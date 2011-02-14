@@ -1,5 +1,4 @@
 <?php
-/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -16,53 +15,46 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-*/
-?>
 
-<?php
-class Individualcommonview_IndexController extends Zend_Controller_Action
+class Groupm_IndexController extends Zend_Controller_Action
 {
-    public function init() 
+    public function init()
     {
-  	$this->view->pageTitle='Individual member';
+        $this->view->pageTitle = "Groupm";
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-	$this->view->createdby = $this->view->globalvalue[0]['id'];
-// 	$this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
+        $this->view->globalvalue = $globalsession->getSession(); // get session values
+		$this->view->username = $this->view->globalvalue[0]['username'];
+//      if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
-	$this->view->adm = new App_Model_Adm();    
+		$this->view->adm = new App_Model_Adm(); // create instance for common model page of adm
     }
 
-    public function indexAction() 
-    {
-    }
-
-    public function commonviewAction()
-    {
-        //Acl
-        //$access = new App_Model_Access();
-        //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'commonviewAction');
-        //if (($checkaccess != NULL)) {
-
-        $id=$this->_request->getParam('id');
-        $this->view->memberid=$id;
-        $individualcommon=new Individualcommonview_Model_individualcommon;
-        $member_name=$individualcommon->getmember($id);
-//getting module id and submodule id
-        $module=$individualcommon->getmodule('Individual');
-        foreach($module as $module_id){ }
-        $this->view->mod_id=$module_id['parent'];
-        $this->view->sub_id=$module_id['module_id'];
-//getting member details, address, contact details
-        $this->view->membername=$member_name;
-        $this->view->address = $this->view->adm->getModule("address",$id,"Individual");
-        $this->view->family=$edit_family = $this->view->adm->editRecord("ob_member_family",$id);
-        $this->view->contact = $this->view->adm->getModule("contact",$id,"Individual");
-        //}
-        //else {
-        //$this->_redirect('index/index');
-        //}
-    }
+    public function indexAction()
+    { 
+		$searchForm = new Groupm_Form_Search();
+        $group = new Groupm_Model_Group();
+		$this->view->form = $searchForm;
+ 		if ($this->_request->isPost() && $this->_request->getPost('Search')){
+			$result = $group->searchDetails($this->_request->getPost());	// get search criteria values
+			$page = $this->_getParam('page',1);
+			$paginator = Zend_Paginator::factory($result); // assign searched values for pagination
+			$paginator->setItemCountPerPage($this->view->adm->paginator());
+			$paginator->setCurrentPageNumber($page);
+				$this->view->paginator = $paginator;
+			$this->view->search = true;
+		} else {
+			$this->view->title = "Group member"; 
+			$storage = new Zend_Auth_Storage_Session();
+			$data = $storage->read();
+			if (!$data) {
+				$this->_redirect('index/login');
+            }
+            $page = $this->_getParam('page',1);
+            $paginator = Zend_Paginator::factory($group->getGroupDetails()); // assign default values for pagination
+	    	$this->view->paginator = $paginator;
+		}
+	    $paginator->setItemCountPerPage($this->view->adm->paginator());
+	    $paginator->setCurrentPageNumber($page);
+     }
 }

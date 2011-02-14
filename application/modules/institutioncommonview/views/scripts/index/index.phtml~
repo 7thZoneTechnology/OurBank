@@ -47,8 +47,8 @@ if(count($this->paginator)!=0) { ?>
         <?php foreach ($this->paginator as $group): ?>
         <tr>
             <td><a href="<?php echo $this->baseUrl()."/groupmcommonview/index/commonview/id/"?><?php echo $group['groupid']; ?>">
-                        <?php echo $this->escape($group['groupcode']); ?></a></td>
-        <td><?php echo $this->escape($group['group_name']);?></td>
+                        <?php echo $this->escape($group['groupcode:']); ?></a></td>
+        <td><?php echo $this->escape($group['group_name:']);?></td>
             <?php endforeach; ?>
             <?php endif; ?>
         </tr>
