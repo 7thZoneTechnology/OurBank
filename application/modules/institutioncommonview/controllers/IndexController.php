@@ -1,5 +1,4 @@
 <?php
-/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -16,50 +15,46 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-*/
-?>
 
-<?php
-/*
- *  create an institution commonview controller
- */
-class Institutioncommonview_IndexController extends Zend_Controller_Action{
-
-    public function init() 
-	{
-        $this->view->pageTitle=$this->view->translate('Institution');
+class Groupm_IndexController extends Zend_Controller_Action
+{
+    public function init()
+    {
+        $this->view->pageTitle = "Groupm";
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
+        $this->view->globalvalue = $globalsession->getSession(); // get session values
 		$this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
+//      if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
-		$this->view->adm = new App_Model_Adm();
-	}
-    public function indexAction() 
-    {
+		$this->view->adm = new App_Model_Adm(); // create instance for common model page of adm
     }
 
-    public function commonviewAction()
-    {
-		//Acl
-//         $access = new App_Model_Access();
-//         $checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'viewinstitutionAction');
-//        	if (($checkaccess != NULL)) {
-            $id=intval($this->_request->getParam("id"));
-            $this->view->institutionid = $id;
-	    //model instance
-            $individualcommon=new Individualcommonview_Model_individualcommon;
-            $module=$individualcommon->getmodule('Institution');
-            foreach($module as $module_id){ }
-		//view instance
-            $this->view->mod_id=$module_id['parent'];
-            $this->view->sub_id=$module_id['module_id'];
-            $this->view->institution = $this->view->adm->editRecord("ob_institution",$id);
-            $this->view->address = $this->view->adm->getModule("address",$id,"Institution");
-            $this->view->contact = $this->view->adm->getModule("contact",$id,"Institution");
-//       	} else {
-//         	$this->_redirect('index/error');
-// 		}
-    }
+    public function indexAction()
+    { 
+		$searchForm = new Groupm_Form_Search();
+        $group = new Groupm_Model_Group();
+		$this->view->form = $searchForm;
+ 		if ($this->_request->isPost() && $this->_request->getPost('Search')){
+			$result = $group->searchDetails($this->_request->getPost());	// get search criteria values
+			$page = $this->_getParam('page',1);
+			$paginator = Zend_Paginator::factory($result); // assign searched values for pagination
+			$paginator->setItemCountPerPage($this->view->adm->paginator());
+			$paginator->setCurrentPageNumber($page);
+				$this->view->paginator = $paginator;
+			$this->view->search = true;
+		} else {
+			$this->view->title = "Group member"; 
+			$storage = new Zend_Auth_Storage_Session();
+			$data = $storage->read();
+			if (!$data) {
+				$this->_redirect('index/login');
+            }
+            $page = $this->_getParam('page',1);
+            $paginator = Zend_Paginator::factory($group->getGroupDetails()); // assign default values for pagination
+	    	$this->view->paginator = $paginator;
+		}
+	    $paginator->setItemCountPerPage($this->view->adm->paginator());
+	    $paginator->setCurrentPageNumber($page);
+     }
 }

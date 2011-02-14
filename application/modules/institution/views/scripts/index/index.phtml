@@ -21,11 +21,11 @@
     <fieldset>
     <legend>Search</legend>
     	<div class="search" style="margin-left:20px;">
-        	<form action="<?php echo $this->baseUrl();?>/institution/index/index" method="POST">
+        	<form action="<?php echo $this->baseUrl();?>/institution/index/index" mthod="POST">
             	<table id = "fieldsets">
                 	<tr>
-                    	<td class="label"><?php echo $this->translate('Institution name:'); ?></td>
-                        <td ><? echo $this->form->field2;?></td>
+                    	<td class="label"><br><?php echo $this->translate('Institution name:'); ?></td>
+                        <td ><?php echo $this->form->field2;?></td>
                         <td class="label"></td>
                        </tr>
                 </table>
@@ -55,6 +55,6 @@
     	</tr>
 	</table>
 <?php } else { 
-        echo $this->errormsg;
+         echo "<font color=red>".$this->errormsg."</font>";
     } ?>
 

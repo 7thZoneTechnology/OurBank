@@ -39,8 +39,7 @@
     <h4><a href="#">Settings</a></h4>
      <ul>
 		 <li><a href="<?php  echo $this->baseUrl();?>/settings/dropdown">Dropdown</a></li>
-         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/selectlanguage/">Languages</a></li>
-		 <li><a href="<?php  echo $this->baseUrl();?>/sms">SMS</a></li>
+    
      </ul>
   </div>
 
@@ -49,8 +48,9 @@
         <?php echo $this->layout()->content; ?>
     </div>
 
+
   <div id="footer">
-    <div id="copytxt"> Mahiti Infotech Pvt. Ltd., <a href="#">Terms &amp; Conditions</a></div>
+    <?php echo $this->render('footer.phtml'); ?>
   </div>
 </div>
 </BODY>

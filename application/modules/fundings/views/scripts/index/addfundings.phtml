@@ -20,12 +20,12 @@
 <form name="form1" action="<?php echo $this->baseUrl();?>/fundings/index/addfundings" method="POST">
 <fieldset>
     <legend>Add fundings</legend> 
-        <table class="fieldsets"> 
+        <TABLE class="fieldsets"> 
             <?php echo $this->form;?>
-        </table>
+        </TABLE>
         <div class="btnhouse">
 	   <div class="ltbtns">
-		<?php echo $this->submitform->Submit;?>
+		<input type = "submit" name = "Submit" value = "Submit">
 	   </div>
 	   <div class="rtbtns">
 		<a href="<?php echo $this->baseUrl();?>/fundings"><input type = "button" name = "Back" value = "Back"></a>
