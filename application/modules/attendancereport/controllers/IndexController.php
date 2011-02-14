@@ -79,6 +79,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 
 				$fetchAllMembers=$fetchMeetings->fetchGroupMembers();
 				$this->view->all_member_name=$fetchAllMembers;
+				                $this->view->search = true;
 			}
 		}
 	}

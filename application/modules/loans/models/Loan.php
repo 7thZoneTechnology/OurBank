@@ -26,7 +26,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
         {
             $select = $this->select()
                         ->setIntegrityCheck(false)
-                        ->join(array('a' => 'ourbank_productsoffer'),array('id'),array('a.name as productname','a.shortname as shortname1'))
+                        ->join(array('a' => 'ourbank_productsoffer'),array('id'),array('a.name as productname','a.shortname as shortname1','a.id as offerid'))
                         ->where('a.name like "%" ? "%"',$post['field6'])
                         ->where('a.shortname like "%" ? "%"',$post['field2'])
                         ->join(array('b' => 'ourbank_productsloan'),'a.id=b.productsoffer_id')

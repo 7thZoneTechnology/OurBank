@@ -8,48 +8,51 @@ class Loans_Form_Loan extends Zend_Form {
         $fieldname2='shortname';
         $offerproductupdate_id = new Zend_Form_Element_Hidden('offerproductupdate_id');
 
-        $product_id = $formfield->field('Select','product_id','','','txt_put','',true,'','','','','','','');
-        $offerproductname = $formfield->field('Text','offerproductname',$table,$fieldname1,'txt_put','',true,'','','','','','','');
+// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
 
-        $offerproductshortname = $formfield->field('Text','offerproductshortname',$table,$fieldname2,'txt_put','',true,'','','','','','','');
+        $product_id = $formfield->field('Select','product_id','','','mand','',true,'','','','','','','');
+        $offerproductname = $formfield->field('Text','offerproductname',$table,$fieldname1,'mand','',true,'','','','','','','');
+
+        $offerproductshortname = $formfield->field('Text','offerproductshortname',$table,$fieldname2,'mand','',true,'','','','','','','');
         $offerproductshortname->addValidator('StringLength', false, array(1, 3));
 
         $offerproduct_description= new Zend_Form_Element_Textarea('offerproduct_description', array('rows' => 3,'cols' => 20,));
         $offerproduct_description->setAttrib('class', '');
+        $offerproduct_description->removeDecorator('HtmlTag');
         $offerproduct_description->setRequired(true)
                                 ->addValidators(array(array('NotEmpty')));
 
-        $begindate = $formfield->field('Text','begindate','','','txt_put','',true,'','','','','','','');
-        $closedate = $formfield->field('Text','closedate','','','txt_put','',true,'','','','','','','');
-        $applicableto = $formfield->field('Select','applicableto','','','txt_put','',true,'','','','','','','');
-        $glsubcode_id = $formfield->field('Select','glsubcode_id','','','txt_put','',true,'','','','','','','');
+        $begindate = $formfield->field('Text','begindate','','','mand','',true,'','','','','','','');
+        $closedate = $formfield->field('Text','closedate','','','mand','',true,'','','','','','','');
+        $applicableto = $formfield->field('Select','applicableto','','','mand','',true,'','','','','','','');
+        $glsubcode_id = $formfield->field('Select','glsubcode_id','','','mand','',true,'','','','','','','');
 
-        $fee_glsubcode_id = $formfield->field('Select','fee_glsubcode_id','','','txt_put','',true,'','','','','','','');
+        $fee_glsubcode_id = $formfield->field('Select','fee_glsubcode_id','','','mand','',true,'','','','','','','');
 
-        $interest_glsubcode_id = $formfield->field('Select','interest_glsubcode_id','','','txt_put','',true,'','','','','','','');
-        $interesttype = $formfield->field('Select','interesttype_id','','','txt_put','',true,'','','','','','','');
+        $interest_glsubcode_id = $formfield->field('Select','interest_glsubcode_id','','','mand','',true,'','','','','','','');
+        $interesttype = $formfield->field('Select','interesttype_id','','','mand','',true,'','','','','','','');
 
-        $minmumloanamount = $formfield->field('Text','minmumloanamount','','','txt_put','',true,'','','','','','','');
+        $minmumloanamount = $formfield->field('Text','minmumloanamount','','','mand','',true,'','','','','','','');
         $minmumloanamount->addValidators(array(array('stringLength', false, array(3,10))));
         $minmumloanamount->addValidators(array(array('Float')));
 
-        $maximunloanamount = $formfield->field('Text','maximunloanamount','','','txt_put','',true,'','','','','','','');
+        $maximunloanamount = $formfield->field('Text','maximunloanamount','','','mand','',true,'','','','','','','');
         $maximunloanamount->addValidators(array(array('stringLength', false, array(3,10))));
         $maximunloanamount->addValidators(array(array('Float')));
 
-        $minimumfrequency = $formfield->field('Text','minimumfrequency','','','txt_put','',true,'','','','','','','');
+        $minimumfrequency = $formfield->field('Text','minimumfrequency','','','mand','',true,'','','','','','','');
         $minimumfrequency->addValidators(array(array('stringLength', false, array(1,3))));
         $minimumfrequency->addValidators(array(array('Float')));
 
-        $maximumfrequency = $formfield->field('Text','maximumfrequency','','','txt_put','',true,'','','','','','','');
+        $maximumfrequency = $formfield->field('Text','maximumfrequency','','','mand','',true,'','','','','','','');
         $maximumfrequency->addValidators(array(array('stringLength', false, array(1,3))));
         $maximumfrequency->addValidators(array(array('Digits')));
 
-        $graceperiodnumber = $formfield->field('Text','graceperiodnumber','','','txt_put','',true,'','','','','','','');
+        $graceperiodnumber = $formfield->field('Text','graceperiodnumber','','','mand','',true,'','','','','','','');
         $graceperiodnumber->addValidators(array(array('stringLength', false, array(1,1))));
         $graceperiodnumber->addValidators(array(array('Digits')));
 
-        $penal_Interest = $formfield->field('Text','penal_Interest','','','txt_put','',true,'','','','','','','');
+        $penal_Interest = $formfield->field('Text','penal_Interest','','','mand','',true,'','','','','','','');
         $penal_Interest->addValidators(array(array('Float')));
 
         $submit = $formfield->field('Submit','Submit','','','','','','','','','','','','');

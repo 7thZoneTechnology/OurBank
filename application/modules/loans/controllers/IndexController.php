@@ -41,7 +41,6 @@ class Loans_IndexController extends Zend_Controller_Action{
                 {
                     $loan = new Loans_Model_Loan();
                     $result = $loan->searchLoan($searchForm->getValues());
-
                     $page = $this->_getParam('page',1);
                     $paginator = Zend_Paginator::factory($result);
                     $paginator->setItemCountPerPage(5);
@@ -182,7 +181,7 @@ class Loans_IndexController extends Zend_Controller_Action{
                 $loanForm->glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
         }
 
-        $glsubcode = $loan->fetchAllglsubcode('1');//ledger id for income 2
+        $glsubcode = $loan->fetchAllglsubcode('2');//ledger id for income 2
         foreach($glsubcode as $glsubcode) {
             $loanForm->fee_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
             $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");

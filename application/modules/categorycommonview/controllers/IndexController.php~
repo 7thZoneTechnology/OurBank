@@ -52,7 +52,7 @@ class Categorycommonview_IndexController extends Zend_Controller_Action
 	{
 		//Acl
         $id=$this->_request->getParam('id');
-			
+//view category			
 			$category = new Category_Model_Category;
 			$this->view->categorydetails=$category->getCategory($id);
 	}	

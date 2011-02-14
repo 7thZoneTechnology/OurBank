@@ -23,13 +23,11 @@
 <form action="<?php echo $this->baseUrl();?>/funderdetails/index/editfunder/id/<?php echo $this->id; ?>" method="POST">
 <fieldset>
 	<!--to change language -->
-            <legend>
-                        <?php echo $this->translate("Funder details"); ?>
+            
+<table class="fieldsets" id="hor-minimalist-b" >
+        <tr><Th colspan="2"><?php echo $this->translate("Funder details"); ?>
                           <a href="<?php echo $this->baseUrl();?>/funderdetails/index/delete/id/<?php echo $this->id; ?>/sub_id/<?php echo $this->sub_id; ?>"><img      src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16" align="right">
-                      </a>
-            </legend>
-
-<table class="fieldsets">
+                      </a></Th></tr>
 		<?php echo $this->form; ?>	
 	</table>
 	<div class="btnhouse">

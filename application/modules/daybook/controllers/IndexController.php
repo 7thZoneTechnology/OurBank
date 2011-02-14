@@ -59,7 +59,7 @@ class Daybook_IndexController extends Zend_Controller_Action
                 $osc = $transaction->openingBalance($fromDate);
                 foreach($osc as $osc1) {
                     $this->view->openingBalance = $osc1["openingBalance"];
-                }
+                } 
             }
             } else {
 	   //user message
@@ -113,7 +113,9 @@ class Daybook_IndexController extends Zend_Controller_Action
 
         $this->view->fromdate=$fromDate = $this->_request->getParam('field1');
         $this->view->savings = 10;
-        $title="Day Book As of ".$this->view->dateconvert->phpnormalformat($fromDate);
+	$head="Day Book";
+        $title="As of ".$this->view->dateconvert->phpnormalformat($fromDate);
+	$amount="* Amount in Rs";
         $text = array($title,"Particulars","GLcode","Cash","Transfer","Particulars","GLcode","Cash","Transfer");
 
         $xx=35; $xy=270;
@@ -123,8 +125,13 @@ class Daybook_IndexController extends Zend_Controller_Action
 
         $y1=740;	$y2=740;
         
-        $page->drawText($text[0],370,$y1);//For Top Header
+        $page->drawText($head,270,780);//For Top Header
+
         $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
+        $page->drawText($amount,505,730);//For Top Header
+        $page->drawText($text[0],500,740);//For Top Header
+        $page->drawText('Credit',35,730);//credit table Top Header
+        $page->drawText('Debit',310,730);//Debit table Top Header
         $y1-=15;
         $startPoint=$y1;
         $page->drawLine($xx, $y1, $xy, $y1); 
@@ -232,7 +239,7 @@ class Daybook_IndexController extends Zend_Controller_Action
         foreach($osc as $osc1) {
             $this->view->openingBalance =$opening = $osc1["openingBalance"];
         }
-        
+       //$page->drawText($opening.'Testing',$x1[4],750); 
         $totalTrnsferCashDebit="0.00";
         $totalCashDebit="0.00";
         $debitTotal="0.00";

@@ -20,18 +20,21 @@
 ?>
 
 <?php
+class Holidaycommonview_Bootstrap extends Zend_Application_Module_Bootstrap {
 
-class Individualcommonview_Bootstrap extends Zend_Application_Module_Bootstrap
-{
 
-//     function _initView()
-//     {
-//         // view and layout setup
-//         Zend_Layout::startMvc(APPLICATION_PATH . 'management/views/layouts');
-//         $view = Zend_Layout::getMvcInstance()->getView();
-//         $view->doctype('XHTML1_STRICT');
-//         $view->headTitle()->setSeparator(' - ');
-//     }
+function _initTranslation() {
+
+
+//        $translate = new Zend_Translate('Array',APPLICATION_PATH. '/languages/english.php', 'en_US');
+//        $translate->addTranslation( APPLICATION_PATH. '/languages/hindi.php','kn_IN');
+//        $translate->setLocale('kn_IN');
+// 
+// 
+//        Zend_Registry::set('Zend_Translate', $translate);
+	   }
+	   
+
 
 
 }

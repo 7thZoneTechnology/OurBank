@@ -20,49 +20,41 @@
 ?>
 
 <?php
-class Individualcommonview_IndexController extends Zend_Controller_Action
+class Holidaycommonview_IndexController extends Zend_Controller_Action
 {
-    public function init() 
-    {
-  	$this->view->pageTitle='Individual member';
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-	$this->view->createdby = $this->view->globalvalue[0]['id'];
-// 	$this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//              $this->_redirect('index/logout');
-//         }
-	$this->view->adm = new App_Model_Adm();    
-    }
+	public function init() 
+	{
+	            $this->view->pageTitle='Holiday';
+                    $this->view->adm = new App_Model_Adm();
+                    $this->view->dateconvert = new App_Model_dateConvertor();
+	}
 
-    public function indexAction() 
-    {
-    }
+	public function indexAction() 
+	{
+               
+		
+	}
+	public function holidayaddAction() 
+	{
+		
+		
+		
+	}
+	
+	public function categoryeditAction() 
+	{
+			
+    }		
+	public function holidayviewAction() 
+	{
+		//Acl
+         $id=$this->_request->getParam('id');
+//view function
+			$holiday = new Holiday_Model_Holiday;
+			$this->view->holidaydetails=$holiday->getHoliday($id);
+	}	
+	public function categorydeleteAction() 
+	{
 
-    public function commonviewAction()
-    {
-        //Acl
-        //$access = new App_Model_Access();
-        //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'commonviewAction');
-        //if (($checkaccess != NULL)) {
-
-        $id=$this->_request->getParam('id');
-        $this->view->memberid=$id;
-        $individualcommon=new Individualcommonview_Model_individualcommon;
-        $member_name=$individualcommon->getmember($id);
-//getting module id and submodule id
-        $module=$individualcommon->getmodule('Individual');
-        foreach($module as $module_id){ }
-        $this->view->mod_id=$module_id['parent'];
-        $this->view->sub_id=$module_id['module_id'];
-//getting member details, address, contact details
-        $this->view->membername=$member_name;
-        $this->view->address = $this->view->adm->getModule("address",$id,"Individual");
-        $this->view->family=$edit_family = $this->view->adm->editRecord("ob_member_family",$id);
-        $this->view->contact = $this->view->adm->getModule("contact",$id,"Individual");
-        //}
-        //else {
-        //$this->_redirect('index/index');
-        //}
-    }
+}
 }

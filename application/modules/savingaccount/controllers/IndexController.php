@@ -33,9 +33,13 @@ class Savingaccount_IndexController extends Zend_Controller_Action
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
         if ($this->_request->getPost('Submit')) {
 			$formData = $this->_request->getPost();
+                        $this->view->errormsg="Record not found.. Try agin...";
 			if ($accountsForm->isValid($formData)) {
 			    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
-			}
+			}else{
+                                            $this->view->errormsg="Record not found.. Try agin...";
+                                        }
+
         }
     }
     public function detailsAction() 

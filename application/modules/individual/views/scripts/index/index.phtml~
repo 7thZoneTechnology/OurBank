@@ -19,22 +19,20 @@
 
 <div id="searchDiv">
     <fieldset>
-        <legend>Search</legend>
+        <legend><?php echo $this->translate("Search"); ?></legend>
             <div class="search" style="margin-left:20px;">
                     <form action="<?php echo $this->baseUrl();?>/individual" method="POST">
                             <table width="100%">
                                 <tr>
-                                    <td>Member code</td><td ><? echo $this->form->code;?></td>
-                                    <td>Member name</td><td ><? echo $this->form->name;?></td>
+                                    <td><?php echo $this->translate("Member code:"); ?></td><td ><? echo $this->form->code;?></td>
+                                    <td><?php echo $this->translate("Member name:"); ?></td><td ><? echo $this->form->name;?></td>
                                 </tr>
                                 <tr>
-                                    <td>Branch name</td><td><? echo $this->form->office;?></td>
-                                    <td>Gender</td><td><? echo $this->form->gender_id;?></td>
+                                    <td><br><?php echo $this->translate("Branch name:"); ?></td><td><br><? echo $this->form->office;?></td>
+                                    <td><br><?php echo $this->translate("Gender:"); ?></td><td><br><? echo $this->form->gender_id;?></td>
                                 </tr>
-                                <tr>
-                                    <td colspan="4" align="center"><? echo $this->form->Search;?></td>
-                                </tr>
-                        </table>
+                               
+                        </table><? echo $this->form->Search;?>
                     </form>	
             </div>
     </fieldset> 
@@ -43,10 +41,10 @@
 <?php if (count($this->paginator)){ ?>
     <table id="hor-minimalist-b">
         <tr>
-            <th>Member code</th>
-            <th>Member name</th>
-            <th>Bank name</td>
-            <th>Gener</td>
+            <th><?php echo $this->translate("Member code"); ?></th>
+            <th><?php echo $this->translate("Member name"); ?></th>
+            <th><?php echo $this->translate("Bank name"); ?></td>
+            <th><?php echo $this->translate("Gener"); ?></td>
         </tr>
         <?php foreach ($this->paginator as $individual){ ?>
         <tr>
@@ -63,5 +61,6 @@
         </tr>
 
     </table>  
-<?php } else {echo "<font color='RED'>Records not found try again...</font>";} ?>
-
+<?php } else { 
+        echo "<font color=red>".$this->errormsg."</font>";
+    } ?>

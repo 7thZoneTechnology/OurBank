@@ -42,7 +42,7 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                     $this->view->result =$result;
  
                 } else {
-                    $this->view->errormsg = "No records found";
+                    $this->view->errormsg = "Record not found..Try again..";
                 }
             }
         }

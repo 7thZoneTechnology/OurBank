@@ -1,3 +1,22 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
 <!--<a href="#" id="open"></B>Change Log</B></a>
 
 <div id="content1">
@@ -34,7 +53,8 @@
 					foreach($this->productdetails as $edit_id) { ?>
 <tr>
 						<th class = "firsttd">product Details</th>
-						<th class = "secondtd"></th>	
+						<th class = "secondtd"></th>
+                                                <th class = "third"></th>	
 <th></th>
 <th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/product/index/productedit/id/<?php echo $edit_id['id'];?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
 </tr>
@@ -63,17 +83,17 @@
                 </TR>
  <TR>
                     <TD>category name</TD>
-                    <TD><?php echo $product['name'];?></TD>
+                    <TD><?php echo $product['categoryname'];?></TD>
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
                 <TR>
+                    <TD></TD>
+                    <TD></TD>
+                    <TD align="right"></TD>
                     <TD><a href="<?php echo $this->baseUrl(); ?>/product">
                                 <input name="submit" type="submit" class="officebutton" value="Back"></a></TD>
-                    <TD></TD>
-                    <TD></TD>
-                    <TD></TD>
                     <TD></TD>
               </TR>
         </TABLE>

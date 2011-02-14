@@ -28,8 +28,8 @@ class Roles_Form_Search extends Zend_Form {
                 // set validation type as alphabetics
 		$vtype=array('Alpha'); 
                 // send parameters to get text as a form field 
-		$grantname = $formfield->field('Text','grantname','','','','Grant name',false,'','','','','',1,'');
-		$grantedby = $formfield->field('Text','granteddate','','','','Granted date',false,'','','','','',1,'');
+		$grantname = $formfield->field('Text','grantname','','','','Grant name:',false,'','','','','',1,'');
+		$grantedby = $formfield->field('Text','granteddate','','','','Granted date:',false,'','','','','',1,'');
 		$this->addElements(array($grantname,$grantedby));
 	}
 

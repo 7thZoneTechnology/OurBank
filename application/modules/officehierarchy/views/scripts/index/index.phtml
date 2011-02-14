@@ -168,7 +168,7 @@ function officehierarchy() {
     <div class="cont-rgt-data">
         <form action="<?php  echo $this->baseUrl();?>/officehierarchy?officeNo=<?php  echo $this->cat;?>" method="POST">
             <table id="hor-minima be less then '+(current+1)+' and more then 0')list-b" summary="Employee Pay Sheet">
-                <tr class="tdbrownheading">
+                <tr class="tdbrownheading" >
                     <th width="33%"><?php echo $this->translate('Officelevel'); ?></th>
                     <th width="33%"><?php echo $this->translate('OfficeType'); ?></th>
                     <th width="33%"><?php echo $this->translate('officeTypeCode'); ?></th>
@@ -202,11 +202,11 @@ function officehierarchy() {
     </form>
     </div>
 </fieldset>
-        <?php } else { ?>	
+        <? } else { ?>	
 <!--        <table>
             <tr>
                 <td width="85%"></td>
-                <td><a href="<?php //php echo $this->baseUrl();?>/index/officehierarchy"> Office hierarchy strcture</a><br /></td>
+                <td><a href="<? //php echo $this->baseUrl();?>/index/officehierarchy"> Office hierarchy strcture</a><br /></td>
             </tr>
         </table>-->
 
@@ -219,7 +219,7 @@ function officehierarchy() {
                         <th width="33%"><?php echo $this->translate('officeTypeCode'); ?></th>
                     </tr>
                     <?php echo $this->form1->officeNo;  ?>
-                        <?php $i=1; foreach($this->officeHierarchySelect as $eacharraysent) { 
+                        <? $i=1; foreach($this->officeHierarchySelect as $eacharraysent) { 
                            $a='officeType'.$i;
                            $b='officeCode'.$i;
                            $c='id'.$i;

@@ -41,10 +41,11 @@
 class  Individualdefault_Form_individualdefault extends Zend_Form {
 
     public function init() {
+        //create a indiviudal form element 
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
         $vtype=array('Digits');				
-        $office = $formfield->field('Select','office','','','mand','Bank name',true,'','','','','',1,0);
+        $office = $formfield->field('Select','office','','','mand','Office name',true,'','','','','',1,0);
         $memberfirstname = $formfield->field('Text','memberfirstname','','','mand','Member name',true,'','','','','',1,0);
         $gender_id = $formfield->field('Select','gender_id','','','mand','Gender',true,'','','','','',1,0);
         $dateofbirth = $formfield->field('Text','memberdateofbirth','','','mand','Date of Brith',true,'','','','','',1,0);

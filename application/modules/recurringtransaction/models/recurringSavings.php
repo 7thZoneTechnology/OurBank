@@ -107,7 +107,7 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
                                     (C.id='$productId') AND
                                     (A.rec_payment_status=D.id) AND
                                     (C.id=B.productsoffer_id)";
-        $result = $this->db->fetchAll($sql,array($accountId));
+        $result = $this->db->fetchAll($sql);
         return $result;
     }
 
@@ -119,76 +119,77 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
                             ourbank_product_fixedrecurring C,
                             ourbank_product D,
                             ourbank_accounts E
-                    where (A.account_id ='$accountId') AND
+                    where (E.id = '$accountId') AND
+                            (A.account_id=E.id) AND
                             (B.id = '$productId') AND
-                            (C.productsoffer_id = B.product_id) AND
-                            (D.id = B.product_id) AND 
-                            (A.account_id=E.id)";
-        $result = $this->db->fetchAll($sql,array($accountId));
+                            (D.id = B.product_id) AND
+                            (B.id = C.productsoffer_id)";
+
+        $result = $this->db->fetchAll($sql,array($accountId,$productId));
         return $result;
     }
 
         public function recurringPaidDetails($accountId) {
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_recurring_payment'),array('rec_paymentserial_id'))
-                        ->where('a.account_id = ?',$accountId);
-                $result = $this->fetchAll($select);
-                return $result->toArray();
+            $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->join(array('a' => 'ourbank_recurring_payment'),array('rec_paymentserial_id'))
+                    ->where('a.account_id = ?',$accountId);
+            $result = $this->fetchAll($select);
+            return $result->toArray();
         }
 
         public function noOfInstalmentPaid($accountId) {
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_recurringpaydetails'),array('paymentserial_id'))
-                        ->where('a.account_id = ?',$accountId)
-                        ->where('a.rec_payment_status = 2 AND (a.recordstatus_id=3 or a.recordstatus_id=1)');
-                $result = $this->fetchAll($select);
-                return $result->toArray();
+            $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->join(array('a' => 'ourbank_recurringpaydetails'),array('paymentserial_id'))
+                    ->where('a.account_id = ?',$accountId)
+                    ->where('a.rec_payment_status = 2 AND (a.recordstatus_id=3 or a.recordstatus_id=1)');
+            $result = $this->fetchAll($select);
+            return $result->toArray();
         }
 
         public function TotalnoOfInstalmentPaid($accountId) {
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_recurringpaydetails'),array('rec_payment_id'))
-                        ->where('a.account_id = ?',$accountId)
-                        ->where('a.recordstatus_id=3 or a.recordstatus_id=1 or a.recordstatus_id=2');
-                $result = $this->fetchAll($select);
-                return $result->toArray();
+            $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->join(array('a' => 'ourbank_recurringpaydetails'),array('rec_payment_id'))
+                    ->where('a.account_id = ?',$accountId)
+                    ->where('a.recordstatus_id=3 or a.recordstatus_id=1 or a.recordstatus_id=2');
+            $result = $this->fetchAll($select);
+            return $result->toArray();
         }
 
         public function fetchMemberName($accountId) {
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('A' => 'ourbank_accounts'),array('id'))
-                        ->where('A.id = ?',$accountId)
-                        ->join(array('B' => 'ourbank_member'),'A.member_id=B.id',array('B.name as memberfirstname'));
-                $result = $this->fetchAll($select);
-                return $result->toArray();
+            $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->join(array('A' => 'ourbank_accounts'),array('id'))
+                    ->where('A.id = ?',$accountId)
+                    ->join(array('B' => 'ourbank_member'),'A.member_id=B.id',array('B.name as memberfirstname'));
+            $result = $this->fetchAll($select);
+            return $result->toArray();
         }
 
         public function recurringProductDetails($accountId,$productId) {
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('A' => 'ourbank_accounts'),array('id'))
-                        ->where('A.id = "'.$accountId.'"  AND A.product_id = "'.$productId.'"')
-                        ->where('A.status_id = 3 or A.status_id = 1')
-                        ->join(array('B' => 'ourbank_productsoffer'),'A.product_id=B.id')
+            $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->join(array('A' => 'ourbank_accounts'),array('id'))
+                    ->where('A.id = "'.$accountId.'"  AND A.product_id = "'.$productId.'"')
+                    ->where('A.status_id = 3 or A.status_id = 1')
+                    ->join(array('B' => 'ourbank_productsoffer'),'A.product_id=B.id')
 //                         ->where('B.id = ?',$productId)
 
-                        ->join(array('C' => 'ourbank_product_fixedrecurring'),'B.id=C.productsoffer_id');
-                $result = $this->fetchAll($select);
-                return $result->toArray();
+                    ->join(array('C' => 'ourbank_product_fixedrecurring'),'B.id=C.productsoffer_id');
+            $result = $this->fetchAll($select);
+            return $result->toArray();
 // 		die($select->__toString($select));
         }
 
         public function recurringInstalmentpayments($accountId,$InstalmentNumber) {
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_recurringpaydetails'),array('rec_payment_id'))
-                        ->where('a.account_id = "'.$accountId.'"  AND a.rec_payment_id = "'.$InstalmentNumber.'"');
-                $result = $this->fetchAll($select);
-                return $result->toArray();
+            $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->join(array('a' => 'ourbank_recurringpaydetails'),array('rec_payment_id'))
+                    ->where('a.account_id = "'.$accountId.'"  AND a.rec_payment_id = "'.$InstalmentNumber.'"');
+            $result = $this->fetchAll($select);
+            return $result->toArray();
         }
 
         public function nextinstallmentdate($accountId) {

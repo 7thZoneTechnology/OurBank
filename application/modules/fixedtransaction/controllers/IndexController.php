@@ -56,7 +56,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                         $accountcode=$membercode;
                         $arrayfixedAccountSearch = $fixedSavings->fixedSearch($accountcode);
                         if (!$arrayfixedAccountSearch) {
-                            echo "search Messages";
+                            echo "Record not found..Try again";
                         } else {
                             $this->view->fixedAccountsSearch = $arrayfixedAccountSearch;
                             foreach($arrayfixedAccountSearch as $arrayfixedAccountSearch1) {

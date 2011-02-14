@@ -18,20 +18,23 @@
 !-->
 
 <div id = "searchDiv">
-    <fieldset>
         <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/deletegroup/id/<?php echo $this->groupid; ?>" method="POST">
-            <table class = "fieldsets">
-                <TR>
-                    <TD><font color="red">Are you sure you want to delete</font></TD>
-                    <TD><?php echo $this->form->remarks;?></TD>
-                </TR>
+            <table id="hor-minimalist-b" class = "fieldsets">
+                <tr><Th>Delete details</Th><th></th></tr>
                 <tr>
-                    <td class = "firsttd"><input type = "Submit" name = "Submit" id="Submit" value = "Submit"/></td>
+                    <td> <label class="mand">Remarks</lable></td>
+                      <td><?php echo $this->form->Remarks;?></td>
+                </tr>
+                <tr>
+                    <td><font color="red">Are you sure you want to delete ?</font></td>
+                    <td></td>
+                </tr>
+
+                   <tr> <td class = "firsttd"><input type = "Submit" name = "Submit" id="Submit" value = "Submit"/></td>
                     <td class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/groupmcommonview/index/commonview/id/<?echo $this->groupid; ?>"><input type = "Button" name = "Back" id="Back" value = "Back"/></a></td>
                 </tr>
         </table>
         </form>
-    </fieldset>
 </div>
 
 

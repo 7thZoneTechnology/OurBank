@@ -18,22 +18,22 @@ function removeFormField(id) {
 </script>
 <div class="searchDiv">
 
-		<table id="hor-minimalist-b">
+		<table id="hor-minimalist-b" class="fieldsets">
 
 			<tr>
                         <th colspan="2">Product information</th>
                         </tr>
 
 			<TR>
-				<TD>Product name*</TD>
+				<TD><label class="mand">Product name</label></TD>
 				<TD ><?php echo $this->form->offerproductname;?><?php echo $this->form->currentdates;?><?php echo $this->errorofferproductname; ?></TD>
 			</TR>
 			<tr>
-				<TD>Short name*</TD>
+				<TD><label class="mand">Short name</TD>
 				<TD ><?php echo $this->form->offerproductshortname;?></TD>
 			</TR>
 			<TR >
-				<TD>Description<span class="reqMark">*</span></TD>
+				<TD><label class="mand">Description</label></TD>
 				<TD><?php echo $this->form->offerproduct_description;?></TD>
 			</TR>
 
@@ -42,30 +42,30 @@ function removeFormField(id) {
 			</tr>
 
 			<tr> 
-				<td>Begin date:*<b style="color:red">dd/mm/yyyy</b></td>
+				<td><label class="mand">Begin date :<b style="color:red">dd/mm/yyyy</b></label></td>
 				<td ><?php echo $this->form->begindate;?></td>
 			</tr>
 			<tr> 
-				<td>Applicable to:<span class="reqMark">*</span></td>
+				<td><label class="mand">Applicable to</label></td>
 				<td ><?php echo $this->form->applicableto;?></td>
 			</tr>
 			<tr> 
-				<td>GL subcode:<span class="reqMark">*</span></td>
+				<td><label class="mand">GL subcode</label></td>
 				<td ><?php echo $this->form->glsubcode_id;?></td>
 			</tr>
 			<tr>
 				<th colspan="2">Fee accounting line</th>
 			</tr>
 			<tr> 
-				<td>Initial deposit<span class="reqMark">*</span></td>
-				<td ><?php echo $this->form->minmumdeposit;?></td>
+				<td><label class="mand">Initial deposit</label></td>
+				<td ><? echo $this->form->minmumdeposit;?></td>
 			</tr>
 			<tr > 
-				<td>Frequency of deposit<span class="reqMark">*</span></td>
-				<td ><?php echo $this->form->frequencyofdeposit;?></td>
+				<td><label class="mand">Frequency of deposit</label></td>
+				<td ><? echo $this->form->frequencyofdeposit;?></td>
 			</tr>
                          <tr>
-				<td >Penal glsubcode:<span class="reqMark">*</span></td>
+				<td ><label class="mand">Penal glsubcode</label></td>
 				<td ><?php echo $this->form->feeglcode;?></td>
 			</tr>
 			<tr>
@@ -73,16 +73,16 @@ function removeFormField(id) {
 			</tr>
 
 			<tr>
-				<td>Interest cal period<span class="reqMark">*</span></td>
-				<td ><?php echo $this->form->Int_timefrequency_id;?></td>
+				<td><label class="mand">Interest cal period</label></td>
+				<td ><? echo $this->form->Int_timefrequency_id;?></td>
 			</tr>
 			<tr>
-				<td>Interest on calculation<span class="reqMark">*</span></td>
-				<td ><?php echo $this->form->frequencyofinterestupdating;?></td>
+				<td><label class="mand">Interest on calculation</label></td>
+				<td ><? echo $this->form->frequencyofinterestupdating;?></td>
 			</tr>
 			<tr> 
-				<td>Minimumbalance for interest<span class="reqMark">*</span></td>
-				<td ><?php echo $this->form->minimumbalanceforinterest;?></td>
+				<td><label class="mand">Minimumbalance for interest</label></td>
+				<td ><? echo $this->form->minimumbalanceforinterest;?></td>
 			</tr>
 
 			<tr>

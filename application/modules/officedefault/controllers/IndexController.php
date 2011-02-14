@@ -131,7 +131,6 @@ class Officedefault_IndexController extends Zend_Controller_Action{
             }
         $this->_redirect('/officecommonview/index/commonview/id/'.$lastid);
 		}
-        else { echo "Adding wrong hierarchy level";}
 		}
         }
         }
@@ -157,12 +156,12 @@ class Officedefault_IndexController extends Zend_Controller_Action{
             $officetypeId=$officetypeIds1->id;
         }
         if($officetypeId==1) { 
-//            $this->view->selectedSuboffice = $subOffice->subofficeFromUrl($officetypeId);
+            $this->view->selectedSuboffice = $subOffice->subofficeFromUrl($officetypeId);
             $this->view->officetypename = $subOffice->officetypename($officetypeId);
         } 
         else {
             $this->view->selectedSuboffice = $subOffice->subofficeFromUrl($officetypeId);
-//           $this->view->officetypename = $subOffice->officetypename($officetypeId);
+            $this->view->officetypename = $subOffice->officetypename($officetypeId);
         }
 	//fetch selected sub office and id
         if($this->view->selectedSuboffice) {
@@ -172,11 +171,9 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         else
         { 
-            if($officetypeId==1){
-                foreach($this->view->officetypename as $officetype) { 
-                $officeForm->parentoffice_id->addMultiOption($officetype->id,$officetype->type);
-            }
-            }
+        foreach($this->view->officetypename as $officetype) { 
+        $officeForm->parentoffice_id->addMultiOption($officetype->id,$officetype->type);
+        }
         }
     }
 	//edit office
@@ -193,8 +190,6 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
         $this->view->form = $officeForm; 
           $office = new Officedefault_Model_officedefault();
-       // $this->view->officeDetails = $office->getOffice();
-      //  $this->view->officehierarchyselect = $office->officehierarchyselect();
         $this->view->id=$office_id=$this->_getParam('id');
         $officehierarchy = $office->getOfficehierarchyDetails(); 
 	//load office hierarchy drop down

@@ -19,10 +19,10 @@
 <!--edit indiviudal member action !-->
 <form action="<?php echo $this->baseUrl();?>/individualdefault/index/editmembername/id/<?php echo $this->memberid; ?>" method="POST">
 <fieldset>
-<legend>Member details</legend>
+<legend>Member details<a href="<?php echo $this->baseUrl();?>/individualdefault/index/deletemember/id/<?php echo $this->memberid; ?>/sub_id/<?php echo $this->sub_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 align="right" width="16" height="16"></a></legend>
 <div class="btnhouse">
 <div class="rtbtns">
-    <td><a href="<?php echo $this->baseUrl();?>/individualdefault/index/deletemember/id/<?php echo $this->memberid; ?>/sub_id/<?php echo $this->sub_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a></td>
+    <td></td>
 	</div>
 </div>
     <table class="fieldsets">
