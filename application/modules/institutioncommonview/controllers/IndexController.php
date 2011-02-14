@@ -20,46 +20,49 @@
 ?>
 
 <?php
-/*
- *  create an institution commonview controller
- */
-class Institutioncommonview_IndexController extends Zend_Controller_Action{
-
+class Individualcommonview_IndexController extends Zend_Controller_Action
+{
     public function init() 
-	{
-        $this->view->pageTitle=$this->view->translate('Institution');
+    {
+  	$this->view->pageTitle='Individual member';
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
-		$this->view->username = $this->view->globalvalue[0]['username'];
+	$this->view->createdby = $this->view->globalvalue[0]['id'];
+// 	$this->view->username = $this->view->globalvalue[0]['username'];
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
-		$this->view->adm = new App_Model_Adm();
-	}
+	$this->view->adm = new App_Model_Adm();    
+    }
+
     public function indexAction() 
     {
     }
 
     public function commonviewAction()
     {
-		//Acl
-//         $access = new App_Model_Access();
-//         $checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'viewinstitutionAction');
-//        	if (($checkaccess != NULL)) {
-            $id=intval($this->_request->getParam("id"));
-            $this->view->institutionid = $id;
-	    //model instance
-            $individualcommon=new Individualcommonview_Model_individualcommon;
-            $module=$individualcommon->getmodule('Institution');
-            foreach($module as $module_id){ }
-		//view instance
-            $this->view->mod_id=$module_id['parent'];
-            $this->view->sub_id=$module_id['module_id'];
-            $this->view->institution = $this->view->adm->editRecord("ob_institution",$id);
-            $this->view->address = $this->view->adm->getModule("address",$id,"Institution");
-            $this->view->contact = $this->view->adm->getModule("contact",$id,"Institution");
-//       	} else {
-//         	$this->_redirect('index/error');
-// 		}
+        //Acl
+        //$access = new App_Model_Access();
+        //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'commonviewAction');
+        //if (($checkaccess != NULL)) {
+
+        $id=$this->_request->getParam('id');
+        $this->view->memberid=$id;
+        $individualcommon=new Individualcommonview_Model_individualcommon;
+        $member_name=$individualcommon->getmember($id);
+//getting module id and submodule id
+        $module=$individualcommon->getmodule('Individual');
+        foreach($module as $module_id){ }
+        $this->view->mod_id=$module_id['parent'];
+        $this->view->sub_id=$module_id['module_id'];
+//getting member details, address, contact details
+        $this->view->membername=$member_name;
+        $this->view->address = $this->view->adm->getModule("address",$id,"Individual");
+        $this->view->family=$edit_family = $this->view->adm->editRecord("ob_member_family",$id);
+        $this->view->contact = $this->view->adm->getModule("contact",$id,"Individual");
+        //}
+        //else {
+        //$this->_redirect('index/index');
+        //}
     }
 }
