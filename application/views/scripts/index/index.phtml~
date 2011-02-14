@@ -24,8 +24,8 @@
 
                
 <div class="cont-rgt-data">             
-            <p align="LEFT"><font color="Black" size="3">Vision</font>		<br></p>
-
+            <p align="LEFT"><font color="Black" size="3">Vision</font></p>
+		<br>
             <div class="vision">
             <p align="justify"> <font face="" size="2">The vision of Ourbank is to stimulate local development by offering small and medium sized micro financial institutions (MFIs) a true free and open source software solution, based on community-driven software development, named OurBank.</font></p>
             <br>
@@ -34,15 +34,15 @@
 
 <p align="justify">
 	<font size="2">OurBank provides MFIs with a tool to store and process all its information, ranging from financial to social data. Ourbank specifically aims at the staff and managers of MFIs, for auditors in the field, and for other actors engaged in the sector. As a result MFIs will broaden the scope of their social impact.
-	</font>		<br>
+	</font>
 </p>
 
-
+<br>
 
 <p align="justify">
-	<font size="2">Once details of a MFI are entered in the system, clients are registered and accounts are created based on bank products (loans, savings, insurance) and product details such as interest rates and repayment times. Once all the data is stored in the system, client and MFI specific data is easily manageable and reported along with graphics. By offering a true free and open source software to manage operational data and track social performance, Ourbank enables MFIs to concentrate in their core mission of giving out loans.</font>		<br>
+	<font size="2">Once details of a MFI are entered in the system, clients are registered and accounts are created based on bank products (loans, savings, insurance) and product details such as interest rates and repayment times. Once all the data is stored in the system, client and MFI specific data is easily manageable and reported along with graphics. By offering a true free and open source software to manage operational data and track social performance, Ourbank enables MFIs to concentrate in their core mission of giving out loans.</font>
 	</p>
-
+<br>
 
             	<p align="left"><font face="" color="black" size="3">OurBank is:</font>		</p>
 		<p align="justify"><font size="2">
