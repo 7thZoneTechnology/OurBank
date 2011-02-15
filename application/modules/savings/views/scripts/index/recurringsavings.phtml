@@ -19,64 +19,64 @@ function removeFormField(id) {
 }
 </script>
 <div class="searchDiv">
-	<table id="hor-minimalist-b">
+	<table id="hor-minimalist-b" class="fieldsets">
 			<tr>
                         <th colspan="2">Product information</th>
                         </tr>
 			<TR >
-				<TD>Product name<span class="reqMark">*</span></TD>
+				<TD><label class="mand">Product name</label></TD>
 				<TD ><?php echo $this->form->offerproductname;?><?php echo $this->form->currentdates;?><?php echo $this->errorofferproductname; ?></TD>
 			</TR>
 			<tr>
-				<TD  >Short name<span class="reqMark">*</span></TD>
+				<TD  ><label class="mand">Short name</label></TD>
 				<TD ><?php echo $this->form->offerproductshortname;?></TD>
 			</TR>
 			<TR >
-				<TD >Description<span class="reqMark">*</span></TD>
+				<TD ><label class="mand">Description</label></TD>
 				<TD><?php echo $this->form->offerproduct_description;?></TD>
 			</TR>
 			<tr>
 				<th colspan="2">Dates</th> 
 			</tr>
 			<tr> 
-				<td >Begin date:<span class="reqMark">*</span><B style='color:red'>dd/mm/yyyy</b></td>
+				<td ><label class="mand">Begin date:<B style='color:red'>dd/mm/yyyy</b></label></td>
 				<td ><?php echo $this->form->begindate;?></td>
 			</tr>
 
 			<tr> 
-				<td >Closed date:<span class="reqMark">*</span><B 	style='color:red'>dd/mm/yyyy</b></td>
+				<td ><label class="mand">Closed date:<B	style='color:red'>dd/mm/yyyy</b></label></td>
 				<td><?php echo $this->form->closedate;?></td>
 			</tr>
 
 			<tr> 
-				<td >Applicable to:<span class="reqMark">*</span></td>
+				<td ><label class="mand">Applicable to</label></td>
 				<td ><?php echo $this->form->applicableto;?></td>
 			</tr>
 			<tr> 
-				<td >GL subcode:<span class="reqMark">*</span></td>
+				<td ><label class="mand">GL subcode</label></td>
 				<td ><?php echo $this->form->glsubcode_id;?></td>
 			</tr>
 			<tr>
 				<th colspan="2">Interest and terms</th>
 			</tr>
 			<tr > 
-				<td>Minimum Recurring amount:<span class="reqMark">*</span></td>
+				<td><label class="mand">Minimum Recurring amount</label></td>
 				<td ><?php echo $this->form->minimum_deposit_amount;?></td>
 			</tr>
 			<tr> 
-				<td >Maximum Recurring amount:<span class="reqMark">*</span></td>
+				<td ><label class="mand">Maximum Recurring amount</label></td>
 				<td ><?php echo $this->form->maximum_deposit_amount;?></td>
 			</tr>
 			<tr>
-				<td >Frequency of deposit:<span class="reqMark">*</span></td>
-				<td ><?php echo $this->form->frequency_of_deposit;?></td>
+				<td ><label class="mand">Frequency of deposit</label></td>
+				<td ><? echo $this->form->frequency_of_deposit;?></td>
 			</tr>
 			<tr>
-				<td >Penal interest:<span class="reqMark">(%)*</span></td>
+				<td ><label class="mand">Penal interest</label></td>
 				<td ><?php echo $this->form->penal_Interest;?></td>
 			</tr>
                         <tr>
-				<td >Penal glsubcode:<span class="reqMark">*</span></td>
+				<td ><label class="mand">Penal glsubcode</label></td>
 				<td ><?php echo $this->form->feeglcode;?></td>
 			</tr>
 			<tr>

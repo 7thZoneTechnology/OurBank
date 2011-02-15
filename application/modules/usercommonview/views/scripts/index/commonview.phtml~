@@ -16,34 +16,16 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
-
- <!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
+<!-- user information !-->
 <table id="hor-minimalist-b">
 	
 		<tr>
 			<th class = "firsttd">User information</th>
 			<th class = "secondtd"></th>
-
+<!-- edit button  !-->
 			<th class="thirdtd"><a href="<?php echo $this->baseUrl()."/user/index/edituserdetail/id/".$this->id; ?>">
 			<img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th> 
+<!-- foreach function !-->
 <? foreach($this->userdetails as $edit_id) { ?>
 			<tr>
 				<td class = "firsttd">User name:</td>
@@ -84,16 +66,22 @@
 		<?php } ?>
   
  </table>
+<!-- address information !-->
 <table id="hor-minimalist-b">
     <tr>
         <th class = "firsttd">Address information</th>
         <th class = "secondtd"></th>
         <?php if (count($this->address)!=0) {?>
+<!-- address edit button !-->
+
         <th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/address/index/edit/id/<?php echo $this->id;?>/modId/<?php echo $this->mod_id ?>/subId/<?php echo $this->sub_id ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
         <?php } else { ?>
+<!-- address add button !-->
+
         <th class = "firsttd"><a href="<?php echo $this->baseUrl();?>/address/index/add/id/<?php echo $this->id; ?>/modId/<?php echo $this->mod_id ?>/subId/<?php echo $this->sub_id ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a></th>
         <?php } ?>
     </tr>
+<!-- address information !-->
 
         <?php if (count($this->address)!=0) {?>
         <?php foreach($this->address as $address){ ?>
@@ -134,17 +122,24 @@
         <?php  ?>
     </table>
 <br>
+<!-- contact information !-->
+
 <table id="hor-minimalist-b">
     <tr>
         <th class="firsttd">Contact information</th>
         <th class = "secondtd"></th>
         <?php if((count($this->contact))!=0) {
         foreach($this->contact as $edit_id) { ?>
+<!-- contact information add button !-->
+
         <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/editcontact/id/<?php echo $this->id; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id;  ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
         <?php }} else { ?>
+<!-- contact information edit button !-->
+
         <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/addcontact/id/<?php echo $this->id; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id;  ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a></th>
         <?php } ?>
     </tr>
+<!-- contact information !-->
 
     <?php foreach($this->contact as $contact){ ?>
 

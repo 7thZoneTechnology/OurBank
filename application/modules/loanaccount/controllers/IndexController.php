@@ -34,11 +34,14 @@ class Loanaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
-        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 			$formData = $this->_request->getPost();
+                        $this->view->errormsg="Record not found.. Try agin...";
 			if ($accountsForm->isValid($formData)) {
 			    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
-			}
+			}else      {
+                                            $this->view->errormsg="Record not found.. Try agin...";
+                                        }
         }
     }
 

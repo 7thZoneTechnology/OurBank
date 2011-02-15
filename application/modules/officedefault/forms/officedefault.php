@@ -51,14 +51,14 @@ class Officedefault_Form_officedefault extends Zend_Form{
 
         $officetype_id = new Zend_Form_Element_Select('officetype_id');
         $officetype_id->setRequired(true);
-        $officetype_id->addMultiOption('','select'.'...');
+        $officetype_id->addMultiOption('','Select'.'...');
         $officetype_id->setAttrib('class','selectbutton');
         $officetype_id->setRegisterInArrayValidator(false);
 	//get url path from edit action
         $officetype_id->setAttrib('onchange', 'getInterests(this.value,"'.$path.'")');
 
         $parentoffice_id = new Zend_Form_Element_Select('parentoffice_id');
-	$parentoffice_id->addMultiOption('','First select officetype'.'...');
+	$parentoffice_id->addMultiOption('','Select Office Type'.'...');
 	$parentoffice_id->setAttrib('class','selectbutton');
         $parentoffice_id->setRegisterInArrayValidator(false);
 

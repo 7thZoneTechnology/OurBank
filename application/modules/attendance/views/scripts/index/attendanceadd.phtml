@@ -23,10 +23,10 @@
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/attendance.js"></script>
 <div id = "searchDiv">
 <fieldset>
-<legend><?php echo $this->translate("Add attendance"); ?></legend>
+
 	<form action="<?php echo $this->baseUrl();?>/attendance/index/attendanceadd/attendance_id/<?php echo $this->attendance_id;?>" method="POST">
-		<table class="fieldsets">
-			
+		<table class="fieldsets" id="hor-minimalist-b">
+			<tr><Th colspan="2"><?php echo $this->translate("Add attendance"); ?></Th></tr>
 			<TR >
 				<TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting date"); ?></TD>
 				<TD ><?php echo $this->attendanceform->meeting_date;?></TD>

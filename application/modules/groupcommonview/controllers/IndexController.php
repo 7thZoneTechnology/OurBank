@@ -28,7 +28,8 @@ class Groupcommonview_IndexController extends Zend_Controller_Action{
 //                 $this->_redirect('index/logout');
 //         }
         $this->view->adm = new App_Model_Adm();// create instance for common model page of adm
-    }
+        $this->view->dateconvert = new App_Model_dateConvertor();    
+}
     public function indexAction(){
 	}
     public function commonviewAction()

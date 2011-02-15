@@ -50,7 +50,7 @@ class Attendanceindex_IndexController extends Zend_Controller_Action{
 
 		$meeting = new Meeting_Model_Meeting();
 		$result = $meeting->fetchAllmeetingdetails();
-
+                $this->view->errormsg="Record not found.. Try agin...";
 		foreach($result as $result) {
 			$searchForm->search_meeting_name_att->addMultiOption($result['id'],$result['name']);
 		}
@@ -58,9 +58,11 @@ class Attendanceindex_IndexController extends Zend_Controller_Action{
 
 		$attendance = new Attendance_Model_Attendance();
 		$result = $attendance->fetchAllattendancedetailsview();
-
 		$page = $this->_getParam('page',1);
 		$paginator = Zend_Paginator::factory($result);
+                                if(!$paginator){
+                    $this->view->errormsg="Record not found.. Try agin...";
+                }
 		$paginator->setItemCountPerPage(5);
 		$paginator->setCurrentPageNumber($page);
 		$this->view->paginator = $paginator;

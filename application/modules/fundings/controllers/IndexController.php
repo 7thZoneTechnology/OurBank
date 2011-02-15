@@ -54,14 +54,16 @@ class Fundings_IndexController extends Zend_Controller_Action
 		    		$fundings = new Fundings_Model_Fundings();
 		    		$page = $this->_getParam('page',1);
 		    		$paginator = Zend_Paginator::factory($fundings->SearchFundings($formData));
-
+                                $this->view->errormsg="Record not found..Try again...";
 				}
 	    	}
 		} else {
             $fundings = new Fundings_Model_Fundings();
             $page = $this->_getParam('page',1);
             $paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ob_funding","id","DESC"));
-
+            if(!$paginator){
+                $this->view->errormsg="Record not found..Try again...";
+		}
 		}
             $paginator->setItemCountPerPage($this->view->adm->paginator());
             $paginator->setCurrentPageNumber($page);

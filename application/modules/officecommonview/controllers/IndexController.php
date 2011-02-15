@@ -26,8 +26,9 @@
 class Officecommonview_IndexController extends Zend_Controller_Action
 {
     public function init() 
-    {
-  	 $this->view->pageTitle=$this->view->translate('New Office');
+    {  
+  	
+        $this->view->pageTitle=$this->view->translate('New Office');
         $storage = new Zend_Auth_Storage_Session();
 	$data = $storage->read();
 	if(!$data){
@@ -51,6 +52,7 @@ class Officecommonview_IndexController extends Zend_Controller_Action
         //if (($checkaccess != NULL)) {
 
 	//get id to view
+        $this->view->title = "Holiday";
         $id=$this->_request->getParam('id');
         $this->view->memberid=$id;
 	//instance for common view

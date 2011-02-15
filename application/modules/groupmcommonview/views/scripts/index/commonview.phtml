@@ -27,23 +27,24 @@
 				<th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/groupmdefault/index/editgroup/id/<?php echo $this->groupid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th> 
 			</tr>
                        
-                          <?php foreach($this->groupname as $groups){}?>
+                          <? $convertdate = new App_Model_dateConvertor();
+                            foreach($this->groupname as $groups){}?>
 
 
 	<tr>
-		<td class = "firsttd">Group name</td>
+		<td class = "firsttd">Group name:</td>
 		<td class = "secondtd"><?php echo $groups['name']; ?></td>
 		<td class = "thirdtd"></td>
 	</tr>
 
 	<tr>
-		<td class = "firsttd">Branch name</td>
+		<td class = "firsttd">Branch name:</td>
 		<td class = "secondtd"><?php echo $groups['officename']; ?></td>
 		<td class = "thirdtd"></td>
 	</tr>
 	<tr>
-		<td class = "firsttd">Created date</td>
-		<td class = "secondtd"><?php echo $groups['group_created_date']; ?></td>
+		<td class = "firsttd">Created date:</td>
+	        <td><?php echo $convertdate->phpnormalformat($groups['group_created_date']);?></div></td>
 		<td class = "thirdtd"></td>
 	</tr>
 	<tr>
@@ -55,7 +56,7 @@
 	
 
     
-                   <?php foreach($this->groupmembers as $groupmem){ ?>
+                   <? foreach($this->groupmembers as $groupmem){ ?>
 
 			<tr>
 				<td class = "firsttd"></td>
@@ -69,7 +70,7 @@
 				<th class = "secondtd"></th>
 				<th class = "secondtd"><a href="<?php echo $this->baseUrl();?>/address/index/edit/id/<?php echo $this->groupid; ?>/subId/<?php 
 				echo $this->sub_id;?>/modId/<?php echo $this->mod_id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a>   </th>
-			</tr><?php } else { ?>
+			</tr><? } else { ?>
                               
                        <th class = "firsttd">Address information</th>
                        <th class = "secondtd"></th>

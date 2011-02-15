@@ -51,10 +51,10 @@
 	
 			<div class="cont-rgt-data">
 				<form action="<?php echo $this->baseUrl();?>/category/index/categorydelete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" summary="Employee Pay Sheet">
+				<table id="hor-minimalist-b" class="fieldsets">
 					<TR>
-						<TD  width="35%" align="right" ><label>Remarks<span class="reqMark">*</span></label></TD>
-						<TD  width="65%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
+						<TD><label class="mand">Remarks</label></TD>
+						<TD  width="150%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
 									</table>
 					</tr>
 							<td><input type="submit" name="Delete" id="Submit" value="Delete"></td>			

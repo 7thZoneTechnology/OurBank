@@ -26,8 +26,8 @@ class  Groupdefault_Form_groupdefault extends Zend_Form {
             // send required parameters to get respective form fields ( first parameter is a input type)
             $office = $formfield->field('Select','office','','','mand','Office',true,'','','','','',0,'');
             $office->setAttrib('onchange','getMember(this.value,"'.$app.'")');
-            $groupname = $formfield->field('Text','groupname','','','mand','Group name',true,'','','','','',1,'');
-            $date = $formfield->field('Text','Created_Date','','','mand','Created date',true,'','','','','',1,'');
+            $groupname = $formfield->field('Text','groupname','','','mand','Group name:',true,'','','','','',1,'');
+            $date = $formfield->field('Text','Created_Date','','','mand','Created date:',true,'','','','','',1,'');
             $code = new Zend_Form_Element_Hidden('code');
             $submit = new Zend_Form_Element_Submit('Submit');
             $back= new Zend_Form_Element_Button('Back');

@@ -100,6 +100,7 @@ class Meetingreport_IndexController extends Zend_Controller_Action
 				$paginator->setItemCountPerPage(5);
 				$paginator->setCurrentPageNumber($page);
 				$this->view->paginator = $paginator;
+				                $this->view->search = true;
 			}
 		}
 	}

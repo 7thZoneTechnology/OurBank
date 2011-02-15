@@ -51,7 +51,7 @@ class Bank_IndexController extends Zend_Controller_Action
             $bank = new Bank_Model_Bank();
             $page = $this->_getParam('page',1);
             $paginator = Zend_Paginator::factory($bank->search($this->_request->getPost('field2')));
-            $this->view->errormsg="Record not found";
+            $this->view->errormsg="Record not found..Try again..";
         } else {
             $this->view->title=$this->view->translate('Bank');
 	    //session
@@ -65,7 +65,7 @@ class Bank_IndexController extends Zend_Controller_Action
             $page = $this->_getParam('page',1);
             $paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ob_bank","id","DESC"));
             if(!$paginator){
-                $this->view->errormsg="Record not found";
+                $this->view->errormsg="Record not found..Try again..";
             }
         }
                 //paginator

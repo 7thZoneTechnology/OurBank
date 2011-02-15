@@ -43,7 +43,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
                     if($result) {
                         $this->view->result =$result;
                     } else {
-                        $this->view->errormsg = "No records found";
+                        $this->view->errormsg = "Record not found..Try Again..";
                     }
                 }
             }

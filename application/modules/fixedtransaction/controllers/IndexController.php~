@@ -25,6 +25,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle='Fixed transaction';
+        $this->view->type= 'fixed';
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
@@ -55,7 +56,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                         $accountcode=$membercode;
                         $arrayfixedAccountSearch = $fixedSavings->fixedSearch($accountcode);
                         if (!$arrayfixedAccountSearch) {
-                            echo "search Messages";
+                            echo "Record Not Found..Try Again";
                         } else {
                             $this->view->fixedAccountsSearch = $arrayfixedAccountSearch;
                             foreach($arrayfixedAccountSearch as $arrayfixedAccountSearch1) {

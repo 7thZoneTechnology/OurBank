@@ -176,9 +176,6 @@ class Activity_IndexController extends Zend_Controller_Action
             $this->view->form = $delform;
             $dbobj = new Activity_Model_Activity();
             //             //Acl
-            //             $access = new App_Model_Access();
-            //             $checkaccess = $access->accessRights('Activity',$this->view->globalvalue[0]['name'],'activitydeleteAction');
-            //             if (($checkaccess != NULL)) {
                 $this->view->id = $this->_getParam('id');
                 $activitydetail=$this->view->adm->editRecord("ob_activity",$this->view->id);
                 foreach($activitydetail as $activitydetails){ 

@@ -26,6 +26,10 @@ class Address_Form_Address extends Zend_Form {
     {
         parent::__construct($id);
         parent::__construct($subId);
+        $vtype=array('Digits');
+        //$id= record id
+        //$subId=submodule id
+        //create address form elements...
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
         $addressline1 = $formfield->field('Text','address1','','','mand','Address line1',true,'','','','','',1,0);
