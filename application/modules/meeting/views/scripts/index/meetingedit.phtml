@@ -23,13 +23,9 @@
 
 <div id = "searchDiv">
 <fieldset>
-<legend>Edit meeting</legend>
 	<form action="<?php echo $this->baseUrl();?>/meeting/index/meetingedit/meeting_id/<?php echo $this->meeting_id;?>" method="POST">
-		<table class="fieldsets">
-			<tr>
-				<TD colspan="2" align="right"><a href="<?php echo $this->baseUrl();?>/meeting/index/meetingdelete/meeting_id/<?php echo $this->meeting_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a>
-				</TD>
-			</tr>
+		<table class="fieldsets" id="hor-minimalist-b">
+			<tr><Th><b>Edit meeting</b></th><th><a href="<?php echo $this->baseUrl();?>/meeting/index/meetingdelete/meeting_id/<?php echo $this->meeting_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 align="right" width="16" height="16"></a></th></tr>
 			<TR >
 				<TD><label for="fld1" class="mand">Meeting name</TD>
 				<TD ><?php echo $this->meetingForm->meeting_name;?></TD>
