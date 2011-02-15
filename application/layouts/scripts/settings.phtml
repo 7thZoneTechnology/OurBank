@@ -16,43 +16,41 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <head>
 <title><?php echo $this->escape($this->title); ?></title>
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/site.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/style2.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/wforms.css" />
+
 </head>
 
 
 <body>
 <div id="container">
-    <div id="header"><?php echo $this->render('settingsheader.phtml'); ?></div>
+    	<div id="header"><?php echo $this->render('settingsheader.phtml'); ?>
+	</div>
 
 
-  <div id="leftnavig">
+  	<div id="leftnavig">
 
-    <h4><a href="#">Settings</a></h4>
-     <ul>
+    	<h4><a href="#">Settings</a></h4>
+     		<ul>
 		 <li><a href="<?php  echo $this->baseUrl();?>/settings/dropdown">Dropdown</a></li>
-    
-     </ul>
-  </div>
+<!--         <li><a href="<?php  echo $this->baseUrl();?>/language/">Languages</a></li>
+		 <li><a href="<?php  echo $this->baseUrl();?>/sms">SMS</a></li>-->
+     		</ul>
+  	</div>
 
-    <div id="pagecontent">
-        <h3><?php echo $this->pageTitle;?></h3>
-        <?php echo $this->layout()->content; ?>
-    </div>
+    	<div id="pagecontent">
+        	<h3><?php echo $this->pageTitle;?></h3>
+        	<?php echo $this->layout()->content; ?>
+    	</div>
 
-
-  <div id="footer">
-    <?php echo $this->render('footer.phtml'); ?>
-  </div>
+  	<div id="footer">
+    		<?php echo $this->render('footer.phtml'); ?>
+  	</div>
 </div>
-</BODY>
+</body>
 </html>
 

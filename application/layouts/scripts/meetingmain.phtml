@@ -22,10 +22,6 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <head>
 <title><?php echo $this->escape($this->title); ?></title>
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/site.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/style2.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/wforms.css" />
 </head>
 
 
@@ -64,7 +60,6 @@
         <h3><?php echo $this->pageTitle;?></h3>
         <?php echo $this->layout()->content; ?>
     </div>
-
 
   <div id="footer">
     <?php echo $this->render('footer.phtml'); ?>
