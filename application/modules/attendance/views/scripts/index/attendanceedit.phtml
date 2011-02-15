@@ -22,10 +22,10 @@
 
 <div id = "searchDiv">
 <fieldset>
-<legend><?php echo $this->translate("Edit Attendance"); ?></legend>
+<legend><?php echo $this->translate("Edit Attendance"); ?><a href="<?php echo $this->baseUrl();?>/attendance/index/attendancedelete/attendance_id/<?php echo $this->attendance_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 align="right" width="16" height="16"></a></legend>
 	<form action="<?php echo $this->baseUrl();?>/attendance/index/attendanceedit/attendance_id/<?php echo $this->attendance_id;?>" method="POST">
 		<table class="fieldsets">
-			<tr><TD colspan="2" align="right"><a href="<?php echo $this->baseUrl();?>/attendance/index/attendancedelete/attendance_id/<?php echo $this->attendance_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a></TD></tr>
+			<tr><TD colspan="2" align="right"></TD></tr>
 
 			<TR >
 				<TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting date"); ?></TD>
