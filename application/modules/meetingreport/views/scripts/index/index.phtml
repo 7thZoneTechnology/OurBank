@@ -71,23 +71,19 @@
         <legend><?php echo $this->translate("Search"); ?></legend>
             <div class="search" style="margin-left:20px;">
                     <form action="<?php echo $this->baseUrl();?>/meetingreport/index" method="POST">
-                            <table width="100%">
+                            <table width="90%">
                                 <tr>
-                                    <td class="label"><?php echo $this->translate("Bank name:"); ?></td>
+                                    <td class="label"><br><?php echo $this->translate("Bank name:"); ?></td>
                                     <td ><? echo $this->form->field1;?></td>
-                                    <td class="label"><?php echo $this->translate("Group name:"); ?></td>
-                                    <td ><div id="groupDiv"><? echo $this->form->field2;?></div></td>
+                                    <td class="label"><br><?php echo $this->translate("Group name:"); ?></td>
+                                    <td ><div id="groupDiv"><? echo $this->form->field2;?></div></td> 
                                 </tr>
 
                                 <tr>
-                                    <td class="label"><?php echo $this->translate("Meeting day:"); ?></td>
-                                    <td ><? echo $this->form->field3;?></td>
-
+                                   <td class="label"><br><?php echo $this->translate("Meeting day:"); ?></td>
+                                      <td ><? echo $this->form->field3;?></td>
                                 </tr>
-                                <tr>
-                                    <td colspan="4" align="center"><? echo $this->form->Search;?></td>
-                                </tr>
-                        </table>
+                        </table><? echo $this->form->Search;?>
                     </form>	
             </div>
     </fieldset> 
