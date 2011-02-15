@@ -59,20 +59,22 @@ $(document).ready(function() {
 		<th><?php echo $this->translate('Meeting name'); ?></th>
 		<th><?php echo $this->translate('Meeting date'); ?></th>
 	</tr>
-		<?php if (count($this->paginator)): 
-		$convertdate = new Creditline_Model_dateConvertor();?>
+		<?php if (count($this->paginator)) { ?>
+		<?php $convertdate = new Creditline_Model_dateConvertor();?>
 		<?php foreach ($this->paginator as $attendance ): ?>
 	<tr>
 		
 		<td><a href="<?php echo $this->baseUrl();?>/attendancecommonview/index/index/attendance_id/<? echo$attendance['attid']; ?>"><?php echo $this->escape($attendance['name']);?></a></td>
 		<td><?php echo $this->escape($convertdate->phpnormalformat($attendance['meeting_date'])); ?></td>
-			<?php endforeach; ?>
-			<?php endif; ?>
-		
-		<tr>
+			<tr>
+                    <?php endforeach; ?>
+                    <?php } else { 
+        echo "<font color=red>".$this->errormsg."</font>";
+    } ?>
 			<td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
 						'/partials/my_pagination_control.phtml'); ?></div></td>
 		</tr>
 	</tr>
 </table>
 
+ 
