@@ -129,15 +129,18 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
         <th><?php echo $this->translate("Absent Member Names"); ?></th>
 	<th><?php echo $this->translate("Group Member Names"); ?></th>
     </tr>
-        <?php  foreach ($this->result as $Attendancereport ) { ?>
+        <?php  $convertdate = new App_Model_dateConvertor();
+            foreach ($this->result as $Attendancereport ) { ?>
     <tr>
 	<td><?php foreach($this->bank_name as $office) {
 			if($Attendancereport['id']==$office['id']){ echo $office['name']; } } ?>
 	</td>
 	<td><?php echo $this->escape($Attendancereport['gname']);?></td> 
 	<td><?php echo $this->escape($Attendancereport['name']);?></td>
-	<td><?php echo $this->escape($Attendancereport['created_date']);?></td>
-	<td><?php echo $this->escape($Attendancereport['time']);?></td>
+
+	<td><?php echo $convertdate->phpnormalformat($Attendancereport['meeting_date']);?></td>
+
+	<td><br><?php echo $this->escape($Attendancereport['time']);?></td>
 	<td><?php echo $this->escape($Attendancereport['place']);?></td>
 	
 	<td><?php $flag=0; foreach ($this->member_name as $as){

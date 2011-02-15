@@ -37,7 +37,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		foreach($loginname as $loginname) {
 			$this->view->username=$loginname['username'];
 		}
-	
+	$this->view->adm = new App_Model_Adm();
 	}
 	//view action
 	function indexAction() {
