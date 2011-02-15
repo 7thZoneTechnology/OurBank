@@ -70,7 +70,7 @@ class Institution_IndexController extends Zend_Controller_Action
 	    $paginator->setItemCountPerPage($this->view->adm->paginator());
 	    $paginator->setCurrentPageNumber($page);
 	    $this->view->paginator = $paginator;
-loanaccount
+
     }
     //add action
     public function addinstitutionAction() 
