@@ -77,7 +77,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		if($accountnumber && $date1 && $date2 && $bank) {
 		$banktransaction = $bankdetail->Searchbanktransaction($accountnumber,$date1,$date2,$bank);
 		if (!$banktransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $banktransaction;
 		}}
@@ -85,7 +85,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		if($accountnumber && !$bank && !$date1 && !$date2) {
 		$bankacctransaction = $bankdetail->Searchaccounttransaction($accountnumber);
 		if (!$bankacctransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $bankacctransaction;
 
@@ -94,7 +94,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		if(!$accountnumber && $bank && $date1 && $date2) {
 		$banknulltransaction = $bankdetail->Searchnullaccounttransaction($bank,$date1,$date2);
 		if (!$banknulltransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $banknulltransaction;
 
@@ -104,7 +104,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		if($accountnumber && !$bank && $date1 && $date2) {
 		$bankdacctransaction = $bankdetail->Searchaccountdatetransaction($accountnumber,$date1,$date2);
 		if (!$bankdacctransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $bankdacctransaction;
 		}}
@@ -112,7 +112,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		if($accountnumber && $bank && !$date1 && !$date2) {
 		$bankbacctransaction = $bankdetail->Searchbankacctransaction($accountnumber,$bank);
 		if (!$bankbacctransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $bankbacctransaction;
 		}}
@@ -121,7 +121,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		elseif(!$accountnumber && $bank && !$date1 && !$date2) {
 		$bankwisetransaction = $bankdetail->Searchbankwisetransaction($bank);
 		if (!$bankwisetransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $bankwisetransaction;
 		}}
@@ -129,7 +129,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		elseif(!$accountnumber && !$bank && $date1 && $date2) {
 		$datewisetransaction = $bankdetail->Searchbankdatetransaction($date1,$date2);
 		if (!$datewisetransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $datewisetransaction;
 		}}
@@ -137,7 +137,7 @@ class Cbtransaction_IndexController extends Zend_Controller_Action
 		elseif(!$accountnumber &&!$bank && !$date1 && !$date2) {
 		$emptytransaction = $bankdetail->Searchemptybanktransaction();
 		if (!$emptytransaction) {
-		echo 'No Transactions yet Records';
+		echo "<font color='red'>No Transactions yet Records<font>";
 		} else {
 		$this->view->cbtransactiondetail = $emptytransaction;
 		}}
