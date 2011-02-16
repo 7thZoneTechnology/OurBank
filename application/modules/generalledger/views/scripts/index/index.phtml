@@ -28,24 +28,24 @@ if($this->search == 0) { ?>
 			
 
             <tr>
-                <td class="label">Begin Date</td>
+                <td class="label">Begin Date:</td>
                 <td allign = "right"><?php  echo $this->form->datefrom;?></td>
-                <td class="label">Close Date</td>
+                <td class="label">Close Date:</td>
                 <td allign = "right"><?php  echo $this->form->dateto;?></td>
 				
             </tr>
             <tr>
-		<Td class="label">Product name</td>
-                <td allign = "right"><?php  echo $this->form->prodname;?></td>
-                <Td class="label">Gl Subcode</td>
-                <td allign = "right"><?php  echo $this->form->glcode;?></td>			
+		<Td class="label"><br>Product name:</td>
+                <td allign = "right"><br><?php  echo $this->form->prodname;?></td>
+                <Td class="label"><br>Gl Subcode:</td>
+                <td allign = "right"><br><?php  echo $this->form->glcode;?></td>			
 
             </tr>
             <tr>
-                <TD colspan="4" align="left"><input type="submit" name="Search" value="Search"/></TD>
+                <TD colspan="4" align="left"></TD>
 
             </tr>
-        </table>
+        </table><input type="submit" name="Search" value="Search">
 </fieldset>
 </form>
 <?php } ?>
