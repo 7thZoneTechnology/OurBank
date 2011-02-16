@@ -39,13 +39,13 @@
 if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 <fieldset>
     <legend> <?php echo $this->translate('search'); ?> </legend>
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-b">
+        <div class="search" style="margin-left:50px;">
+            <table  class="fieldset">
                 <form action="<?php echo $this->baseUrl();?>/loansupplementary/index" method="POST">
                     <TR>
-                            <TD ><?php echo $this->translate('As of date'); ?></td>
-                            <TD ><?php echo $this->form->datefrom;?></TD>
-                            <TD ><input type="submit" name="Search" value="Search"/></TD>
+                            <TD ><?php echo $this->translate('As of date:'); ?></td>
+                            <TD ><br><?php echo $this->form->datefrom;?></TD></tr>
+                            <tr><TD ><input type="submit" name="Search" value="Search"/></TD>
                     </TR>
 
                 </form>
