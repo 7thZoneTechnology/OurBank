@@ -33,7 +33,7 @@ class Transferscroll_Form_Search extends Zend_Form {
 	
 		$field1 = new Zend_Form_Element('datefrom');
 		$field1->setAttrib('class', 'txt_put');
-	
+	        $field1->setRequired(true);
 	
 		$submit = new Zend_Form_Element_Submit('Search');
 		$pdf=new Zend_Form_Element_Submit('PDF');
