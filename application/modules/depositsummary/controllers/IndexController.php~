@@ -296,7 +296,7 @@ $page->drawLine($xy, $y1, $xy, $startlinepoint);//1st vertical line
         $pdf->save('/var/www'.$projname.'/reports/depositsummaryreport.pdf');
         $path = '/var/www'.$projname.'/reports/depositsummaryreport.pdf';
         chmod($path,0777);
-//          $this->_redirect('/depositsummary/index/');
+         $this->_redirect('/depositsummary/index/');
      }
     
     function reportdisplayAction() {
