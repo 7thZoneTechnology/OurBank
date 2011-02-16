@@ -40,7 +40,7 @@ public function getbankNames() {
 			->where('a.recordstatus_id=3')
 
 	->join(array('b'=>'ob_accounts'),'a.account_id=b.account_id')
-	->join(array('c'=>'ob_member'),'b.member_id=c.member_id AND c.bank_id="'.$bank.'"')
+	->join(array('c'=>'ob_member'),'b.member_id=c.id AND c.bank_id="'.$bank.'"')
 	->join(array('d'=>'ob_institution'),'d.id=c.bank_id',array('name as bankname'))
 	->join(array('e'=>'ob_activity'),'e.id=b.activity_id',array('e.name as activityname'));
 
@@ -55,7 +55,7 @@ public function getbankNames() {
 			->where('a.recordstatus_id=3')
 
 	->join(array('b'=>'ob_accounts'),'a.account_id=b.account_id')
-	->join(array('c'=>'ob_member'),'b.member_id=c.member_id AND c.bank_id="'.$bank.'"')
+	->join(array('c'=>'ob_member'),'b.member_id=c.id AND c.bank_id="'.$bank.'"')
 
 	->join(array('d'=>'ob_institution'),'d.id=c.bank_id',array('name as bankname'))
 
@@ -73,7 +73,7 @@ public function getbankNames() {
         ->where('YEAR(a.transaction_date)="'.$year.'"')
 			->where('a.recordstatus_id=3')
 	->join(array('b'=>'ob_accounts'),'a.account_id=b.account_id')
-	->join(array('c'=>'ob_member'),'b.member_id=c.member_id AND c.bank_id="'.$bank.'"')
+	->join(array('c'=>'ob_member'),'b.member_id=c.id AND c.bank_id="'.$bank.'"')
 	->join(array('d'=>'ob_institution'),'d.id=c.bank_id',array('name as bankname'))
 	->join(array('e'=>'ob_activity'),'e.id=b.activity_id',array('e.name as activityname'));
         //die($select->__toString());
@@ -118,7 +118,7 @@ public function Searchyearlybanktransaction($year) {
 	->join(array('a' => 'ob_transaction'),array('account_id'))
 	->where('a.recordstatus_id=3')
 	->join(array('b'=>'ob_accounts'),'a.account_id=b.account_id')
-	->join(array('c'=>'ob_member'),'b.member_id=c._id')
+	->join(array('c'=>'ob_member'),'b.member_id=c.id')
 	->join(array('d'=>'ob_institution'),'d.id=c.bank_id',array('name as bankname'))
 	->join(array('e'=>'ob_activity'),'e.id=b.activity_id',array('e.name as activityname'));
 
