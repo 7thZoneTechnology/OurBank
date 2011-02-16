@@ -104,7 +104,7 @@
              </table>
         </div>
 <form action="<?php echo $this->baseUrl();?>/depositsummary/index/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/depositsummary/index/reportdisplay/file/depositsummaryreport.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+onClick="window.open('<?php echo $this->baseUrl(); ?>/depositsummary/index/reportdisplay/file/savingsummaryreport.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 <input type="hidden" name="field1" value="<?php echo $this->office_id;?>">
            <input type="submit" value="PDF" id="submit">
 </form>
