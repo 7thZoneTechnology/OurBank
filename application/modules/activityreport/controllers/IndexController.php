@@ -27,7 +27,7 @@ class Activityreport_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = $this->view->translate("Gender and age wise number of accounts");
+        $this->view->pageTitle = $this->view->translate("Gender and Age wise number of accounts");
 	$this->view->type = "others";
 	 $sessionName = new Zend_Session_Namespace('ourbank');
         $userid=$this->view->createdby = $sessionName->primaryuserid;
