@@ -41,22 +41,18 @@
 <form action="<?php echo $this->baseUrl();?>/cbmonthlytransaction" method="POST">
     <fieldset>
         <legend>Search</legend>
-                <TABLE id="hor-minimalist-b">
+                <TABLE width="100%">
                    <tr>
-                            <td>Month</td>
+                            <td><br>Month</td>
                             <td><?php echo $this->form->field1;?></td>
-                            <td>Year</td>
-
+                            <td><br>Year</td>
                             <td><?php echo $this->form->field2;?></td>
                     </tr>
 			<tr>
-				<TD>Bank name</TD>
+				<TD><br>Bank name</TD>
 				<td><?php echo $this->form->field3;?></td>
 			</tr>
-                    <tr>
-                            <td><? echo $this->form->Search;?></td>
-                   </tr>
-        	</TABLE>
+        	</TABLE><? echo $this->form->Search;?>
  	</fieldset> 
 </form>
 	   </div>
