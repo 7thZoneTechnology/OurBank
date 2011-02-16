@@ -31,6 +31,7 @@ class Dcb_Form_Search extends Zend_Form {
                 $formfield = new App_Form_Field ();
                 // send parameter to get input fields
                 $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
+                $datefrom->setRequired(true);
                 $dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
                 //add element to form
 		$this->addElements(array($datefrom,$dateto));

@@ -16,13 +16,32 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
 <form action="<?php echo $this->baseUrl();?>/savingsdetails" method="POST">   
 <fieldset>
-    <legend>Personal Savings Members</legend>
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
+            <tr><Th colspan="4"><b>Personal Savings Members</b></TD></tr>
                 <TR>
-                    <TH>Account Number</TH> 
+                    <TH>Account Number</Th> 
                     <TH>Account Name</TH> 
                     <TH>Member Code</TH> 
                     <TH>Member Name</TH> 
@@ -39,7 +58,7 @@
                         <TD><?php echo $savings['name']; ?></TD> 
                         <TD><?php echo $savings['accountcreated_date']; ?></TD> 
                         <TD><?php echo $savings['balance']; ?></TD> 
-                        <TD><?php echo $savings['login_name']; ?></TD>  
+                        <TD><?php echo $savings['username']; ?></TD>  
                     
                     </TR>
                 <?php } ?>

@@ -23,7 +23,7 @@
         <legend>Search</legend>
             <div class="search" style="margin-left:20px;">
                 <form action="<?php echo $this->baseUrl();?>/meetingindex/index" method="POST">
-                    <table width="100%">
+                    <table width="100%" >
                         <tr>
                             <td class="label">Meeting day:</td>
                             <td ><? echo $this->form->search_weekdays;?></td>
@@ -62,9 +62,9 @@
      </tr>
 
     <?php endforeach; ?>
-<?php } else { 
+        <?php } else { 
         echo "<font color=red>".$this->errormsg."</font>";
-    } ?>
+            } ?>
     <tr>
         <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
                                     '/partials/my_pagination_control.phtml'); ?></div></td>

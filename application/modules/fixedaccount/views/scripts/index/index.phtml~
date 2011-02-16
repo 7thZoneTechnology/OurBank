@@ -41,7 +41,7 @@
 	    <Th>Name / Group Name</th>
             <Th>Branch</th>
 	    <Th>Type</Th>
-            <th></th>
+            
 	</tr>
 	<?php foreach($this->result as $member) : ?>
 	<tr>
@@ -66,7 +66,6 @@
 	<?php endforeach; ?>
 
 	</table>
-    <?php } else {
-        echo $this->errormsg;
-    }
-    ?>
+    <?php } else { 
+        echo "<font color=red>".$this->errormsg."</font>";
+    } ?>

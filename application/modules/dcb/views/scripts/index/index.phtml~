@@ -191,10 +191,10 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/dcb/index/reportdisplay/fi
                         <TD ><?php echo $this->form->dateto;?></TD>
                     </TR>
                     <TR>
-                        <TD colspan="4"><input type="submit" name="Search" value="Search"></TD>
+                        <TD colspan="4"></TD>
                     </TR>
                 </form>
-            </table>
+            </table><input type="submit" name="Search" value="Search">
         </div>
 </fieldset>
 <?php } ?>

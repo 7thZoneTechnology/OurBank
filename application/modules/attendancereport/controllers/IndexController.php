@@ -84,7 +84,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		}
 	}
 
-/*	function pdfgenerationAction() {
+	function pdfgenerationAction() {
 		$pdf = new Zend_Pdf();
 		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
 // 		 $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4_LANDSCAPE);
@@ -142,7 +142,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 					}
 				} $y1+=$ommittedspace;
 
-// 				$page->drawText($meetingDetails1['Institute_bank_name'], $x[0], $y1);
+ 				$page->drawText($meetingDetails1['Institute_bank_name'], $x[0], $y1);
 
 			$st1=30;
 			$text1 = $meetingDetails1['name'];
@@ -170,7 +170,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		$path = '/var/www/'.$projname.'/reports/attendance'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
 	}
-*/
+
 	public function fetchgroupsAction() {
 		$this->_helper->layout->disableLayout();
 
@@ -190,7 +190,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 	}
 
 	
-//
+
 	public function fetchmeetingsAction() {
 		$this->_helper->layout->disableLayout();
 		$path = $this->view->baseUrl();

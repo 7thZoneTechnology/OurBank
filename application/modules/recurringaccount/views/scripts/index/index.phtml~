@@ -67,5 +67,5 @@
 	<?php endforeach; ?>
 	</table>
  <?php } else {
-        echo $this->errormsg;
+         echo "<font color=red>".$this->errormsg."</font>";
     }

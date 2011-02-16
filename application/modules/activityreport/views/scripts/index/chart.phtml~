@@ -1,3 +1,23 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<!-- chart view -->
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
    <script type="text/javascript">
      google.load('visualization', '1', {packages: ['corechart']});
@@ -36,32 +56,33 @@ var data = new google.visualization.DataTable();
 	<div class="maincol_box">
 	<div id="visualization" style="width: 600px; height: 350px;"></div>
 	</div>
-	 
+
+<!-- summary report view -->	 
 <div class="register">
      <div class="profile_tab">
 		<table id="hor-minimalist-b">
 			
-                <tr><th>Age</th><th>No of account: <?php if($this->genderid==1) { echo "Male";} else if($this->genderid==2){ echo "Female";} else { echo "Male and female";} ?></th></tr>
-                
-               
-                <tr><td>Age between <?php echo $this->from1; ?> - <?php echo $this->to1; ?></td>
-                        <td><? echo $this->age1 ?></td>
+                <tr><td id="reportth"><?php echo $this->translate("Age"); ?></td><td align="center" id="reportth"><?php if($this->gendername==1) { echo $this->translate("Male");} else if($this->gendername==2){ echo $this->translate("Female");} else { echo $this->translate("Male and female");} ?>-accounts</td></tr>
+
+                <tr><td><?php echo $this->translate('Age between'); ?> <?php echo $this->form1; ?> - <?php echo $this->to1; ?></td>
+                        <td align="center"><? echo $this->age1 ?></td>
                 </tr>
 
-                <tr><td>Age between <?php echo $this->from2; ?> - <?php echo $this->to2; ?></td>
-                       <td><? echo $this->age2 ?></td>
+                <tr><td><?php echo $this->translate('Age between'); ?><?php echo $this->form2; ?> - <?php echo $this->to2; ?></td>
+                       <td align="center"><? echo $this->age2 ?></td>
                 </tr>
 
-                <tr></td><td>Age between <?php echo $this->from3; ?> - <?php echo $this->to3; ?></td>
-                        <td><? echo $this->age3 ?></td>
+                <tr></td><td><?php echo $this->translate('Age between'); ?><?php echo $this->form3; ?> - <?php echo $this->to3; ?></td>
+                        <td align="center"><? echo $this->age3 ?></td>
                 </tr>
 
-                 <tr></td><td>Age between <?php echo $this->from4; ?> - <?php echo $this->to4; ?></td>
-                        <td><? echo $this->age4 ?></td>
+                 <tr></td><td><?php echo $this->translate('Age between'); ?><?php echo $this->form4; ?> - <?php echo $this->to4; ?></td>
+                        <td align="center"><? echo $this->age4 ?></td>
                 </tr>
 
-                 <tr><td>Age above <?php echo $this->age; ?></td>
-                        <td><? echo $this->age5 ?></td>
+                 <tr><td><?php echo $this->translate('Age above'); ?> <?php echo $this->age; ?></td>
+     </div>
+</div>                        <td align="center"><? echo $this->age5 ?></td>
                 </tr>
 
           </table>

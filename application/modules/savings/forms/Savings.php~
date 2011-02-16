@@ -29,14 +29,14 @@ public function __construct()
         $formfield = new App_Form_Field ();
         // send parameters to get form fields (first parameter is a form field type)
         $offerproduct_id = $formfield->field('Hidden','offerproduct_id','','','','offerproduct_id',false,'','','','','','','');
-        $productshortname = $formfield->field('Text','productshortname','','','','productshortname',false,'','','','','','','');
+        $productshortname = $formfield->field('Text','productshortname','','','mand','productshortname',false,'','','','','','','');
         $currentdates = $formfield->field('Hidden','currentdates','','','','currentdates',false,'','','','','','','');
-        $productType = $formfield->field('Select','productType','','','','productType',false,'','','','','','','');
+        $productType = $formfield->field('Select','productType','','','mand','productType',false,'','','','','','','');
         $productType->setRegisterInArrayValidator(false);
         $productType->setAttrib('onchange', 'getSavingAccount(this.value)');	
         
         $savingproducttype = $formfield->field('Text','savingproductname','','','','savingproductname',false,'','','','','','','');
-                        $savingproducttype->setAttrib('readonly', 'true');stringLength
+                        $savingproducttype->setAttrib('readonly', 'true');
         
         $offerproductname = $formfield->field('Text','offerproductname','','','mand','offerproductname',true,'','','','','','','');
                         $offerproductname->addValidator(new Zend_Validate_Db_NoRecordExists('ourbank_productsoffer', 'name'));
@@ -62,7 +62,7 @@ public function __construct()
         $graterthan=new Zend_Validate_GreaterThan(0);
         $minmumdeposit->setRequired(true)
                 ->addValidators(array(array('stringLength', false, array(1,8))))
-                            ->addValidators(array(array('NotEmpty'),astringLengthrray('Float'),array($graterthan,true)));
+                            ->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
         $frequencyofdeposit = $formfield->field('Select','frequencyofdeposit','','','mand','frequencyofdeposit',true,'','','','','','','');
         $Int_timefrequency_id = $formfield->field('Select','Int_timefrequency_id','','','mand','Int_timefrequency_id',true,'','','','','','','');
         

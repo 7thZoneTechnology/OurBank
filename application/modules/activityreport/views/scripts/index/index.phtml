@@ -64,10 +64,14 @@
           </table>
      </div>
 </div>
-<form action="<?php echo $this->baseUrl();?>/activityreport/index/pdftransaction" method="POST">
-<div class="reportdiv">      <input type="submit" value="PDF"  id="reportbutton"><input type="hidden" name="activity" value="<?php echo $this->activityname; ?>"> <input type="hidden" name="gender" value="<?php echo $this->gendername;?>"></div>
-</form>
-<div class="reportdiv"><a href="<?php echo $this->baseUrl();?>/activityreport/index/chart/act_id/<? echo $this->activityname; ?>/gen_id/<? echo $this->gendername; ?>">      <input type="submit" value="Graph"  id="reportbutton"></td></a></div>
+<form action="<?php echo $this->baseUrl();?>/activityreport/index/pdftransaction" method="POST"
+                onClick="window.open('<?php echo $this->baseUrl();?>/activityreport/index/reportdisplay/file/activity.pdf<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
-		<tr>
+        <div class="reportdiv"><input type="submit" value="PDF"  id="reportbutton"><input type="hidden" name="activity" value="<?php echo $this->activityname; ?>"> 
+                            <input type="hidden" name="gender" value="<?php echo $this->gendername;?>">
+        </div>
+</form>
+<div class="reportdiv"><a href="<?php echo $this->baseUrl();?>/activityreport/index/chart/act_id/<? echo $this->activityname; ?>/gen_id/
+                                <? echo $this->gendername; ?>"><input type="submit" value="Graph"  id="reportbutton">
+                        </a></div>
 <?php } ?>
