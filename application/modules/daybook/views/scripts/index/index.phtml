@@ -215,17 +215,17 @@
 
     <fieldset>
     <legend> Search </legend>
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-b">
+        <div class="search" style="margin-left:50px;">
+            <table>
                 <form action="<?php echo $this->baseUrl();?>/daybook/index" method="POST">
                 <TR>
-                    <TD ><?php echo $this->translate('As of date'); ?></td>
-                    <TD ><?php echo $this->form->datefrom;?></TD>
-                    <TD ><input type="submit" name="Search" value="Search"/></TD>
+                    <TD ><?php echo $this->translate('As of date:'); ?></td>
+                    <TD ><?php echo $this->form->datefrom;?></TD></tr>
+                   <tr><TD ><input type="submit" name="Search" value="Search"/></TD>
                 </TR>
                 </form>
             </table>
-        <? echo $this->errormsg; ?>
+        
         </div>
     </fieldset>
-<?php } ?>
+<?php } echo $this->errormsg; ?>
