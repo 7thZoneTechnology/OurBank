@@ -38,8 +38,7 @@
 <form action="<?php echo $this->baseUrl();?>/savingsdetails" method="POST">   
 <fieldset>
         <div class="cont-rgt-data">
-            <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
-            <tr><Th colspan="4"><b>Personal Savings Members</b></TD></tr>
+            <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%" >
                 <TR>
                     <TH>Account Number</Th> 
                     <TH>Account Name</TH> 
@@ -63,13 +62,17 @@
                     </TR>
                 <?php } ?>
                 <tr>
-			<td colspan="8"><div style="float:right;"><?= $this->paginationControl($this->paginator, 'Sliding', '/partials/my_pagination_control.phtml'); ?></div></td>
+		<td colspan="8" align="right" ><font color="green"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+						'/partials/my_pagination_control.phtml'); ?></div></td>
 		</tr>
                 
             </table>
-            <input type="submit" value="PDF" id="submit">
-	   <?php echo $this->Error;?>
+            	   <?php echo $this->Error;?>
         </div>
 </fieldset>
 </form>
 
+<form action="<?php echo $this->baseUrl();?>/savingsdetails/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/savingsdetails/index/reportdisplay/file/savingsdetails.pdf',<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+                 <input type="submit" value="PDF" id="submit">
+</form>

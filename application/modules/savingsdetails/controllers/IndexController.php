@@ -37,8 +37,8 @@ $this->view->type = "others";
 	$savingsSelect = $personalsavings->accountDetails();
 $paginator = Zend_Paginator::factory($savingsSelect);
         $paginator->setCurrentPageNumber($this->_getParam("page")); 
-        $paginator->setItemCountPerPage(35);
-        $paginator->setPageRange(36);
+        $paginator->setItemCountPerPage(10);
+        $paginator->setPageRange(16);
         $this->view->page=$this->_request->getParam('page');
         $this->view->paginator = $paginator;
         $this->view->depositeAmount = 0;
@@ -158,10 +158,10 @@ $paginator = Zend_Paginator::factory($savingsSelect);
 		$page->setLineWidth(1)->drawLine(570, $y1-25, 570, 750); //table rigth vertical
 		$pdfData = $pdf->render();
 	
-		$pdf->save('/var/www/'.$projname.'/reports/loanslist.pdf');
-		$path = '/var/www/'.$projname.'/reports/loanslist.pdf';
+		$pdf->save('/var/www/'.$projname.'/reports/savingsdetails.pdf');
+		$path = '/var/www/'.$projname.'/reports/savingsdetails.pdf';
 		chmod($path,0777);
-
+                $this->_redirect("savingsdetails/index");
 	    }
 	}
 
