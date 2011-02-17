@@ -36,44 +36,43 @@
 ############################################################################
 !-->
 <div class="cont-rgt-data">
-<fieldset>
-    <legend>Details</legend>
-  
-            <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
 
-                    <TR>
-			   
-                           <!-- <TH width="20%">Product</TD>-->
-			    <TH width="20%">Loan</TH>
-                            <TH width="20%">Account Number</TH>
-                            <TH width="20%">Member Name</TD>
-			    <TH width="20%">Amount Disbursed</TH>
-	           </TR>
-		    <?php $totalAmount = 0;
-			  foreach($this->paginator as $loanDetails1) : ?>
-                    <TR>
-			   	<!--<TD width="20%"><?php echo $loanDetails1->productname;?></TD>-->
-			       	<TD  width="20%"><?php echo $loanDetails1->offerproductname;?></TD>
-                                <TD  width="20%"><?php echo $loanDetails1->account_number;?></TD>
-				<TD  width="20%"><?php echo $loanDetails1->memberfirstname;?></TD>
-				<TD  width="20%"><?php echo $loanDetails1->amount_disbursed;?></TD>
-			       	<?php $totalAmount = $totalAmount + $loanDetails1->amount_disbursed; ?>
-		   </TR>
-		    <?php endforeach; ?>
-	    </table>
-	    <table>
+            <table id="hor-minimalist-b" summary="Employee Pay Sheet" >
+                            <T>
+                                <!-- <TH width="20%">Product</TD>-->
+                                    <TH width="20%">Loan</TH>
+                                    <TH width="20%">Account Number</TH>
+                                    <TH width="20%">Member Name</td>
+                                    <TH width="20%">Amount Disbursed</TH>
+                            
+                                    <?php $totalAmount = 0;
+                                     foreach($this->paginator as $loanDetails1) : ?>
+                           
+                                        <!--<TD width="20%"><?php echo $loanDetails1->productname;?></TD>-->
+                                        <TD  width="20%"><?php echo $loanDetails1->offerproductname;?></TD>
+                                        <TD  width="20%"><?php echo $loanDetails1->account_number;?></TD>
+                                        <TD  width="20%"><?php echo $loanDetails1->memberfirstname;?></TD>
+                                        <TD  width="20%"><?php echo $loanDetails1->amount_disbursed;?></TD>
+                                        <?php $totalAmount = $totalAmount + $loanDetails1->amount_disbursed; ?>
+                            </TR>
+                            <?php endforeach; ?> 
+            </table></table>
+
+            <table align = "right" >
 		     <TR>
-			<TH>totalamountDisbursed</TH>
-			<TH><?php echo $totalAmount?></TH>
-			
-		   </TR>
-	    </table>
-<form action="<?php echo $this->baseUrl();?>/currentloanlist/index/pdfgeneration" method="POST"
-onClick="window.open('<?php echo $this->baseUrl();?>/currentloanlist/index/reportdisplay/file/Currentloanlist.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
-            <input type="submit" value="PDF" id="submit" name="PDF">
-</form>
-</fieldset>
-        </div>
+                        <TH></TH>
+                        <TH></TH>
+                        <TH align="left"><b>Total Amount Disbursed:</b></TH>
+                        <th align="right"><font color="#039"><b><?php echo $totalAmount;?></b></font></TH>
+                     </TR>
+             </table>
+   </div>
+                <form action="<?php echo $this->baseUrl();?>/currentloanlist/index/pdfgeneration" method="POST"
+                onClick="window.open('<?php echo $this->baseUrl();?>/currentloanlist/index/reportdisplay/file/Currentloanlist.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+                            <input type="submit" value="PDF" id="submit" name="PDF">
+                </form>
+ 
+       
 
 
 

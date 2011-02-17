@@ -124,7 +124,7 @@ $this->view->type = "others";
 		$pdf->save('/var/www/'.$projname.'/reports/Currentloanlist.pdf');
 		$path = '/var/www/'.$projname.'/reports/Currentloanlist.pdf';
 		chmod($path,0777);
-
+            $this->_redirect("currentloanlist/index");
 	    }
 	}
 
