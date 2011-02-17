@@ -208,8 +208,8 @@
 <?php  } 
 if(($this->loanCredit) && ($this->loanDedit))  { ?>
 <div style="float:left;width:370px">
-<form action="<?php echo $this->baseUrl();?>/reports/loansupplementary/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/reports/loansupplementary/reportdisplay/file/loansupplementary.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+<form action="<?php echo $this->baseUrl();?>/reports/loanscroll/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/reports/loanscroll/reportdisplay/file/loanscroll.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
             
             <input type="submit" value="PDF" id="submit">
