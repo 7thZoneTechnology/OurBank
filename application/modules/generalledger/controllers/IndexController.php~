@@ -67,12 +67,16 @@ class Generalledger_IndexController extends Zend_Controller_Action
             $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
             $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
             if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){
-                                echo "<font color='red'><b> Record not found</b> </font>";
+//             $this->view->field1 = $this->_request->getParam('datefrom');
+//             $this->view->field2 = $this->_request->getParam('dateto');
+                        $fromDate = $this->_request->getParam('datefrom');
+			$toDate = $this->_request->getParam('dateto');
                 }
-        } /*else {
-            $this->view->search = 0;
+        } else {
+            echo "<font color='red'><b> Record not found</b> </font>";
+            
 
-        }*/
+        }
 			
         }
     }
@@ -88,8 +92,8 @@ class Generalledger_IndexController extends Zend_Controller_Action
     }
     public function pdfdisplayAction() 
     { 
-        $fromDate = $this->_request->getParam('field2'); 
-        $toDate = $this->_request->getParam('field2');
+        $fromDate = $this->_request->getParam('fromDate'); 
+        $toDate = $this->_request->getParam('toDate');
         $product = $this->_request->getParam('field3');
 
         $pdf = new Zend_Pdf();

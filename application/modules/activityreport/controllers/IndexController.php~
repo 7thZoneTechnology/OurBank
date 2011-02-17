@@ -243,6 +243,6 @@ class Activityreport_IndexController extends Zend_Controller_Action
 		$path = '/var/www/'.$projname.'/reports/activity.pdf';
 		chmod($path,0777);
 		//redirect path
-// 		$this->_redirect('/activityreport/index/reportdisplay/file/activity.pdf');	
+		$this->_redirect('/activityreport/index/');	
 	}
 }

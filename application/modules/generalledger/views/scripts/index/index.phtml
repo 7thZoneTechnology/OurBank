@@ -50,18 +50,16 @@ if($this->search == 0) { ?>
 </form>
 <?php } ?>
 <?php if (count($this->ledegerList)) { ?>
-	<h3 align="right">From <?php echo "<font color='#039'>".$this->field1."</font>"; ?> </h3>
-	<h3 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h3> 
+	<h5 align="right">From <?php echo "<font color='#039'>".$this->field2."</font>"; ?> </h5>
+	<h5 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h5> 
 	<?php foreach($this->ledegerList as $ledegerList) { $type = $ledegerList["subheader"]; }?>
-	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
+	<h5 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h5> <br>
 
-	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
+	<h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5>
 
 <div style="float:left;width:800px">
-
-<fieldset>
-    <legend>Liabilities</legend>
-    <TABLE id="hor-minimalist-b" width="80%">
+    <TABLE id="hor-minimalist-b">
+       <tr><Th colspan="4"><b>Liabilities</b></Th></tr>
      <tr>
         <TH allign = "right">Particular</TH>
         <TH allign = "right">Dr</TH>
@@ -114,8 +112,7 @@ if($this->search == 0) { ?>
         
      <?php }  ?>
     </TABLE>
-
-</div></fieldset>
+</div>
 
 
 <?php } ?>
@@ -184,8 +181,4 @@ if($this->search == 0) { ?>
     </TABLE>
 
 </fieldset>
-
-
-
-
 </div>

@@ -42,8 +42,10 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 			}else      {
                                             $this->view->errormsg="Record not found.. Try agin...";
                                         }
-        }
-    }
+
+
+            }
+                }
 
     public function detailsAction() 
     {

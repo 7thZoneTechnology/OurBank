@@ -96,7 +96,7 @@ class Dcb_IndexController extends Zend_Controller_Action
 	public function pdfdisplayAction() 
 	{ 
 		$pdf = new Zend_Pdf();
-		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4_LANDSCAPE);
+		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_LANDSCAPE_A4);
 		$pdf->pages[] = $page;
 		$app = $this->view->baseUrl();
 		$word=explode('/',$app);
@@ -266,6 +266,6 @@ class Dcb_IndexController extends Zend_Controller_Action
 		$pdf->save('/var/www/'.$projname.'/reports/DCB.pdf');
 		$path = '/var/www/'.$projname.'/reports/DCB.pdf';
 	        chmod($path,0777);
-//                 $this->_redirect("/dcb/index");
+                $this->_redirect("/dcb/index");
 	}
 }

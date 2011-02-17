@@ -41,8 +41,8 @@
 	<tr>
 	    <Th>Member Code</Th>
 	    <Th>Name / Group Name</th>
-            <Th>Branch</th>
-	    <Th>Type</Th>
+            <Th>Branch</th>&nbsp;
+	    <Th>Type of Account</Th>
             <th></th>
 	</tr>
 	<?php foreach($this->result as $member) : ?>

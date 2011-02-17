@@ -38,7 +38,7 @@
      <div class="profile_tab">
 		<table id="hor-minimalist-b">
 			
-                <tr><td id="reportth"><?php echo $this->translate("Age"); ?></td><td align="center" id="reportth"><?php if($this->gendername==1) { echo $this->translate("Male");} else if($this->gendername==2){ echo $this->translate("Female");} else { echo $this->translate("Male and female");} ?>-accounts</td></tr>
+                <tr><th id="reportth"><?php echo $this->translate("Age"); ?></th><th align="center" id="reportth"><?php if($this->gendername==1) { echo $this->translate("Male");} else if($this->gendername==2){ echo $this->translate("Female");} else { echo $this->translate("Male and female");} ?>-accounts</th></tr>
 
                 <tr><td><?php echo $this->translate('Age between'); ?><?php echo $this->from1; ?> - <?php echo $this->to1; ?></td>
                         <td align="center"><? echo $this->age1 ?></td>
@@ -65,7 +65,7 @@
      </div>
 </div>
 <form action="<?php echo $this->baseUrl();?>/activityreport/index/pdftransaction" method="POST"
-                onClick="window.open('<?php echo $this->baseUrl();?>/activityreport/index/reportdisplay/file/activity.pdf<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+                onClick="window.open('<?php echo $this->baseUrl();?>/activityreport/index/reportdisplay/file/activity.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
         <div class="reportdiv"><input type="submit" value="PDF"  id="reportbutton"><input type="hidden" name="activity" value="<?php echo $this->activityname; ?>"> 
                             <input type="hidden" name="gender" value="<?php echo $this->gendername;?>">

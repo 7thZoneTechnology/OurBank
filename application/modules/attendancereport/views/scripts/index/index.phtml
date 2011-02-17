@@ -132,31 +132,28 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
         <?php  $convertdate = new App_Model_dateConvertor();
             foreach ($this->result as $Attendancereport ) { ?>
     <tr>
-	<td><?php foreach($this->bank_name as $office) {
-			if($Attendancereport['id']==$office['id']){ echo $office['name']; } } ?>
-	</td>
+	<td><?php foreach($this->bank_name as $office) { if($Attendancereport['id']==$office['id']){ echo $office['name']; } } ?></td>
 	<td><?php echo $this->escape($Attendancereport['gname']);?></td> 
 	<td><?php echo $this->escape($Attendancereport['name']);?></td>
-
 	<td><?php echo $convertdate->phpnormalformat($Attendancereport['meeting_date']);?></td>
-
 	<td><br><?php echo $this->escape($Attendancereport['time']);?></td>
 	<td><?php echo $this->escape($Attendancereport['place']);?></td>
-	
-	<td><?php $flag=0; foreach ($this->member_name as $as){
+		<td><?php $flag=0; foreach ($this->member_name as $as){
 			if($as['id']==$Attendancereport['id']){ echo $as['member_name']."<br>"; $flag=1; }
 			}
-			if($flag==0) { echo "NIL"; }
-		?>
-	</td>
+			if($flag==0) { echo "NIL"; } ?>
+                </td>
 	<td><?php foreach ($this->all_member_name as $as1){
 		if($as1['id']==$Attendancereport['id']){ echo $as1['member_name']."<br>";}
 			}  ?>
-	</td>
-                <?php }?>
+	</td>  <?php }?>
     </tr>
+<tr>
+		<td colspan="8" align="right" ><font color="green"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+						'/partials/my_pagination_control.phtml'); ?></div></td>
+</tr>
 </table>
-   <?php } ?>
+ <?php } ?>
   
 
 </form>
