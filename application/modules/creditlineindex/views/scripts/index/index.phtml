@@ -26,14 +26,14 @@
 		<form action="<?php echo $this->baseUrl();?>/creditlineindex/index" method="POST">
 			<table width="100%">
                                 <tr>
-                                    <td class="label"><?php echo $this->translate('Creditline name:'); ?></td>
-                                    <td ><? echo $this->form->searchCreditline;?></td>
-                                </tr>
-                                <tr>
                                     <td class="label"><?php echo $this->translate('Creditline From:'); ?></td>
                                     <td ><? echo $this->form->search_from_credit;?></td>
                                     <td class="label"><?php echo $this->translate('Creditline To:'); ?></td>
                                     <td ><? echo $this->form->search_to_credit;?></td>
+                                </tr>
+                                <tr>
+                                    <td class="label"><br><?php echo $this->translate('Creditline name:'); ?></td>
+                                    <td ><br><? echo $this->form->searchCreditline;?></td>
                                 </tr>
                                 <tr>
                                    <td></td> <td><font color="red"><? echo $this->errorMsg;?></font></td>
