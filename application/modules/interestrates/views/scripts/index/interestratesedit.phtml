@@ -19,20 +19,18 @@
 
 
 <div id = "searchDiv">
-
-	
+<fieldset>
+    <legend>Edit interest rates<a href="<?php echo $this->baseUrl();?>/interestrates/index/interestratesdelete/interest_id/<?php echo $this->interest_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></legend>
+        <div class="search" style="margin-left:20px;">	
 	<form onsubmit="return validation()" name="interestForm"  action="<?php echo $this->baseUrl();?>/interestrates/index/interestratesedit/interest_id/<?php echo $this->interest_id;?>" method="POST">
 	
-		<table id="hor-minimalist-b">
-                   <tr><Th>Edit interest rates</Th><th><a href="<?php echo $this->baseUrl();?>/interestrates/index/interestratesdelete/interest_id/<?php echo $this->interest_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></th></tr>
-			<TR>
-			<TD colspan="2" align="right"></TD>
-			</TR>
-
-			<?php echo $this->InterestratesForm->interestname;?>
-			<?php echo $this->InterestratesForm->creditlinename;?>
+		<table width="100%">
+                   <tr>
+			<td><? echo $this->InterestratesForm->interestname;?>
+			<? echo $this->InterestratesForm->creditlinename;?><td>
+                  </tr>
 		</table>
-
+</fieldset>
 		<table id="hor-minimalist-b">
 
 			<TR>
@@ -65,12 +63,11 @@
 				</TD>
 			</TR>
 				
-			<TR><TD colspan="5"><input type="button" value="Add range" onClick="addInputEDIT('interest_ranges','<?php echo $this->baseUrl();?>');"></TD><tr></tr></TR>
-			<?php echo $this->InterestratesForm->status;?>
+			<tr><TD colspan="5"><input type="button" value="Add range" onClick="addInputEDIT('interest_ranges','<?php echo $this->baseUrl();?>');"></TD></tr>
+			<?php echo $this->InterestratesForm->status;?><tr></tr>
                     <tr><TD colspan="4"><input type="Submit" name="Update"  value="Update"></TD>
                         <td align="right"><a href="<?php echo $this->baseUrl();?>/interestratesindex"><input type="button" value="Back"></a></td></tr>
 		</table>
-
  	</form>
 
 </div>

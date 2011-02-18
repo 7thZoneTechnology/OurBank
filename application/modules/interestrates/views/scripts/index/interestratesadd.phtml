@@ -22,11 +22,12 @@
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/interestratesadd.js"></script>
 <div id = "searchDiv">
 <fieldset>
+        <legend>Add interest rates</legend>
+        <div class="search" style="margin-left:20px;">	
 	<form onsubmit="return validation()" name="interestForm" action="<?php echo $this->baseUrl();?>/interestrates/index/interestratesadd" method="POST">
-		<table id="hor-minimalist-b">
-                         <tr><Th colspan="2">Add interest rates</Th></tr>
-			<?php echo $this->InterestratesForm->interestname;?>
-			<?php echo $this->InterestratesForm->creditlinename;?>
+		<table width="100%">
+			<tr><td><? echo $this->InterestratesForm->interestname;?>
+			<? echo $this->InterestratesForm->creditlinename;?></td></tr>
 		</table>
 </fieldset>
 		<table id="hor-minimalist-b">
@@ -56,7 +57,7 @@
 			<tr></tr><TD colspan="5"><input type="button" value="Add range" onClick="addInputADD('interest_ranges','<? echo $this->baseUrl();?>');"></TD></tr>
 			<?php echo $this->InterestratesForm->status;?>
                             <tr></tr><td colspan="4"><input type="Submit" name="Submit" name="Submit" value="Submit"></td>
-                            <td><a href="<?php echo $this->baseUrl();?>/interestratesindex"><input type="button" value="Back"></a></td>
+                            <td align="right"><a href="<?php echo $this->baseUrl();?>/interestratesindex"><input type="button" value="Back"></a></td>
 		</table>
  	</form>
 
