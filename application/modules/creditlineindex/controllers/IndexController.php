@@ -53,11 +53,12 @@ class Creditlineindex_IndexController extends Zend_Controller_Action{
 
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 			$formData = $this->_request->getPost();
+                        $this->view->errorMsg="Record Not found..Try Again..";
 			if ($this->_request->isPost()) {
 				$formData = $this->_request->getPost();
 				if ($searchForm->isValid($formData)) {
 					if(($formData['search_from_credit'] && !$formData['search_to_credit']) || (!$formData['search_from_credit'] && $formData['search_to_credit'])) {
-						$this->view->errorMsg="Select From and To Date";
+						$this->view->errorMsg="Record Not found..Try Again..";
 					} else {
 					$result = $creditline->SearchCreditline($formData);
 					$page = $this->_getParam('page',1);
