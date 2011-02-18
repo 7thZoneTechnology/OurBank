@@ -24,7 +24,7 @@
 class Creditlineindex_IndexController extends Zend_Controller_Action{
 
 	public function init() {
-		$this->view->pageTitle=$this->view->translate("Credit line");
+		$this->view->pageTitle=$this->view->translate("Creditline");
 
 		$globalsession = new App_Model_Users();
 		$this->view->globalvalue = $globalsession->getSession();
