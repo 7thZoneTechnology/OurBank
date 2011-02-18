@@ -20,11 +20,11 @@
 
 <div id = "searchDiv">
 <fieldset>
-<legend><?php echo $this->translate('Edit creditline'); ?></legend>
 	<form action="<?php echo $this->baseUrl();?>/creditline/index/creditlineedit/id/<?php echo $this->id;?>" method="POST">
-		<table class = "fieldsets">
+		<table class = "fieldsets" id="hor-minimalist-b">
+                    <tr><Th><b><?php echo $this->translate('Edit creditline'); ?></b></Th><th><a href="<?php echo $this->baseUrl();?>/creditline/index/creditlinedelete/creditline_id/<?php echo $this->id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></th></tr>
 			<TR>
-			<TD colspan="2" align="right"><a href="<?php echo $this->baseUrl();?>/creditline/index/creditlinedelete/creditline_id/<?php echo $this->id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a></TD>
+			<TD colspan="2" align="right"></TD>
 			</TR>
 			<?php echo $this->form;?>
 		</table>
