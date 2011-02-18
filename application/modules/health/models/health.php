@@ -66,8 +66,8 @@ class Health_Model_health  extends Zend_Db_Table {
                 $select=$this->select()
                                         ->setIntegrityCheck(false)
                                         ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('name as membername','id as memberid'))
-                                        ->join(array('b'=>'ourbank_family'),'b.family_id = a.family_id')
-                                        ->where('b.family_id='.$familyid);
+                                        ->join(array('b'=>'ourbank_family'),'b.id = a.family_id')
+                                        ->where('b.id='.$familyid);
                 $result=$this->fetchAll($select);
                 return $result->toArray();
         }

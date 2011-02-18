@@ -37,7 +37,7 @@ foreach($this->membername as $name){
 <br>
 <table id="hor-minimalist-b" border="1">
 <tr>
-<th align="left" colspan="<?php echo $actlen; ?>">
+<th  align="left" colspan="<?php echo $actlen; ?>">
    <?php echo $names[$i]; ?>
 </th>
 </tr>
@@ -48,6 +48,7 @@ foreach($this->membername as $name){
     <input type="checkbox" name="habit[]" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
     <?php echo $habits['name']; ?>
     </td>
+
    <?php } ?>
 </tr>
 <tr>
@@ -64,22 +65,13 @@ foreach($this->membername as $name){
 }
 ?>
 </div>
-
-<?php if(($this->habitdetails) || ($this->challengedetails)){ ?>
 <table>
 <input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
 <input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
-<?php if($this->error){ ?>
-<font color="red"><?php echo $this->error;?></font>
-<?php }else{ ?>
+
 <tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
 <td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
 </tr>
-<?php
-}
-?>
-
 </table>
-<?php } ?>
 
 </form>

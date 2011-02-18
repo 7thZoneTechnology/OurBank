@@ -53,9 +53,6 @@ class Health_IndexController extends Zend_Controller_Action
         $this->view->membername = $dbmodel->getfamilymemberdetails($familyid);
 //count number of family members
         $this->view->membercount = count($this->view->membername);
-        if(count($this->view->membername)==0){
-        $this->view->error = "No members in this family";
-        }
 // //insert the health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
         {
@@ -126,7 +123,7 @@ class Health_IndexController extends Zend_Controller_Action
             }
         $this->view->adm->deleteRecordwithparam('ourbank_healthhabitdetails','family_id',$familyid);
         $this->view->adm->deleteRecordwithparam('ourbank_healthphychallenge','family_id',$familyid);
- -
+ 
 
         foreach($habit as $habitid){
         explode('-',$habitid);
