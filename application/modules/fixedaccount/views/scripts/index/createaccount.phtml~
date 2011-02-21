@@ -133,15 +133,15 @@ function getInterests(path,interest) {
             <TD><?php echo $this->fixedForm->date1;?></TD>
         </TR>
         <TR>
-            <TD><label for="fld1" class="mand">Period</TD>
+            <TD><br><label for="fld1" class="mand">Period</TD>
             <TD><?php echo $this->fixedForm->period;?></TD>
         </TR>
         <TR>
-            <TD><label for="fld1" class="mand">Interest</TD>
+            <TD><br><label for="fld1" class="mand">Interest</TD>
             <TD><div id="interestdiv"><?php echo $this->fixedForm->interest;?></div></TD>
         </TR>
         <TR>
-            <TD><label for="fld1" class="mand">Fixed amount</TD>
+            <TD><br><label for="fld1" class="mand">Fixed amount</TD>
             <TD><?php echo $this->fixedForm->tAmount;?></TD>
         </TR>
         <?php if($this->gp_members) { ?>
@@ -152,13 +152,11 @@ function getInterests(path,interest) {
 
         </TR>
             <? } ?>
-        <TR>
-            <TD><?php echo $this->fixedForm->Submit; ?></TD>
-            <TD><?php echo $this->fixedForm->Back; ?></td>
-        </TR>
-
         <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
     </table>
+            <TD><?php echo $this->fixedForm->Submit; ?></TD>
+<td>
+ <a href="<?php echo $this->baseUrl(); ?>/fixedaccount"><input type="button" name="back" value="<?php echo $this->fixedForm("Back");?>"></a></td>
     <?php echo $this->fixedForm->Id; ?> <?php echo $this->fixedForm->memberId; ?> 
  <?php echo $this->fixedForm->code; ?> 
     </form>

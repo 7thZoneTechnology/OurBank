@@ -155,7 +155,8 @@ function getInterests(path,interest) {
         <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
     </table>
             <TD><?php echo $this->fixedForm->Submit; ?></TD>
-            <TD><?php echo $this->fixedForm->Back; ?></td>
+<td>
+ <a href="<?php echo $this->baseUrl(); ?>/fixedaccount"><input type="button" name="back" value="<?php echo $this->translate("Back");?>"></a></td>
     <?php echo $this->fixedForm->Id; ?> <?php echo $this->fixedForm->memberId; ?> 
  <?php echo $this->fixedForm->code; ?> 
     </form>
