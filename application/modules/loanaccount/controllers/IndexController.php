@@ -62,6 +62,9 @@ class Loanaccount_IndexController extends Zend_Controller_Action
     	$code = base64_decode($this->_request->getParam('code'));
         $this->view->account = $this->view->accounts->details($productId,$code);
         $this->view->interestRates = $this->view->accounts->getInterestRates($productId);
+        $minDeposite = 0;
+        $minInstallments=0;
+        $maxInstallments=0;
         foreach ($this->view->account as $account) {
             $minDeposite = $account->minamount; // Validate for min balance
             $minInstallments = $account->minInstallments; 

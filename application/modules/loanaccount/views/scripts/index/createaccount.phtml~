@@ -179,10 +179,12 @@ foreach ($this->account as $account) {
                         <td><?php echo $this->loanForm->group; ?></td>
                     </TR>
 					<?php } ?>
+                    <TR>
+                        <TD><?php echo $this->loanForm->Submit; ?></TD>
+                           <a href="<?php echo $this->baseUrl(); ?>/loanaccount"><input type="button" name="back" value="<?php echo $this->translate("Back");?>"></a></td>
+                    </TR>
                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
                 </table>
-                            <?php echo $this->loanForm->Submit; ?></TD>
-                           <a href="<?php echo $this->baseUrl(); ?>/loanaccount"><input type="button" name="back" value="<?php echo $this->translate("Back");?>"></a>
                 <?php echo $this->loanForm->Id; ?> <?php echo $this->loanForm->code; ?> 
             </form>
 </fieldset>
