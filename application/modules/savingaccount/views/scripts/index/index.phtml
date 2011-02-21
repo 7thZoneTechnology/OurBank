@@ -42,22 +42,22 @@
 	    <Th>Member Code</Th>
 	    <Th>Name / Group Name</th>
             <Th>Branch</th>&nbsp;
-	    <Th>Type</Th>
-            <th></th>
+	    <Th>Type IND</Th>
+            <th>Type Group</th>
 	</tr>
 	<?php foreach($this->result as $member) : ?>
 	<tr>
 		<td><a href="<?php echo $this->baseUrl();?>/savingaccount/index/details/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
 		<td><?php  echo $member->name;?></td>
 		<td><?php  echo $member->officename;?></td>
-		<td>
+		<td align="center">
 		<?php if ($member->type==1) { 
 		 echo $member->membertype; 
 		} else {
 		  echo "-"; 
 		} ?>
 		</td>
-		<td>
+		<td align="center">
 		<?php if($member->type==2) { 
 		echo $member->membertype;
 		} else {
