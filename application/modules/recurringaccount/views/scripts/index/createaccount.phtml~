@@ -137,13 +137,13 @@ foreach ($this->account as $account) {
       <fieldset>
                 <legend>New fixed account</legend>
          <form name="form1" action="<?php echo $this->baseUrl();?>/recurringaccount/index/createaccount" method="POST">
-               <table class="fieldsets">
+               <table >
                              <TR>
-                                <TD><br><label for="fld1" class="mand">Date of account</label></TD>
+                                <TD><label for="fld1" class="mand">Date of account</label></TD>
                                 <TD><?php echo $this->fixedForm->date1;?></TD>
                              </TR>
                               <TR>
-                                <TD><br><label for="fld1" class="mand">Period</label></TD>
+                                <TD><label for="fld1" class="mand">Period</label></TD>
                                 <TD><?php echo $this->fixedForm->period;?></TD>
                               </TR>
                               <TR>
@@ -161,14 +161,8 @@ foreach ($this->account as $account) {
                                         echo "<input type=checkbox name=members[] value=".$gpmembers['id'].">".$gpmembers['name']."<br>";} ?></TD>
                                     </TR>
                                     <? } ?>
-                                   <div class="btnhouse">
-                                        <div class="ltbtns"> <TR>
-                                        <TD><?php echo $this->fixedForm->Submit; ?></TD>
-                                        <td><?php echo $this->fixedForm->Back; ?></td>
-                                    </TR>
-                                        </div>
-                                 </div>
-                                    </table>
+                                    </table><TD><?php echo $this->fixedForm->Submit; ?></TD>
+    <td><a href="<?php echo $this->baseUrl(); ?>/recurringaccount"><input type="button" name="back" align="right" value="<?php echo $this->translate("Back");?>"></a></td>
                                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
 
                             <?php echo $this->fixedForm->Id; ?> <?php echo $this->fixedForm->memberId; ?> 
