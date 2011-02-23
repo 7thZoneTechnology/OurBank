@@ -266,6 +266,6 @@ class Dcb_IndexController extends Zend_Controller_Action
 		$pdf->save('/var/www/'.$projname.'/reports/DCB.pdf');
 		$path = '/var/www/'.$projname.'/reports/DCB.pdf';
 	        chmod($path,0777);
-                $this->_redirect("/dcb/index");
+                $this->_redirect("/dcb/index/");
 	}
 }

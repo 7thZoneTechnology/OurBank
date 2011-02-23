@@ -23,7 +23,7 @@
     <div style="width:350px;float:left">
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
             <Tr>
-                <td><b class="star">Name</b></td>
+                <td><b class="star">Name:</b></td>
                 <TD><?php echo $this->offerproductname;?></TD>
             </TR>
             <TR>
@@ -122,11 +122,19 @@
             <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
                 <tr >
                     <td width="40%">Transaction mode</td>
-                    <td width="60%"><?php echo $this->form2->paymenttype;?><?php echo $this->form2->paymenttype_details;?><h id="details" style="display:none">Voucher/cheque/draft </h> </td> 
+                    <td width="60%"><br><?php echo $this->form2->paymenttype;?><?php echo $this->form2->paymenttype_details;?><h id="details" style="display:none">Voucher/cheque/draft </h> </td> 
                 </tr>
                 <tr>
-                    <td width="40%">Description</td>
-                    <td width="60%"><?php echo $this->form2->transactiondescription; 
+                    <td >Description
+<?php echo $this->form2->transactiondescription; 
+                            echo $this->form2->accountId;
+                            echo $this->form2->productId; 
+                            echo $this->form2->memberId; 
+                            echo $this->form2->capitalamount;
+                            echo $this->form2->interestamountto; 
+                            echo $this->form2->penalinterest;
+                            echo $this->form2->maturedinterestamount;?></td>
+                    <td ><?php
                             echo $this->form2->accountId;
                             echo $this->form2->productId; 
                             echo $this->form2->memberId; 
@@ -140,17 +148,16 @@
                 <tr>
                     <td></td>
                     <td ></td>
-                    <td><span class="reqMark">* Markedfieldsaremandatory</span></td>
+                    <td><font color="green"><b>*</b></font> Marked fields are mandatory</td>
                 </tr>
                 <TR>
-                    <TD><?php echo $this->form2->Confirm;?></TD>
                     <td><a href="<?php echo $this->baseUrl();?>/fixedtransaction/index/fixed/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>">
-                    <input name="submit" type="submit" value="back"></a></TD>
+                    </TD>
                 </TR>
                 <tr>
                     <td colspan="4"><B style="color:red"><? echo $this->noaccount1;?></B></td>
                 </tr>
-            </table>
+            </table><?php echo $this->form2->Confirm;?><input name="submit" type="submit" value="back"></a>
         </form>
 
     </div>
@@ -174,8 +181,8 @@
                 </tr>
                 <?php } ?>
                 <tr>
-                    <td width="40%">Description</td>
-                    <td width="60%"><?php echo $this->transactiondescription; echo $this->form2->accountId;echo $this->form2->productId; echo $this->form2->memberId; echo $this->form2->capitalamount;echo $this->form2->interestamountto; echo $this->form2->penalinterest;
+                    <td >Description</td>
+                    <td ><?php echo $this->transactiondescription; echo $this->form2->accountId;echo $this->form2->productId; echo $this->form2->memberId; echo $this->form2->capitalamount;echo $this->form2->interestamountto; echo $this->form2->penalinterest;
                     echo $this->form2->paymenttype1;
                     echo $this->form2->paymenttype_details1;
                     echo $this->form2->transactiondescription1;

@@ -21,23 +21,20 @@
     <fieldset>
     <legend>Search</legend>
     	<div class="search" style="margin-left:20px;">
-        	<form action="<?php echo $this->baseUrl();?>/institution/index/index" mthod="POST">
+        	<form action="<?php echo $this->baseUrl();?>/institution/index/index" method="POST">
             	<table id = "fieldsets">
                 	<tr>
                     	<td class="label"><br><?php echo $this->translate('Institution name:'); ?></td>
                         <td ><? echo $this->form->field2;?></td>
                         <td class="label"></td>
-                       </tr>
-                </table>
-                 <div class="btnhouse">
-               <div class="ltbtns">
-                   <?php echo $this->form->Search;?>
-               </div>
+                        
+                    </tr>
+                </table><td ><? echo $this->form->Search;?></td>
             </form>	
         </div>
     </fieldset> 
 </div> 
-<?php if (count($this->paginator)){ ?>
+<?php if (count($this->paginator)) { ?>
 	<table id="hor-minimalist-b" summary="">
     	<tr class="tdbrownheading">
 			<th><?php echo $this->translate('Institution name'); ?></th>
@@ -55,6 +52,6 @@
     	</tr>
 	</table>
 <?php } else { 
-         echo "<font color=red>".$this->errormsg."</font>";
+        echo "<font color=red>".$this->errormsg."</font>";
     } ?>
 

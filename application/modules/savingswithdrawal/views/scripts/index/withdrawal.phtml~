@@ -68,10 +68,10 @@
                 </TR>
 
                 <TR>
-                    <TD><br><label for="fld1" class="mand">Amount R$</label></TD>
+                    <TD><br><label for="fld1" class="mand">Amount Rs</label></TD>
                     <TD><br><?php echo $this->form->amount;?></TD>
                 </TR>
-				<TR>
+		<TR>
                     <TD><br><label for="fld1" class="mand">Transaction mode</label></TD>
                     <TD><br><?php echo $this->form->transactionMode;?></TD>
                 </TR>

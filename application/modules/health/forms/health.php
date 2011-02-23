@@ -27,15 +27,31 @@ class Health_Form_health extends Zend_Form {
     public function __construct($number) 
     {
         //$number = number family members
-        //create a health form eleAgriculturements...
-
+        //create a health form elements...
+         parent::__construct($number);
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
+	 for($i=1;$i<=$number;$i++) {
+        $name = $formfield->field('Text','name'.$i,'','','','',true,'','','','','',0,0);
+        $name->setAttrib('readonly','');
 
-       for($i=1;$i<=$number;$i++) {
-        $value = $formfield->field('Text','value'.$i,'','','','',true,'','','','','',0,0);
-        $this->addElements(array($value,$source_id));
+        $health = new Zend_Form_Element_Select('health'.$i);
+        $health->removeDecorator('DtDdWrapper'); 
+        $health->removeDecorator('HtmlTag');
+        $health->removeDecorator('label');
+
+        $treatment = new Zend_Form_Element_Select('treatment'.$i);
+        $treatment->removeDecorator('DtDdWrapper'); 
+        $treatment->removeDecorator('HtmlTag');
+        $treatment->removeDecorator('label');
+
+        $Accessibility = new Zend_Form_Element_Select('accessability'.$i);
+        $Accessibility->removeDecorator('DtDdWrapper'); 
+        $Accessibility->removeDecorator('HtmlTag');
+        $Accessibility->removeDecorator('label');
+
+        $familymemberid = $formfield->field('Hidden','familymemberid'.$i,'','','','','','','','','','',0,0);
+        $this->addElements(array($name,$health,$treatment,$Accessibility,$familymemberid));
 	}
     }
-
 }

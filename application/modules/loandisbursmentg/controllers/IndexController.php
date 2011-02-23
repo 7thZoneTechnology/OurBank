@@ -38,7 +38,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
 			if ($loansearch->isValid($formData)) {
 		    	$search = $this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
 		    	if (!$search) {
-                        echo "Enter a valid Number";
+                        echo '<font color="red">Record not found..Try again..</font>';
 		    	} else {
 					if (COUNT($search)=='1') {
 						foreach($search as $account) {

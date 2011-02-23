@@ -76,8 +76,8 @@ class Funder_IndexController extends Zend_Controller_Action
                 $paginator = Zend_Paginator::factory($result);
                 $this->view->paginator = $paginator;   //assign to the view object
                 if(!$paginator)
-        {          $this->view->errormsg="Record not found....Try again...";
-        }
+                    {          $this->view->errormsg="Record not found....Try again...";
+                    }
             } 
         }
 	// for pagination

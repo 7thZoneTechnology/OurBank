@@ -14,7 +14,7 @@
                                 <th colspan="3">Product information</th><th></th>
                             </tr>
                         <TR>
-                                <TD><br><label class="mand"></label>Product type</label></TD>
+                                <TD><br><label class="mand">Product type</label></TD>
                                 <TD ><?php echo $this->form->savingproductname;?></TD>
                                 <td></td><td></td>
                         </TR>
@@ -170,7 +170,8 @@
 					
 					
 					<tr>
-						<td><?php echo $this->form->Submit;?></td>
+<!-- 						<td><?php echo $this->form->Submit;?></td> -->
+                                        <td><input name="submit" type="Update" class="officebutton" id="Update" value="Update"></td>
 						<td><a href="<?php echo $this->baseUrl(); ?>/savings/index">
                                 <input name="submit" type="submit" class="officebutton" value="Back"></a></td>
 <td></td><td></td>

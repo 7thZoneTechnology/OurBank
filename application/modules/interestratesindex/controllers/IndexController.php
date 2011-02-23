@@ -56,9 +56,13 @@ class Interestratesindex_IndexController extends Zend_Controller_Action{
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
+            $this->view->errorMsg="Record Not found..Try Again..";
             if ($searchForm->isValid($formData)) {
                 $result = $interest->SearchInterestrates($formData);
                 $page = $this->_getParam('page',1);
+                if(!$paginator)
+                { $this->view->errorMsg="Record not found....Try again...";
+                    }
                 $paginator = Zend_Paginator::factory($result);
                 $paginator->setItemCountPerPage(5);
                 $paginator->setCurrentPageNumber($page);

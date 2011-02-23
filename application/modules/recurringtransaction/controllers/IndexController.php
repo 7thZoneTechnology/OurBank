@@ -51,7 +51,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $accountcode=$membercode;
                     $arrayrecurringAccountSearch = $recurringSavings->recurringSearch($accountcode);
                     if (!$arrayrecurringAccountSearch) {
-                            echo "No records found";
+                            echo '<font color="red">Record not found..Try again..</font>';
                     } else {
                         $this->view->recurringAccountsSearch = $arrayrecurringAccountSearch;
                         foreach($arrayrecurringAccountSearch as $arrayrecurringAccountSearch1) {
@@ -1538,7 +1538,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
 
                 $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_from'=> '',
+                                                    'glsubcode_id_<fieldset>from'=> '',
                                                     'glsubcode_id_to'=>  $bankglsubcode,
                                                     'tranasction_id'=> $transaction_id1,
                                                     'credit'=>'',

@@ -31,6 +31,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
         if(!$data){
                 $this->_redirect('index/login');
         }
+    $this->view->adm = new App_Model_Adm();
     }
 
     public function indexAction() 

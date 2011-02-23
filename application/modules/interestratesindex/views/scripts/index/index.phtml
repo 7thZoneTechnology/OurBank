@@ -48,8 +48,8 @@
 		<th>Creditline</th>
 
 	</tr>
-	<?php if (count($this->paginator)): $a='';?>
-	<?php foreach ($this->paginator as $interest ){ ?>
+	<?php if (count($this->paginator)) { $a='';?>
+	<?php foreach ($this->paginator as $interest ) { ?>
 	
 		<? if($a!=$interest['id'])	{ ?>
 		<tr>	
@@ -57,7 +57,9 @@
 		</tr>
 		<?php $a=$interest['id'];
 	} ?>
-	<?php endif; ?>
+	<?php } else { 
+        echo "<font color=red>".$this->errorMsg."</font>";
+    }  ?> 
 
 	<tr>
 	<td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',

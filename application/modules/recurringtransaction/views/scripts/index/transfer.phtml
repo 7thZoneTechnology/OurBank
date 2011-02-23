@@ -129,12 +129,12 @@
 
     <div id="loanRepayment" style="float:left;width:100%">
         <?php if(!$this->Submit) { ?>
-        <fieldset> 
-            <legend>Account close and transfer funds</legend>
+    <fieldset>
+          <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+    <tr><Th colspan="2">Account close and transfer funds</Th></tr>
                 <div class="cont-rgt-data">
                     <form action="<?php echo $this->baseUrl();?>/recurringtransaction/index/transfer/accountId/<?php  echo $this->accountid;?>/productId/<?php  echo $this->productid;?>" method="POST">
-                        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-                            <tr>
+                             <tr>
                                 <td class="label">Amount:</td>
                                 <td><?php echo $this->transferForm->accountId; echo $this->transferForm->productId; echo $this->transferForm->matured;?></td>
                             </tr>
@@ -142,15 +142,14 @@
                                 <td class="label">Account number:</td>
                                 <td><?php  echo $this->transferForm->account_number;?></td>
                             </tr>
-                            <tr>
-                                <td class="label"><? echo $this->transferForm->Confirm;?></td>
-                                                                <td><a href="<?php echo $this->baseUrl();?>">
-                                        <input name="submit" type="submit"  value="back" tabindex="25"></a></TD>
-                            </tr>
+                            
                             <tr>
                                 <td colspan="4"><B style="color:red"><? echo $this->noaccounts;?></B></td>
                             </tr>
-                        </table>
+                        </table><tr>
+                                <td class="label"><? echo $this->transferForm->Confirm;?></td>
+                                <td><a href="<?php echo $this->baseUrl();?>"><input name="submit" type="submit"  value="back" tabindex="25"></a></TD>
+                            </tr>
                     </form>
         </fieldset>
                 <?php } ?>

@@ -19,7 +19,7 @@
 
 <div>
     <div style="width:350px;float:left">
-
+<?php $convertdate = new Creditline_Model_dateConvertor(); ?>
             <table id="hor-minimalist-bjinu">
                 <Tr>
                     <td><b >Product name</b></td>
@@ -35,11 +35,12 @@
                 </TR>
                 <TR>
                     <td><b >Begin date:</b></td>
-                    <TD><?php echo $this->begin_date;?></TD>
+                    <TD><?php echo $this->escape($convertdate->phpnormalformat($this->begin_date)); ?></TD>
                 </TR>
+
                 <TR>
                     <td><b >Mature date:</b></td>
-                    <TD><?php echo $this->mature_date;?></TD>
+                    <TD><?php echo $this->escape($convertdate->phpnormalformat($this->mature_date)); ?></TD>
                 </TR>
                 <TR>
                     <td><b >Amount:</b></td>

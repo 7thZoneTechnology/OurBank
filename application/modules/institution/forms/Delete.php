@@ -33,8 +33,8 @@ class Institution_Form_Delete extends Zend_Form {
 		$remarks->setRequired(true)
 		->addValidators(array(array('NotEmpty')));
 		//add submit button
-		$submit_yes = new Zend_Form_Element_Submit('Yes');
-		$submit_yes->setAttrib('id', 'Yes');
+		$submit_yes = new Zend_Form_Element_Submit('Delete');
+		$submit_yes->setAttrib('id', 'Delete');
 		//add elements to form
 		$this->addElements(array($remarks,$submit_yes));
 	}

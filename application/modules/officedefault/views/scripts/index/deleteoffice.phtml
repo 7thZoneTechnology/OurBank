@@ -20,9 +20,19 @@
 <form action="<?php echo $this->baseUrl();?>/officedefault/index/deleteoffice/id/<?php echo $this->memberid; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST">
     <table id="hor-minimalist-b">
                 <tr><th><?php echo $this->translate("Member Information"); ?></th><th></th><th></th><th></th></tr>
+                        <TR>
+                            <TD width="8"></TD>
+                           <TD width="80" align="left"><font color="green">*</font><?php echo $this->delete; ?></TD>
+                       </TR>
+                        <tr><TD><font color="red">Are you sure you want to delete ?</font></TD><td></td></tr>
+                                <tr><TD><input type="Submit" name="Delete" value="Delete"></TD>
+                                   <td><a href="<?php echo $this->baseUrl();?>/officecommonview/index/commonview/id/<?php echo $this->memberid ?>"><input type="button" name="no" value="<?php echo $this->translate('Cancel'); ?>"></a></td>
 
-            <tr><td><font color="red"><?php echo $this->translate("Do you want to delete"); ?></font><?php echo $this->delete; ?></td><td></td><td></td><td></td></tr> 
-            <tr><td></td><td><a href="<?php echo $this->baseUrl();?>/officecommonview/index/commonview/id/<?php echo $this->memberid ?>"><input type="button" name="no" value="<?php echo $this->translate('Cancel'); ?>"></a></td></td><td></td><td></tr>
+
+
+
+            <!--<tr><td><font color="red"><?php echo $this->translate("Do you want to delete"); ?></font><?php echo $this->delete; ?></td><td></td><td></td><td></td></tr> 
+            <tr><td></td><td><a href="<?php echo $this->baseUrl();?>/officecommonview/index/commonview/id/<?php echo $this->memberid ?>"><input type="button" name="no" value="<?php echo $this->translate('Cancel'); ?>"></a></td></td><td></td><td></tr>-->
             
     </table>
 </form>

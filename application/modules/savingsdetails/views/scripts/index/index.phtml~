@@ -73,6 +73,6 @@
 </form>
 
 <form action="<?php echo $this->baseUrl();?>/savingsdetails/index/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/savingsdetails/index/reportdisplay/file/savingsdetails.pdf',<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+onClick="window.open('<?php echo $this->baseUrl(); ?>/savingsdetails/index/reportdisplay/file/savingsdetails.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
                  <input type="submit" value="PDF" id="submit">
 </form>

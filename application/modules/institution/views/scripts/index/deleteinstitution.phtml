@@ -18,20 +18,21 @@
 !-->
 
 <fieldset>
-    <legend><?php echo $this->translate('Delete institution'); ?></legend>
-	<form name = "deleteform" action="<?php echo $this->baseUrl();?>/institution/index/deleteinstitution/" method="POST">
-	   <table class="fieldsets">
+    <form name = "deleteform" action="<?php echo $this->baseUrl();?>/institution/index/deleteinstitution/" method="POST">
+	   <table class="fieldsets" id="hor-minimalist-b">
+    <tr><Th colspan="2"><?php echo $this->translate('Delete institution'); ?></Th></tr>
+	
 
 	   
                 <TR>
                     <TD  ><label for="fld1" class="mand"><?php echo $this->translate('Remarks'); ?></label></TD>
 		    <TD  ><?php echo $this->form->remarks;?></TD>					
 		</TR>
-
+                <tr><TD><font color="Red">Do you want to delete?</font></TD></tr>
 	    </table>
 		<div class="btnhouse">
 	   <div class="ltbtns">
-		<input type="submit" name="submit" id="submit" value="<?php echo $this->translate('Delete'); ?>">
+		<input type="submit" name="submit" id="Delete" value="<?php echo $this->translate('Delete'); ?>">
 	   </div>
 	   <div class="rtbtns">
 		<a href="<?php echo $this->baseUrl();?>/institution"><input type = "button" name = "Back" value = "<?php echo $this->translate('No'); ?>"></a>

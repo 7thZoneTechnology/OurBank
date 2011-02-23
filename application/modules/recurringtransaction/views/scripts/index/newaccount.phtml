@@ -86,36 +86,36 @@ function getInterests(countryId,path) {
             <? }?>
             <?php foreach($this->recurringAccountDetails as $productRecurringDetails) : ?>
             <TR>
-                    <td width="40%"><b class="star">Producttype:</b></td>
+                    <td width="40%"><b class="star">Product type:</b></td>
                     <TD width="60%"><?php echo $this->escape($productRecurringDetails['productname']);?></TD>
             </TR>
             <TR>
-                    <td width="40%"><b class="star">Productname:</b></td>
+                    <td width="40%"><b class="star">Product name:</b></td>
                     <TD width="60%"><?php echo $this->escape($productRecurringDetails['offerproductname']);?></TD>
             </TR>
             <TR>
-                    <td width="40%" ><b class="star">beginDate:</b></td>
+                    <td width="40%" ><b class="star">Begin date:</b></td>
                     <TD width="60%"><?php echo $this->escape($productRecurringDetails['begin_date']);?></TD>
             </TR>
             <TR>
-                    <td width="40%" ><b class="star">matureDate:</b></td>
+                    <td width="40%" ><b class="star">Mature date:</b></td>
                     <TD width="60%"><?php echo $this->escape($productRecurringDetails['mature_date']);?></TD>
             </TR>
             <TR>
-                    <td width="40%"><b class="star">amount:</b></td>
+                    <td width="40%"><b class="star">Amount:</b></td>
                     <TD width="60%"><?php echo $this->escape($productRecurringDetails['recurring_amount']);?></TD>
             </TR>
             <?php endforeach;?>
             <tr>
-                    <td width="40%"><B style="color:red">capitalAmount:</b></td>
+                    <td width="40%"><B style="color:red">Capital amount:</b></td>
                     <TD width="60%"><B style="color:red"><?php echo $this->paidAmount;?></B></TD>
             </TR>
             <TR>
-                    <td width="50%"><B style="color:red">grossInterest:</b></td>
+                    <td width="50%"><B style="color:red">Gross interest:</b></td>
                     <TD width="50%"><B style="color:red"><?php echo $this->simpleInterest;?></B></TD>
             </TR>
             <TR>
-                    <td width="50%"><B style="color:red">grossAmount:</b></td>
+                    <td width="50%"><B style="color:red">Gross amount:</b></td>
                     <TD width="50%"><B style="color:red"><?php echo $this->matureAmount;?></B></TD>
             </TR>
         </table>
@@ -221,7 +221,7 @@ function getInterests(countryId,path) {
                     <tr>
                         <td></td>
                         <td ></td>
-                        <td><span class="reqMark">Markedfieldsaremandatory * </span></td>
+                        <td><font color="green"><b>*</b></font>Markedfieldsaremandatory</td>
                     </tr>
                     <TR>
                         <TD><?php echo $this->form2->Confirm;?></td>
@@ -278,19 +278,17 @@ function getInterests(countryId,path) {
         </div>
     </fieldset>
 	<?php } ?>
-</div>
+
+
 <?php } else { ?>
 <div id="loanRepayment" style="float:left;width:100%">
-    <fieldset>
-        <legend></legend>
             <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                 <TR class="tdbrown">
-                    <TD width="40%"><SPAN style="color:red">This account cannot be reneved since all the installments has not been paid</span></TD>
+                    <TD ><SPAN style="color:red">This account cannot be renewed since all the installments has not been paid</span></TD>
                 </TR>
             </table>
         </div>
-    </fieldset>
-</div>
+
 <?php } ?>
 
 

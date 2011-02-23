@@ -67,6 +67,7 @@ $officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
 //search function
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 			$formData = $this->_request->getPost();
+                        $this->view->errormsg="Record not found....Try again...";
 			if ($this->_request->isPost()) {
 				$formData = $this->_request->getPost();
 				if ($searchForm->isValid($formData)) {
@@ -74,6 +75,9 @@ $officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
 					$result = $holiday->SearchHoliday($searchForm->getValues());
 					$page = $this->_getParam('page',1);
 					$paginator = Zend_Paginator::factory($result);
+//                                          if(!$paginator)
+//                                         {          $this->view->errormsg="Record not found....Try again...";
+//                                         }
 					$paginator->setItemCountPerPage(5);
 					$paginator->setCurrentPageNumber($page);
 					$this->view->paginator = $paginator;

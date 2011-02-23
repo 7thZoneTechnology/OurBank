@@ -21,80 +21,24 @@
 
 <?php
 class Health_Model_health  extends Zend_Db_Table {
-    protected $_name = 'ourbank_healthhabitdetails';
+    protected $_name = 'ob_member';
 
-        public function gethabittypes()
-        {
-        $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_master_habit'),array('a.id'));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-        }
-
-    public function getchallengetypes()
-        {
-        $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_master_phychallenge'),array('a.id'));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-//         die ($select->__toString($select));
-        }
-
-// 	public function get_expensedetails($memberid)
-//         {
-//         $select=$this->select()
-//                                 ->setIntegrityCheck(false)
-//                                 ->join(array('a'=>'ourbank_expensedetails'),array('a.id'))
-// 				->where('a.member_id=?',$memberid);
-//         $result=$this->fetchAll($select);
-//         return $result->toArray();
-// //         die ($select->__toString($select));
-//         }
-// 
-//      public function deleteexpense($param)  
-//             {
-//                 $db = $this->getAdapter();
-//                             //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
-//                 $db->delete("ourbank_expensedetails",array('member_id = '.$param));
-//         
-//             // $db->exec("delete from ourbank_cropdetails where member_id = $param");
-//                 return;
-//             }
-        public function getfamilymemberdetails($familyid){
-                $select=$this->select()
-                                        ->setIntegrityCheck(false)
-                                        ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('name as membername','id as memberid'))
-                                        ->join(array('b'=>'ourbank_family'),'b.id = a.family_id')
-                                        ->where('b.id='.$familyid);
-                $result=$this->fetchAll($select);
-                return $result->toArray();
-        }
-       
-    public function getselectedhabit($memberid){
-                    $select=$this->select()
-                                            ->setIntegrityCheck(false)
-                                            ->join(array('a'=>'ourbank_healthhabitdetails'),array('a.id'),array('habit_id'))
-                                            ->where('a.member_id='.$memberid);
-                    $result=$this->fetchAll($select);
-                    return $result->toArray();
-            }
-    public function getphysicalchallenge($memberid){
-        $select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_healthphychallenge'),array('a.id'),array('phychallenge_id'))
-                ->where('a.member_id='.$memberid);
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-
+// edit family details with respective to member id...
+    public function edit_health($member_id)
+    {
+       $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_familyhealth'),array('a.id'))
+                        ->where('a.member_id=?',$member_id);
+       $result=$this->fetchAll($select);
+       return $result->toArray();
     }
-/*
+
 //update the family details with respective to member id...
-    public function update($loanId,$input = array()) {
-    $where[] = "id = '".$loanId."'";
+    public function updatehealth($memberId,$input = array()) {
+    $where[] = "familymember_id = '".$memberId."'";
     $db = $this->getAdapter();
-    $result = $db->update('ourbank_loandetails',$input,$where);
-    }*/
+    $result = $db->update('ourbank_familyhealth',$input,$where);
+    }
 
 }
