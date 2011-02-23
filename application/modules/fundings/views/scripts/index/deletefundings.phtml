@@ -21,7 +21,7 @@
   
 	<form action="<?php echo $this->baseUrl();?>/fundings/index/deletefundings" method="POST">
 	   <table id="hor-minimalist-b" class="fieldsets">
-            <tr><Th colspan="2" ><b>Delete fundings</b></Th></tr>
+            <tr><Th colspan="2" >Delete fundings</Th></tr>
            <TR>
            	<TD><label class="mand">Remarks</label></TD>
 	    	<TD><?php echo $this->form->remarks;?></TD>					
@@ -32,7 +32,10 @@
 		    <tr ><a href="<?php echo $this->baseUrl();?>/fundingscommonview/index/commonview/id/<?php echo $this->id; ?>">
 		      </a></TD>
 		</TR>
-	    </table><tr> <TD > <input name="submit" type="submit"  value="Delete" ><input name="submit" type="submit"  value="No" ></td></tr>
+	    </table><tr> <TD > <input name="Delete" type="submit"  value="Delete" ></TD>
+
+            <td><a href="<?php echo $this->baseUrl();?>/fundings/"><input name="No" type="button"  value="<?php echo $this->translate('No'); ?>"></a></td></tr>
+
 	    <input type = "hidden" name = "id" value = "<?php echo $this->id; ?>">
 	</form>
 </fieldset>

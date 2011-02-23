@@ -15,42 +15,21 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-!-->
-
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
 !-->  
-<div id = "searchDiv">
-    <fieldset>
-        <legend><?php echo $this->translate('Delete activity'); ?></legend>	
-        <form name = "deleteform" action="<?php echo $this->baseUrl();?>/activity/index/activitydelete/id/<?php echo $this->id; ?>" method="POST"  name= "myform">
-             <table class = "fieldsets">
+<div>
+  <form name = "deleteform" action="<?php echo $this->baseUrl();?>/activity/index/activitydelete/id/<?php echo $this->id; ?>" method="POST"  name= "myform">
+   <table class = "fieldsets" id="hor-minimalist-b">
+    <tr><Th colspan="2"><?php echo $this->translate('Delete activity'); ?></Th></tr>
                 <tr>
-                    <td class = "firsttd">Remark<span>*</span></td>
-                    <td class="secondtd"><?php echo $this->form->remarks;?></td>
+                    <td class = "firsttd"><label class="mand">Remarks</label></td>
+                    <td><?php echo $this->form->remarks;?></td>
                    
                 </TR>
-                <tr> <td><font color="red"><?php echo $this->translate('Are you sure you want to delete'); ?></font></td></tr>
-                    <tr><td class = "firsttd"><input type = "Submit" name = "Submit" id="Submit" value = "Delete"/><input type = "Button" name = "No" id="No" value = "No"/></a></td>
-                   
-                    <td class = "secondtd"><a href="<?php echo $this->baseUrl(); ?>/activity/index">
-                </tr>   
+                <tr> <td><font color="red"><?php echo $this->translate('Are you sure you want to delete?'); ?></font></td><td></td></tr>
+                    <tr>
+                        <td><input type = "Submit" name = "Submit" id="Submit" value = "Delete"></td>
+                        <td align="right"><a href="<?php echo $this->baseUrl(); ?>/activity/index"><input type = "Button" name = "No" id="No" value = "No"></a></td>
+                   </tr>
             </table>
         </form>
-    </fieldset>
-</div>
+   </div>

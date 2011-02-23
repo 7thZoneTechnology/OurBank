@@ -27,7 +27,7 @@
 			<div class="cont-rgt-data">
 				<form action="<?php echo $this->baseUrl();?>/funderdetails/index/delete/id/<?php echo $this->funderid; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
 				<table id="hor-minimalist-b" class="fieldsets">
-                                       <tr><Th colspan="2"><b>Funder Details</b></Th></tr> 
+                                       <tr><Th colspan="2">Funder Details</Th></tr> 
 					<TR>
 						<TD><label class="mand">Remarks</TD>
 						<TD  width="65%"  align="left" ><?php echo $this->delete1->remarks;?></TD>
@@ -36,7 +36,7 @@
 					
 				</table>
 						<TR><TD><input type="submit" name="Delete" id="Delete" value="Delete">			
-						<input name="submit" type="submit"  value="No" ></a></TD></TR>
+						<a href="<?php echo $this->baseUrl();?>/funder"><input name="No" type="submit"  value="<?php echo $this->translate('No'); ?>"></a></TD></TR>
 				</form>
 			
 </fieldset>

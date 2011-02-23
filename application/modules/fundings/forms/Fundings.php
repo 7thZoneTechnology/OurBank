@@ -42,11 +42,7 @@
         $createdDate = $formfield->field('Hidden','created_date','','','','',false,'','','','','',0,date("y/m/d H:i:s"));
 
 					
-            $this->addElements(array($funderId,$institutionId,$name,
-									 $amount,$interest,
-                                     $currencyId,$exchangerate,$glsubcode,
-									 $beginingDate,$closingDate,
-                                     $id,$createdBy,
-									 $createdDate));
+            $this->addElements(array($funderId,$institutionId,$name, $amount,$interest,$currencyId,$exchangerate,$glsubcode, $beginingDate,$closingDate,
+                                     $id,$createdBy, $createdDate));
     }
 }

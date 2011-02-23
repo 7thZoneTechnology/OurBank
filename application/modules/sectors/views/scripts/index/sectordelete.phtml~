@@ -16,23 +16,22 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->  
-<div id = "searchDiv">
-    <fieldset>
-<legend><?php echo $this->translate('Delete sector'); ?></legend>
+<div>
+    <table class = "fieldsets" id="hor-minimalist-b">
+      <tr><Th colspan="2"><?php echo $this->translate('Delete sector'); ?></Th></tr>
         <form action="<?php echo $this->baseUrl();?>/sectors/index/sectordelete/id/<?php echo $this->id; ?>" method="POST"  name= "myform">
-            <table class = "fieldsets">
-                <TR>
-                    <TD><td>Remark<span>*</span></td>
-                    <?php echo $this->form->remarks;?></TD>
-                </TR>
-               <tr ><TD><font color="red"><?php echo $this->translate('Are you sure you want to delete'); ?></font></TD></tr>
-                <tr>
-                    <td class = "firsttd"><input type = "Submit" name = "Submit" id="Submit" value = "Delete"/><a href="<?php echo $this->baseUrl(); ?>/sectors/index"><input type = "Button" name = "No" id="No" value = "No"/></td>
-                    <td class = "secondtd"></td>
-                    <td class = "thirdtd">
-                            </a></td>
-                </tr>           
+
+                    <TR>
+                            <TD width="8"></TD>
+                           <TD width="80" align="left"><label class="mand">Remarks</label><?php echo $this->form->remarks;?></TD>
+                       </TR>
+
+
+
+               <tr ><TD><font color="red"><?php echo $this->translate('Are you sure you want to delete ?'); ?></font></TD><td></td></tr>
+                <tr><td><input type = "Submit" name = "Submit" id="Submit" value = "Delete"></td>
+                    <td align="right"><a href="<?php echo $this->baseUrl(); ?>/sectors/index"><input type = "Button" name = "No" id="No" value = "No"></a></td>
+                </tr>
             </table>
         </form>
-    </fieldset>
-</div>
+    </div>

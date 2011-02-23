@@ -23,11 +23,11 @@ class Sectors_Form_Sectors extends Zend_Form
                 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
                 $formfield = new App_Form_Field ();
                 // send parameters to get form fields as a form field(first parameter is type of input field)
-                $name = $formfield->field('Text','name','','','mand','Sector',true,'','','','','',1,'');
+                $name = $formfield->field('Text','name','','','mand','Sector:',true,'','','','','',1,'');
                 $name->addValidators(array(array('stringLength', false, array(1,30))));
                 $name->addValidator('Alpha',true,array('allowWhiteSpace'=>true));
                 $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,'');
-                $description = $formfield->field('Textarea','description','','','mand','Description',true,'','','',3,18,1,0);
+                $description = $formfield->field('Textarea','description','','','mand','Description:',true,'','','',3,18,1,0);
                 $status = $formfield->field('Checkbox','status','','','mand','Active',true,'','','','','',1,'');
                 $createdBy = $formfield->field('Hidden','created_by','','','','',"","","","","",false,0,$createdById);
                 $createdDate = $formfield->field('Hidden','created_date','','','','',"","","","","",false,0,date("y/m/d H:i:s"));

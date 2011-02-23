@@ -17,28 +17,27 @@
 ############################################################################
 !-->
 
-<!--
- *  delete view of funder details 
---> 
-
-
 <fieldset>
+    <form name = "deleteform" action="<?php echo $this->baseUrl();?>/institution/index/deleteinstitution/" method="POST">
+	   <table class="fieldsets" id="hor-minimalist-b">
+    <tr><Th colspan="2"><?php echo $this->translate('Delete institution'); ?></Th></tr>
 	
-			<div class="cont-rgt-data">
-				<form action="<?php echo $this->baseUrl();?>/funderdetails/index/delete/id/<?php echo $this->funderid; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" class="fieldsets">
-                                       <tr><Th colspan="2">Funder Details</Th></tr> 
-					<TR>
-						<TD><label class="mand">Remarks</TD>
-						<TD  width="65%"  align="left" ><?php echo $this->delete1->remarks;?></TD>
-                                           </TR>
-                                        <tr><td><font color="red">Do you want to Delete?</font></td></tr>
-					
-				</table>
-						<TR><TD><input type="submit" name="Delete" id="Delete" value="Delete">			
-						<a href="<?php echo $this->baseUrl();?>/funder"><input name="No" type="submit"  value="<?php echo $this->translate('No'); ?></a></TD></TR>
-				</form>
-			
-</fieldset>
 
-</form>
+	   
+                <TR>
+                    <TD  ><label for="fld1" class="mand"><?php echo $this->translate('Remarks'); ?></label></TD>
+		    <TD  ><?php echo $this->form->remarks;?></TD>					
+		</TR>
+                <tr><TD><font color="Red">Do you want to delete?</font></TD></tr>
+	    </table>
+		<div class="btnhouse">
+	   <div class="ltbtns">
+		<input type="submit" name="submit" id="Delete" value="<?php echo $this->translate('Delete'); ?>">
+	   </div>
+	   <div class="rtbtns">
+		<a href="<?php echo $this->baseUrl();?>/institution"><input type = "button" name = "Back" value = "<?php echo $this->translate('No'); ?>"></a>
+	   </div>
+        </div>
+	    <input type = "hidden" name = "id" value = "<?php echo $this->id; ?>">
+	</form>
+</fieldset>

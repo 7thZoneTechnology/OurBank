@@ -29,7 +29,7 @@ function removeFormField(id) {
 				<TD ><?php echo $this->form->offerproductname;?><?php echo $this->form->currentdates;?><?php echo $this->errorofferproductname; ?></TD>
 			</TR>
 			<tr>
-				<TD><label class="mand">Short name</TD>
+				<TD><label class="mand">Short name</label></TD>
 				<TD ><?php echo $this->form->offerproductshortname;?></TD>
 			</TR>
 			<TR >
@@ -89,7 +89,7 @@ function removeFormField(id) {
                         <tr>
 				<td >From (years)</td><td >To (years)</td><td >Rate of interest</td>
 				
-			</tr><br/>
+			</tr>
 			<tr>
 				<td><input type='text' size='3' name='interestfrom' id='interestfrom' value="" class = 'txt_put'></td>
 				<td><input type='text' size='3' name='interestto' id='interestto' value="" class = 'txt_put'></td>

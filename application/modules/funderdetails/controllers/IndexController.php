@@ -162,16 +162,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
                 $redirect = $this->view->adm->deleteAction("ob_funder","funder",$id);
                 $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
                 $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
-
-
+                $this->_redirect('/funder');
                 }
-		// if not valid redirct action
-               
-        
       }
-
-    $this->_redirect('/funder');
-//         }
     }
 }
 }

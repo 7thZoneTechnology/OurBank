@@ -20,13 +20,10 @@
 <form action="<?php echo $this->baseUrl();?>/fee/index/editfeedetail/id/<?php echo $this->fee_id; ?>" method="POST">
  	<div id="container-1">
 		<div class="profile_tab">
-
 			<fieldset>
-				<legend>edit Fee Information</legend>
-					<table class="fieldsets">	
-						<TR>
-							<TD colspan="2" align="right"><a href="<?php echo $this->baseUrl();?>/fee/index/delete/id/<?php echo $this->fee_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a></TD>
-						</TR>
+                        <table class="fieldsets" id="hor-minimalist-b">
+                        <tr><Th colspan="2">Edit Fee Information<a href="<?php echo $this->baseUrl();?>/fee/index/delete/id/<?php echo $this->fee_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></Th></tr>
+				        	
 						<?php echo $this->form;?>
 
 
@@ -36,7 +33,7 @@
  								<input type="submit" name="Update" id="Submit" value="Update">                 
 							</div>
 								<div class="rtbtns">
-								<a href="<?php echo $this->baseUrl();?>/fee"><?php echo $this->form->Back;?></a>
+								<a href="<?php echo $this->baseUrl();?>/fee"><input type="button" name="Back" id="Back" value="Back"></a>
 								</div>
 						</div>
 			</fieldset>

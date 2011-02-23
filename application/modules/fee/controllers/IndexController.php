@@ -134,7 +134,7 @@ public function viewAction()
 			$fee = new Fee_Model_Fee;
 			$feedetails = $fee->getFee($id);
 
-			$form->populate($feedetails[0]);
+			$form->populate($feedetails);
 
 			if ($this->_request->isPost() && $this->_request->getPost('Update')) { 
 		            $editfee = $this->view->adm->editRecord("ob_fee",$id);

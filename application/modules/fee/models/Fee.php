@@ -30,8 +30,8 @@ class Fee_Model_Fee extends Zend_Db_Table
                 ->setIntegrityCheck(false)
                 ->join(array('a'=>'ob_fee'),array('id'),array('a.description as feedescription','name','value','glsubcode_id','membertype_id'))
                 ->where('a.id=?',$id)
-				->join(array('b' => 'ourbank_membertypes'),'a.membertype_id = b.id')
-->join(array('c' => 'ourbank_glsubcode'),'a.glsubcode_id = c.id');
+		->join(array('b' => 'ourbank_membertypes'),'a.membertype_id = b.id')
+                ->join(array('c' => 'ourbank_glsubcode'),'a.glsubcode_id = c.id');
 	//	 die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();

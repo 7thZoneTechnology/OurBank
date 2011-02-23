@@ -17,28 +17,26 @@
 ############################################################################
 !-->
 
-<!--
- *  delete view of funder details 
---> 
+<form action="<?php echo $this->baseUrl();?>/fee/index/editfeedetail/id/<?php echo $this->fee_id; ?>" method="POST">
+ 	<div id="container-1">
+		<div class="profile_tab">
+			<fieldset>
+                        <table class="fieldsets" id="hor-minimalist-b">
+                        <tr><Th colspan="2">Edit Fee Information<a href="<?php echo $this->baseUrl();?>/fee/index/delete/id/<?php echo $this->fee_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></Th></tr>
+				        	
+						<?php echo $this->form;?>
 
 
-<fieldset>
-	
-			<div class="cont-rgt-data">
-				<form action="<?php echo $this->baseUrl();?>/funderdetails/index/delete/id/<?php echo $this->funderid; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" class="fieldsets">
-                                       <tr><Th colspan="2">Funder Details</Th></tr> 
-					<TR>
-						<TD><label class="mand">Remarks</TD>
-						<TD  width="65%"  align="left" ><?php echo $this->delete1->remarks;?></TD>
-                                           </TR>
-                                        <tr><td><font color="red">Do you want to Delete?</font></td></tr>
-					
-				</table>
-						<TR><TD><input type="submit" name="Delete" id="Delete" value="Delete">			
-						<a href="<?php echo $this->baseUrl();?>/funder"><input name="No" type="submit"  value="<?php echo $this->translate('No'); ?></a></TD></TR>
-				</form>
-			
-</fieldset>
-
+ 					</table>
+						<div class="btnhouse">
+							<div class="ltbtns">
+ 								<input type="submit" name="Update" id="Submit" value="Update">                 
+							</div>
+								<div class="rtbtns">
+								<a href="<?php echo $this->baseUrl();?>/fee"><?php echo $this->form->Back;?></a>
+								</div>
+						</div>
+			</fieldset>
+		</div>
+	</div>
 </form>

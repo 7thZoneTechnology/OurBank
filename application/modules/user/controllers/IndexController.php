@@ -171,7 +171,7 @@ class User_Indexcontroller extends Zend_Controller_Action
 //                                     echo  "<pre>"; print_r($previousdata);
                                     $this->view->adm->updateLog("ourbank_user_log",$previousdata[0],$id);
                                     $this->view->adm->updateRecord("ourbank_user",$id,$addForm->getValues());
-//                                     $this->_redirect('user/index');
+                                    $this->_redirect('user/index');
 				}
                              // } else {
                                 //            $this->_redirect('index/index');
