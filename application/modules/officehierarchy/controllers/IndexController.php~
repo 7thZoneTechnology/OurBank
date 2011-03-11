@@ -48,7 +48,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
            $this->view->form1 = $form1;
            $this->view->form1->officeNo->setAttrib('onchange', 'reload(this.value)');
            $this->view->form1->Edit->setName('Confirm');
-           $this->view->form1->Edit->setLabel('Confirm');
+           $this->view->form1->Edit->setLabel('confirm');
 	   //set office numbers for office levels in view page
            if($cat) { 
               $this->view->form1->officeNo->setValue($cat,$cat);
@@ -219,7 +219,8 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                 $this->view->form1->officeLevel->setRequired(true)
                      ->addValidators(array(array('NotEmpty'),array('stringLength', false, array(1, 2)),array('Digits') ));
         }
-
+//         else{ echo "Choose low level hierarchy";}
+//             }
 
 	//get confirmation and update
             if ($this->_request->isPost() && $this->_request->getPost('Confirm')) {
@@ -252,16 +253,16 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                                              'short_name' =>$officeCode);
                                 $date=date("Y-m-d");
                                 $officehierarchy->officeInsert($data);
-                            } else {	
-                                $officeType=ucwords($form1->getValue('officeType'.$i));
-                                $id=$form1->getValue('id'.$i);
-                                $officeCode=ucwords($form1->getValue('officeCode'.$i));
-                                $level=$form1->getValue('hierarchyLevel'.$i);
-                                $date=date("Y-m-d");
-                                $data = array('type' => $officeType,
-                                              'Hierarchy_level'=>$level,
-                                              'short_name' =>$officeCode);
-                                $officehierarchy->officeUpdate($id,$data);
+//                             } else {	
+//                                 $officeType=ucwords($form1->getValue('officeType'.$i));
+//                                 $id=$form1->getValue('id'.$i);
+//                                 $officeCode=ucwords($form1->getValue('officeCode'.$i));
+//                                 $level=$form1->getValue('hierarchyLevel'.$i);
+//                                 $date=date("Y-m-d");
+//                                 $data = array('type' => $officeType,
+//                                               'Hierarchy_level'=>$level,
+//                                               'short_name' =>$officeCode);
+//                                 $officehierarchy->officeUpdate($id,$data);
                             }
                         }
                     }
@@ -276,7 +277,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
             $form1 = new Officehierarchy_Form_EditHierarchy();
             $this->view->form1 = $form1;
             $formData = $this->_request->getPost();
-            if ($form1->isValid($formData)) {
+//             if ($form1->isValid($formData)) {
                 $validator = new Zend_Validate_Db_NoRecordExists('ourbank_officehierarchy','type');		
                 $validator1 = new Zend_Validate_Db_NoRecordExists('ourbank_officehierarchy','short_name');	
                 $id=$form1->getValue('id');
@@ -329,10 +330,10 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                             $messages = $officeType.' (OR) '.$officeCode.'alreadyexisting';
                             $this->_redirect("officehierarchy?Existed=".$messages);
                         }
-                    } else {
-                        $messages= 'noProperData';
-                        $this->_redirect("officehierarchy?Existed=".$messages);
-                    }
+//                     } else {
+//                         $messages= 'noProperData';
+//                         $this->_redirect("officehierarchy?Existed=".$messages);
+//                     }
                  }
             }
 
@@ -340,7 +341,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
     function inlineeditAction() {
 	//set to disable layout
         $this->_helper->layout->disableLayout();
-        $id = $this->_request->getParam('subOfficeId');
+        $id = $this->_request->getParam('subOfficeId'); //echo $id;
 
         $form1 = new Officehierarchy_Form_EditHierarchy();
         $this->view->form1 = $form1;
@@ -372,7 +373,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
     function deleteAction() {
         $Management = new Officehierarchy_Form_Deletehierarchy;
         $this->view->deleteform = $Management->deleteForm('officeTypeId');
-        $this->view->deleteid=$id = $this->_request->getParam('officeTypeId');
+        $this->view->deleteid=$id = $this->_request->getParam('officeTypeId')Next;
         $this->view->deleteform->officeTypeId->setValue($id);
         if($id) {
            $officehierarchy = new Officehierarchy_Model_Officehierarchy();

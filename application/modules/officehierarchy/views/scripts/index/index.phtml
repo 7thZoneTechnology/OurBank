@@ -160,19 +160,11 @@ function officehierarchy() {
 <?php if($this->noOfficeLevel == 0) { ?>		
     <div class="cont-rgt-data">
         <form action="<?php  echo $this->baseUrl();?>/officehierarchy?officeNo=<?php  echo $this->cat;?>" method="POST">
-<<<<<<< HEAD
             <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                 <tr class="tdbrownheading">
                     <th width="33%"><?php echo $this->translate('Office level'); ?></th>
                     <th width="33%"><?php echo $this->translate('Office Type'); ?></th>
                     <th width="33%"><?php echo $this->translate('Office TypeCode'); ?></th>
-=======
-            <table id="hor-minima be less then '+(current+1)+' and more then 0')list-b" summary="Employee Pay Sheet">
-                <tr class="tdbrownheading" >
-                    <th width="33%"><?php echo $this->translate('Officelevel'); ?></th>
-                    <th width="33%"><?php echo $this->translate('OfficeType'); ?></th>
-                    <th width="33%"><?php echo $this->translate('officeTypeCode'); ?></th>
->>>>>>> 0d09c8541df8c4c0354e8b2c7a1f09c9969c93fc
                 </tr>
                 <tr>
                     <td><?php echo $this->translate('Enter number of office level'); ?></td>
@@ -204,16 +196,7 @@ function officehierarchy() {
     </div>
 </fieldset>
         <? } else { ?>	
-<<<<<<< HEAD
 
-=======
-<!--        <table>
-            <tr>
-                <td width="85%"></td>
-                <td><a href="<? //php echo $this->baseUrl();?>/index/officehierarchy"> Office hierarchy strcture</a><br /></td>
-            </tr>
-        </table>-->
->>>>>>> 0d09c8541df8c4c0354e8b2c7a1f09c9969c93fc
 
     <div class="cont-rgt-data">
             <form method="POST"  action="<?php  echo $this->baseUrl();?>/officehierarchy/index/edit">
