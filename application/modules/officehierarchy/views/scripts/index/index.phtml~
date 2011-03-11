@@ -17,7 +17,7 @@
 ############################################################################
 !-->
 
-<script>
+<script type="text/javascript" language="JavaScript">
 function getXMLHTTP() {
     var xmlhttp=false;	
     try{
@@ -40,7 +40,7 @@ function getXMLHTTP() {
     }
 
 function getState(subOfficeId) {
-    var strURL="<?PHP echo $this->baseUrl();?>/ourbankM/public/officehierarchy/index/inlineedit?subOfficeId="+subOfficeId; alert(strURL);
+    var strURL="<?PHP echo $this->baseUrl();?>/officehierarchy/index/inlineedit?subOfficeId="+subOfficeId; 
     var req = getXMLHTTP();
         if (req) {
             $('#addofficehierarchy').hide();	
@@ -64,30 +64,22 @@ function getState(subOfficeId) {
     }
 
     function addPerson() {
-        var current =$("#officeNo").val();
-        var limit=current+1;
-        var maxLevel=10;
-        if(current == maxLevel) {
-           alert("you reached max level ..you cant create more then "+maxlevel+" level");
-        } else if (current == limit)  {
-                alert("AT a time u can create only one level");
-            } else {
-                current++;
-          var strToAdd = ' <input type="hidden" name="officeNo" id="officeNo" value="'+current+'" size="2" class="textfield" />'
-            $('#mainField').append(strToAdd)
-            $('#next').show();
-            $('#mainField').show();
-            $('#OFFICE_NO').hide();
-            $('#addofficehierarchy').hide();
-            $('#Edit').hide();
-            $('#next').show();
-            $('.b1').attr('disabled', 'disabled');
-        }
+        var current =parseInt($("#officeNo").val());
+          current++;
+          var strToAdd = '<input type="hidden" name="officeNo" id="officeNo" value="'+current+'" size="2" class="textfield" />'
+             $('#mainField').append(strToAdd)
+             $('#next').show();
+             $('#mainField').show();
+             $('#OFFICE_NO').hide();
+             $('#addofficehierarchy').hide();
+             $('#Edit').hide();
+             $('#next').show();
+             $('.b1').attr('disabled', 'disabled');
     }
     $(document).ready(function(){
     $('#addofficehierarchy').click(addPerson)
     });
-
+/*
 
 $(document).ready(function() {
 $('input#officeCode1').autotab({ target: 'officeCode1', maxlength: 2, format: 'alpha' });
@@ -98,7 +90,7 @@ $('input#officeCode1').autotab({ target: 'officeCode1', maxlength: 2, format: 'a
     $('input#officeLevel').autotab({ target: 'officeLevel',maxlength: 2, format: 'number' });
 });
 
-
+*/
 $(function() {
     $('.error').hide();
     $('.error1').hide();
@@ -109,7 +101,10 @@ $(function() {
   });
 
 });
+function newofficehierarchy(this){
 
+
+}
 
 function officehierarchy() {
     var name = $("input#officeLevel").val(); // alert(name);
@@ -166,7 +161,7 @@ function officehierarchy() {
 
 <?php if($this->noOfficeLevel == 0) { ?>		
     <div class="cont-rgt-data">
-        <form action="<?php  echo $this->baseUrl();?>/officehierarchy?officeNo=<?php  echo $this->cat;?>" method="POST">
+        <form action="<?php  echo $this->baseUrl();?>/officehierarchy?=<?php  echo $this->cat;?>" method="POST">
             <table id="hor-minima be less then '+(current+1)+' and more then 0')list-b" summary="Employee Pay Sheet">
                 <tr class="tdbrownheading">
                     <th width="33%"><?php echo $this->translate('Officelevel'); ?></th>
@@ -203,12 +198,7 @@ function officehierarchy() {
     </div>
 </fieldset>
         <? } else { ?>	
-<!--        <table>
-            <tr>
-                <td width="85%"></td>
-                <td><a href="<? //php echo $this->baseUrl();?>/index/officehierarchy"> Office hierarchy strcture</a><br /></td>
-            </tr>
-        </table>-->
+
 
     <div class="cont-rgt-data">
             <form method="POST"  action="<?php  echo $this->baseUrl();?>/officehierarchy/index/edit">
@@ -272,10 +262,9 @@ function officehierarchy() {
           </table>
     </form>
 
-<?php if($this->errorExisted) {?>
+<?php if($this->errorExisted) { ?>
 <CENTER class="updateerror"><?php echo $this->errorExisted; ?></CENTER>
-<?php }?>
+<?php } ?>
 
-<?php
-}?>
+<?php } ?>
 

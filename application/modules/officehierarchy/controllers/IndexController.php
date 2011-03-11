@@ -49,6 +49,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
            $this->view->form1->officeNo->setAttrib('onchange', 'reload(this.value)');
            $this->view->form1->Edit->setName('Confirm');
            $this->view->form1->Edit->setLabel('confirm');
+           $this->view->form1->Edit->setAttrib('onclick', 'return officehierarchy()');
 	   //set office numbers for office levels in view page
            if($cat) { 
               $this->view->form1->officeNo->setValue($cat,$cat);
@@ -219,7 +220,8 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                 $this->view->form1->officeLevel->setRequired(true)
                      ->addValidators(array(array('NotEmpty'),array('stringLength', false, array(1, 2)),array('Digits') ));
         }
-
+//         else{ echo "Choose low level hierarchy";}
+//             }
 
 	//get confirmation and update
             if ($this->_request->isPost() && $this->_request->getPost('Confirm')) {
