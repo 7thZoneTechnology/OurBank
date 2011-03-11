@@ -39,13 +39,13 @@
 if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 <fieldset>
     <legend> <?php echo $this->translate('search'); ?> </legend>
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-b">
+        <div class="search" style="margin-left:50px;">
+            <table  class="fieldset">
                 <form action="<?php echo $this->baseUrl();?>/loansupplementary/index" method="POST">
                     <TR>
-                            <TD ><?php echo $this->translate('As of date'); ?></td>
-                            <TD ><?php echo $this->form->datefrom;?></TD>
-                            <TD ><input type="submit" name="Search" value="Search"/></TD>
+                            <TD ><?php echo $this->translate('As of date:'); ?></td>
+                            <TD ><?php echo $this->form->datefrom;?></TD></tr>
+                            <tr><TD ><input type="submit" name="Search" value="Search"/></TD>
                     </TR>
 
                 </form>
@@ -227,7 +227,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 if(($this->loanCredit) && ($this->loanDedit))  { ?>
 <div style="float:left;width:370px">
 <form action="<?php echo $this->baseUrl();?>/loansupplementary/index/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/loansupplementary/index/reportdisplay/file/loanscroll.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+onClick="window.open('<?php echo $this->baseUrl(); ?>/loansupplementary/index/reportdisplay/file/loansupplementary.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
             
             <input type="submit" value="PDF" id="submit">

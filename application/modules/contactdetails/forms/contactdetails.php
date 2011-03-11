@@ -38,7 +38,7 @@ class Contactdetails_Form_contactdetails extends Zend_Form
         //create a contact details form elements
         $vtype=array('Digits');
 	$formfield = new App_Form_Field ();
-        $contactPerson = $formfield->field('Text','contact_person','','','mand','Contact person *',true,'','','','','',1,0);
+        $contactPerson = $formfield->field('Text','contact_person','','','mand','Contact person ',true,'','','','','',1,0);
         $telephone = $formfield->field('Text','telephone','','','mand','Telephone number',true,$vtype,'','','','',1,0);
 	$mobile = $formfield->field('Text','mobile','','','mand','mobile',true,$vtype,1,15,'','',1,0);
         $mobile->addValidator('StringLength', false, array(10, 11));

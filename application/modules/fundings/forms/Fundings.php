@@ -19,7 +19,7 @@
 */
 ?>
 
-<?php class Fundings_Form_Fundings extends ZendX_JQuery_Form {
+<?php class Fundings_Form_Fundings extends Zend_Form {
 	public function init() 
 	{
 		$formfield = new App_Form_Field ();
@@ -27,9 +27,9 @@
 
         $institutionId = $formfield->field('Select','institution_id','','','mand','Institution name',true,'','','','','',1,0);
         $funderId = $formfield->field('Select','funder_id','','','mand','Funder name',true,'','','','','',1,0);
-        $intrest = $formfield->field('Text','intrest','','','mand','Intrest %',true,'','','','','',1,0);
+        $interest = $formfield->field('Text','intrest','','','mand','Interest %',true,'','','','','',1,0);
         $currencyId = $formfield->field('Select','currency_id','','','mand','Funding currency',true,'','','','','',1,0);
-        $amount = $formfield->field('Text','amount','','','mand','Funding amount R$',true,'','','','','',1,0);
+        $amount = $formfield->field('Text','amount','','','mand','Funding amount Rs',true,'','','','','',1,0);
         $exchangerate = $formfield->field('Text','exchangerate','','','mand','Funding exchange rate',true,'','','','','',1,0);
         $glsubcode = $formfield->field('Select','glsubcode_id','','','mand','GL code',true,'','','','','',1,0);
 
@@ -42,11 +42,7 @@
         $createdDate = $formfield->field('Hidden','created_date','','','','',false,'','','','','',0,date("y/m/d H:i:s"));
 
 					
-            $this->addElements(array($funderId,$institutionId,$name,
-									 $amount,$intrest,
-                                     $currencyId,$exchangerate,$glsubcode,
-									 $beginingDate,$closingDate,
-                                     $id,$createdBy,
-									 $createdDate));
+            $this->addElements(array($funderId,$institutionId,$name, $amount,$interest,$currencyId,$exchangerate,$glsubcode, $beginingDate,$closingDate,
+                                     $id,$createdBy, $createdDate));
     }
 }

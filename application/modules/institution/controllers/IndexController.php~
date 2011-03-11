@@ -70,7 +70,7 @@ class Institution_IndexController extends Zend_Controller_Action
 	    $paginator->setItemCountPerPage($this->view->adm->paginator());
 	    $paginator->setCurrentPageNumber($page);
 	    $this->view->paginator = $paginator;
-
+loanaccount
     }
     //add action
     public function addinstitutionAction() 
@@ -151,7 +151,7 @@ class Institution_IndexController extends Zend_Controller_Action
 			$this->view->form = $form;
 			
 			//get poster data and validate
-			if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+			if ($this->_request->isPost() && $this->_request->getPost('Delete')) {
 				$id=$this->_request->getParam("id");
 				$redirect = $this->view->adm->deleteAction("ob_institution","institution",$id);
 				$this->_redirect("/".$redirect);

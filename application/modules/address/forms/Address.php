@@ -26,6 +26,7 @@ class Address_Form_Address extends Zend_Form {
     {
         parent::__construct($id);
         parent::__construct($subId);
+        $vtype=array('Digits');
         //$id= record id
         //$subId=submodule id
         //create address form elements...
@@ -37,7 +38,7 @@ class Address_Form_Address extends Zend_Form {
         $city = $formfield->field('Text','city','','','mand','City',true,'','','','','',1,0);
         $state = $formfield->field('Text','state','','','','State',false,'','','','','',1,0);
         $country = $formfield->field('Text','country','','','','Country',false,'','','','','',1,0);
-        $pincode = $formfield->field('Text','zipcode','','','','Pincode',false,'','','','','',1,0);
+        $pincode = $formfield->field('Text','zipcode','','','','Pincode',false,$vtype,'','','','',1,0);
         $address_id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,$id);
         $sub_id = $formfield->field('Hidden','submodule_id','','','','',false,'','','','','',0,$subId);
         $created_by = $formfield->field('Hidden','created_by','','','','',false,'','','','','',0,1);

@@ -22,20 +22,20 @@
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/interestratesadd.js"></script>
 <div id = "searchDiv">
 <fieldset>
-<legend>Add interest rates</legend>
+        <legend>Add interest rates</legend>
+        <div class="search" style="margin-left:20px;">	
 	<form onsubmit="return validation()" name="interestForm" action="<?php echo $this->baseUrl();?>/interestrates/index/interestratesadd" method="POST">
-	
-		<table id="hor-minimalist-b">
-			<?php echo $this->InterestratesForm->interestname;?>
-			<?php echo $this->InterestratesForm->creditlinename;?>
+		<table width="100%">
+			<tr><td><? echo $this->InterestratesForm->interestname;?>
+			<? echo $this->InterestratesForm->creditlinename;?></td></tr>
 		</table>
-
+</fieldset>
 		<table id="hor-minimalist-b">
 			<TR>
-				<TH >* Start range - R$</TH>
-				<TH >* End range - R$</TH>
-				<TH >* Interest - % </TH>
-				<TH >* Fee - % </TH>
+				<TH ><font color="green">*</font>Start range - R$</TH>
+				<TH ><font color="green">*</font> End range - R$</TH>
+				<TH ><font color="green">*</font> Interest - % </TH>
+				<TH ><font color="green">*</font> Fee - % </TH>
 				<TH >Billet - R$</TH>
 			</TR>
 			<TR>
@@ -54,20 +54,13 @@
 				</TD>
 			</TR>
 			
-			<tr><TD colspan="5"><input type="button" value="Add range" onClick="addInputADD('interest_ranges','<?php echo $this->baseUrl();?>');"></TD></tr>
+			<tr></tr><TD colspan="5"><input type="button" value="Add range" onClick="addInputADD('interest_ranges','<? echo $this->baseUrl();?>');"></TD></tr>
 			<?php echo $this->InterestratesForm->status;?>
+                            <tr></tr><td colspan="4"><input type="Submit" name="Submit" name="Submit" value="Submit"></td>
+                            <td align="right"><a href="<?php echo $this->baseUrl();?>/interestratesindex"><input type="button" value="Back"></a></td>
 		</table>
-
-		<div class="btnhouse">
-			<div class="ltbtns">
-				<input type="Submit" name="Submit" name="Submit" value="Submit">
-			</div>
-			<div class="rtbtns">
-				<a href="<?php echo $this->baseUrl();?>/interestratesindex"><input type="button" value="Back"></a>
-			</div>
-		</div>
  	</form>
-</fieldset>
+
 </div>
 
 

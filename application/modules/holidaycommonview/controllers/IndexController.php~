@@ -24,8 +24,9 @@ class Holidaycommonview_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-		
+				$this->view->pageTitle='Holiday';
 
+                    $this->view->dateconvert = new App_Model_dateConvertor();
 	}
 
 	public function indexAction() 
@@ -48,6 +49,7 @@ class Holidaycommonview_IndexController extends Zend_Controller_Action
 	{
 		//Acl
          $id=$this->_request->getParam('id');
+//view function
 			$holiday = new Holiday_Model_Holiday;
 			$this->view->holidaydetails=$holiday->getHoliday($id);
 	}	

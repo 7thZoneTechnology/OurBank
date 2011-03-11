@@ -57,12 +57,16 @@ class Penaltyindex_IndexController extends Zend_Controller_Action{
 
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 			$formData = $this->_request->getPost();
+                        $this->view->errormsg="Record not found....Try again...";
 			if ($this->_request->isPost()) {
 				$formData = $this->_request->getPost();
 				if ($searchForm->isValid($formData)) {
 					$result = $penalty->SearchPenalty($searchForm->getValues());
 
 					$page = $this->_getParam('page',1);
+                                         if(!$paginator)
+                                            {          $this->view->errormsg="Record not found....Try again...";
+                                            }
 					$paginator = Zend_Paginator::factory($result);
 					$paginator->setItemCountPerPage(5);
 					$paginator->setCurrentPageNumber($page);

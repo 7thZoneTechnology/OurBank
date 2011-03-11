@@ -67,10 +67,12 @@ class Generalledger_IndexController extends Zend_Controller_Action
             $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
             $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
             if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){
-                                echo "<font color='red'><b> Record not found</b> </font>";
+            $this->view->field2 = $this->_request->getParam('datefrom');
+            $this->view->field2 = $this->_request->getParam('dateto');
                 }
         } else {
-            $this->view->search = 0;
+            echo "<font color='red'><b> Record not found</b> </font>";
+            
 
         }
 			

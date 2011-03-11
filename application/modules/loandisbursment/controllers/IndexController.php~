@@ -1,4 +1,25 @@
 <?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
+?>
+
+<?php
 class Loandisbursment_IndexController extends Zend_Controller_Action {
 	public function init() {
 		$this->view->title = "Loan transactions";
@@ -32,7 +53,7 @@ class Loandisbursment_IndexController extends Zend_Controller_Action {
 				if ($loansearch->isValid($formData)) {
 					$search = $loantransactions->searchaccounts($accountNumber);
 					if(!$search) {
-                                            echo "Enter a valid Number";
+                                            echo '<font color="red">Enter a valid Number..</font>';
 				        } else {
                                             if(COUNT($search)=='1') {
                                                 foreach($search as $account) {
@@ -76,7 +97,7 @@ class Loandisbursment_IndexController extends Zend_Controller_Action {
                     $this->view->code=$arrayroles1['groupcode'];
                     $this->view->name=$arrayroles1['group_name'];
                     $this->view->type=$arrayroles1['membertype_id'];
-                   echo $mobileno=$this->view->mobile=$arrayroles1['mobile'];
+                    $mobileno=$this->view->mobile=$arrayroles1['mobile'];
 	       }
                $groupmembers= $this->view->groupmembers = $loantransactions->groupmembers($account_id);
                $noOfGroupmembersinaccount=COUNT($groupmembers);
@@ -91,7 +112,7 @@ class Loandisbursment_IndexController extends Zend_Controller_Action {
                     $this->view->code=$arrayroles1['membercode'];
                     $this->view->name=$arrayroles1['member_name'];
                     $this->view->type=$arrayroles1['membertype_id'];
-                  echo  $mobileno=$this->view->mobile=$arrayroles1['mobile'];
+                    $mobileno=$this->view->mobile=$arrayroles1['mobile'];
 	       }
 	   }
 

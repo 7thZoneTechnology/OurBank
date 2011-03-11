@@ -1,0 +1,104 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<form action="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>" method="POST">
+<div style="width:750px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+<?php 
+$hlen = count($this->habitdetails);
+$clen = count($this->challengedetails);
+$actlen = $hlen > $clen ? $hlen : $clen;
+$actlen = $actlen*2+1;
+$names = array();
+$nameid = array();
+foreach($this->membername as $name){
+ $nameid[] = $name['memberid'];
+ $names[] = $name['membername'];
+}
+ ?>
+
+<?php for($i=0;$i<$this->membercount;$i++) { ?>
+<br>
+<table id="hor-minimalist-b" border="1">
+<th colspan="<?php echo $actlen; ?>">
+   <?php echo $names[$i]; 
+$selectedHabits = array();
+$selectedChallenges = array();
+?>
+</th>
+<tr>
+    <td>Habits</td>
+    <?php foreach($this->habitdetails as $habits){ 
+    $dbmodel=new Health_Model_health();
+    $selectedHab = $dbmodel->getselectedhabit($nameid[$i]); // get selected health id's
+
+    foreach ($selectedHab as $selectedHabit){
+        $selectedHabits[] = $selectedHabit['habit_id']; // set all avail health list 
+    }
+
+ if(in_array($habits['id'],$selectedHabits)) { ?>
+    <td ><input type="checkbox" name="habit[]"  checked="true"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+    <?php echo $habits['name']; ?>
+</td>
+<?php } else { ?>
+<td ><input type="checkbox" name="habit[]"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+<?php echo $habits['name']; ?>
+</td>
+<?php } }
+
+?>
+</tr>
+<tr>
+    <td>Physical challenge</td>
+    <?php foreach($this->challengedetails as $challenge){ 
+
+    $selectedPhysical = $dbmodel->getphysicalchallenge($nameid[$i]); // get selected physical challenge id's
+
+    foreach ($selectedPhysical as $selectedPhy){
+        $selectedChallenges[] = $selectedPhy['phychallenge_id']; // set all avail physical challenge list 
+    }
+
+ if(in_array($challenge['id'],$selectedChallenges)) { ?>
+
+    <td><input type="checkbox" name="challenge[]" checked="true" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+    <?php echo $challenge['name']; ?>
+</td>
+<?php } else { ?>
+  <td><input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+    <?php echo $challenge['name']; ?>
+
+</td>
+   <?php } } 
+?>
+</tr>
+</table>
+<?php
+}
+
+?>
+</div>
+<table>
+<input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
+<input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
+
+<tr><td><input type="submit" id="submit" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
+<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+</tr>
+</table>
+
+</form>

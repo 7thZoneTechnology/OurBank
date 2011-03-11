@@ -75,7 +75,7 @@ $bank = $this->view->adm->viewRecord("ob_institution","id","DESC");
 		if($month && $year && $bank) {
 		$banktransaction = $bankmonthlydetail->Searchmonthlybanktransaction($month,$year,$bank);
 		if (!$banktransaction) {
-		echo 'No Transaction Records';
+		echo '<font color="red">No Transaction Records</font>';
 		} else {
 		$this->view->cbmonthlytransactiondetail = $banktransaction;
 		}}
@@ -83,7 +83,7 @@ $bank = $this->view->adm->viewRecord("ob_institution","id","DESC");
 		elseif($bank && !$month && !$year) {
 		$bankwisetransaction = $bankmonthlydetail->Searchbanktransaction($bank);
 		if (!$bankwisetransaction) {
-		echo 'No Transaction Records';
+		echo '<font color="red">No Transaction Records</font>';
 		} else {
 		$this->view->cbmonthlytransactiondetail = $bankwisetransaction;
 		}}
@@ -91,7 +91,7 @@ $bank = $this->view->adm->viewRecord("ob_institution","id","DESC");
 		elseif(!$bank && $year && $month) {
 		$datewisetransaction = $bankmonthlydetail->Searchmonthyearbanktransaction($year,$month);
 		if (!$datewisetransaction) {
-		echo 'No Transaction Records';
+		echo '<font color="red">No Transaction Records</font>';
 		} else {
 		$this->view->cbmonthlytransactiondetail = $datewisetransaction;
 		}}
@@ -99,7 +99,7 @@ $bank = $this->view->adm->viewRecord("ob_institution","id","DESC");
 		elseif(!$bank && $year && !$month) {
 		$yeartransaction = $bankmonthlydetail->Searchyearlybanktransaction($year);
 		if (!$yeartransaction) {
-		echo 'No Transaction Records';
+		echo '<font color="red">No Transaction Records</font>';
 		} else {
 		$this->view->cbmonthlytransactiondetail = $yeartransaction;
 		}}
@@ -107,14 +107,14 @@ $bank = $this->view->adm->viewRecord("ob_institution","id","DESC");
 		elseif(!$bank && !$year && $month) {
 		$yeartransaction = $bankmonthlydetail->Searchyearlybanktransaction($year);
 		if (!$yeartransaction) {
-		echo 'Please select a year';
+		echo '<font color="red">Please select a year</font>';
 		} else {
 		}}
 
 		elseif(!$bank && !$year && !$month) {
 		$emptytransaction = $bankmonthlydetail->Searchalltransaction();
 		if (!$emptytransaction) {
-		echo 'No Transaction yet Records';
+		echo '<font color="red">No Transaction Records</font>';
 		} else {
 		$this->view->cbmonthlytransactiondetail = $emptytransaction;
 		}}

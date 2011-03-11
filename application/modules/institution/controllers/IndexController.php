@@ -46,12 +46,13 @@ class Institution_IndexController extends Zend_Controller_Action
 		$this->view->form = $searchForm; 
 		//poster validation
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-                    $institution = new Institution_Model_Institution();
-                    $page = $this->_getParam('page',1);
-                    $paginator = Zend_Paginator::factory($institution->searchRecord($this->_request->getPost('field2')));
-                    $this->view->errormsg="Record not found..Try again..";
-                    } else {
+            $institution = new Institution_Model_Institution();
+            $page = $this->_getParam('page',1);
+                $this->view->errormsg="Record not found....Try again...";
+	    	$paginator = Zend_Paginator::factory($institution->searchRecord($this->_request->getPost('field2')));
+		} else {
             $this->view->title=$this->view->translate('Institution');
+            
 	    //session
             $storage = new Zend_Auth_Storage_Session();
             $data = $storage->read();
@@ -59,18 +60,15 @@ class Institution_IndexController extends Zend_Controller_Action
                 $this->_redirect('index/login');
             }
             $institution = new Institution_Model_Institution();
-            $page = $this->_getParam('page',1);
-	    	$paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ob_institution","id","DESC"));
-                if(!$paginator){
-                $this->view->errormsg="Record not found..Try again..";
-        }
-
-    }
+            $page = $this->_getParam('page',1);//                     //assign to the view object
+	    $paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ob_institution","id","DESC"));
+        }if(!$paginator)
+                    {          $this->view->errormsg="Record not found....Try again...";
+                    }
 		//paginator
 	    $paginator->setItemCountPerPage($this->view->adm->paginator());
 	    $paginator->setCurrentPageNumber($page);
 	    $this->view->paginator = $paginator;
-
     }
     //add action
     public function addinstitutionAction() 
@@ -107,7 +105,7 @@ class Institution_IndexController extends Zend_Controller_Action
 			$form = new Institution_Form_Institution(1);
 			$this->view->form = $form;
 			$this->view->submitform = new Bank_Form_Submit();
-			if ($this->_request->isPost() && $this->_request->getPost('Update')) {
+			if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 				$formData = $this->_request->getPost();
 				if ($form->isValid($formData)) { 
 					//Update the previous record
@@ -151,7 +149,7 @@ class Institution_IndexController extends Zend_Controller_Action
 			$this->view->form = $form;
 			
 			//get poster data and validate
-			if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+			if ($this->_request->isPost() && $this->_request->getPost('Delete')) {
 				$id=$this->_request->getParam("id");
 				$redirect = $this->view->adm->deleteAction("ob_institution","institution",$id);
 				$this->_redirect("/".$redirect);

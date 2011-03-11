@@ -90,41 +90,36 @@
                     <form action="<?php echo $this->baseUrl();?>/attendancereport/index" method="POST">
                             <table width="100%">
                                 <tr>
-                                    <td class="label"><?php echo $this->translate("Bank Name:"); ?></td>
-                                    <td ><?php echo $this->form->field1;?></td>
-                                    <td class="label"><?php echo $this->translate("Group Name:"); ?></td>
-                                    <td ><div id="groupDiv"><?php echo $this->form->field2;?></div></td>
+                                    <td class="label"><br><?php echo $this->translate("Bank Name:"); ?></td>
+                                    <td ><? echo $this->form->field1;?></td>
+                                    <td class="label"><br><?php echo $this->translate("Group Name:"); ?></td>
+                                    <td ><div id="groupDiv"><? echo $this->form->field2;?></div></td>
                                 </tr>
 
                                 <tr>
-                                    <td class="label"><?php echo $this->translate("Meeting Name:"); ?></td>
-                                    <td ><div id="meetingDiv"><?php echo $this->form->field5;?></div></td>
-                                    <td class="label"><?php echo $this->translate("Meeting Date :"); ?></td>
-                                    <td ><?php echo $this->form->field4;?></td>
+                                    <td class="label"><br><?php echo $this->translate("Meeting Name:"); ?></td>
+                                    <td ><div id="meetingDiv"><? echo $this->form->field5;?></div></td>
+                                    <td class="label"><br><?php echo $this->translate("Meeting Date :"); ?></td>
+                                    <td ><? echo $this->form->field4;?></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" align="center"><?php echo $this->form->Search;?></td>
+                                    
                                 </tr>
-                        </table>
+                        </table><td colspan="4" align="left"><? echo $this->form->Search;?></td>
                     </form>	
             </div>
     </fieldset> 
 </div> 
 
+<!-- view Report -->
 
-
-
-
-
-
-
-
-<fieldset>
-        <legend><?php echo $this->translate("Attendance Details"); ?></legend>
+<?php  if((count($this->result) ==0) && ($this->search == true))  {
+echo "<font color='RED'>Records Not Found Try Again...</font>";
+}
+ if(count($this->result)){ ?>
 <table id="hor-minimalist-b">
-    
         
-		<tr>
+     <tr>
         <th><?php echo $this->translate("Bank Name"); ?></th>
 	<th><?php echo $this->translate("Group Name"); ?></th>
         <th><?php echo $this->translate("Meeting Name"); ?></th>
@@ -133,42 +128,41 @@
 	<th><?php echo $this->translate("Meeting Place"); ?></th>
         <th><?php echo $this->translate("Absent Member Names"); ?></th>
 	<th><?php echo $this->translate("Group Member Names"); ?></th>
-	
     </tr>
-<?php if (count($this->result)){ ?>
-        <?php  foreach ($this->result as $Attendancereport ) { ?>
+        <?php  $convertdate = new App_Model_dateConvertor();
+            foreach ($this->result as $Attendancereport ) { ?>
     <tr>
-	<td><?php foreach($this->bank_name as $office) {
-			if($Attendancereport['id']==$office['id']){ echo $office['name']; } } ?>
-	</td>
+	<td><?php foreach($this->bank_name as $office) { if($Attendancereport['id']==$office['id']){ echo $office['name']; } } ?></td>
 	<td><?php echo $this->escape($Attendancereport['gname']);?></td> 
 	<td><?php echo $this->escape($Attendancereport['name']);?></td>
-	<td><?php echo $this->escape($Attendancereport['created_date']);?></td>
-	<td><?php echo $this->escape($Attendancereport['time']);?></td>
+	<td><?php echo $convertdate->phpnormalformat($Attendancereport['meeting_date']);?></td>
+	<td><br><?php echo $this->escape($Attendancereport['time']);?></td>
 	<td><?php echo $this->escape($Attendancereport['place']);?></td>
-	
-	<td><?php $flag=0; foreach ($this->member_name as $as){
+		<td><?php $flag=0; foreach ($this->member_name as $as){
 			if($as['id']==$Attendancereport['id']){ echo $as['member_name']."<br>"; $flag=1; }
 			}
-			if($flag==0) { echo "NIL"; }
-		?>
-	</td>
+			if($flag==0) { echo "NIL"; } ?>
+                </td>
 	<td><?php foreach ($this->all_member_name as $as1){
 		if($as1['id']==$Attendancereport['id']){ echo $as1['member_name']."<br>";}
-			}
-		?>
-	</td>
-                <?php }?>
-	
+			}  ?>
+	</td>  <?php }?>
     </tr>
-   <?php } else { ?>
-    <tr>
-	<td colspan="8" align="center"><?php echo $this->translate("Result Not Found"); ?></td>
-    </tr>
-<?php } ?>
+<tr>
+		<td colspan="8" align="right" ><font color="green"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+						'/partials/my_pagination_control.phtml'); ?></div></td>
+</tr>
 </table>
+ <?php } ?>
+  
 
-</fieldset>
+</form>
+<form action="<?php echo $this->baseUrl();?>/attendancereport/index/pdfgeneration/field1/<? echo $this->institute_bank_id;?>/field2/<? echo $this->group_id;?>/field3/<? echo $this->fromDate;?>/field4/<? echo $this->toDate;?>" method="POST"
+
+onClick="window.open('<?php echo $this->baseUrl();?>/attendancereport/index/reportdisplay/file/attendance<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="<?php echo $this->translate('PDF'); ?>" id="submit">
+</form>
 
 
 

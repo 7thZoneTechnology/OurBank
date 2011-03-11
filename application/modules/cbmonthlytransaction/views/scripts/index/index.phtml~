@@ -16,28 +16,43 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
 <?php  if(!$this->cbmonthlytransactiondetail) { ?>   
 <div id="searchDiv">
 
 <form action="<?php echo $this->baseUrl();?>/cbmonthlytransaction" method="POST">
     <fieldset>
         <legend>Search</legend>
-                <TABLE id="hor-minimalist-b">
+                <TABLE width="75%">
                    <tr>
-                            <td>Month</td>
+                            <td><br>Month</td>
                             <td><?php echo $this->form->field1;?></td>
-                            <td>Year</td>
-
+                            <td><br>Year</td>
                             <td><?php echo $this->form->field2;?></td>
                     </tr>
 			<tr>
-				<TD>Bank name</TD>
+				<TD><br>Bank name</TD>
 				<td><?php echo $this->form->field3;?></td>
 			</tr>
-                    <tr>
-                            <td><? echo $this->form->Search;?></td>
-                   </tr>
-        	</TABLE>
+        	</TABLE><? echo $this->form->Search;?>
  	</fieldset> 
 </form>
 	   </div>
@@ -60,8 +75,8 @@
  			<tr>
 				<td><?php echo $bankdetails['account_number']; ?></td>
 					<td><?php echo $bankdetails['transaction_date']; ?></td>
-					<td><?php echo $bankdetails['activity_name']; ?></td>
-					<td><?php echo $bankdetails['Institute_bank_name']; ?></td>
+					<td><?php echo $bankdetails['activityname']; ?></td>
+					<td><?php echo $bankdetails['bankname']; ?></td>
 					<td align="right"><?php echo $bankdetails['amount_to_bank']; ?></td>
 					<td align="right"><?php echo $bankdetails['amount_from_bank']; ?></td>
 			</tr>

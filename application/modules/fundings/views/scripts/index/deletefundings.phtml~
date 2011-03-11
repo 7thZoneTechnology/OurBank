@@ -1,0 +1,39 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<fieldset>
+  
+	<form action="<?php echo $this->baseUrl();?>/fundings/index/deletefundings" method="POST">
+	   <table id="hor-minimalist-b" class="fieldsets">
+            <tr><Th colspan="2" >Delete fundings</Th></tr>
+           <TR>
+           	<TD><label class="mand">Remarks</label></TD>
+	    	<TD><?php echo $this->form->remarks;?></TD>					
+		</TR>
+		<tr><td><font color="red">Do you Want to delete ?</font></td></tr>
+		<TR>
+		   
+		    <tr ><a href="<?php echo $this->baseUrl();?>/fundingscommonview/index/commonview/id/<?php echo $this->id; ?>">
+		      </a></TD>
+		</TR>
+	    </table><tr> <TD > <input name="Delete" type="submit"  value="Delete" ></TD>
+            <td><a href="<?php echo $this->baseUrl();?>/fundings/"><input name="No" type="submit"  value="<?php echo $this->translate('No'); ?>"></a></td></tr>
+	    <input type = "hidden" name = "id" value = "<?php echo $this->id; ?>">
+	</form>
+</fieldset>

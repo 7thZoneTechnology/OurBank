@@ -4,7 +4,7 @@
     function addPerson() {
     current++;
     var id = document.getElementById("id").value;
-    $("#FamilyInformation").append("<p id='row" + id + "'><label for='from" + id + "'>&nbsp;&nbsp;<input type='text' size='5' name='from"+current+"' id='from" + id + "' class = 'txt_put'><label for='to" + id + "'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='2' name='to"+current+"' id='to" + id + "' class = 'txt_put'><label for='rate" + id + "'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' size='2' name='rate"+current+"' id='rate" + id + "' class = 'txt_put'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onClick='removeFormField(\"#row" + id + "\"); return false;'><img src='/Mahiti-OB/ourbank/images/delete.gif'  border=0 width='16' height='16'><hr/></a><p>");
+     $(".hor-minimalist-b").append("<tr id=row"+id+"><td><input type='text' size='4' name='period_ofrange_monthfrom"+id+"' id='from" + id + "' class = 'txt_put'></td><td><input type='text' size='4' name='period_ofrange_monthto"+id+"' id='to" + id + "' class = 'txt_put'></td><td><input type='text' size='4' name='Interest"+id+"' id='rate" + id + "' class = 'txt_put'><td><a href='#' onClick='removeFormField(\"#row" + id + "\"); return false;'><img src='<? echo $this->baseUrl(); ?>/images/delete.gif'  border=0 width='16' height='16'></a></td></tr>");
 
     document.myform.memberCount.value = id;   
     id = (id - 1) + 2;
@@ -20,32 +20,32 @@
 </script>
 </head> 
 <form action="<?php echo $this->baseUrl();?>/loans/index/loansedit/id/<?php echo $this->offerproduct_id;?>" method="POST" name= "myform">
-<fieldset>
-    <legend>Edit Loan</legend>
+  
         <div class="register">
             <div class="profile_tab">
 
-            <table id="hor-minimalist-b">
+            <table id="hor-minimalist-b" class="fieldsets">
+                <tr><Th><b>Edit Loan</b></Th><th></th><th></th></tr>
                 <TR>
-                    <TH>ProductDetails</TH>
+                    <TH>Product Details</th>
                     <TH></TH>
                     <TH></TH>
                     <TH></TH>
                  </TR>
                 <TR>
-                    <TD>Product Type</TD>
+                    <TD><label class="mand required">Product Type</label></TD>
                     <TD><?php echo $this->form->product_id;?></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
                 <TR>
-                    <TD>Productname</TD>
+                    <TD  style="width:350px; !important"><label class="mand required">Productname</TD>
                     <TD><?php echo $this->form->offerproductupdate_id;echo $this->form->offerproductname;?></TD>
-                    <TD>ShortName</TD>
+                    <TD  style="width:200px; !important"><label class="mand required">ShortName</TD>
                     <TD><?php echo $this->form->offerproductshortname;?></TD>
                 </TR>
                 <TR>
-                    <TD>Description</TD>
+                    <TD><label class="mand required">Description</TD>
                     <TD><?php echo $this->form->offerproduct_description;?></TD>
                     <TD></TD>
                     <TD></TD>
@@ -56,26 +56,27 @@
                     <TH></TH>
                     <TH></TH>
                  </TR>
+
                 <TR>
-                    <TD>BeginDate</TD>
-                    <TD><?php echo $this->form->begindate;?>[yyyy-mm-dd]</TD>
+                    <TD><label class="mand required">BeginDate</TD>
+                    <TD><?php echo $this->form->begindate;?></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
                 <TR>
-                    <TD>CloseDate</TD>
-                    <TD><?php echo $this->form->closedate;?>[yyyy-mm-dd]</TD>
+                    <TD><label class="mand required">CloseDate</TD>
+                    <TD><?php echo $this->form->closedate;?></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
                 <TR>
-                    <TD>applicableTo</TD>
+                    <TD><label class="mand required">applicableTo</TD>
                     <TD><?php echo $this->form->applicableto;?></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
                 <TR>
-                    <TD>GL subcode</TD>
+                    <TD><label class="mand">GL subcode</TD>
                     <TD><?php echo $this->form->glsubcode_id;?></TD>
                     <TD></TD>
                     <TD></TD>
@@ -87,15 +88,15 @@
                     <TH></TH>
                  </TR>
                 <TR>
-                    <TD>Minimum</TD>
+                    <TD><label class="mand">Minimum</TD>
                     <TD><?php echo $this->form->minmumloanamount;?></TD>
-                    <TD>Minimum</TD>
+                    <TD><label class="mand">Minimum</TD>
                     <TD width="20"><?php echo $this->form->minimumfrequency;?></TD>
                 </TR>
                 <TR>
-                    <TD>Maximum</TD>
+                    <TD><label class="mand">Maximum</TD>
                     <TD><?php echo $this->form->maximunloanamount;?></TD>
-                    <TD>Maximum</TD>
+                    <TD><label class="mand">Maximum</TD>
                     <TD><?php echo $this->form->maximumfrequency;?></TD>
                 </TR>
                 <TR>
@@ -105,11 +106,17 @@
                     <TH></TH>
                  </TR>
                 <TR>
-                    <td>Penal Fee</td>
+                    <td><label class="mand">Penal Fee</td>
                     <TD><?php echo $this->form->penal_Interest;?></TD>
-                    <TD>Interest type</TD>
+                    <TD><label class="mand">Interest type</TD>
                     <TD><?php echo $this->form->interesttype_id;?></TD>
                 </TR>
+                    <tr> 
+                        <TD ><label class="mand">Penal glsubcode</TD>
+                        <td><? echo $this->form->fee_glsubcode_id;?></td>
+                        <TD ><label class="mand">Interest glsubcode</TD>
+                        <td><? echo $this->form->interest_glsubcode_id;?></td>
+                    </tr>
                 <TR>
                     <TH>GracePeriod</TH>
                     <TH></TH>
@@ -117,41 +124,42 @@
                     <TH></TH>
                  </TR>
                 <tr> 
-                    <TD>GracePeriod</TD>
+                    <TD><label class="mand">GracePeriod</TD>
                     <TD><?php echo $this->form->graceperiodnumber;?></TD>
-                    <td><input type="hidden" id="id" value="1">
-                                <input type="hidden" name="memberCount" id="memberCount" value=""  class="textfield" />
-                        <table>
+                    <td>
+                        <input type="hidden" name="memberCount" id="memberCount" value=""  class="textfield" />
+                        <table id="hor-minimalist-b" style="width:200px; !important">
                             <tr class="tdbrownheading"> 
                                	<Th width="10%">From</Th>
                                 <Th width="5%">To</Th>
                                 <Th width="3%">Rate</Th>
                                 <th></th>
-                                <th></th>
+
                             </tr>
                             <?php $count1 = 0; ?>
-                            <?php foreach($this->interest1 as $loan) { ?>
-                            <?php $count1++; ?>
-                            <input type = "hidden" name = "count1" value = " <?php echo $count1; ?>">
-                            <input type = "hidden" name = "Interestperiod_id1<?php echo $count1?>" value = " <?php echo $loan->Interestperiod_id; ?>">
-                                <tr>
-                                <td><input name ="period_ofrange_monthfrom<?php echo $count1?>" type="text" 
-                                           value="<?php echo $loan['period_ofrange_monthfrom'];?>" size="4" class="txt_put">
-                                </td>
-                                <td><input name ="period_ofrange_monthto<?php echo $count1?>" type="text" 
-                                           value="<?php echo $loan['period_ofrange_monthto'];?>" size="4" class="txt_put">
-                                </td>
-                                <td><input name ="Interest<?php echo $count1?>" type="text" 
-                                            value="<?php echo $loan['Interest'];?>" size="4" class="txt_put">
-                                </td>
-                                <td></td>
-                                <td></td>
-                                </tr>
-                            <?php } ?>
+                <?php foreach($this->interest1 as $loan) { ?>
+                        <?php $count1++; ?>
+                        <input type = "hidden" name = "count1" value = " <?php echo $count1; ?>">
+                        <input type = "hidden" name = "Interestperiod_id1<?php echo $count1?>" value = " <?php echo $loan->Interestperiod_id; ?>">
+                            <tr id="row<? echo $count1;?>">
+                            <td><input name ="period_ofrange_monthfrom<?php echo $count1?>" type="text" 
+                                        value="<?php echo $loan['period_ofrange_monthfrom'];?>" size="4" class="txt_put">
+                            </td>
+                            <td><input name ="period_ofrange_monthto<?php echo $count1?>" type="text" 
+                                        value="<?php echo $loan['period_ofrange_monthto'];?>" size="4" class="txt_put">
+                            </td>
+                            <td><input name ="Interest<?php echo $count1?>" type="text" 
+                                        value="<?php echo $loan['Interest'];?>" size="4" class="txt_put">
+                            </td>
+                            <td><? if($count1>1) { ?>
+                                <a href='#' onClick='removeFormField("#row<?php echo $count1?>"); return false;'> <img src='<? echo $this->baseUrl(); ?>/images/delete.gif'  border=0 width='16' height='16'><br></a> 
+                                <? } ?></td>
+                            </tr>
+                <?php } ?>
+                    <input type="text" id="id" value="<?php echo $count1+=1;?>">
                             </table>
-                            <br>
-                        <div id="FamilyInformation"></div>
-                       <input type="button" id="addPerson" class="officebutton" value="addTerm">
+                        <table id="hor-minimalist-b" class="hor-minimalist-b" style="width:200px; !important"></table>
+                            <input type="button" id="addPerson" class="officebutton" value="addTerm">
                          </td>
                     <td></td>
                 </tr>
@@ -161,10 +169,9 @@
                     <input name="submit" type="submit" class="officebutton" value="back"></a></td>
                 </TR>
         </table>
-                <div><?php echo $this->datesinfo; ?><?php echo $this->amounts; ?><?php echo $this->freequency; ?></div>
-        <CENTER style="color:red"><?php echo $this->updateerror; ?></CENTER>
+            <div><?php echo $this->datesinfo; ?><?php echo $this->amounts; ?><?php echo $this->freequency; ?></div>
+        <center style="color:red"><?php echo $this->updateerror; ?></center>
+</div>
+</div>
 
-</div>
-</div>
-</fieldset>
 </form>

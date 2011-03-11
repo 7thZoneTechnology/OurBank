@@ -1,3 +1,22 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
 
 <div id="searchDiv">
     <fieldset>
@@ -29,16 +48,18 @@
 		<th>Creditline</th>
 
 	</tr>
-	<?php if (count($this->paginator)): $a='';?>
-	<?php foreach ($this->paginator as $interest ){ ?>
+	<?php if (count($this->paginator)) { $a='';?>
+	<?php foreach ($this->paginator as $interest ) { ?>
 	
-		<? if($a!=$interest['_id'])	{ ?>
+		<? if($a!=$interest['id'])	{ ?>
 		<tr>	
 		<td><a href="<?php echo $this->baseUrl()."/interestratescommonview/index/index/interest_id/".$interest['id']; ?>"><?php echo $this->escape($interest['name']);?></a></td><td colspan="6"><?php echo $this->escape($interest['creditline_name']);?></td></tr> <? } ?>
 		</tr>
 		<?php $a=$interest['id'];
 	} ?>
-	<?php endif; ?>
+	<?php } else { 
+        echo "<font color=red>".$this->errormsg."</font>";
+    }  ?> 
 
 	<tr>
 	<td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',

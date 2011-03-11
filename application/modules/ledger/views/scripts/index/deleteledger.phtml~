@@ -45,7 +45,7 @@
 			<form action="<?php echo $this->baseUrl();?>/ledger/index/deleteledger/id/<?php echo $this->id;?>" method="POST"  name= "deleteledger">
 				<table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
 					<TR>
-						<TD  width="35%" align="right" ><label><label class="mand">Remarks</label></TD>
+						<TD  width="35%" align="right" ><label class="mand">Remarks</label></TD>
 						<TD  width="65%"  align="left" ><?php echo $this->form->remarks; echo $this->errormsg;?></TD>
 					</TR>
 					<TR>

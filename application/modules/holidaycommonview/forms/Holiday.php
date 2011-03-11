@@ -40,9 +40,6 @@
         $holidayfrom = $formfield->field('Text','holiday_from','','','mand','Holiday from',true,'','','','','',1,0);
         $holidayto = $formfield->field('Text','holiday_upto','','','mand','Holiday upto',true,'','','','','',1,0);
         $repaymentdate = $formfield->field('Text','repayment_date','','','mand','Repayment date',true,'','','','','',1,0);
-       
-
-        
 
         // Hidden Feilds 
         $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);

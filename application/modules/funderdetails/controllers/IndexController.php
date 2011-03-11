@@ -148,9 +148,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $this->view->funderid=$id;
 	// create instance of delete
         $delform=new Funderdetails_Form_Delete();
-        $this->view->delete=$delform;
+        $this->view->delete1=$delform;
 	// search for the search criterias
-        if ($this->_request->isPost() && $this->_request->getPost('Submit'))
+        if ($this->_request->isPost() && $this->_request->getPost('Delete'))
         {
             $formdata = $this->_request->getPost();
 		// form data validate
@@ -162,14 +162,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
                 $redirect = $this->view->adm->deleteAction("ob_funder","funder",$id);
                 $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
                 $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
+                $this->_redirect('/funder');
                 }
-		// if not valid redirct action
-                $this->_redirect("/".$redirect);
-            }
-        }
-//         }
-//         else {
-//         $this->_redirect('index/index');
-//         }
+      }
     }
+}
 }

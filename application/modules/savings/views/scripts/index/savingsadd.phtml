@@ -13,10 +13,8 @@
        }
 </script> 
 <div class="searchDiv">
-  <fieldset>
-        <legend>New savings</legend>
-	<form action="<?php echo $this->baseUrl();?>/savings/index/savingsadd" method="POST"  name= "myform">
-            <table class="fieldsets">
+ 	<form action="<?php echo $this->baseUrl();?>/savings/index/savingsadd" method="POST"  name= "myform">
+            <table  id="hor-minimalist-b" class="fieldsets"><tr><Th colspan="4">New savings</Th></tr>
                 <TR >
                     <TD>Product type</TD>
                     <TD><?php echo $this->form->productType;?></TD>
@@ -31,7 +29,7 @@
                 <div class="rtbtns">
                     <a href="<?php echo $this->baseUrl();?>/management/savings/"><input type = "Button" name = "Back" id="Back" value = "Back"/></a>
                 </div>
-            </div>
+            </div></table>
         </form>
-   </fieldset>
+
 </div>

@@ -31,6 +31,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
         if(!$data){
                 $this->_redirect('index/login');
         }
+    $this->view->adm = new App_Model_Adm();
     }
 
     public function indexAction() 
@@ -56,7 +57,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                         $accountcode=$membercode;
                         $arrayfixedAccountSearch = $fixedSavings->fixedSearch($accountcode);
                         if (!$arrayfixedAccountSearch) {
-                            echo "search Messages";
+                            echo '<font color="red">Record not found..Try again..</font>';
                         } else {
                             $this->view->fixedAccountsSearch = $arrayfixedAccountSearch;
                             foreach($arrayfixedAccountSearch as $arrayfixedAccountSearch1) {

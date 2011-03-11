@@ -37,7 +37,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		foreach($loginname as $loginname) {
 			$this->view->username=$loginname['username'];
 		}
-	
+	$this->view->adm = new App_Model_Adm();
 	}
 	//view action
 	function indexAction() {
@@ -50,6 +50,12 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		foreach($office as $office) {
 			$searchForm->field1->addMultiOption($office['id'],$office['name']); 		
 		}
+        $paginator = Zend_Paginator::factory($searchForm);
+        $paginator->setCurrentPageNumber($this->_getParam("page")); 
+        $paginator->setItemCountPerPage(10);
+        $paginator->setPageRange(11);
+        $this->view->page=$this->_request->getParam('page');
+        $this->view->paginator = $paginator;
 
 			$fetchMeetings=new Attendancereport_Model_Attendancereport();
 			$this->view->result=$result=$fetchMeetings->getMeetingsall(); 
@@ -79,11 +85,12 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 
 				$fetchAllMembers=$fetchMeetings->fetchGroupMembers();
 				$this->view->all_member_name=$fetchAllMembers;
+				                $this->view->search = true;
 			}
 		}
 	}
 
-/*	function pdfgenerationAction() {
+	function pdfgenerationAction() {
 		$pdf = new Zend_Pdf();
 		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
 // 		 $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4_LANDSCAPE);
@@ -141,7 +148,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 					}
 				} $y1+=$ommittedspace;
 
-// 				$page->drawText($meetingDetails1['Institute_bank_name'], $x[0], $y1);
+ 				$page->drawText($meetingDetails1['Institute_bank_name'], $x[0], $y1);
 
 			$st1=30;
 			$text1 = $meetingDetails1['name'];
@@ -168,8 +175,9 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		$pdf->save('/var/www/'.$projname.'/reports/attendance'.date('Y-m-d').'.pdf');
 		$path = '/var/www/'.$projname.'/reports/attendance'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
+                $this->_redirect('/attendancereport/index');
 	}
-*/
+
 	public function fetchgroupsAction() {
 		$this->_helper->layout->disableLayout();
 
@@ -189,7 +197,7 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 	}
 
 	
-//
+
 	public function fetchmeetingsAction() {
 		$this->_helper->layout->disableLayout();
 		$path = $this->view->baseUrl();
@@ -206,10 +214,6 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 		}
 	}
 
-	function viewtransactionAction() {
-		
-	}
-
 	function reportdisplayAction() {
 		$this->_helper->layout->disableLayout();
 		$file1 = $this->_request->getParam('file');
@@ -220,9 +224,4 @@ class Attendancereport_IndexController extends Zend_Controller_Action
 
                 $this->view->filename = "/".$projname."/reports/".$file1;
 	}
-
-	function reportviewAction() {
 	}
-
-	
-}

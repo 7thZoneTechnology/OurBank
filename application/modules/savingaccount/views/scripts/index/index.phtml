@@ -23,12 +23,13 @@
 			<table class="fieldsets">
                             <TR>
                                 <TD><label for="fld3">Member code / Name / Group Name</label></TD>
-                                <TD><?php echo $this->form->membercode;?></TD>
+                                <TD><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <?php echo $this->form->Submit;?>
+                                <input type="Submit" name="Submit" value="Search">
+
                             </div>
                         </div>
 	 </form>
@@ -40,16 +41,16 @@
 	<tr>
 	    <Th>Member Code</Th>
 	    <Th>Name / Group Name</th>
-            <Th>Branch</th>
-	    <Th>Type</Th>
-            <th></th>
+            <Th>Branch</th>&nbsp;
+	    <Th>Individual</Th>
+            <th>Group</th>
 	</tr>
 	<?php foreach($this->result as $member) : ?>
 	<tr>
 		<td><a href="<?php echo $this->baseUrl();?>/savingaccount/index/details/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
 		<td><?php  echo $member->name;?></td>
 		<td><?php  echo $member->officename;?></td>
-		<td>
+		<td >
 		<?php if ($member->type==1) { 
 		 echo $member->membertype; 
 		} else {
@@ -65,5 +66,8 @@
 		</td>
 	</tr>
 	<?php endforeach; ?>
+
 	</table>
-<?php }?>
+<?php } else { 
+        echo "<font color=red>".$this->errormsg."</font>";
+    } ?>

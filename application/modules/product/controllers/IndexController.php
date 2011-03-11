@@ -52,8 +52,7 @@ class Product_IndexController extends Zend_Controller_Action
 		$searchForm = new Product_Form_Search();
 		$this->view->form = $searchForm;
 		$category_id = $product->getCategoryDetails();
-
-$institution = $this->view->adm->viewRecord("ourbank_category","id","DESC");
+                $institution = $this->view->adm->viewRecord("ourbank_category","id","DESC");
 
 			foreach($institution as $institution) {
 				$searchForm->category_id->addMultiOption($institution['id'],$institution['name']);
@@ -72,7 +71,6 @@ $institution = $this->view->adm->viewRecord("ourbank_category","id","DESC");
 				if ($searchForm->isValid($this->_request->getPost())){
 					$result = $product->SearchProduct($searchForm->getValues());
 					$page = $this->_getParam('page',1);
-                                        
                                         if(!$paginator){
                                             $this->view->errormsg="Record not found.. Try agin...";
                                         }

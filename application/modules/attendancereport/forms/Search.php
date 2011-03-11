@@ -45,7 +45,6 @@ class Attendancereport_Form_Search extends Zend_Form {
 	$field3->setAttrib('class', 'txt_put');
 
 	$field4 = new Zend_Form_Element_Text('field4');
-	$field4->setAttrib('class', 'txt_put');
 
 	$field5 = new Zend_Form_Element_Select('field5');
 	$field5->setAttrib('class', 'txt_put');

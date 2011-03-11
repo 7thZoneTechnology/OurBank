@@ -134,7 +134,7 @@ public function viewAction()
 			$fee = new Fee_Model_Fee;
 			$feedetails = $fee->getFee($id);
 
-			$form->populate($feedetails[0]);
+			$form->populate($feedetails);
 
 			if ($this->_request->isPost() && $this->_request->getPost('Update')) { 
 		            $editfee = $this->view->adm->editRecord("ob_fee",$id);
@@ -165,8 +165,8 @@ public function viewAction()
 		$this->view->mod_id=$modId;
 		$this->view->sub_id=$subId;
 		$individualcommon=new Feecommon_Model_Feecommon;
-		$fee_details=$individualcommon->getfee($id);
-		$this->view->feedetails=$fee_details;
+$userdetails=new User_Model_User();
+		$user_details=$userdetails->getuser($id);		$this->view->feedetails=$user_details;
  		$delform=new Userdetails_Form_Delete();
 		$this->view->delete=$delform;
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')){

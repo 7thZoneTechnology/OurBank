@@ -25,15 +25,12 @@
         <legend>Search</legend>
             <div class="cont-rgt-data">
                 <form action="<?php echo $this->baseUrl();?>/fixedtransaction/index/index" method="POST">
-                    <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                    <table  summary="Employee Pay Sheet">
                         <tr>
-                            <td>Account Number/Membercode</td>
+                            <td><br>Account Number/Membercode:</td>
                             <td><?php echo $this->form->member_id;?></td>
                         </tr>
-                        <tr>
-                            <TD colspan = "2"><?php echo $this->form->Search;?></TD>
-                        </tr>
-                    </table>
+                    </table><?php echo $this->form->Search;?>
                 </form>
             </div>
     </fieldset>
@@ -55,7 +52,7 @@
             </table>
         </div>
 
-<?php }?>
+<? }?>
 
 <?php if ($this->membertype_ID==1 ) { ?>
 

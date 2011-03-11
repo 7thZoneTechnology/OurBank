@@ -32,8 +32,8 @@ class Interestrates_Form_Interestrates extends Zend_Form
 		$fieldname='name';
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
 
-		$interestname = $formfield->field('Text','interestname',$table,$fieldname,'mand','Name',true,'','','','','',1,0);
-		$creditlinename = $formfield->field('Select','creditlinename','','','mand','Creditline',true,'','','','','',1,0);
+		$interestname = $formfield->field('Text','interestname',$table,$fieldname,'mand','Name :',true,'','','','','',1,0);
+		$creditlinename = $formfield->field('Select','creditlinename','','','mand','Creditline :',true,'','','','','',1,0);
 		$status = $formfield->field('Checkbox','status','','','mand','Active','','','','','','',1,0);
 		$this->addElements( array($interestname,$creditlinename,$status));
 	}

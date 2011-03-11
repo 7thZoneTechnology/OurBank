@@ -1,3 +1,23 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<!-- script for google bar chart -->
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load('visualization', '1', {packages: ['corechart']});
@@ -42,9 +62,9 @@
       google.setOnLoadCallback(drawVisualization);
     </script>
     <div id="visualization" style="width: 600px; height: 400px;"></div>
-   
+   <!-- summary of the report -->
           <table id="hor-minimalist-b">
-                <tr><td id="reportth">Age Limits</td><td align="center" id="reportth">Total Members(numbers)</td></tr>
+                <tr><td id="reportth"><?php echo $this->translate("Age Limits"); ?></td><td align="center" id="reportth"><?php echo $this->translate("Total Members(numbers)"); ?></td></tr>
                 <tr><td>Age between <?php echo $this->from1; ?> - <?php echo $this->to1; ?></td>
                         <?php if(($this->age_ratio1)!=NULL) { ?>
 				<td align="center"><?php echo $this->age_ratio1[0]['membercount']; ?></td>

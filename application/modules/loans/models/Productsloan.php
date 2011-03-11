@@ -38,6 +38,7 @@ $this->db = Zend_Db_Table::getDefaultAdapter();
                       'graceperiodnumber' => $post['graceperiodnumber'], 
                       'fund_id' => '',
                       'glsubcode' => '');
-        $this->db->update($table,$data,$where);
+
+       $this->db->update($table,$data,$where);
     }
 }

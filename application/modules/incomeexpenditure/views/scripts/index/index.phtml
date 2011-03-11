@@ -41,16 +41,13 @@ if((!$this->income) && (!$this->expenditure)){ ?>
 <div id="searchDiv">
     <fieldset>
         <legend><?php echo $this->translate('Search'); ?></legend>
-            <div class="search">
-                <TABLE id="hor-minimalist-b">
+            <div class="search" style="margin-left:50px;">
+                <TABLE >
                    <tr>
-                            <TD><?php echo $this->translate('As of date'); ?></td>
+                            <TD><?php echo $this->translate('As of date:'); ?></td>
                             <td><?php echo $this->form->datefrom;?></td>
-                   
-                            <td><input type="submit" name="Search" value="Search"/></td>
-                           
                    </tr>
-        	</TABLE>
+        	</TABLE><input type="submit" name="Search" value="Search">
 	   </div>
  	</fieldset> 
 </div>

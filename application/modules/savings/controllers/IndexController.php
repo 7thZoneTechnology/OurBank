@@ -502,7 +502,7 @@ class Savings_IndexController extends Zend_Controller_Action{
             $interestrecord = $offerproduct->getRecord($offerproductid); //get interest details
                 foreach($interestrecord as $intrecord){
                     $interestdata = (array('record_id' => '',
-                                    'period_id' => $intrecord['id'],
+                                    'record_id' => $intrecord['id'],
                                     'period_ofrange_monthfrom'=> $intrecord['period_ofrange_monthfrom'],
                                     'period_ofrange_monthto'=> $intrecord['period_ofrange_monthto'],                 'period_ofrange_description' => $intrecord['period_ofrange_description'],      'offerproduct_id' => $intrecord['offerproduct_id'],
                                     'Interest' => $intrecord['Interest'],                                                'intereststatus_id'=>3));

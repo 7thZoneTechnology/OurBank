@@ -30,7 +30,8 @@
 <th></th>
 </tr>
 <?php }}  ?>
-        <?php foreach($this->holidaydetails as $holiday) {  ?>
+        <?php  $convertdate = new App_Model_dateConvertor();
+        foreach($this->holidaydetails as $holiday) {  ?>
                 <TR>
                     <TD>Holiday Name</TD>
                     <TD><?php echo $holiday['name'];?></TD>
@@ -48,22 +49,20 @@
                 </TR>
  <TR>
                     <TD>Holiday from</TD>
-                    <TD><?php echo $holiday['holiday_from'];?></TD>
+                    <td><?php echo $convertdate->phpnormalformat($holiday['holiday_from']);?></div></td>
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
  <TR>
                     <TD>Holiday upto</TD>
-                    <TD><?php echo $holiday['holiday_upto'];?></TD>
-                    <TD></TD>
+                    <td><?php echo $convertdate->phpnormalformat($holiday['holiday_upto']);?></div></td>
                     <TD></TD>
                     <TD></TD>
                 </TR>
 <TR>
                     <TD>Repayment date</TD>
-                    <TD><?php echo $holiday['repayment_date'];?></TD>
-                    <TD></TD>
+                    <td><?php echo $convertdate->phpnormalformat($holiday['repayment_date']);?></div></td>
                     <TD></TD>
                     <TD></TD>
                 </TR>

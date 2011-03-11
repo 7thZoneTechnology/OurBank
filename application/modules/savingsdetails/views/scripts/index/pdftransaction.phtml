@@ -48,13 +48,13 @@ echo $txt;
 		$folio += $txt;
 		?> %</td>
         <?php endforeach; ?>
-	</tr><tr><td><b>Total</b></td><td><?php echo $acc; ?></td><td>R$ <?php echo $Lamt; ?></td><td><?php echo $folio; ?> %</td>
+	</tr><tr><td><b>Total</b></td><td><?php echo $acc; ?></td><td>R$ <? echo $Lamt; ?></td><td><? echo $folio; ?> %</td>
         <?php   }?>
 
    
 </tr>
 </table>
-<form action="<?php echo $this->baseUrl();?>/loanslist/index/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/loanslist/index/reportdisplay/file/loanslist.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+<form action="<?php echo $this->baseUrl();?>/savingsdetails/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/savingsdetails/index/reportdisplay/file/savingsdetails.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
                  <input type="submit" value="PDF" id="submit">
 </form>

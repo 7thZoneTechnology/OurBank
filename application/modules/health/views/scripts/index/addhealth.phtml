@@ -1,0 +1,77 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<form action="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>" method="POST">
+<div style="width:750px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+
+<?php 
+$hlen = count($this->habitdetails);
+$clen = count($this->challengedetails);
+$actlen = $hlen > $clen ? $hlen : $clen;
+$actlen = $actlen*2+1;
+$names = array();
+$nameid = array();
+foreach($this->membername as $name){
+ $nameid[] = $name['memberid'];
+ $names[] = $name['membername'];
+}
+ ?>
+
+<?php for($i=0;$i<$this->membercount;$i++) { ?>
+<br>
+<table id="hor-minimalist-b" border="1">
+<tr>
+<th  align="left" colspan="<?php echo $actlen; ?>">
+   <?php echo $names[$i]; ?>
+</th>
+</tr>
+<tr>
+    <td>Habits</td>
+    <?php foreach($this->habitdetails as $habits){ ?>
+    <td colspan="2">
+    <input type="checkbox" name="habit[]" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+    <?php echo $habits['name']; ?>
+    </td>
+
+   <?php } ?>
+</tr>
+<tr>
+    <td>Physical challenge</td>
+    <?php foreach($this->challengedetails as $challenge){ ?>
+    <td colspan="2"><input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+    <?php echo $challenge['name']; ?>
+    </td>
+   <?php } 
+?>
+</tr>
+</table>
+<?php
+}
+?>
+</div>
+<table>
+<input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
+<input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
+
+<tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+</tr>
+</table>
+
+</form>

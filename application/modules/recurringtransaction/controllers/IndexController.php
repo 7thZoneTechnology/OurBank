@@ -39,13 +39,10 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         if(!$data){
                 $this->_redirect('index/login');
         }
-
         $Recurringdepositsavings = new Recurringtransaction_Form_Membersearch();
         $this->view->form = $Recurringdepositsavings;
         $recurringSavings = new Recurringtransaction_Model_recurringSavings();
-
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-
             $formData = $this->_request->getPost();
             $membercode = $this->_request->getParam('member_id');
             if ($Recurringdepositsavings->isValid($formData)) {
@@ -54,7 +51,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $accountcode=$membercode;
                     $arrayrecurringAccountSearch = $recurringSavings->recurringSearch($accountcode);
                     if (!$arrayrecurringAccountSearch) {
-                            echo "No records found";
+                            echo '<font color="red">Record not found..Try again..</font>';
                     } else {
                         $this->view->recurringAccountsSearch = $arrayrecurringAccountSearch;
                         foreach($arrayrecurringAccountSearch as $arrayrecurringAccountSearch1) {
@@ -63,8 +60,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                         }
                         $this->_redirect('recurringtransaction/index/recurring/accountId/'.base64_encode($this->view->account_id).'/productId/'.base64_encode($this->view->product_id));
                     }
-                }
-                 else {
+                } else {
                     $this->view->recurringAccountsSearch = $arrayrecurringAccountSearch;
                     foreach($arrayrecurringAccountSearch as $arrayrecurringAccountSearch1) {
                         $this->view->membername = $arrayrecurringAccountSearch1['membername'];
@@ -82,7 +78,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                         $this->view->groupname=$groupNamesSearchFetch1['groupname'];
                         $this->view->group_id=$groupNamesSearchFetch1['group_id'];
                     }
-                   $membernameFetch = $recurringSavings->individualMemberName($memberId);
+                    $membernameFetch = $recurringSavings->individualMemberName($memberId);
                     $accountIDFetch = $recurringSavings->accountIDSearch($memberId);
                     $this->view->accountIDFetch = $accountIDFetch;
                     foreach($membernameFetch as $membernameFetch1) {
@@ -108,10 +104,10 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
         $accountId = base64_decode($this->_request->getParam('accountId'));
         $productId = base64_decode($this->_request->getParam('productId'));
-//         $matured = base64_decode($this->_request->getParam('matured'));
-//         $capital = base64_decode($this->_request->getParam('capital'));
-//         $this->view->manualRepayment= $this->_request->getParam('manualRepayment');
-//         $date = new Zend_Date();
+        $matured = base64_decode($this->_request->getParam('matured'));
+        $capital = base64_decode($this->_request->getParam('capital'));
+        $this->view->manualRepayment= $this->_request->getParam('manualRepayment');
+        $date = new Zend_Date();
         $this->view->accountid=$accountId;
         $this->view->productid=$productId;
 
@@ -125,6 +121,11 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
             $InstalmentNumber=$this->view->rec_payment_id=$installmentsDetailsFetch1['rec_payment_id'];
             $amountTopay=$installmentsDetailsFetch1['rec_payment_amount'];
             $status=$installmentsDetailsFetch1['rec_payment_status'];
+        }
+
+        $IndividualnameFetch = $recurringDetails->fetchMemberName($accountId);
+        foreach($IndividualnameFetch as $IndividualnameFetch1) {
+                $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
         }
 
         $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
@@ -246,21 +247,20 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         }
         $this->view->paidAmount=$paidAmount;
 
-                $systemDate= $date->get(Zend_Date::DATES); /*system date*/
-                $currentdate=$date->toString('YYYY-MM-dd');
-                $this->view->currentDate=$currentdate;
-                $this->view->maturedate=$matureDate;
-                $RateperMonth=$fixedInterest/12;
-                $this->view->installmentNumber=$InstalmentNumber;
-                $simpleInterest=((($amountTopay*$InstalmentNumber)*$InstalmentNumber*$RateperMonth)/100);
-                $capitalAmount=($amountTopay*$InstalmentNumber);
-                $this->view->capitalAmount=$capitalAmount;	
-                $simpleInterest=round($simpleInterest,2);
-                $this->view->simpleInterest=$simpleInterest;
+        $systemDate= $date->get(Zend_Date::DATES); /*system date*/
+        $currentdate=$date->toString('YYYY-MM-dd');
+        $this->view->currentDate=$currentdate;
+        $this->view->maturedate=$matureDate;
+        $RateperMonth=$fixedInterest/12;
+        $this->view->installmentNumber=$InstalmentNumber;
+        $simpleInterest=((($amountTopay*$InstalmentNumber)*$InstalmentNumber*$RateperMonth)/100);
+        $capitalAmount=($amountTopay*$InstalmentNumber);
+        $this->view->capitalAmount=$capitalAmount;	
+        $simpleInterest=round($simpleInterest,2);
+        $this->view->simpleInterest=$simpleInterest;
 
-
-                $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
-                $this->view->matureAmount=$matureAmount;
+        $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
+        $this->view->matureAmount=$matureAmount;
 // 
 //                 $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
 //                 $this->view->groupNamesSearch = $groupNamesSearchFetch;
@@ -1538,7 +1538,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
 
                 $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_from'=> '',
+                                                    'glsubcode_id_<fieldset>from'=> '',
                                                     'glsubcode_id_to'=>  $bankglsubcode,
                                                     'tranasction_id'=> $transaction_id1,
                                                     'credit'=>'',

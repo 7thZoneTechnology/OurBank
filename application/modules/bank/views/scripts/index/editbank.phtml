@@ -19,9 +19,10 @@
 
 <form name="editform" action="<?php echo $this->baseUrl();?>/bank/index/editbank" method="POST">
 	<fieldset>
-    	<legend><?php echo $this->translate("Edit bank"); ?><a href="<?php echo $this->baseUrl();?>/bank/index/deletebank/id/<?php echo $this->id;?>">
-                        <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20" align="right"></a></legend> 
-        <table class="fieldsets"> 
+    <table class="fieldsets" id="hor-minimalist-b"> 
+        <tr><Th colspan="2"><?php echo $this->translate("Edit bank"); ?><a href="<?php echo $this->baseUrl();?>/bank/index/deletebank/id/<?php echo $this->id;?>">
+                        <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20" align="right"></a></Th></tr>
+    	
             <?php echo $this->form;?>
         </table>
         <div class="btnhouse">

@@ -19,15 +19,15 @@
 
 <form name="form1" action="<?php echo $this->baseUrl();?>/fundings/index/editfundings" method="POST">
 <fieldset>
-    <legend>Edit fundings<a href="<?php echo $this->baseUrl();?>/fundings/index/deletefundings/id/<?php echo $this->id;?>">
-                        <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20" align="right"></a></legend> 
-        <table class="fieldsets"> 
+<img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20" align="right"></a></Th></tr>
+<table class="fieldsets" id="hor-minimalist-b"> 
+    <tr><Th colspan="2">Edit fundings<a href="<?php echo $this->baseUrl();?>/fundings/index/deletefundings/id/<?php echo $this->id;?>">
+                        
              <?php echo $this->form;?>
         </table>
         <div class="btnhouse">
 	   <div class="ltbtns">
-		<?php echo $this->submitform->Submit;?>
-	   </div>
+		<input type="submit" name="Update" id="Submit" value="Update"> 	   </div>
 	   <div class="rtbtns">
 		<a href="<?php echo $this->baseUrl();?>/fundings"><input type = "button" name = "Back" value = "Back"></a>
 	   </div>

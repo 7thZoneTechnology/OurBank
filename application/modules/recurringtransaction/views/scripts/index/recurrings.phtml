@@ -16,6 +16,16 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
+
+<!-- enable the date picker -->
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#recurringDate").datepicker({"dateFormat":"dd/mm/yy"});
+});
+</script>
 
 <BODY onload="toggleField();"></BODY> 
 <div>
@@ -26,12 +36,12 @@
                 <TD width="20%">Name</TD>
                 <TD width="20"><?php echo $this->groupname;?></TD>
             </TR>
-            <?php } ?>
+            <? } ?>
             <?php if ($this->memberfirstname ) { ?>
             <TR class="tdbrown">
                 <TD width="20%">Name</TD>
                 <TD width="20"><?php echo $this->memberfirstname;?></TD>
-            <?php } ?>
+            <? } ?>
             <?php foreach($this->recurringAccountDetails as $productRecurringDetails) { ?>
             <TR>
                 <td width="40%"><b class="star">Producttype:</b></td>
@@ -76,9 +86,9 @@
 <div class="box">
 <div id="content1">
     <fieldset>
-        <legend>Members in account</legend>
+        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+        <tr><Th colspan="2">Members in account</Th></tr>
         <div class="cont-rgt-data">
-            <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                 <tr class="tdbrownheading">
                     <td width="30%">Name</td>
                     <td width="50%">code</td>
@@ -111,7 +121,7 @@
             <TR>
                 <td colspan="2"><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/newaccount/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>">Account renewal</a></TD>
             </TR>
-            <?php } ?>
+            <? } ?>
             <tr>
                 <td colspan="2"><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/status/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>">Account status</a></TD>
             </TR>
@@ -139,12 +149,12 @@
 
 <div style="float:left;width:770px">
     <fieldset>
-    <legend>Deposit</legend>
+    <table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
+    <tr><Th colspan="2">Deposit</Th></tr>
         <div class="cont-rgt-data">
             <form name="form1" action="<?php echo $this->baseUrl();?>/recurringtransaction/index/deposit/manualRepayment/<?php echo $this->manualRepayment;?>" method="POST" >
-                <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                     <TR class="tdbrown">
-                        <TD width="40%">Date<span class="reqMark">(yyyy-mm-dd)*</span></TD>
+                        <TD width="40%"><label class="mand">Date(yyyy-mm-dd)</label></TD>
                         <TD width="60%"><?php echo $this->recurringForm->accountId;?><?php echo $this->recurringForm->productId;?><?php echo $this->recurringForm->recurringDate;?></TD>
                     </TR>
                 </table>
@@ -171,13 +181,13 @@
                         </TD>
                     </tr>
                         <?php }	?>
-                    <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                    <table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
                         <TR class="tdbrown">
-                            <TD width="40%">Amount<span class="reqMark">*</span></TD>
+                            <TD width="40%"><label class="mand">Amount</label></TD>
                             <TD width="60%"><?php echo $this->recurringForm->amount;?></TD>
                         </TR>
                         <TR class="tdbrown1">
-                            <td width="20%">Transaction mode<span class="reqMark">*</span></td>
+                            <td width="20%"><label class="mand">Transaction mode</label></td>
                             <TD><?php echo $this->recurringForm->transactionMode; ?>
                             <?php echo $this->recurringForm->paymenttype_details;?>
                             <h id="details" style="display:none">voucher/cheque/draft number</h></td>
@@ -189,7 +199,7 @@
                                                 </tr>-->
                     <?php if($this->recurringForm->fine) { ?>
                     <tr class="tdbrown1">
-                        <D width="20%">Fine R$</td>
+                        <D width="20%">Fine Rs</td>
                         <TD><?php echo $this->recurringForm->fine; ?></TD>
                     </TR>
                     <?php } ?>
@@ -198,15 +208,14 @@
                 <tr>
                     <td></td>
                     <td ></td>
-                    <td><span class="reqMark">* Marked fields are mandatory</span></td>
-                </tr>
+                    <td><font color="green"><b>*</b></font>Marked fields are mandatory</td>
+                </tr> </table>
                 <TR>
                     <TD><?php echo $this->recurringForm->Confirm;?></TD>
                     <td><a href="<?php echo $this->baseUrl();?>">
                     <input name="submit" type="submit"  value="back" tabindex="25"></a></td>
                 </TR>
-                </table>
-            </form>
+               </form>
         </div>
     </fieldset>
 </div>

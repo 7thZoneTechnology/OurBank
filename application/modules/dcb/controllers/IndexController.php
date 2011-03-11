@@ -42,6 +42,8 @@ class Dcb_IndexController extends Zend_Controller_Action
 		$this->view->form = $searchForm;
 	
 		if ($this->_request->isPost() && $this->_request->getPost('Search')){
+                    $formData = $this->_request->getPost();
+                if ($searchForm->isValid($formData)) {
 			$fromDate = $this->_request->getParam('datefrom');
 			$toDate = $this->_request->getParam('dateto');
 			if($fromDate && $toDate) { $this->view->savings = "10"; 
@@ -60,6 +62,7 @@ class Dcb_IndexController extends Zend_Controller_Action
 				$this->view->fromdate = $dayArray[0];
 				$this->view->todate = $dayArray[1];
 			}
+                   }
 		}
 	}
 	
@@ -263,6 +266,6 @@ class Dcb_IndexController extends Zend_Controller_Action
 		$pdf->save('/var/www/'.$projname.'/reports/DCB.pdf');
 		$path = '/var/www/'.$projname.'/reports/DCB.pdf';
 	        chmod($path,0777);
-                $this->_redirect('dcb/index');
+                $this->_redirect("/dcb/index/");
 	}
 }

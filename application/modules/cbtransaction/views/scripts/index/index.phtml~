@@ -16,6 +16,25 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
 <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/datepicker.js"></script>
 <script type="text/javascript" src="<?php echo $this->baseUrl();?>/js/datepicker1.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
@@ -35,7 +54,7 @@ $("#field2").datepicker({"dateFormat":"yy/mm/dd"});
 
     <fieldset>
         <legend>Search</legend>
-                <TABLE id="hor-minimalist-b">
+                <TABLE width="100%">
 
                    <tr>
                             <td>From date</td>
@@ -81,7 +100,7 @@ $("#field2").datepicker({"dateFormat":"yy/mm/dd"});
 					<td><?php echo $bankdetails['account_number']; ?></td>
 					<td><?php echo $bankdetails['transaction_date']; ?></td>
 					<td><?php echo $bankdetails['activityname']; ?></td>
-					<td><?php echo $bankdetails['Institute_bank_name']; ?></td>
+					<td><?php echo $bankdetails['bankname']; ?></td>
 					<td align="right"><?php echo $bankdetails['amount_to_bank']; ?></td>
 					<td align="right"><?php echo $bankdetails['amount_from_bank']; ?></td>
 				</tr>

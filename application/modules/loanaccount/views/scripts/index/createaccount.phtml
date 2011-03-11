@@ -73,6 +73,7 @@ function displayRow(type) {
 
 }
 </script>
+<div>
 <?php 
 if ($this->account) {
 foreach ($this->account as $account) {
@@ -85,7 +86,7 @@ foreach ($this->account as $account) {
         </TR>
         <TR>
             <td>Member code:</td>
-            <TD><?php echo $account->code; ?></TD>
+            <TD><? echo $account->code; ?></TD>
         </TR>
         <TR>
             <td>Name:</td>
@@ -141,49 +142,49 @@ foreach ($this->account as $account) {
             <form name="addform" action="<?php echo $this->baseUrl();?>/loanaccount/index/createaccount" method="POST">
             <table class="fieldsets">
                     <TR>
-                        <TD><label for="fld1" class="mand">Date of account</TD>
+                        <TD><label for="fld1" class="mand">Date of account</label></TD>
                         <TD><?php echo $this->loanForm->date;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Disbursement amount</TD>
+                        <TD><label for="fld1" class="mand">Disbursement amount</label></TD>
                         <TD><?php echo $this->loanForm->amount;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Installments (Months)</TD>
+                        <TD><label for="fld1" class="mand">Installments (Months)</label></TD>
                         <TD><?php echo $this->loanForm->installments;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Interest rate</TD>
+                        <TD><label for="fld1" class="mand">Interest rate</label></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->interest;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Interest type</TD>
+                        <TD><label for="fld1" class="mand">Interest type</label></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->interesttype_id;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Transfer amount to</TD>
+                        <TD><label for="fld1" class="mand">Transfer amount to</label></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->savingAccount;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Fundings</TD>
+                        <TD><label for="fld1" class="mand">Fundings</label></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->fundings;?></div></TD>
                     </TR>
                     <TR id = "funder" style="display:none">
-                        <TD><label for="fld1" class="mand">Funder</TD>
+                        <TD><label for="fld1" class="mand">Funder</label></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->funders;?></div></TD>
                     </TR>
 					<?php if ($this->loanForm->group) { ?>
                     <TR>
-                        <TD><label for="fld1" class="mand">Group Member</TD>
+                        <TD><label for="fld1" class="mand">Group Member</label></TD>
                         <td><?php echo $this->loanForm->group; ?></td>
                     </TR>
 					<?php } ?>
-                    <TR>
-                        <TD><?php echo $this->loanForm->Submit; ?></TD>
-                        <td><?php echo $this->loanForm->Back; ?></td>
-                    </TR>
                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
                 </table>
+                            <?php echo $this->loanForm->Submit; ?></TD>
+                           <a href="<?php echo $this->baseUrl(); ?>/loanaccount"><input type="button" name="back" value="<?php echo $this->translate("Back");?>"></a>
                 <?php echo $this->loanForm->Id; ?> <?php echo $this->loanForm->code; ?> 
             </form>
+</fieldset>
+</div>
 </div>

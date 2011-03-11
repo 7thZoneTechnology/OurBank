@@ -29,7 +29,7 @@ foreach ($this->account as $account) {
         </TR>
         <TR>
             <td>Member code:</td>
-            <TD><?php echo $account->code; ?></TD>
+            <TD><? echo $account->code; ?></TD>
         </TR>
         <TR>
             <td>Name:</td>
@@ -75,11 +75,12 @@ foreach ($this->account as $account) {
     </table>
 <?php } } ?>
 </div>
-<div style="float:left;width:350px"> 
+
+</div>
     <fieldset>
-        <legend>New Savings</legend>
-            <form name="form1" action="<?php echo $this->baseUrl();?>/savingaccount/index/createaccount" method="POST">
-            <table class="fieldsets">
+     <legend>New Savings</legend>
+        <form name="form1" action="<?php echo $this->baseUrl();?>/savingaccount/index/createaccount" method="POST">
+            <table class="fieldsets" >
                     <TR>
                         <TD><label for="fld1" class="mand">Date of account</TD>
                         <TD><?php echo $this->savingsForm->date;?></TD>
@@ -94,13 +95,12 @@ foreach ($this->account as $account) {
                         <td><?php echo $this->savingsForm->group; ?></td>
                     </TR>
 					<?php } ?>
-                    <TR>
-                        <TD><?php echo $this->savingsForm->Submit; ?></TD>
-                        <td><?php echo $this->savingsForm->Back; ?></td>
-                    </TR>
 
                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
                 </table>
+                        <TD><?php echo $this->savingsForm->Submit; ?></TD>
+                        <td><?php echo $this->savingsForm->Back; ?></td>
                 <?php echo $this->savingsForm->Id; ?> <?php echo $this->savingsForm->code; ?> 
             </form>
-</div>
+        </fieldset>
+      </div>

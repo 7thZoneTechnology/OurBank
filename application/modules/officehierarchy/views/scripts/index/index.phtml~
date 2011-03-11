@@ -163,7 +163,7 @@ function officehierarchy() {
     <div class="cont-rgt-data">
         <form action="<?php  echo $this->baseUrl();?>/officehierarchy?=<?php  echo $this->cat;?>" method="POST">
             <table id="hor-minima be less then '+(current+1)+' and more then 0')list-b" summary="Employee Pay Sheet">
-                <tr class="tdbrownheading">
+                <tr class="tdbrownheading" class="fieldsets">
                     <th width="33%"><?php echo $this->translate('Officelevel'); ?></th>
                     <th width="33%"><?php echo $this->translate('OfficeType'); ?></th>
                     <th width="33%"><?php echo $this->translate('officeTypeCode'); ?></th>
@@ -238,7 +238,7 @@ function officehierarchy() {
 
         <table>
             <TR class="tdbrown">
-                <td width="33%"><label for="Office_Level'+current+'"><?php echo $this->translate('afterWhichLevel'); ?></label>
+                <td width="33%"><label for="Office_Level'+current+'"><?php echo $this->translate('After WhichLevel'); ?></label>
                 &nbsp;&nbsp;<?php echo $this->form1->officeLevel;  ?><span class="reqMark">*</span></td>
                 <TD width="33%"><input type="text" id="officeType<?php echo $this->noOfficeLevel+1;?>" 
                                         name="officeType<?php echo $this->noOfficeLevel+1;  ?>" size="15" class="txt_put" />

@@ -5,9 +5,9 @@
 <?php foreach($this->loan as $loan) {  ?>
     <TABLE id="hor-minimalist-b">
         <tr>
-        <th></th>        <th></th>
+        <th><b>Loan Details</b></th><th></th>
         <th></th>
-        <TH align="right"><a href="<?php echo $this->baseUrl();?>/loans/index/loansedit/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></TH>
+        <TH><a href="<?php echo $this->baseUrl();?>/loans/index/loansedit/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0  align="right" width="20" height="20"></a></TH>
         </tr>
         <TR>
             <TH>Product Details</TH>
@@ -24,7 +24,7 @@
         <TR>
             <TD>Product Name</TD>
             <TD><?php echo $loan['productname'];?></TD>
-            <TD>Product ShortName</TD>
+            <TD>ShortName</TD>
             <TD><?php echo $loan['productshortname'];?></TD>
         </TR>
         <TR>
@@ -91,7 +91,7 @@
             <TD>Penal fee</TD>
             <TD><?php echo $loan['penal_Interest'];?></TD>
             <TD>Interest type</TD>
-            <TD></TD>
+            <TD><?php echo $loan['description'];?></TD>
         </TR>
         <TR>
             <TH>Grace Period</TD>

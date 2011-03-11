@@ -40,21 +40,21 @@ class Transferscroll_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
 	$dateconvertor = new App_Model_dateConvertor();
-
+        if ($searchForm->isValid($formData)) { 
 	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
 	$Date = $dateconvertor->mysqlformat($fromDate);
 	
             $formData = $this->_request->getPost();
                 $this->view->savings = 10;
                 $this->view->pageTitle = "Transfer scroll";
-
                 $dbobj = new Transferscroll_Model_Transferscroll();
+
                 //Saving Account Credit and Debit
                 $this->view->savingsCredit = $dbobj->totalSavingsCredit($fromDate);
                 $this->view->savingsDebit = $dbobj->totalSavingsDebit($fromDate);
- 
-              $this->view->field1 = $this->_request->getParam('datefrom');
-         }
+                $this->view->field1 = $this->_request->getParam('datefrom');
+
+         } }
     }
 
 	//pdf view action
@@ -177,7 +177,7 @@ class Transferscroll_IndexController extends Zend_Controller_Action
         $pdf->save('/var/www/'.$projname.'/reports/transferscroll.pdf');
 	$path = '/var/www/'.$projname.'/reports/transferscroll.pdf';
     
-        chmod($path,0777);
+//         chmod($path,0777);
 
     }
 }

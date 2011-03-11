@@ -133,14 +133,12 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/transferscroll/index/repor
 <div id="searchDiv">
 <fieldset>
     <legend><?php echo $this->translate('Search'); ?> </legend>
-               <table id="hor-minimalist-b">
+               <table id="searchDiv">
                 <form action="<?php echo $this->baseUrl();?>/transferscroll/index" method="POST">
                     <TR>
-                            <TD ><?php echo $this->translate('Date'); ?></TD>
-                            <TD ><?php echo $this->form->datefrom;?></TD>
-                            
-                            
-                            <div class="btnhouse">
+                            <TD ><br><?php echo $this->translate('As of date:'); ?></TD>
+                            <TD ><?php echo $this->form->datefrom;?></TD></tr>
+                          <tr>  <div class="btnhouse">
 				<div class="ltbtns">
 					<TD  ><?php echo $this->form->Search;?></TD>
 				</div>
@@ -151,6 +149,6 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/transferscroll/index/repor
       
 </fieldset>
 </div>
-<?php } ?>
+<?php } 
 
 

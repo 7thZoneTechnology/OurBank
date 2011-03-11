@@ -1,9 +1,33 @@
 <?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
+?>
+
+<?php
+/*
+ *  create an activity controller to view, chart action and pdf action
+ */
 class Activityreport_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = "Gender and age wise number of accounts"$this->view->translate("Activity wise outstanding");
+        $this->view->pageTitle = $this->view->translate("Gender and Age wise number of accounts");
 	$this->view->type = "others";
 	 $sessionName = new Zend_Session_Namespace('ourbank');
         $userid=$this->view->createdby = $sessionName->primaryuserid;
@@ -14,24 +38,25 @@ class Activityreport_IndexController extends Zend_Controller_Action
           $this->view->username=$loginname['username'];
         }
     }
-
+	//view action
     public function indexAction()
     {
         $activityform=new Activityreport_Form_activityreport();
         $this->view->form=$activityform;
         $activity_ratio=new Activityreport_Model_activityreport();
         $activity_name=$activity_ratio->getActivity();
+	//load activity name dropdown
         foreach($activity_name as $activity_name1)
         {
-            $activityform->activity->addMultiOption($activity_name1['activity_id'],$activity_name1['activity_name']);
+            $activityform->activity->addMultiOption($activity_name1['id'],$activity_name1['name']);
         }
 	
 	$gender= $activity_ratio->getGender();
-			
+	//load gender dropdown
 	foreach($gender as $gender1) { 
-		$activityform->gender->addMultiOption($gender1['gender_id'],$gender1['sex']);
+		$activityform->gender->addMultiOption($gender1['id'],$gender1['sex']);
 	}
-
+	   //filter details
 	   if ($this->_request->isPost() && $this->_request->getPost('Search')) 
 	{   $formData = $this->_request->getPost();
 	    if($activityform->isValid($formData))
@@ -41,13 +66,13 @@ class Activityreport_IndexController extends Zend_Controller_Action
 		$this->view->gendername=$gender=$this->_request->getParam('gender');
 		$activityname=$activity_ratio->getactivityname($activityid);
 		foreach($activityname as $result){
-		$this->view->activity=$result['activity_name'];
+		$this->view->activity=$result['name'];
 		}
 		$gendername=$activity_ratio->getGendername($gender);
 		foreach($gendername as $gendername){
 		$this->view->gender=$gendername['sex'];
 		}
-		
+		//age limit 
 		$this->view->from1=$from_age=16;
 		$this->view->to1=$to_age=25;
 		$activity_result1=$activity_ratio->getactivity_between($from_age,$to_age,$activityid,$gender);
@@ -78,13 +103,14 @@ class Activityreport_IndexController extends Zend_Controller_Action
 	   }
     	}
 	}
-
+	//chart action
 	public function chartAction()
 	{
-		$this->view->pageTitle = "Gender and age wise number of accounts chart"$this->view->translate("Activity wise outstanding");
+		$this->view->pageTitle = $this->view->translate("Gender and age wise number of accounts chart");
 		$activityid = $this->_request->getParam('act_id');
         	$this->view->genderid=$gender= $this->_request->getParam('gen_id');
 		$activity_ratio=new Activityreport_Model_activityreport();
+		//age limit
 		$this->view->from1=$from_age=16;
 		$this->view->to1=$to_age=25;
 		$activity_result1=$activity_ratio->getactivity_between($from_age,$to_age,$activityid,$gender);
@@ -112,7 +138,7 @@ class Activityreport_IndexController extends Zend_Controller_Action
 		foreach($activity_result5 as $age5){}
 		$this->view->age5=$age5['accountcount'];
 	}
-
+	//pdf report display action
 	function reportdisplayAction() {
 		$app = $this->view->baseUrl();
 		$word=explode('/',$app);
@@ -120,11 +146,13 @@ class Activityreport_IndexController extends Zend_Controller_Action
 		for($i=0; $i<count($word); $i++){
 			if($i>0 && $i<(count($word)-1)) { $projname.='/'.$word[$i]; }
 		}
+		//disable layout
 		$this->_helper->layout->disableLayout();
 		$file1 = $this->_request->getParam('file'); 
 		$this->view->filename = $projname."/reports/".$file1;
 	}
 
+	//pdf creation
 	function pdftransactionAction()
 	{	
 		$pdf = new Zend_Pdf();
@@ -147,7 +175,7 @@ class Activityreport_IndexController extends Zend_Controller_Action
 		$page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
 		//set the font
 		$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
-
+		//language set
  		$text=array($this->view->translate("Gender and age wise number of accounts"),$this->view->translate("Age Limits"),$this->view->translate("Number of Account"));
 		$x1 = 80; 
 		$x2=150;
@@ -210,9 +238,11 @@ class Activityreport_IndexController extends Zend_Controller_Action
 		$y1 -= 15;
 		$page->drawLine(50, $y1, 550, $y1);
 		$pdfData = $pdf->render();	
+		//save path
 		$pdf->save('/var/www/'.$projname.'/reports/activity.pdf');
 		$path = '/var/www/'.$projname.'/reports/activity.pdf';
 		chmod($path,0777);
-		$this->_redirect('/activityreport/index/reportdisplay/file/activity.pdf');	
+		//redirect path
+		$this->_redirect('/activityreport/index/');	
 	}
 }

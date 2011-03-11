@@ -1,3 +1,22 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/membershipgroup.js"></script>
 <div id = "searchDiv">
     <fieldset>
@@ -5,7 +24,7 @@
         <form action="<?php echo $this->baseUrl();?>/groupdefault/index/groupaccount" method="POST" onsubmit="return valid()">
             <table class="fieldsets"> 
                 <TR>
-                    <TD><label for="fld1" class="mand">Branch name:</td>
+                    <TD><label for="fld1" class="mand">Bank name</td>
                     <TD><?php echo $this->form->office;?></TD>
                 </TR>	
                 <TR>		
@@ -14,11 +33,11 @@
                 <TR>
                     <TD ><?php echo $this->form->Created_Date;?></TD></TD>
                 </TR>
-        </table><br/>
-        <table class="fieldsets">
-                <TR id="membersdiv">
-                </TR>
-        </table>
+            </table><br/>
+            <table class="fieldsets">
+                    <TR id="membersdiv">
+                    </TR>
+            </table>
             <div class="btnhouse">
                 <div class="ltbtns">
                     <?php echo $this->form->Submit;?>

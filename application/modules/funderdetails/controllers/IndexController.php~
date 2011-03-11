@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,13 +16,18 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-!-->
+*/
+?>
+
 <?php
+/*
+ *  create an action for add, edit, delete
+ */
 class Funderdetails_IndexController extends Zend_Controller_Action 
 {
     public function init() 
     {
-        $this->view->pageTitle='Funder';
+        $this->view->pageTitle=$this->view->translate("Funder");
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
         $this->view->username = $this->view->globalvalue[0]['username'];
@@ -33,7 +39,7 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $this->view->funder = new Fundercommonview_Model_fundercommon ();
 
         $individualcommon=new Individualmcommonview_Model_individualmcommonview();
-        $module=$individualcommon->getmodule('Individualm');
+        $module=$individualcommon->getmodule('Funder');
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
@@ -43,6 +49,7 @@ class Funderdetails_IndexController extends Zend_Controller_Action
     {
     }
 
+        //add Action
     public function addfunderAction()
     {
         //Acl
@@ -50,24 +57,30 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 //         $access = new App_Model_Access();
 //         $checkaccess = $access->accessRights('Funder',$this->view->globalvalue[0]['name'],'addfunderAction');
 //         if (($checkaccess != NULL)) {
-        //add Action
-        $this->view->title = "Funder Details";
+        $this->view->title = $this->view->translate("Funder Details"); 
+
+	//create instance of funder
         $form = new Funderdetails_Form_funderdetails($this->view->id);
         $this->view->form=$form;
+	//load funder type drop down
         $fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");					
         foreach($fundertype as $fundertype1) { 
                 $form->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
         }
+
+	// get poster data
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
             $formData = $this->_request->getPost();
+		//poster data validation
             if($form->isValid($formData))
             {
             $id = $this->view->adm->addRecord("ob_funder",$form->getValues());
             $type = $this->_request->getParam('type');
             $o=str_pad($type,3,"0",STR_PAD_LEFT);
             $u=str_pad($id,5,"0",STR_PAD_LEFT);
-            echo $fundercode=$o.$u;
+            $fundercode=$o.$u;
+		// get funder code
  	    $this->view->adm->updateRecord("ob_funder",$id,array('code'=>$fundercode));
             $this->_redirect('/fundercommonview/index/commonview/id/'.$id);
             }
@@ -77,23 +90,26 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         }*/	
     }
 
+        //edit funder Action
     public function editfunderAction()
     {
 	//Acl
 // 	$access = new App_Model_Access();
 // 	$checkaccess = $access->accessRights('Funder',$this->view->globalvalue[0]['name'],'editfunderAction');
 // 	if (($checkaccess != NULL)) {
-	//edit Action
 
 	$form = new Funderdetails_Form_funderdetails($this->view->id);
 	$this->view->form=$form;
 
-	$fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");	
+	$fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");
+        //load funder type drop down 	
 	foreach($fundertype as $fundertype1) { 
 	$form->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
 	} 
+	// get poster data
 	if ($this->_request->isPost() && $this->_request->getPost('update')) { 
             $formData = $this->_request->getPost();
+	    //validate poster data
             if ($form->isValid($formData)) { 
             $id = intval($this->_request->getParam('id'));
             $previousdata = $this->view->adm->editRecord("ob_funder",$id);
@@ -115,25 +131,29 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 	
     }
 
+        //view funder Action
     public function viewfunderAction() 
     {
     }
 
+        //delete Action
     public function deleteAction()
     {
         //Acl
 //         $access = new App_Model_Access();
 //         $checkaccess = $access->accessRights('Funder',$this->view->globalvalue[0]['name'],'editfunderAction');
 //         if (($checkaccess != NULL)) {
-        //delete Action
+
         $id=$this->_request->getParam('id');
         $this->view->funderid=$id;
+	// create instance of delete
         $delform=new Funderdetails_Form_Delete();
-        $this->view->delete=$delform;
-        if ($this->_request->isPost() && $this->_request->getPost('Submit'))
+        $this->view->delete1=$delform;
+	// search for the search criterias
+        if ($this->_request->isPost() && $this->_request->getPost('Delete'))
         {
             $formdata = $this->_request->getPost();
-            //print_r($formdata);
+		// form data validate
             if($delform->isValid($formdata)) 
             { 
                 $id=$this->_request->getParam('id');
@@ -142,13 +162,16 @@ class Funderdetails_IndexController extends Zend_Controller_Action
                 $redirect = $this->view->adm->deleteAction("ob_funder","funder",$id);
                 $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
                 $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
+$this->_redirect('/funder');
+
                 }
-                $this->_redirect("/".$redirect);
-            }
-        }
-//         }
-//         else {
-//         $this->_redirect('index/index');
+		// if not valid redirct action
+               
+        
+      }
+
+    
 //         }
     }
+}
 }

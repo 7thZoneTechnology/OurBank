@@ -80,10 +80,10 @@ class Fixedaccount_Form_Fixed extends Zend_Form
 
         $Yes = new Zend_Form_Element_Submit('Yes');
 
-        $back = new Zend_Form_Element_Submit('Back');
+        $Back = new Zend_Form_Element_Submit('Back');
 
         $this->addElements(array($submit,$amount,$period,$matureamount,$interest,$tAmount,
                                  $memberfirstname,$fixedfee,$memberId,$membercode,$totalamount,$Type,$date1,$productId,$typeId,$memberTypeIdv,
-                                 $Yes,$back));
+                                 $Yes,$Back));
         }
 }
