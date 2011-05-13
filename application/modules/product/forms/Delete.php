@@ -18,20 +18,16 @@
 ############################################################################
 */
 ?>
-
 <?php
 	class Product_Form_Delete extends Zend_Form {
+            public function __construct(){
+                parent::__construct();
+        // $fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+                $formfield = new App_Form_Field ();
+                $remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,18,1,0);
+                $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
 
-		public function __construct() 
-			{
-				parent::__construct();
-		// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-			$formfield = new App_Form_Field ();
-			$remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,18,1,0);
-        $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
-
-			$this->addElements(array($remarks,$id));
-
-		}
+                $this->addElements(array($remarks,$id));
+            }
 	}	
 

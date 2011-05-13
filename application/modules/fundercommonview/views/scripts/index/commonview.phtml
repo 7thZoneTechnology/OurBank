@@ -43,13 +43,14 @@
         </tr>
         <tr>
             <td class="firsttd"><?php echo $this->translate("Funder type:"); ?></td>
-            <?php if($view['type']==1){ ?><td class="secondtd"><?php echo $this->translate("Individual"); ?></td><?php } if($view['type']==2) { ?>
-            <td class="secondtd"><?php echo $this->translate("Organization"); ?></td> <?php } ?><td class="thirdtd"></td>
+            <td class = "secondtd"><?php echo $view['fundertypename']; ?></td>
+            <td class="thirdtd"></td>
         </tr>
         <tr>
-            <td class="firsttd"><?php echo $this->translate("Acive:"); ?></td>
-            <?php if($view['status']==1){ ?><td class="secondtd"><?php echo $this->translate("Acive"); ?></td><?php } else { ?>
-            <td class="secondtd"><?php echo $this->translate("Deactive"); ?></td> <?php } ?> </td><td class="thirdtd"></td>
+            <td class="firsttd"><?php echo $this->translate("Active:"); ?></td>
+            <?php if($view['status']==1){ ?><td class="secondtd"><?php echo $this->translate("Active"); ?></td><?php } else { ?>
+            <td class="secondtd"><?php echo $this->translate("Deactive"); ?></td> <?php } ?> 
+            </td><td class="thirdtd"></td>
         </tr>
     <?php } ?>
 </table>
@@ -94,11 +95,7 @@
         <td class = "secondtd"><?php echo $address_view['state']; ?></td>
         <td class="thirdtd"></td>
     </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Country:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['country']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
+
     <tr>
         <td class="firsttd"><?php echo $this->translate("Pin code:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['zipcode']; ?></td>

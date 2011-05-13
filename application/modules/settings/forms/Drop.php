@@ -1,18 +1,28 @@
-<?php
-class settings_Form_Drop extends  ZendX_JQuery_Form 
-{
-    public function init() 
-    {
-       
-$name = new Zend_Form_Element_Text('name');
-        $name->setAttrib('class', 'txt_put');
-        $name->addValidators(array(array('NotEmpty')))
-                    ->setRequired(true);
+<?php class Settings_Form_Drop extends Zend_Form {
 
 
+		
+	
 
-       
+	public function init() 
+	{
 
-        $this->addElements(array($name));
+		$vtype=array('Alpha','StringLength');
+		$formfield = new App_Form_Field ();
+
+// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+
+		
+	
+        $name = $formfield->field('Text','name','','','','name',true,'','','','','',1,0);
+      
+
+        
+
+        // Hidden Feilds 
+      
+
+					
+            $this->addElements(array($name));
     }
 }

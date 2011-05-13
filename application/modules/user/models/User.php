@@ -21,67 +21,79 @@
 
 <?php 
 
-class User_Model_User extends Zend_Db_Table { 
- protected $_name = 'ourbank_user';
-// search function
- public function userSearch($post) {
- 		$select = $this->select()
-			->setIntegrityCheck(false)  
- 			->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
-			->where('a.username like "%" ? "%"',$post['name'])
-			->where('b.designation_id like "%" ? "%"',$post['designation'])
-			->where('c.id like "%" ? "%"',$post['bank'])
-			->where('e.id like "%" ? "%"',$post['grant_id'])
-			->join(array('b'=>'ob_designation'),'a.designation = b.designation_id')
- 			->join(array('c'=>'ob_bank'),'a.bank_id = c.id')
- 			->join(array('d'=>'gender'),'a.gender = d.id')
- 			->join(array('e'=>'ob_grant'),'a.grant_id = e.id',array('name as grant'));
-			//die($select->__toString());		
-		$result = $this->fetchAll($select);
-		return $result->toArray();
-	}
-// view function
-public function getUser($id) {
- 		   $select = $this->select()
-                       ->setIntegrityCheck(false)  
-                ->join(array('a'=>'ourbank_user'),array('a.id'),array('name as username','id as userid','password','bank_id'))
-                ->where('a.id='.$id)
-
- 			->join(array('b'=>'ob_designation'),'a.designation = b.designation_id')
- 			->join(array('c'=>'ob_bank'),'a.bank_id = c.id')
- 			->join(array('d'=>'gender'),'a.gender = d.id')
- 			->join(array('e'=>'ob_grant'),'a.grant_id = e.id',array('name as grant'));
-
-
-
-		//die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-	}
-public function getUserDetails() {
+class User_Model_User extends Zend_Db_Table 
+{
+    protected $_name = 'ourbank_user';
+    // search function
+    public function getUserDetails() 
+    {
 	$select = $this->select()
-			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
-			 ->join(array('b'=>'ob_designation'),'a.designation = b.designation_id')
- ->join(array('c'=>'ob_bank'),'a.bank_id = c.id')
- ->join(array('d'=>'gender'),'a.gender = d.id')
- ->join(array('e'=>'ob_grant'),'a.grant_id = e.id',array('name as grant'));
-
+            ->setIntegrityCheck(false)  
+            ->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
+            ->join(array('b'=>'ourbank_master_designation'),'a.id = b.id',array('name as desi_name'))
+            ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id')
+            ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'))
+            ->join(array('e'=>'ourbank_grant'),'a.grant_id = e.id',array('name as grant'))
+            ->join(array('f'=>'ourbank_master_department'),'a.department = f.id',array('name as department'));
 
 	//die($select->__toString());		
 	return $this->fetchAll($select);
     }
-// view module
- public function getmodule($modulename)
+
+    // view function
+    public function getUser($id) 
+    {
+        $select = $this->select()
+                ->setIntegrityCheck(false)  
+                ->join(array('a'=>'ourbank_user'),array('a.id'),array('name as username','id as userid','password','c.id as bank_id','username as usename'))
+                ->where('a.id='.$id)
+                ->join(array('b'=>'ourbank_master_designation'),'a.id = b.id',array('name as desi_name'))
+                ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id')
+                ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'))
+                ->join(array('e'=>'ourbank_grant'),'a.grant_id = e.id',array('name as grant'))
+            ->join(array('f'=>'ourbank_master_department'),'a.department = f.id',array('name as department'));
+
+		//die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    // view module
+    public function getmodule($modulename)
     {
         $select=$this->select()
-                        ->setIntegrityCheck(false)
-                        ->join(array('ob_modules'),array('module_id'))
-                        ->where('module_description=?',$modulename);
+                ->setIntegrityCheck(false)
+                ->join(array('ourbank_modules'),array('module_id'))
+                ->where('module_description=?',$modulename);
         $result=$this->fetchAll($select);
         return $result->toArray();
         //die ($select->__toString($select));
     }
+
+
+
+
+
+
+    public function userSearch($post) {
+        $select = $this->select()
+                ->setIntegrityCheck(false)  
+                ->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
+                ->where('a.username like "%" ? "%"',$post['name'])
+                ->where('b.id like "%" ? "%"',$post['designation'])
+                ->where('c.id like "%" ? "%"',$post['bank'])
+                ->where('e.id like "%" ? "%"',$post['grant_id'])
+                ->join(array('b'=>'ourbank_master_designation'),'a.designation = b.id',array('name as desi_name'))
+                ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id')
+                ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'))
+                ->join(array('e'=>'ourbank_grant'),'a.grant_id = e.id',array('name as grant'));
+                //die($select->__toString());		
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+    }
+
+
+
 //view personal details
 public function getpersonal($id)
     {
@@ -98,7 +110,7 @@ public function getpersonal($id)
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'address'),array('id'))
+                ->join(array('a'=>'ourbank_address'),array('id'))
                 ->where('id=?',$id);
      //  die ($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -109,7 +121,7 @@ public function getcontact($id)
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'contact'),array('id'))
+                ->join(array('a'=>'ourbank_contact'),array('id'))
                 ->where('id=?',$id);
      //  die ($select->__toString($select));
         $result=$this->fetchAll($select);

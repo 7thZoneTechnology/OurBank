@@ -1,0 +1,44 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<form action="<?php echo $this->baseUrl();?>/familysavings/index/add/id/<?php echo $this->memberid; ?>" method="POST">
+<table id="hor-minimalist-b">
+<tr> 
+    <th width="27%"><?php echo $this->translate("Source of deposits"); ?></th>
+    <th width="27%"><?php echo $this->translate("Deposit amount"); ?></th>
+</tr>
+<?php  
+foreach($this->loanDetails as $loandetails) { 
+
+    $b ='loanamount'.$loandetails['id'];
+    $g = 'source_id'.$loandetails['id'];
+
+?>
+<tr>
+    <td><?php echo $loandetails['name']; ?></td>
+    <td><?php echo $this->form->$b; ?></td>
+</tr> 
+<?php echo $this->form->$g; ?> 
+<?php }?>
+<tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+</tr>
+</table>
+
+</form>

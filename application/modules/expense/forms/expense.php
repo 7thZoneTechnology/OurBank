@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Expense_Form_expense extends Zend_Form {
     public function init()
     {} 
@@ -31,9 +28,12 @@ class Expense_Form_expense extends Zend_Form {
 
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
-
+        $error = "Only digits";
        for($i=1;$i<=$number;$i++) {
-        $value = $formfield->field('Text','value'.$i,'','','','',true,'','','','','',0,0);
+        $value = $formfield->field('Text','value'.$i,'','','mand','',false,'','','','','',0,0);
+        $value->setAttrib('maxlength',6);
+        $graterthan=new Zend_Validate_GreaterThan(0);
+        $value->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
         $source_id = $formfield->field('Hidden','source_id'.$i,'','','','','','','','','','',0,0);
         $this->addElements(array($value,$source_id));
 	}

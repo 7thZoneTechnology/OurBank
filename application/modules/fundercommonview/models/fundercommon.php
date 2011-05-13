@@ -24,14 +24,14 @@
 !-->
 <?php
 class Fundercommonview_Model_fundercommon extends Zend_Db_Table {
-    protected $_name = 'ob_member';
+    protected $_name = 'ourbank_funder';
 
     public function getfunder($id)
     {
         $select=$this->select()
         ->setIntegrityCheck(false)
-        ->join(array('a'=>'ob_funder'),array('a.id'))
-        ->join(array('b'=>'ob_funder_types'),('b.id = a.type'))
+        ->join(array('a'=>'ourbank_funder'),array('a.id'))
+        ->join(array('b'=>'ourbank_master_fundertype'),('b.id = a.type'),array('b.name as fundertypename'))
         ->where('a.id=?',$id);
         $result=$this->fetchAll($select);
 	//return funder details
@@ -42,7 +42,7 @@ class Fundercommonview_Model_fundercommon extends Zend_Db_Table {
     {
         $select=$this->select()
             ->setIntegrityCheck(false)
-            ->join(array('ob_modules'),array('module_id'))
+            ->join(array('ourbank_modules'),array('module_id'))
             ->where('module_description=?',$modulename);
         $result=$this->fetchAll($select);
 	//return module details

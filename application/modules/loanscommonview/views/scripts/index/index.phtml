@@ -1,11 +1,11 @@
 
 
-<?php $dateconvert = new Creditline_Model_dateConvertor(); ?>
+<?php $dateconvert = new App_Model_dateConvertor(); ?>
 <div class="cont-rgt-data">
 <?php foreach($this->loan as $loan) {  ?>
     <TABLE id="hor-minimalist-b">
         <tr>
-        <th><b>Loan Details</b></th><th></th>
+        <th><b>Loan details</b></th><th></th>
         <th></th>
         <TH><a href="<?php echo $this->baseUrl();?>/loans/index/loansedit/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0  align="right" width="20" height="20"></a></TH>
         </tr>
@@ -53,7 +53,7 @@
         </TR>
         <TR>
             <TD>Applicable To</TD>
-            <TD><?php echo $loan['type'];?></TD>
+            <TD><?php echo $loan['name'];?></TD>
             <TD></TD>
             <TD></TD>
         </TR>

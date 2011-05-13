@@ -25,14 +25,14 @@
  */
 class Funder_Model_funder extends Zend_Db_Table 
 {
-    protected $_name = 'ob_funder';
+    protected $_name = 'ourbank_funder';
 
     public function funderDetails() 
     {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ob_funder'),array('a.id'))
-			->join(array('b' => 'ob_funder_types'),'b.id=a.type',array('b.fundertype'))
+			->join(array('a' => 'ourbank_funder'),array('a.id'))
+			->join(array('b' => 'ourbank_master_fundertype'),'b.id=a.type',array('b.name as fundertype'))
 			->order(array('a.id DESC'));
 	//return funder details
 	return $this->fetchAll($select);
@@ -42,8 +42,8 @@ class Funder_Model_funder extends Zend_Db_Table
     {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ob_funder'),array('a.id'))
-			->join(array('b' => 'ob_funder_types'),'b.id=a.type',array('b.fundertype'))
+			->join(array('a' => 'ourbank_funder'),array('a.id'))
+			->join(array('b' => 'ourbank_master_fundertype'),'b.id=a.type',array('b.name as fundertype'))
                         ->where('a.type like "%" ? "%"',$post['type'])
 			->where('a.code like "%" ? "%"',$post['code'])
 			->where('a.name like "%" ? "%"',$post['name'])

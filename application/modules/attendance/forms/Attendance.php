@@ -35,14 +35,18 @@ class Attendance_Form_Attendance extends Zend_Form
         $meeting_name->addMultiOption('','Select...');
         $meeting_name->setAttrib('class', 'mand');
         $meeting_name->setAttrib('id', 'meeting_name');
-        $meeting_name->setAttrib('onchange', 'getMembers1(this.value,"'.$path.'",10)');
+        $meeting_name->setAttrib('onchange', 'getMembers1(this.value,"'.$path.'",10), getMeeting(this.value,"'.$path.'",10)');
         $meeting_name->setRequired(true);
+//         $meeting_day = $formfield->field('Select','meeting_day','','','mand','',true,'','','','','','','');
 
         $meeting_date = $formfield->field('Text','meeting_date','','','mand','Meeting date',true,'','','','','','','');
+$meeting_time = $formfield->field('Text','meeting_time','','','mand','Meeting time',true,'','','','','','','');
+        $notes = new Zend_Form_Element_Textarea('notes',array('rows' =>3 ,'cols'=>35));
+        $resolution = new Zend_Form_Element_Textarea('resolution',array('rows' =>3 ,'cols'=>35));
         $submit = $formfield->field('Submit','Submit','','','','Submit','','','','','','','','');
         $Back = $formfield->field('Submit','Back','','','','Back','','','','','','','','');
 
-        $this->addElements( array($meeting_name,$meeting_date,$Back,$submit));
+        $this->addElements( array($meeting_name,$resolution,$meeting_time,$meeting_date,$notes,$Back,$submit));
     }
 }
 /** end of class */

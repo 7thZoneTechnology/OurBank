@@ -12,19 +12,23 @@ $(document).ready(function() {
             <form action="<?php echo $this->baseUrl();?>/savings/index" method="POST">
                 <table width="100%">
                     <tr>
-                        <td class="label">product name:</td>
+                        <td class="label">Product name:</td>
                         <td ><? echo $this->form->prodname;?></td>
                         <td class="label"> Short Name:</td>
                         <td ><? echo $this->form->shname;?></td>
                     </tr>
 
                     <tr>
-                        <td class="label"><br>begin date:</td>
-                        <td ><br><? echo $this->form->fromdate;?></td>
-                        <td class="label"><br>closed date:</td>
-                        <td ><br><? echo $this->form->todate;?></td>
+                        <td class="label">Begin date:</td>
+                        <td ><? echo $this->form->fromdate;?></td>
+                        <td class="label">Closed date:</td>
+                        <td ><? echo $this->form->todate;?></td>
                     </tr>
-            </table> <td><input type = "Submit" name = "Search" id="Search" value = "Search"/></td>
+            <div class="ltbtns">
+                <td><input type = "Submit" name = "Search" id="Search" value = "Search"/></td>
+            </div>
+                  
+            </table>
             </form>	
         </div>
     </fieldset> 
@@ -36,25 +40,21 @@ $(document).ready(function() {
 <?php } ?>
 <?php if (count($this->paginator)){ ?>
 <table id="hor-minimalist-b">
-
     <tr>
         <th>Product name</th>
-        <th>short name</th>
+        <th>Short name</th>
         <th>Begin date</td>
         <th>Closed date</td>
         <th>Applicable to</th>
     </tr>
-
-
-
         <?php foreach ($this->paginator as $saving ): ?>
     <tr>
         <td><a href="<?php echo $this->baseUrl()."/savings/index/savingsview/offerproduct_id/".base64_encode($saving['productid']); ?>">
                      <?php echo $this->escape($saving['productname']); ?></a></td>
     <td><?php echo $this->escape($saving['shortnames']);?></td>
     <td><?php echo $convertdate->phpnormalformat($saving['begindate']); ?>
-    <td><?php $datevalue = $convertdate->phpnormalformat($saving['closedate']);
-            if($datevalue =="00/00/0000") { echo "-----"; } else { echo $datevalue; }?></td> 
+    <td><?php if($saving['closedate'] != Null) { $datevalue = $convertdate->phpnormalformat($saving['closedate']);
+              echo $datevalue; } else { echo "-----"; }?></td> 
     <td><?php echo $this->escape($saving['type']);?></div></td>
    
         <?php endforeach; ?>

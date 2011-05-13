@@ -27,7 +27,9 @@ class Holiday_IndexController extends Zend_Controller_Action
 		$this->view->pageTitle='Holiday';
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
+    $sessionName = new Zend_Session_Namespace('ourbank');
+	$this->view->createdby = $sessionName->primaryuserid;
+
 //		$this->view->username = $this->view->globalvalue[0]['username'];
 //        if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
@@ -54,9 +56,9 @@ class Holiday_IndexController extends Zend_Controller_Action
 		$holiday = new Holiday_Model_Holiday();
 		$result = $holiday->getHolidayDetails();
 //listing office names
-$officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
+$officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
-				$searchForm->office_id->addMultiOption($officename['id'],$officename['name']);
+				$searchForm->office_id->addMultiOption($officename['id'],$officename['type']);
 			}
 //pagination
 		$page = $this->_getParam('page',1);
@@ -91,17 +93,27 @@ $officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
 		$holidayForm = new Holiday_Form_Holiday();
 		$this->view->form = $holidayForm;
 //listing office names
-$officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
+$officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
-				$holidayForm->office_id->addMultiOption($officename['id'],$officename['name']);
+				$holidayForm->office_id->addMultiOption($officename['id'],$officename['type']);
 			}
 //submit action
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 				$formData = $this->_request->getPost();
 				if ($this->_request->isPost()) {
 					if ($holidayForm->isValid($formData)) {
-//getting the values from search form
-					$id = $this->view->adm->addRecord("ourbank_holiday",$holidayForm->getValues());
+//getting the values from search form   			
+$dateconvert= new App_Model_dateConvertor();
+
+														$formdata1=array('name'=>$formData['name'],
+                                    					'office_id'=>$formData['office_id'],
+                                    					'holiday_from'=>$dateconvert->mysqlformat($formData['holiday_from']),
+                                    					'holiday_upto'=>$dateconvert->mysqlformat($formData['holiday_upto']),
+                                    					'repayment_date'=>$dateconvert->mysqlformat($formData['repayment_date']),
+                                    					'created_by'=>$this->view->createdby
+														);		
+
+					$id = $this->view->adm->addRecord("ourbank_holiday",$formdata1);
 						$this->_redirect('/holiday');
 				}
 			}
@@ -120,25 +132,39 @@ $officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
 // calling holiday model
 			$holiday = new Holiday_Model_Holiday;
 //listing office names
-			$officename = $this->view->adm->viewRecord("ourbank_office","id","DESC");
+			$officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
-				$holidayForm->office_id->addMultiOption($officename['id'],$officename['name']);
+				$holidayForm->office_id->addMultiOption($officename['id'],$officename['type']);
 			}
 //displaying the values to edit
-			$holidaydetails = $holiday->getHoliday($id);
-			$holidayForm->populate($holidaydetails[0]);
+        	$result = $holiday->getHoliday($id);
+   			$dateconvert= new App_Model_dateConvertor();
+			foreach($result as $holidaydetails) {
+				$this->view->form->name->setValue($holidaydetails['name']);
+				$this->view->form->office_id->setValue($holidaydetails['office_id']);
+				$this->view->form->holiday_from->setValue($dateconvert->normalformat($holidaydetails['holiday_from']));
+				$this->view->form->holiday_upto->setValue($dateconvert->normalformat($holidaydetails['holiday_upto']));
+				$this->view->form->repayment_date->setValue($dateconvert->normalformat($holidaydetails['repayment_date']));
+
+		}
 //update action					
         if ($this->_request->isPost() && $this->_request->getPost('Update')) {
 	    if ($this->_request->isPost()) {
 		$formData = $this->_request->getPost();
 		if ($holidayForm->isValid($formData)) {
-								$id=$this->_request->getParam("id");
-
 //update and edit
-  $previousdata = $this->view->adm->editRecord("ourbank_holiday",$id);
+			$formdata1=array('name'=>$formData['name'],
+			'office_id'=>$formData['office_id'],
+			'holiday_from'=>$dateconvert->mysqlformat($formData['holiday_from']),
+			'holiday_upto'=> $dateconvert->mysqlformat($formData['holiday_upto']),
+			'repayment_date'=> $dateconvert->mysqlformat($formData['repayment_date']),
+			'created_by'=>$this->view->createdby);			
+
+
+  					$previousdata = $this->view->adm->editRecord("ourbank_holiday",$id);
 					$this->view->adm->updateLog("ourbank_holiday_log",$previousdata[0],$this->view->createdby);
 					//update 					
-					$this->view->adm->updateRecord("ourbank_holiday",$id,$holidayForm->getValues());
+					$this->view->adm->updateRecord("ourbank_holiday",$id,$formdata1);
 					$this->_redirect("/holiday");
 
 }

@@ -39,8 +39,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
                         ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name as landtypename'))
-                        ->join(array('c'=>'ourbank_master_ownershiptype'),'c.id=a.landowner_id',array('c.name as ownertype'))
-                        ->where('a.member_id=?',$mebmerid);
+                        ->where('a.family_id=?',$mebmerid);
 //         die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
@@ -51,7 +50,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         $select=$this->select()
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
-                        ->where('a.member_id=?',$mebmerid);
+                        ->where('a.family_id=?',$mebmerid);
 //         die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
@@ -62,11 +61,32 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
     {
         $db = $this->getAdapter();
                     //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
-        $db->delete("ourbank_agriculture",array('member_id = '.$param));
+        $db->delete("ourbank_agriculture",array('family_id = '.$param));
 
     // $db->exec("delete from ourbank_cropdetails where member_id = $param");
         return;
     }
 
+ public function owner($id)
+        {
+        $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a'=>'ourbank_family'),array('a.id'))
+            ->join(array('b'=>'ourbank_familymember'),'b.family_id=a.id',array('b.id as landowner_name','b.name'))
+            ->where('a.id=?',$id);
+         //die ($select->__toString($select));
 
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
+ public function village($id)
+        {
+        $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a'=>'ourbank_master_villagelist'),array('a.id'));
+         //die ($select->__toString($select));
+
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
 }

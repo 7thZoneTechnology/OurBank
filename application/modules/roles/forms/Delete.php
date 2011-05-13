@@ -25,7 +25,9 @@ class Roles_Form_Delete extends Zend_Form {
                 // create instance for common field php file to access field method 
 		$formfield = new App_Form_Field ();
                 // send parameters to get textarea as a form field 
-		$remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,18,1,0);
+		//$remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,18,1,0);
+                $remarks =$this->addElement('textarea','remarks', array('rows' => '5', 'cols'=>'20' ));
+                //->setAttrib('class' ,'tAreaStyles')
 		$this->addElements(array($remarks));
 	}
 }

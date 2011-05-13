@@ -16,16 +16,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
-
-<!-- enable the date picker -->
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#Date(yyyy-mm-dd)").datepicker({"dateFormat":"dd/mm/yy"});
-});
-</script>
 
 <BODY onload="toggleField();"></BODY> 
 <div>
@@ -85,24 +75,21 @@ $(document).ready(function() {
 <a href="#" id="open">groupMembers</a>
 <div class="box">
 <div id="content1">
-    <fieldset>
-        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-        <tr><Th colspan="2">Members in account</Th></tr>
-        <div class="cont-rgt-data">
-                <tr class="tdbrownheading">
-                    <td width="30%">Name</td>
-                    <td width="50%">code</td>
-                </tr>
-                <?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
-                <tr class="tdbrown">
-                    <TD width="30%"><?php echo $arrayroles1['memberfirstname'];?></TD>
-                    <TD width="50%"><?php echo $arrayroles1['membercode'];?></TD>
-                </tr>
-                <?php }?>
-            </table>
-        </div>
-    </fieldset>
-    <p><a href="#" id="close">hide</a></p>
+    <div class="cont-rgt-data">
+        <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
+            <tr class="tdbrownheading">
+                <td width="30%">Name</td>
+                <td width="50%">code</td>
+            </tr>
+            <?php foreach($this->groupMembersDetails as $arrayroles1)  { ?>
+            <tr class="tdbrown">
+                <TD width="30%"><?php echo $arrayroles1['memberfirstname'];?></TD>
+                <TD width="50%"><?php echo $arrayroles1['membercode'];?></TD>
+            </tr>
+            <?php } ?>
+        </table>
+    </div>
+<p><a href="#" id="close">hide</a></p>
 </div>
 </div>
 <?php }	?>
@@ -112,7 +99,7 @@ $(document).ready(function() {
 <div style="float:left;width:50%">
     <div class="cont-rgt-data">
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet" border="1">
-             <?php if($this->statuscheck1) {
+            <?php if($this->statuscheck1) {
                 if($this->depositcheck1) { ?>
             <TR>
                 <td colspan="2"><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Deposit</a></TD>
@@ -131,63 +118,62 @@ $(document).ready(function() {
         </table>
     </div>
 </div>
-<?php If($this->groupname) { ?>
-    <fieldset>
-        <legend>Type of format</legend>
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-                <tr>
-                    <td><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Automatic Reccuring payment</a></td>
-                </tr>
-                <tr>
-                    <td><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/yes">Manual recurring payment</a></td>
-                </tr>
-            </table>
-        </div>
-    </fieldset>
+<?php if($this->groupname) { ?>
+
+    <div class="cont-rgt-data">
+        <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
+            <tr>
+                <td><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Automatic Reccuring payment</a></td>
+            </tr>
+            <tr>
+                <td><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/yes">Manual recurring payment</a></td>
+            </tr>
+        </table>
+    </div>
+
 <?php } ?>
 
 <div style="float:left;width:770px">
     <fieldset>
-    <table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
-    <tr><Th colspan="2">Deposit</Th></tr>
+    <legend>Deposit</legend>
         <div class="cont-rgt-data">
             <form name="form1" action="<?php echo $this->baseUrl();?>/recurringtransaction/index/deposit/manualRepayment/<?php echo $this->manualRepayment;?>" method="POST" >
+                <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                     <TR class="tdbrown">
-                        <TD width="40%"><label class="mand">Date(yyyy-mm-dd)</label></TD>
+                        <TD width="40%">Date<span class="reqMark">(yyyy-mm-dd)*</span></TD>
                         <TD width="60%"><?php echo $this->recurringForm->accountId;?><?php echo $this->recurringForm->productId;?><?php echo $this->recurringForm->recurringDate;?></TD>
                     </TR>
                 </table>
-                    <?php if($this->manualRepayment=='yes' && $this->groupname) { ?>
-                    <tr>
-                        <TD>
-                            <fieldset>
-                            <legend> Enter Individual member amount  </legend>
-                                <div class="cont-rgt-data">
-                                    <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-                                        <tr class="tdbrownheading">
-                                            <td width="39%">Name</td>
-                                            <td>Amount</td>
-                                        </tr>
-                                        <?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
-                                        <tr class="tdbrown">
-                                            <TD width="39%"><?php echo $arrayroles1['memberfirstname'];?></TD>
-                                            <td><?php $a='amount'.$arrayroles1['member_id'];echo $this->recurringForm->$a; ?></TD>
-                                        </tr>
-                                        <?php }?>
-                                    </table>
-                                </div>
-                            </fieldset>
-                        </TD>
-                    </tr>
-                        <?php }	?>
-                    <table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
+                <?php if($this->manualRepayment=='yes' && $this->groupname) { ?>
+                <tr>
+                    <TD>
+                        <fieldset>
+                        <legend> Enter Individual member amount  </legend>
+                            <div class="cont-rgt-data">
+                                <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                                    <tr class="tdbrownheading">
+                                        <td width="39%">Name</td>
+                                        <td>Amount</td>
+                                    </tr>
+                                    <?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
+                                    <tr class="tdbrown">
+                                        <TD width="39%"><?php echo $arrayroles1['memberfirstname'];?></TD>
+                                        <td><?php $a='amount'.$arrayroles1['member_id'];echo $this->recurringForm->$a; ?></TD>
+                                    </tr>
+                                    <?php }?>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </TD>
+                </tr>
+                <?php }	?>
+                    <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                         <TR class="tdbrown">
-                            <TD width="40%"><label class="mand">Amount</label></TD>
+                            <TD width="40%">Amount<span class="reqMark">*</span></TD>
                             <TD width="60%"><?php echo $this->recurringForm->amount;?></TD>
                         </TR>
                         <TR class="tdbrown1">
-                            <td width="20%"><label class="mand">Transaction mode</label></td>
+                            <td width="20%">Transaction mode<span class="reqMark">*</span></td>
                             <TD><?php echo $this->recurringForm->transactionMode; ?>
                             <?php echo $this->recurringForm->paymenttype_details;?>
                             <h id="details" style="display:none">voucher/cheque/draft number</h></td>
@@ -199,7 +185,7 @@ $(document).ready(function() {
                                                 </tr>-->
                     <?php if($this->recurringForm->fine) { ?>
                     <tr class="tdbrown1">
-                        <D width="20%">Fine Rs</td>
+                        <D width="20%">Fine R$</td>
                         <TD><?php echo $this->recurringForm->fine; ?></TD>
                     </TR>
                     <?php } ?>
@@ -208,14 +194,15 @@ $(document).ready(function() {
                 <tr>
                     <td></td>
                     <td ></td>
-                    <td><font color="green"><b>*</b></font>Marked fields are mandatory</td>
-                </tr> </table>
+                    <td><span class="reqMark">* Marked fields are mandatory</span></td>
+                </tr>
                 <TR>
                     <TD><?php echo $this->recurringForm->Confirm;?></TD>
                     <td><a href="<?php echo $this->baseUrl();?>">
                     <input name="submit" type="submit"  value="back" tabindex="25"></a></td>
                 </TR>
-               </form>
+                </table>
+            </form>
         </div>
     </fieldset>
 </div>

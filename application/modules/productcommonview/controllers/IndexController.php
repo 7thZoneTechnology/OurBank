@@ -22,8 +22,7 @@
 <?php
 class Productcommonview_IndexController extends Zend_Controller_Action
 {
-	public function init() 
-	{
+	public function init(){
 		$this->view->pageTitle='Product';
 //         $globalsession = new App_Model_Users();
 //         $this->view->globalvalue = $globalsession->getSession();
@@ -35,29 +34,17 @@ class Productcommonview_IndexController extends Zend_Controller_Action
 		$this->view->adm = new App_Model_Adm();   	
 	}
 
-	public function indexAction() 
-	{
-           
+	public function indexAction(){
+
 	}
-	public function categoryaddAction() 
-	{
-		
-		
-	}
-	
-	public function categoryeditAction() 
-	{
-    }		
+
 	public function productviewAction() 
 	{
-		//Acl
-        $id=$this->_request->getParam('id');
-			
-			$product= new Product_Model_Product;
-			$this->view->productdetails=$product->getProduct($id);
+	    //Acl
+            $this->view->title='Product';
+            $id=$this->_request->getParam('id');
+            $product= new Product_Model_Product;
+            $this->view->productdetails=$product->getProduct($id);
 	}	
-	public function categorydeleteAction() 
-	{
-
-}
+	
 }

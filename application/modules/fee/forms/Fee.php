@@ -31,23 +31,27 @@
 		$vtype=array('Alpha','StringLength');
 		$formfield = new App_Form_Field ();
 
-// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+		// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
 
-		
-	
         $name = $formfield->field('Text','name','','','mand','Fee name',true,'','','','','',1,0);
+        $feetype = $formfield->field('Select','feetype_id','','','mand','Fee type',true,'','','','','',1,0);
+        $amounttype = $formfield->field('Select','amountype_id','','','mand','amount type',true,'','','','','',1,0);
+        $hierarchy_id = $formfield->field('Select','hierarchy_id','','','mand','Office type',true,'','','','','',1,0);
+		$feefor = $formfield->field('Select','category_id','','','mand','',false,'','','','','',0,0);
+		$glsubcode_id = $formfield->field('Select','glsubcode_id','','','mand','',false,'','','','','',0,0);
 
-        $membertype = $formfield->field('Select','membertype_id','','','mand','Member type',true,'','','','','',1,0);
         $description = $formfield->field('Text','description','','','mand','Fee description',true,'','','','','',1,0);
         $amount = $formfield->field('Text','value','','','mand','Fee amount',true,'','','','','',1,0);
-		$feefor = $formfield->field('Select','glsubcode_id','','','mand','Fee for',true,'','','','','',1,0);
-        // Hidden Feilds 
-        $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
-        $createdBy = $formfield->field('Hidden','created_by','','','','',false,'','','','','',0,1);
+		$feetype_id = $formfield->field('Select','feetype_id','','','mand','',true,'','','','','',0,0);
+        $feetype_id->setAttrib('onchange','displayRow(this.value)');
+ 		$createdBy = $formfield->field('Hidden','created_by','','','','',false,'','','','','',0,1);
         $createdDate = $formfield->field('Hidden','created_date','','','','',false,'','','','','',0,date("y/m/d H:i:s"));
 
+        // Hidden Feilds 
+        $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
+
 					
-            $this->addElements(array($id,$name,$description,$membertype,$amount,$feefor,
-            $createdBy,$createdDate));
+            $this->addElements(array($id,$name,$hierarchy_id,$description,$feetype,$feefor,$glsubcode_id,$amounttype,$amount,$feetype_id,$feefor,$createdBy,$createdDate
+           ));
     }
 }

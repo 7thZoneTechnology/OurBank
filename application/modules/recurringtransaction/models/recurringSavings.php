@@ -69,8 +69,11 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
                         ->setIntegrityCheck(false)  
                         ->join(array('A' => 'ourbank_accounts'),array('id'))
                         ->where('A.id = ?',$accountId)
+                        ->join(array('B' => 'ourbank_familymember'),'A.member_id=B.id',array('B.name as memberfirstname','B.bank'));
 
-                        ->join(array('B' => 'ourbank_member'),'A.member_id=B.id',array('B.name as memberfirstname','B.office_id'));
+   //       die($select->__toString($select));
+
+
                 $result = $this->fetchAll($select);
                 return $result->toArray();
         }
@@ -107,22 +110,26 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
                                     (C.id='$productId') AND
                                     (A.rec_payment_status=D.id) AND
                                     (C.id=B.productsoffer_id)";
+
         $result = $this->db->fetchAll($sql);
         return $result;
     }
 
     public function recurringAccountDetails($accountId,$productId) {
         $this->db = Zend_Db_Table::getDefaultAdapter();
-            $sql = "select A.begin_date,A.mature_date,A.recurring_amount,A.fixed_interest,B.name as offerproductname,D.name as productname,E.membertype_id,B.glsubcode_id,C.penal_Interest,E.status_id
+            $sql = "select A.begin_date,A.mature_date,A.recurring_amount,A.fixed_interest,B.name as offerproductname,D.name as productname,E.membertype_id,B.glsubcode_id,C.penal_Interest,E.account_number,F.familycode,A.fixed_interest,E.status_id
                     from ourbank_recurringaccounts A,
                             ourbank_productsoffer B,
                             ourbank_product_fixedrecurring C,
                             ourbank_product D,
-                            ourbank_accounts E
+                            ourbank_accounts E,
+                            ourbank_familymember F
+
                     where (E.id = '$accountId') AND
                             (A.account_id=E.id) AND
                             (B.id = '$productId') AND
                             (D.id = B.product_id) AND
+                            (E.member_id = F.id)AND
                             (B.id = C.productsoffer_id)";
 
         $result = $this->db->fetchAll($sql,array($accountId,$productId));
@@ -134,6 +141,10 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
                     ->setIntegrityCheck(false)  
                     ->join(array('a' => 'ourbank_recurring_payment'),array('rec_paymentserial_id'))
                     ->where('a.account_id = ?',$accountId);
+   //       die($select->__toString($select));
+
+
+
             $result = $this->fetchAll($select);
             return $result->toArray();
         }
@@ -163,6 +174,7 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
                     ->setIntegrityCheck(false)  
                     ->join(array('A' => 'ourbank_accounts'),array('id'))
                     ->where('A.id = ?',$accountId)
+                    ->where('A.membertype_id =1')
                     ->join(array('B' => 'ourbank_member'),'A.member_id=B.id',array('B.name as memberfirstname'));
             $result = $this->fetchAll($select);
             return $result->toArray();
@@ -184,6 +196,7 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
         }
 
         public function recurringInstalmentpayments($accountId,$InstalmentNumber) {
+
             $select = $this->select()
                     ->setIntegrityCheck(false)  
                     ->join(array('a' => 'ourbank_recurringpaydetails'),array('rec_payment_id'))
@@ -324,7 +337,7 @@ class Recurringtransaction_Model_recurringSavings extends Zend_Db_Table {
         public function getDelayFine() {
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_feedetails'),array('fee_id'))
+                        ->join(array('a' => 'ob_fee'),array('fee_id'))
                         ->where('a.feename = "recurrings" or a.feename = "deposit"')
                         ->where('a.recordstatus_id = 3 OR a.recordstatus_id = 1');
                 $result = $this->fetchAll($select);

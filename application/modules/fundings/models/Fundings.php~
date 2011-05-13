@@ -22,7 +22,7 @@
 <?php
 class Fundings_Model_Fundings extends Zend_Db_Table 
 {
-    protected $_name = 'ob_funding';
+    protected $_name = 'ourbank_funding';
 
 
     public function SearchFundings($post) 
@@ -30,10 +30,9 @@ class Fundings_Model_Fundings extends Zend_Db_Table
 
 		$select = $this->select()
 				->setIntegrityCheck(false)  
-				->join(array('a' => 'ob_funding'),array('funding_id'))
-				->join(array('c' => 'ob_funder'),'a.funder_id = c.id',array('c.id'))
-				->join(array('d' => 'ob_institution'),'a.institution_id = d.id',array('d.id'))
-				->join(array('e' => 'ob_currency'),'a.currency_id = e.id',array('e.id'))			
+				->join(array('a' => 'ourbank_funding'),array('funding_id'))
+				->join(array('c' => 'ourbank_funder'),'a.funder_id = c.id',array('c.id'))
+				->join(array('e' => 'ourbank_master_currency'),'a.currency_id = e.id',array('e.id'))			
 				->where('a.name like "%" ? "%"',$post['field2'])
 				->where('a.amount like "%" ? "%"',$post['field4'])
 				->where('a.beginingdate like "%" ? "%"',$post['field7'])
@@ -47,12 +46,11 @@ class Fundings_Model_Fundings extends Zend_Db_Table
 	$select = $this->select()
 		->setIntegrityCheck(false)  
 
-		->join(array('b' => 'ob_funding'),array('b.id'))
+		->join(array('b' => 'ourbank_funding'),array('b.id'))
         ->where('b.id = ?',$id)
-		->join(array('c' => 'ob_funder'),'b.funder_id = c.id',array('c.name as fundername'))
-		->join(array('d' => 'ob_institution'),'b.institution_id = d.id',array('d.name as institutionname'))
-		->join(array('e' => 'ob_currency'),'b.currency_id = e.id',array('e.name as currency'))
-		->join(array('f' => 'ourbank_glsubcode'),'f.id = b.glsubcode_id',array('f.name as glname'));
+		->join(array('c' => 'ourbank_funder'),'b.funder_id = c.id',array('c.name as fundername'))
+		->join(array('e' => 'ourbank_master_currency'),'b.currency_id = e.id',array('e.name as currency'))
+		->join(array('f' => 'ourbank_glsubcode'),'f.id = b.id',array('f.header as glname'));
 
 		//die($select->__toString($select));
 		$result = $this->fetchAll($select);

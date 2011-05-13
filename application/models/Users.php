@@ -22,12 +22,12 @@
 <?php
 class App_Model_Users extends Zend_Db_Table
  {
-    protected $_name="gender";
+    protected $_name="ourbank_master_gender";
 
     public function userinfo($username) {
             $select = $this->select()
                        ->setIntegrityCheck(false)  
-                       ->join(array('a' => 'ob_user'),array('id'))
+                       ->join(array('a' => 'ourbank_user'),array('id'))
                        ->where('a.username = ?',$username);
 
       // die ($select->__toString($select));
@@ -35,26 +35,11 @@ class App_Model_Users extends Zend_Db_Table
        return $this->fetchAll($select);
     }
 
-    public function insertAct($input)
-    {
-        $db = $this->getAdapter();
-	$db->insert('ob_subactivity',$input);
-	return '1';
-    }
-
-    public function getActivity()
-    {
-        $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->from('ob_subactivity');
-        return $this->fetchAll($select);
-    }
-
     public function username($userid) {
         $select = $this->select()
                        ->setIntegrityCheck(false)  
-                       ->join(array('a' => 'ob_user'),array('id'))
-			->join(array('c'=>'ob_grant'),'a.grant_id=c.id')
+                       ->join(array('a' => 'ourbank_user'),array('id'))
+			->join(array('c'=>'ourbank_grant'),'a.grant_id=c.id')
 			 ->where('a.id = ?',$userid);
 
         $result = $this->fetchAll($select);
@@ -64,7 +49,7 @@ class App_Model_Users extends Zend_Db_Table
     public function getRole($role) {
 
         $this->db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "SELECT id from ob_grant where name = '".$role."'";
+        $sql = "SELECT id from ourbank_grant where name = '".$role."'";
         $result = $this->db->fetchOne($sql);
         return $result;
 
@@ -73,33 +58,16 @@ class App_Model_Users extends Zend_Db_Table
     public function getRoleName($roleid) {
 
         $this->db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "SELECT grantname from ob_grant where grant_id = ".$roleid;
-        $result = $this->db->fetchOne($sql);
-        return $result;
-
-    }
-    
-    public function getResource($resource) {
-
-        $this->db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "SELECT submodule_id from ob_submodule where submodule_description = '".$resource."'";
+        $sql = "SELECT grantname from ourbank_grant where grant_id = ".$roleid;
         $result = $this->db->fetchOne($sql);
         return $result;
 
     }
 
-    public function getResourceName($resourceid) {
-
-        $this->db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "SELECT submodule_description from ob_submodule where submodule_id = ".$resourceid;
-        $result = $this->db->fetchOne($sql);
-        return $result;
-
-    }
     public function getLanguage() {
 
         $this->db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "SELECT code from ob_language where 	active = 1";
+        $sql = "SELECT code from ourbank_language where active = 1";
         $result = $this->db->fetchOne($sql);
         return $result;
 

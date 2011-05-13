@@ -93,6 +93,7 @@ class Roles_IndexController extends Zend_Controller_Action{
          if ($this->_request->isPost() && $this->_request->getPost('submit')) {
             $grantname = $this->_request->getParam('grantname'); //get grant name
             $formData = $this->_request->getPost(); //get formdata
+//             if($form->isValid($formData)){
             $moduleid = array();
             $moduleids = array();
             $mainmoduleid = array();
@@ -120,7 +121,7 @@ class Roles_IndexController extends Zend_Controller_Action{
                 $data=array('name' => $grantname,
                             'created_date'=>date("Y-m-d : H-i-s"),
                             'created_by'=>$this->view->createdby);
-                $grantid = $this->view->adm->addRecord('ob_grant',$data); // inserting grant name details
+                $grantid = $this->view->adm->addRecord('ourbank_grant',$data); // inserting grant name details
                 foreach($moduleids as $moduleids1){
                     $inputdata=array(
                                 'grant_id' => intVal($grantid),
@@ -129,7 +130,7 @@ class Roles_IndexController extends Zend_Controller_Action{
                                 'edit'=>0,
                                 'view'=>0,
                                 'delete'=>0);
-                    $this->view->adm->addRecord('ob_grantactivity',$inputdata); // set all permission as 0 before inserting exact value 
+                    $this->view->adm->addRecord('ourbank_grantactivity',$inputdata); // set all permission as 0 before inserting exact value 
                 } 
             foreach($moduleid as $moduleid1){
                     $inputdata=array(
@@ -139,7 +140,7 @@ class Roles_IndexController extends Zend_Controller_Action{
                                 'edit'=>1,
                                 'view'=>1,
                                 'delete'=>1);
-                    $this->view->adm->addRecord('ob_grantactivity',$inputdata); // set all permission as 1 before inserting
+                    $this->view->adm->addRecord('ourbank_grantactivity',$inputdata); // set all permission as 1 before inserting
                 }
                 // update all permission mode according to input data given
                 foreach($moduleids as $moduleidinsert){
@@ -147,42 +148,41 @@ class Roles_IndexController extends Zend_Controller_Action{
                         if(strstr($formData1,$moduleidinsert)){
                             if(strstr($formData1,"add")){   
                                 $data = array("add" => 1);
-                                $activity->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $activity->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             else if(strstr($formData1,"edit")){
                                 $data = array("edit" => 1);
-                                $activity->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $activity->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             else if(strstr($formData1,"view")){
                                 $data = array("view" => 1);
-                                $activity->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $activity->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             else if(strstr($formData1,"delete")){
                                 $data = array("delete" => 1);
-                                $activity->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $activity->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             }
                     }
                 
                 }
         	$this->_redirect('roles/index');
-       		}  
+//        		}  
             }
-    
-   
+            }
 
     public function roleseditAction() {
         $this->view->title = 'Edit Roles';
-        // create instance for roles edit form 
+        //create instance for roles edit form 
         $form = new Roles_Form_Roles();
         $this->view->form = $form;
-        // receive the grantid 
+        //receive the grantid 
         $grantid =  $this->_request->getParam('id');  
         $this->view->grantid = $grantid;
         // create instance for roles model 
         $grant = new Roles_Model_Roles();
         //  get grant name from grant table for respective grant id
-        $grantdetails = $this->view->adm->editRecord('ob_grant',$grantid);
+        $grantdetails = $this->view->adm->editRecord('ourbank_grant',$grantid);
         // set grant name value 
         foreach($grantdetails as $grantdetails1){
             $form->grantname->setValue($grantdetails1['name']);
@@ -198,9 +198,9 @@ class Roles_IndexController extends Zend_Controller_Action{
         $grantname =  $this->_request->getParam('grantname'); 
         $formData = $this->_request->getPost();
         // get all previousdata of grant table
-        $previousdata = $this->view->adm->editRecord("ob_grant",$grantid);
+        $previousdata = $this->view->adm->editRecord("ourbank_grant",$grantid);
         // send previous data to grant log table
-        $this->view->adm->updateLog("ob_grant_log",$previousdata[0],$this->view->createdby);
+        $this->view->adm->updateLog("ourbank_grant_log",$previousdata[0],$this->view->createdby);
         // get all previousdata of grant activities
         $activitydetails = $grant->editactivity($grantid);
         // send previous data to grant activity log table
@@ -212,15 +212,15 @@ class Roles_IndexController extends Zend_Controller_Action{
                               'edit' => $activitydetailslist['edit'], 
                               'view' => $activitydetailslist['view'],  
                               'delete' => $activitydetailslist['delete']);
-            $grant->editactivitydetails('ob_grantactivity_log',$editdata);
+            $grant->editactivitydetails('ourbank_grantactivity_log',$editdata);
         }
             // delete particular record from grant activity table
-            $grant->deleteactivity('ob_grantactivity',$grantid);
+            $grant->deleteactivity('ourbank_grantactivity',$grantid);
             // update grant table 
             $data=array('name' => $grantname,
                             'created_date'=>date("Y-m-d : H-i-s"),
                             'created_by'=>$this->view->createdby);
-            $this->view->adm->updateRecord('ob_grant',$grantid,$data);
+            $this->view->adm->updateRecord('ourbank_grant',$grantid,$data);
             $moduleid = array();
             $moduleids = array();
             $values = array();
@@ -248,7 +248,7 @@ class Roles_IndexController extends Zend_Controller_Action{
                                 'edit'=>0,
                                 'view'=>0,
                                 'delete'=>0);
-                    $this->view->adm->addRecord('ob_grantactivity',$inputdata);
+                    $this->view->adm->addRecord('ourbank_grantactivity',$inputdata);
                 } 
             // set all permission as 1 before inserting
             foreach($moduleid as $moduleid1){
@@ -259,7 +259,7 @@ class Roles_IndexController extends Zend_Controller_Action{
                                 'edit'=>1,
                                 'view'=>1,
                                 'delete'=>1);
-                    $this->view->adm->addRecord('ob_grantactivity',$inputdata);
+                    $this->view->adm->addRecord('ourbank_grantactivity',$inputdata);
                 }
                 // update all permission mode according to input data given
                 foreach($moduleids as $moduleidinsert){
@@ -267,19 +267,19 @@ class Roles_IndexController extends Zend_Controller_Action{
                         if(strstr($formData1,$moduleidinsert)){
                             if(strstr($formData1,"add")){   
                                 $data = array("add" => 1);
-                                $grant->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $grant->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             else if(strstr($formData1,"edit")){
                                 $data = array("edit" => 1);
-                                $grant->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $grant->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             else if(strstr($formData1,"view")){
                                 $data = array("view" => 1);
-                                $grant->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $grant->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             else if(strstr($formData1,"delete")){
                                 $data = array("delete" => 1);
-                                $grant->updateRecord('ob_grantactivity',$data,$moduleidinsert);
+                                $grant->updateRecord('ourbank_grantactivity',$data,$moduleidinsert);
                                     } 
                             }
                     }
@@ -295,7 +295,7 @@ class Roles_IndexController extends Zend_Controller_Action{
         // create instance for roles model 
         $grant = new Roles_Model_Roles();
         // get grant name
-        $grantdetails = $this->view->adm->editRecord('ob_grant',$grantid);
+        $grantdetails = $this->view->adm->editRecord('ourbank_grant',$grantid);
         foreach($grantdetails as $grantdetails1){
             $this->view->grantname = $grantdetails1['name'];
         }
@@ -328,13 +328,13 @@ class Roles_IndexController extends Zend_Controller_Action{
                         // get remarks 
                         $remarks = $this->_getParam('remarks');
                         // get grant details for that grant id
-                        $previousdata = $this->view->adm->editRecord("ob_grant",$grantid);
+                        $previousdata = $this->view->adm->editRecord("ourbank_grant",$grantid);
                         // insert previous data into log table
-                        $this->view->adm->updateLog("ob_grant_log",$previousdata[0],$this->view->createdby);
+                        $this->view->adm->updateLog("ourbank_grant_log",$previousdata[0],$this->view->createdby);
                         // get grant activities details for that grant id
                         $activitydetails = $dbobj->editactivity($grantid);
                         // delete grant data from grant table
-                        $dbobj->deletegrantname('ob_grant',$grantid);
+                        $dbobj->deletegrantname('ourbank_grant',$grantid);
                         // insert grant activitity data into log table
                         foreach($activitydetails as $activitydetailslist){
                                 $editdata = array('id' => $activitydetailslist['id'],
@@ -344,10 +344,10 @@ class Roles_IndexController extends Zend_Controller_Action{
                                                 'edit' => $activitydetailslist['edit'], 
                                                 'view' => $activitydetailslist['view'],  
                                                 'delete' => $activitydetailslist['delete']);
-                                $dbobj->editactivitydetails('ob_grantactivity_log',$editdata);
+                                $dbobj->editactivitydetails('ourbank_grantactivity_log',$editdata);
                             }
                         // delete grant activity details
-                          $dbobj->deleteactivity('ob_grantactivity',$grantid);
+                          $dbobj->deleteactivity('ourbank_grantactivity',$grantid);
         		$this->_redirect('roles/index');
                 }
                 }

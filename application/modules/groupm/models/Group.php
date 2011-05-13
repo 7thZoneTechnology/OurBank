@@ -24,7 +24,7 @@ class Groupm_Model_Group extends Zend_Db_Table {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_group'),array('id'),array('id as groupid','groupcode','name as  group_name'))
-			->join(array('b' => 'ourbank_office'),'a.office_id = b.id')
+			->join(array('b' => 'ourbank_office'),'a.village_id = b.id')
 			->order(array('a.id DESC'));   
 	return $this->fetchAll($select);
     }

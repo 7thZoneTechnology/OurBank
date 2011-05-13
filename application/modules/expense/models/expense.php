@@ -38,7 +38,7 @@ class Expense_Model_expense  extends Zend_Db_Table {
         $select=$this->select()
                                 ->setIntegrityCheck(false)
                                 ->join(array('a'=>'ourbank_expensedetails'),array('a.id'))
-				->where('a.member_id=?',$memberid);
+				->where('a.family_id=?',$memberid);
         $result=$this->fetchAll($select);
         return $result->toArray();
 //         die ($select->__toString($select));
@@ -48,7 +48,7 @@ class Expense_Model_expense  extends Zend_Db_Table {
             {
                 $db = $this->getAdapter();
                             //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
-                $db->delete("ourbank_expensedetails",array('member_id = '.$param));
+                $db->delete("ourbank_expensedetails",array('family_id = '.$param));
         
             // $db->exec("delete from ourbank_cropdetails where member_id = $param");
                 return;

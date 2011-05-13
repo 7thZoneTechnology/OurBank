@@ -16,8 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
-
+<div>
             <TABLE id="hor-minimalist-b">
                 <TR>
                     <TH class = "firsttd">Ledger information</TH>
@@ -54,7 +53,7 @@
                 </TR>
                 <TR>
                     <TD>Created date</TD>
-                    <TD ><?php $dateconvert = new Creditline_Model_dateConvertor();
+                    <TD ><?php $dateconvert = new App_Model_dateConvertor();
                                 $d=explode(' ',$this->created_date); 
                                 echo $dateconvert->phpnormalformat($d[0]);?></TD>
                     <TD></TD>
@@ -66,4 +65,4 @@
                          <input name="submit" type="submit" class="officebutton" value="Back"></a></td>
 	       </TR>
         </TABLE>
-
+    </div>

@@ -24,7 +24,7 @@ class Meeting_IndexController extends Zend_Controller_Action
 {
     public function init() 
     {
-        $this->view->pageTitle='Meeting';
+        $this->view->pageTitle='Group meeting';
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
         $this->view->username = $this->view->globalvalue[0]['username'];
@@ -33,7 +33,7 @@ class Meeting_IndexController extends Zend_Controller_Action
 //             $this->_redirect('index/logout');
 //         }
         $this->view->adm = new App_Model_Adm();
-        $this->view->dateconvert = new Creditline_Model_dateConvertor();
+        $this->view->dateconvert = new App_Model_dateConvertor();
 
         $test = new DH_ClassInfo(APPLICATION_PATH . '/modules/meetingindex/controllers/');
         $module = $test->getControllerClassNames();
@@ -43,47 +43,52 @@ class Meeting_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->view->pageTitle='Meetings';
+        $this->view->pageTitle='Group meeting';
     }
 
     public function meetingaddAction()  
     { 
-//Acl
-// 		$access = new App_Model_Access();
-// 		$checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'addinstitutionAction');
-// 		if (($checkaccess != NULL)) {
-                //add
+        //Acl
+        // 		$access = new App_Model_Access();
+        // 		$checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'addinstitutionAction');
+        // 		if (($checkaccess != NULL)) {
+        //add
         $path = $this->view->baseUrl();
         $this->view->title = "New Meeting";
-        $this->view->pageTitle='Meetings';
+        $this->view->pageTitle='Group meeting';
 
         $meetingForm = new Meeting_Form_Meeting($path);
         $this->view->meetingForm = $meetingForm;
+        $meeting = new Meeting_Model_Meeting();
 
-        $office = $this->view->adm->viewRecord("ob_bank","id","DESC");
-        foreach($office as $office1){
-            $meetingForm->institute_bank_id->addMultiOption($office1['id'],$office1['name']);
+        //load office names in the drop down list box
+        $office = new Meeting_Model_Meeting();
+        $max_id=$office->getoffice_hierarchy();
+        $maxlevel=$max_id[0]['id'];
+        $officename=$office->getoffice($maxlevel);
+        foreach($officename as $officename1){
+        $meetingForm->institute_bank_id->addMultiOption($officename1['office_id'],$officename1['name']);
         }
 
-        $meeting = new Meeting_Model_Meeting();
-        $days = $meeting->getDays();
+        $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
         foreach($days as $days) {
-            $meetingForm->meeting_day->addMultiOption($days['day_value'],$days['day_value']);
+            $meetingForm->meeting_day->addMultiOption($days['id'],$days['name']);
         }
 
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $formData = $this->_request->getPost();
             if ($meetingForm->isValid($formData)) {
+
                 $formdata1=array('name'=>$formData['meeting_name'],
-                                    'bank_id'=>$formData['institute_bank_id'],
+                                    'village_id'=>$formData['institute_bank_id'],
                                     'group_id'=>$formData['group_name'],
-                                    'grouphead_name'=>$formData['group_head'],
+                                    'grouphead_name'=> $formData['group_head'],
                                     'place'=>$formData['meeting_place'],
                                     'time'=>$formData['meeting_time'],
                                     'day'=>$formData['meeting_day'],
                                     'created_by'=>$this->view->createdby);
 
-                $id = $this->view->adm->addRecord("ob_meeting",$formdata1);
+                $id = $this->view->adm->addRecord("ourbank_meeting",$formdata1);
                 $this->_redirect('/meetingindex');
                 }
         }
@@ -95,24 +100,31 @@ class Meeting_IndexController extends Zend_Controller_Action
     public function meetingeditAction()
     {
 //Acl
-// 		$access = new App_Model_Access();
-// 		$checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'addinstitutionAction');
-// 		if (($checkaccess != NULL)) {
-                //edit
-        $this->view->pageTitle='Meetings';
+//$access = new App_Model_Access();
+//$checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'addinstitutionAction');
+//if (($checkaccess != NULL)) {
+//edit
+        $this->view->pageTitle='Group meeting';
         $path = $this->view->baseUrl();
         $this->view->title = "Edit Meeting";
         $this->view->meeting_id=$meeting_id = $this->_getParam('meeting_id');
         $meetingForm = new Meeting_Form_Meeting($path);
         $this->view->meetingForm = $meetingForm;
-        $office = $this->view->adm->viewRecord("ob_bank","id","DESC");
-        foreach($office as $office1){
-            $meetingForm->institute_bank_id->addMultiOption($office1['id'],$office1['name']);
-        }
         $meeting = new Meeting_Model_Meeting();
-        $days = $meeting->getDays();
+
+        //load office names in the drop down list box
+        $office = new Meeting_Model_Meeting();
+        $max_id=$office->getoffice_hierarchy();
+        $maxlevel=$max_id[0]['id'];
+        $officename=$office->getoffice($maxlevel);
+        foreach($officename as $officename1){
+        $meetingForm->institute_bank_id->addMultiOption($officename1['office_id'],$officename1['name']);
+        }
+
+
+        $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
         foreach($days as $days) {
-            $meetingForm->meeting_day->addMultiOption($days['day_value'],$days['days_name']);
+            $meetingForm->meeting_day->addMultiOption($days['id'],$days['name']);
         }
         $fetchMeetingDetails=$meeting->fetchMeetingdetailsForID($meeting_id);
 //         foreach($fetchMeetingDetails as $meetings1) {}
@@ -120,25 +132,26 @@ class Meeting_IndexController extends Zend_Controller_Action
         
         foreach($fetchMeetingDetails as $meetings) {
             $this->view->meetingForm->meeting_name->setValue($meetings['name']);
-            $this->view->meetingForm->institute_bank_id->setValue($meetings['bank_id']);
+            $this->view->meetingForm->institute_bank_id->setValue($meetings['village_id']);
             $this->view->meetingForm->group_head->setValue($meetings['grouphead_name']);
             $this->view->meetingForm->meeting_place->setValue($meetings['place']);
             $this->view->meetingForm->meeting_time->setValue($meetings['time']);
-            $this->view->meetingForm->meeting_day->setValue($meetings['day']);
+            $this->view->meetingForm->meeting_day->setValue($meetings['wid']);
 
             $formdata2=array('id'=>$meetings['id'],'name'=>$meetings['name'],
-                    'bank_id'=>$meetings['bank_id'],'group_id'=>$meetings['group_id'],
-                    'grouphead_name'=>$meetings['grouphead_name'],
+                    'village_id'=>$meetings['village_id'],'group_id'=>$meetings['group_id'],
+                    'grouphead_name'=>'',
                     'place'=>$meetings['place'],'time'=>$meetings['time'],
-                    'day'=>$meetings['day'],'created_by'=>$meetings['created_by'],
+                    'day'=>$meetings['wid'],'created_by'=>$meetings['created_by'],
                     'created_date'=>$meetings['created_date']);
         }
 
-        $office=$meeting->fetchGroupnames($meetings['bank_id']);
+        $office=$meeting->fetchGroupnames($meetings['village_id']);
             foreach($office as $office) {
                 $meetingForm->group_name->addMultiOption($office['id'],$office['name']);
             }
         $this->view->meetingForm->group_name->setValue($meetings['group_id']);
+        $meetingForm->meeting_name->removeValidator('Db_NoRecordExists');
 
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $id = $this->_getParam('meeting_id');
@@ -146,16 +159,16 @@ class Meeting_IndexController extends Zend_Controller_Action
             $this->view->meeting_id=$meeting_id = $this->_getParam('meeting_id');
             if ($meetingForm->isValid($formData)) {
                 $formdata1=array('name'=>$formData['meeting_name'],
-                                    'bank_id'=>$formData['institute_bank_id'],
+                                    'village_id'=>$formData['institute_bank_id'],
                                     'group_id'=>$formData['group_name'],
-                                    'grouphead_name'=>$formData['group_head'],
+                                    'grouphead_name'=> '',
                                     'place'=>$formData['meeting_place'],
                                     'time'=>$formData['meeting_time'],'day'=>$formData['meeting_day'],
                                     'created_by'=>$this->view->createdby);
-                $this->view->adm->updateLog("ob_meeting_log",$formdata2,$this->view->createdby);
+                $this->view->adm->updateLog("ourbank_meeting_log",$formdata2,$this->view->createdby);
                 //update 					
-                $this->view->adm->updateRecord("ob_meeting",$id,$formdata1);
-                $this->_redirect("/meetingindex");
+                $this->view->adm->updateRecord("ourbank_meeting",$id,$formdata1);
+               $this->_redirect('/meetingcommonview/index/index/meeting_id/'.$id);
             }
         }
 // 		} else {
@@ -167,7 +180,7 @@ class Meeting_IndexController extends Zend_Controller_Action
     }
 
     public function meetingdeleteAction() {
-        $this->view->pageTitle='Meetings';
+        $this->view->pageTitle='Group meeting';
 //Acl
 // 		$access = new App_Model_Access();
 // 		$checkaccess = $access->accessRights('Institution',$this->view->globalvalue[0]['name'],'addinstitutionAction');
@@ -179,7 +192,7 @@ class Meeting_IndexController extends Zend_Controller_Action
         if($this->_request->isPost() && $this->_request->getPost('Delete')) {
             $formdata = $this->_request->getPost();
             if($deleteForm->isValid($formdata)) {
-                $redirect = $this->view->adm->deleteAction("ob_meeting",$this->view->modulename,$this->view->id);
+                $redirect = $this->view->adm->deleteAction("ourbank_meeting",$this->view->modulename,$this->view->id);
                 $this->_redirect("/".$redirect);
             }
         }
@@ -189,30 +202,36 @@ class Meeting_IndexController extends Zend_Controller_Action
 // 		}
     }
 
-    public function fetchgroupsAction() {
+    public function fetchgroupsAction()
+    {
         $this->_helper->layout->disableLayout();
 
         $path = $this->view->baseUrl();
         $meetingForm = new Meeting_Form_Meeting($path);
         $this->view->meetingForm = $meetingForm;
-        $bank_id=$this->_request->getParam('bank_id');
+        $officeID=$this->_request->getParam('officeID');
+
         $meeting = new Meeting_Model_Meeting();
-        $office=$meeting->fetchGroupnames($bank_id);
+        $office=$meeting->fetchGroupnames($officeID);
+
         foreach($office as $office) {
             $meetingForm->group_name->addMultiOption($office['id'],$office['name']);
         }
     }
 
-    public function fetchheadnameAction() {
-        $this->_helper->layout->disableLayout();
 
+    public function headnameAction()
+    {
+        $this->_helper->layout->disableLayout();
         $path = $this->view->baseUrl();
         $meetingForm = new Meeting_Form_Meeting($path);
         $this->view->meetingForm = $meetingForm;
         $group_id=$this->_request->getParam('group_id');
         $meeting = new Meeting_Model_Meeting();
         $headname=$meeting->fetchHeadName($group_id);
-        foreach($headname as $headname1){}
-        $this->view->headname=$headname1['member_name'];
+        foreach($headname as $headname1){
+        $meetingForm->group_head->setValue($headname1['headname']);
+        }
     }
+
 }

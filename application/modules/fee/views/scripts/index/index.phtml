@@ -21,17 +21,15 @@
     <fieldset>
         <legend>Search</legend>
             <div class="search" style="margin-left:20px;">
-				<form action="<?php echo $this->baseUrl();?>/fee/" method="POST">
+				<form action="<?php echo $this->baseUrl();?>/fee" method="POST">
 					<table width="100%">
 						<tr>
 							<td class="label">Fee name:</td>
-							<td ><? echo $this->form->field3;?></td>
+							<td ><? echo $this->form->name;?></td>
 							<td class="label">Fee amount:</td>
-							<td ><? echo $this->form->field2;?></td>
+							<td ><? echo $this->form->value;?></td>
 						</tr>
-						<tr>
-							<td colspan="4" align="center"><? echo $this->form->Search;?></td>
-						</tr>
+						
 					</table>
 					<input type="submit" name="Search" id="Submit" value="Search">			
 				</form>	
@@ -48,15 +46,13 @@
 			<?php foreach ($this->paginator as $individual): ?>
 				<tr>
 					<td>
-					<a href="<?php echo $this->baseUrl()."/fee/index/view/id/".$individual->id; ?>">
-					<?php echo $this->escape($individual->name); ?></a>
+					<a href="<?php echo $this->baseUrl()."/fee/index/view/id/".$individual['id']; ?>">
+					<?php echo $this->escape($individual['name']);?></a>
 					</td>            
 					<td>
-					<?php echo $this->escape($individual->description);?>
-					</td>
+<?php echo $this->escape($individual['description']);?></a>					</td>
 					<td>
-					<?php echo $this->escape($individual->value);?></td>
-			<?php endforeach; ?>
+<?php echo $this->escape($individual['value']);?></a>			<?php endforeach; ?>
 		<?php endif; ?>
 		</tr>
  		<tr>

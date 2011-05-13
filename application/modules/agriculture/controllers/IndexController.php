@@ -44,6 +44,28 @@ class Agriculture_IndexController extends Zend_Controller_Action
     public function addAction() 
     {
         $this->view->title = $this->view->translate("Add agriculture details");
+        //Base line data
+        $this->view->memberid = $this->_getParam('id');
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $agriculture = new Agriculture_Model_agriculture(); 
+
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        $this->view->owner = $agriculture->owner($this->_getParam('id'));
+        $this->view->village = $agriculture->village($this->_getParam('id'));
+
+
+        //add agriculture
         $this->view->memberid=$member_id=$this->_getParam('id');
 //count number of family members
         $family_model=new Agriculture_Model_agriculture();
@@ -77,27 +99,52 @@ class Agriculture_IndexController extends Zend_Controller_Action
             $ownername=$this->_request->getParam('ownername');
             $survey_no=$this->_request->getParam('survey');
             $acre=$this->_request->getParam('acre');
+            $gunta=$this->_request->getParam('gunta'); 
             $value=$this->_request->getParam('acrevalue');
             $i = 0;
             foreach($this->_getParam('tenant') as $val) {
                 $agri = array('id' => '',
-                            'member_id'=>$member_id,
-                            'landowner_id'=>$owner_id[$i],
+                            'family_id'=>$member_id,
                             'landowner_name'=>$ownername[$i],
                             'land_id'=>$land_id[$i],
                             'villagename'=>$village_id[$i],
                             'survey_no' => $survey_no[$i],
-                            'acre'=>$acre[$i], 'value'=>$value[$i]);
+                            'acre'=>$acre[$i],
+                            'gunta'=>$gunta[$i]);
                 $i++;
                 $this->view->adm->addRecord("ourbank_agriculture",$agri);
             }
-            $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
+            $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
         }
     }
 
     public function editAction()
     {
         $this->view->title = $this->view->translate("Edit agriculture details");
+                //Base line data
+        $agriculture = new Agriculture_Model_agriculture(); 
+
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $this->view->owner = $agriculture->owner($this->_getParam('id'));
+        $this->view->village = $agriculture->village($this->_getParam('id'));
+
+
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        //edit agriculture
         $this->view->memberid=$member_id=$this->_getParam('id');
 //count number of family members
         $family_model=new Agriculture_Model_agriculture();
@@ -121,25 +168,25 @@ class Agriculture_IndexController extends Zend_Controller_Action
             $family_model->deleteagri($id);
             $land_id=$this->_request->getParam('tenant');
             $village_id=$this->_request->getParam('villagename');
-            $owner_id=$this->_request->getParam('ownertype');
             $ownername=$this->_request->getParam('ownername');
             $survey_no=$this->_request->getParam('survey');
             $acre=$this->_request->getParam('acre');
+            $gunta=$this->_request->getParam('gunta');
             $value=$this->_request->getParam('acrevalue');
             $i = 0;
             foreach($this->_getParam('tenant') as $val) {
                 $agri = array('id' => '',
-                            'member_id'=>$member_id,
-                            'landowner_id'=>$owner_id[$i],
+                            'family_id'=>$member_id,
                             'landowner_name'=>$ownername[$i],
                             'land_id'=>$land_id[$i],
                             'villagename'=>$village_id[$i],
                             'survey_no' => $survey_no[$i],
-                            'acre'=>$acre[$i], 'value'=>$value[$i]);
+                            'gunta'=>$gunta[$i],
+                            'acre'=>$acre[$i]);
                 $i++;
                 $this->view->adm->addRecord("ourbank_agriculture",$agri);
             }
-            $this->_redirect('/individualmcommonview/index/commonview/id/'.$id);
+            $this->_redirect('/familycommonview/index/commonview/id/'.$id);
         }
 
 

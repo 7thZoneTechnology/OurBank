@@ -16,7 +16,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
 <head>
 <script type="text/javascript" language="JavaScript">
 
@@ -63,55 +62,51 @@
     <div class="profile_tab">   
         <div id =2 style="width:400px;float:left">
 
-                <form name="addledger" action="<?php echo $this->baseUrl();?>/ledger/index/addledger" method="POST">
+             <form name="addledger" action="<?php echo $this->baseUrl();?>/ledger/index/addledger" method="POST">
                 <table id="hor-minimalist-b" class="fieldsets">
+                    <tr><Th colspan="2">New Ledger</Th></tr>
                     <TR>
-                        <th class="txt_rgt" colspan='2'>New Ledger</th>
+                        <td class="txt_rgt"><label class="mand"><b>Ledger For</b></label></td>
+                        <TD><?php echo $this->form->product;?><?php  echo $this->errorLedgerFor;?></TD>
                     </TR>
                     <TR>
-                        <td class="txt_rgt"><label class="mand">Ledger For</label></td>
-                        <td><?php echo $this->form->product;?><?php  echo $this->errorLedgerFor;?></td>
+                        <td class="txt_rgt"><label class="mand"><b>Gl Header</b></label></td>
+                        <TD ><?php echo $this->form->accountHeader; //echo $this->erroraccountHeader;?></TD>
                     </TR>
                     <TR>
-                        <td class="txt_rgt"><label class="mand">Gl Header</b></td>
-                        <td><?php echo $this->form->accountHeader; ?></td>
+                        <td class="txt_rgt"><label class="mand"><b>Description</b></label></td>
+                        <TD ><?php echo $this->form->glcodeDescription;?></TD>
                     </TR>
                     <TR>
-                        <td class="txt_rgt"><label class="mand">Description</b></td>
-                        <td><div><?php echo $this->form->glcodeDescription;?></div></td>
-                    </TR>
-                    <TR>
-                        <td><?php echo $this->form->Submit;?></td>
-                        <td><a href=<?php echo $this->baseUrl(); ?>/ledger/index>
+                        <TD><?php echo $this->form->Submit;?></TD>
+                        <td align="right"><a href=<?php echo $this->baseUrl(); ?>/ledger/index>
                         <input name="submit" type="submit" class="officebutton" value="Back"></a></td>
                     </TR>
 
                 </table>
                 </form>
-
-        </div>
+               </div>
 
         <div id = "1" style="display:none;width:400px;float:left">
-            <fieldset>
-            <legend>New Sub-Ledger</legend> 
-                <form name = "subcode" action="<?php echo $this->baseUrl();?>/ledger/index/addsubledger" method="POST">
-                    <table id="hor-minimalist-b" class="fieldsets">
+               <table id="hor-minimalist-b">
+                   <tr><Th>New Sub-Ledger</Th></tr>
+                      <form name = "subcode" action="<?php echo $this->baseUrl();?>/ledger/index/addsubledger" method="POST">
                         <TR>
                             <td  class="txt_rgt"><b>Main Ledger</b></td>
                             <td ><div id="subproducts"><b class="star">*</b></div><?php  echo $this->errorSubLedgerFor;?></td>
                         </TR>
     
                         <TR>
-                            <td  class="txt_rgt"><label class="mand">Sub-Ledger For</td>
-                            <TD ><?php echo $this->form->offerproduct; ?></TD>
+                            <td  class="txt_rgt"><b class="star">Sub-Ledger For : </b></td>
+                            <TD ><?php echo $this->form->offerproduct; ?><span class="reqMark">*</span></td>
                         </TR>
                         <TR>
-                            <td  class="txt_rgt"><label class="mand">Gl Sub Header</td>
-                            <TD ><?php echo $this->form->subheader; echo $this->erroraccountHeader;?></TD>
+                            <td  class="txt_rgt"><b class="star">Gl Sub Header: </b></td>
+                            <TD ><?php echo $this->form->subheader; echo $this->erroraccountHeader;?><span class="reqMark">*</span></TD>
                         </TR>
                         <TR>
-                            <td  class="txt_rgt">Description</td>
-                            <TD ><?php echo $this->form->glsubaccountdescription;?></TD>
+                            <td  class="txt_rgt"><b class="star">Description:</b></td>
+                            <TD ><?php echo $this->form->glsubaccountdescription;?><span class="reqMark">*</span></TD>
                             <input type="hidden" name="glcode_id" value="">
                         </TR>
                         <TR>
@@ -121,18 +116,15 @@
                         </TR>
                     </table>
                 </form>
-            </fieldset>
-        </div>
+               </div>
+
         <span id="glcode">
             <div id =3 style="width:400px;float:left">
-
-                    <table id="hor-minimalist-b" class="fieldsets">
-                    <tr>
-                        <th class="txt_rgt" colspan='2'>Existing Ledger</th>
-                    </tr>
+                    <table id="hor-minimalist-b">
+                       <tr><Th colspan="2">Existing ledger</Th></tr>
                             <tr >
-                                <td ><label class="mand">Gl Code</td>
-                                <td ><label class="mand">Gl Header</td>
+                                <td ><b class="star">Gl Code</b></td>
+                                <td ><b class="star">Gl Header</b></td>
                             </tr>
                             <?php foreach($this->ledger as $ledger) : ?>
                                 <tr >
@@ -144,7 +136,6 @@
                                 </tr>
                             <?php endforeach; ?>
                     </table>
-
             </div>
         </span>
         <div id="statediv"></div>

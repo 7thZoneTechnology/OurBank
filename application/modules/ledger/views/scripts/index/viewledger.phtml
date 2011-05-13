@@ -59,7 +59,7 @@
     </TR>
     <TR>
         <TD >Created Date</TD>
-        <TD ><?php $dateconvert = new Creditline_Model_dateConvertor();
+        <TD ><?php $dateconvert = new App_Model_dateConvertor();
                     $date=explode(' ',$this->created_date); 
                     echo $dateconvert->phpnormalformat($date[0]);?></TD>
         <TD></td>

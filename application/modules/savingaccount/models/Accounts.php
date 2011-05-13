@@ -42,42 +42,46 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
         $this->update($data , $where );
     }
 	
-    public function search($membercode) 
+    public function search($code) 
     {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql="SELECT 
-              a.id as id,
-              a.membercode as code,
+ $sql="SELECT 
+              DISTINCT a.id as id,
+              a.familycode as code,
               a.name as name,
-              substr(a.membercode,5,1) as type,
-	      	  c.type as membertype,
-              b.name as officename
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
               from
-              ourbank_member a,
+              ourbank_familymember a,
               ourbank_office b,
-              ourbank_membertypes c
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
               where
-              a.office_id= b.id and
-              (a.name like '%' '$membercode' '%'  or a.membercode like '%' '$membercode' '%') AND
-              substr(a.membercode,5,1) = c.id
+              a.village_id= b.id and
+              a.id = d.member_id and
+              (a.name like '%' '$code' '%'  or a.familycode like '%' '$code' '%') AND
+              substr(a.familycode,5,1) = c.id  
               union
-	      	  SELECT
-	          a.id as id,
+              SELECT
+	      DISTINCT a.id as id,
               a.groupcode as code,
               a.name as name,
-	          substr(a.groupcode,5,1) as type,
-              c.type as membertype,
-              b.name as officename
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
               from
               ourbank_group a,
               ourbank_office b,
-              ourbank_membertypes c
+              ourbank_master_membertypes c
               where
-              a.office_id= b.id and
-              (a.name like '%' '$membercode' '%'  or a.groupcode like '%' '$membercode' '%') AND
+              a.village_id= b.id and
+              (a.name like '%' '$code' '%'  or a.groupcode like '%' '$code' '%') AND
               substr(a.groupcode,5,1) = c.id";
-        $result = $this->db->fetchAll($sql,array($membercode));
+        $result = $this->db->fetchAll($sql,array($code));
         return $result;
     }
     
@@ -85,37 +89,39 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
+
         $sql="SELECT 
               a.id as id,
-              a.membercode as code,
+              a.familycode as code,
               a.name as name,
-              substr(a.membercode,5,1) as type,
+              substr(a.familycode,5,1) as type,
               c.type as membertype,
               b.name as officename
               from
-              ourbank_member a,
+              ourbank_familymember a,
               ourbank_office b,
-              ourbank_membertypes c
+              ourbank_master_membertypes c
               where
-              a.office_id= b.id and 
-              substr(a.membercode,5,1) = c.id and
-              a.membercode like '%' '$code' '%'
+              a.village_id= b.id and 
+              substr(a.familycode,5,1) = c.id and
+              a.familycode like '%' '$code' '%'
               union
-			  SELECT 
-			  a.id as id,
+	      SELECT 
+	      a.id as id,
               a.groupcode as code,
               a.name as name,
-	          substr(a.groupcode,5,1) as type,
-	          c.type as membertype,
+	      substr(a.groupcode,5,1) as type,
+	      c.type as membertype,
               b.name as officename
               from
               ourbank_group a,
               ourbank_office b,
-              ourbank_membertypes c
+              ourbank_master_membertypes c
               where
-              a.office_id= b.id and
-	          substr(a.groupcode,5,1) = c.id and
+              a.village_id= b.id and 
+              substr(a.groupcode,5,1) = c.id and
               a.groupcode like '%' '$code' '%'";
+              //echo $sql;
         $result = $db->fetchAll($sql,array($code));
         return $result;
     }
@@ -130,15 +136,16 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
                 from 
                 ourbank_productsoffer A,
                 ourbank_product B,
-                ourbank_member C
+                ourbank_familymember C
                 where 
-                C.membercode = $code AND 
-                substr(C.membercode,5,1) = A.applicableto AND 
-				A.product_id = B.id AND 
-				B.category_id = 1 AND
-				B.shortname = 'ps'
-				UNION
-				select 
+                C.familycode = $code AND 
+                (substr(C.familycode,5,1) = A.applicableto OR
+                A.applicableto = 4) AND 
+                A.product_id = B.id AND 
+                B.category_id = 1 AND
+                B.shortname = 'ps'
+                UNION
+                select 
                 A.name as name,
                 A.id as id
                 from 
@@ -147,11 +154,11 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
                 ourbank_group C
                 where 
                 C.groupcode = $code AND 
-                substr(C.groupcode,5,1) = A.applicableto AND 
-				A.product_id = B.id AND 
-				B.category_id = 1 AND
-				B.shortname = 'ps' ";
-
+                (substr(C.groupcode,5,1) = A.applicableto OR
+                A.applicableto = 4) AND 
+		A.product_id = B.id AND 
+		B.category_id = 1 AND
+		B.shortname = 'ps' ";
         $result = $db->fetchAll($sql,array($code));
         return $result;
     }
@@ -168,11 +175,12 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
                 ourbank_accounts A,
                 ourbank_productsoffer B,
                 ourbank_product C,
-                ourbank_member D
+                ourbank_familymember D
                 WHERE
-                D.membercode = $code AND
- 				substr(D.membercode,5,1) = A.membertype_id AND
-				A.member_id = D.id AND
+                D.familycode = $code AND
+                substr(A.account_number,8,1) = 'S' AND
+                substr(D.familycode,5,1) = A.membertype_id AND
+                A.member_id = D.id AND
                 A.product_id = B.id AND
                 B.product_id = C.id AND
                 C.category_id = 1
@@ -187,8 +195,9 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
                 ourbank_group D
                 WHERE
                 D.groupcode = $code AND
- 				substr(D.groupcode,5,1) = A.membertype_id AND
-				A.member_id = D.id AND
+                substr(A.account_number,8,1) = 'S' AND
+ 		substr(D.groupcode,5,1) = A.membertype_id AND
+		A.member_id = D.id AND
                 A.product_id = B.id AND
                 B.product_id = C.id AND
                 C.category_id = 1";
@@ -199,15 +208,16 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
     
     public function details($productId,$code) 
     {
+        // Is been seen by nataraj sir
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT 
-				E.id as id,
-                E.membercode as code,
-                substr(E.membercode,5,1) as typeID,
-                E.name as name,
                 F.name as officename,
                 F.id as officeid,
+		E.id as id,
+                E.familycode as code,
+                substr(E.familycode,5,1) as typeID,
+                E.name as name,
                 B.name as productname,
                 B.begindate as begindate,
                 B.glsubcode_id as glsubID,
@@ -216,24 +226,24 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
                 FROM
                 ourbank_productsoffer B,
                 ourbank_productssaving C,
-                ourbank_member E,
+                ourbank_familymember E,
                 ourbank_office F,
-				ourbank_product G
+	        ourbank_product G
                 WHERE
-                E.membercode = $code AND 
-				E.office_id = F.id AND
+                E.familycode = $code AND 
                 B.id = $productId AND
                 B.id = C.productsoffer_id AND
-				G.id = B.product_id AND
- 				G.category_id = 1
+		G.id = B.product_id AND
+		E.village_id = F.id AND
+ 		G.category_id = 1
                 UNION
                 SELECT 
-				E.id as id,
+                F.name as officename,
+                F.id as officeid,
+		E.id as id,
                 E.groupcode as code,
                 substr(E.groupcode,5,1) as typeID,
                 E.name as name,
-                F.name as officename,
-                F.id as officeid,
                 B.name as productname,
                 B.begindate as begindate,
                 B.glsubcode_id as glsubID,
@@ -244,15 +254,16 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
                 ourbank_productssaving C,
                 ourbank_group E,
                 ourbank_office F,
-				ourbank_product G
+		ourbank_product G
                 WHERE
                 E.groupcode = $code AND 
-				E.office_id = F.id AND
                 B.id = $productId AND
                 B.id = C.productsoffer_id AND
-				G.id = B.product_id AND
- 				G.category_id = 1
+		G.id = B.product_id AND
+		E.village_id = F.id AND
+ 		G.category_id = 1
                 ";
+                //echo $sql;
         return $db->fetchAll($sql,array($productId,$code));
     }
     
@@ -283,49 +294,61 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
     public function getGlcode($officeId)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-		$sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId and glcode_id=2";
-		return $result = $db->fetchAll($sql);
+        $sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId and glcode_id=2";
+        return $result = $db->fetchAll($sql);
     }
 
-	public function getMember($officeid)
-	{
-		$db = Zend_Db_Table::getDefaultAdapter();
-		$sql = "select 
-				C.id as id,
-				C.name as name
-				from
-				ourbank_group as A,
-				ourbank_groupmembers B,
-				ourbank_member C
-				where
-				A.office_id = $officeid AND
-				A.id = B.id AND
-				B.member_id = C.id  
-				";
-		return $result = $db->fetchAll($sql);
-	}
+    public function getMember($code)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $sql = "select 
+                C.id as id,
+                C.name as name
+                from
+                ourbank_group as A,
+                ourbank_groupmembers B,
+                ourbank_familymember C
+                where
+                A.groupcode = $code AND
+                A.id = B.group_id AND
+                B.member_id = C.id  
+                ";
+        //echo $sql;
+        return $result = $db->fetchAll($sql);
+    }
 
-	public function goupAcc($group,$productId,$accId,$amt,$tranID,$date)
-	{
-        $db = $this->getAdapter();
-        foreach($group as $group) {
-			// Acc entry
-            $accdata = array('account_id' => $accId,
-                          'member_id' => $group,
-                          'product_id' => $productId,
-                          'status' => 3,
-                          'created_by' => 1);
-           	$db->insert('ourbank_group_acccounts',$accdata);
-			//Grp transaction entry
-           	$trandata = array('transaction_id' => $tranID,
-						  	'account_id' => $accId,
-						  	'transaction_date' => $date,
-						  	'transaction_type' => 1,
-						  	'transaction_amount' => $amt/2,
-                          	'member_id' => $group,
-                          	'transacted_by' => 1);
-           $db->insert('ourbank_group_savingstransaction',$trandata);
+
+    public function getAccountid($memberid)
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $sql = "select id from ourbank_accounts where member_id = $memberid and tag_account != 0";
+            return $result = $db->fetchOne($sql);
         }
-		return true; 
-	}
+
+    public function goupAcc($code,$productId,$accId,$amt,$tranID,$date,$count)
+    {
+        $db = $this->getAdapter();
+        $group = $this->getMember($code);
+        foreach($group as $group) {
+                    // Acc entry
+        $Accid = $this->getAccountid($group->id);
+
+        $accdata = array('account_id' => $Accid,
+                        'member_id' => $group->id,
+                        'product_id' => $productId,
+                        'status' => 3,
+                        'created_by' => 1);
+        $db->insert('ourbank_group_acccounts',$accdata);
+        //Grp transaction entry
+        $trandata = array('transaction_id' => $tranID,
+                          'account_id' => $Accid,
+                          'transaction_date' => $date,
+                          'transaction_type' => 1,
+                          'transaction_amount' => $amt/$count,
+                          'member_id' => $group->id,
+                          'transacted_by' => 1);
+        $db->insert('ourbank_group_savingstransaction',$trandata);
+        }
+        return true; 
+    }
 }

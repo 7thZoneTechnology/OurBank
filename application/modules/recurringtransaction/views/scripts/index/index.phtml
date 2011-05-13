@@ -17,15 +17,15 @@
 ############################################################################
 !-->
 
-<?php if (!$this->recurringAccountsSearch )  { ?>
+<?php if (!$this->recurringAccountsSearch)  { ?>
 <div id="searchDiv">
     <fieldset>
         <legend>Search</legend>
             <div class="cont-rgt-data">
                 <form action="<?php echo $this->baseUrl();?>/recurringtransaction/index" method="POST">
-                    <table  summary="Employee Pay Sheet">
-                        <tr>
-                            <td><br>Account Number / Membercode:</td>
+                <table class="fieldsets">
+                    <tr>
+                            <td>Account Number/Membercode</td>
                             <td><?php echo $this->form->member_id;?></td>
                         </tr>
                         <tr>
@@ -36,50 +36,47 @@
             </div>
     </fieldset>
 	</div>
-	<?}?>
+<? } ?>
 <?php if ($this->membertype_ID==2) { ?>
     <fieldset>
-        <legend>Member details</legend>
-            <div class="cont-rgt-data">
-                <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-                    <TR class="tdbrown">
-                        <TD width="20%">Name</TD>
-                        <TD width="20"><?php echo $this->groupname;?></TD>
-                    </TR>
-                    <TR class="tdbrown">
-                        <TD width="20%">Code</TD>
-                        <TD width="20"><?php echo $this->membercode;?></TD>
-                    </TR>
-                </table>
-            </div>
+    <legend>Member details</legend>
+        <div class="cont-rgt-data">
+            <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                <TR class="tdbrown">
+                    <TD width="20%">Name</TD>
+                    <TD width="20"><?php echo $this->groupname;?></TD>
+                </TR>
+                <TR class="tdbrown">
+                    <TD width="20%">Code</TD>
+                    <TD width="20"><?php echo $this->membercode;?></TD>
+                </TR>
+            </table>
+        </div>
 </fieldset>
 <? }?>
 <?php if ($this->membertype_ID==1 ) { ?>
-
-            <div class="cont-rgt-data">
-                <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-                        <TR class="tdbrown">
-                            <TD width="20%">Name</TD>
-                            <TD width="20"><?php echo $this->membername;?></TD>
-                        <TR class="tdbrown">
-                            <TD width="20%">code</TD>
-                            <TD width="20"><?php echo $this->membercode;?></TD>
-                        </TR>
-               </table>
-            </div>
-
-<? } ?>
-<?php if ($this->membertype_ID==1 || $this->membertype_ID==2 ) { ?>
-
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-                <TR>
-                    <td><span class="reqMark">Account</span></td><td><span class="reqMark">Productname</span></td></TR>
-                    <?php foreach($this->accountIDFetch as $arrayroles2)  { ?>
-<TR><TD><a href="<?php echo $this->baseUrl();?>/recurringtransaction/index/recurring/accountId/<?php echo base64_encode($arrayroles2['account_id']);?>/productId/<?php echo base64_encode($arrayroles2['product_id']);?>"><?php echo $arrayroles2['account_number'];?></a></TD>
-                <TD><?php echo $this->offerproductname;?></TD></TR>
-                <? } ?>
+    <div class="cont-rgt-data">
+        <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
+                <TR class="tdbrown">
+                    <TD width="20%">Name</TD>
+                    <TD width="20"><?php echo $this->membername;?></TD>
+                <TR class="tdbrown">
+                    <TD width="20%">code</TD>
+                    <TD width="20"><?php echo $this->membercode;?></TD>
+                </TR>
         </table>
     </div>
+<? } ?>
 
+<?php if ($this->membertype_ID==1 || $this->membertype_ID==2 ) { ?>
+    <div class="cont-rgt-data">
+        <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
+            <TR>
+                <td><span class="reqMark">Account</span></td><td><span class="reqMark">Productname</span></td></TR>
+                <?php foreach($this->accountIDFetch as $arrayroles2)  { ?>
+                <TR><TD><a href="<?php echo $this->baseUrl();?>/recurringtransaction/index/recurring/accountId/<?php echo base64_encode($arrayroles2['account_id']);?>/productId/<?php echo base64_encode($arrayroles2['product_id']);?>"><?php echo $arrayroles2['account_number'];?></a></TD>
+            <TD><?php echo $this->offerproductname;?></TD></TR>
+            <? } ?>
+        </table>
+    </div>
 <? } ?>

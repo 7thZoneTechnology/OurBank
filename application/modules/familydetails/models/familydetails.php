@@ -21,7 +21,7 @@
 
 <?php
 class Familydetails_Model_familydetails  extends Zend_Db_Table {
-protected $_name = 'ob_member';
+protected $_name = 'ourbank_member';
 
 //get family member details with respective family member id
 public function edit_family($member_id)

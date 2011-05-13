@@ -17,58 +17,38 @@
 ############################################################################
 !-->
 
-<fieldset style="width:759px;float:left">
+<div id = "searchDiv">
+        <TABLE id="hor-minimalist-b">
+	<Th colspan="5">Delete category</th>
+           <?php foreach($this->categorydetails as $category) {  ?>
+            <TR>
+                <TD>Category Name</TD>
+                <TD></TD>
+                <TD></TD>
+                <TD><?php echo $category['name'];?></TD>
+                <TD></TD>
+            </TR>
+            <TR>
+                <TD>Category Description</TD>
+                <TD></TD>
+                <TD></TD>
+                <TD><?php echo $category['description'];?></TD>
+                <TD></TD>
+            </TR>
+        </TABLE>
+        <?php } ?>
 
-<div style="width:480px;float:left"> 
+        <form action="<?php echo $this->baseUrl();?>/category/index/categorydelete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
+        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                <TR>
+                        <TD  width="35%" align="right" ><font color="green" size="+1">*</font><label>Remarks</label></TD>
+                        <TD  width="65%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
+                </tr>
+                <tr>
+                        <TD><input type="submit" name="Delete" id="Submit" value="Delete"></td>			
+                        <td align="right"><a href="<?php echo $this->baseUrl();?>/category/index"><input name="submit" type="submit"  value="Cancel" ></a></td>
+                </TR>
+        </table>
+        </form>
 
-    <TABLE id="hor-minimalist-b">
-        <tr><Th>Delete category</Th><th></th><th></th><th><th></th></tr>
-        <?php foreach($this->categorydetails as $category) {  ?>
-
-				<TR>
-					<TD>Category Name</TD>
-					<TD></TD>
-					<TD></TD>
-					<TD><?php echo $category['name'];?></TD>
-					<TD></TD>
-				</TR>
-				<TR>
-					<TD>Category Description</TD>
-					<TD></TD>
-					<TD></TD>
-					<TD><?php echo $category['description'];?></TD>
-					<TD></TD>
-				</TR>
-				<tr>
-                                <TD></TD><TD></TD>
-					<TD></TD>
-					<TD></TD>
-					<TD></TD></tr>
-			</TABLE>
-<TABLE id="hor-minimalist-b">
-<tr><Th>Confirm Delete</th></tr>
-<?php } ?>
-	
-			<div class="cont-rgt-data">
-				<form action="<?php echo $this->baseUrl();?>/category/index/categorydelete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" class="fieldsets">
-					<TR>
-						<TD><label class="mand">Remarks</label></TD>
-						<TD  width="150%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
-									</table>
-					</tr>
-							<td><input type="submit" name="Delete" id="Submit" value="Delete"></td>			
-
-						
-					<TD><a href="<?php echo $this->baseUrl(); ?>/category">
-					<input name="submit" type="submit" class="No" value="No"></a></TD>
-					<TD></TD>
-					<TD></TD>
-					<TD></TD>
-					<TD></TD>
-				</TR></TD>
-					</TR>
-				</form>
-			
-</fieldset>
 </div>

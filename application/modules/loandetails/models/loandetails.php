@@ -20,17 +20,35 @@
 ?>
 
 <?php
-class Loandetails_Model_loandetails extends Zend_Db_Table {
-	protected $_name = 'ob_accounts';
+class Loandetails_Model_loandetails  extends Zend_Db_Table {
+    protected $_name = 'ourbank_member';
 
-	public function loanInstalments($accountId) {
-		$select = $this->select()
-			->setIntegrityCheck(false)  
-			->join(array('A' => 'ob_installmentdetails'),array('Installmentserial_id'))
-			->where('A.account_id = ?',$accountId)
-			->where('A.recordstatus_id = 3 OR A.recordstatus_id =1')
-			->join(array('B' => 'ob_installmentstatus'),'A.installment_status=B.installmentstatus_id');
-		$result = $this->fetchAll($select);
-		return $result->toArray();
-	}
+        public function edit_loantypes()
+        {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_master_loansource'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+//         die ($select->__toString($select));
+        }
+
+	public function get_loandetails($memberid)
+        {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_loandetails'),array('a.id'))
+				->where('a.family_id=?',$memberid);
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+//         die ($select->__toString($select));
+        }
+
+//update the family details with respective to member id...
+    public function update($loanId,$input = array()) {
+    $where[] = "id = '".$loanId."'";
+    $db = $this->getAdapter();
+    $result = $db->update('ourbank_loandetails',$input,$where);
+    }
+
 }

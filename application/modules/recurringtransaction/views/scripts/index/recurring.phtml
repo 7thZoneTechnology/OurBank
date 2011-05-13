@@ -27,7 +27,7 @@
                 <TD width="20"><?php echo $this->groupname;?></TD>
             </TR>
             <? }?>
-            <?php if ($this->memberfirstname ) { ?>
+            <?php if ($this->memberfirstname) { ?>
             <TR class="tdbrown">
                 <TD width="20%">Name</TD>
                 <TD width="20"><?php echo $this->memberfirstname;?></TD>
@@ -56,7 +56,7 @@
             <?php } ?>
             <tr>
                 <td width="40%"><B style="color:red">Capital amount:</b></td>
-                <TD width="60%"><B style="color:red"><?php echo $this->paidAmount;?></B></TD>
+                <TD width="60%"><B style="color:red"><?php echo $this->capitalAmount;?></B></TD>
             </TR>
             <TR>
                 <td width="50%"><B style="color:red">Gross interest:</b></td>
@@ -71,33 +71,6 @@
     </div>
 </div>
 
-<DIV style="float:left;width:50%">
-<?php If($this->membertypr_id==2) { ?>
-<a href="#" id="open">groupMembers</a>
-<div class="box">
-<div id="content1">
-
-    <div class="cont-rgt-data">
-        <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-            <tr class="tdbrownheading">
-                <td width="30%">Name</td>
-                <td width="50%">code</td>
-            </tr>
-        <?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
-            <tr class="tdbrown">
-                <TD width="30%"><?php echo $arrayroles1['memberfirstname'];?></TD>
-                <TD width="50%"><?php echo $arrayroles1['membercode'];?></TD>
-            </tr>
-        <?php }?>
-        </table>
-    </div>
-
-<p><a href="#" id="close">hide</a></p>
-</div>
-</div>
-<?php }	?>
-<table width="100%"><TR><TD></TD></TR></table>
-</DIV>
 
 <div style="float:left;width:50%">
     <div class="cont-rgt-data">

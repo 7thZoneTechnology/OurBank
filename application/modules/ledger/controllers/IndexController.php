@@ -90,7 +90,9 @@ class Ledger_IndexController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if ($form->isValid($formData)) {
                 $first = new Ledger_Model_Ledger();
+
                 $arrayledger = $first->ledgerSearch($glcode,$accountHeader);
+
                 $arraysubledger = $first->subledgerSearch($glsubcode,$subheader);
                 $this->view->subledger = $arraysubledger;
 
@@ -122,8 +124,9 @@ class Ledger_IndexController extends Zend_Controller_Action
 
         $ledger = new Ledger_Model_Ledger();
         $categoryDetails = $ledger->getLedgerTypes();
+//         echo "<pre>"; print_r($categoryDetails);
         foreach($categoryDetails as $cName) {
-        $form->product->addMultiOption($cName->id,$cName->description);
+        $form->product->addMultiOption($cName->id,$cName->name);
         }
 
         $products = $ledger->getproducts();
@@ -149,7 +152,7 @@ class Ledger_IndexController extends Zend_Controller_Action
                     $ledger = new Ledger_Model_Ledger();
                     $result = $ledger->getLdegertype($productname);
                     foreach($result as $result1) {
-                    $headerCon = substr($result1->description, 0, 1);
+                    $headerCon = substr($result1->name, 0, 1);
                     }
                     if ($glCode) {
                         $fetchGlcode=$ledger->fetchGlcode($glCode);//fetch glcode for id
@@ -338,19 +341,6 @@ class Ledger_IndexController extends Zend_Controller_Action
 
     public function deleteledgerAction()
     {
-        $this->view->id=$ledgerID=$this->_request->getParam('id');
-        $ledger = new Ledger_Model_Ledger();
-        $ledgerselect = $ledger->viewLedger($ledgerID);
-        $this->view->ledger = $ledgerselect;
-        foreach ($ledgerselect as $ledger1) {
-            $ledgerID = $ledger1->id;
-            $this->view->header=$ledger1->header;
-            $this->view->glcode=$ledger1->glcode;
-            $this->view->description=$ledger1->description;
-            $this->view->login_name=$ledger1->name;
-            $this->view->created_date=$ledger1->created_date;
-        }
-
         $form = new Management_Form_Delete();
         $this->view->form = $form;
         $id= $this->view->id = $this->_request->getParam('id');
@@ -371,32 +361,20 @@ class Ledger_IndexController extends Zend_Controller_Action
 
     public function deletesubledgerAction()
     {
-        $this->view->id = $subLedgerID = $this->_request->getParam('id');
-        $ledger = new Ledger_Model_Ledger();
-        $ledgerselect = $ledger->viewSubLedger($subLedgerID);
-        $this->view->subledger = $ledgerselect;
-        foreach ($this->view->subledger as $ledger1) {
-            $this->view->glcode=$ledger1->glcode;
-            $this->view->glsubcode=$ledger1->glsubcode;
-            $this->view->subheader=$ledger1->header;
-            $this->view->glsubaccountdescription=$ledger1->description;
-            $this->view->login_name=$ledger1->name;
-            $this->view->created_date=$ledger1->created_date;
-        }
         $form = new Management_Form_Delete();
         $this->view->form = $form;
         $id= $this->view->id = $this->_request->getParam('id');
         if ($this->_request->isPost() && $this->_request->getPost('Delete')) 
         {
             $formData=$this->_request->isPost();
-            if ($this->_request->getParam('remarks')) 
+            if ($this->_request->getParam('remarks'))
             {
                 $glsubdetails=$this->view->adm->editRecord('ourbank_glsubcode',$id);
                 $this->view->adm->addRecord('ourbank_glsubcode_log',$glsubdetails[0]);
                 $this->view->adm->deleteRecord('ourbank_glsubcode',$id);
                 $this->_redirect("ledger/index");
             } else {
-                $this->view->errormsg="Value required";
+                $this->view->errormsg="Value is required and can't be empty";
             }
         }
     }
@@ -409,7 +387,7 @@ class Ledger_IndexController extends Zend_Controller_Action
         $product = $ledger->getLdegertype($product_id); 
         foreach($product as $product) 
         {
-            $this->view->ledgername = $product->description;
+            $this->view->ledgername = $product->name;
         }
     }
 

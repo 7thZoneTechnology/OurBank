@@ -19,22 +19,37 @@
 */
 ?>
 
-
 <?php
 class Attendance_Model_Attend extends Zend_Db_Table {
-    protected $_name = 'ob_member';
+    protected $_name = 'ourbank_member';
 
-    public function fetchMembers($meeting_ID) {
+public function fetchgroupid($meeting_ID) {
         $select = $this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a' => 'ob_meeting'),array('id'))
-                ->where('a.id = '.$meeting_ID)
-
-                ->join(array('b' => 'ob_groupmembers'),'b.id = a.group_id')
-                ->where('b.groupmember_status = 1 OR b.groupmember_status = 3')
-
-                ->join(array('c' => 'ob_member'),'b.member_id = c.id');
+                ->join(array('a' => 'ourbank_meeting'),array('id'))
+                ->where('a.id = '.$meeting_ID);
+	//die($select->__toString($select));
         $result = $this->fetchAll($select);
+        return $result->toArray();		
+    }
+
+
+    public function fetchMembers($meeting_ID,$groupid) {
+        $select = $this->select()
+                ->setIntegrityCheck(false)
+
+                ->join(array('a' => 'ourbank_meeting'),array('a.id'),array('a.day','a.grouphead_name','a.place','a.time'))
+                ->where('a.id =?',$meeting_ID)
+                ->join(array('b' => 'ourbank_group'),'b.village_id = a.village_id',array('b.id','b.name as groupname'))
+            ->where('b.id =?',$groupid)
+		->join(array('c' => 'ourbank_groupmembers'),'c.group_id = b.id',array('c.member_id'))
+		->join(array('d' => 'ourbank_familymember'),'d.id = c.member_id',array('d.name as membername','d.id'))
+->join(array('e' => 'ourbank_master_weekdays'),'a.day = e.id',array('e.name as day'));
+
+
+	//die($select->__toString($select));
+        $result = $this->fetchAll($select);
+        //$count = $result->count(); 
         return $result->toArray();		
     }
 	

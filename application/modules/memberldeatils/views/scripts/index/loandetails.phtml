@@ -1,0 +1,148 @@
+
+<?php if (count($this->details)) { ?>
+ <div style="float:left;width:350px"> 
+    <?php foreach($this->details as $details) { ?>
+        <table id="hor-minimalist-s">
+            <TR>
+                <TH>Menber details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td>Name </td>
+                <TD><?php echo $details->name ?></TD>
+            </TR>
+
+            <TR>
+                <td>Branch</td>
+                <TD><?php echo $details->officename ?></TD>
+            </TR>
+            <TR>
+                <td>Code</td>
+                <TD><?php echo $details->code ?></TD>
+
+            </TR>
+            <TR>
+                <td> Account code</td>
+                <td><?php echo $details->number ?></TD>
+            </TR>
+            <TR>
+                <TH>Loan Details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td>Loan name</b></td>
+                <td><?php echo $details->loanname ?></TD>
+            </TR>
+            <TR>
+                <td>Loan amount R$</b></td>
+                <td><?php echo $details->amount ?></TD>
+            </TR>
+
+            <TR>
+                <td>Interest rate %</td>
+                <TD><?php echo $details->interest ?></TD>
+            </TR>
+
+            <TR>
+            <td>Installments</td>
+                <TD><?php echo $details->installments ?></TD>
+            </TR>
+            <TR>
+                <td>Sanctioned date</b></td>
+                <td><?php echo $details->sanctioned ?></TD>
+            </TR>
+            <TR>
+                <td>Fee</b></td>
+                <td></TD>
+            </TR> 
+        </table> 
+    <?php } ?>
+    <br/>
+</div>
+<div style="float:right;width:350px"> 
+        <table id="hor-minimalist-s" border="1">
+            <TR>
+                <TH colspan="9">Installment status</TH>
+                <TH>No.</TD>
+                <TH colspan="9">Amount</TH>
+            </TR>
+            <TR>
+                <TD colspan="9">Paid</TD>
+                <?php foreach ($this->paid as $paid) { ?>
+                <TD><?php echo $paid->paidCount ; ?></TD>
+                <TD colspan="9" align="right"><?php echo $paid->paidAmt ; ?></TD>
+                <?php } ?>
+            </TR>
+            <TR>
+                <TD colspan="9">Due</TD>
+                <?php foreach ($this->unpaid as $unpaid) { ?>
+                <TD><?php echo $unpaid->unpaidCount ; ?></TD>
+                <TD colspan="9" align="right"><?php echo $unpaid->unpaidAmt ; ?></TD>
+                <?php } ?>
+            </TR>
+        </table>
+        <br>
+        <table id="hor-minimalist-s" border="1">
+            <TR>
+                <TH>Sl no.</TH>
+                <TH colspan="9">Deatails of interest collected by the member</TH>
+                <TH>Amount in Rs.</TD>
+            </TR>
+            <TR>
+                <TD>1</TD>
+                <TD colspan="9">Paid amount</TD>
+                <?php foreach ($this->paid as $paid) { ?>
+                <td align="right"><?php echo $paid->paidAmt ; ?></td>
+                <?php } ?>
+
+            </TR>
+             <TR>
+                <TD>2</TD>
+                <TD colspan="9">Capital amount</TD>
+                <?php foreach($this->details as $details) { ?>
+                <td align="right"><?php echo $details->amount; ?></td>
+                <?php } ?>
+            </TR>
+            <TR>
+                <TD>3</TD>
+                <TD colspan="9">Total interet paid</TD>
+                <?php foreach ($this->paid as $paid) { ?>
+                <td align="right"><?php echo $paid->interest ; ?></td>
+                <?php } ?>
+            </TR>
+        </table>
+</div>
+<?php $convertdate = new App_Model_dateConvertor(); ?>
+
+<table id="hor-minimalist-b">
+    <tr>
+        <th>V No.</td>
+        <th>Transaction date</td>
+        <th>Creidt</td>
+        <th>Debit</td>
+        <th>Payment mode</td>
+        <th>Transacted by</td>  
+    </tr>
+    <?php foreach($this->tran as $transaction) : ?>
+    <tr>
+       <td><?php echo $transaction->id; ?></td>
+       <td><?php echo $transaction->date; ?></td>
+       <?php if ($transaction->cr) {?>
+       <td><?php echo $transaction->cr; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+       <?php if ($transaction->dt) { ?> 
+       <td><?php echo $transaction->dt; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+
+       <td><?php echo $transaction->mode; ?></td>
+       <td><?php echo $transaction->name; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+    <?php } else { ?>
+    Invalid number
+<?php } ?>

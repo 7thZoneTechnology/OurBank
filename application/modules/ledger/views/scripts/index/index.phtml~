@@ -17,6 +17,7 @@
 ############################################################################
 !-->
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://gmpg.org/xfn/11">
@@ -51,32 +52,34 @@
 <div id="searchDiv">
     <fieldset>
         <legend>Ledger search </legend>
-        <div class="search">
-            <table id = "fieldsets">
+        <div class="search" style="margin-left:20px;">
+            <table width="100%">
                 <form name="ledgerindex" action="<?php echo $this->baseUrl();?>/ledger/index" method="POST">
                     <tr>
-                        <td class="label">Ledger code:</td>
-                        <td><?php  echo $this->form1->field6;?></td>
-                        <td class="label">Sub ledger code:</td>
-                        <td><?php  echo $this->form1->field2;?></td>
+                        <td class="label"><br />Ledger code:</td>
+                        <td><?php  echo $this->form1->field6; ?></td>
+                        <td class="label"><br />Sub ledger code:</td>
+                        <td><?php  echo $this->form1->field2; ?></td>
                     </tr>
                     <tr>
-                        <Td class="label">Header:</td>
-                        <td><?php  echo $this->form1->field3;?></td>
-                        <td class="label">Sub header:</td>
-                        <td><?php  echo $this->form1->field4;?></td>
+                        <Td class="label"><br />Header:</td>
+                        <td><?php  echo $this->form1->field3; ?></td>
+                        <td class="label"><br />Sub header:</td>
+                        <td><?php  echo $this->form1->field4; ?></td>
                     </tr>
-                    <tr>
-                        <div class="btnhouse">
-               <div class="ltbtns">
-                        <td colspan="4" align="left"><? echo $this->form1->Search;?></td></div></div>
-                    </tr>
-                </form>
             </table>
+             <div class="ltbtns">
+            <input type="submit" name="Search" value="Search"/>
+            </div>
+</form>
         </div>
     </fieldset> 
 </div> 
 <br>
+<?php  if(count($this->paginator)!="")  { 
+
+// check search result is not empty and assign values
+if(count($this->paginator)!=0) { ?>
 
 <div class="cont-rgt-data">
     <table id="hor-minimalist-b" height="30" width="80%">
@@ -90,9 +93,8 @@
     </table>
 
         <?php 
-            $dateconvert = new Creditline_Model_dateConvertor();
+            $dateconvert = new App_Model_dateConvertor();
             foreach($this->paginator as $ledger) { ?>
-<!--             <h1 style="font-size:18px;"><?php/* echo $ledger->glcode;*/?></h1> -->
 
                         <table id="hor-minimalist-b" width="80%">
                             <tr>
@@ -119,9 +121,8 @@
                                     </tr>
                                 </table>
                             <?php } ?>
-                        <?php }  ?>
-            <?php }  ?>
-
+                        <?php } ?>
+             <?php } ?>
 </div>
 
 <div class="accordion_content">
@@ -136,6 +137,9 @@
         </TR>
     </table>
 </div>
+<?php } } else { echo "<font color='RED'>Records Not Found Try Again...</font>";
+} ?>
+<br>
 
 
 

@@ -26,7 +26,7 @@
 <?php  
 for($i=1;$i<=$this->number;$i++) {
     $a='source'.$i;
-    $b='loanamount'.$i;
+    $b='incomeamount'.$i;
     $c='source_id'.$i;
 ?>
 <tr>

@@ -19,10 +19,10 @@
 
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
-                <TR>
-                    <TH width=200%>Summary  Information of MFI's</TH> 
-                    <th></th><th></th>
-                </TR>
+                       <tr>
+                    <th>Member details</th>
+                    <th></th>
+                    </tr>
                  <?php foreach($this->savings as $savings1){?>
                     <TR>
                         <td>Number of Branch Offices</td>
@@ -32,56 +32,126 @@
                   <?php foreach($this->savings1 as $allmembers){?>
                     <TR>
                         <td>Number of Members</td>
-                        <TD><?php echo $allmembers['COUNT(member_id)']?></TD>   
+                        <TD><?php echo $allmembers['COUNT(id)']?></TD>   
                    </tr>
                   <?php } ?>
-                  <?php foreach($this->activeMembers as $activemember){?>
-                    <TR>
+
+                    <tr>
                         <td>Number of Active Members</td>
-                        <TD><?php echo $activemember['COUNT(member_id)']?></TD>   
+                        <td><?php echo $this->activemember; ?></td>   
                    </tr>
-                  <?php } ?>
-                  <?php foreach($this->inactiveMembers as $inactivemember){?>
-                    <TR>
+
+                    <tr>
                         <td>Number of Inactive Members</td>
-                        <TD><?php echo $inactivemember['COUNT(member_id)']?></TD>   
+                        <TD><?php echo $this->inactivemember; ?></TD>   
                    </tr>
-                  <?php } ?>
-               
-                
-                 <?php foreach($this->loanAccounts as $loanaccounts){?>
-                    <TR>
-                        <td>Number of Loan Accounts</td>
-                        <TD><?php echo $loanaccounts['COUNT(name)']?></TD>   
+
+                    <tr>
+                        <td>Number of Groups</td>
+                        <TD><?php echo $this->group; ?></TD>   
                    </tr>
-                  <?php } ?>
-                   <?php foreach($this->totalLoans as $totalloans){?>
-                    <TR>
-                        <td>Total Figure of Loans Amount</td>
-                        <TD>Rs<?php echo $totalloans['SUM(loan_amount)']?>/-</TD>   
+
+                    <tr>
+                        <td>Number of Group members</td>
+                        <TD><?php echo $this->groupmembers; ?></TD>   
                    </tr>
-                  <?php } ?>
-                   <?php foreach($this->loanDisburse as $loandisburse){?>
-                    <TR>
-                        <td>Total Amount of Loans Disbursed</td>
-                        <TD>Rs<?php echo $loandisburse['SUM(amount_disbursed)']?>/-</TD>   
+                    <tr>
+                    <th>Saving account details</th>
+                    <th></th>
+                    </tr>
+                    <tr>
+                        <td>Number of Saving accounts</td>
+                        <TD><?php echo $this->savingaccounts; ?></TD>   
                    </tr>
-                  <?php } ?>
-                  <?php foreach($this->loanRepay as $loanrepay){?>
-                    <TR>
-                        <td>Total Amount of Loans Repaid</td>
-                        <TD>Rs<?php echo $loanrepay['SUM(paid_amount)']?>/-</TD>   
+
+                    <tr>
+                        <td>Total saving amount</td>
+                        <TD><?php echo $this->savingbalance; ?></TD>   
                    </tr>
-                   <?php } ?>
-                   <?php foreach($this->sql1 as $rateofRepay){  ?>
-                        <TR>
-                           <td>The Rate of Loan Repayment</font></td>
-                           <TD><?php echo $rateofRepay->rate;?>%</TD>
-                       </TR>
-                    <?php } ?>
+
+                    <tr>
+                        <td>Number of Fixed accounts</td>
+                        <TD><?php echo $this->fixedaccounts; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Total fixed amount</td>
+                        <TD><?php echo $this->fixedbalance; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Recurring accounts</td>
+                        <td><?php echo $this->recurringaccounts; ?></td>
+                   </tr>
+
+                  <tr>
+                        <td>Number of Recurring balance</td>
+                        <td><?php echo $this->recurringbalance; ?></td>
+                   </tr>
+
+                    <tr>
+                    <th>Loan account details</th>
+                    <th></th>
+                    </tr>
+                    <tr>
+                        <td>Number of Loan accounts</td>
+                        <td><?php echo $this->loanaccounts; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Loan amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->loanamount) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Disbursed amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->disbursed) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Repayment amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->paidamount) ; ?></td>   
+                   </tr>
+
+                        <td>Total interest amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->interestamount) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Active Loan accounts</td>
+                        <TD><?php echo $this->activeloanaccounts; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Active Loan amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activeloanamount) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Active Disbursed amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activedisbursed) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Active Repayment amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activepaidamount) ; ?></td>   
+                   </tr>
+
+                   </tr>
+
+                        <td>Total Active interest amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activeinterestamount) ; ?></td>
+                   </tr>
+
+                    <tr>
+                        <td>The Rate of Loan Repayment</font></td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->rateofrepay) ; ?> %</td>
+                    </tr>
+
+
                     <?php foreach($this->sql as $loanDetails1){  ?>
                         <TR>
-                            <td>The Amount of Loan Outstanding Details<font color ="red"> "(LoanDisbursed - LoanRepaid)"</font></td>
+                            <td>The Amount of Loan Outstanding Details<font color ="red"></font></td>
                             <TD>Rs<?php  echo $loanDetails1->test;?>/-</TD>
                     </TR>
                     <?php } ?>
@@ -99,19 +169,25 @@
                    </tr>
                   <?php } ?>
                   <?php foreach($this->fundings as $Fundings){?>
-                    <TR>
+                    <!--<TR>
                         <td>Total Number of Fundings by Funders</td>
                         <TD><?php echo $Fundings['COUNT(id)']?></TD>
-                   </tr>
+                   </tr>-->
                    <?php } ?>
                    <?php foreach($this->totalFundings as $totalfundings){?>
-                    <TR>
+                   <!-- <tr>
                         <td>Amount of Fundings funded for <font color ="red">"<?php echo $totalfundings['COUNT(id)']?>"</font> are</td>
                         <TD>Rs<?php echo $totalfundings['SUM(amount)']?>/-</TD>
-                   </tr>
+                   </tr>-->
                   <?php } ?>
                     
                  
               </table>
 	   <?php echo $this->Error;?>
+</form>
+<form action="<?php echo $this->baseUrl();?>/summarymfi/index/pdfgeneration" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/summarymfi/index/reportdisplay/file/summarymfi<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="PDF" id="submit">
+</form>
         </div>

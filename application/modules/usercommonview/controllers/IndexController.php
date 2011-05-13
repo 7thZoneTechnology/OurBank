@@ -23,45 +23,45 @@
 <?php
 class Usercommonview_IndexController extends Zend_Controller_Action
 {
-	public function init() {
-       	$this->view->pageTitle='User';
-// calling model			
+    public function init() 
+    {
+        $this->view->pageTitle='User';
+        // calling model			
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
-		$this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//              $this->_redirect('index/logout');
-//         }
-		$this->view->adm = new App_Model_Adm();
+                $this->view->username = $this->view->globalvalue[0]['username'];
+        //         if (($this->view->globalvalue[0]['id'] == 0)) {
+        //              $this->_redirect('index/logout');
+        //         }
+        $this->view->adm = new App_Model_Adm();
+    }
 
-	}
-
-    public function commonviewAction() {
-// 		$this->view->title = "View user";
-// 		//Acl
-//      $access = new App_Model_Access();
-//      $checkaccess = $access->accessRights('User',$this->view->globalvalue[0]['name'],'commonviewAction');
-//      if (($checkaccess != NULL)) {
-// calling search form
-		$SectForm = new Sectors_Form_Search();
-		$this->view->form = $SectForm;
-//getting the id
-		$id = $this->_getParam('id');
-		$this->view->id = $id;
-//getting the model
-		$userdetails=new User_Model_User();
-		$user_details=$userdetails->getuser($id);
-  		$module=$userdetails->getmodule('User');
-        foreach($module as $module_id){ }
-//displaying the submodule details
-        $this->view->mod_id=$module_id['parent'];
-        $this->view->sub_id=$module_id['module_id'];
-		$this->view->userdetails = $user_details;
-		$this->view->address = $this->view->adm->getModule("address",$id,"User");
-		$this->view->contact = $this->view->adm->getModule("contact",$id,"User");
-//         } else {
-//            		 $this->_redirect('index/error');
-//     }
-
-}
+    public function commonviewAction()
+    {
+        // 		$this->view->title = "View user";
+        // 		//Acl
+        //      $access = new App_Model_Access();
+        //      $checkaccess = $access->accessRights('User',$this->view->globalvalue[0]['name'],'commonviewAction');
+        //      if (($checkaccess != NULL)) {
+        // calling search form
+        // 		$SectForm = new Sectors_Form_Search();
+        // 		$this->view->form = $SectForm;
+        //getting the id
+            $id = $this->_getParam('id');
+            $this->view->id = $id;
+        //getting the model
+            $userdetails=new User_Model_User();
+            $user_details1=$userdetails->getUser($id);
+            $module=$userdetails->getmodule('User');
+            foreach($module as $module_id){ }
+        //displaying the submodule details
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->userdetails = $user_details1;
+            $this->view->address = $this->view->adm->getModule("ourbank_address",$id,"User");
+            $this->view->contact = $this->view->adm->getModule("ourbank_contact",$id,"User");
+        //         } else {
+        //            		 $this->_redirect('index/error');
+        //     }
+    }
 }

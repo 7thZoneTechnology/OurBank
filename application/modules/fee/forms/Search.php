@@ -35,16 +35,13 @@
 
 		
 	
-        	$feename = $formfield->field('Text','field3','','','mand','',false,'','','','','',0,0);
-        	$feedescription = $formfield->field('Text','field2','','','mand','',false,'','','','','',0,0);
+        	$feename = $formfield->field('Text','name','','','mand','',false,'','','','','',0,0);
+        	$value = $formfield->field('Text','value','','','mand','',false,'','','','','',0,0);
         	
 
         // Hidden Feilds 
-        	$user_id = $formfield->field('Hidden','user_id','','','','',false,'','','','','',0,1);
-		$recordstatusId = $formfield->field('Hidden','recordstatus_id','','','','',false,'','','','','',0,3);
-
+    
 					
-		$this->addElements(array($feename,$feedescription,$user_id,
-            	$recordstatusId));
+		$this->addElements(array($feename,$value));
     }
 }

@@ -1,22 +1,3 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-
 <fieldset>
 	<legend>Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/loanaccount" method="POST">
@@ -28,8 +9,7 @@
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-
-                               <input type="Submit" name="Search" value="Search">
+                                <?php echo $this->form->Submit;?>
                             </div>
                         </div>
 	 </form>
@@ -42,8 +22,8 @@
 	    <Th>Member Code</Th>
 	    <Th>Name / Group Name</th>
             <Th>Branch</th>
-	    <Th>Individual</Th>
-            <th>Group</th>
+	    <td class="centertd" align="center">Type</td>
+            <th></th>
 	</tr>
 	<?php foreach($this->result as $member) : ?>
 	<tr>
@@ -58,7 +38,7 @@
 		} ?>
 		</td>
 		<td>
-		<?php if($member->type==2) { 
+		<?php if($member->type==2 || $member->type==3) { 
 		echo $member->membertype;
 		} else {
 		echo "-";
@@ -67,6 +47,4 @@
 	</tr>
 	<?php endforeach; ?>
 	</table>
- <?php } else { 
-        echo "<font color=red>".$this->errormsg."</font>";
-    } ?>
+<?php }?>

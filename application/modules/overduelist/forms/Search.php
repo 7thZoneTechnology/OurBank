@@ -23,21 +23,16 @@
 <?php class Overduelist_Form_Search extends Zend_Form 
 {
 
-	public function init() 
-	{
-
-		$vtype=array('Alpha','StringLength');
-		$formfield = new App_Form_Field ();
-
-// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-
-		
-	
-        $officebranch = $formfield->field('Select','bank_id','','','mand','',true,'','','','','',0,0);
-        $loanofficer = $formfield->field('Select','loanofficer','','','mand','',true,'','','','','',0,0);
-        $date = $formfield->field('Text','dater','','','mand','',true,'','','','','',0,0);
-
-					
-	$this->addElements(array($loanofficer,$officebranch,$date));
+    public function __construct($app) 
+    {
+        $vtype=array('Alpha','StringLength');
+        $formfield = new App_Form_Field ();
+        parent::__construct($app);
+        //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+        $officebranch = $formfield->field('Select','bank_id','','','mand','',false,'','','','','',0,0);
+        $officebranch->setAttrib('onchange', 'Getofficer(this.value,"'.$app.'")');
+        $loanofficer = $formfield->field('Select','loanofficer','','','mand','',false,'','','','','',0,0);
+        $date = $formfield->field('Text','datefrom','','','mand','',true,'','','','','',0,0);
+        $this->addElements(array($loanofficer,$officebranch,$date));
     }
 }

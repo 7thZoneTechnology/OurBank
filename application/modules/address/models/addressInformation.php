@@ -21,26 +21,26 @@
 
 <?php
 class Address_Model_addressInformation  extends Zend_Db_Table {
-    protected $_name = 'ob_member';
+    protected $_name = 'ourbank_member';
 
 //getting module record with respective submodule id...
     public function getmodule($subId)
     {
         $select=$this->select()
         ->setIntegrityCheck(false)
-        ->from('ob_modules')
+        ->from('ourbank_modules')
         ->where('module_id=?',$subId);
         $result = $this->fetchAll($select);
         return $result->toArray();
         //die ($select->__toString($select));
     }
 
-//getting address details with respective record id and submodule id
-    public function getaddress($id,$sub_id)
+//getting ourbank_address details with respective record id and submodule id
+    public function getourbank_address($id,$sub_id)
     {
         $select=$this->select()
         ->setIntegrityCheck(false)
-        ->join(array('a' => 'address'),array('id'))
+        ->join(array('a' => 'ourbank_address'),array('id'))
         ->where('a.submodule_id='.$sub_id)
         ->where('a.id = '.$id);
 	 $result=$this->fetchAll($select);
@@ -54,7 +54,21 @@ class Address_Model_addressInformation  extends Zend_Db_Table {
     {
         $select=$this->select()
         ->setIntegrityCheck(false)
-        ->join(array('a' => 'contact'),array('id'))
+        ->join(array('a' => 'ourbank_contact'),array('id'))
+        ->where('a.submodule_id='.$sub_id)
+        ->where('a.id = '.$id);
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+  	 //die ($select->__toString($select));
+
+    }
+
+//getting address details with respective record id and submodule id ...
+    public function getaddress($id,$sub_id)
+    {
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a' => 'ourbank_address'),array('id'))
         ->where('a.submodule_id='.$sub_id)
         ->where('a.id = '.$id);
         $result=$this->fetchAll($select);

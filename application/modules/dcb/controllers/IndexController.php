@@ -25,46 +25,124 @@
  */
 class Dcb_IndexController extends Zend_Controller_Action
 {
-	
-	public function init(){ 
-         $this->view->pageTitle = $this->view->translate('Demand collections & balance');
+
+
+ public function init() 
+    {
+        $this->view->pageTitle='Demand collections & balance';
+        $sessionName = new Zend_Session_Namespace('ourbank');
+	$userid=$this->view->createdby = $sessionName->primaryuserid;
+	$login=new App_Model_Users();
+        $this->view->type = "operationalReport";
          $this->view->dateconvert=new App_Model_dateConvertor();
-         $this->view->tilte = $this->view->translate('Reports');
-         $this->view->type = "others";
-         $this->view->adm = new App_Model_Adm();
-	}
+	$loginname=$login->username($userid);
+	foreach($loginname as $loginname) {
+	$this->view->username=$loginname['username'];
+        }
+        $this->view->adm = new App_Model_Adm();
+    }
         //view action
 	public function indexAction()
-	{ 
+	{       $app=$this->view->baseUrl();
 		$this->view->pageTitle = "Demand collections & balance";
 		$this->view->tilte = "Reports";
-		$searchForm = new Dcb_Form_Search();
+		$searchForm = new Dcb_Form_Search($app);
 		$this->view->form = $searchForm;
-	
-		if ($this->_request->isPost() && $this->_request->getPost('Search')){
-                    $formData = $this->_request->getPost();
-                if ($searchForm->isValid($formData)) {
-			$fromDate = $this->_request->getParam('datefrom');
-			$toDate = $this->_request->getParam('dateto');
-			if($fromDate && $toDate) { $this->view->savings = "10"; 
-				$this->view->resultshow = "From <font color=#039>".$fromDate."</font> <br>To <font color=#039>".$toDate."</font>";
-				$Loandemand = new Dcb_Model_Dcb();
-			
-				$this->view->office= $Loandemand->office();
+                $option=array('1'=>'Account number','2'=>'Group','3'=>'Village');
+	        $searchForm->option->addMultiOptions($option);
+                $Loandemand = new Dcb_Model_Dcb();
 
-				$this->view->accounts= $Loandemand->fetchloanDetails();
-				$dayArray=array();
+		if ($this->_request->isPost() && $this->_request->getPost('Search'))
+                {
+                    $this->view->hidedate=$fromDate = $this->_request->getParam('datefrom');
+                    $this->view->accountno=$account1 = $this->_request->getParam('account');
+                    if($account1)
+                    { $this->view->hideacc=$account=$account1;
+                      $Type = substr($account,4,1);
+                    } else { $this->view->hideacc=$account=''; $Type=0; }
+                    $this->view->village=$village1 = $this->_request->getParam('village'); 
+                    if($village1){ $this->view->hidevillage=$village=$village1; } else { $this->view->hidevillage=$village=''; } 
+                    $this->view->group=$group1 = $this->_request->getParam('group'); 
+                    if($group1){ $this->view->hidegroup=$group=$group1; } else { $this->view->hidegroup=$group=''; }
+                    $hierarchy = $Loandemand->getofficehierarchy();
+                    foreach($hierarchy as $hiearchyids){
+                    $hiearchyid = $hiearchyids['hierarchyid'];
+                    }
+                    $this->view->office = $Loandemand->office($village,$hiearchyid);
 
-				$fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                if ($fromDate && $account){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of<font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts = $Loandemand->fetchloanDetails($fromDate,$account,$Type);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+                 if ($fromDate && $group){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of <font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts = $Loandemand->fetchgrouploan($fromDate,$group);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
 
-				$dayArray= $this->findFirstAndLastDay($fromDate);
-					
-				$this->view->fromdate = $dayArray[0];
-				$this->view->todate = $dayArray[1];
-			}
-                   }
-		}
+                 if ($fromDate && $village){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of <font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts = $Loandemand->fetchvillageloan($fromDate,$village);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+
+                if ($fromDate && !$village && !$account && !$group){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of <font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts = $Loandemand->fetchvillageloan($fromDate,$village);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+
+                }
 	}
+
+
+    public function getoptionAction() { 
+	$this->_helper->layout->disableLayout();
+        $app = $this->view->baseUrl();
+	$searchForm = new Dcb_Form_Search($app);
+        $this->view->form = $searchForm;
+	$this->view->optionid=$id = $this->_request->getParam('optionid');
+
+	$dcbmodel=new Dcb_Model_Dcb();
+        if($this->view->optionid==3){
+        $hierarchy = $dcbmodel->getofficehierarchy();
+            foreach($hierarchy as $hiearchyids){
+            $hiearchyid = $hiearchyids['hierarchyid'];
+            }
+	$office=$this->view->adm->getRecord('ourbank_office','officetype_id',$hiearchyid);
+	foreach($office as $office1) {
+			$searchForm->village->addMultiOption($office1['id'],$office1['name']);
+        }
+        }
+
+        if($this->view->optionid==2){
+        $group = $this->view->adm->viewRecord("ourbank_group","id","DESC");
+	foreach($group as $group1) {
+			$searchForm->group->addMultiOption($group1['id'],$group1['name']);
+        }
+    }
+}
 	
 	function findFirstAndLastDay($anyDate)
 	{
@@ -72,11 +150,10 @@ class Dcb_IndexController extends Zend_Controller_Action
 		list($yr,$mn,$dt) =    split('-',$anyDate);    // separate year, month and date
 		$timeStamp        =    mktime(0,0,0,$mn,1,$yr);    //Create time stamp of the first day from the give date.
 		$firstDay         =    date('Y-m-d',$timeStamp);    //get first day of the given month
-		list($y,$m,$t)    =    split('-',date('Y-m-t',$timeStamp)); //Find the last date of the month and separating it
-		$lastDayTimeStamp =    mktime(0,0,0,$m,$t,$y);//create time stamp of the last date of the give month
-		$lastDay          =    date('Y-m-d',$lastDayTimeStamp);// Find last day of the month
-		$arrDay           =    array("$firstDay","$lastDay"); // return the result in an array format.
-	
+	file:///var/www/IDF/application/modules/dcb/controllers/IndexController.php	list($y,$m,$t)    =    split('-',date('Y-m-t',$timeStamp)); //Find the last date of the month and separating it
+		//$lastDayTimeStamp =    mktime(0,0,0,$m,$t,$y);//create time stamp of the last date of the give month
+		//$lastDay          =    date('Y-m-d',$lastDayTimeStamp);// Find last day of the month
+		$arrDay           =    array("$firstDay"); // return the result in an array format.
 		return $arrDay;
 	}
         //report display
@@ -104,8 +181,65 @@ class Dcb_IndexController extends Zend_Controller_Action
 		// Image path
 		$image_name = "/var/www/".$projname."/public/images/logo.jpg";
 		$Loandemand = new Dcb_Model_Dcb();
-		$demand = $Loandemand->fetchloanDetails();
-		$this->view->currentLoan = $demand;
+                $this->view->hidedate=$fromDate = $this->_request->getParam('hidedate');
+                    $this->view->accountno=$account1 = $this->_request->getParam('hideacc');
+                    if($account1)
+                    { $this->view->hideacc=$account=$account1;
+                      $Type = substr($account,4,1);
+                    } else { $this->view->hideacc=$account=''; $Type=0; }
+                    $village1 = $this->_request->getParam('hidevillage'); 
+                    if($village1){ $this->view->hidevillage=$village=$village1; } else { $this->view->hidevillage=$village=''; } 
+                    $group1 = $this->_request->getParam('hidegroup'); 
+                    if($group1){ $this->view->hidegroup=$group=$group1; } else { $this->view->hidegroup=$group=''; }
+                    $hierarchy = $Loandemand->getofficehierarchy();
+                    foreach($hierarchy as $hiearchyids){
+                    $hiearchyid = $hiearchyids['hierarchyid'];
+                    }
+                    $this->view->office = $Loandemand->office($village,$hiearchyid);
+
+                if ($fromDate && $account){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of<font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts =$demand= $Loandemand->fetchloanDetails($fromDate,$account,$Type);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+                 if ($fromDate && $group){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of <font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts=$demand = $Loandemand->fetchgrouploan($fromDate,$group);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+
+                 if ($fromDate && $village){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of <font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts=$demand = $Loandemand->fetchvillageloan($fromDate,$village);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+
+                if ($fromDate && !$village && !$account && !$group){
+                            $this->view->savings = "10"; 
+                            $this->view->resultshow = "As of <font color=#039>".$fromDate."</font>";	
+                            $dayArray=array();
+                            $fromDate=$this->view->dateconvert->phpmysqlformat($fromDate);
+                            $this->view->accounts=$demand = $Loandemand->fetchvillageloan($fromDate,$village);
+                            $dayArray= $this->findFirstAndLastDay($fromDate);
+                            $this->view->fromdate = $dayArray[0];
+                         //   $this->view->todate = $dayArray[1];
+		 }
+
 		// Image
 		$image = Zend_Pdf_Image::imageWithPath($image_name);
                 $page->drawImage($image, 25, 520, 125, 570);
@@ -140,7 +274,7 @@ class Dcb_IndexController extends Zend_Controller_Action
 		$this->view->title = "Reports";
 	        $my = 500;
                 $my1 = 515;
-                
+
 		$page->drawLine(25, $my1, 810, $my1);
 
 		$page->drawLine(25, 495, 810, 495);
@@ -163,101 +297,172 @@ class Dcb_IndexController extends Zend_Controller_Action
 	
 	
 		$y1 = 480;
-		$totalAmount="0"; 
-		$totalinterest="0"; 
-		$currentamount="0";
-		$currentinterest="0";
-		$totalprincipal="0"; 
-		$totalint="0";
-		$aprin="0";
-		$aint="0"; 
-		$npri="0"; 
-		$nint="0"; 
-		$totpri="0";
-		$totint="0";
-		$fprinci="0"; 
-		$fint="0";
+	$overprinciple = "0";
+	$overinterest = "0";
 	
-		$Loandemand = new Dcb_Model_Dcb();
-		$demand = $Loandemand->fetchloanDetails();
+	$nextprinciple = "0";
+	$nextinterest = "0";
 	
-		foreach($demand as $savingsCredit) {
-		$page->drawText($savingsCredit->account_number,$x0, $y1);
-		$page->drawText($savingsCredit->amount,$x1, $y1);
-		$page->drawText($savingsCredit->interest,$x2, $y1);
-		$page->drawText($savingsCredit->currentamount,$x3, $y1);
-		$page->drawText($savingsCredit->currentinterest,$x4, $y1);
-		$page->drawText($savingsCredit["amount"]+$savingsCredit["currentamount"],$x5, $y1);
-		$page->drawText($savingsCredit["interest"]+$savingsCredit["currentinterest"],$x6, $y1);
-		$page->drawText($savingsCredit->paidamount,$x7, $y1);
-		$page->drawText($savingsCredit->paidinterest,$x8, $y1);
-		$page->drawText($savingsCredit->nextamount,$x9, $y1);
-		$page->drawText($savingsCredit->nextinterest,$x10, $y1);
-		$page->drawText($savingsCredit["paidamount"]+$savingsCredit["nextamount"],$x11, $y1);
-		$page->drawText($savingsCredit["paidinterest"]+$savingsCredit["paidinterest"],$x12, $y1);
-		$page->drawText($savingsCredit["amount"]+$savingsCredit["currentamount"]-($savingsCredit["paidamount"]+$savingsCredit["nextamount"]),$x13, $y1);
-		$page->drawText($savingsCredit["interest"]+$savingsCredit["currentinterest"]-($savingsCredit["paidinterest"]+$savingsCredit["paidinterest"]),$x14, $y1);
+	$paidPriciple = "0";
+	$paidInterest = "0";
+	
+	$collectionprinciple = "0";
+	$collectioninterest = "0";
+	
+	$total1 = "0";
+	$total2 = "0";
+	$total3 = "0";
+	$total3 = "0";
+	$total4 = "0";
+	$total5 = "0";
+	$total6 = "0";
+	$total7 = "0";
+	$total8 = "0";
+	$total9 = "0";
+	$total10 = "0";
+	$total11 = "0";
+	$total12 = "0";
+	$total13 = "0";
+	$total14 = "0";
+		
+
+         foreach($this->view->office as $office) { 
+
+                //echo $office->villagename; 
+ 		$page->drawText($office->villagename,$x0, $y1);
+
+               foreach($this->view->accounts as $accounts) 
+               {  
+                    if ($accounts->officeid == $office->village_id) 
+                    { 
+                        if ($accounts->installment_date <= $this->view->fromdate) 
+                        {
+                        $overprinciple = $overprinciple + $accounts->installment_principal_amount;
+                        $overinterest = $overinterest + $accounts->installment_interest_amount;
+                        } 
+                        if ($accounts->installment_date >= $this->view->fromdate) 
+                        {
+                        $nextprinciple = $nextprinciple + $accounts->installment_principal_amount;
+                        $nextinterest = $nextinterest + $accounts->installment_interest_amount;
+                        } 
+                        if ($accounts->installment_status == 2 && $accounts->installment_date < $this->view->fromdate) 
+                        {
+                        $paidPriciple = $paidPriciple + $accounts->installment_principal_amount;
+                        $paidInterest = $paidInterest + $accounts->installment_interest_amount;
+                        } 
+                        if ($accounts->installment_status == 2 && $accounts->installment_date >= $this->view->fromdate) 
+                        {
+                        $collectionprinciple = $collectionprinciple + $accounts->installment_principal_amount;
+                        $collectioninterest = $collectioninterest + $accounts->installment_interest_amount;
+                        } 
+                        } 
+                    else 
+                    { $overprinciple=0; $overinterest=0; $nextprinciple=0; $nextinterest=0; $collectionprinciple=0; $collectioninterest=0; $paidPriciple=0;
+                            $paidInterest=0;    
+                    } 
+                } 
+
+
+              $page->drawText($overprinciple,$x1, $y1);
+                    $total1 = $total1 + $overprinciple;;
+
+              $page->drawText($overinterest,$x2, $y1);
+
+                    $total2 = $total2 + $overinterest;;
+
+              $page->drawText($nextprinciple,$x3, $y1);
+                    $total3 = $total3 + $nextprinciple; 
+
+
+            $page->drawText($nextinterest,$x4, $y1);
+                    $total4 = $total4 + $nextinterest;
+
+
+            $page->drawText($overprinciple + $nextprinciple,$x5, $y1);
+                     $total5 = $total5 + ($overprinciple + $nextprinciple);
+
+	    $page->drawText($overinterest + $nextinterest,$x6, $y1);
+                    $total6 = $total6 + ($overinterest + $nextinterest);
+
+
+             $page->drawText($collectionprinciple,$x7, $y1);
+                    $total7 = $total7 + $collectionprinciple;
+
+
+ 		$page->drawText($collectioninterest,$x8, $y1);
+                    $total8 = $total8 + $collectioninterest;
+
+
+             $page->drawText($paidPriciple,$x9, $y1);
+                    $total9 = $total9 + $paidPriciple;
+
+
+             $page->drawText($paidInterest,$x10, $y1);
+                    $total10 = $total10 + $paidInterest;
+
+
+             $page->drawText($collectiontotal=$collectionprinciple + $paidPriciple,$x11, $y1);
+                        $total11 = $total11 + ($collectionprinciple + $paidPriciple);
+
+
+             $page->drawText($interesttotal=$collectioninterest + $paidInterest,$x12, $y1);
+                        $total12 = $total12 + ($collectioninterest + $paidInterest);
+
+
+             $page->drawText($prinbalance=($overprinciple + $nextprinciple) - $collectiontotal,$x13, $y1);
+                        $total13 = $total13 + $prinbalance;
+
+ 		$page->drawText($interestbalance=($overinterest + $nextinterest) -$interesttotal,$x14, $y1);
+                        $total14 = $total14 + $interestbalance;
+
 		$y1 = $y1 - 25;
-					
-	
-					$totalAmount = $totalAmount + $savingsCredit->amount;
-					$totalinterest = $totalinterest + $savingsCredit["interest"]; 
-					$currentamount = $currentamount + $savingsCredit["currentamount"];
-					$currentinterest = $currentinterest + $savingsCredit["currentinterest"];
-					$totalprincipal = $totalprincipal + $savingsCredit["amount"]+$savingsCredit["currentamount"]; 
-					$totalint = $totalint + $savingsCredit["interest"]+$savingsCredit["currentinterest"]; 
-					$aprin = $aprin + $savingsCredit["paidamount"]; 
-					$aint = $aint + $savingsCredit["paidinterest"]; 
-					$npri = $npri + $savingsCredit["nextamount"];
-					$nint = $nint + $savingsCredit["nextinterest"]; 
-					$totpri = $totpri + $savingsCredit["paidamount"]+$savingsCredit["nextamount"]; 
-					$totint = $totint + $savingsCredit["paidinterest"]+$savingsCredit["nextinterest"]; 
-					$fprinci = $fprinci+$savingsCredit["amount"]+$savingsCredit["currentamount"]-($savingsCredit["paidamount"]+$savingsCredit["nextamount"]);
-					$fint = $fint+$savingsCredit["interest"]+$savingsCredit["currentinterest"]-($savingsCredit["paidinterest"]+$savingsCredit["nextinterest"]);
-	
-		}
+          } 
+
+
+
 		$page->drawText("TOTAL",$x0,$y1);
-		$page->drawText($totalAmount,$x1,$y1);
+
+		$page->drawText($total1,$x1,$y1);
                 $page->drawLine($x1-5, $y1-15, $x1-5, $my1);
 
-		$page->drawText($totalinterest,$x2,$y1);
+		$page->drawText($total2,$x2,$y1);
                 $page->drawLine($x2-5, $y1-15, $x2-5, $my1);
 
-		$page->drawText($currentamount,$x3,$y1);
+		$page->drawText($total3,$x3,$y1);
                 $page->drawLine($x3-5, $y1-15, $x3-5, $my1);
 
-		$page->drawText($currentinterest,$x4,$y1);
+		$page->drawText($total4,$x4,$y1);
                 $page->drawLine($x4-5, $y1-15, $x4-5, $my1);
 
-		$page->drawText($totalprincipal,$x5,$y1);
+		$page->drawText($total5,$x5,$y1);
                 $page->drawLine($x5-5, $y1-15, $x5-5, $my1);
 
-		$page->drawText($totalint,$x6,$y1);
+		$page->drawText($total6,$x6,$y1);
                 $page->drawLine($x6-5, $y1-15, $x6-5, $my1);
 
-		$page->drawText($aprin,$x7,$y1);
+		$page->drawText($total7,$x7,$y1);
                 $page->drawLine($x7-5, $y1-15, $x7-5, $my1);
 
-		$page->drawText($aint,$x8,$y1);
+		$page->drawText($total8,$x8,$y1);
                 $page->drawLine($x8-5, $y1-15, $x8-5, $my1);
 
-		$page->drawText($npri,$x9,$y1);
+		$page->drawText($total9,$x9,$y1);
                 $page->drawLine($x9-5, $y1-15, $x9-5, $my1);
 
-		$page->drawText($nint,$x10,$y1);
+		$page->drawText($total10,$x10,$y1);
                 $page->drawLine($x10-5, $y1-15, $x10-5, $my1);
 
-		$page->drawText($totpri,$x11,$y1);
+		$page->drawText($total11,$x11,$y1);
                 $page->drawLine($x11-5, $y1-15, $x11-5, $my1);
 
-		$page->drawText($totint,$x12,$y1);
+		$page->drawText($total12,$x12,$y1);
                 $page->drawLine($x12-5, $y1-15, $x12-5, $my1);
 
 
-		$page->drawText($fprinci,$x13,$y1);
+		$page->drawText($total13,$x13,$y1);
                 $page->drawLine($x13-5, $y1-15, $x13-5, $my1);
 
-		$page->drawText($fint,$x14,$y1);
+		$page->drawText($total14,$x14,$y1);
 		$page->drawLine(25, $y1-15, 810, $y1-15);// after table horizontal line
 
 
@@ -266,6 +471,6 @@ class Dcb_IndexController extends Zend_Controller_Action
 		$pdf->save('/var/www/'.$projname.'/reports/DCB.pdf');
 		$path = '/var/www/'.$projname.'/reports/DCB.pdf';
 	        chmod($path,0777);
-                $this->_redirect("/dcb/index/");
+               // $this->_redirect('dcb/index');
 	}
 }

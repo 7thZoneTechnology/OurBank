@@ -29,15 +29,14 @@ protected $_name = 'ourbank_transaction';
     {
         $db = $this->getAdapter();
         $sql = 'SELECT 
-B.name as productname,
-A.account_number as account_number,
-C.membercode as membercode,
-C.name as name,
-A.accountcreated_date as accountcreated_date,
-G.balance as balance,
-E.name as username
-
-				 FROM 
+                B.name as productname,
+                A.account_number as account_number,
+                C.membercode as membercode,
+                C.name as name,
+                A.accountcreated_date as accountcreated_date,
+                G.balance as balance,
+                E.name as username
+		FROM 
                 ourbank_accounts A,
                 ourbank_productsoffer B,
                 ourbank_member C,

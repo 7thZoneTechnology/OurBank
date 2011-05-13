@@ -16,7 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 
-class Groupm_Form_Search extends Zend_Dojo_Form {
+class Groupm_Form_Search extends Zend_Form {
    
 	public function __construct() 
 		{
@@ -24,8 +24,8 @@ class Groupm_Form_Search extends Zend_Dojo_Form {
 			//$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
 			$formfield = new App_Form_Field ();
                         // send parameters to get input fields 
-			$groupcode = $formfield->field('Text','groupcode','','','','Group code:',false,'','','','','',1,'');
-			$groupname = $formfield->field('Text','groupname','','','','Group name:',false,'','','','','',1,'');
+			$groupcode = $formfield->field('Text','groupcode','','','','Group code',false,'','','','','',1,'');
+			$groupname = $formfield->field('Text','groupname','','','','Group name',false,'','','','','',1,'');
 			$this->addElements(array($groupcode,$groupname));
 		}
 }

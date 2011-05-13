@@ -18,11 +18,9 @@
 ############################################################################
 */
 ?>
-
 <?php
 class Product_Model_Product extends Zend_Db_Table {
 	protected $_name = 'ourbank_category';
-
 	public function getCategoryDetails() {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
@@ -40,8 +38,13 @@ class Product_Model_Product extends Zend_Db_Table {
 			->join(array('a' => 'ourbank_product'),array('id'));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
-die($select->__toString($select));
+// die($select->__toString($select));
 	}
+         public function insertbaseProduct($input)
+            {
+                $this->db = $this->getAdapter();
+                $this->db->insert('ourbank_product',$input);
+            } 
 
 	public function viewCategory($category_id) {
 		$select = $this->select()
@@ -63,9 +66,6 @@ die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
 	}
-
-	
-
 	public function SearchProduct($post = array()) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
@@ -79,15 +79,18 @@ die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
-
-                public function mysqlformat($nformat) {
-                    $ndate = new Zend_Date($nformat, 'dd/mm/yyyy');
-                   
-                }
-	
-	
-
-
-
-	
+        public function getAllProduct(){
+            $this->db = $this->getAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = 'select * from ourbank_product';
+            $result = $this->db->fetchALL($sql,array());
+            return $result;
+        }
+        
+        public function getproductstatus($productid){
+        $db = $this->getAdapter();
+        $sql = "select * from ourbank_accounts where product_id in (select id from ourbank_productsoffer where product_id = $productid)";
+        $result = $db->fetchAll($sql);
+        return $result;
+        }
 }

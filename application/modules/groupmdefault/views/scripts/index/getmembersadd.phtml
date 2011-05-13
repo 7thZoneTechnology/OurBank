@@ -1,36 +1,67 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
+<?php 
+$dbobj = new Groupmdefault_Model_groupdefault();
+if($this->members) { 
+ $val = 0;
+?>
+    <table  id="hor-minimalist-s" >
+        <tr>
+            <th bgcolor="Silver" align="center" width="40%"><b>Family breadwinner</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Family members</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>UID</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Group head</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Representatives</b></th>
+        </tr>
+        <?php 
+        $val = 0;
 
-<?php if($this->members) { ?>
-    <table BORDER WIDTH=50% class="fieldsets">
-        <tr><th bgcolor="Silver" align="center" ><b>Group members</b></th><th bgcolor="Silver" align="center"><b>Group head</b></th></tr>
-        <? foreach($this->members as $members) { ?>
+        foreach($this->members as $members) {
+        if(!in_array($members['family_id'],$this->existmembers))
+        {
+            if($val >=1){
+                if($familyid !=$members['family_id']) {
+                $val = 0;
+                }
+            }
+        $breadwinner = $dbobj->getbreadwinner($members['family_id']);
+        foreach($breadwinner as $breadwinners){
+            $familyid = $breadwinners['family_id'];
+        }
+        ?>
         <TR>
-            <td width="25%">
-                <input type="checkbox" name="member_id[]" id="selector" value="<?php echo $members["id"];?>"><? echo $members["name"];?>
+
+            <?php 
+
+                if($familyid==$members['family_id']) {
+                $val++;
+               if($val == 1){
+                ?>
+                <td colspan="5">
+                    <input type="checkbox" name="member_id<?php echo $breadwinners['family_id'];?>" id="<?php echo $breadwinners['family_id'];?>" class="memberclass" onclick="membershow(this)" value="<?php echo $breadwinners["id"];?> "><? echo $breadwinners["name"];?>
+                </td>
+            <?php } 
+} 
+?> 
+        </tr>
+            <tr style="display: none" name="row_<?php echo $members['family_id'];?>">
+            <td></td>
+            <td width="20%">
+                <input type="checkbox" name="member_id[]" class="familymember" value="<?php echo $members['family_id'];?>_<?php echo $members["id"];?>" ><?php echo $members["name"];?>
             </td>
-            <td width="25%">
-                <input type="radio" name="memberhead"   id="memberhead" value="<?php echo $members["id"];?>">
+            <td width="30%"><?php echo $members["uid"];?>
             </td>
-        </TR>
-        <? } ?>
+            <td width="25%" align="center">
+                <input type="radio" name="memberhead" class="familymember" value="<?php echo $members["id"];?>">
+            </td>
+            <td width="25%" align="center">
+                <input type="checkbox" name="representatives[]" id="<?php echo $members["id"];?>" class="chkvalid" value="<?php echo $members["id"];?>">
+            </td>
+            </tr>
+        <?php } 
+
+
+}
+?>
     </table>
-<?php } else {
+<?php  } else {
         echo "<font color='RED'>No Members in the branch you seleted</font>";
  } ?>

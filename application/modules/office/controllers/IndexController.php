@@ -17,15 +17,13 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 /*
  *  create an office controller to view all details
  */
-class Office_IndexController extends Zend_Controller_Action{
-
-       public function init() {
+class Office_IndexController extends Zend_Controller_Action
+{
+   public function init() 
+   {
         $this->view->pageTitle=$this->view->translate('New Office');
 	//check session and redirect
         $storage = new Zend_Auth_Storage_Session();
@@ -37,7 +35,8 @@ class Office_IndexController extends Zend_Controller_Action{
         $this->view->createdby = $sessionName->primaryuserid;
     }
 
-   public function indexAction() {
+   public function indexAction() 
+   {
         $sessionName = new Zend_Session_Namespace('ourbank');
         $storage = new Zend_Auth_Storage_Session();
 	$data = $storage->read();
@@ -59,30 +58,39 @@ class Office_IndexController extends Zend_Controller_Action{
         $sessionName = new Zend_Session_Namespace('ourbank');
         $this->view->createdby = $sessionName->primaryuserid;
         $office = new Office_Model_office();
+	//validate filterer search 
+        $sub1 = $this->_request->getPost('search');
+
+if(($sub1 == 'search') && ($this->_request->getParam('office') == '') && ($this->_request->getParam('shortname') == '') && ($this->_request->getParam('officename') ==''))  {
+
+       $result = $office->getOffice();
+}
+else if(($sub1 == 'Search') && (($this->_request->getParam('office') != '') || ($this->_request->getParam('shortname') != '') || ($this->_request->getParam('officename') !=''))){
+
+              $this->view->s1 = $officeid = $this->_request->getParam('office');
+              $this->view->s2 = $shortname = $this->_request->getParam('shortname');
+              $this->view->s3 = $officename = $this->_request->getParam('officename');
+		    //return filtered values to view
+                    $result = $office->SearchOffice($officeid,$shortname,$officename);
+
+}
+
+else if(($this->_request->getParam('s1') != '') || ($this->_request->getParam('s2') != '') || ($this->_request->getParam('s3') !='')) {
+
+                                $this->view->s1 = $officeid = $this->_request->getParam('s1');
+                                $this->view->s2 = $shortname = $this->_request->getParam('s2');
+                                $this->view->s3 = $officename = $this->_request->getParam('s3');
+
+               $result = $office->SearchOffice($officeid,$shortname,$officename);
+                            }
+else{
         $result = $office->getOffice();
+}
+
         $page = $this->_getParam('page',1);
         $paginator = Zend_Paginator::factory($result);
         $paginator->setItemCountPerPage(5);
         $paginator->setCurrentPageNumber($page);
         $this->view->paginator = $paginator;
-	//validate filterer search 
-        if ($this->_request->isPost() && $this->_request->getPost('search')) { 
-            $formData = $this->_request->getPost();
-            if ($this->_request->isPost()) {
-                $formData = $this->_request->getPost();
-                if ($searchForm->isValid($formData)) {
-                    $office = new Office_Model_office();
-		    //return filtered values to view
-                    $result = $office->SearchOffice($searchForm->getValues());
-                    $page = $this->_getParam('page',1);
-                    $paginator = Zend_Paginator::factory($result);
-                    $paginator->setItemCountPerPage(5);
-                    $paginator->setCurrentPageNumber($page);
-		    //view pagination instance
-                    $this->view->paginator = $paginator;
-                }
-            }
-        }
-
     }
 }

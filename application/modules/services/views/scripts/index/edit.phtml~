@@ -16,35 +16,29 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
-<form action="<?php echo $this->baseUrl();?>/loandetails/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
+<div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
+<form action="<?php echo $this->baseUrl();?>/services/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
 <table id="hor-minimalist-b">
 <tr> 
-    <th width="27%"><?php echo $this->translate("Source of loan"); ?></th>
-    <th width="12%"><?php echo $this->translate("Amount of loan"); ?></th>
-    <th width="10%"><?php echo $this->translate("Purpose of borrowed"); ?></th>
-    <th width="17%"><?php echo $this->translate("Amount of repayment"); ?></th>
-    <th width="17%"><?php echo $this->translate("Loan due"); ?></th>
-    <th width="17%"><?php echo $this->translate("Outstanding loan"); ?></th>
+    <th width="27%"><?php echo $this->translate("Service details"); ?></th>
+    <th width="12%"><?php echo $this->translate("To whom"); ?></th>
+    <th width="10%"><?php echo $this->translate("Own fund"); ?></th>
+    <th width="17%"><?php echo $this->translate("Recuired loan/help"); ?></th>
 </tr>
 <?php  
-for($i=1;$i<=$this->number;$i++) {
-    $a='source'.$i;
-    $b='loanamount'.$i;
-    $c='purpose'.$i;
-    $d='repayment'.$i;
-    $e='due'.$i;
-    $f='outstanding'.$i;
-    $h='source_id'.$i;
+foreach($this->service_details as $servicedetails){
+    $a='services'.$servicedetails['id'];
+    $c='whom'.$servicedetails['id'];
+    $d='fund'.$servicedetails['id'];
+    $e='help'.$servicedetails['id'];
+    $f='source_id'.$servicedetails['id'];
+
 ?>
 <tr>
-    <td><?php echo $this->form->$a; ?></td>
-    <td><?php echo $this->form->$b; ?></td>
+    <td><?php echo $servicedetails['name']; ?></td>
     <td><?php echo $this->form->$c; ?></td>
     <td><?php echo $this->form->$d; ?></td>
-    <td><?php echo $this->form->$e; ?></td>
-    <td><?php echo $this->form->$f; echo $this->form->$h; ?></td>
-
+    <td><?php echo $this->form->$e; echo $this->form->$f; ?></td>
 </tr> 
 <?php }?>
 <tr><td><input type="submit" id="update" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
@@ -52,3 +46,4 @@ for($i=1;$i<=$this->number;$i++) {
 </tr>
 </table>
 </form>
+</div>

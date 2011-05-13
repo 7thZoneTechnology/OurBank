@@ -29,17 +29,17 @@ class Funderdetails_IndexController extends Zend_Controller_Action
     {
         $this->view->pageTitle=$this->view->translate("Funder");
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-        $this->view->username = $this->view->globalvalue[0]['username'];
-        $this->view->id = $this->view->globalvalue[0]['id'];
+//         $this->view->globalvalue = $globalsession->getSession();
+//         $this->view->username = $this->view->globalvalue[0]['username'];
+//         $this->view->id = $this->view->globalvalue[0]['id'];
+		  $sessionName = new Zend_Session_Namespace('ourbank');
+           $this->view->id = $sessionName->primaryuserid;
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //         $this->_redirect('index/logout');
 //         }
         $this->view->adm = new App_Model_Adm();
         $this->view->funder = new Fundercommonview_Model_fundercommon ();
-
-        $individualcommon=new Individualmcommonview_Model_individualmcommonview();
-        $module=$individualcommon->getmodule('Funder');
+        $module=$this->view->funder->getmodule('Funder');
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
@@ -63,9 +63,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $form = new Funderdetails_Form_funderdetails($this->view->id);
         $this->view->form=$form;
 	//load funder type drop down
-        $fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");					
+        $fundertype = $this->view->adm->viewRecord("ourbank_master_fundertype","id","DESC");					
         foreach($fundertype as $fundertype1) { 
-                $form->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
+                $form->type->addMultiOption($fundertype1['id'],$fundertype1['name']);
         }
 
 	// get poster data
@@ -75,13 +75,13 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 		//poster data validation
             if($form->isValid($formData))
             {
-            $id = $this->view->adm->addRecord("ob_funder",$form->getValues());
+            $id = $this->view->adm->addRecord("ourbank_funder",$form->getValues());
             $type = $this->_request->getParam('type');
             $o=str_pad($type,3,"0",STR_PAD_LEFT);
             $u=str_pad($id,5,"0",STR_PAD_LEFT);
             $fundercode=$o.$u;
 		// get funder code
- 	    $this->view->adm->updateRecord("ob_funder",$id,array('code'=>$fundercode));
+ 	    $this->view->adm->updateRecord("ourbank_funder",$id,array('code'=>$fundercode));
             $this->_redirect('/fundercommonview/index/commonview/id/'.$id);
             }
         }
@@ -101,10 +101,10 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 	$form = new Funderdetails_Form_funderdetails($this->view->id);
 	$this->view->form=$form;
 
-	$fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");
+	$fundertype = $this->view->adm->viewRecord("ourbank_master_fundertype","id","DESC");
         //load funder type drop down 	
 	foreach($fundertype as $fundertype1) { 
-	$form->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
+	$form->type->addMultiOption($fundertype1['id'],$fundertype1['name']);
 	} 
 	// get poster data
 	if ($this->_request->isPost() && $this->_request->getPost('update')) { 
@@ -112,9 +112,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 	    //validate poster data
             if ($form->isValid($formData)) { 
             $id = intval($this->_request->getParam('id'));
-            $previousdata = $this->view->adm->editRecord("ob_funder",$id);
-            $this->view->adm->updateLog("ob_funder_log",$previousdata[0],$this->view->id);
-            $this->view->adm->updateRecord("ob_funder",intval($this->_request->getParam('id')),$form->getValues());
+            $previousdata = $this->view->adm->editRecord("ourbank_funder",$id);
+            $this->view->adm->updateLog("ourbank_funder_log",$previousdata[0],$this->view->id);
+            $this->view->adm->updateRecord("ourbank_funder",intval($this->_request->getParam('id')),$form->getValues());
             $this->_redirect('/fundercommonview/index/commonview/id/'.intval($this->_request->getParam('id')));
     
             } 
@@ -122,7 +122,7 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 	$id=intval($this->_request->getParam('id'));
 	$this->view->id=$id;
 	$this->view->title = "Edit Member Details"; 
-        $funderdetails = $this->view->adm->editRecord("ob_funder",$id);
+        $funderdetails = $this->view->adm->editRecord("ourbank_funder",$id);
         $form->populate($funderdetails[0]);
         }
 	/*} else {
@@ -148,9 +148,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $this->view->funderid=$id;
 	// create instance of delete
         $delform=new Funderdetails_Form_Delete();
-        $this->view->delete1=$delform;
+        $this->view->delete=$delform;
 	// search for the search criterias
-        if ($this->_request->isPost() && $this->_request->getPost('Delete'))
+        if ($this->_request->isPost() && $this->_request->getPost('Submit'))
         {
             $formdata = $this->_request->getPost();
 		// form data validate
@@ -159,12 +159,17 @@ class Funderdetails_IndexController extends Zend_Controller_Action
                 $id=$this->_request->getParam('id');
                 $formdata = $this->_request->getPost();
                 if($delform->isValid($formdata)) {
-                $redirect = $this->view->adm->deleteAction("ob_funder","funder",$id);
-                $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
-                $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
-                $this->_redirect('/funder');
+                $redirect = $this->view->adm->deleteAction("ourbank_funder","funder",$id);
+                $this->view->adm->deleteSubmodule("ourbank_contact",$id,$this->view->sub_id);
+                $this->view->adm->deleteSubmodule("ourbank_address",$id,$this->view->sub_id);
                 }
-      }
+		// if not valid redirct action
+                $this->_redirect("/".$redirect);
+            }
+        }
+//         }
+//         else {
+//         $this->_redirect('index/index');
+//         }
     }
-}
 }

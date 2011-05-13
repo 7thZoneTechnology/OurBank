@@ -71,33 +71,7 @@
     </div>
 </div>
 
-<DIV style="float:left;width:50%">
-<?php If($this->membertypr_id==2) { ?>
-<a href="#" id="open">groupMembers</a>
-<div class="box">
-    <div id="content1">
 
-            <div class="cont-rgt-data">
-                <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-                    <tr class="tdbrownheading">
-                        <td width="30%">Name</td>
-                        <td width="50%">code</td>
-                    </tr>
-                    <?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
-                    <tr class="tdbrown">
-                        <TD width="30%"><?php echo $arrayroles1['memberfirstname'];?></TD>
-                        <TD width="50%"><?php echo $arrayroles1['membercode'];?></TD>
-                    </tr>
-                    <?php }?>
-                </table>
-            </div>
-
-    <p><a href="#" id="close">hide</a></p>
-    </div>
-</div>
-<?php }	?>
-<table width="100%"><TR><TD></TD></TR></table>
-</DIV>
 
 <div style="float:left;width:50%">
     <div class="cont-rgt-data">
@@ -125,7 +99,7 @@
 <div id="loanRepayment" style="float:left;width:100%">
 <?php if(!$this->Submit) { ?>
     <fieldset>
-        <legend>accountRenewal</legend>
+        <legend>Account renewal</legend>
             <div class="cont-rgt-data">
                 <form name="form1" action="<?php echo $this->baseUrl();?>/recurringtransaction/index/status/accountId/<?php  echo $this->accountid;?>/productId/<?php  echo $this->productid;?>" method="POST" >
                     <table id="hor-minimalist-b" summary="Employee Pay Sheet">
@@ -143,14 +117,14 @@
                             <TD width="60%"><?php echo $this->recurringstatus->description;?></TD>
                         </TR>
                     </table>
-                    <table>
+                    <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                         <tr>
                             <td></td>
                             <td ></td>
                             <td><span class="reqMark">Markedfieldsaremandatory * </span></td>
                         </tr>
                         <TR>
-                            <TD><?php echo $this->recurringstatus->Confirm;?></TD>
+                            <TD><input name="Confirm" type="submit"  value="Confirm" tabindex="25"></TD>
                             <td><a href="<?php echo $this->baseUrl();?>/recurringtransaction/index/recurring/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>">
                             <input name="submit" type="submit"  value="back" tabindex="25"></a></TD>
                         </TR>
@@ -163,7 +137,7 @@
 
 <?php if($this->Submit) { ?>
     <fieldset>
-        <legend>accountRenewal</legend>
+        <legend>Account renewal</legend>
             <div class="cont-rgt-data">
                 <form name="form1" action="<?php echo $this->baseUrl();?>/recurringtransaction/index/status/accountId/<?php  echo $this->accountid;?>/productId/<?php  echo $this->productid;?>" method="POST" >
                     <table id="hor-minimalist-b" summary="Employee Pay Sheet">
@@ -198,7 +172,7 @@
 </div>
 
 <fieldset>
-<legend>status</legend>
+<legend>Status</legend>
     <div class="cont-rgt-data">
         <table id="hor-minimalist-b" summary="Employee Pay Sheet">
             <tr>

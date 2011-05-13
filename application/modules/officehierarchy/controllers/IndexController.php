@@ -191,11 +191,11 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                                 $this->view->form1->$c->setValue($this->_request->getPost('id'.$noOfficeLevel));
                                 $this->view->form1->$d->setValue($officeLevel+1);
                             } else {
-                                    $messages = $officeCode.'alreadyexisting';
+                                    $messages = $officeCode.'  already existing';
                                     $this->_redirect("officehierarchy?Existed=".$messages);
                                 }
                         } else {
-                            $messages = $officeType.'alreadyexisting';
+                            $messages = $officeType.'  already existing';
                             $this->_redirect("officehierarchy?Existed=".$messages);
                           }
                     } else {
@@ -319,7 +319,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                                           $this->view->form1->Edit->setName('update');
                                           $this->view->form1->Edit->setLabel($this->view->ZendTranslate->_("update"));
                                           $this->view->form1->Edit->setAttrib('class', 'officesubmit');
-                                          $messages = $officeType.' (OR) '.$officeCode.' '.'alreadyexisting';
+                                          $messages = $officeType.' (OR) '.$officeCode.'  already existing';
                                           $this->_redirect("officehierarchy?Existed=".$messages);
                                         }
                                      }
@@ -328,7 +328,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                             $this->view->form1->Edit->setLabel('update');
                             $this->view->form1->Edit->setAttrib('class', 'officesubmit');
 			    //existing message
-                            $messages = $officeType.' (OR) '.$officeCode.'alreadyexisting';
+                            $messages = $officeType.' (OR) '.$officeCode.'  already existing';
                             $this->_redirect("officehierarchy?Existed=".$messages);
                         }
                     } else {

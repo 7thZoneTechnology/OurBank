@@ -17,18 +17,13 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
 
-<?php
-class Incomeexpenditure_Form_Search extends ZendX_JQuery_Form {
-	public function __construct() 
-		{
-			parent::__construct();
-			//$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
-			$formfield = new App_Form_Field ();
-			//$vtype=array('Alpha');
-			$datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
-			
-			$this->addElements(array($datefrom));
-		}
+class Incomeexpenditure_Form_Search extends ZendX_JQuery_Form 
+{
+    public function __construct() 
+    {
+        $datefrom = new ZendX_JQuery_Form_Element_DatePicker('datefrom');
+        $datefrom->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
+        $this->addElements(array($datefrom));
+    }
 }

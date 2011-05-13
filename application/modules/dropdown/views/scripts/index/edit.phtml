@@ -1,0 +1,37 @@
+<form action="<?php echo $this->baseUrl();?>/dropdown/index/edit/id/<?php echo $this->id; ?>/name/<?php  echo $this->ff; ?>" method="POST">
+ 	<div id="container-1">
+		<div class="profile_tab">
+
+			<fieldset>
+				<legend>Edit</legend>
+					<table class="fieldsets">	
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th><a href="<?php echo $this->baseUrl();?>/dropdown/index/delete/id/<?php echo $this->id ?>/name/<?php echo $this->tableName ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20"></a></th></tr>
+
+
+						<TR>
+                    <TD> Edit <? echo substr($this->tableName,15); ?>
+</TD>
+                <TD ><?php echo $this->form->commonname;?></TD>
+            						</TR>
+
+
+
+
+ 					</table>
+						<div class="btnhouse">
+							<div class="ltbtns">
+ 								<input type="submit" name="Update" id="Submit" value="Update">                 
+							</div>
+								<div class="rtbtns">
+ <TD><a href="<?php echo $this->baseUrl(); ?>/dropdown">
+                                <input name="submit" type="submit" class="officebutton" value="Back"></a></TD>								</div>
+						</div>
+			</fieldset>
+		</div>
+	</div>
+</form>
+

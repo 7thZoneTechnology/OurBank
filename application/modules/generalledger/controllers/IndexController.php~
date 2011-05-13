@@ -26,7 +26,7 @@ class Generalledger_IndexController extends Zend_Controller_Action
     { 
         $this->view->pageTitle = "General Ledger";
         $this->view->title = "Reports";
-        $this->view->type = "others";
+        $this->view->type = "generalFields";
         $this->view->adm = new App_Model_Adm();
 	$this->view->dateconvertor = new App_Model_dateConvertor();
     }
@@ -54,6 +54,8 @@ class Generalledger_IndexController extends Zend_Controller_Action
 	$fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
 	$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
 	$glsubcode =$this->_request->getParam('glcode');
+            $this->view->datefrom = $fromDate;             
+            $this->view->dateto = $toDate;             
 
             $this->view->search = 10;             
             $generalLedger = new Generalledger_Model_Generalledger();
@@ -67,14 +69,10 @@ class Generalledger_IndexController extends Zend_Controller_Action
             $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
             $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
             if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){
-//             $this->view->field1 = $this->_request->getParam('datefrom');
-//             $this->view->field2 = $this->_request->getParam('dateto');
-                        $fromDate = $this->_request->getParam('datefrom');
-			$toDate = $this->_request->getParam('dateto');
                 }
         } else {
-            echo "<font color='red'><b> Record not found</b> </font>";
-            
+            $this->view->search = 0;
+                                echo "<font color='red'><b> Record not found</b> </font>";
 
         }
 			
@@ -92,8 +90,8 @@ class Generalledger_IndexController extends Zend_Controller_Action
     }
     public function pdfdisplayAction() 
     { 
-        $fromDate = $this->_request->getParam('fromDate'); 
-        $toDate = $this->_request->getParam('toDate');
+        $fromDate = $this->_request->getParam('field2'); 
+        $toDate = $this->_request->getParam('field2');
         $product = $this->_request->getParam('field3');
 
         $pdf = new Zend_Pdf();

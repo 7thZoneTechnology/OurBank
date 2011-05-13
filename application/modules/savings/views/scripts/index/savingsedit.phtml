@@ -1,35 +1,42 @@
-
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script> 
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#begindate").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#closedate").datepicker({"dateFormat":"dd/mm/yy"});
+}); 
+</script>
 <div class="searchDiv"> 
 <fieldset>
-	
+	<legend>Edit savings</legend>
 			<form action="<?php echo $this->baseUrl();?>/savings/index/savingsedit" method="POST" name="myform" id="signupForm" class="cmxform">
 		
                     <input type="hidden" name="shortname" value="<?php echo $this->shortname;?>"/>
-                    <input type="hidden" name="offerproduct_id" value="<?php echo $this->offerproduct_id;?>"/>
+                    <input type="hidden" name="offerproduct_id" value="<?php echo $this->offerid;?>"/>
                     <input type="hidden" name="currentdates" value="<?php echo $this->currentdates;?>"/>
-                    <table id="hor-minimalist-b" class="fieldsets"> 
-                        <tr><Th><b>Edit savings</b></Th><th></th><th><a href="<?php echo $this->baseUrl();?>/savings/index/savingsdelete/id/<? echo base64_encode($this->offerid);?>">
-                            <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 align="right" width="16" height="16"></a></Th><th></th></tr>
+                    <input type="hidden" name="FDproductID" value="<?php echo $this->FDproductid;?>"/>
+                    <table id="hor-minimalist-b"> 
+                           
                             <tr>
-                                <th colspan="3">Product information</th><th></th>
+                                <th colspan="3">Product information</th><th><a href="<?php echo $this->baseUrl();?>/savings/index/savingsdelete/id/<? echo base64_encode($this->offerid);?>">
+                            <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a></th>
                             </tr>
                         <TR>
-                                <TD><br><label class="mand">Product type</label></TD>
+                                <TD>Product type<span class="reqMark">*</span></TD>
                                 <TD ><?php echo $this->form->savingproductname;?></TD>
                                 <td></td><td></td>
                         </TR>
                         <TR>
-                                <TD><label class="mand">Product name</TD>
+                                <TD>Product name<span class="reqMark">*</span></TD>
                                 <TD ><?php echo $this->form->offerproductname;?><SPAN style="color:red"><?php echo $this->errorofferproductname; ?><SPAN style="color:red"></SPAN></TD>
                                 <td></td><td></td>  
                         </TR>
                         <TR>
-                                <TD><label class="mand">short name</TD>
+                                <TD>short name<span class="reqMark">*</span></TD>
                                 <TD ><?php echo $this->form->offerproductshortname;?></TD>
                                 <td></td><td></td>
                         </TR>
                         <TR>
-                                    <TD><label class="mand">Description</TD>
+                                    <TD>Description<span class="reqMark">*</span></TD>
                                     <TD ><?php echo $this->form->offerproduct_description;?></TD>
                                     <td></td><td></td>
                         </TR>
@@ -38,24 +45,24 @@
                                 <th colspan="4">Dates</th> 
                         </tr>
                         <tr > 
-                                <td><label class="mand">Begin date<B style='color:red'>dd/mm/yyyy</b></td>
+                                <td>Begin date<span class="reqMark">*</span><B style='color:red'>dd/mm/yyyy</b></td>
                                 <td ><?php echo $this->form->begindate;?></td>
                                 <td></td><td></td>
                         </TR>
                         <?php if($this->shortname !='ps') {  ?>
                         <tr > 
-                            <td><label class="mand">Closed date<B style='color:red'>dd/mm/yyyy</b></td>
+                            <td>Closed date<span class="reqMark">*</span><B style='color:red'>dd/mm/yyyy</b></td>
                             <td ><? echo $this->form->closedate;?></td>
                             <td></td><td></td>
 					</tr>
 					<?php } ?>
 					<tr > 
-						<td><label class="mand">Applicable to</td>
+						<td>Applicable to<span class="reqMark">*</span></td>
 						<td ><? echo $this->form->applicableto;?></td>
 <td></td><td></td>
 					</TR>
 					<tr > 
-						<td><label class="mand">GL subcode</td>
+						<td>GL subcode<span class="reqMark">*</span></td>
 						<td ><? echo $this->form->glsubcode_id;?></td>
 <td></td><td></td>
 					</TR>
@@ -64,31 +71,31 @@
 							<th colspan="4">Interest and terms</th>
 						</tr>
 						<tr> 
-							<td><label class="mand">Initial deposit</td>
+							<td>Initial deposit<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->minmumdeposit;?></td>
 <td></td><td></td>
 						</tr>
 						<tr > 
-							<td><label class="mand">Frequency of deposit</td>
+							<td>Frequency of deposit<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->frequencyofdeposit;?></td>
 <td></td><td></td>
 						</tr>
 						<tr>
-							<td colspan="4" class="td_border1">Installments</td>
+							<th colspan="4">Installments</th>
 						</tr>
 						<tr > 
-							<td><label class="mand">Interest cal period</td>
+							<td>Interest cal period<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->Int_timefrequency_id;?></td>
 <td></td><td></td>
 						</tr>
 
 						<tr > 
-							<td><label class="mand">Interest on calculation</td>
+							<td>Interest on calculation<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->frequencyofinterestupdating;?></td>
 <td></td><td></td>
 						</tr>
 						<tr > 
-							<td><label class="mand">Minimum bal for interest</td>
+							<td>Minimum bal for interest<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->minimumbalanceforinterest;?></td>
 <td></td><td></td>
 						</tr>
@@ -98,22 +105,22 @@
 							<th colspan="4">Interest and terms</th>
 						</tr>
 						<tr > 
-							<td><label class="mand">Minimum fixed anount</td>
+							<td>Minimum fixed amount<span class="reqMark">*</span></td>
 							<td ><?php echo $this->form->minimum_deposit_amount;?></td>
 <td></td><td></td>
 						</tr>
 						<tr> 
-							<td><label class="mand">Maximum fixed amount</td>
+							<td>Maximum fixed amount<span class="reqMark">*</span></td>
 							<td ><?php echo $this->form->maximum_deposit_amount;?></td>
 <td></td><td></td>
 						</tr>
 						<tr >
-							<td><label class="mand">Frequency of deposit</td>
+							<td>Frequency of deposit<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->frequency_of_deposit;?></td>
 <td></td><td></td>
 						</tr>
 						<tr >
-							<td><label class="mand">Penal interest</td>
+							<td>Penal interest<span class="reqMark">*</span></td>
 							<td ><?php echo $this->form->penal_Interest;?></td>
 <td></td><td></td>
 						</tr>
@@ -123,22 +130,22 @@
 							<th colspan="4">Interest and terms</th>
 						</tr>
 						<tr > 
-							<td><label class="mand">Minimum recurring amount</td>
+							<td>Minimum recurring amount<span class="reqMark">*</span></td>
 							<td ><?php echo $this->form->minimum_deposit_amount;?></td>
 <td></td><td></td>
 						</tr>
 						<tr > 
-							<td><label class="mand">Maximum recurring amount</td>
+							<td>Maximum recurring amount<span class="reqMark">*</span></td>
 							<td ><?php echo $this->form->maximum_deposit_amount;?></td>
 <td></td><td></td>
 						</tr>
 						<tr > 
-							<td><label class="mand">Frequency of deposit</td>
+							<td>Frequency of deposit<span class="reqMark">*</span></td>
 							<td ><? echo $this->form->frequency_of_deposit;?></td>
 <td></td><td></td>
 						</tr>
 						<tr > 
-							<td><label class="mand">Penal interest</td>
+							<td>Penal interest<span class="reqMark">*</span></td>
 							<td ><?php echo $this->form->penal_Interest;?></td>
 <td></td><td></td>
 						</tr>
@@ -147,7 +154,7 @@
                                                 <th colspan="4">Periods and rates</th> 
 					</tr>
 					<tr> 
-						<Td align="left" >From (years) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To (years) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate</Td>
+						<Td align="left" >From(Month) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To(Month) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate of interest</Td>
 						<td></td><td></td><td></td>
 					</tr>
 						<?php $count = 0; ?>
@@ -165,7 +172,7 @@
 						<input type="hidden" name="memberCount" id="memberCount" value=""  class="textfield" /><td colspan="2"><div id="interestperiods"></div></td>
                                         </tr>
                                         <tr>
-                                                <td align="left" colspan="2"><input type="button" onClick="addFormField(); return false;" value="Add interest types"></td>	
+                                                <td align="left" colspan="2"><input type="button" onClick="addFormField('<?php echo $this->baseUrl();?>'); return false;" value="Add interest types"></td>	
 					</tr>
 					
 					

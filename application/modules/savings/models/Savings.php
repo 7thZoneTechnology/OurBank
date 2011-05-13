@@ -26,7 +26,8 @@ class Savings_Model_Savings extends Zend_Db_Table {
 	           	->join(array('A' => 'ourbank_product'),'p.product_id = A.id')
 			->join(array('B' => 'ourbank_category'),'A.category_id=B.id')
                         ->where('A.category_id = 1') 
-			->join(array('c'=>'ourbank_membertypes'),'p.applicableto = c.id');
+			->join(array('c'=>'ourbank_master_membertypes'),'p.applicableto = c.id');
+// die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
   		// return available offerdetails
@@ -49,7 +50,7 @@ class Savings_Model_Savings extends Zend_Db_Table {
  		$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('b' => 'ourbank_productsoffer'),array('id'),array('id as productid','name as productname','begindate','closedate','shortname as shortnames'))
-                ->join(array('a' => 'ob_membertypes'),'b.applicableto = a.membertype_id',array('membertype as type'))
+                ->join(array('a' => 'ourbank_master_membertypes'),'b.applicableto = a.id',array('type'))
 			->where('b.name like "%" ? "%"',$post['prodname'])
 			->where('b.shortname like "%" ? "%"',$post['shname'])
 			->where('b.begindate like "%" ? "%"',$begindate)
@@ -69,7 +70,45 @@ class Savings_Model_Savings extends Zend_Db_Table {
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return get product short name
 	}
-// 
+        public function getAllOffer(){
+                    $this->db = $this->getAdapter();
+                    $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+                    $sql = 'select * from ourbank_productsoffer';
+                    $result = $this->db->fetchALL($sql,array());
+                    return $result;
+                }
+// // //         public function insertbaseOffer($input)
+// // //                     {
+// // //                         $this->db = $this->getAdapter();
+// // //                         $this->db->insert('ourbank_productsoffer',$input);
+// // //                     }
+
+        public function genarateGlCode($header){
+                $db = $this->getAdapter();
+                        $sql = "select max(glsubcode) as glsubcode from ourbank_glsubcode where glcode_id =(select id from ourbank_glcode where header like '%".$header."%')";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+        }  
+
+        public function getStatus($offername){
+                $db = $this->getAdapter();
+                        $sql = "select * from ourbank_productsoffer where name ='".$offername."'";
+                $result = $db->fetchAll($sql);
+	       return $result; // //return offer details
+        } 
+
+        public function getGlCodeexist($header){
+                $db = $this->getAdapter();
+                        $sql = "select glcode from ourbank_glcode where header like '%".$header."%'";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+        }
+        public function getGlCodeid($header){
+                $db = $this->getAdapter();
+                        $sql = "select id from ourbank_glcode where header like '%".$header."%'";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+        }
 	public function viewofferProduct($offerproduct_id,$offerproductshortname) {
 		if($offerproductshortname == 'ps') {
 			$tablename="ourbank_productssaving";
@@ -84,12 +123,16 @@ class Savings_Model_Savings extends Zend_Db_Table {
 			->where('a.id = ?',$offerproduct_id)
 			->join(array('b' => $tablename),'a.id = b.productsoffer_id')
 			->join(array('c' => 'ourbank_product'),'a.product_id = c.id',array('name as productname','shortname'))
-			->join(array('d' => 'ourbank_membertypes'),'a.applicableto = d.id',array('type as applicableperson'))
+			->join(array('d' => 'ourbank_master_membertypes'),'a.applicableto = d.id',array('type as applicableperson'))
 			->join(array('f' => 'ourbank_glsubcode'),'a.glsubcode_id = f.id',array('header','glsubcode'))
-			->join(array('e' => 'ourbank_frequencyofpayment'),'b.'.$fielid1.'= e.id',array('type as installment'));
+			->join(array('e' => 'ourbank_master_frequencypayment'),'b.'.$fielid1.'= e.id',array('name as installment'));
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return product details for that particular id 
 	}
+        public function insertinterestperiods($data) {
+                        $this->db = $this->getAdapter();
+                        $this->db->insert('ourbank_interest_periods',$data);
+                }
  
 	public function viewinterest($offerproduct_id) { 
 		$select = $this->select()
@@ -127,7 +170,7 @@ class Savings_Model_Savings extends Zend_Db_Table {
                 $db = $this->getAdapter();
 		$data = array('name'=>$data['offerproductname'],
                               'shortname' =>$data['offerproductshortname'],
-                              'product_id' =>$data['offerproduct_id'],
+                              'product_id' =>$data['FDproductID'],
                               'description' =>$data['offerproduct_description'],
                               'begindate' =>$convertdate->phpmysqlformat($data['begindate']),
                              'closedate' =>$CLOSEDDATE,
@@ -169,7 +212,7 @@ class Savings_Model_Savings extends Zend_Db_Table {
  	public function getfrequencyofdepo($frequencyofdeposit2) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_frequencyofpayment'),array('id'))
+			->join(array('a' => 'ourbank_master_frequencypayment'),array('id'))
 			->where('a.id = ?',$frequencyofdeposit2);
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return frequency type values with condition
@@ -198,7 +241,7 @@ class Savings_Model_Savings extends Zend_Db_Table {
 	public function fetchAllTimeFrequencyType() {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_frequencyofpayment'),array('id'));
+			->join(array('a' => 'ourbank_master_frequencypayment'),array('id'));
 		$result = $this->fetchAll($select);
 		return $result->toArray();// return frequency type values
 	}
@@ -206,22 +249,27 @@ class Savings_Model_Savings extends Zend_Db_Table {
 	public function fetchAllMemberType() {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_membertypes'),array('id'));
+			->join(array('a' => 'ourbank_master_membertypes'),array('id'));
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return membertype
 	}
 // 
-	public function fetchAllglsubcode() {
-		$select = $this->select()
-			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_glsubcode'),array('id'))
-			->where('a.subledger_id = 4');
-		$result = $this->fetchAll($select);
-		return $result->toArray(); // return liabilities values 
+	public function fetchAllglsubcode($liability) {
+		$db = $this->getAdapter();
+                        $sql = "select * from ourbank_glsubcode where subledger_id =(select id from ourbank_master_ledgertypes where name like '%".$liability."%')";
+                        $result = $db->fetchAll($sql);
+	       return $result; // //return liabilities values 
+	}
+
+        public function getProductid($shortname) {
+		$db = $this->getAdapter();
+                        $sql = "select id from ourbank_product where shortname = '".$shortname."'";
+                        $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
 	}
         public function interestcalperiod($periodid) {
 		$db = $this->getAdapter();
-                        $sql = "select type from ourbank_frequencyofpayment where id = $periodid";
+                        $sql = "select name as type from ourbank_master_frequencypayment where id = $periodid";
                         $result = $db->fetchOne($sql);
 	       return $result; // return frequency term for period id
 	}
@@ -229,25 +277,25 @@ class Savings_Model_Savings extends Zend_Db_Table {
 	public function getapplicableto($applicableto2) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_membertypes'),array('id'))
+			->join(array('a' => 'ourbank_master_membertypes'),array('id'))
 			->where('a.id = ?',$applicableto2);
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // get membertypes for id
 	}
-	public function addofferproduct($post,$product_id,$closeddate) {
+	public function addofferproduct($post,$product_id,$closeddate,$glsubcodeid) {
                 // instance to convert date
                 $convertdate = new App_Model_dateConvertor();
-		$user_id = $sessionName->primaryuserid;
+// 		$user_id = $sessionName->primaryuserid;
 		if($closeddate == "") {
 			$CLOSEDDATE="0000-00-00";
 		} else {
 			$CLOSEDDATE= $convertdate->phpmysqlformat($closeddate);
 		}
-                if($post['feeglcode'] == "") {
-                        $feesubcode = '';
-                } else {
-                        $feesubcode = $post['feeglcode'];
-                }
+//                 if($post['feeglcode'] == "") {
+//                         $feesubcode = '';
+//                 } else {
+//                         $feesubcode = $post['feeglcode'];
+//                 }
                	$data = array('id'=> '',
 					'name'=>$post['offerproductname'],
 					'shortname'=>$post['offerproductshortname'],
@@ -256,10 +304,10 @@ class Savings_Model_Savings extends Zend_Db_Table {
 					'begindate'=>$convertdate->phpmysqlformat($post['begindate']),
 					'closedate'=>$CLOSEDDATE,
 					'applicableto'=>$post['applicableto'],
-					'glsubcode_id'=>$post['glsubcode_id'],
+					'glsubcode_id'=>$glsubcodeid,
 					'capital_glsubcode_id'=>'',
-					'Interest_glsubcode_id'=>'',
-					'fee_glsubcode_id'=>$feesubcode);
+					'Interest_glsubcode_id'=>'');
+// 					'fee_glsubcode_id'=>$feesubcode);
 		$this->insert($data); //insert pffer details
 	}
 

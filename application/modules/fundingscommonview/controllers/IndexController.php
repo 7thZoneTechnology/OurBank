@@ -49,8 +49,8 @@ class fundingscommonview_IndexController extends Zend_Controller_Action{
     
             $fundings = new Fundings_Model_Fundings();
             $this->view->fundings = $fundings->viewfundings($id);
-			$this->view->address = $this->view->adm->getSubmodule("address",$id,"Management","Fundings");
-			$this->view->contact = $this->view->adm->getSubmodule("contact",$id,"Management","Fundings");
+			$this->view->address = $this->view->adm->getModule("ourbank_address",$id,"Management","Fundings");
+			$this->view->contact = $this->view->adm->getModule("ourbank_contact",$id,"Management","Fundings");
 //         } else {
 // 			$this->_redirect('index/error');
 //         }

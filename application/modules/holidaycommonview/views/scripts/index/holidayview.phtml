@@ -29,9 +29,9 @@
 <th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/holiday/index/holidayedit/id/<?php echo $edit_id['id'];?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th><th></th>
 <th></th>
 </tr>
-<?php }}  ?>
-        <?php  $convertdate = new App_Model_dateConvertor();
-        foreach($this->holidaydetails as $holiday) {  ?>
+<?php }}       $dateconvert= new App_Model_dateConvertor();
+  ?>
+        <?php foreach($this->holidaydetails as $holiday) {  ?>
                 <TR>
                     <TD>Holiday Name</TD>
                     <TD><?php echo $holiday['name'];?></TD>
@@ -49,20 +49,22 @@
                 </TR>
  <TR>
                     <TD>Holiday from</TD>
-                    <td><?php echo $convertdate->phpnormalformat($holiday['holiday_from']);?></div></td>
+                    <TD><?php echo $this->escape($dateconvert->normalformat($holiday['holiday_from']));?></TD>
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
  <TR>
                     <TD>Holiday upto</TD>
-                    <td><?php echo $convertdate->phpnormalformat($holiday['holiday_upto']);?></div></td>
+                    <TD><?php echo $this->escape($dateconvert->normalformat($holiday['holiday_upto']));?></TD>
+                    <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
 <TR>
                     <TD>Repayment date</TD>
-                    <td><?php echo $convertdate->phpnormalformat($holiday['repayment_date']);?></div></td>
+                    <TD><?php echo $this->escape($dateconvert->normalformat($holiday['repayment_date']));?></TD>
+                    <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>

@@ -21,7 +21,7 @@
 
 <?php
 class Individualcommon_Model_individualcommon extends Zend_Db_Table {
-    protected $_name = 'ob_member';
+    protected $_name = 'ourbank_fundings';
 
 
 

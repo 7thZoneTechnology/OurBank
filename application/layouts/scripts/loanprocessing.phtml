@@ -1,0 +1,51 @@
+<head>
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script> 
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
+
+
+<script>
+$(document).ready(function() {
+    $("#field1").datepicker({"dateFormat":"dd/mm/yy"});
+   
+});
+</script>
+</head> 
+<body>
+<div id="container">
+    <div id="header"><?php echo $this->render('loanprocessingheader.phtml'); ?></div>
+  <div id="leftnavig">
+   <h4><a>Templates</a></h4>
+   <ul>
+		<li class="selected"><a href="<?php  echo $this->baseUrl();?>/grouplaw">Group by law</a></li>
+		<li class="selected"><a href="<?php  echo $this->baseUrl();?>/groupprofile">Group social economic</a></li>
+		<li class="selected"><a href="<?php  echo $this->baseUrl();?>/groupresolution">Group resolution to open a bank account</a></li>
+		<li class="selected"><a href="<?php  echo $this->baseUrl();?>/sbwithdrawal">Group resolution to open a Sb account</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/groupresolution">Resolution to become a member of koota</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/internalloan">Individual loan request</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/memberldeatils">Internal loan application by member</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/groupgrading/index/shgindex">Group grading</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familyform">External loan application individualy</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/thumbdeclaration">Literate declaration</a></li>
+                <li class="selected"><a href="#">Declaration by borrowing affidative member</a></li>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/affidavit">Declaration by each member of group</a></li>
+                <li class="selected"><a href="#">Group loan request</a></li>
+                <li class="selected"><a href="#">SBI loan application</a></li>
+				<li class="selected"><a href="<?php  echo $this->baseUrl();?>/externalloan">Group resolution for Bankloan</a></li>
+   </ul>
+  </div>
+
+    <div id="pagecontent">
+        <h3><?php echo $this->pageTitle;?></h3>
+        <?php echo $this->layout()->content; ?>
+    </div>
+
+  <div id="footer">
+    <div id="copytxt"> Mahiti Infotech Pvt. Ltd., <a href="#">Terms &amp; Conditions</a></div>
+  </div>
+</div>
+</BODY>
+</html>
+

@@ -17,30 +17,64 @@
 ############################################################################
 !-->
 
-<?php if($this->assignMembers) { 
-   $head = $this->grouphead;   ?>
-      <TABLE BORDER WIDTH=50% class="fieldsets">
-	 <tr><th>Group members</th><th> Group head</th></tr>
-            <? foreach($this->assignMembers as $members) {?>
-            <TR>
-                <td width="25%">
-                    <input type="checkbox"  name="member_id[]" id = "member_id[]"  checked="true"  value="<?php echo $members["id"];?>" ><? echo $members["name"];?>
+<?php if($this->Allmem) { 
+$allmem = $this->Allmem;
+$exist = $this->Exist;
+$Existfamily = $this->Existfamily;
+$repmembers = array();
+$repmembers = $this->representative;
+
+// $breadwner[] = array();
+$dbobj = new Groupmdefault_Model_groupdefault();
+     $head = $this->grouphead;   ?>
+    <table  id="hor-minimalist-s" >
+	  <tr>
+            <th bgcolor="Silver" align="center" width="40%"><b>Family breadwinner</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Family members</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>UID</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Group head</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Representatives</b></th>
+
+        </tr>
+            <?php foreach($this->Allmembers as $members) { 
+
+                if(in_array($members['id'],$allmem)){
+            $familyid = $members['family_id'];
+
+            ?>
+            <?php if($members['breadwinner_id']==1) { 
+                $fami = $dbobj->getfamilyMembersforedit($familyid);
+//                  foreach($fami as $familym){ 
+//                     $breadwner[] = $familym['id'];
+//                  }
+
+            ?>
+                <tr>
+                <td colspan="5">
+                    <input type="checkbox" name="member_bread" <?php if(in_array($members["family_id"],$Existfamily)) {?> checked ="true" <?php } ?> value="<?php echo $members["id"];?>"><? echo $members["name"];?>
                 </td>
-                <td width="25%">
-                    <input type="radio" name="memberhead"   id="memberhead" <? if($head == $members["id"]) { ?> checked="true" <? } ?> value="<?php echo $members["id"];?>">
+                </tr>
+            <?php 
+                 foreach($fami as $familymem){ ?>
+                <tr>
+                <TD>
+                </TD>
+                <td>
+                    <input type="checkbox" name="member_id[]" <?php if(in_array($familymem["id"],$exist)) {?> checked ="true" <?php } ?> value="<?php echo $familymem['family_id'];?>_<?php echo $familymem["id"];?>"><? echo $familymem["name"];?>
                 </td>
-            </TR>
-		<? }?>
-		 <? foreach($this->members as $members) {?>
-            <TR>
-                <td width="25%">
-                    <input type="checkbox"  name="member_id[]" id = "member_id[]"    value="<?php echo $members["id"];?>" ><? echo $members["name"];?>
+                <td width="30%"><?php echo $members["uid"];?>
                 </td>
-                <td width="25%">
-                     <input type="radio" name="memberhead"   id="memberhead"  value="<?php echo $members["id"];?>">
+                 <td align="center">
+                    <input type="radio" name="memberhead" <?php if($familymem["id"]==$head) { ?> checked ="true" <?php } ?> value="<?php echo $familymem["id"];?>">
                 </td>
- 		</TR>
-		<? }?>
+              
+                <td align="center">
+                <input type="checkbox" name="representatives[]" <?php if(in_array($familymem["id"],$repmembers)) {?> checked ="true" <?php } ?> id="<?php echo $familymem["id"];?>" value="<?php echo $familymem["id"];?>">
+            </td>
+                </tr>
+
+                <? }
+        } } }  ?>
             </table>
 	    <?php }    
  else {

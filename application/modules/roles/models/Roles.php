@@ -19,8 +19,8 @@
 */
 // roles model page which is used to insert,edit,delete values for roles  
 class Roles_Model_Roles extends Zend_Db_Table {
-        // declare ob_grantactivity as a parent table 
-	protected $_name = 'ob_grantactivity';
+        // declare ourbank_grantactivity as a parent table 
+	protected $_name = 'ourbank_grant';
 	// insert all grant activity values
 	public function addGrantActivites($data) {
             $this->insert($data);
@@ -29,7 +29,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
 	public function getRoles() {
             $select = $this->select()
                     ->setIntegrityCheck(false)
-                    ->from('ob_grant');
+                    ->from('ourbank_grant');
             $result = $this->fetchAll($select);
             return $result->toArray(); // return grant details 
 	}
@@ -41,7 +41,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
 	else{$searchdate=$post['granteddate'];}
             $select = $this->select()
                     ->setIntegrityCheck(false)
-                    ->from('ob_grant') 
+                    ->from('ourbank_grant') 
                     ->where('name like "%" ? "%" ' ,$post['grantname'])
                     ->where('created_date  like "%" ? "%" ',$searchdate);
 	$result = $this->fetchAll($select);
@@ -51,7 +51,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
  	public function getModule() {
         $select = $this->select()
                         ->setIntegrityCheck(false)  
-                        ->from('ob_modules');
+                        ->from('ourbank_modules');
         $result = $this->fetchAll($select);
         return $result->toArray(); // return all module details
     	}
@@ -59,7 +59,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
 	public function getSubmodule($moduleid) {
 	   $select = $this->select()
                     ->setIntegrityCheck(false)  
-                    ->join(array('a' => 'ob_modules'),array('module_id'),array('module_id','module_description'))
+                    ->join(array('a' => 'ourbank_modules'),array('module_id'),array('module_id','module_description'))
                     ->where('parent=?',$moduleid);
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return all sub modules list
@@ -74,7 +74,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
          public function viewModuleid($grantid) {
             $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ob_grantactivity'),array('id'),array('module_id'))
+                ->join(array('a' => 'ourbank_grantactivity'),array('id'),array('module_id'))
                 ->where('grant_id =?',$grantid);
             $result = $this->fetchAll($select);
             return $result->toArray(); // return grant activity for particular grant id 
@@ -83,7 +83,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
 	public function getActivity($moduleid,$grantid) {
                 $select = $this->select()
                     ->setIntegrityCheck(false)  
-                    ->join(array('a' => 'ob_grantactivity'),array('id'),array('add','edit','view','delete'))
+                    ->join(array('a' => 'ourbank_grantactivity'),array('id'),array('add','edit','view','delete'))
                     ->where('grant_id ='.$grantid)
                     ->where('module_id ='.$moduleid);
 		$result = $this->fetchAll($select);
@@ -93,7 +93,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
         public function editactivity($grantid) {
                 $select = $this->select()
                     ->setIntegrityCheck(false)  
-                    ->join(array('a' => 'ob_grantactivity'),array('id'),array('id','module_id','add','edit','view','delete'))
+                    ->join(array('a' => 'ourbank_grantactivity'),array('id'),array('id','module_id','add','edit','view','delete'))
                     ->where('grant_id ='.$grantid);
 		$result = $this->fetchAll($select);
 		return $result->toArray();
@@ -118,7 +118,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
         // get single record of grant name for that grant id
 	 public function getGrantname($grantid) {
             $db = $this->getAdapter();
-            $sql = "select name from ob_grant 
+            $sql = "select name from ourbank_grant 
                     where id = $grantid";
                     $result = $db->fetchOne($sql);
             return $result; // return grant name
@@ -131,4 +131,7 @@ class Roles_Model_Roles extends Zend_Db_Table {
                     $result = $db->fetchAll($sql);
             return $result; // return the status for grant id
 	} 
+      
+
+
 }

@@ -1,5 +1,4 @@
 
-<?php
  <!--
 ############################################################################
 #  This file is part of OurBank.
@@ -19,59 +18,58 @@
 ############################################################################
 !-->
 
-?>
 
 <!-- search !-->
 <div id="searchDiv">
     <fieldset>
         <legend>Search</legend>
-		<div class="search" style="margin-left:20px;">
-			<form action="<?php echo $this->baseUrl();?>/user" method="POST">
-				<table width="100%">
-					<tr>
-						<td class="label">User name:</td>
-						<td ><? echo $this->form->name;?></td>
-						<td class="label">designation:</td>
-						<td ><? echo $this->form->designation;?></td>
-					</tr>
-					<tr>					
-						<td class="label">bank name:</td>
-						<td ><? echo $this->form->bank;?></td>
-						<td class="label">Granted:</td>
-						<td ><? echo $this->form->grant_id;?></td>
-					</tr>
-				</table>
-<!-- search button  !-->
-				<input type="submit" name="Search" id="Submit" value="Search">			
-			</form>	
-		</div>
+            <div class="search" style="margin-left:20px;" id = "fieldsets">
+                <form action="<?php echo $this->baseUrl();?>/user" method="POST">
+                    <table width="100%">
+                        <tr>
+                            <td class="label">Username:</td>
+                            <td ><? echo $this->form->name;?></td>
+                            <td class="label">Designation:</td>
+                            <td ><? echo $this->form->designation;?></td>
+                        </tr>
+                        <tr>					
+                            <td class="label">Bank name:</td>
+                            <td ><? echo $this->form->bank;?></td>
+                            <td class="label">Granted:</td>
+                            <td ><? echo $this->form->grant_id;?></td>
+                        </tr>
+                    </table>
+                    <!-- search button  !-->
+                    <input type="submit" name="Search" id="Submit" value="Search">			
+                </form>	
+            </div>
     </fieldset> 
 </div> 
 <!-- search result display !-->
 <table id="hor-minimalist-b">
-	<tr>
-		<th>User name </th>
-		<th>Designation</td>
-		<th>Office name</td>
+        <tr>
+            <th>Username </th>
+            <th>Designation</td>
+            <th>Office name</td>
 
- 		<th>Gendre</td>
- 		<th>Granted as</td>
+            <th>Gender</td>
+            <th>Granted as</td>
 	</tr>
  	    <?php if (count($this->paginator)): ?>
-		<?php foreach ($this->paginator as $userdetail): ?>
+                <?php foreach ($this->paginator as $userdetail): ?>
 	<tr>
 		<td>
 <!-- fetching the datas from array  !-->
     <a href="<?php echo $this->baseUrl()."/usercommonview/index/commonview/id/".$userdetail['userid']; ?>"><?php echo $this->escape($userdetail['username']);?></a></td>
-       <td><?php echo $this->escape($userdetail['designation_name']);?></td>
+       <td><?php echo $this->escape($userdetail['desi_name']);?></td>
        <td><?php echo $this->escape($userdetail['name']);?></td>
        <td><?php echo $this->escape($userdetail['sex']);?></td>
        <td><?php echo $this->escape($userdetail['grant']);?></td>
-           		 </tr>
+    </tr>
 		<?php endforeach; ?>
 		<?php endif; ?>
-	<tr>
-		<td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                            '/partials/my_pagination_control.phtml'); ?></div></td>
-	</tr>
+    <tr>
+        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+                                        '/partials/my_pagination_control.phtml'); ?></div></td>
+    </tr>
 </table>

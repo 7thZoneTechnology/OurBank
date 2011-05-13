@@ -27,34 +27,40 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
     public function fixedAccountsSearch($membercode)
     {
         if(substr($membercode,4,1)=='1') {
+        $stype = 'F';
         $select = $this->select()
             ->setIntegrityCheck(false)  
-            ->join(array('a' => 'ourbank_member'),array('id'),array('a.id as member_id','a.membercode','a.name as membername'))
-            ->where('a.membercode = ?',$membercode)
+            ->join(array('a' => 'ourbank_familymember'),array('id'),array('a.id as member_id','a.familycode as membercode','a.name as membername'))
             ->join(array('c' => 'ourbank_accounts'),'c.member_Id = a.id',array('c.account_number','c.membertype_id as membertype_ID'))
+            ->where('c.account_number  = ?',$membercode)
+            ->where('substr(c.account_number,7,1) ="F"')
             ->join(array('d' => 'ourbank_productsoffer'),'d.id = c.product_id',array('d.id as product_id','d.name as offerproductname'))
             ->join(array('e' => 'ourbank_product_fixedrecurring'),'e.productsoffer_id = d.id')
             ->join(array('f' => 'ourbank_product'),'f.id = d.product_id')
             ->where('f.shortname="fd"')
             ->join(array('g' => 'ourbank_fixedaccounts'),'c.id = g.account_id',array('g.account_id','g.begin_date','g.mature_date'))
-            ->group(array('a.membercode'));
+            ->group(array('a.familycode'))
+            ->where('c.status_id !=5 and c.status_id !=4');
 //         die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result->toArray();
         }
 
-        if(substr($membercode,4,1)=='2') {
+        if((substr($membercode,4,1)=='2') or (substr($membercode,4,1)=='3')) {
+
         $select = $this->select()
             ->setIntegrityCheck(false)  
             ->join(array('a' => 'ourbank_group'),array('id'),array('a.id as member_id','a.groupcode as membercode','a.name as membername'))
-            ->where('a.groupcode = ?',$membercode)
             ->join(array('c' => 'ourbank_accounts'),'c.member_Id = a.id',array('c.account_number','c.membertype_id as membertype_ID'))
+            ->where('c.account_number  = ?',$membercode)
+            ->where('substr(c.account_number,7,1) ="F"')
             ->join(array('d' => 'ourbank_productsoffer'),'d.id = c.product_id',array('d.id as product_id','d.name as offerproductname'))
-            ->join(array('e' => 'ourbank_product_fixedrecurring'),'c.product_id = d.id')
+            ->join(array('e' => 'ourbank_product_fixedrecurring'),'e.productsoffer_id = d.id')
             ->join(array('f' => 'ourbank_product'),'f.id = d.product_id')
             ->where('f.shortname="fd"')
             ->join(array('g' => 'ourbank_fixedaccounts'),'c.id = g.account_id',array('g.account_id','g.begin_date','g.mature_date'))
-            ->group(array('a.groupcode'));
+            ->group(array('a.groupcode'))
+            ->where('c.status_id !=5 and c.status_id !=4');
 //         die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result->toArray();
@@ -67,6 +73,7 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
             ->setIntegrityCheck(false)  
             ->join(array('a' => 'ourbank_accounts'),array('id'))
             ->where('a.account_number = ?',$accountcode)
+            ->where('a.status_id !=5')
             ->join(array('b' => 'ourbank_fixedaccounts'),'a.id = b.account_id');
 //         die($select->__toString($select));
 
@@ -74,17 +81,19 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
         return $result->toArray();
     }
 
-    public function groupNamesSearch($memberId) 
-    {
-        $select = $this->select()
-            ->setIntegrityCheck(false)  
-            ->join(array('a' => 'ourbank_groupaddress'),array('a.groupname','a.group_id'))
-            ->where('a.group_id = ?',$memberId)
-            ->where('a.groupaccountstatus = 3 or a.groupaccountstatus = 1')
-            ->join(array('b' => 'ourbank_groupmembers'),'a.group_id = b.group_id');
-        $result = $this->fetchAll($select);
-        return $result->toArray();
-    }
+//     public function groupNamesSearch($memberId) 
+//     {
+//         $select = $this->select()
+//             ->setIntegrityCheck(false)  
+//             ->join(array('a' => 'ourbank_groupaddress'),array('a.groupname','a.group_id'))
+//             ->where('a.group_id = ?',$memberId)
+//             ->where('a.groupaccountstatus = 3 or a.groupaccountstatus = 1')
+//             ->join(array('b' => 'ourbank_groupmembers'),'a.group_id = b.group_id');
+// //         die($select->__toString($select));
+// 
+//         $result = $this->fetchAll($select);
+//         return $result->toArray();
+//     }
 
     public function individualMemberName($memberId) 
     {
@@ -102,27 +111,43 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
             ->setIntegrityCheck(false)  
             ->join(array('a' => 'ourbank_accounts'),array('id'))
                 ->where('a.member_id = ?',$memberId)
+                ->where('a.status_id !=5')
                 ->where('a.membertype_id = ?',$membertype)
-
             ->join(array('b' => 'ourbank_fixedaccounts'),'a.id = b.account_id')
+            ->where('b.fixedaccountstatus_id !=5')
             ->join(array('c' => 'ourbank_productsoffer'),'a.product_id = c.id',array('c.name as productname'));
+// die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result->toArray();
     }
 
-    public function fixedAccountDetails($accountId) 
+    public function fixedAccountDetails($accountId,$mtype) 
     {
+        if($mtype == 2 or $mtype == 3){
         $select = $this->select()
             ->setIntegrityCheck(false)  
             ->join(array('a' => 'ourbank_accounts'),array('id'),array('a.account_number','a.membertype_id','a.status_id'))
             ->where('a.id = ?',$accountId)
-            ->join(array('s' => 'ourbank_member'),'a.member_id = s.id',array('s.name as membername','s.office_id'))
+            ->join(array('s' => 'ourbank_group'),'a.member_id = s.id',array('s.name as membername','s.village_id as office_id'))
             ->join(array('b' => 'ourbank_fixedaccounts'),'a.id = b.account_id',array('b.begin_date','b.mature_date','b.fixed_amount','b.fixed_interest','b.recordstatus_id'))
-
             ->join(array('c' => 'ourbank_productsoffer'),'a.product_id = c.id',array('c.name as offerproductname','c.glsubcode_id'))
             ->join(array('d' => 'ourbank_product_fixedrecurring'),'c.id = d.productsoffer_id',array('d.penal_Interest'));
         $result = $this->fetchAll($select);
         return $result->toArray();
+        }
+        if($mtype == 1){
+        $select = $this->select()
+            ->setIntegrityCheck(false)  
+            ->join(array('a' => 'ourbank_accounts'),array('id'),array('a.account_number','a.membertype_id','a.status_id'))
+            ->where('a.id = ?',$accountId)
+            ->join(array('s' => 'ourbank_familymember'),'a.member_id = s.id',array('s.name as membername','s.village_id as office_id'))
+            ->join(array('b' => 'ourbank_fixedaccounts'),'a.id = b.account_id',array('b.begin_date','b.mature_date','b.fixed_amount','b.fixed_interest','b.recordstatus_id'))
+            ->join(array('c' => 'ourbank_productsoffer'),'a.product_id = c.id',array('c.name as offerproductname','c.glsubcode_id'))
+            ->join(array('d' => 'ourbank_product_fixedrecurring'),'c.id = d.productsoffer_id',array('d.penal_Interest'));
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+        }
+
     }
 
     public function findmembertypeid($accountId) 
@@ -154,12 +179,11 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
     {
         $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('c' => 'ourbank_accounts'),array('id'),array('c.account_number'))
-                ->where('c.id = ?',$accountId)
-                ->where('c.membertype_id = 2')
-                ->join(array('a' => 'ourbank_group'),'a.id = c.member_id',array('a.id as group_id','a.groupcode','a.name as groupname'))
-                ->join(array('b' => 'ourbank_groupmembers'),'b.id = a.id')
-                ->join(array('d' => 'ourbank_member'),'d.id = b.member_id',array('d.membercode','d.name','d.id'));
+                ->join(array('a' => 'ourbank_group_acccounts'),array('id'))
+                ->where('a.account_id = ?',$accountId)
+                ->join(array('d' => 'ourbank_familymember'),'d.id = a.member_id',array('name','familycode as membercode'));
+
+//                 ->join(array('d' => 'ourbank_member'),'d.id = b.member_id',array('d.membercode','d.name','d.id'));
         $result = $this->fetchAll($select);
         return $result->toArray();
     }
@@ -186,7 +210,7 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
     {
         $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ourbank_paymenttypes'),array('id'));
+                ->join(array('a' => 'ourbank_master_paymenttypes'),array('id'));
         $result = $this->fetchAll($select);
         return $result->toArray();
     }
@@ -241,6 +265,8 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
                         ->setIntegrityCheck(false)  
                         ->join(array('a' => 'ourbank_Recordstatus'),array('recordstatus_id'))
                         ->where('a.recordstatus_id = ?',$accountstatus);
+// // 		die($select->__toString($select));
+
                 $result = $this->fetchAll($select);
                 return $result->toArray();
         }
@@ -340,6 +366,19 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
                         ->join(array('A' => 'ourbank_accounts'),array('id'))
+                        ->where('A.account_number = ?',$accountNumber)
+                        ->where('A.status_id = 3 or A.status_id = 1')
+                        ->join(array('B' => 'ourbank_productsoffer'),'A.product_id=B.id');
+// 		die($select->__toString($select));
+                $result = $this->fetchAll($select);
+                return $result->toArray();
+
+        }
+
+         public function savingsAccountsForid($accountNumber) {
+                $select = $this->select()
+                        ->setIntegrityCheck(false)  
+                        ->join(array('A' => 'ourbank_accounts'),array('id'))
                         ->where('A.id = ?',$accountNumber)
                         ->where('A.status_id = 3 or A.status_id = 1')
                         ->join(array('B' => 'ourbank_productsoffer'),'A.product_id=B.id')
@@ -351,12 +390,15 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
 
         }
 
+
         public function transferaccountid($accountNumber) {
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
                         ->join(array('a' => 'ourbank_accounts'),array('id'))
                         ->where('a.id = ?',$accountNumber)
                         ->join(array('b' => 'ourbank_productsoffer'),'a.product_id=b.id');
+// // 		die($select->__toString($select));
+
                 $result = $this->fetchAll($select);
                 return $result->toArray();
         }
@@ -398,7 +440,7 @@ class Fixedtransaction_Model_fixedSavings extends Zend_Db_Table
 
         public function groupfixedInsert($input = array()) {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
-                $result = $this->db->insert('ourbank_groupmember_recurringtransaction',$input);
+                $result = $this->db->insert('ourbank_group_recurringtransaction',$input);
                 return $result;
         }
 

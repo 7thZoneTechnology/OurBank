@@ -26,9 +26,8 @@
 class Officecommonview_IndexController extends Zend_Controller_Action
 {
     public function init() 
-    {  
-  	
-        $this->view->pageTitle=$this->view->translate('New Office');
+    {
+  	 $this->view->pageTitle=$this->view->translate('New Office');
         $storage = new Zend_Auth_Storage_Session();
 	$data = $storage->read();
 	if(!$data){
@@ -52,13 +51,25 @@ class Officecommonview_IndexController extends Zend_Controller_Action
         //if (($checkaccess != NULL)) {
 
 	//get id to view
-        $this->view->title = "Holiday";
         $id=$this->_request->getParam('id');
         $this->view->memberid=$id;
 	//instance for common view
         $officecommon=new Officecommonview_Model_officecommonview;
         $office=$officecommon->getoffice($id);
         $this->view->office=$office;
+
+        $maxid=$officecommon->findlastlevel();
+        foreach($maxid as $maxid1) {
+        $villagelastid=$maxid1->lastid;
+        }
+        $office[0]['officetype_id'];
+        if($villagelastid==$office[0]['officetype_id'])
+        {
+        $this->view->villageid=$office[0]['officetype_id'];
+        $villagename=$office[0]['id'];
+        $this->view->villageaddress=$officecommon->getvillageaddress($villagename);
+        }
+
         $parent_id=$office[0]['parentoffice_id'];
         $parent_name = $this->view->adm->editRecord("ourbank_office",$parent_id);
         $this->view->parentname=$parent_name[0]['name'];
@@ -67,10 +78,8 @@ class Officecommonview_IndexController extends Zend_Controller_Action
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
-
-        
-        $this->view->address = $this->view->adm->getModule("address",$id,"Office");
-        $this->view->contact = $this->view->adm->getModule("contact",$id,"Office");
+        $this->view->address = $this->view->adm->getModule("ourbank_address",$id,"Office");
+        $this->view->contact = $this->view->adm->getModule("ourbank_contact",$id,"Office");
         //}
         //else {
         //$this->_redirect('index/index');

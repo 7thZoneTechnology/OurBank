@@ -23,19 +23,34 @@ class Meetingbookreport_Model_Meetingbook extends Zend_Db_Table
 {
     protected $_name = 'ourbank_attendance';
 
-    public function fetchMembers($meeting_ID,$groupid) {
+//     public function fetchMembers($meeting_ID) {
+//         $select = $this->select()
+//                 ->setIntegrityCheck(false)
+// 
+//                 ->join(array('a' => 'ourbank_meeting'),array('a.id'))
+//                 ->where('a.id =?',$meeting_ID)
+//                 ->join(array('b' => 'ourbank_group'),'b.village_id = a.village_id',array('b.id','b.saving_perweek','b.name as groupname','b.penalty_notcoming', 'b.penalty_latecoming'))
+//             ->where('b.id =?',$groupid)
+// 		->join(array('c' => 'ourbank_groupmembers'),'c.group_id = b.id',array('c.member_id as memberid'))
+// 		->join(array('d' => 'ourbank_familymember'),'d.id = c.member_id',array('d.name as membername','d.id','d.uid'));
+// 	//die($select->__toString($select));
+//         $result = $this->fetchAll($select);
+//         return $result->toArray();		
+//     }
+
+    public function fetchMembers($meeting_ID) {
         $select = $this->select()
                 ->setIntegrityCheck(false)
 
-                ->join(array('a' => 'ourbank_meeting'),array('a.id'))
-                ->where('a.id =?',$meeting_ID)
-                ->join(array('b' => 'ourbank_group'),'b.village_id = a.village_id',array('b.id','b.saving_perweek','b.name as groupname','b.penalty_notcoming', 'b.penalty_latecoming'))
-            ->where('b.id =?',$groupid)
+//                 ->join(array('a' => 'ourbank_group'),array('a.id'))
+//                 ->where('a.id =?',$meeting_ID)
+                ->join(array('b' => 'ourbank_group'),array('b.id'),array('b.id as group_id','b.saving_perweek', 'b.penalty_latecoming','b.penalty_notcoming','b.late_subglcode','b.absent_subglcode'))
+            ->where('b.id =?',$meeting_ID)
 		->join(array('c' => 'ourbank_groupmembers'),'c.group_id = b.id',array('c.member_id as memberid'))
-		->join(array('d' => 'ourbank_familymember'),'d.id = c.member_id',array('d.name as membername','d.id'));
-	//die($select->__toString($select));
+		->join(array('d' => 'ourbank_familymember'),'d.id = c.member_id',array('d.name as membername','d.id','d.uid'));
+//         die($select->__toString($select));
         $result = $this->fetchAll($select);
-        return $result->toArray();		
+        return $result->toArray();
     }
 
 public function meetingdetails($branchid,$meetingno)
@@ -61,20 +76,39 @@ public function fetchgroupid($meeting_ID) {
     }
 
 
-    public function fetchmeeting($meeting_ID,$groupid) {
+//     public function fetchmeeting($meeting_ID,$groupid) {
+//         $select = $this->select()
+//                 ->setIntegrityCheck(false)
+// 
+//                 ->join(array('a' => 'ourbank_meeting'),array('a.id'),array('a.day','a.grouphead_name','a.place','a.time'))
+//                 ->where('a.id =?',$meeting_ID)
+//                 ->join(array('b' => 'ourbank_group'),'b.village_id = a.village_id',array('b.id','b.name as groupname','b.saving_perweek'))
+//             ->where('b.id =?',$groupid)
+// 		->join(array('c' => 'ourbank_groupmembers'),'c.group_id = b.id',array('c.member_id'))
+//                 ->join(array('e' => 'ourbank_master_weekdays'),'a.day = e.id',array('e.name as weekday'));
+// 	//die($select->__toString($select));
+//         $result = $this->fetchAll($select);
+//         return $result->toArray();		
+//     }
+
+    public function fetchmeeting($meeting_ID) {
         $select = $this->select()
                 ->setIntegrityCheck(false)
 
-                ->join(array('a' => 'ourbank_meeting'),array('a.id'),array('a.day','a.grouphead_name','a.place','a.time'))
-                ->where('a.id =?',$meeting_ID)
-                ->join(array('b' => 'ourbank_group'),'b.village_id = a.village_id',array('b.id','b.name as groupname','b.saving_perweek'))
-            ->where('b.id =?',$groupid)
+//                 ->join(array('a' => 'ourbank_group'),array('a.id'),array('a.day','a.grouphead_name','a.place','a.time','a.village_id'))
+//                 ->where('a.id =?',$meeting_ID)
+                ->join(array('b' => 'ourbank_group'),array('b.id'), array('b.id','b.name as groupname', 'b.saving_perweek', 'b.village_id','b.place','b.time'))
+            ->where('b.id =?',$meeting_ID)
 		->join(array('c' => 'ourbank_groupmembers'),'c.group_id = b.id',array('c.member_id'))
-                ->join(array('e' => 'ourbank_master_weekdays'),'a.day = e.id',array('e.name as weekday'));
-	//die($select->__toString($select));
+                ->join(array('e' => 'ourbank_master_weekdays'),'b.days = e.id',array('e.name as weekday'))
+                ->join(array('f' => 'ourbank_office'),'b.village_id = f.id',array('f.name as officename'))
+                ->join(array('g' => 'ourbank_familymember'),'b.head = g.id',array('g.name as grouphead_name'));
+
+// 	die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result->toArray();		
     }
+
 public function fetchmeetingno($meeting_ID)
 {
         $select = $this->select()
@@ -89,30 +123,41 @@ public function fetchmeetingno($meeting_ID)
 
 public function fetchloanofficer($groupid)
 {
+//         $select = $this->select()
+//                 ->setIntegrityCheck(false)
+//                 ->join(array('a' => 'ourbank_accounts'), array('a.id'),array('a.account_number'))
+//             ->where('a.membertype_id =2 or a.membertype_id =3')
+//             ->where('a.member_id =?',$groupid)
+//             ->join(array('b' => 'ourbank_loanaccounts'), 'b.account_id=a.id',array('b.id'))
+//             ->join(array('c' => 'ourbank_user'), 'c.id=b.created_by',array('c.name as loanofficer'));
+// 
+// 	//die($select->__toString($select));
+//         $result = $this->fetchAll($select);
+//         return $result->toArray();
+
         $select = $this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a' => 'ourbank_accounts'), array('a.id'),array('a.account_number'))
-            ->where('a.membertype_id =2 or a.membertype_id =3')
-            ->where('a.member_id =?',$groupid)
-            ->join(array('b' => 'ourbank_loanaccounts'), 'b.account_id=a.id',array('b.id'))
+                ->from(array('a'=>'ourbank_groupmembers'),array('a.id'))
+                ->where('a.group_id=?',$groupid)
+                ->join(array('b' => 'ourbank_accounts'),'a.member_id=b.member_id',array('b.account_number'))
+                ->where("b.account_number LIKE '%L%'")
             ->join(array('c' => 'ourbank_user'), 'c.id=b.created_by',array('c.name as loanofficer'));
-
-	//die($select->__toString($select));
+// 	die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result->toArray();
 }
 
 public function creditbalance($memberid) {
+
         $select = $this->select()
                 ->setIntegrityCheck(false)
-		->join(array('e' => 'ourbank_group_acccounts'),array('e.account_id'))
-                ->where('e.member_id = '.$memberid)
-            ->join(array('f' => 'ourbank_accounts'),'f.id = e.account_id')
-            ->join(array('g' => 'ourbank_group_savingstransaction'),'g.account_id=e.account_id AND g.transaction_type="1" AND g.member_id='.$memberid, array('sum(g.transaction_amount) as currentbalance'))
-            ->group('g.member_id');
-	//die($select->__toString($select));
+            ->from(array('a' => 'ourbank_accounts'),array('a.id'))
+             ->where("a.status_id=1")
+            ->join(array('b' => 'ourbank_group_savingstransaction'),"b.account_id=a.id and b.transaction_type='1' AND b.member_id=".$memberid, array('sum(b.transaction_amount) as currentbalance'))
+            ->group('b.member_id');
+// 	die($select->__toString($select));
         $result = $this->fetchAll($select);
-        return $result->toArray();		
+        return $result->toArray();	
     }
 
 public function loanoutstanding($memberid) {
@@ -122,12 +167,12 @@ public function loanoutstanding($memberid) {
                 ->where('a.member_id = '.$memberid)
                 ->where('membertype_id=1')
 		->join(array('b' => 'ourbank_loanaccounts'),'b.account_id=a.id',array('b.id as loanid'))
-		->join(array('c' => 'ourbank_installmentdetails'),'c.account_id=b.account_id',array('sum(c.installment_amount) as outstanding','c.installment_amount as pay'))
+		->join(array('c' => 'ourbank_installmentdetails'), 'c.account_id=b.account_id', array('sum(c.installment_amount) as outstanding','c.installment_amount as pay'))
                 ->where('installment_status!=2');
 
 	//die($select->__toString($select));
         $result = $this->fetchAll($select);
-        return $result->toArray();		
+        return $result->toArray();	
     }
 
 public function loandue($memberid) {
@@ -165,23 +210,36 @@ public function fetchattendance($branchid,$meetingno)
                     ->from(array('a' => 'ourbank_attendance'))
                      ->where('a.meeting_id = '.$branchid)
                      ->where('a.week_no = '.$meetingno)
-                    ->join(array('b' => 'ourbank_meeting'),'a.meeting_id = b.id',array('b.name as meetingname'));
-        //die($select->__toString($select));
+                    ->join(array('b' => 'ourbank_group'),'a.meeting_id = b.id',array('b.name as meetingname'));
+//         die($select->__toString($select));
             $result = $this->fetchAll($select);
             return $result->toArray();
 }
 
-    public function memberattendance($memberid)
+    public function memberabsent($memberid,$attendanceid)
     {
         $select = $this->select()
                     ->setIntegrityCheck(false)  
-                    ->from(array('a' => 'ourbank_memberattendance'))
-                     ->where('a.member_id = '.$memberid)
+                    ->from(array('a' => 'ourbank_memberattendance'),array('a.member_id as latemem_id'))
+                     ->where('a.member_id = '.$memberid.' and a.attendance_id='.$attendanceid.' and a.attendance_type=1')
                     ->join(array('b' => 'ourbank_attendance'),'a.attendance_id = b.id');
-
-        //die($select->__toString($select));
+//         die($select->__toString($select));
             $result = $this->fetchAll($select);
             return $result->toArray();
     }
+
+    public function memberlate($memberid,$attendanceid)
+    {
+        $select = $this->select()
+                    ->setIntegrityCheck(false)  
+                    ->from(array('a' => 'ourbank_memberattendance'),array('a.member_id as latemem_id'))
+                     ->where('a.member_id = '.$memberid.' and a.attendance_id='.$attendanceid.' and a.attendance_type=2')
+//                      ->where('a.latemem_id = '.$memberid)
+                    ->join(array('b' => 'ourbank_attendance'),'a.attendance_id = b.id');
+//         die($select->__toString($select));
+            $result = $this->fetchAll($select);
+            return $result->toArray();
+    }
+
 
 }

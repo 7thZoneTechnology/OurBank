@@ -22,6 +22,8 @@
 <?php
 class Address_Model_addressInformation  extends Zend_Db_Table {
     protected $_name = 'ob_member';
+
+//getting module record with respective submodule id...
     public function getmodule($subId)
     {
         $select=$this->select()
@@ -33,35 +35,38 @@ class Address_Model_addressInformation  extends Zend_Db_Table {
         //die ($select->__toString($select));
     }
 
+//getting address details with respective record id and submodule id
     public function getaddress($id,$sub_id)
     {
-                $select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a' => 'address'),array('id'))
-                ->where('a.submodule_id='.$sub_id)
-                ->where('a.id = '.$id);
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a' => 'address'),array('id'))
+        ->where('a.submodule_id='.$sub_id)
+        ->where('a.id = '.$id);
 	 $result=$this->fetchAll($select);
 	 return $result->toArray();
   	// die ($select->__toString($select));
 
     }
 
-        public function getcontact($id,$sub_id)
+//getting contact details with respective record id and submodule id ...
+    public function getcontact($id,$sub_id)
     {
-                $select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a' => 'contact'),array('id'))
-                ->where('a.submodule_id='.$sub_id)
-                ->where('a.id = '.$id);
-		$result=$this->fetchAll($select);
-		return $result->toArray();
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a' => 'contact'),array('id'))
+        ->where('a.submodule_id='.$sub_id)
+        ->where('a.id = '.$id);
+        $result=$this->fetchAll($select);
+        return $result->toArray();
   	 //die ($select->__toString($select));
 
     }
 
+//update records with respective four different arguments 
     public function updateRecord($table,$param,$data,$sub1)  
     {
-		$db = $this->getAdapter();
+        $db = $this->getAdapter();
         $db->update($table, $data , array('id = '.$param,'submodule_id='.$sub1));
         return;
     }

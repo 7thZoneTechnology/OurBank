@@ -23,53 +23,42 @@ if($this->search == 0) { ?>
 
 <fieldset>
     <legend>Search</legend>
-
         <TABLE width="100%">
-			
-
             <tr>
-                <td class="label">Begin Date:</td>
+                <td class="label">Begin Date</td>
                 <td allign = "right"><?php  echo $this->form->datefrom;?></td>
-                <td class="label">Close Date:</td>
+                <td class="label">Close Date</td>
                 <td allign = "right"><?php  echo $this->form->dateto;?></td>
-				
             </tr>
             <tr>
-		<Td class="label"><br>Product name:</td>
-                <td allign = "right"><br><?php  echo $this->form->prodname;?></td>
-                <Td class="label"><br>Gl Subcode:</td>
-                <td allign = "right"><br><?php  echo $this->form->glcode;?></td>			
-
+				<Td class="label">Product name</td>
+                <td allign = "right"><?php  echo $this->form->prodname;?></td>
+                <Td class="label">Gl Subcode</td>
+                <td allign = "right"><?php  echo $this->form->glcode;?></td>			
             </tr>
             <tr>
-                <TD colspan="4" align="left"></TD>
-
+                <TD colspan="4" align="left"><input type="submit" name="Search" value="Search"/></TD>
             </tr>
-        </table><input type="submit" name="Search" value="Search">
+        </table>
 </fieldset>
 </form>
 <?php } ?>
 <?php if (count($this->ledegerList)) { ?>
-	<h5 align="right">From <?php echo "<font color='#039'>".$this->fromDate."</font>"; ?> </h5>
-	<h5 align="right"> To <?php echo "<font color='#039'>".$this->toDate."</font>"; ?></h5> 
+	<h3 align="right">From <?php echo "<font color='#045'>".$this->datefrom."</font>"; ?> </h3>
+	<h3 align="right"> To <?php echo "<font color='#045'>".$this->dateto."</font>"; ?></h3> 
 	<?php foreach($this->ledegerList as $ledegerList) { $type = $ledegerList["subheader"]; }?>
-	<h5 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h5> <br>
-
-	<h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5>
-
-<div style="float:left;width:800px">
-    <TABLE id="hor-minimalist-b">
-       <tr><Th colspan="4"><b>Liabilities</b></Th></tr>
+	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
+	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
+	<div style="float:left;width:800px">
+    <TABLE id="hor-minimalist-b" width="80%">
      <tr>
         <TH allign = "right">Particular</TH>
         <TH allign = "right">Dr</TH>
         <TH allign = "right">Cr</TH>
         <TH allign = "right">Balance</TH>
      </tr>
-
      <?php foreach($this->ledegerList as $ledegerList) { 
      $liabilityCash = 0.00; ?>
-     
              <tr>
             <TD allign = "right">Opening Balance</TD>
             <TD allign = "right"></TD>
@@ -90,7 +79,7 @@ if($this->search == 0) { ?>
         <?php if ($ledegerList["credit"]) { ?>
         <TD allign = "right"></TD>
         <TD allign = "right"><?php echo $ledegerList["credit"];?></TD>
-        <TD align = "rgiht"><?php echo sprintf("%4.2f",  $liabilityCash + $ledegerList["credit"]);?></TD>
+        <TD align = "right"><?php echo sprintf("%4.2f",  $liabilityCash + $ledegerList["credit"]);?></TD>
         <?php } ?>
 
      </tr>
@@ -99,22 +88,18 @@ if($this->search == 0) { ?>
         <?php if ($ledegerList["debit"]) { ?>
         <TD allign = "right"><?php echo $ledegerList["debit"];?></TD>
         <TD allign = "right"></TD>
-        <TD align = "rgiht"><?php echo sprintf("%4.2f", $ledegerList["credit"] + $liabilityCash - $ledegerList["debit"]); ?></TD>
+        <TD align = "right"><?php echo sprintf("%4.2f", $ledegerList["credit"] + $liabilityCash - $ledegerList["debit"]); ?></TD>
         <?php } ?>
      </tr>
      <tr>
             <TH allign = "right">Closing Balance</TH>
             <TH allign = "right"></TH>
             <TH allign = "right"></TH>
-            <TH align = "rgiht"><?php echo sprintf("%4.2f", $ledegerList["credit"] + $liabilityCash - $ledegerList["debit"]);?></TH>
+            <TH align = "right"><?php echo sprintf("%4.2f", $ledegerList["credit"] + $liabilityCash - $ledegerList["debit"]);?></TH>
      </tr>
-
-        
      <?php }  ?>
     </TABLE>
 </div>
-
-
 <?php } ?>
 <div style="float:left;width:800px">
 <?php if (count($this->ledegerListAssets)) { ?>
@@ -124,7 +109,6 @@ if($this->search == 0) { ?>
 	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
 
 	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
-<fieldset>
     <legend>Assets</legend>
     <TABLE id="hor-minimalist-b" width="80%">
      <tr>
@@ -148,7 +132,7 @@ if($this->search == 0) { ?>
 
 
      <?php } } } ?>
-                 <TD align = "rgiht"><?php echo $assetsCash ;?></TD>
+                 <TD align = "right"><?php echo $assetsCash ;?></TD>
 
              </tr>
      <TR>
@@ -156,8 +140,7 @@ if($this->search == 0) { ?>
         <?php if ($ledegerListAssets["credit"]) { ?>
         <TD allign = "right"></TD>
         <TD allign = "right"><?php echo $ledegerListAssets["credit"];?></TD>
-        <TD align = "rgiht"><?php echo sprintf("%4.2f",  $assetsCash + $ledegerListAssets["credit"]);?></TD>
-
+        <TD align = "right"><?php echo sprintf("%4.2f",  $assetsCash + $ledegerListAssets["credit"]);?></TD>
         <?php } ?>
 
      </tr>
@@ -166,19 +149,24 @@ if($this->search == 0) { ?>
         <?php if ($ledegerListAssets["debit"]) { ?>
         <TD allign = "right"><?php echo $ledegerListAssets["debit"];?></TD>
         <TD allign = "right"></TD>
-        <TD align = "rgiht"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]); ?></TD>
+        <TD align = "right"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]); ?></TD>
         <?php } ?>
      </tr>
      <tr>
             <TH allign = "right">Closing Balance</TH>
             <TH allign = "right"></TH>
             <TH allign = "right"></TH>
-            <TH align = "rgiht"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]);?></TH>
+            <TH align = "right"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]);?></TH>
      </tr>
 
-       
-      <?php  } } ?>
+       <?php }} ?>
     </TABLE>
 
-</fieldset>
+<form action="<?php echo $this->baseUrl();?>/generalledger/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/generalledger/index/reportdisplay/file/generalledger.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+           <input type="submit" value="PDF" id="submit">
+</form>
+
+
+
 </div>

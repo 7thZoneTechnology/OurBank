@@ -20,25 +20,25 @@
 ?>
 
 <?php
-class Recurringtransaction_IndexController extends Zend_Controller_Action 
+class Recurringtransaction_IndexController extends Zend_Controller_Action
 {
     public function init() {
         $this->view->pageTitle='Recurring transaction';
         $this->view->type="recurring";
-        $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-                $this->_redirect('index/login');
-        }
+//         $storage = new Zend_Auth_Storage_Session();
+//         $data = $storage->read();
+//         if(!$data){
+//             $this->_redirect('index/login');
+//         }
     }
 
     public function indexAction() 
     {
-        $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-                $this->_redirect('index/login');
-        }
+//         $storage = new Zend_Auth_Storage_Session();
+//         $data = $storage->read();
+//         if(!$data){
+//             $this->_redirect('index/login');
+//         }
         $Recurringdepositsavings = new Recurringtransaction_Form_Membersearch();
         $this->view->form = $Recurringdepositsavings;
         $recurringSavings = new Recurringtransaction_Model_recurringSavings();
@@ -51,7 +51,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $accountcode=$membercode;
                     $arrayrecurringAccountSearch = $recurringSavings->recurringSearch($accountcode);
                     if (!$arrayrecurringAccountSearch) {
-                            echo '<font color="red">Record not found..Try again..</font>';
+                            echo "No records found";
                     } else {
                         $this->view->recurringAccountsSearch = $arrayrecurringAccountSearch;
                         foreach($arrayrecurringAccountSearch as $arrayrecurringAccountSearch1) {
@@ -94,7 +94,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
-                $this->_redirect('index/login');
+            $this->_redirect('index/login');
         }
 
         $matureDate=0;
@@ -125,7 +125,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
         $IndividualnameFetch = $recurringDetails->fetchMemberName($accountId);
         foreach($IndividualnameFetch as $IndividualnameFetch1) {
-                $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
+            $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
         }
 
         $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
@@ -144,7 +144,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
         $this->view->recurringmemberbranchid = $recurringmemberbranchid;
         foreach($recurringmemberbranchid as $recurringmemberbranchids) {
-            $memberbranch_id=$this->view->memberbransch_id=$recurringmemberbranchids['office_id'];
+            $memberbranch_id=$this->view->memberbransch_id=$recurringmemberbranchids['bank'];
         }
 
         $recurringPaidDetails = $recurringDetails->recurringPaidDetails($accountId);
@@ -171,24 +171,24 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $simpleInterest=round($simpleInterest,2);
         $this->view->simpleInterest=$simpleInterest;
 
-
         $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
         $this->view->matureAmount=$matureAmount;
-// 
-//         $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
-//         $this->view->groupNamesSearch = $groupNamesSearchFetch;
-//         foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
-//             $this->view->groupname=$groupNamesSearchFetch1['groupname'];
-//             $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
-//             $accountNumber=$groupNamesSearchFetch1['account_number'];
-//         }
-// 
-//         if($this->view->groupname) {
-//             $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
-//             $this->view->groupMembersDetails=$groupMembersDetails;
-//         }
+
+        $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+        $this->view->groupNamesSearch = $groupNamesSearchFetch;
+        foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+            $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+            $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+            $accountNumber=$groupNamesSearchFetch1['account_number'];
+        }
+
+        if($this->view->groupname) {
+            $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+            $this->view->groupMembersDetails=$groupMembersDetails;
+        }
     } 
         /*End of Fetch all the Details Based on Account Id and Product Id on the URl*/
+
 
     function recurringsAction()
     {
@@ -209,11 +209,9 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
         $fixedSavings = new Recurringtransaction_Model_fixedSavings();
         $recurringDetails=new Recurringtransaction_Model_recurringSavings();
-
                //validate for display ( deposit, renewal, status )
         $this->view->depositcheck1 = $recurringDetails->depositcheck($accountId);
         $this->view->statuscheck1 = $recurringDetails->statuscheck($accountId);
-
         $installmentsDetailsFetch = $recurringDetails->installmentsDetails($accountId,$productId);
         $this->view->installmentsDetails = $installmentsDetailsFetch;
         foreach($installmentsDetailsFetch as $installmentsDetailsFetch1) {
@@ -225,25 +223,25 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
         $this->view->recurringAccountDetails = $recurringAccountDetailsFetch;
         foreach($recurringAccountDetailsFetch as $recurringAccountDetailsFetch1) {
-                $begindate=$this->view->begin_date=$recurringAccountDetailsFetch1['begin_date'];
-                $matureDate=$this->view->mature_date=$recurringAccountDetailsFetch1['mature_date'];
-                $penalty=$this->view->penal_Interest=$recurringAccountDetailsFetch1['penal_Interest'];
-                $fixedInterest=$this->view->fixed_interest=$recurringAccountDetailsFetch1['fixed_interest'];
-                $this->view->membertypr_id=$recurringAccountDetailsFetch1['membertype_id'];
-                $glsubcode=$recurringAccountDetailsFetch1['glsubcode_id'];
+            $begindate=$this->view->begin_date=$recurringAccountDetailsFetch1['begin_date'];
+            $matureDate=$this->view->mature_date=$recurringAccountDetailsFetch1['mature_date'];
+            $penalty=$this->view->penal_Interest=$recurringAccountDetailsFetch1['penal_Interest'];
+            $fixedInterest=$this->view->fixed_interest=$recurringAccountDetailsFetch1['fixed_interest'];
+            $this->view->membertypr_id=$recurringAccountDetailsFetch1['membertype_id'];
+            $glsubcode=$recurringAccountDetailsFetch1['glsubcode_id'];
         }
 
         $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
         $this->view->recurringmemberbranchid = $recurringmemberbranchid;
         foreach($recurringmemberbranchid as $recurringmemberbranchids) {
-                $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['office_id'];
+            $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['bank'];
         }
 
         $recurringPaidDetails = $recurringDetails->recurringPaidDetails($accountId);
         $this->view->recurringPaidDetails = $recurringPaidDetails;
         $paidAmount=0;
         foreach($recurringPaidDetails as $recurringPaidDetailss) {
-                $paidAmount=$paidAmount+$recurringPaidDetailss['rec_paid_amount'];
+            $paidAmount=$paidAmount+$recurringPaidDetailss['rec_paid_amount'];
         }
         $this->view->paidAmount=$paidAmount;
 
@@ -261,20 +259,20 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
         $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
         $this->view->matureAmount=$matureAmount;
-// 
-//                 $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
-//                 $this->view->groupNamesSearch = $groupNamesSearchFetch;
-//                 foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
-//                         $this->view->groupname=$groupNamesSearchFetch1['groupname'];
-//                         $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
-//                         $accountNumber=$groupNamesSearchFetch1['account_number'];
-//                 }
-// 
-//                 if($this->view->groupname) {
-//                         $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
-//                         $this->view->groupMembersDetails=$groupMembersDetails;
-//                 }
-// 
+
+        $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+        $this->view->groupNamesSearch = $groupNamesSearchFetch;
+        foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+            $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+            $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+            $accountNumber=$groupNamesSearchFetch1['account_number'];
+        }
+
+        if($this->view->groupname) {
+            $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+            $this->view->groupMembersDetails=$groupMembersDetails;
+        }
+
         $noOfInstalmentPaid1=$recurringDetails->noOfInstalmentPaid($accountId);
         $noOfInstalmentPaid=count($noOfInstalmentPaid1);
         $this->view->noOfInstalmentPaid=$noOfInstalmentPaid;
@@ -285,7 +283,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
         $IndividualnameFetch = $recurringDetails->fetchMemberName($accountId);
         foreach($IndividualnameFetch as $IndividualnameFetch1) {
-                $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
+            $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
         }
 
         $this->view->currentDate=$currentdate;
@@ -305,36 +303,35 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $this->view->form2->productId->setValue($productId);  /*setting values*/
         $this->view->form2->member_id->setValue($memberId);  /*setting values*/
         if($matured){
-                $this->view->form2->recurringamount->setValue($matured);  /*setting values*/
+            $this->view->form2->recurringamount->setValue($matured);  /*setting values*/
         } else {
-                $this->view->form2->recurringamount->setValue($capital);  /*setting values*/
+            $this->view->form2->recurringamount->setValue($capital);  /*setting values*/
         }
 
+        $currentdate=$date->toString('YYYY-MM-dd');
+        $this->view->currentDate=$currentdate;
+        $this->view->maturedate=$matureDate;
+        $RateperMonth=$fixedInterest/12;
+        $this->view->installmentNumber=$InstalmentNumber;
+        $simpleInterest=((($amountTopay*$InstalmentNumber)*$InstalmentNumber*$RateperMonth)/100);
+        $simpleInterest=round($simpleInterest,2);
+        $this->view->simpleInterest=$simpleInterest;
+        $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
+        $this->view->matureAmount=$matureAmount;
+        $InstalmentNumber=$noOfInstalmentPaid+1;
+        if($InstalmentNumber==1) {
+            $lastPaidDate=$begindate;
+        } else  {
+            $recurringInstalmentpayments=$recurringDetails->recurringInstalmentpayments($accountId,$InstalmentNumber-1);
+            foreach($recurringInstalmentpayments as $recurringInstalmentpayments1) {
+                $lastPaidDate=$recurringInstalmentpayments1['rec_payment_date']; /*last instalment paid date*/
+            }
+        }
 
-                $currentdate=$date->toString('YYYY-MM-dd');
-                $this->view->currentDate=$currentdate;
-                $this->view->maturedate=$matureDate;
-                $RateperMonth=$fixedInterest/12;
-                $this->view->installmentNumber=$InstalmentNumber;
-                $simpleInterest=((($amountTopay*$InstalmentNumber)*$InstalmentNumber*$RateperMonth)/100);
-                $simpleInterest=round($simpleInterest,2);
-                $this->view->simpleInterest=$simpleInterest;
-                $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
-                $this->view->matureAmount=$matureAmount;
-                $InstalmentNumber=$noOfInstalmentPaid+1;
-                if($InstalmentNumber==1) {
-                        $lastPaidDate=$begindate;
-                } else  {
-                        $recurringInstalmentpayments=$recurringDetails->recurringInstalmentpayments($accountId,$InstalmentNumber-1);
-                        foreach($recurringInstalmentpayments as $recurringInstalmentpayments1) {
-                                $lastPaidDate=$recurringInstalmentpayments1['rec_payment_date']; /*last instalment paid date*/
-                        }
-                }
-
-                $recurringForm=new Recurringtransaction_Form_recurringTransaction($amountTopay,$currentdate,$lastPaidDate);
-                $this->view->recurringForm=$recurringForm;
-                $this->view->recurringForm->accountId->setValue($accountId);
-                $this->view->recurringForm->productId->setValue($productId);  /*fetching all payment mode */
+        $recurringForm=new Recurringtransaction_Form_recurringTransaction($amountTopay,$currentdate,$lastPaidDate);
+        $this->view->recurringForm=$recurringForm;
+        $this->view->recurringForm->accountId->setValue($accountId);
+        $this->view->recurringForm->productId->setValue($productId);  /*fetching all payment mode */
 // 
 //                 if($this->view->manualRepayment=='yes' && $this->view->groupname) {
 //                         $this->view->recurringForm->amount->setAttrib('readonly', 'true');
@@ -348,82 +345,83 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 //                         }
 //                 }
 // 
-            $due=$this->view->dueAmount=0;
-            $accountnextinstallmentdate=$recurringDetails->nextinstallmentdate($accountId);
-            foreach($accountnextinstallmentdate as $accountnextinstallmentdates) {
-                $nextinstallmentdate=$accountnextinstallmentdates['rec_payment_date'];
-                $accountinstallment_date1=$nextinstallmentdate;
-                $InstalmentNumber=$accountnextinstallmentdates['rec_payment_id'];
-                $this->view->dueAmount=$this->view->dueAmount+$accountnextinstallmentdates['rec_payment_amount'];
-                $due=$this->view->dueAmount;
+        $due=$this->view->dueAmount=0;
+        $accountnextinstallmentdate=$recurringDetails->nextinstallmentdate($accountId);
+        foreach($accountnextinstallmentdate as $accountnextinstallmentdates) {
+            $nextinstallmentdate=$accountnextinstallmentdates['rec_payment_date'];
+            $accountinstallment_date1=$nextinstallmentdate;
+            $InstalmentNumber=$accountnextinstallmentdates['rec_payment_id'];
+            $this->view->dueAmount=$this->view->dueAmount+$accountnextinstallmentdates['rec_payment_amount'];
+            $due=$this->view->dueAmount;
 
+            $systemDate= $date->get(Zend_Date::DATES);
+            $date->set($nextinstallmentdate,Zend_Date::DATES);
+            $nextinstallmentdate=$date->get($nextinstallmentdate,Zend_Date::DATES);
+
+            $date->set($systemDate,Zend_Date::DATES);
+
+            if (($date->isLater($nextinstallmentdate, Zend_Date::DATES))) {
                 $systemDate= $date->get(Zend_Date::DATES);
-                $date->set($nextinstallmentdate,Zend_Date::DATES);
-                $nextinstallmentdate=$date->get($nextinstallmentdate,Zend_Date::DATES);
 
-                $date->set($systemDate,Zend_Date::DATES);
+                $installmentDate = new Zend_Date($nextinstallmentdate, Zend_Date::DATES);
+                $accountnextdueinstallmentdate=$installmentDate->toString('YYYY-MM-dd');
 
-                if (($date->isLater($nextinstallmentdate, Zend_Date::DATES))) {
-                    $systemDate= $date->get(Zend_Date::DATES);
+                $systemDate = new Zend_Date($systemDate, Zend_Date::DATES);
+                $presentdatedate=$systemDate->toString('YYYY-MM-dd');
 
-                    $installmentDate = new Zend_Date($nextinstallmentdate, Zend_Date::DATES);
-                    $accountnextdueinstallmentdate=$installmentDate->toString('YYYY-MM-dd');
+                $date_parts1=explode("-",$accountnextdueinstallmentdate );
+                $date_parts2=explode("-",$presentdatedate);
+                $start_date=gregoriantojd($date_parts1[1], $date_parts1[2], $date_parts1[0]);
+                $end_date=gregoriantojd($date_parts2[1], $date_parts2[2], $date_parts2[0]);
+                $noOfDays= $end_date - $start_date;
 
-                    $systemDate = new Zend_Date($systemDate, Zend_Date::DATES);
-                    $presentdatedate=$systemDate->toString('YYYY-MM-dd');
-
-                    $date_parts1=explode("-",$accountnextdueinstallmentdate );
-                    $date_parts2=explode("-",$presentdatedate);
-                    $start_date=gregoriantojd($date_parts1[1], $date_parts1[2], $date_parts1[0]);
-                    $end_date=gregoriantojd($date_parts2[1], $date_parts2[2], $date_parts2[0]);
-                    $noOfDays= $end_date - $start_date;
-
-                    if($noOfDays >= 1) {
-                            $fineAmount = $recurringDetails->getDelayFine();
-                            foreach($fineAmount as $fineData) {
-                                    $DelayFine = $fineData['feevalue'];
-                            }
-                            if($due) {
-                                    $amount = (($due * $DelayFine)/100)*$noOfDays;
-                                    $amountDisplayed = $amount + $due ;
-                                    $this->view->dueAmount = round($amountDisplayed,2);
-                            } else {
-                                    $amount = 0;
-                            }
-                    }	 
-
-                    $installmentStatus='5';
-                    $statusOverdue=$recurringDetails->instalmentStatus($accountId,$InstalmentNumber,$installmentStatus);
-                    if (($date->isLater($accountinstallment_date1, Zend_Date::DATES))) {
-                        $this->view->recurringForm->addElement(new Zend_Form_Element_Text('fine'));
-                        $this->view->recurringForm->fine->setAttrib('class', 'textfield');
-                        $this->view->recurringForm->fine->setRequired(true);
-                        if($amount) {
-                                $this->view->recurringForm->fine->setValue($amount);
-                        }
-                        $this->view->recurringForm->fine->setAttrib('readonly', 'true');
-                        $this->view->recurringForm->fine->addValidators(array(array('Float'),
-                                                            array('GreaterThan',false,array('1',
-                                                            'messages' => array('notGreaterThan' => 'Min=1Rs')))));
+//                 if($noOfDays >= 1) {
+//                     $fineAmount = $recurringDetails->getDelayFine();
+//                     foreach($fineAmount as $fineData) {
+//                         $DelayFine = $fineData['feevalue'];
+//                     }
+//                     if($due) {
+//                         $amount = (($due * $DelayFine)/100)*$noOfDays;
+//                         $amountDisplayed = $amount + $due ;
+//                         $this->view->dueAmount = round($amountDisplayed,2);
+//                     } else {
+//                         $amount = 0;
+//                     }
+//                 }
+                        $amount = 0;
+                $installmentStatus='5';
+                $statusOverdue=$recurringDetails->instalmentStatus($accountId,$InstalmentNumber,$installmentStatus);
+                if (($date->isLater($accountinstallment_date1, Zend_Date::DATES))) 
+                {
+                    $this->view->recurringForm->addElement(new Zend_Form_Element_Text('fine'));
+                    $this->view->recurringForm->fine->setAttrib('class', 'textfield');
+                    $this->view->recurringForm->fine->setRequired(true);
+                    if($amount) {
+                        $this->view->recurringForm->fine->setValue($amount);
                     }
+                    $this->view->recurringForm->fine->setAttrib('readonly', 'true');
+                    $this->view->recurringForm->fine->addValidators(array(array('Float'),
+                                                        array('GreaterThan',false,array('1',
+                                                        'messages' => array('notGreaterThan' => 'Min=1Rs')))));
                 }
             }
+        }
 
-            $paymentModeDetails = $recurringDetails->fetchAllPaymentMode();
-            foreach ($paymentModeDetails as $paymenttype1) {
-                    $recurringForm->transactionMode->addMultiOption($paymenttype1['id'],$paymenttype1['description']);
-            }
+        $paymentModeDetails = $recurringDetails->fetchAllPaymentMode();
+        foreach ($paymentModeDetails as $paymenttype1) {
+                $recurringForm->transactionMode->addMultiOption($paymenttype1['id'],$paymenttype1['description']);
+        }
 //                 $freequencyofdeposit =$recurringDetails->fetchfreequencyofdeposit();
 //                 foreach($freequencyofdeposit as $freequency) {
 //                         $RecurringAccountForm->frequencyofdeposit->addMultiOption($freequency['timefrequncy_id'],$freequency['timefrequencytype']);
 //                 }
-        }
+    }
 
         function depositAction()
         {
             $storage = new Zend_Auth_Storage_Session();
             $data = $storage->read();
-            if(!$data){
+            if(!$data) {
                     $this->_redirect('index/login');
             }
 
@@ -453,30 +451,30 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
             $IndividualnameFetch = $recurringDetails->fetchMemberName($accountId);
             foreach($IndividualnameFetch as $IndividualnameFetch1) {
-                    $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
+                $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
             }
 
             $recurringPaidDetails = $recurringDetails->recurringPaidDetails($accountId);
             $this->view->recurringPaidDetails = $recurringPaidDetails;
             $paidAmount=0;
             foreach($recurringPaidDetails as $recurringPaidDetailss) {
-                    $paidAmount=$paidAmount+$recurringPaidDetailss['rec_paid_amount'];
+                $paidAmount=$paidAmount+$recurringPaidDetailss['rec_paid_amount'];
             }
             $this->view->paidAmount=$paidAmount;
-// 
-//                 $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
-//                 $this->view->groupNamesSearch = $groupNamesSearchFetch;
-//                         foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
-//                                 $this->view->groupname=$groupNamesSearchFetch1['groupname'];
-//                                 $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
-//                                 $accountNumber=$groupNamesSearchFetch1['account_number'];
-//                         }
-// 
-//                 if($this->view->groupname) {
-//                         $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
-//                         $this->view->groupMembersDetails=$groupMembersDetails;
-//                 }
-// 
+
+            $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+            $this->view->groupNamesSearch = $groupNamesSearchFetch;
+            foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+                $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+                $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+                $accountNumber=$groupNamesSearchFetch1['account_number'];
+            }
+
+            if($this->view->groupname) {
+                    $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+                    $this->view->groupMembersDetails=$groupMembersDetails;
+            }
+
             $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
             $this->view->recurringAccountDetails = $recurringAccountDetailsFetch;
             $begindate=0;$mature_date=0;
@@ -500,7 +498,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
             $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
             $this->view->recurringmemberbranchid = $recurringmemberbranchid;
             foreach($recurringmemberbranchid as $recurringmemberbranchids) {
-                    $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['office_id'];
+                    $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['bank'];
             }
 
             $currentdate=$date->toString('YYYY-MM-dd');
@@ -575,19 +573,20 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $end_date=gregoriantojd($date_parts2[1], $date_parts2[2], $date_parts2[0]);
                     $noOfDays= $end_date - $start_date;
 
-                    if($noOfDays >= 1) {
-                        $fineAmount = $recurringDetails->getDelayFine();
-                        foreach($fineAmount as $fineData) {
-                            $DelayFine = $fineData['feevalue'];
-                        }
-                        if($due) {
-                            $amount = (($due * $DelayFine)/100)*$noOfDays;
-                            $amountDisplayed = $amount + $due ;
-                            $this->view->dueAmount = round($amountDisplayed,2);
-                        } else {
-                            $amount = 0;
-                        }
-                    }	 
+//                     if($noOfDays >= 1) {
+//                         $fineAmount = $recurringDetails->getDelayFine();
+//                         foreach($fineAmount as $fineData) {
+//                             $DelayFine = $fineData['feevalue'];
+//                         }
+//                         if($due) {
+//                             $amount = (($due * $DelayFine)/100)*$noOfDays;
+//                             $amountDisplayed = $amount + $due ;
+//                             $this->view->dueAmount = round($amountDisplayed,2);
+//                         } else {
+//                             $amount = 0;
+//                         }
+//                     }	 
+                    $amount = 0;
 
                     $installmentStatus='5';
                     $statusOverdue=$recurringDetails->instalmentStatus($accountId,$InstalmentNumber,$installmentStatus);
@@ -727,7 +726,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
                     $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
                                             'glsubcode_id_from'=> '',
-                                            'glsubcode_id_to'=>  $bankcashglsubcode,
+                                            'glsubcode_id_to'=>  '',
                                             'transaction_id'=>$transaction_id,
                                             'credit'=>$paidAmounts,
                                             'debit' => '',
@@ -823,14 +822,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 foreach($IndividualnameFetch as $IndividualnameFetch1) {
                         $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
                 }
-//                 $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
-//                 $this->view->groupNamesSearch = $groupNamesSearchFetch;
-//                         foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
-//                                 $this->view->groupname=$groupNamesSearchFetch1['groupname'];
-//                                 $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
-//                                 $accountNumber=$groupNamesSearchFetch1['account_number'];
-//                         }
-// 
+
                 $noOfInstalmentPaid1=$recurringDetails->noOfInstalmentPaid($accountId);
                 $noOfInstalmentPaid=count($noOfInstalmentPaid1);
                 $this->view->noOfInstalmentPaid=$noOfInstalmentPaid;
@@ -866,7 +858,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
                 $this->view->recurringmemberbranchid = $recurringmemberbranchid;
                 foreach($recurringmemberbranchid as $recurringmemberbranchids) {
-                        $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['office_id'];
+                        $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['bank'];
                 }
 
                 $RateperMonth=$fixedInterest/12;
@@ -878,22 +870,30 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 $this->view->matureAmount=$matureAmount;
                 $InstalmentNumber=$noOfInstalmentPaid+1;
                 if($InstalmentNumber==1) {
-                        $lastPaidDate=$begindate;
+                    $lastPaidDate=$begindate;
                 } else  {
-                        $recurringInstalmentpayments=$recurringDetails->recurringInstalmentpayments($accountId,$InstalmentNumber);
-                        foreach($recurringInstalmentpayments as $recurringInstalmentpayments1) {
-                                $lastPaidDate=$recurringInstalmentpayments1['rec_payment_date']; /*last instalment paid date*/
-                        }
+                    $recurringInstalmentpayments=$recurringDetails->recurringInstalmentpayments($accountId,$InstalmentNumber);
+                    foreach($recurringInstalmentpayments as $recurringInstalmentpayments1) {
+                        $lastPaidDate=$recurringInstalmentpayments1['rec_payment_date']; /*last instalment paid date*/
+                    }
                 }
 
                 $recurringProductDetails=$recurringDetails->recurringProductDetails($accountId,$productId);
                 foreach($recurringProductDetails as $recurringProductDetails1) {
-                        $recurringBeginDate=$this->view->begindate=$recurringProductDetails1['begindate'];
-                        $recurringClosedDate=$this->view->closedate=$recurringProductDetails1['closedate'];
-                        $recurringMinAmount=$this->view->minimum_deposit_amount=$recurringProductDetails1['minimum_deposit_amount'];
-                        $recurringMaxAmount=$this->view->maximum_deposit_amount=$recurringProductDetails1['maximum_deposit_amount'];
-                        $memberId=$this->view->member_id=$recurringProductDetails1['member_id'];
-                        $membertypeId= $this->view->membertypr_id=$recurringAccountDetailsFetch1['membertype_id'];
+                    $recurringBeginDate=$this->view->begindate=$recurringProductDetails1['begindate'];
+                    $recurringClosedDate=$this->view->closedate=$recurringProductDetails1['closedate'];
+                    $recurringMinAmount=$this->view->minimum_deposit_amount=$recurringProductDetails1['minimum_deposit_amount'];
+                    $recurringMaxAmount=$this->view->maximum_deposit_amount=$recurringProductDetails1['maximum_deposit_amount'];
+                    $memberId=$this->view->member_id=$recurringProductDetails1['member_id'];
+                    $membertypeId= $this->view->membertypr_id=$recurringAccountDetailsFetch1['membertype_id'];
+                }
+
+                $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+                $this->view->groupNamesSearch = $groupNamesSearchFetch;
+                foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+                    $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+                    $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+                    $accountNumber=$groupNamesSearchFetch1['account_number'];
                 }
 
                 if($this->view->groupname) {
@@ -1196,7 +1196,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                                                     'tranasction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' =>$this->view->simpleInterest,
-                                                    'record_status'=>'3'));
+                                                    'recordstatus_id'=>'3'));
 
                     $bankexpenditureccounts=$transactions->insertbankexpenditureaccounts($bankexpenditureaccountinsert);
 
@@ -1248,13 +1248,13 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
             }
             $this->view->paidAmount=$paidAmount;
 
-//                 $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
-//                 $this->view->groupNamesSearch = $groupNamesSearchFetch;
-//                         foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
-//                                 $this->view->groupname=$groupNamesSearchFetch1['groupname'];
-//                                 $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
-//                                 $accountNumber=$groupNamesSearchFetch1['account_number'];
-//                         }
+            $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+            $this->view->groupNamesSearch = $groupNamesSearchFetch;
+            foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+                $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+                $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+                $accountNumber=$groupNamesSearchFetch1['account_number'];
+            }
 
             $transferForm = new Recurringtransaction_Form_transferSearch(); 
             $this->view->transferForm = $transferForm; /*search form for Transfer the amount*/
@@ -1299,10 +1299,10 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
             foreach($recurringmemberbranchid as $recurringmemberbranchids) {
                     $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['office_id'];
             }
-//                 if($this->view->groupname) {
-//                         $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
-//                         $this->view->groupMembersDetails=$groupMembersDetails;
-//                 }
+                if($this->view->groupname) {
+                        $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+                        $this->view->groupMembersDetails=$groupMembersDetails;
+                }
 
             $systemDate= $date->get(Zend_Date::DATES);/*system date*/
             $currentdate=$date->toString('YYYY-MM-dd');
@@ -1525,7 +1525,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 foreach($selectbankaccounts as $selectbankaccount) {
                     $bankglsubcode=$selectbankaccount['id'];
                 }
-<fieldset>
+
 
                 $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
                                                 'glsubcode_id_from'=> '',
@@ -1538,12 +1538,12 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
 
                 $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_<fieldset>from'=> '',
+                                                    'glsubcode_id_from'=> '',
                                                     'glsubcode_id_to'=>  $bankglsubcode,
                                                     'tranasction_id'=> $transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $bankinterestamount,
-                                                    'record_status'=>'3'));
+                                                    'recordstatus_id'=>'3'));
 
                 $bankexpenditureccounts=$transactions->insertbankexpenditureaccounts($bankexpenditureaccountinsert);
 
@@ -1561,12 +1561,15 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
             $this->recurringAction();
             $date = new Zend_Date();
-            if ($this->_request->getPost('Confirm') || $this->_request->getPost('Submit')) { /*if the data is Posted*/
-                $accountId=$this->_request->getPost('accountId');
-                $productId=$this->_request->getPost('productId');
+            if ($this->_request->getPost('Confirm') || $this->_request->getPost('Submit')) { 
+                /*if the data is Posted*/
+                echo $accountId=$this->_request->getPost('accountId');
+                echo $productId=$this->_request->getPost('productId');
+
             } else { /*if the data is from url*/
                 $accountId=base64_decode($this->_request->getParam('accountId'));
                 $productId=base64_decode($this->_request->getParam('productId'));
+
             }
 
             $this->view->accountid=$accountId;
@@ -1581,7 +1584,6 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
             $this->view->statuscheck1 = $recurringDetails->statuscheck($accountId);
 
             $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
-//             echo "<pre>"; print_r($recurringAccountDetailsFetch);
             $this->view->recurringAccountDetails = $recurringAccountDetailsFetch;
             foreach($recurringAccountDetailsFetch as $recurringAccountDetailsFetch1) {
                 $begindate=$this->view->begin_date=$recurringAccountDetailsFetch1['begin_date'];
@@ -1612,22 +1614,21 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
             $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
             $this->view->recurringmemberbranchid = $recurringmemberbranchid;
             foreach($recurringmemberbranchid as $recurringmemberbranchids) {
-                    $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['office_id'];
+                    $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['bank'];
             }
-// 
-//                 $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
-//                 $this->view->recurringmemberbranchid = $recurringmemberbranchid;
-//                 foreach($recurringmemberbranchid as $recurringmemberbranchids) {
-//                         $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['memberbranch_id'];
-//                 }
-// 
+
+            $recurringmemberbranchid = $recurringDetails->recurringmemberbranchid($accountId);
+            $this->view->recurringmemberbranchid = $recurringmemberbranchid;
+            foreach($recurringmemberbranchid as $recurringmemberbranchids) {
+                    $memberbranch_id=$this->view->memberbranch_id=$recurringmemberbranchids['bank'];
+            }
+
 //                 $noOfInstalmentPaid1=$recurringDetails->noOfInstalmentPaid($accountId);
 //                 $noOfInstalmentPaid=count($noOfInstalmentPaid1); // echo $noOfInstalmentPaid;
 // 
 //                 $numberofinstallments=$recurringDetails->TotalnoOfInstalmentPaid($accountId);
 //                 $totalnumberofinstallments=count($numberofinstallments);
-// 
-// 
+
                 $recurringPaidDetails = $recurringDetails->recurringPaidDetails($accountId);
                 $this->view->recurringPaidDetails = $recurringPaidDetails;
                 $paidAmount=0;
@@ -1648,19 +1649,15 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 $simpleInterest=round($simpleInterest,2);
                 $this->view->simpleInterest=$simpleInterest;
 
-
                 $matureAmount=($amountTopay*$InstalmentNumber)+$simpleInterest;
                 $this->view->matureAmount=$matureAmount;
-// 
-// 
+
                 $findstatus=$fixedSavings->findstatus($accountStatusId);
                 foreach($findstatus as $findstatus1) {
                         $status=$findstatus1['recordstatusdescription'];
                 }
                 $this->view->status=$status;
-// 
-// 
-// 
+
                 $RecurringstatusForm = new Recurringtransaction_Form_recurringstatus();
                 $this->view->recurringstatus=$RecurringstatusForm;
                 $this->view->recurringstatus->accountId->setValue($accountId);
@@ -1671,14 +1668,49 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                         $RecurringstatusForm->newStatus->addMultiOption($newstatus['recordstatus_id'],$newstatus['recordstatusdescription']);
                 }
 
+                $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+                $this->view->groupNamesSearch = $groupNamesSearchFetch;
+                foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+                    $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+                    $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+                    $accountNumber=$groupNamesSearchFetch1['account_number'];
+                }
+
+                if($this->view->groupname) {
+                    $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+                    $this->view->groupMembersDetails=$groupMembersDetails;
+                }
+
+
                 if ($this->_request->isPost() && $this->_request->getPost('Confirm')) {
                     $formData = $this->_request->getPost();
                     if ($RecurringstatusForm->isValid($formData)) {
                         $status =$this->view->newStatus= $this->_request->getParam('newStatus');
                         $description =$this->view->description= $this->_request->getParam('description');
+                        $accountId =$this->view->accountId= $this->_request->getParam('accountId');
+                        $productId =$this->view->productId= $this->_request->getParam('productId');
 
                         $this->view->recurringstatus->newStatus1->setValue($status);
                         $this->view->recurringstatus->description1->setValue($description);
+                        $this->view->recurringstatus->accountId->setValue($accountId);
+                        $this->view->recurringstatus->productId->setValue($productId);
+
+
+                        $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId);
+                        $this->view->groupNamesSearch = $groupNamesSearchFetch;
+                        foreach($groupNamesSearchFetch as $groupNamesSearchFetch1) {
+                            $this->view->groupname=$groupNamesSearchFetch1['groupname'];
+                            $groupid=$this->view->group_id=$groupNamesSearchFetch1['group_id'];
+                            $accountNumber=$groupNamesSearchFetch1['account_number'];
+                        }
+
+                        if($this->view->groupname) {
+                            $groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+                            $this->view->groupMembersDetails=$groupMembersDetails;
+                        }
+
+
+
 
                         $statusdetails =$savingsDetails->getrecordstatusdetails($status);
                         foreach($statusdetails as $statusdetailsinfo) {

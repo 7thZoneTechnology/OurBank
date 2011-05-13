@@ -21,24 +21,18 @@
  *  delete view of funder details 
 --> 
 
+<form action="<?php echo $this->baseUrl();?>/funderdetails/index/delete/id/<?php echo $this->funderid; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST">
+<div class="register">
+	<div class="profile_tab"> 
+		<table id="hor-minimalist-b">
+	<!--to change language -->
+                          <tr><th class="firsttd"><?php echo $this->translate("Funder Information"); ?></th></tr>
 
-<fieldset>
-	
-			<div class="cont-rgt-data">
-				<form action="<?php echo $this->baseUrl();?>/funderdetails/index/delete/id/<?php echo $this->funderid; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" class="fieldsets">
-                                       <tr><Th colspan="2">Funder Details</Th></tr> 
-					<TR>
-						<TD><label class="mand">Remarks</TD>
-						<TD  width="65%"  align="left" ><?php echo $this->delete1->remarks;?></TD>
-                                           </TR>
-                                        <tr><td><font color="red">Do you want to Delete?</font></td></tr>
-					
-				</table>
-						<TR><TD><input type="submit" name="Delete" id="Delete" value="Delete">			
-						<a href="<?php echo $this->baseUrl();?>/funder"><input name="No" type="submit"  value="<?php echo $this->translate('No'); ?>"></a></TD></TR>
-				</form>
+			<tr><td><font color="red"><?php echo $this->translate("Do you want to delete"); ?></font><?php echo $this->delete; ?></tr> 
+			<tr><td><a href="<?php echo $this->baseUrl();?>/fundercommonview/index/commonview/id/<?php echo $this->funderid ?>"><input type="button" name="no" value="<?php echo $this->translate('Cancel'); ?>"></a></td></tr>
 			
-</fieldset>
+		</table>
 
+</div>
+</div>
 </form>

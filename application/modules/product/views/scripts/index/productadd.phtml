@@ -18,14 +18,11 @@
 !-->
 
 
-<form action="<?php echo $this->baseUrl();?>/product/index/productadd/id/<?php echo $this->id; ?>" method="POST">
-
-
-   
-            <table id="hor-minimalist-b"> 
-            <tr><Th>Add product</Th><th></th></tr>
+<form action="<?php echo $this->baseUrl();?>/product/index/productadd" method="POST">
+<fieldset>
+    <legend>Add product</legend> 
+            <table class="fieldsets"> 
                 <?php echo $this->form;?>
             </table>
-	<input type="submit" name="Submit" id="Submit" value="Submit">			
-
-
+            <input type="submit" name="Submit" id="Submit" value="Submit">			
+</fieldset>

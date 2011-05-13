@@ -17,7 +17,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-
+/**
+* Class does add and edit crop deatils of a particular family
+*/
 class crop_IndexController extends Zend_Controller_Action{
 
     public function init() 
@@ -34,7 +36,7 @@ class crop_IndexController extends Zend_Controller_Action{
         $this->view->id=$subId=$this->_getParam('id');
         $this->view->subId=$subId=$this->_getParam('subId');
         $this->view->modId=$modId=$this->_getParam('modId');
-        $addressmodel=new Individualmcommonview_Model_individualmcommonview();
+        $addressmodel=new Familycommonview_Model_familycommonview();
         $module_name=$addressmodel->getmodule($subId);
         foreach($module_name as $module_view)
         {
@@ -51,7 +53,28 @@ class crop_IndexController extends Zend_Controller_Action{
     public function addcropAction() 
     {
         $this->view->title=$this->view->translate('Add Crop');
-        //load contact details form with two arguments ...
+        //Base line data
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        //agriculture view
+        $this->view->agriculture=$edit_agriculture =$familycommon->getagriculturedetails($this->_getParam('id'));
+
+$this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
+        $this->view->guntatotal =$familycommon->getguntatotal($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        //load crop details form with two arguments ...
         $form = new Crop_Form_Crop($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->memberid=$member_id=$this->_getParam('id');
 
@@ -65,30 +88,47 @@ class crop_IndexController extends Zend_Controller_Action{
         }
         $path1= $this->view->path1=strtolower($path1);
 
-        $funder = $this->view->adm->viewRecord("ourbank_crop","id","DESC");
+        $funder = $this->view->adm->viewRecord("ourbank_master_crop","id","DESC");
 	foreach($funder as $funder) {
 	   $form->crop_id->addMultiOption($funder['id'],$funder['name']);
 	}
-
+        $dateconvert= new App_Model_dateConvertor();
 	$crop = new Crop_Model_Crop ();
 	$this->view->cropdetails = $crop->getCrop();
+	$this->view->units = $crop->getUnits();
+
         if ($this->_request->getPost('submit')) {
-            $acer=$this->_getParam('acre');
+            $formdata=$this->_request->getPost();
+//             echo '<pre>'; print_r($formdata);
+            if($formdata['enteredacre']>=$formdata['availableacre']){ 
+            $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
+            } else {   
+            $acer=$this->_getParam('acre');   
+            $gunta=$this->_getParam('gunta');
+            $unit=$this->_getParam('unit');
+            $realised=$this->_getParam('realised');
             $quantity=$this->_getParam('quantity');
             $marketed=$this->_getParam('marketed');
             $price=$this->_getParam('price');
+            $soldDate = $this->_getParam('date');
             $i = 0;
             foreach($this->_getParam('crop_id') as $val) {
-                $crop = array('member_id' => $member_id,
+                        if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
+                $crop = array('family_id' => $member_id,
                               'crop_id' => $val,
                               'acre' => $acer[$i],
+                              'gunta' => $gunta[$i],
+                              'unit'=>$unit[$i],
                               'quantity' => $quantity[$i],
                               'marketed'=>$marketed[$i],
-                              'price'=>$price[$i]);
+                              'price'=>$price[$i],
+                              'realised'=>$realised[$i],
+                              'sold_date'=>$date);
                 $i++;
                 $this->view->adm->addRecord("ourbank_cropdetails",$crop);
             }
-            $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
+            $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+                }
         }
     }
     
@@ -96,7 +136,28 @@ class crop_IndexController extends Zend_Controller_Action{
     public function editcropAction() 
     {
         $this->view->title=$this->view->translate('Edit Contact');
-        //load contact details form with two arguments ...
+        $this->view->title=$this->view->translate('Add Crop');
+        //Base line data
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        //agriculture view
+        $this->view->agriculture=$edit_agriculture =$familycommon->getagriculturedetails($this->_getParam('id'));
+ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
+        $this->view->guntatotal =$familycommon->getguntatotal($this->_getParam('id'));
+
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        //load crop details form with two arguments ...
         $form = new Crop_Form_Crop($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->form = $form;
         $this->view->id = $this->_getParam('id');
@@ -111,7 +172,11 @@ class crop_IndexController extends Zend_Controller_Action{
 	$this->view->cropdetails = $crop->getCrop();
         //update contact details
         if ($this->_request->getPost('submit')) {
-        
+                    $formdata=$this->_request->getPost();
+//             echo '<pre>'; print_r($formdata);
+            if($formdata['enteredacre']>=$formdata['availableacre']){ 
+            $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
+            } else { 
             $id=$this->_getParam('id');
             $crop = new Crop_Model_Crop ();
             $editCrop = $crop->getCropdetails($id);
@@ -120,26 +185,37 @@ class crop_IndexController extends Zend_Controller_Action{
             }
             $crop->deletecrop($id);
             $acer=$this->_getParam('acre');
+            $gunta=$this->_getParam('gunta');
+            $unit=$this->_getParam('unit');
             $quantity=$this->_getParam('quantity');
             $marketed=$this->_getParam('marketed');
             $price=$this->_getParam('price');
+            $realised=$this->_getParam('realised');
+            $soldDate = $this->_getParam('date');
+            $dateconvert= new App_Model_dateConvertor();
             $i = 0;
             foreach($this->_getParam('crop_id') as $val) {
-                $crop = array('member_id' => $id,
+                        if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
+                $crop = array('family_id' => $id,
                               'crop_id' => $val,
                               'acre' => $acer[$i],
+                              'gunta' => $gunta[$i],
+                              'unit'=>$unit[$i],
                               'quantity' => $quantity[$i],
                               'marketed'=>$marketed[$i],
-                              'price'=>$price[$i]);
+                              'price'=>$price[$i],
+                              'realised'=>$realised[$i],
+                              'sold_date'=>$date);
                 $i++;
                 $this->view->adm->addRecord("ourbank_cropdetails",$crop);
             }
-            $this->_redirect('/individualmcommonview/index/commonview/id/'.$id);
+            $this->_redirect('/familycommonview/index/commonview/id/'.$id);
+            }
         } else {
             //set the contact details in the contact form...
             $sub_id=$this->_getParam('subId');
             $id=$this->_getParam('id');
-            $individualcommon=new Individualmcommonview_Model_individualmcommonview();
+            $individualcommon=new Familycommonview_Model_familycommonview();
             $this->view->editCrop = $individualcommon->getcrop($this->_getParam('id'));
         }
     }

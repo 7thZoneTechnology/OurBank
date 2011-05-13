@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,37 +16,17 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-!-->
-
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-<?php 
+*/
 if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 <fieldset>
     <legend> <?php echo $this->translate('search'); ?> </legend>
-        <div class="search" style="margin-left:50px;">
-            <table  class="fieldset">
+        <div class="cont-rgt-data">
+            <table id="hor-minimalist-b">
                 <form action="<?php echo $this->baseUrl();?>/loansupplementary/index" method="POST">
                     <TR>
-                            <TD ><?php echo $this->translate('As of date:'); ?></td>
-                            <TD ><?php echo $this->form->datefrom;?></TD></tr>
-                            <tr><TD ><input type="submit" name="Search" value="Search"/></TD>
+                            <TD ><?php echo $this->translate('As of date'); ?></td>
+                            <TD ><?php echo $this->form->datefrom;?></TD>
+                            <TD ><input type="submit" name="Search" value="Search"/></TD>
                     </TR>
 
                 </form>
@@ -57,7 +38,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 	<h5 align="right"><?php echo $this->translate('As of'); ?> <?php echo "<font color='#039'>".$this->field1."</font>"; ?></h5>
 
 	<h5 style="text-align:right">* <?php echo $this->translate('Amount in'); ?> <font color="red"><?php echo $this->translate('Rs'); ?></font></h5>
-<div style="float:left;width:370px"> 
+<div style="float:left;width:375px"> 
         <?php 
 		$i = 0;
 		$j = 0;
@@ -149,7 +130,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
  } $k=0;$j=0; ?>
 
 <?php if($this->loanDedit) { ?>
-<div style="float:left;width:370px">
+<div style="float:left;width:375px">
 <h5>Debit</h5>
 <table id="hor-minimalist-s">
 		<TR>
@@ -186,6 +167,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
  			}?>
 			</TR>
 			<?php } 
+
 			 for($k=$j;$k<=$count;$k++){ 
 			 if($k==$count){ ?>
 				<tr>
@@ -225,7 +207,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 
 <?php  } 
 if(($this->loanCredit) && ($this->loanDedit))  { ?>
-<div style="float:left;width:370px">
+<div style="float:left;width:375px">
 <form action="<?php echo $this->baseUrl();?>/loansupplementary/index/pdftransaction" method="POST"
 onClick="window.open('<?php echo $this->baseUrl(); ?>/loansupplementary/index/reportdisplay/file/loansupplementary.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">

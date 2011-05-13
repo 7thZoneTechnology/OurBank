@@ -34,6 +34,7 @@
             </div>
        </fieldset>
  </div>  
+
 <?php  if((count($this->paginator) ==0) && ($this->search == true))  {
 echo "<font color='RED'>Records Not Found Try Again...</font>";
 }
@@ -44,11 +45,11 @@ if(count($this->paginator)!=0) { ?>
             <th>Group name</td>
         </tr>
         <?php if (count($this->paginator)): ?>
-        <?php foreach ($this->paginator as $group): ?>
+        <?php foreach ($this->paginator as $individual): ?>
         <tr>
-            <td><a href="<?php echo $this->baseUrl()."/groupmcommonview/index/commonview/id/"?><?php echo $group['groupid']; ?>">
-                        <?php echo $this->escape($group['groupcode']); ?></a></td>
-        <td><?php echo $this->escape($group['group_name']);?></td>
+            <td><a href="<?php echo $this->baseUrl()."/groupcommonview/index/commonview/id/"?><?php echo $individual['groupid']; ?>">
+                        <?php echo $this->escape($individual['groupcode']); ?></a></td>
+        <td><?php echo $this->escape($individual['group_name']);?></td>
             <?php endforeach; ?>
             <?php endif; ?>
         </tr>

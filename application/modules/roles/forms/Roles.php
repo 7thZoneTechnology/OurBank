@@ -25,7 +25,8 @@ class Roles_Form_Roles extends Zend_Form
             // create instance for common field php file to access field method 
             $formfield = new App_Form_Field ();
             // send parameters to get text as a form field 
-            $grantname = $formfield->field('Text','grantname','','','mand','Grant name',true,'',4,15,'','','','');
+            $grantname = $formfield->field('Text','grantname','','','mand','Grant name',true,'Alpha',4,15,'','','','');
+//             $grantname->addValidator('Alpha', true, array('allowWhiteSpace' => true));
             $this->addElements(array($grantname));
         }
     }

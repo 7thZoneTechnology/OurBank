@@ -1,0 +1,240 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+
+<table  id="hor-minimalist-b" border="0">
+	<TR>
+		<TH colspan="4"><?php echo $this->translate("Group Information"); ?></TH>
+		
+	</TR>
+<?php
+ if($this->members) {  
+ $count = count($this->members); 
+foreach($this->members as $members) { $memberaccid=$members['id']; } 
+                    //fetch group savings a/c no.
+                    $currentbalance=new Meetingbook_Model_Attend();
+                    $memberaccNum=$currentbalance->fetchaccNum($memberaccid);
+
+?>
+        <tr><td>Group name:</td><td><? echo $members['groupname'];?></td>
+        <td>Week:</td><td><?php echo $this->meetingweek;?></td>
+        </td>
+        </tr>
+        
+        <tr><td>Group head:</td><td><? echo $members['grouphead_name'];?></td>
+        <td>Day:</td><td><? echo $members['day'];?></td>
+        </tr>
+        
+        <tr><td>Number of members:</td><td><? echo $count;?></td>
+        <td>Time:</td><td><?php echo $members['time'];?></td>
+        </tr>
+        
+        <tr>
+        <td>Savings Acc.No:</td><td>
+        <?php 
+        if($memberaccNum) {
+        echo $memberaccNum[0]['account_number']; 
+        } else {
+        echo "<span style='color:red;'>Your Account is closed</span>";
+        }
+        ?></td>
+        <td>Place:</td><td><?php echo $members['place'];?></td>
+        </tr>
+
+        <tr>
+            <td>Loan Officer:</td><td><?php 
+            if($this->loanofficer) { echo $this->loanofficer; 
+            } else { 
+            echo "<span style='color:red;'>There is no loan accounts</span>";
+            } ?></td>
+            <td>Office:</td><td><?php echo $members['officename'];?>
+            <input type="hidden" name="officeid" value="<?php echo $members['village_id'];?>"/> </td>
+        </tr>
+<?php } ?>
+
+	<TR>
+		<TH colspan="2"><?php echo $this->translate("Meeting Information"); ?></TH>
+                <TH></TH>
+		<TH class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/meetingbook/index/attendanceedit/attendance_id/<?php echo $this->attendance_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></TH>
+		
+	</TR>
+
+	<?php   $convertdate = new App_Model_dateConvertor(); 
+	foreach($this->fetchattendance as $fetchattendance){ ?>
+		<TR >
+			<TD width="200px"><?php echo $this->translate("Meeting name"); ?></TD>
+			<TD colspan="3"><?php echo $fetchattendance['name'];?></TD>
+		</TR>
+		<TR >
+			<TD><?php echo $this->translate("Meeting date"); ?></TD>
+			<TD colspan="3"><?php echo $convertdate->phpnormalformat($fetchattendance['meeting_date']);?></TD>
+
+		</TR>
+
+		<TR >
+			<TD><?php echo $this->translate("Meeting time"); ?></TD>
+			<TD colspan="3"><?php echo $fetchattendance['attendancetime'];?></TD>
+
+		</TR>
+
+<!--		<TR >
+			<TD><?php echo $this->translate("Absentees"); ?></TD>
+			<TD colspan="3"><? foreach($this->absentees as $absentees){  echo $absentees['name']."<br>"; } ?></TD>
+		</TR>
+
+		<TR >
+			<TD><?php echo $this->translate("Late Comer"); ?></TD>
+			<TD colspan="3"><? foreach($this->latecomer as $latecomer){  echo $latecomer['name']."<br>"; } ?></TD>
+
+		</TR>-->
+
+		<TR >
+			<TD><?php echo $this->translate("Discussion"); ?></TD>
+			<TD colspan="3"><? foreach($this->attendancediscussion as $discussion){  echo $discussion['name']."<br>"; } ?></TD>
+		</TR>
+		<TR >
+			<TD><?php echo $this->translate("Decision"); ?></TD>
+			<TD colspan="3"><? foreach($this->attendancedecision as $decision){  echo $decision['name']."<br>"; } ?></TD>
+		</TR>
+		<TR >
+			<TD><?php echo $this->translate("Note"); ?></TD>
+			<TD colspan="3"><?php echo $fetchattendance['notes'];?></TD>
+		</TR>
+		<TR >
+			<TD><?php echo $this->translate("Resolution"); ?></TD>
+			<TD colspan="3"><?php echo $fetchattendance['resolution']; ?></TD>
+		</TR>
+			<?php   } ?>
+
+            <TR>
+                <td colspan="4">
+<?php if($this->groupmembers) { $count = count($this->groupmembers); ?>
+	<table id="hor-minimalist-b"> 
+            <TR style="border-bottom: 4px solid #CBCBCB;">
+                <th colspan='6' style="border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Member details"); ?></th>
+                <th colspan='2' style="border-right: solid 1px #CBCBCB; text-align:center; !important;"><?php echo $this->translate("Savings"); ?></th>
+                <th colspan='2' style="border-right: solid 1px #CBCBCB; text-align:center; !important;"><?php echo $this->translate("Loans"); ?></th>
+                <th style="border-right: solid 1px #CBCBCB; text-align:center; !important;"></th>
+            </TR>
+
+            <TR align="center" >
+                <th style="width:5px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Sl"); ?></th>
+                <th style="border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Members"); ?></th>
+                <th style="width:85px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("UID"); ?></th>
+                <th style="width:5px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Attn."); ?></th>
+                <th style="width:5px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Late"); ?></th>
+                <th style="width:5px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Absent"); ?></th>
+                <th style="width:55px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Balance"); ?></th>
+                <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("pay"); ?></th>
+                <th style="width:55px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Outstanding"); ?></th>
+                <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Due"); ?></th>
+                <th style="width:60px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Total"); ?></th>
+            </TR>
+
+<? $no=1;  $Topay=0; $total1=0; $currentbalance1=0; $currentbalance2=0; $currentbalance3=0; $loandue1=0; $loandue2=0; $currentpay=0; $totallatefee=0; $totalabsentfee=0; $loanoutstanding1=0;
+$currentbalance=new Meetingbookreport_Model_Meetingbook();
+ foreach($this->groupmembers as $members) {  //echo '<pre>';print_r($this->groupmembers);
+$memberid=$members['memberid'];  
+?>
+    <TR>
+        <td><? echo $no;?> </td>
+        <td><? echo $members['membername'];?> </td>
+        <td><? echo $members['uid'];?></td>
+        <td><?   $attendance=$this->attendance_id;
+                $memberabsent=$currentbalance->memberabsent($memberid,$attendance);
+               $memberlate=$currentbalance->memberlate($memberid,$attendance);
+               if($memberabsent) { echo 'A';} 
+                else if($memberlate) { echo 'L';} else { echo 'P'; }
+                ?> 
+            </td>
+
+        <td style="text-align:right;"><? if($memberlate) { 
+                $totallatefee+=$latefee=$members['penalty_latecoming']; echo $latefee; } else { echo $latefee=0; }
+                 ?> 
+        </td>
+        <td style="text-align:right;"><? if($memberabsent) { 
+                    $totalabsentfee+=$absentfee=$members['penalty_notcoming']; echo $absentfee; } else { echo $absentfee=0; }
+                 ?> 
+        </td>
+        <td style="text-align:right;">    <?php 
+                    $creditbalance=$currentbalance->creditbalance($memberid);
+                    $debitbalance=$currentbalance->debitbalance($memberid); 
+                  if($creditbalance) { 
+                           if($debitbalance) { $debitbalance1=$debitbalance; } else { $debitbalance1=0; }
+                        $currentbalance1=$creditbalance[0]['currentbalance']-$debitbalance1[0]['currentbalance'];
+                     echo $currentbalance1;  } else { echo '0'; }  $currentbalance2+=$currentbalance1;  ?>
+        </td>
+        <td style="text-align:right;"><?php echo $perweek=$members['saving_perweek'];?></td> 
+        <td style="text-align:right;">    <?php  
+                    $loanoutstanding=$currentbalance->loanoutstanding($memberid);
+                  if($loanoutstanding[0]['outstanding']) { 
+                        echo $loanoutstanding[0]['outstanding'];
+                         $loanoutstanding1=$loanoutstanding[0]['outstanding'];
+                        } else { echo $loanoutstanding1; }
+                       $currentbalance3+=$loanoutstanding1;  ?>
+        </td>
+        <td style="text-align:right;"> <?php
+                    $loandue=$currentbalance->loandue($memberid); 
+                  if($loandue[0]['outstanding']) { 
+                        echo $loandue[0]['outstanding'];
+                         $loandue1=$loandue[0]['outstanding'];
+                        } else { echo $loandue1; }
+                       $loandue2+=$loandue1;  ?>
+        </td>
+        <td style="text-align:right;"><?php 
+            $total=$latefee+$absentfee+$currentbalance1+$loandue1; 
+            echo $total;
+            $total1+=$total; ?></td> 
+    </TR>
+<? $no++; 
+$Topay+=$members['saving_perweek']; 
+ 
+} ?>
+    <TR>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total</td>
+        <td style="text-align:right;"><?php echo $totallatefee; ?></td>
+        <td style="text-align:right;"><?php echo $totalabsentfee; ?></td>
+        <td style="text-align:right;"><?php echo $currentbalance2; ?></td>
+        <td style="text-align:right;"><?php echo $Topay; ?></td> 
+
+        <td style="text-align:right;"><?php echo $currentbalance3; ?></td>
+        <td style="text-align:right;"><?php echo $loandue2; ?></td>
+        <td style="text-align:right;"><?php echo $total1; ?></td>
+    </TR>
+        </table>
+<?php } else {
+       echo "<font color='RED'>No Members in the branch you seleted</font>";
+} ?>
+                </td>
+
+            </TR>
+</table>
+
+		<div class="btnhouse">
+			<div class="ltbtns">
+			
+			</div>
+			<div class="rtbtns">
+			<a href="<?php echo $this->baseUrl();?>/meetingbookindex"><input type="button" value="<?php echo $this->translate('Back'); ?>"></a>
+			</div>
+		</div>
+

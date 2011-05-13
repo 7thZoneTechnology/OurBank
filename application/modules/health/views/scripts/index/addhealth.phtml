@@ -16,7 +16,95 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+<script language="javascript">
+function onSubmit() 
+{ 
+  var habitfields = $("input[name='habit[]']").serializeArray(); 
+  var challengefields = $("input[name='challenge[]']").serializeArray(); 
 
+  if (habitfields.length == 0 && challengefields.length == 0) 
+  { 
+    alert('nothing selected'); 
+    return false;
+  } 
+
+  if (habitfields.length == 0) 
+  { 
+    alert('in habits nothing selected'); 
+//     $("#habiterror").text("<font color ='red'>in habits nothing selected</font>");
+    return false;
+  } 
+
+    if (challengefields.length == 0) 
+  { 
+    alert('in challenge nothing selected'); 
+//     $("#phyerror").text("<font color ='red'>in challenge nothing selected</font>");
+    return false;
+  } 
+ 
+}
+
+</script>
+
+ <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+   <tr>
+        <th><?php echo $this->translate("Family information"); ?></th>
+        <th></th>
+        <th></th>
+        <th></th>
+   </tr>
+    <?php 
+    foreach($this->membernames as $family_view){ ?>
+
+    <tr>
+        <td ><?php echo $this->translate("Family ID:"); ?></td>
+        <td ><?php echo $family_view['family_id']; ?></td>
+        <td ><?php echo $this->translate("Caste:"); ?></td>
+        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+    <tr>
+        <td ><?php echo $this->translate("House No:"); ?></td>
+        <td ><?php echo $family_view['house_no']; ?></td>
+        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $family_view['ration']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $family_view['street']; ?></td>
+        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
+        }?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $family_view['villagename']; ?></td>
+        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $this->revvillagename; ?></td>
+        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
+    </tr>
+    <tr>
+        <td ><?php echo $this->translate("Family type:"); ?></td>
+        <td ><?php echo $family_view['familytype']; ?></td>
+        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $family_view['caste']; ?></td>
+        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
+    </tr>
+   <?php } ?>
+</table> 
+<br/>
 <form action="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>" method="POST">
 <div style="width:750px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
 
@@ -32,33 +120,64 @@ foreach($this->membername as $name){
  $names[] = $name['membername'];
 }
  ?>
-
+    <table id="hor-minimalist-b" border="1" width="100%">
+        <tr>
+            <th  align="left" width="20%">
+            Sno.&nbsp;&nbsp;&nbsp;  Name <br>
+            Description
+            </th>
+            <th colspan="<?php echo $actlen; ?>" align="center" width="80%">
+            What
+            </th>
+        </tr>
+    </table>
 <?php for($i=0;$i<$this->membercount;$i++) { ?>
 <br>
-<table id="hor-minimalist-b" border="1">
+    <table id="hor-minimalist-b" border="1" width="100%">
+        <tr>
+            <td width="5%" ><?php echo $nameid[$i];?></td>
+            <td width="95%" align="left">
+            <?php  echo "<b>$names[$i] "."'s<b>"; ?>
+            </td>
+        </tr>
+        <tr>
+        <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
+        <td colspan="2"><textarea  rows="3" cols="18" name="suggestion_<?php echo $nameid[$i]; ?>"></textarea>
+        </TD>
+        </tr>
+    </table>
+<table id="hor-minimalist-b" border="1" width="100%">
+
+
 <tr>
-<th  align="left" colspan="<?php echo $actlen; ?>">
-   <?php echo $names[$i]; ?>
-</th>
-</tr>
-<tr>
-    <td>Habits</td>
-    <?php foreach($this->habitdetails as $habits){ ?>
+    <td width="20%">Habits</td>
+    <?php $h = 0; foreach($this->habitdetails as $habits){ $h++; ?>
     <td colspan="2">
-    <input type="checkbox" name="habit[]" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+<?php if($h==1) { ?>
+    <input type="checkbox" name="habit[]" checked value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+<?php } else {?>
+    <input type="checkbox" name="habit[]"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+<?php } ?>
     <?php echo $habits['name']; ?>
     </td>
-
    <?php } ?>
+
 </tr>
 <tr>
-    <td>Physical challenge</td>
-    <?php foreach($this->challengedetails as $challenge){ ?>
-    <td colspan="2"><input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+    <td width="20%">Physical challenge</td>
+    <?php $c = 0; foreach($this->challengedetails as $challenge){ $c++; ?>
+    <td colspan="2">
+<?php if($c==1) { ?>
+<input type="checkbox" name="challenge[]" checked value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+<?php } else {?>
+<input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+<?php } ?>
+
     <?php echo $challenge['name']; ?>
     </td>
    <?php } 
 ?>
+
 </tr>
 </table>
 <?php
@@ -69,7 +188,7 @@ foreach($this->membername as $name){
 <input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
 <input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
 
-<tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+<tr><td><input type="submit" id="submit" name="submit" onclick="return onSubmit()" value="<?php echo $this->translate("Submit"); ?>"></td>
 <td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
 </tr>
 </table>

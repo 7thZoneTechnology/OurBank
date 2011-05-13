@@ -22,12 +22,12 @@
 <?php
 class Fixedaccount_Form_Fixed extends Zend_Form 
 {
-   public function __construct($path) {
-    parent::__construct($path);
-        $date1 = new ZendX_JQuery_Form_Element_DatePicker('date1');
-        $date1->setAttrib('class', 'txt_put');
-        $date1->setJQueryParam('dateFormat', 'yy-mm-dd');
-        $date1->setRequired(true);
+   public function __construct($path,$minumumbal,$maximumbal) {
+    parent::__construct($path,$minumumbal);
+        $date = new ZendX_JQuery_Form_Element_DatePicker('date');
+        $date->setAttrib('class', 'txt_put');
+        $date->setJQueryParam('dateFormat', 'dd/mm/yy');
+        $date->setRequired(true); 
 
         $period = new Zend_Form_Element_Select('period');
         $period->addMultiOption('','Select...');
@@ -37,12 +37,19 @@ class Fixedaccount_Form_Fixed extends Zend_Form
 
         $interest = new Zend_Form_Element_Text('interest');
         $interest->setAttrib('class', 'txt_put');
+        $interest->setRequired(true);
+
 //         $interest->setAttrib('id', 'interestval');
 //         $interest->setAttrib('readonly', 'true');
 
         $tAmount = new Zend_Form_Element_Text('tAmount');
-        $tAmount->setAttrib('class', 'txt_put');
-        $tAmount->setAttrib('onchange', 'calculateMatureAmount()');
+        $tAmount->setAttrib('class', 'amount1');
+        $tAmount->setRequired(true);
+        $valid  = new Zend_Validate_Between(array('min' => $minumumbal, 'max' => $maximumbal));
+//         $graterthan=new Zend_Validate_GreaterThan($minumumbal);
+        $tAmount->addValidators(array(array($valid,true)));
+
+//         $tAmount->setAttrib('onchange', 'calculateMatureAmount()');
 
         $matureamount = new Zend_Form_Element_Text('matureamount');
         $matureamount->setAttrib('class', 'txt_put');
@@ -80,10 +87,10 @@ class Fixedaccount_Form_Fixed extends Zend_Form
 
         $Yes = new Zend_Form_Element_Submit('Yes');
 
-        $Back = new Zend_Form_Element_Submit('Back');
+        $back = new Zend_Form_Element_Submit('Back');
 
         $this->addElements(array($submit,$amount,$period,$matureamount,$interest,$tAmount,
-                                 $memberfirstname,$fixedfee,$memberId,$membercode,$totalamount,$Type,$date1,$productId,$typeId,$memberTypeIdv,
-                                 $Yes,$Back));
+                                 $memberfirstname,$fixedfee,$memberId,$membercode,$totalamount,$Type,$date,$productId,$typeId,$memberTypeIdv,
+                                 $Yes,$back));
         }
 }

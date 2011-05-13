@@ -44,6 +44,22 @@ class Expense_IndexController extends Zend_Controller_Action
     public function addAction() 
     {
         $this->view->title = $this->view->translate("Add expense details");
+                //Base line data
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        //add expense
         $this->view->memberid=$member_id=$this->_getParam('id');
         $this->view->submoduleid = $this->_getParam('subId');
 
@@ -70,12 +86,13 @@ class Expense_IndexController extends Zend_Controller_Action
         $submoduleid = $this->_getParam('subId');
 
             $formData = $this->_request->getPost();
+            if($addForm->isValid($formData)){
             for($i=1;$i<=$number;$i++)
             {	if($this->_request->getParam('value'.$i)){
                 $this->view->adm->addRecord("ourbank_expensedetails",
                                             array('id' => '',
                                             'submodule_id' => $submoduleid,
-                                            'member_id'=>$member_id,
+                                            'family_id'=>$member_id,
                                             'expense_id'=>$this->_request->getParam('source_id'.$i),
                                             'value'=>$this->_request->getParam('value'.$i),
                                             'created_date'=>date("y/m/d H:i:s"),
@@ -83,7 +100,8 @@ class Expense_IndexController extends Zend_Controller_Action
                                             ));
 		}
             }
-             $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
+             $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+            }
         }
     }
 
@@ -91,6 +109,22 @@ class Expense_IndexController extends Zend_Controller_Action
     public function editAction() 
     {
         $this->view->title = $this->view->translate("Edit expense information");
+                //Base line data
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        // edit expences
         $this->view->memberid=$member_id=$this->_getParam('id');
         $this->view->submoduleid = $submoduleid = $this->_getParam('subId');
 
@@ -119,9 +153,9 @@ class Expense_IndexController extends Zend_Controller_Action
         $i=1;
         foreach($expensedetails as $expensedetails1){ 
         $c='value'.$expensedetails1['expense_id'];
-        $d='source_id'.$i;
+//         $d='source_id'.$i;
         $addForm->$c->setValue($expensedetails1['value']);
-        $addForm->$d->setValue($expensedetails1['expense_id']);
+//         $addForm->$d->setValue($expensedetails1['expense_id']);
         $i++;
         }
 
@@ -129,29 +163,30 @@ class Expense_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('update')) 
         {
             $submoduleid = $this->_getParam('subId');
-
-            $expense_db = new Expense_Model_expense ();
-            $editExpense = $expense_db->get_expensedetails($member_id);
-            for ($j = 0 ; $j< count($editExpense); $j++) {
-                $this->view->adm->addRecord("ourbank_expensedetails_log",$editExpense[$j]);
+            $formData = $this->_request->getPost();
+            if($addForm->isValid($formData)){
+                $expense_db = new Expense_Model_expense ();
+                $editExpense = $expense_db->get_expensedetails($member_id);
+                for ($j = 0 ; $j< count($editExpense); $j++) {
+                    $this->view->adm->addRecord("ourbank_expensedetails_log",$editExpense[$j]);
+                }
+                    $expense_db->deleteexpense($member_id);
+                    for($i=1;$i<=$number;$i++)
+                    {	if($this->_request->getParam('value'.$i)){
+                        $this->view->adm->addRecord("ourbank_expensedetails",
+                                                    array('id' => '',
+                                                    'submodule_id' => $submoduleid,
+                                                    'family_id'=>$member_id,
+                                                    'expense_id'=>$this->_request->getParam('source_id'.$i),
+                                                    'value'=>$this->_request->getParam('value'.$i),
+                                                    'created_date'=>date("y/m/d H:i:s"),
+                                                    'created_by'=>$this->view->createdby
+                                                    ));
+                        }
+                    }
+                 $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
             }
-            $expense_db->deleteexpense($member_id);
-            for($i=1;$i<=$number;$i++)
-            {	if($this->_request->getParam('value'.$i)){
-                $this->view->adm->addRecord("ourbank_expensedetails",
-                                            array('id' => '',
-                                            'submodule_id' => $submoduleid,
-                                            'member_id'=>$member_id,
-                                            'expense_id'=>$this->_request->getParam('source_id'.$i),
-                                            'value'=>$this->_request->getParam('value'.$i),
-                                            'created_date'=>date("y/m/d H:i:s"),
-                                            'created_by'=>$this->view->createdby
-                                            ));
-		}
-            }
-                 $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
-		}
-
         }
+    }
 	
 }

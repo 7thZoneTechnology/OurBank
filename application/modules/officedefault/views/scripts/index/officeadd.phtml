@@ -1,22 +1,3 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-
 <script type="text/javascript">
 function getInterests(officetype_id,path) {
 	if(officetype_id) {
@@ -24,24 +5,37 @@ function getInterests(officetype_id,path) {
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
+
+function getaddress(officetype_id,path){
+	if(officetype_id) {
+		targeturl=path+"/officedefault/index/address?officetype_id="+officetype_id;
+		$.ajax({ url: targeturl, success: function(data){ $("#addressdiv").html(data) }});
+	}
+}
 </script>
+<fieldset>
+    <legend><?php echo $this->translate('NewOffice'); ?></legend>
         <div class="register">
             <div class="profile_tab">
                 <form action="<?php  echo $this->baseUrl();?>/officedefault/index/officeadd" method="POST" name="joe" id="signupForm" class="cmxform">
-                    <table id="hor-minimalist-b">
-                        <tr><Th>New Office</Th><th></th></tr>
+                    <table>  
                         <tr>
-                            <td><?php echo $this->translate('Office type'); ?></td><td><?php  echo $this->form->officetype_id;?></td>    
+                            <td width="50%"><?php echo $this->translate('Office type'); ?></td><td width="50%"><?php  echo $this->form->officetype_id;?></td>    
                         </tr>
-                        <tr>
+
+                         <tr>
                            <td><?php echo $this->translate('Parent office'); ?></td> <td><div id="statediv"><?php echo $this->form->parentoffice_id; ?></div></td>    
                         </tr>
-		        <tr><td><?php echo $this->translate('Office name'); ?></td>
+
+		        <tr><td><?php echo $this->translate('Name'); ?></td>
 			<td><?php  echo $this->form->name;?></td>
 		        </tr>
-		        <tr><td><?php echo $this->translate('Office short name'); ?></td>
+		        <tr><td><?php echo $this->translate('Short name'); ?></td>
 			<td><?php  echo $this->form->short_name; echo $this->form->createdby; echo $this->form->createddate; ?></td>
 		        </tr>
+                        <tr>
+                           <td id="addressdiv" colspan="2"> </td>
+                        </tr>
         		<tr>
 			<td><input name="Submit" id="Submit" type="submit" class="officebutton" value="<?php echo $this->translate('Submit'); ?>"></td>
 		        <td><a href=<?php echo $this->baseUrl();?>/office/index>
@@ -55,4 +49,4 @@ function getInterests(officetype_id,path) {
 	   </form>
 	</div>
     </div>
-
+</fieldset>

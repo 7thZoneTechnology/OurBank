@@ -46,10 +46,10 @@ class Funder_IndexController extends Zend_Controller_Action
 	// create an instance for funder form
         $searchForm = new Funder_Form_funder();
         $this->view->form = $searchForm;
-        $fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");
+        $fundertype = $this->view->adm->viewRecord("ourbank_master_fundertype","id","DESC");
 	// fetch funder type for dropdown list
         foreach($fundertype as $fundertype1){
-        $searchForm->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
+        $searchForm->type->addMultiOption($fundertype1['id'],$fundertype1['name']);
         }
 
 
@@ -66,7 +66,6 @@ class Funder_IndexController extends Zend_Controller_Action
         {
 	
         $formData = $this->_request->getPost();
-        $this->view->errormsg="Record not found....Try again...";
 		// form data validate
             if ($searchForm->isValid($formData)) 
             {
@@ -74,19 +73,16 @@ class Funder_IndexController extends Zend_Controller_Action
                 $result = $funder->searchDetails($searchForm->getValues());
                 $page = $this->_getParam('page',1);
                 $paginator = Zend_Paginator::factory($result);
-                $this->view->paginator = $paginator;   //assign to the view object
-                if(!$paginator)
-                    {          $this->view->errormsg="Record not found....Try again...";
-                    }
+
+		//assign to the view object
+                $this->view->paginator = $paginator;
             } 
         }
 	// for pagination
         $paginator->setItemCountPerPage($this->view->adm->paginator());
         $paginator->setCurrentPageNumber($page);
         $this->view->paginator = $paginator;
-        
-    
-}
+    }
 }
 
 

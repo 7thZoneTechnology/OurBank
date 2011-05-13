@@ -17,13 +17,16 @@
 ############################################################################
 !-->
 <div class="searchDiv">
- 
+ <fieldset>
         <table id="hor-minimalist-b">
         <tr>  
             <th>Grant name</th>
             <!-- set grant name -->
-            <th><font color="green"><b><?php echo $this->grantname; ?></b></font></th><th></th><th><a href="<?php echo $this->baseUrl()."/roles/index/rolesedit/id/".$this->grantid; ?>">
-                <img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>  <th></th>
+            <th><font color="green"><b><?php echo $this->grantname; ?></b></font></th>
+		<th></th>
+		</th>  <th>
+		<th align='right'><a href="<?php echo $this->baseUrl()."/roles/index/rolesedit/id/".$this->grantid; ?>">
+                <img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
         </tr>
        </table>
 
@@ -109,4 +112,5 @@ foreach ($this->availmodule as $availmodules){
                 </tr>
           <?php }  } }  }  ?>
     </table>
+</fieldset>
 </div>

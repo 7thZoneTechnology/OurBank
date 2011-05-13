@@ -17,26 +17,14 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-
-<?php class Receiptpayment_Form_Search extends Zend_Form 
+class Receiptpayment_Form_Search extends ZendX_JQuery_Form 
 {
-
-	public function init() 
-	{
-
-		$vtype=array('Alpha','StringLength');
-		$formfield = new App_Form_Field ();
-
-// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-
-		
-	
-        $date1 = $formfield->field('Text','date1','','','mand','',true,'','','','','',0,0);
-        $date2 = $formfield->field('Text','date2','','','mand','',true,'','','','','',0,0);
-     
-					
-	$this->addElements(array($date1,$date2));
-    }
+    public function init() 
+    {
+        $date1 = new ZendX_JQuery_Form_Element_DatePicker('field1');
+        $date1->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
+        $date2 = new ZendX_JQuery_Form_Element_DatePicker('field2');
+        $date2->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
+        $this->addElements(array($date1,$date2));
+   }
 }

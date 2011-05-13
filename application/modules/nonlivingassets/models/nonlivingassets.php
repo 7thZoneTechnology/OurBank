@@ -25,7 +25,7 @@ class Nonlivingassets_Model_nonlivingassets  extends Zend_Db_Table {
     {
         $db = $this->getAdapter();
                     //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
-        $db->delete("ourbank_nonlivingassetsdetails",array('member_id = '.$param));
+        $db->delete("ourbank_nonlivingassetsdetails",array('family_id = '.$param));
 
     // $db->exec("delete from ourbank_cropdetails where member_id = $param");
         return;
@@ -35,7 +35,7 @@ class Nonlivingassets_Model_nonlivingassets  extends Zend_Db_Table {
         $select=$this->select($param)
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_nonlivingassetsdetails'),array('a.id'))
-                        ->where('a.member_id=?',$mebmerid);
+                        ->where('a.family_id=?',$mebmerid);
         $result=$this->fetchAll($select);
         return $result->toArray();
     }

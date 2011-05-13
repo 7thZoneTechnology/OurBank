@@ -58,7 +58,6 @@ class Contactdetails_IndexController extends Zend_Controller_Action{
 //load contact details form with two arguments ...
         $form = new Contactdetails_Form_contactdetails($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->form=$form;
-        $this->view->submitform = new Bank_Form_Submit();
 //dynamically change the path name
         $addressmodel=new Address_Model_addressInformation();
         $module_name=$addressmodel->getmodule($this->view->subId);
@@ -66,13 +65,13 @@ class Contactdetails_IndexController extends Zend_Controller_Action{
         {$path1=$module_view['module_description'].'commonview';}
         $path1= $this->view->path1=strtolower($path1);
 //insert the contact details...
-        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+        if ($this->_request->isPost() && $this->_request->getPost('submit')) {
  	    	if ($this->_request->isPost()) {
  			$formData = $this->_request->getPost();
 				if ($form->isValid($formData)) { 
                                 $validator = new Zend_Validate_EmailAddress();
                                 if ($validator->isValid($formData['email'])) {
-                                $this->view->adm->addRecord("contact",$form->getValues());
+                                $this->view->adm->addRecord("ourbank_contact",$form->getValues());
 			        $this->_redirect('/'.$path1.'/index/commonview/id/'.$this->_request->getParam("id"));
                                 } 
                                 else {
@@ -92,7 +91,7 @@ class Contactdetails_IndexController extends Zend_Controller_Action{
 //load contact details form with two arguments ...
         $form = new Contactdetails_Form_contactdetails($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->form = $form;
-        $this->view->submitform = new Bank_Form_Submit();
+
 //dynamically change the path name
         $addressmodel=new Address_Model_addressInformation();
         $module_name=$addressmodel->getmodule($this->view->subId);
@@ -100,16 +99,16 @@ class Contactdetails_IndexController extends Zend_Controller_Action{
         {$path1=$module_view['module_description'].'commonview';}
         $path1= $this->view->path1=strtolower($path1);
 //update contact details
-        if ($this->_request->isPost() && $this->_request->getPost('Update')) {
+        if ($this->_request->isPost() && $this->_request->getPost('update')) {
 	    	if ($this->_request->isPost()) {
  				$formData = $this->_request->getPost();
  				if ($form->isValid($formData)) { 
                                 $validator = new Zend_Validate_EmailAddress();
                                 if ($validator->isValid($formData['email'])) {
-					$editContact = $this->view->adm->editSubmodule("contact",$this->_getParam('id'),$this->_getParam('submodule_id'));
+					$editContact = $this->view->adm->editSubmodule("ourbank_contact",$this->_getParam('id'),$this->_getParam('submodule_id'));
 
-					$this->view->adm->updateLog("contact_log",$editContact[0],$this->view->createdby);
-                                        $addressmodel->updateRecord("contact",$this->_getParam('id'),$form->getValues(),$this->_getParam('submodule_id'));
+					$this->view->adm->updateLog("ourbank_contact_log",$editContact[0],$this->view->createdby);
+                                        $addressmodel->updateRecord("ourbank_contact",$this->_getParam('id'),$form->getValues(),$this->_getParam('submodule_id'));
 					$this->_redirect('/'.$path1.'/index/commonview/id/'.$this->_getParam('id'));
                                 } 
                                 else {

@@ -59,15 +59,6 @@ function getXMLHTTP() { //fuction to return the xml http object
 	}
 
 
-$(document).ready(function() {
-$('input[name=officeName]').autotab({ target: 'officeName', maxlength: 50, format: 'alpha' });
-$('input[name=officeShortName]').autotab({ target: 'officeShortName', maxlength: 5, format: 'alphaupper' });
-$('input[name=officeCity]').autotab({ target: 'officeCity', maxlength: 30, format: 'alpha' });
-$('input[name=officeState]').autotab({ target: 'officeState', maxlength: 30, format: 'alpha' });
-$('input[name=officeCountry]').autotab({ target: 'officeCountry', maxlength: 30, format: 'alpha' });
-$('input[name=officePhone]').autotab({ target: 'officePhone', maxlength: 30, format: 'telphone' });
-$('input[name=memberpincode]').autotab({ target: 'memberpincode', maxlength: 30, format: 'number' });
-});
 
     $(function() {
     $('.error').hide();

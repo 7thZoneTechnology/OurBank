@@ -25,7 +25,7 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
     public function init() 
     {
 //it is create session and implement ACL concept...
-        $this->view->pageTitle=$this->view->translate('Non living assets');
+        $this->view->pageTitle=$this->view->translate('Other assets owned');
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
         $this->view->createdby = $this->view->globalvalue[0]['id'];
@@ -43,7 +43,23 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
 //add family health add action
     public function addassetAction() 
     {
-        $this->view->title = $this->view->translate("Add nonliving asset details");
+        $this->view->title = $this->view->translate("Add other assets owned");
+                //Base line data
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        //add non-living assets
         $this->view->memberid=$member_id=$this->_getParam('id');
 
         $this->view->submoduleid = $this->_getParam('subId');
@@ -57,23 +73,45 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
             $number = $this->_getParam('number');
             $value = $this->_getParam('value');
             $submoduleid = $this->_getParam('subid');
+                        $date = $this->_getParam('date');
+
             $i = 0;
+			$dateconvert= new App_Model_dateConvertor();
+
             foreach($this->_getParam('assettype') as $val) {
                 $assettype = array('submodule_id' => $submoduleid,
-                                    'member_id' => $member_id,
+                                    'family_id' => $member_id,
                                     'nonliveasset_id' => $val,
                                     'number'=>$number[$i],
+                                    'date_of_value'=>$dateconvert->mysqlformat($date[$i]),
+
                                     'value'=>$value[$i]);
                 $i++;
                 $this->view->adm->addRecord("ourbank_nonlivingassetsdetails",$assettype);
             }
-             $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
+             $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
         }
     }
 
     public function editassetAction() 
     {
-        $this->view->title=$this->view->translate('Edit Livingasset');
+        $this->view->title=$this->view->translate('Edit other assets owned');
+                //Base line data
+        $familycommon = new Familycommonview_Model_familycommonview(); 
+        $this->view->memberid = $this->_getParam('id');
+        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $revvillageid = $this->view->membername[0]['rev_village_id'];
+        if ($revvillageid) {
+            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
+        }
+        //getting module id and submodule id
+        $module=$familycommon->getmodule('Family');
+        foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+            $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+        //edit non-living assets
         $this->view->memberid=$member_id=$this->_getParam('id');
         //load form for living assets
         $this->view->submoduleid = $this->_getParam('subId');
@@ -93,24 +131,30 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
             $asset_db->deleteasset($id);
             $number = $this->_getParam('number');
             $value = $this->_getParam('value');
+                        $date = $this->_getParam('date');
+
             $i = 0;
+			$dateconvert= new App_Model_dateConvertor();
+
             foreach($this->_getParam('assettype') as $val) {
 
                 $assettype = array('submodule_id' => $submoduleid,
-                                    'member_id' => $id,
+                                    'family_id' => $id,
                                     'nonliveasset_id' => $val,
                                     'number'=>$number[$i],
+                                    'date_of_value'=>$dateconvert->mysqlformat($date[$i]),
+
                                     'value'=>$value[$i]);
                 $i++;
                 $this->view->adm->addRecord("ourbank_nonlivingassetsdetails",$assettype);
             }
-            $this->_redirect('/individualmcommonview/index/commonview/id/'.$id);
+            $this->_redirect('/familycommonview/index/commonview/id/'.$id);
         } 
         else {
             //set the contact details in the contact form...
             $sub_id=$this->_getParam('subId');
             $id=$this->_getParam('id');
-            $individualcommon=new Individualmcommonview_Model_individualmcommonview();
+            $individualcommon=new Familycommonview_Model_familycommonview();
             $this->view->editAsset = $individualcommon->getnonlivingassetsdetails($id); 
             //$form->populate($editContact[0]);
         }

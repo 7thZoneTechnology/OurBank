@@ -1,0 +1,34 @@
+<?php
+
+class Maintenance_DayendController extends Zend_Controller_Action
+{
+
+    public function init()
+    {
+        $this->view->pageTitle = "Maintenance";
+
+	$sessionName = new Zend_Session_Namespace('ourbank');
+	$this->view->createdby = $sessionName->primaryuserid;
+	$this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+    }
+
+    public function indexAction()
+    {
+        $this->view->title = "Day end";
+        $transaction = new Maintenance_Model_Dayend();
+        $this->view->paginator = $transaction->transactionByDate();
+        if ($this->_request->getPost('DayEndProcess')) {
+            $totalVoucher = $this->_request->getPost('totalVNo');
+            for($i = 1; $i<=$totalVoucher; $i++) {
+                $inputData = array('recordstatus_id' => 1,
+                                'confirmation_flag' => 1);
+                $transaction->transactionUpdate($this->_request->getPost('VoucherNo'.$i),$inputData);
+                //$vResult = $transaction->transactionVoucher($this->_request->getPost('VoucherNo'.$i));
+
+            }
+        $this->_redirect('/maintenance/dayend');
+        }
+    }
+
+    
+}

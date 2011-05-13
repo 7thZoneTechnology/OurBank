@@ -49,25 +49,32 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         $db = $this->getAdapter();
         $sql = "select 
                     D.id as glsubcode_id,
-		    D.glsubcode as glsubcode,
+					A.glsubcode_id_to,
+					D.glsubcode as glsubcode,
+					D.id,
                     D.header as subheader,
                     sum(A.credit) as credit,
                     sum(A.debit) as debit
                     from 
-		    ourbank_Liabilities A,
-		    ourbank_glcode B,
-		    ourbank_glsubcode D,
-		    ourbank_transaction E
-		    where (
-		    (D.id = '".$glsubcode."' '%') AND  
-                    A.glsubcode_id_to = D.id AND 
-		    B.id = D.glcode_id AND
+		    		ourbank_Liabilities A,
+					ourbank_glcode B,
+		    		ourbank_glsubcode D,
+		    		ourbank_transaction E
+		    		where (
+		    		(D.id = '".$glsubcode."' '%') AND  
+  		  A.glsubcode_id_to = D.id AND 
+		B.id = D.glcode_id AND
 		    B.ledgertype_id = 4 AND
 		    A.transaction_id = E.transaction_id AND
-                    E.transaction_date BETWEEN '$date1' AND '$date2')
+
+
+			E.transaction_date BETWEEN '$date1' AND '$date2')
 		    group by D.id";
+//echo $sql;
+
         $result=$db->fetchAll($sql);
         return $result;
+
 
     }
     
@@ -92,6 +99,9 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date < '$date') 
 		    group by F.id";
+//echo $sql;
+
+
         $result=$db->fetchAll($sql);
         return $result;
 
@@ -118,6 +128,8 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date BETWEEN '$date1' AND '$date2') 
 		    group by F.id";
+//echo $sql;
+
          $result=$db->fetchAll($sql);
          return $result;
 
@@ -144,6 +156,8 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date < '$date') 
 		    group by F.id";
+//echo $sql;
+
         $result=$db->fetchAll($sql);
         return $result;
 

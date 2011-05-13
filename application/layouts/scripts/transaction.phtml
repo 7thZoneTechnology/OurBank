@@ -21,6 +21,12 @@
            <li ><a href="<?php echo $this->baseUrl();?>/fixedtransaction">Fixed savings</a></li>
 	   <li ><a href="<?php echo $this->baseUrl();?>/recurringtransaction">Recurring savings</a></li>
 	   <li ><a href="<?php echo $this->baseUrl();?>/loandisbursmentg">Loans</a></li>
+	   <li ><a href="<?php echo $this->baseUrl();?>/ledgerreport">Ledger Report</a></li>
+	   <li ><a href="<?php echo $this->baseUrl();?>/receipts">Recepts and payments</a></li>
+   	   <li ><a href="<?php echo $this->baseUrl();?>/altertransaction">Alter transaction</a></li>
+   	   <li ><a href="<?php echo $this->baseUrl();?>/amounttransfer">Amount transfer</a></li>
+
+
 	</ul>
 	<?php } ?>
         <?php if($this->type == "savings") { ?>
@@ -29,6 +35,7 @@
             <li><a href="<?php echo $this->baseUrl();?>/savingswithdrawal">Saving withdrawal</a></li>
             <li><a href="<?php echo $this->baseUrl();?>/savingsdeposit">Saving deposit</a></li>
             <li><a href="<?php echo $this->baseUrl();?>/psdetails">Saving details</a></li>
+            <li><a href="<?php echo $this->baseUrl();?>/msdetails">Member saving details</a></li>
                 </ul>
 	<?php } ?>
 	<?php if($this->type == "loans") { ?>
@@ -66,7 +73,7 @@
     </div>
 
   <div id="footer">
-    <div id="copytxt"> Mahiti Infotech Pvt. Ltd., <a href="#">Terms &amp; Conditions</a></div>
+    <?php echo $this->render('footer.phtml'); ?>
   </div>
 </div>
 </BODY>

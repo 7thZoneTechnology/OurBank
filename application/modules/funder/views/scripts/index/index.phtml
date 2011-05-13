@@ -40,40 +40,48 @@
                                     <td class="label"><br><?php echo $this->translate("Funder type:"); ?></td>
                                     <td ><br><? echo $this->form->type;?></td>
                                 </tr>
-                        </table>
-<!--button object -->
-                                    <input type="submit" name="Search" id="Submit" value="Search">
+                                <tr> 	<!--button object -->
+                                    <td colspan="4" align="center"></td>
+                                </tr>
+                        </table><br />
+                         <div class="ltbtns">
+                        <? echo $this->form->Search;?>
+                        </div>
                     </form>	
             </div>
     </fieldset> 
-</div>
+</div> 
 
 <!--
  *  view list of funder details and filtered search details
 -->
-<?php if (count($this->paginator)) { ?>
+<?php  if(count($this->paginator)!="")  { 
+
+// check search result is not empty and assign values
+if(count($this->paginator)!=0) { ?>
 <table id="hor-minimalist-b">
     <tr>
         <th><?php echo $this->translate("Funder code"); ?></th>
         <th><?php echo $this->translate("Funder name"); ?></th>
         <th><?php echo $this->translate("Funder type"); ?></th>
-   </tr>
+
+    </tr>
+    <?php if (count($this->paginator)): ?>
     <?php foreach ($this->paginator as $funder): ?>
     <tr>
         <td><a href="<?php echo $this->baseUrl()."/fundercommonview/index/commonview/id/".$funder['id']; ?>">
         <?php echo $this->escape($funder['code']); ?></a></td>
-        <td><?php echo $this->escape($funder['name']);?></td>
+        <td><?php echo $this->escape($funder['name']); ?></td>
         <td><?php echo $this->escape($funder['fundertype']); ?></td>
 
     <?php endforeach; ?>
-
+    <?php endif; ?>
     </tr>
     <tr>
         <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
         '/partials/my_pagination_control.phtml'); ?></div></td>
     </tr>
 </table>
-<?php } else { 
-        echo "<font color=red>".$this->errormsg."</font>";
-    } ?>
-
+<?php } } else { echo "<font color='RED'>Records Not Found Try Again...</font>";
+} ?>
+<br>

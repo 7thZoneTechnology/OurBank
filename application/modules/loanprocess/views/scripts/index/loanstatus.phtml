@@ -1,0 +1,104 @@
+<?php if(!$this->result) { ?>
+<fieldset>
+	<legend>Request status</legend>
+		<form action="<?php echo $this->baseUrl();?>/loanprocess/index/loanstatus" method="POST">
+			<table class="fieldsets">
+                            <TR>
+                                <TD><label for="fld3">Member code / Group code</label></TD>
+                                <TD><? echo $this->form->membercode;?></TD>
+                            </TR>
+                        </table>
+                        <div class="btnhouse">
+                            <div class="ltbtns">
+                                <?php echo $this->form->Submit;?>
+                            </div>
+                        </div>
+	       </form>
+</fieldset>
+<?php } ?>
+<div>
+<?php if($this->result) { ?>
+    <form action="<?php echo $this->baseUrl();?>/loanprocess/index/loanupdate/id/<?php echo base64_encode($this->id); ?>" method="POST">
+    <table id="hor-minimalist-b">
+	<tr>
+	    <Th colspan="3">Loan details</Th>
+
+	</tr>
+	<?php foreach($this->result as $loan){ ?>
+	<tr>
+		<td>Group code / Individual code</td>
+		<td colspan="2"><?php  echo $loan['code'];?></td>
+        </tr>
+        <tr>
+		<td>Name</td>
+		<td colspan="2"><?php  echo $loan['name'];?></td>
+	</tr>
+        <tr>
+		<td>Loan amount</td>
+		<td colspan="2"><?php  echo $loan['Amount'];?></td>
+	</tr>
+        <?php if($this->memtype==1) { ?>
+        <tr>
+		<td>Purpose</td>
+		<td colspan="2"><?php  echo $loan['purpose'];?></td>
+	</tr>
+        <?php } ?>
+        <tr>
+		<td><?php echo $this->levelname; ?> approval</td>
+                <td colspan="2">
+                 <?php  
+                    $enable = array();
+                    foreach($this->loanstatus as $status) {
+                    $enablearray[]=$status['id']; 
+                    }
+                    $enable = array_intersect($enablearray,$this->enablearray);
+                foreach($this->loanstatus as $status) {
+                if(in_array($status['id'],$enable)) { ?>
+
+                <input type="radio" name="status" value="<?php echo $status['id'];?>" ><?php echo $status['name']; ?>
+                <?php } else { ?>
+                <input type="radio" name="status" value="<?php echo $status['id'];?>" disabled <?php if($loan['status'] == $status['name']) {?> checked <?php } ?> ><?php echo $status['name']; ?>
+                <?php } } ?>
+                <input type="hidden" value="<?php echo $loan['processid']; ?>" name="memberid">
+                <input type="hidden" value="<?php echo $this->memtype; ?>" name="membertype">
+                <input type="hidden" value="<?php echo $this->memcount; ?>" name="membercount">
+                <input type="hidden" value="<?php echo $this->memberid; ?>" name="memgroupid">
+
+                </td>
+                </tr>
+               <tr>
+                <td>Process description</td>
+                <td colspan="2"><textarea name="description" cols="25" rows="5"></textarea></td>
+                </tr>
+                <?php if($this->getgroupmember) { ?>
+                    <tr>
+                    <th>Member name</th>
+                    <th>Amount</th>
+                    <th>Purpose</th>
+                    </tr>
+                    <?php $j=0; foreach($this->getgroupmember as $groupdetails) { $j++;?>
+                    <tr>
+                    <td><?php echo $groupdetails['memname']; ?></td>
+                    <td><?php echo $groupdetails['Amount']; ?></td>
+                    <td><?php echo $groupdetails['purposename']; ?>
+                        <input type="Hidden" name="rquestid<?php echo $j; ?>" value="<?php echo $groupdetails['requestid'] ?>">
+                    </td>
+                    </tr>
+                    <?php } ?>
+                <?php } ?>
+        <tr>
+            <div class="btnhouse">
+                <div class="ltbtns">
+		  <td><input type="submit" name="update" value="Update"/></td>
+                </div>
+		<div class="rtbtns">
+                    <td><a href="<?php echo $this->baseUrl();?>/loanprocess/index"><input type="button" name="Back" value="Back"/></a></td>
+                </div>
+            </div>
+	</tr> 
+
+	<?php } ?>
+	</table>
+</form>
+<?php }  ?>
+</div>

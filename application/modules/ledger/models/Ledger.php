@@ -46,7 +46,7 @@ class Ledger_Model_Ledger extends Zend_Db_Table
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = 'select B.id as id,C.id as lid,B.glcode as glcode,B.header as header from 
                 ourbank_glcode B,
-                ourbank_ledgertypes C
+                ourbank_master_ledgertypes C
                 where (B.ledgertype_id = C.id)';
         $result = $this->db->fetchALL($sql,array());
         return $result;
@@ -75,8 +75,8 @@ class Ledger_Model_Ledger extends Zend_Db_Table
         $select = $this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a' => 'ourbank_glcode'),array('id'))
-                    ->where('a.glcode like "%" ? "%"',$glcode)
-                    ->where('a.header like "%" ? "%"',$accountHeader);
+                    ->where('a.glcode like  ? "%"',$glcode)
+                    ->where('a.header like  ? "%"',$accountHeader);
         $result = $this->fetchAll($select);
         return $result;
     }
@@ -86,8 +86,8 @@ class Ledger_Model_Ledger extends Zend_Db_Table
         $select = $this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a' => 'ourbank_glsubcode'),array('id'))
-                    ->where('a.glsubcode like "%" ? "%"',$glsubcode)
-                    ->where('a.header like "%" ? "%"',$subheader);
+                    ->where('a.glsubcode like  ? "%"',$glsubcode)
+                    ->where('a.header like  ? "%"',$subheader);
         $result = $this->fetchAll($select);
         return $result;
     }
@@ -95,7 +95,7 @@ class Ledger_Model_Ledger extends Zend_Db_Table
     public function getLdegertype($ledgertype_id)
     {
         $this->db = $this->getAdapter();
-        $sql = 'select * from ourbank_ledgertypes where id = '.$ledgertype_id;
+        $sql = 'select * from ourbank_master_ledgertypes where id = '.$ledgertype_id;
         $result = $this->db->fetchALL($sql);
         return $result;
     }
@@ -111,7 +111,7 @@ class Ledger_Model_Ledger extends Zend_Db_Table
     public function getLedgerTypes()
     {
         $this->db = $this->getAdapter();
-        $sql = 'select * from ourbank_ledgertypes';
+        $sql = 'select * from ourbank_master_ledgertypes';
         $result = $this->db->fetchALL($sql);
         return $result;
     }

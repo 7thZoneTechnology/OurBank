@@ -24,6 +24,14 @@ class  Commonviewfee_Form_Feedetails extends Zend_Form {
 
     	public function init() {
 			$fee_id = new Zend_Form_Element_Hidden('fee_id');
+
+$hierarchy_id = new Zend_Form_Element_Select('hierarchy_id');
+			$hierarchy_id->addMultiOption('','Select...');
+			$hierarchy_id->setAttrib('class', 'txt_put');
+			$hierarchy_id->setRequired(true)
+			->addValidators(array(array('NotEmpty')));
+			
+
 			
 			$membertype = new Zend_Form_Element_Select('membertype');
 			$membertype->addMultiOption('','Select...');
@@ -43,12 +51,18 @@ class  Commonviewfee_Form_Feedetails extends Zend_Form {
 			$feeamount->setAttrib('class', '');
 			$feeamount->setAttrib('size', '10');
                        
+			$glsubcode = new Zend_Form_Element_Select('glsubcode_id');
+			$glsubcode->addMultiOption('','Select...');
+			$glsubcode->setAttrib('class', 'txt_put');
+			$glsubcode->setRequired(true)
+			->addValidators(array(array('NotEmpty')));
+
 
                         $submit = new Zend_Form_Element_Submit('Submit');
 			$back= new Zend_Form_Element_Submit('Back');
 			$update = new Zend_Form_Element_Submit('Update');
 
-		        $this->addElements(array($update,$fee_id,$back,$feename,$feedescription,$feeamount,$submit,$membertype));
+		        $this->addElements(array($update,$fee_id,$back,$hierarchy_id,$feename,$feedescription,$feeamount,$submit,$glsubcode));
 
     }
 }

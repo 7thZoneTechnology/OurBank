@@ -27,9 +27,9 @@ class Management_Form_Delete extends Zend_Form {
 		$remarks->setAttrib('id', 'remarks');
 		$remarks->setAttrib('rows','2');
 		$remarks->setAttrib('cols','20');
-		$remarks->setLabel('remarks')
-					->setRequired(true)
-					->addValidators(array(array('NotEmpty')));
+		$remarks->setLabel('')
+                ->setRequired(true)
+                ->addValidators(array(array('NotEmpty')));
 
 		$submit_yes = new Zend_Form_Element_Submit('Yes');
 		$submit_yes->setAttrib('id', 'Yes');

@@ -26,7 +26,7 @@ class Meetingbookreport_IndexController extends Zend_Controller_Action
     {
         $this->view->pageTitle = $this->view->translate("Meeting Book");
         $this->view->title =  $this->view->translate('Reports');
-        $this->view->type = $this->view->translate("others");
+        $this->view->type = $this->view->translate("financialReports");
 
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
@@ -53,7 +53,7 @@ public function indexAction()
         $this->view->attendanceform=$attendanceform;
 
         //dropdown meeting list
-        $meeting = $this->view->adm->viewRecord("ourbank_meeting","id","ASC"); 
+        $meeting = $this->view->adm->viewRecord("ourbank_group","id","ASC"); 
         foreach($meeting as $meeting1){ 
             $attendanceform->meeting_name->addMultiOption($meeting1['id'],$meeting1['name']);
         }
@@ -65,25 +65,25 @@ public function indexAction()
 
         $formData = $this->_request->getPost(); 
         if ($attendanceform->isValid($formData)) {
-            $branchid = $this->_request->getParam('meeting_name');
+            $meeting_id = $this->_request->getParam('meeting_name');
             $meetingno = $this->_request->getParam('meetingno');
         $this->view->field1 = $meetingno;
-        $this->view->branchid = $branchid;
+        $this->view->branchid = $meeting_id;
 
         //for meeting details
         $meetingbook = new Meetingbookreport_Model_Meetingbook();
-	$this->view->fetchgroupid=$groupid1=$meetingbook->fetchgroupid($branchid);
-	$groupid= $groupid1[0]['group_id']; 
-        $this->view->meeting=$ff=$meetingbook->fetchmeeting($branchid,$groupid); 
+// 	$this->view->fetchgroupid=$groupid1=$meetingbook->fetchgroupid($meeting_id);
+// 	$groupid= $groupid1[0]['group_id']; 
+        $this->view->meeting=$ff=$meetingbook->fetchmeeting($meeting_id); 
         //fetch member details
-        $this->view->members=$aa=$meetingbook->fetchMembers($branchid,$groupid);  
+        $this->view->members=$aa=$meetingbook->fetchMembers($meeting_id);  
 
         //fetch attendance details
-        $this->view->attendance=$meetingbook->fetchattendance($branchid,$meetingno);  
+        $this->view->attendance=$meetingbook->fetchattendance($meeting_id,$meetingno);  
 
-        //fetch loan officer 
-        $loanofficer=$meetingbook->fetchloanofficer($groupid);
-        if($loanofficer){  $this->view->loanofficer=$loanofficer[0]['loanofficer']; }
+//         //fetch loan officer 
+//         $loanofficer=$meetingbook->fetchloanofficer($groupid);
+//         if($loanofficer){  $this->view->loanofficer=$loanofficer[0]['loanofficer']; }
 
             $formData = $this->_request->getPost();
                 $this->view->savings = 10;
@@ -101,7 +101,7 @@ public function indexAction()
         $meetingno=$fetchmeeting->fetchmeetingno($meeting_ID);
         $this->view->meeting = $meetingno;
         foreach($meetingno as $meet){
-            $attendanceform->meetingno->addMultiOption($meet['week_no'],$meet['week_no'].' - '.$meet['meeting_date']);
+     $attendanceform->meetingno->addMultiOption($meet['week_no'],$meet['week_no'].' --- '.$meet['meeting_date']);
         }
     }
 
@@ -127,24 +127,24 @@ public function indexAction()
                }
 
         //view details on pdf page
-            $branchid = $this->_request->getParam('meeting_name');
+            $meeting_id = $this->_request->getParam('meeting_name');
             $meetingno = $this->_request->getParam('meetingno');
-        $this->view->field1 = $meetingno;
-        $this->view->branchid = $branchid;
+            $this->view->field1 = $meetingno;
+            $this->view->branchid = $meeting_id;
 
         //for meeting details
         $meetingbook = new Meetingbookreport_Model_Meetingbook();
-	$this->view->fetchgroupid=$groupid1=$meetingbook->fetchgroupid($branchid);
-	$groupid= $groupid1[0]['group_id']; 
-        $this->view->meeting=$ff=$meetingbook->fetchmeeting($branchid,$groupid); //echo '<pre>';print_r($ff); 
+// 	$this->view->fetchgroupid=$groupid1=$meetingbook->fetchgroupid($meeting_id);
+// 	$groupid= $groupid1[0]['group_id']; 
+        $this->view->meeting=$ff=$meetingbook->fetchmeeting($meeting_id); //echo '<pre>';print_r($ff); 
         //fetch member details
-        $this->view->members=$aa=$meetingbook->fetchMembers($branchid,$groupid);  //echo '<pre>';print_r($aa);
+        $this->view->members=$aa=$meetingbook->fetchMembers($meeting_id);  //echo '<pre>';print_r($aa);
 
         //fetch attendance details
-        $this->view->attendance=$meetingbook->fetchattendance($branchid,$meetingno);  
+        $this->view->attendance=$meetingbook->fetchattendance($meeting_id,$meetingno);  
 
         //fetch loan officer 
-        $loanofficer=$meetingbook->fetchloanofficer($groupid);
+        $loanofficer=$meetingbook->fetchloanofficer($meeting_id);
         if($loanofficer){  $this->view->loanofficer=$loanofficer[0]['loanofficer']; }
 
 
@@ -217,41 +217,46 @@ public function indexAction()
         $page->drawLine(50, $y1, 550, $y1); //table top line
         $y3=$y1; // assign for left and right lines
         $y1=$y1-15;
-        $page->drawText("Sl.No.", 55, $y1);
-        $page->drawText("Members", 80, $y1);
-        $page->drawText("Attendance", 180, $y1);
-        $page->drawText("Late fee", 225, $y1);
-        $page->drawText("Absent fee", 265, $y1);
-        $page->drawText("Current Balance", 315, $y1);
-        $page->drawText("To be pay", 380, $y1);
-        $page->drawText("Outstanding", 430, $y1);
-        $page->drawText("Due", 490, $y1);
+        $page->drawText("Sl", 55, $y1);
+        $page->drawText("Members", 70, $y1);
+        $page->drawText("UID", 180, $y1);
+        $page->drawText("Attn.", 240, $y1);
+        $page->drawText("Late", 265, $y1);
+        $page->drawText("Absent", 290, $y1);
+        $page->drawText("Balance", 340, $y1);
+        $page->drawText("Pay", 395, $y1);
+        $page->drawText("Outstanding", 420, $y1);
+        $page->drawText("Due", 480, $y1);
         $page->drawText("Total", 525, $y1);
        // $page->drawLine(50, $y1 = $y1 - 20, 550, $y1); //dynamic bottom line - member details table
         $page->drawLine(50, $y1 -10, 550, $y1=$y1-10);
 
-$no=1;  $Topay=0; $currentbalance1=0; $currentbalance2=0; $currentbalance3=0; $loandue1=0; $loandue2=0; $currentpay=0; $totallatefee=0; $totalabsentfee=0; $total1=0;
+$no=1;  $Topay=0; $currentbalance1=0; $currentbalance2=0; $currentbalance3=0; $loandue1=0; $loandue2=0; $currentpay=0; $totallatefee=0; $totalabsentfee=0; $total1=0; $total=0;
 $currentbalance=new Meetingbookreport_Model_Meetingbook();
 
-        $x3=280;
-        $x4=320;
+        $x3=315;
+        $x4=345;
         $x5=400;
-        $x6=440;
-        $x7=500;
-        $x8=540;
+        $x6=445;
+        $x7=495;
+        $x8=530;
         $x9=575;
 
-foreach($this->view->members as $members) { $memberid=$members['memberid'];
+foreach($this->view->members as $members) { $memberid=$members['memberid']; $total=0;
 
         $y1=$y1-15;
         $page->drawText($no, 55, $y1);
-        $page->drawText($members['membername'], 80, $y1);
+        $page->drawText($members['membername'], 70, $y1);
+        $page->drawText($members['uid'], 180, $y1);  //$members['uid']
 
-        $memberattendance=$currentbalance->memberattendance($memberid);
-        if($memberattendance) { $absente='Absent';} else { $absente='Present'; }
-        $page->drawText($absente, 180, $y1);
+               $memberabsent=$currentbalance->memberabsent($memberid,$attendance['id']);
+               $memberlate=$currentbalance->memberlate($memberid,$attendance['id']);
+               if($memberabsent) { $absente='A';} 
+                else if($memberlate) { $absente='L';} else { $absente='P'; }
 
-        if($memberattendance) { 
+        $page->drawText($absente, 245, $y1);
+
+        if($memberlate) { 
                 $totallatefee+=$latefee=$members['penalty_latecoming']; 
                $pos=position(sprintf("%4.2f",$latefee),$x3);
                $page->drawText(sprintf("%4.2f",$latefee),$pos+2,$y1);
@@ -261,7 +266,7 @@ foreach($this->view->members as $members) { $memberid=$members['memberid'];
                $page->drawText(sprintf("%4.2f",''),$pos+2,$y1);
         }
 
-        if($memberattendance) { 
+        if($memberabsent) { 
         $totalabsentfee+=$absentfee=$members['penalty_notcoming']; 
         $pos=position(sprintf("%4.2f",$absentfee),$x4);
         $page->drawText(sprintf("%4.2f",$absentfee),$pos+2,$y1);
@@ -304,14 +309,14 @@ foreach($this->view->members as $members) { $memberid=$members['memberid'];
                 } 
                 $loandue2+=$loandue1;
 
-                $total=$latefee+$absentfee+$perweek+$loandue1;
-                $total1+=$total;
+                $total=$latefee+$absentfee+$currentbalance1+$loandue1;
                 $pos=position(sprintf("%4.2f",$total),$x9);
                 $page->drawText(sprintf("%4.2f",$total),$pos+2,$y1);
 
         $page->drawLine(50, $y1 -10, 550, $y1=$y1-10);
     $no++;
 $Topay+=$members['saving_perweek'];
+                $total1+=$total;
  }
 
 $y1=$y1-15;
@@ -344,11 +349,8 @@ $y1=$y1-15;
         $page->setLineWidth(1)->drawLine(550, $y1, 550, $y3); //table rigth vertical
 
         $pdfData = $pdf->render();
-    
         $pdf->save('/var/www/'.$projname.'/reports/meetingbook.pdf');
 	$path = '/var/www/'.$projname.'/reports/meetingbook.pdf';
-    
         chmod($path,0777);
-
     }
 }

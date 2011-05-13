@@ -16,63 +16,32 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<fieldset style="width:759px;float:left">
-
-<div style="width:480px;float:left"> 
 
 
-	
-	<div class="cont-rgt-data">
-			<TABLE id="hor-minimalist-b">
-            <tr><Th>Delete Category</Th><th></th><th></th><th></th><th></th></tr>
-        <?php foreach($this->productdetails as $category) {  ?>
-
-				<TR>
-					<TD>product name</TD>
-					<TD></TD>
-					<TD></TD>
-					<TD><?php echo $category['name'];?></TD>
-					<TD></TD>
-				</TR>
-				<TR>
-					<TD>short name</TD>
-					<TD></TD>
-					<TD></TD>
-					<TD><?php echo $category['shortname'];?></TD>
-					<TD></TD>
-				</TR>
-<TR>
-					<TD>product description</TD>
-					<TD></TD>
-					<TD></TD>
-					<TD><?php echo $category['description'];?></TD>
-					<TD></TD>
-				</TR>
-				<TR>
-					<TD><a href="<?php echo $this->baseUrl(); ?>/management/category">
-					<TD></TD>
-					<TD></TD>
-					<TD></TD>
-					<TD></TD>
-				</TR>
-			</TABLE>
-<?php } ?>
-
-	
-			<div class="cont-rgt-data">
-				<form action="<?php echo $this->baseUrl();?>/product/index/productdelete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" summary="Employee Pay Sheet">
-					<TR><Th>confirm Delete</Th><th></th></tr>
-						<TD  width="35%" align="right" ><label>Remarks<span class="reqMark">*</span></label></TD>
-						<TD  width="65%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
-					</TR>
-                                <tr><TD><font color="Red">Do you want to Delete</font></TD></tr>
-				</table>
-
-													<input type="submit" name="Delete" id="Submit" value="Delete">			
-
-						<input name="submit" type="submit"  value="No" ></a></TD>
-				</form>
-			
-
-		</div></fieldset>
+<div id = "searchDiv">
+   <TABLE id="hor-minimalist-b">
+        <tr><Th colspan="6" width="100">Delete product</Th></tr>
+            <?php foreach($this->productdetails as $product) {  ?>
+            <TR>
+                <TD colspan="3">Product Name :</TD>
+                <TD colspan="3"><?php echo $product['name'];?></TD>
+            </tr>
+            <TR>
+                <TD colspan="3">Product Description :</TD>
+                <TD colspan="3"><?php echo $product['description'];?></TD>
+            </TR>
+        <?php } ?>
+        </TABLE>
+        <form action="<?php echo $this->baseUrl();?>/product/index/productdelete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
+        <table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
+                <TR>
+                      <TD  width="8" align="right" ></TD>
+		     <TD  width="45" align="left" ><font color="green"><b>*</b></font>Remarks</FONT><?php echo $this->deleteform->remarks;?></TD>
+                </TR>
+                 <TR>
+                        <TD><input type="submit" name="Delete" id="Submit" value="Delete"></td>			
+                        <td align="right"><a href="<?php echo $this->baseUrl();?>/product/index"><input name="submit" type="submit"  value="Cancel" ></a></TD>
+                </TR>
+        </table>
+        </form>
+</div>

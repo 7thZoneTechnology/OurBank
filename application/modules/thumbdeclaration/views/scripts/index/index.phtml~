@@ -1,0 +1,55 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+<style type="text/css">
+tr#bcolor
+{
+background-color : silver;
+}
+</style> <div> 
+
+
+<h3>Thumb impression declaration</h3>
+
+<table id="hor-minimalist-b">
+    <tr>
+		<td>Bank</td>
+    </tr>
+	<tr>
+		<td>Branch</td>
+    </tr>
+       </table>
+
+<table id="hor-minimalist-b">	
+    
+    <tr><td colspan="5"><font color="Green"><b>Thumb impression Declaration</b></font></td></tr>
+    <tr><TD colspan="5">
+    <p align="justify"> I hereby declare that Smt/sri ______________________ has given the thumb impression in the presence of me and his mother tongue ___________________________</p></td>
+    <tr>
+        <tr><Td width="30%"><br><br><br><br>DATE : <?php echo date('d-m-Y');?></td>
+        <Td align="right"><br><br><br><br>Yours sincerely</td></tr>
+    </tr>
+   </table>
+<form action="<?php echo $this->baseUrl();?>/thumbdeclaration/index/pdfgeneration" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/thumbdeclaration/index/reportdisplay/file/thumbimpression<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="PDF" id="submit">
+</form>
+</body>
+</html>
+ </div>

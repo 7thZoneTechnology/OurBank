@@ -39,6 +39,7 @@ class Savingaccount_Form_Savings extends Zend_Form
         $date->setAttrib('class', 'txt_put');
         $date->setJQueryParam('dateFormat', 'yy-mm-dd');
         $date->setRequired(true);
+	$date->setAttrib('size', 12);
         //hidden feilds
 		$code = $formfield->field('Hidden','code','','','','',false,'','','','','',0,$codenum);
 		$Id = $formfield->field('Hidden','Id','','','','',false,'','','','','',0,$ID);
@@ -46,7 +47,7 @@ class Savingaccount_Form_Savings extends Zend_Form
 		$Yes = $formfield->field('Submit','Yes','','','','',false,'','','','','',0,0);
 		$back = $formfield->field('Submit','Back','','','','',false,'','','','','',0,0);
         $this->addElements(array($submit,$amount,$code,$Id,$date,$back,$Yes));
-		if (substr(base64_decode($codenum),4,1) == 2) {
+		if ((substr(base64_decode($codenum),4,1) == 2) or (substr(base64_decode($codenum),4,1) == 3)) {
         	$group = new Zend_Form_Element_MultiCheckbox('group');
 			$this->addElements(array($group));
 		} else {

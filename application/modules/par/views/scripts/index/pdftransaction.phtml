@@ -1,186 +1,153 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
+<script type="text/javascript">
+function Getuser(branch_id,path) { 
+	if(branch_id) {
+		targeturl=path+"/par/index/getofficer?branch_id="+branch_id; 
+		$.ajax({ url: targeturl, success: function(data){ $("#officerdiv").html(data) }});
+	}
+}
+</script>
+<?php if($this->parrisk) { ?>
+		<?php 
+		$total30 = "0.00";
+		$total60 = "0.00";
+		$total90 = "0.00";
+		$total180 = "0.00";
+		$total360 = "0.00";
+		$total360above = "0.00";
+		
+		$today = $this->fromdate;
+		$date30 = date('Y-m-d',strtotime(date("Y-m-d", strtotime($today)) . " -30 days"));
+		$date60 = date('Y-m-d',strtotime(date("Y-m-d", strtotime($today)) . " -60 days"));
+		$date90 = date('Y-m-d',strtotime(date("Y-m-d", strtotime($today)) . " -90 days"));
+		$date180 = date('Y-m-d',strtotime(date("Y-m-d", strtotime($today)) . " -180 days"));
+                $date360 = date('Y-m-d',strtotime(date("Y-m-d", strtotime($today)) . " -360 days"));
+		
+		$day30="0.00";$day60="0.00";$day90="0.00";$day180="0.00";
+		$day360="0.00";$day360above="0.00";$r="0.00";
+		$duedate='';
+		?>
+<h3 style="text-align:right;"><? echo $this->resultshow; ?></h3>
+<br>
+<h3 style="text-align:right"> <font color="red">*</font> Amount in <font color="red">Rs</font></h3>
 
-
-<h5>List</h5>
-            <?php 
-              $total30 = "0";
-              $total60 = "0";
-              $total90 = "0";
-              $total180 = "0";
-              $total360 = "0";
-              $total360days = "0";
-              $total = "0";
-            ?>
-    <table id="hor-minimalist-b">
+<table id="hor-minimalist-b" border="1">
         <TR>
-            <TH> Month </TH>
-            <TH> Loan A/C </TH>
-            <TH> On Time </TH>
-            <TH> 1 - 30 Days </TH>
-            <TH> 31 - 60 Days </TH>
-            <TH> 61 - 90 Days </TH>
-            <TH> 91 - 180 Days </TH>
-            <TH> 181 - 360 Days </TH>
-            <TH> 361 Days Above </TH>
-            <TH> O/S Loan </TH>
-
+		<TD class="reporttd" rowspan="2"><br>Name</TD>
+		<TD class="reporttd" rowspan="2"><br>Loan A/C</TD>
+		<TD class="reporttd" rowspan="2"><br>On Time</TD>
+		<TD class="reporttd" align="center" colspan="6">Days</TD>
+		<TD class="reporttd" align="right" rowspan="2"><br>O/S Loan</TD>
         </TR>
-        <?php if($this->due30) { ?>
-        <?php foreach($this->due30 as $due30) { ?>
-        <TR>
-            <TD></TD>
-            <TD ><?php echo $due30->account_number; ?></TD>
-            <TD></TD>
-            <TD align="rigth"><?php echo $due30->accountinstallment_amount;
-                $total30 = $total30 + $due30->accountinstallment_amount;?></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
+	<tr>
+		<TD class="reporttd" align="right"> 1 - 30</TD>
+		<TD class="reporttd" align="right"> 31 - 60</TD>
+		<TD class="reporttd" align="right"> 61 - 90</TD>
+		<TD class="reporttd" align="right"> 91 - 180</TD>
+		<TD class="reporttd" align="right"> 181 - 360</TD>
+		<TD class="reporttd" align="right"> > 360</TD>
 
-        </TR>
-        <?php } ?>
-        <?php } ?>
-        <?php if($this->getDueabove30less60) { ?>
-        <?php foreach($this->getDueabove30less60 as $getDueabove30less60) { ?>
-        <TR>
-            <TD></TD>
-            <TD ><?php echo $getDueabove30less60->account_number;?></TD>
-            <TD ></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"><?php echo $getDueabove30less60->accountinstallment_amount;
-                    $total60 = $total60 + $getDueabove30less60->accountinstallment_amount;?></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
+	</tr>
+        <?php if($this->parrisk) { $a=array(); 
+		foreach($this->parrisk as $parrisk1) { $a[]=$parrisk1->account_number; }
+			$a=array_unique($a);	$a=array_values($a);
 
-        </TR>
-        <?php } ?>
-        <?php } ?>
+		for($i=0; $i<count($a); $i++) { $flag90_180=0; $flag180_360=0; $flag360_above=0;
 
-        <?php if($this->getDueabove60less90) { ?>
-        <?php foreach($this->getDueabove60less90 as $getDueabove60less90) { ?>
-        <TR>
-            <TD></TD>
-            <TD ><?php echo $getDueabove60less90->account_number; ?></TD>
-            <TD></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"><?php echo $getDueabove60less90->sum;
-                 $total90 = $total90 + $getDueabove60less90->sum;?></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
+		foreach($this->parrisk as $parrisk2) {
+			$duedate=$parrisk2->installment_date;
+			$modelObj=new Par_Model_Par();
+			if($a[$i]==$parrisk2->account_number) {
+				if($duedate>$date30 AND $duedate<=$today)
+                                {
+					$day30 = $parrisk2->installment_amount;
+                                } 
+				else if($duedate>$date60 AND $duedate<=$date30) 
+                                { 
+					$day60 = $parrisk2->installment_amount; 
+                                }
+				else if($duedate>$date90 AND $duedate<=$date60) 
+                                { 
+					$day90 = $parrisk2->installment_amount;
+                                }
+				else if($duedate>$date180 AND $duedate<=$date90)
+                                { 
+		
+				    $amt1=$modelObj->getAmount($date180,$date90,$parrisk2->account_number);
+                                    if($flag90_180==0) 
+                                    {
+                                        foreach($amt1 as $amt2) { $day180+= $amt2['sumofdue'];}
+                                    }
+				    $flag90_180++;
+		
+				}
+				else if($duedate>=$date360 AND $duedate<=$date180)  
+                                { 
 
-        </TR>
-        <?php } ?>
-        <?php } ?>
-        <?php if($this->getDueabove90less180) { ?>
-        <?php foreach($this->getDueabove90less180 as $getDueabove90less180) { ?>
-        <TR>
-            <TD></TD>
-            <TD ><?php echo $getDueabove90less180->account_number; ?></TD>
-            <TD ></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"><?php echo $getDueabove90less180->sum;
-                $total180 = $total180 + $getDueabove90less180->sum; ?></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
+                                    $amt3=$modelObj->getAmount($date360,$date180,$parrisk2->account_number);
+                                    if($flag180_360==0) 
+                                    {
+                                    foreach($amt3 as $amt4) { $day360+= $amt4['sumofdue'];}
+                                    }
+                                    $flag180_360++;
+			            /*$day360 = $parrisk2->accountinstallment_amount; */ 
+				}
 
-        </TR>
-        <?php } ?>
-        <?php } ?>
+				else 
+                                {
+				    $amt5=$modelObj->getAmount1($date360,$parrisk2->account_number);
+				    if($flag360_above==0) {
+				    foreach($amt5 as $amt6) { $day360above+= $amt6['sumofdue'];}
+				    }
+				    $flag360_above++;
+				//	$day360above = $parrisk2->accountinstallment_amount; 
+				}
+			}
+		}
+			$total30+=$day30;$total60+=$day60; $total90+=$day90;
+			$total180+=$day180; $total360+=$day360;$total360above+=$day360above;
+			?>
+			<TR>
 
-        <?php if($this->getDueabove180less360) { ?>
-        <?php foreach($this->getDueabove180less360 as $getDueabove180less360) { ?>
-        <TR>
-            <TD></TD>
-            <TD ><?php echo $getDueabove180less360->account_number; ?></TD>
-            <TD ></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"><?php echo $getDueabove180less360->sum;
-                 $total360 = $total360 + $getDueabove180less360->sum;?></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-
-        </TR>
-        <?php } ?>
-        <?php } ?>
-
-        <?php if($this->getDueabove360) { ?>
-        <?php foreach($this->getDueabove360 as $getDueabove360) { ?>
-        <TR>
-            <TD align="rigth"></TD>
-            <TD ><?php echo $getDueabove360->account_number; ?></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"></TD>
-            <TD align="rigth"><?php echo $getDueabove360->sum;
-            $total360days = $total360days + $getDueabove360->sum; ?></TD>
-
-            <TD></TD>
-
-        </TR>
-        <?php } ?>
-        <?php } ?>
-
-        <TR>
-            <TD ></TD>
-            <TD >Total</TD>
-            <TD ></TD>
-            <TD align="rigth"><?php echo $total30;?></TD>
-            <TD align="rigth"><?php echo $total60;?></TD>
-            <TD align="rigth"><?php echo $total90;?></TD>
-            <TD align="rigth"><?php echo $total180;?></TD>
-            <TD align="rigth"><?php echo $total360;?></TD>
-            <TD align="rigth"><?php echo $total360days;?></TD>
-            <TD align="rigth"><?php echo $total30 + $total60 + $total90 + $total180 + $total360 + $total360days;?></TD>
-
-
-
-        </TR>
-
-    </table>
-
+			<TD align="center"><? 
+                        $mname=new Par_Model_Par();
+                        $name=$mname->gettmembername($a[$i]);
+                        foreach($name as $name1) {  echo $name1['name']; }
+						?></TD>
+			<TD ><?php echo $a[$i]; ?></TD>	
+			<TD align="center"></TD>	
+			<TD align="right"><?php  echo $day30; $r+=$day30; ?></TD>	
+			<TD align="right"><?php echo $day60; $r+=$day60; ?></TD>	
+			<TD align="right"><?php echo $day90; $r+=$day90; ?></TD>	
+			<TD align="right"><?php echo $day180; $r+=$day180; ?></TD>	
+			<TD align="right"><?php echo $day360; $r+=$day360; ?></TD>	
+			<TD align="right"><?php echo $day360above; $r+=$day360above; ?></TD>	
+			<TD align="right"><?php echo $r;?></TD>
+			</TR>
+			<? $day30="0.00";$day60="0.00";$day90="0.00";$day180="0.00";$day360="0.00";$day360above="0.00";$r="0.00";
+			}
+		} ?>
+	<TR>
+			<TD ></TD>
+			<TD ></TD>
+			<TD >Total(Rs)</TD>
+			<TD align="right"><?php echo sprintf("%4.2f", $total30);?></TD>
+			<TD align="right"><?php echo sprintf("%4.2f", $total60);?></TD>
+			<TD align="right"><?php echo sprintf("%4.2f", $total90);?></TD>
+			<TD align="right"><?php echo sprintf("%4.2f", $total180);?></TD>
+			<TD align="right"><?php echo sprintf("%4.2f", $total360);?></TD>
+			<TD align="right"><?php echo sprintf("%4.2f", $total360above);?></TD>
+			<TD align="right"><?php echo  sprintf("%4.2f", ($total30 + $total60 + $total90 + $total180 + $total360 + $total360above));?></TD>
+		</TR>
+</table>
 
 <form action="<?php echo $this->baseUrl();?>/par/index/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl();?>/par/index/reportdisplay/file/par.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
-           
+onClick="window.open('<?php echo $this->baseUrl();?>/par/index/reportdisplay/file/par-<?php echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+	<input type="hidden" name="fromdate" value="<? echo $this->fromdate; ?>">
+	<input type="hidden" name="branch" value="<? echo $this->branch; ?>">
+	<input type="hidden" name="officer" value="<? echo $this->officer; ?>">
             <input type="submit" value="PDF" id="submit">
 </form>
-
-
+<? } ?>
 
 
 

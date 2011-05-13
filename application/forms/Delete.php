@@ -17,13 +17,12 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-class App_Form_Delete extends Zend_Form {
-    public function init() {
-		$formfield = new App_Form_Field();
-		$remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,15,1,0);
-		$this->addElements(array($remarks));
+class App_Form_Delete extends Zend_Form 
+{
+    public function init() 
+    {
+	$formfield = new App_Form_Field();
+	$remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,15,1,0);
+	$this->addElements(array($remarks));
     }
 }

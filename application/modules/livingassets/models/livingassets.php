@@ -24,10 +24,10 @@ class Livingassets_Model_livingassets  extends Zend_Db_Table {
     public function deleteasset($param)  
     {
         $db = $this->getAdapter();
-                    //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
-        $db->delete("ourbank_liveassetdetails",array('member_id = '.$param));
+                    //$db->delete("ourbank_cropdetails",array('family_id = '.$param));
+        $db->delete("ourbank_liveassetdetails",array('family_id = '.$param));
 
-    // $db->exec("delete from ourbank_cropdetails where member_id = $param");
+    // $db->exec("delete from ourbank_cropdetails where family_id = $param");
         return;
     }
     public function getAssetdetails($mebmerid)
@@ -35,7 +35,7 @@ class Livingassets_Model_livingassets  extends Zend_Db_Table {
         $select=$this->select($param)
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_liveassetdetails'),array('a.id'))
-                        ->where('a.member_id=?',$mebmerid);
+                        ->where('a.family_id=?',$mebmerid);
         $result=$this->fetchAll($select);
         return $result->toArray();
     }

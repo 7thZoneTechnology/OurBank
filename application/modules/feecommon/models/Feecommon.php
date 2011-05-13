@@ -21,7 +21,7 @@
 
 <?php 
 class Feecommon_Model_Feecommon extends Zend_Db_Table { 
- protected $_name = 'ob_feedetails';
+ protected $_name = 'ourbank_fee';
 
 
  public function getfee($id)
@@ -37,6 +37,39 @@ class Feecommon_Model_Feecommon extends Zend_Db_Table {
         return $result->toArray();
        //die ($select->__toString($select));
     }
+
+public function getcategory($selcat)
+    {
+ $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->from('ourbank_category')
+                ->where('freetype_id=  ?',$selcat);
+//         die ($select->__toString($select));
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+
+
+//          $select=$this->select()
+//                 ->setIntegrityCheck(false)
+//                  ->join(array('a'=>'ourbank_category'),array('id'));
+//          
+//          $result=$this->fetchAll($select);
+//          return $result->toArray();
+       //die ($select->__toString($select));
+    }
+
+public function getmembertypes()
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_membertypes'),array('id'));
+
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+       //die ($select->__toString($select));
+    }
+
+
 public function getmemtype($id)
     {
         $select=$this->select()
@@ -57,5 +90,13 @@ public function getmemtype($id)
         return $result->toArray();
         return $result;
     }
-
+ public function getOffice() {
+              $select = $this->select()
+                       ->setIntegrityCheck(false)  
+                       ->join(array('a' => 'ourbank_glsubcode'),array('a.office_name,a.officeshort_name'))
+                       ->where('a.glcode_id != 1 AND glcode_id != 2');
+                      
+       $result = $this->fetchAll($select);
+       return $result->toArray();
+    }
 }

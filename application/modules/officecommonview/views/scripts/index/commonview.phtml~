@@ -16,33 +16,35 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+
+
 <table id="hor-minimalist-b">
     <tr>
-        <th class="firsttd">Office information</th>
+        <th class="firsttd"><?php echo $this->translate("Office information"); ?></th>
         <th class = "secondtd"></th>
-        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/office/index/officeedit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/officedefault/index/officeedit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
     </tr>
 
     <?php 
     $convertdate = new Creditline_Model_dateConvertor();
     foreach($this->office as $office_view){ ?>
     <tr>
-        <td class="firsttd">Office type:</td>
+        <td class="firsttd"><?php echo $this->translate("Office type:"); ?></td>
         <td class = "secondtd"><?php echo $office_view['type']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">parent office:</td>
-        <td class = "secondtd"><?php echo $office_view['parentoffice_id']; ?></td>
+        <td class="firsttd"><?php echo $this->translate("parent office:"); ?></td>
+        <td class = "secondtd"><?php echo $this->parentname; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Office name:</td>
+        <td class="firsttd"><?php echo $this->translate("Office name:"); ?></td>
         <td class = "secondtd"><?php echo $office_view['name']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Office short name:</td>
+        <td class="firsttd"><?php echo $this->translate("Office short name:"); ?></td>
         <td class = "secondtd"><?php echo $office_view['short_name']; ?></td>
         <td class="thirdtd"></td>
     </tr>
@@ -53,7 +55,7 @@
 
 <table id="hor-minimalist-b">
     <tr>
-        <th class="firsttd">Address information</th>
+        <th class="firsttd"><?php echo $this->translate("Address information"); ?></th>
         <th class="secondtd"></th>
         <?php if(count($this->address)!=0) {
         foreach($this->address as $edit_id) { ?>	
@@ -65,37 +67,37 @@
 
     <?php foreach($this->address as $address_view){ ?>
     <tr>
-        <td class="firsttd">Address line1:</td>
+        <td class="firsttd"><?php echo $this->translate("Address line1:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['address1']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Address line2:</td>
+        <td class="firsttd"><?php echo $this->translate("Address line2:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['address2']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Address line3:</td>
+        <td class="firsttd"><?php echo $this->translate("Address line3:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['address3']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">City:</td>
+        <td class="firsttd"><?php echo $this->translate("City:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['city']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">State:</td>
+        <td class="firsttd"><?php echo $this->translate("State:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['state']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Country:</td>
+        <td class="firsttd"><?php echo $this->translate("Country:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['country']; ?></td >
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Pin code:</td>
+        <td class="firsttd"><?php echo $this->translate("Pin code:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['zipcode']; ?></td>
         <td class="thirdtd"></td>
     </tr>
@@ -105,34 +107,34 @@
 
 <table id="hor-minimalist-b">
     <tr>
-        <th class="firsttd">Contact information</th>
+        <th class="firsttd"><?php echo $this->translate("Contact information"); ?></th>
         <th class = "secondtd"></th>
         <?php if((count($this->contact))!=0) {
         foreach($this->contact as $edit_id) { ?>
-        <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/editcontact/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
+        <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/editcontact/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id;  ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
         <?php }} else { ?>
-        <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/addcontact/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a></th>
+        <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/addcontact/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id;  ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a></th>
         <?php } ?>
     </tr>
 
     <?php foreach($this->contact as $contact){ ?>
     <tr>
-        <td class="firsttd">Contact person:</td>
+        <td class="firsttd"><?php echo $this->translate("Contact person:"); ?></td>
         <td class = "secondtd"><?php echo $contact['contact_person']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Telephone number:</td>
+        <td class="firsttd"><?php echo $this->translate("Telephone number:"); ?></td>
         <td class = "secondtd"><?php echo $contact['telephone']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Mobile number</td>
+        <td class="firsttd"><?php echo $this->translate("Mobile number:"); ?></td>
         <td class = "secondtd"><?php echo $contact['mobile']; ?></td>
         <td class="thirdtd"></td>
     </tr>
     <tr>
-        <td class="firsttd">Email ID:</td>
+        <td class="firsttd"><?php echo $this->translate("Email ID:"); ?></td>
         <td class = "secondtd"><?php echo $contact['email']; ?></td>
         <td class="thirdtd"></td>
     </tr>
@@ -140,6 +142,6 @@
 </table> 
  <div class="btnhouse">
     <div class="rtbtns">
-        <a href="<?php echo $this->baseUrl(); ?>/individual"><input type="button" name="back" value="Back"></a>
+        <a href="<?php echo $this->baseUrl(); ?>/office"><input type="button" name="back" value="<?php echo $this->translate('Back'); ?>"></a>
     </div>
  </div>

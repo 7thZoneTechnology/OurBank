@@ -1,4 +1,4 @@
-<?php
+<!--
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -14,7 +14,11 @@
 ############################################################################
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
+############################################################################ 
+!-->
+
+<?php 
+
  if($this->savings) {
 
 	$overprinciple = "0";
@@ -44,10 +48,11 @@
 	$total12 = "0";
 	$total13 = "0";
 	$total14 = "0";
-?>
+ ?>
 
 
 <h5 style="text-align:right;"><? echo $this->resultshow; ?></h5>
+<?php if($this->accountno){ ?><h5 style="text-align:right;">Account Number <? echo $this->accountno; ?></h5><?php } ?>
 <h5 style="text-align:right"> <font color="red">*</font> Amount in <font color="red">Rs</font></h5>
 <div style="width: 750px; height: 400px; overflow: auto; padding: 10px">
 <h5>DCB</h5>
@@ -55,12 +60,12 @@
 	<TR>
 		<TH class="label1"></TH>
 		<Td colspan="6"  align="center" bgcolor="Silver">Demand</TH>
-		<Td colspan="4"  align="center" bgcolor="Silver">Collection</TH>
+		<Td colspan="6"  align="center" bgcolor="Silver">Collection</TH>
 		<Td colspan="4"  align="center" bgcolor="Silver">Balance</Td>
 	</TR>
 
 	<TR>	
-		<TH rowspan="2" class="label1">Account number</TH>
+		<TH rowspan="2" class="label1">Village name</TH>
 		<TH colspan="2" class="label1">Arrears of the demand</TH>
 		<TH colspan="2" class="label1">Current demand</TH>
 		<TH colspan="2" class="label1">Total demand</TH>
@@ -84,17 +89,16 @@
         </TR>
 
 	<TR>
-         <?php foreach($this->office as $office) { ?>
+         <?php foreach($this->office as $office) { //echo $office->village_id; ?>
 
-             <TD ><?php echo $office->officename; ?></TD>
-              <?php foreach($this->accounts as $accounts) { ?>
-              <?php //foreach($this->dcb as $dcb) { ?>
-              <?php if ($accounts->office_id == $office->officeid) {?>
+             <TD ><?php echo $office->villagename; ?></TD>
+              <?php foreach($this->accounts as $accounts) {  ?>
+              <?php if ($accounts->officeid == $office->village_id) { ?>
               <?php if ($accounts->installment_date < $this->fromdate) {
                     $overprinciple = $overprinciple + $accounts->installment_principal_amount;
                     $overinterest = $overinterest + $accounts->installment_interest_amount;
               } ?>
-               <?php if ($accounts->installment_date <= $this->todate && $accounts->installment_date >= $this->fromdate) {
+               <?php if ($accounts->installment_date >= $this->fromdate) {
                     $nextprinciple = $nextprinciple + $accounts->installment_principal_amount;
                     $nextinterest = $nextinterest + $accounts->installment_interest_amount;
               } ?>
@@ -106,9 +110,8 @@
                     $collectionprinciple = $collectionprinciple + $accounts->installment_principal_amount;
                     $collectioninterest = $collectioninterest + $accounts->installment_interest_amount;
               } ?>
-              <?php } ?>
-              <?php } ?>
-              <?php //} ?>
+              <?php } else { $overprinciple=0; $overinterest=0; $nextprinciple=0; $nextinterest=0; $collectionprinciple=0; $collectioninterest=0; $paidPriciple=0;
+                            $paidInterest=0;} } ?>
 
               <TD align="right"> <?php echo $overprinciple;
                     $total1 = $total1 + $overprinciple;?></TD>
@@ -135,14 +138,14 @@
               <TD align="right"><?php echo $paidInterest;
                     $total10 = $total10 + $paidInterest;?></TD>
 
-              <TD align="right"><?php echo $collectionprinciple + $paidPriciple;
+              <TD align="right"><?php echo $collectiontotal=$collectionprinciple + $paidPriciple;
                         $total11 = $total11 + ($collectionprinciple + $paidPriciple);?></TD>
-              <TD align="right"><?php echo $collectioninterest + $paidInterest;
+              <TD align="right"><?php echo $interesttotal=$collectioninterest + $paidInterest;
                         $total12 = $total12 + ($collectioninterest + $paidInterest);?> </TD>
-              <TD align="right"><?php echo ($overprinciple + $nextprinciple) -$collectionprinciple;
-                        $total13 = $total13 + (($overprinciple + $nextprinciple) -$collectionprinciple);?></TD>
-              <TD align="right"><?php echo ($overinterest + $nextinterest) -$collectioninterest;
-                        $total14 = $total14 + (($overinterest + $nextinterest) -$collectioninterest);?> </TD>
+              <TD align="right"><?php echo $prinbalance=($overprinciple + $nextprinciple) - $collectiontotal;
+                        $total13 = $total13 + $prinbalance;?></TD>
+              <TD align="right"><?php echo $interestbalance=($overinterest + $nextinterest) -$interesttotal;
+                        $total14 = $total14 + $interestbalance;?> </TD>
          </TR>
 
          <?php } ?>
@@ -174,8 +177,29 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/dcb/index/reportdisplay/fi
            <div class="btnhouse">
 				<div class="ltbtns">
 					<TD > <input type="submit" value="<?php echo $this->translate('PDF'); ?>" id="submit"></TD>
+                                        <input type="hidden" name="hidedate" value="<?php echo $this->hidedate; ?>" >
+                                        <input type="hidden" name="hideacc" value="<?php echo $this->hideacc; ?>" >
+                                        <input type="hidden" name="hidegroup" value="<?php echo $this->hidegroup; ?>" >
+                                        <input type="hidden" name="hidevillage" value="<?php echo $this->hidevillage; ?>" >
 				</div>
             </div>
 </form>
-<?php }
+<?php } else {?>
+                <form action="<?php echo $this->baseUrl();?>/dcb/index" method="POST">
+            <table id="hor-minimalist-b">
+
+                    <TR>
+                        <TD>Date From</TD>
+                        <TD><?php echo $this->form->datefrom;?></TD>
+                        <TD>Search for</TD>
+                        <TD><?php echo $this->form->option; ?></TD>
+                    </TR>
+                    <tr id="optiondiv">
+                    </tr>
+                    <TR>
+                        <TD colspan="4"><input type="submit" name="Search" value="Search"/></TD> 
+            </table>
+        </form>
+        </div>
+<?php } ?>
 

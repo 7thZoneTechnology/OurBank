@@ -34,10 +34,15 @@ class Incomedetails_Form_Incomedetails extends Zend_Form {
 
        for($i=1;$i<=$number;$i++) {
 
-        $source = $formfield->field('Text','source'.$i,'','','','',true,'','','','','',0,0);
+        $source = $formfield->field('Text','source'.$i,'','','','',false,'','','','','',0,0);
         $source->setAttrib('readonly','');
-        $incomeamount = $formfield->field('Text','incomeamount'.$i,'','','','',true,'','','','','',0,0);
-        $incomeamount->setAttrib('size',5);
+        $incomeamount = $formfield->field('Text','incomeamount'.$i,'','','mand','',false,'','','','','',0,0);
+        $graterthan=new Zend_Validate_GreaterThan(0);
+
+        $incomeamount->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
+        $incomeamount->setAttrib('maxlength',10);
+        $incomeamount->setAttrib('size',14);
+
 
         $source_id = $formfield->field('Hidden','source_id'.$i,'','','','','','','','','','',0,0);
 	$record_id = $formfield->field('Hidden','record_id'.$i,'','','','','','','','','','',0,0);

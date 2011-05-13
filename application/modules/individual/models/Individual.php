@@ -17,38 +17,34 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
+class Individual_Model_individual  extends Zend_Db_Table 
+{
+    protected $_name = 'ourbank_member';
+
+    public function getMemberdetails()
+    {
+        $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_familymember'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function searchDetails($post)
+        {
+            $select=$this->select()
+                            ->setIntegrityCheck(false)
+                            ->join(array('a'=>'ourbank_family'),array('a.id'))
+                            ->join(array('b'=>'ourbank_familymember'),'a.id = b.family_id')
+                            ->where('b.name like "%" ? "%"',$post['membername']) 
+                            ->where('a.village_id like "%" ? "%"',$post['village'])
+                            ->where('b.name_inregional like "%" ? "%"',$post['name_inregional']);
+
+                   $result=$this->fetchAll($select);
+            return $result->toArray();
+        }
+
+}
+
 ?>
 
-<?php
-class Individual_Model_Individual extends Zend_Db_Table {
-    protected $_name = 'ob_member';
-
-//getting all member list...
-    public function getMemberDetails() {
-        $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ob_member'),array('a.id'))
-                        ->join(array('c' => 'gender'),'c.id = a.member_gender',array('c.sex'))
-                        ->join(array('d' => 'ob_bank'),'d.id = a.bank_id',array('d.name'))
-                        ->order(array('a.id DESC'));   
-	//die($select->__toString($select));		
-	return $this->fetchAll($select);
-    }
-
-//searching member with four different searching options name, gender, code, bank name...
-    public function searchDetails($post = array()) {
-	$select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ob_member'),array('a.id'))
-                        ->join(array('c' => 'gender'),'c.id = a.member_gender',array('c.sex'))
-                        ->join(array('d' => 'ob_bank'),'d.id = a.bank_id',array('d.name'))
-                        ->where('a.membercode like "%" ? "%"',$post['code'])
-                        ->where('a.member_name like "%" ? "%"',$post['name'])
-                        ->where('a.member_gender like "%" ? "%"',$post['gender_id'])
-                        ->where('a.bank_id like "%" ? "%"',$post['office'])
-                        ->order(array('a.id DESC'));   
-	//die($select->__toString($select));	
-	return $this->fetchAll($select);
-    }
-
- }

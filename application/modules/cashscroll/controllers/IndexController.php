@@ -29,7 +29,8 @@ class Cashscroll_IndexController extends Zend_Controller_Action
     { 
         $this->view->pageTitle = $this->view->translate("Cash scroll");
         $this->view->title =  $this->view->translate('Reports');
-        $this->view->type = $this->view->translate("others");
+        $this->view->type = $this->view->translate("financialReports");
+$this->view->adm = new App_Model_Adm();
     }
 	//view action
     public function indexAction() 
@@ -38,12 +39,21 @@ class Cashscroll_IndexController extends Zend_Controller_Action
         $this->view->form = $searchForm;
 //         $sample = new Reports_Form_Sample();
 //         $this->view->sample = $sample;
+        $villageoffice = new Cashscroll_Model_Cashscroll();
+
+       $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+			foreach($officename as $officename){
+				$searchForm->branch->addMultiOption($officename['id'],$officename['type']);
+			}
+
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	$dateconvertor = new App_Model_dateConvertor();
-        $formData = $this->_request->getPost();
+        $formData = $this->_request->getPost(); //print_r($formData);
         if ($searchForm->isValid($formData)) {
         $fromDate = $this->_request->getParam('datefrom');
-        $this->view->field1 = $fromDate ;
+        $branchid = $this->_request->getParam('branch');
+        $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
 	$fromDate = $dateconvertor->mysqlformat($fromDate);
 
             $title1 = $this->view->translate("Cash Scroll");
@@ -53,11 +63,13 @@ class Cashscroll_IndexController extends Zend_Controller_Action
                 $transaction = new Cashscroll_Model_Cashscroll();
 
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate);
-                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate);
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$branchid);
+                $officename=$transaction-> officename($branchid);
+                $this->view->officename=$officename[0]['officename'];
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$branchid);
 
                 // Opening Balance
-                $osc = $transaction->openingBalance($fromDate);
+                $osc = $transaction->openingBalance($fromDate,$branchid);
                 foreach($osc as $osc1) {
                 $this->view->openingBalance = $osc1["openingBalance"];
                 }
@@ -83,8 +95,20 @@ class Cashscroll_IndexController extends Zend_Controller_Action
      //pdf transaction
     public function pdftransactionAction() 
     { 
-        $fromDate = $this->_request->getParam('field1'); 
+            //rupees right alignment
+            function position($amt,$posValue) {
+                      $len=strlen($amt);
+                      $pos=($posValue-35)-($len*4);
+                      return $pos;
+               }
+
+        $fromDate = $this->_request->getParam('date');
+        $branchid = $this->_request->getParam('office');
         $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
+
+//         $fromDate = $this->_request->getParam('field1'); 
+//         $this->view->field1 = $fromDate;
 	//date format instance
 	$dateconvertor = new App_Model_dateConvertor();
 	$cfromDate = $dateconvertor->mysqlformat($fromDate);
@@ -104,10 +128,21 @@ class Cashscroll_IndexController extends Zend_Controller_Action
         $page->setLineWidth(1)->drawLine(25, 25, 25, 820); //left vertical
         $page->setLineWidth(1)->drawLine(570, 25, 570, 820); //right vertical
         $page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
+
+        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 9);
+
+        $page->drawText("Cash Scroll",270, 780);
+        $page->drawText("Cash Scroll",270, 780);
+
         //set the font
         $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
-    
-        $text = array("Cash Scroll - As of From ".$fromDate,
+        $y1=745;
+        $page->drawText("Credit",50,$y1);
+        $page->drawText("Debit",310,$y1);
+
+        $y1=745;	$y2=740;
+        $page->drawText("As of From ".$fromDate,465,$y1);//For Top Header
+        $text = array("",
                     "SL No.",
                     "Particulars",
                     "Amount",
@@ -117,25 +152,25 @@ class Cashscroll_IndexController extends Zend_Controller_Action
                     "Closing Cash");
         $this->view->savings = 10;
         $page->drawText("Date : ".date('d-m-Y'),500, 800); //date('Y-m-d')
-        $page->drawText("Date : ".date('d-m-Y'),500, 800); 
+//         $page->drawText("Date : ".date('d-m-Y'),500, 800); 
         $page->drawText($text[0],240, 780);$page->drawText($text[0],240, 780);
 
         $x1 = 60; 
         $x2 = 120; 
-        $x3 = 220;
-        $x4 = 340;
-        $x5 = 400;
-        $x6 = 500;
+        $x3 = 310;
+        $x4 = 315;
+        $x5 = 390;
+        $x6 = 570;
     
         $page->drawLine(50, 740, 550, 740);
         $page->drawLine(50, 720, 550, 720);
 
         $page->drawText($text[1], $x1, 725);
         $page->drawText($text[2], $x2, 725);
-        $page->drawText($text[3], $x3, 725);
+        $page->drawText($text[3], 250, 725);
         $page->drawText($text[1], $x4, 725);
         $page->drawText($text[5], $x5, 725);
-        $page->drawText($text[3], $x6, 725);
+        $page->drawText($text[3], 510, 725);
     
         $y1 = 710;
         $y2 = 710;
@@ -146,15 +181,15 @@ class Cashscroll_IndexController extends Zend_Controller_Action
 
         $this->view->savings = 10;
 
-        $this->view->savingsCredit = $transaction->totalSavingsCredit($cfromDate);
-        $this->view->savingsDebit = $transaction->totalSavingsDebit($cfromDate);
+        $this->view->savingsCredit = $transaction->totalSavingsCredit($cfromDate,$branchid);
+        $this->view->savingsDebit = $transaction->totalSavingsDebit($cfromDate,$branchid);
 
         //Credit and Debit
-        $savingsCredit = $transaction->totalSavingsCredit($cfromDate);
-        $savingsDebit = $transaction->totalSavingsDebit($cfromDate);
+        $savingsCredit = $transaction->totalSavingsCredit($cfromDate,$branchid);
+        $savingsDebit = $transaction->totalSavingsDebit($cfromDate,$branchid);
        // Opening Cash 
         $openingBalance = 0; 
-        $osc = $transaction->openingBalance($cfromDate);
+        $osc = $transaction->openingBalance($cfromDate,$branchid);
         foreach($osc as $osc1) {
             $openingBalance = $osc1->openingBalance;
         }
@@ -171,7 +206,9 @@ class Cashscroll_IndexController extends Zend_Controller_Action
             $i++;
             $page->drawText($i,$x1, $y1);
             $page->drawText($savingsCredit->account_number,$x2, $y1);
-            $page->drawText($savingsCredit->amount_to_bank,$x3, $y1);
+//             $page->drawText($savingsCredit->amount_to_bank,$x3, $y1);
+               $pos=position(sprintf("%4.2f",$savingsCredit->amount_to_bank),$x3);
+               $page->drawText(sprintf("%4.2f",$savingsCredit->amount_to_bank),$pos+2,$y1);
             $amountCredit = $amountCredit + $savingsCredit->amount_to_bank;
             $y1 = $y1 - 15;
         }
@@ -179,7 +216,9 @@ class Cashscroll_IndexController extends Zend_Controller_Action
             $j++;
             $page->drawText($j,$x4, $y2);
             $page->drawText($savingsDebit->account_number,$x5, $y2);
-            $page->drawText($savingsDebit->amount_from_bank,$x6, $y2);
+//             $page->drawText($savingsDebit->amount_from_bank,$x6, $y2);
+               $pos=position(sprintf("%4.2f",$savingsDebit->amount_from_bank),$x6);
+               $page->drawText(sprintf("%4.2f",$savingsDebit->amount_from_bank),$pos+2,$y2);
             $amountDebit = $amountDebit + $savingsDebit->amount_from_bank;
             $y2 = $y2 - 15;
         }
@@ -187,22 +226,30 @@ class Cashscroll_IndexController extends Zend_Controller_Action
         $page->drawLine(50, $y1, 550, $y1);
         //opening balnce
         $page->drawText($text[6], $x1, $y1 - 10);
-        $page->drawText(sprintf("%4.2f", $openingBalance), $x3, $y1 -10);
+//         $page->drawText(sprintf("%4.2f", $openingBalance), $x3, $y1 -10);
+               $pos=position(sprintf("%4.2f",$openingBalance),$x3);
+               $page->drawText(sprintf("%4.2f",$openingBalance),$pos+2,$y1 -10);
 
         //closing Balance
         $page->drawText($text[7], $x4, $y1 -10); 
-        $page->drawText(sprintf("%4.2f", ( $sum = ($amountCredit + $openingBalance) - $amountDebit)), $x6, $y1 -10);
+//         $page->drawText(sprintf("%4.2f", ( $sum = ($amountCredit + $openingBalance) - $amountDebit)), $x6, $y1 -10);
+               $pos=position(sprintf("%4.2f",( $sum = ($amountCredit + $openingBalance) - $amountDebit)),$x6);
+               $page->drawText(sprintf("%4.2f",( $sum = ($amountCredit + $openingBalance) - $amountDebit)),$pos+2,$y1 -10);
 
         $page->drawLine(50, $y1 = $y1 - 20, 550, $y1);
         $page->drawLine(50, $y1 -20, 550, $y1-20);
     
 
         $page->drawText($text[4], $x1, $y1 -15);$page->drawText($text[4], $x1, $y1 -15);
-        $page->drawText(sprintf("%4.2f", ($amountCredit + $openingBalance)), $x3, $y1 -15);
-        $page->drawText(sprintf("%4.2f", ($amountCredit + $openingBalance)), $x3, $y1 -15);
+               $pos=position(sprintf("%4.2f",($amountCredit + $openingBalance)),$x3);
+               $page->drawText(sprintf("%4.2f",($amountCredit + $openingBalance)),$pos+2,$y1 -15);
+//         $page->drawText(sprintf("%4.2f", ($amountCredit + $openingBalance)), $x3, $y1 -15);
+//         $page->drawText(sprintf("%4.2f", ($amountCredit + $openingBalance)), $x3, $y1 -15);
         $page->drawText($text[4], $x4, $y1 -15); $page->drawText($text[4], $x4, $y1 -15);
-        $page->drawText(sprintf("%4.2f", $amountDebit + $sum), $x6, $y1 -15);
-        $page->drawText(sprintf("%4.2f", $amountDebit + $sum), $x6, $y1 -15);  
+//         $page->drawText(sprintf("%4.2f", $amountDebit + $sum), $x6, $y1 -15);
+//         $page->drawText(sprintf("%4.2f", $amountDebit + $sum), $x6, $y1 -15);  
+               $pos=position(sprintf("%4.2f",$amountDebit + $sum),$x6);
+               $page->drawText(sprintf("%4.2f",$amountDebit + $sum),$pos+2,$y1 -15);
     
         // Virtual table
         $page->setLineWidth(1)->drawLine(50, $y1 - 20, 50, 740); //Table left vertical

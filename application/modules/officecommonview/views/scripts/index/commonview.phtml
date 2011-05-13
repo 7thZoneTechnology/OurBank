@@ -17,7 +17,6 @@
 ############################################################################
 !-->
 
-
 <table id="hor-minimalist-b">
     <tr>
         <th class="firsttd"><?php echo $this->translate("Office information"); ?></th>
@@ -26,7 +25,7 @@
     </tr>
 
     <?php 
-    $convertdate = new Creditline_Model_dateConvertor();
+    $convertdate = new App_Model_dateConvertor();
     foreach($this->office as $office_view){ ?>
     <tr>
         <td class="firsttd"><?php echo $this->translate("Office type:"); ?></td>
@@ -48,8 +47,32 @@
         <td class = "secondtd"><?php echo $office_view['short_name']; ?></td>
         <td class="thirdtd"></td>
     </tr>
+<?php if($this->villageid){ foreach($this->villageaddress as $district){ ?>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("District:"); ?></td>
+        <td class = "secondtd"><?php echo $district['districtname']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
 
-    <?php } ?>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Taluk:"); ?></td>
+        <td class = "secondtd"><?php echo $district['talukname']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Hobli:"); ?></td>
+        <td class = "secondtd"><?php echo $district['hobliname']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Gilla panchayath:"); ?></td>
+        <td class = "secondtd"><?php echo $district['panchayathname']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <?php }}} ?>
 </table> 
 <br/>
 
@@ -91,11 +114,11 @@
         <td class = "secondtd"><?php echo $address_view['state']; ?></td>
         <td class="thirdtd"></td>
     </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Country:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['country']; ?></td >
+<!--    <tr>
+        <td class="firsttd"><?php //echo $this->translate("Country:"); ?></td>
+        <td class = "secondtd"><?php //echo $address_view['country']; ?></td >
         <td class="thirdtd"></td>
-    </tr>
+    </tr>-->
     <tr>
         <td class="firsttd"><?php echo $this->translate("Pin code:"); ?></td>
         <td class = "secondtd"><?php echo $address_view['zipcode']; ?></td>

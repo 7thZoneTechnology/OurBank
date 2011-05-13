@@ -18,89 +18,109 @@
 */
  
 
-function getXMLHTTP() {
-	var xmlhttp=false;	
-	try{
-		xmlhttp=new XMLHttpRequest();
-	}
-	catch(e) {
-		try{			
-			xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		catch(e){
-			try{
-			xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-			}
-			catch(e1){
-				xmlhttp=false;
-			}
-		}
-	}
-	return xmlhttp;
+function getXMLHTTP() 
+{
+    var xmlhttp=false;	
+    try{
+        xmlhttp=new XMLHttpRequest();
+    }
+    catch(e) {
+        try{			
+            xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch(e){
+            try{
+            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+            catch(e1){
+                    xmlhttp=false;
+            }
+        }
+    }
+    return xmlhttp;
 }
 
-function getGroups(bank_id,path) {	
-	var strURL=path+"/meeting/index/fetchgroups?bank_id="+bank_id;
-	if(bank_id!='') {
-	var req = getXMLHTTP();
-	
-		req.onreadystatechange = function() {
-			if (req.readyState == 4) {
-				// only if "OK"
-				if (req.status == 200) {
-					document.getElementById('groupDiv').innerHTML=req.responseText;
-				}
-					else {
-					alert("There was a problem while using XMLHTTP:\n" + req.statusText);
-				}
-			}				
-		}			
-		req.open("GET", strURL, true);
-		req.send(null);
-	}
-
+function getGroups(officeID,path)
+{	
+    var strURL=path+"/meeting/index/fetchgroups?officeID="+officeID;
+    if(officeID!='') {
+    var req = getXMLHTTP();
+    
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    document.getElementById('groupDiv').innerHTML=req.responseText;
+                }
+                    else {
+                    alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                }
+            }				
+        }			
+        req.open("GET", strURL, true);
+        req.send(null);
+    }
 }
 
-function getHeadName(group_id,path) {	
-	var strURL=path+"/meeting/index/fetchheadname?group_id="+group_id;
-	if(group_id!='') {
-	var req = getXMLHTTP();
-	
-		req.onreadystatechange = function() {
-			if (req.readyState == 4) {
-				// only if "OK"
-				if (req.status == 200) {
-					document.getElementById('group_head').value=req.responseText;
-				}
-					else {
-					alert("There was a problem while using XMLHTTP:\n" + req.statusText);
-				}
-			}				
-		}			
-		req.open("GET", strURL, true);
-		req.send(null);
-	}
-
+function fetchoffice(officeID,path)
+{	
+    var strURL=path+"/officemeeting/index/fetchoffice?officeID="+officeID; 
+    if(officeID!='') {
+    var req = getXMLHTTP();
+    
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) { 
+                if (req.status == 200) { 
+                    document.getElementById('groupDiv').innerHTML=req.responseText;
+                }
+                    else {
+                    alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                }
+            }				
+        }			
+        req.open("GET", strURL, true);
+        req.send(null);
+    }
 }
 
-function getGroups(bank_id,path) {	
-	var strURL=path+"/meeting/index/fetchgroups?bank_id="+bank_id;
-	if(bank_id!='') {
-	var req = getXMLHTTP();
-	
-		req.onreadystatechange = function() {
-			if (req.readyState == 4) {
-				// only if "OK"
-				if (req.status == 200) {
-					document.getElementById('groupDiv').innerHTML=req.responseText;
-				}
-					else {
-					alert("There was a problem while using XMLHTTP:\n" + req.statusText);
-				}
-			}				
-		}			
-		req.open("GET", strURL, true);
-		req.send(null);
-	}
+function getHeadName(group_id,path) 
+{	
+    var strURL=path+"/meeting/index/headname?group_id="+group_id;
+    if(group_id!='') {
+    var req = getXMLHTTP();
+    
+    req.onreadystatechange = function() {
+        if (req.readyState == 4) { 
+            if (req.status == 200) { 
+                    document.getElementById('grouphead').innerHTML=req.responseText; 
+            }
+                    else {
+                    alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+            }
+        }				
+    }			
+    req.open("GET", strURL, true);
+    req.send(null);
+    }
 }
+
+// function getGroups(bank_id,path) {	
+// 	var strURL=path+"/meeting/index/fetchgroups?bank_id="+bank_id;
+// 	if(bank_id!='') {
+// 	var req = getXMLHTTP();
+// 	
+// 		req.onreadystatechange = function() {
+// 			if (req.readyState == 4) {
+// 				// only if "OK"
+// 				if (req.status == 200) {
+// 					document.getElementById('groupDiv').innerHTML=req.responseText;
+// 				}
+// 					else {
+// 					alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+// 				}
+// 			}				
+// 		}			
+// 		req.open("GET", strURL, true);
+// 		req.send(null);
+// 	}
+// }
 

@@ -27,7 +27,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = 'Recurring';
         $this->view->title = 'Accounting';
         $this->view->accounts = new Recurringaccount_Model_Accounts();
-        $this->view->cl = new Creditline_Model_dateConvertor ();
+        $this->view->cl = new App_Model_dateConvertor();
         $this->view->adm = new App_Model_Adm ();
     }
 
@@ -37,7 +37,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
             if ($this->_request->isPost()) {
-                $formData = $this->_request->getPost();
+                $formData = $this->_request->getPost(); 
                 if ($accountsForm->isValid($formData)) {
                     $result = $this->view->accounts->search($this->_request->getParam('membercode'));
                     if($result) {
@@ -58,8 +58,9 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $this->view->memberId = $memberId;
         $applicableto=substr($memberCode,4,1);
         $this->view->savingsProducts = $this->view->accounts->fetchSavingsProducts($applicableto);
-        $this->view->account = $this->view->accounts->accountsSearch($memberCode);
+        $aa=$this->view->account = $this->view->accounts->accountsSearch($memberCode); print_r($aa);
     }
+	//recurring account creation
 
     public function createaccountAction()
     {
@@ -69,6 +70,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $productId = base64_decode($this->_request->getParam('Id'));
         $memberId = base64_decode($this->_request->getParam('memberId'));
         $membercode = base64_decode($this->_request->getParam('code'));
+
         //EXTRACTING GROUP ID FROM MEMBER CODE
         if(substr($membercode,4,1)=='2') {
             $this->view->gp_members=$this->view->accounts->fetchmembers($memberId);
@@ -250,7 +252,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
                                     'credit' => $this->_request->getPost('tAmount'),
                                     'record_status' => 3);
                     $this->view->adm->addRecord('ourbank_Assets',$assets);
-                    $this->_redirect("/fixedaccount/index/message/acNum/".base64_encode($b.$t.$pid.$p.$a));
+                    $this->_redirect("/recurringaccount/index/message/acNum/".base64_encode($b.$t.$pid.$p.$a));
                 }
             }
         }

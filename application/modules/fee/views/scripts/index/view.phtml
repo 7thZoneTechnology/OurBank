@@ -27,16 +27,27 @@
 					<tr>
 						<th class = "firsttd">Fee Details</th>
 						<th class = "secondtd"></th>
-						<th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/fee/index/editfeedetail/id/<?php echo $edit_id['id'];?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20">
+						<th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/fee/index/editfeedetail/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20">
+                         	<?php }} else { ?>
+					
+					</tr>
+<?php if(($this->fetchfee)!=NULL) {
+					foreach($this->fetchfee as $edit_id) { ?>
+					<tr>
+						<th class = "firsttd">Fee Details</th>
+						<th class = "secondtd"></th>
+						<th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/fee/index/editfeedetail/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20">
                          	<?php }} else { ?>
 						<TD class="label" align="right">Click to Add :</TD>
 						<TD><a href="<?php echo $this->baseUrl();?>/user/index/editmembername/id/<?php echo $this->memberid; ?>">ADD</a></TD>
-                         	<?php } ?></a></th>
+                         	<?php } ?></a></th><?php } ?>
 					</tr>
+				<?php if(($this->feedetails)!=NULL) {?>
+
 					<?php foreach($this->feedetails as $member_view){?>
 					<tr>
-						<td class = "firsttd">Fee Name:</td>
-						<td><?php echo $member_view['name'];?></td>
+						<td>Fee Name:</td>
+						<td><?php echo $member_view['feename'];?></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -45,25 +56,85 @@
 						<td></td>
 					</tr>
 					<tr>	
-						<td>Fee value:</td>
-						<td><?php echo $member_view['value'];?></td>
+						<td>Fee type:</td>
+						<td><?php echo $member_view['feetype'];?></td>
+						<td></td>
+					</tr>
+<tr>	
+						<td>Category:</td>
+						<td><?php echo $member_view['categoryname'];?></td>
+						<td></td>
+					</tr>
+<tr>	
+						<td>Gl subcode:</td>
+						<td><?php echo $member_view['glsubcode'];?></td>
 						<td></td>
 					</tr>
 					<tr>				
-						<td>member type:</td>
-						<td><?php echo $member_view['type'];?></td>
+						<td>Office hierarchy:</td>
+						<td><?php echo $member_view['officename'];?></td>
 						<td></td>
 					</tr>
 <tr>				
-						<td>Fee for:</td>
-						<td><?php echo $member_view['header'];?></td>
+						<td>Amount type:</td>
+						<td><?php echo $member_view['amounttype'];?></td>
 						<td></td>
 					</tr>
+
+<tr>				
+						<td>Amount:</td>
+						<td><?php echo $member_view['value'];?></td>
+						<td></td>
+					</tr>
+
+
+				<?php } ?>
+				<?php } else {?>
+
+					<?php foreach($this->fetchfee as $member_view){?>
+					<tr>
+						<td>Fee Name:</td>
+						<td><?php echo $member_view['name'];?></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Fee description:</td>
+						<td><?php echo $member_view['description'];?></td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td>Fee type:</td>
+						<td><?php echo $member_view['feetype'];?></td>
+						<td></td>
+					</tr>
+<tr>	
+						<td>Gl subcode:</td>
+						<td><?php echo $member_view['glsubcode'];?></td>
+						<td></td>
+					</tr>
+					<tr>				
+						<td>Office hierarchy:</td>
+						<td><?php echo $member_view['officename'];?></td>
+						<td></td>
+					</tr>
+<tr>				
+						<td>Amount type:</td>
+						<td><?php echo $member_view['amounttype'];?></td>
+						<td></td>
+					</tr>
+
+<tr>				
+						<td>Amount:</td>
+						<td><?php echo $member_view['value'];?></td>
+						<td></td>
+					</tr>
+
+
+				<?php } ?>
+		
 				<?php } ?>
 
-			</table>
+ 	</table>
 		</div>
 	</div>
 </div>
-
- 

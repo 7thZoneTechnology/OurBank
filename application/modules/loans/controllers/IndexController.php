@@ -8,7 +8,7 @@ class Loans_IndexController extends Zend_Controller_Action{
         $this->view->createdby = $sessionName->primaryuserid;
 
         $this->view->adm = new App_Model_Adm();
-        $this->view->dateconvert = new Creditline_Model_dateConvertor();
+        $this->view->dateconvert = new App_Model_dateConvertor();
     }
 
     public function indexAction() 
@@ -70,7 +70,7 @@ class Loans_IndexController extends Zend_Controller_Action{
             $loanForm->product_id->addMultiOption($product['id'],$product['name']);
         }
 
-        $membertype_id1 = $this->view->adm->viewRecord("ourbank_membertypes","id","DESC");
+        $membertype_id1 = $this->view->adm->viewRecord("ourbank_master_membertypes","id","DESC");
         foreach($membertype_id1 as $membertype_id){
             $loanForm->applicableto->addMultiOption($membertype_id['id'],$membertype_id['type']);
         }
@@ -87,7 +87,7 @@ class Loans_IndexController extends Zend_Controller_Action{
             $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
         }
 
-        $interesttype1 = $this->view->adm->viewRecord("ourbank_interesttypes","id","ASC");
+        $interesttype1 = $this->view->adm->viewRecord("ourbank_master_interesttypes","id","ASC");
         foreach($interesttype1 as $interesttypes){
             $loanForm->interesttype_id->addMultiOption($interesttypes['id'],$interesttypes['description']);
         }
@@ -164,8 +164,8 @@ class Loans_IndexController extends Zend_Controller_Action{
         $loanForm = new Loans_Form_Loan();
         $this->view->form = $loanForm;
 
-        $membertype = new Management_Model_Membertype();
-        $membertype_id = $membertype->getMembertypeDetails();
+        $membertype_id = $this->view->adm->viewRecord("ourbank_master_membertypes","id","DESC");
+
         foreach($membertype_id as $membertype_id) {
                 $loanForm->applicableto->addMultiOption($membertype_id['id'],$membertype_id['type']);
         }
@@ -187,7 +187,7 @@ class Loans_IndexController extends Zend_Controller_Action{
             $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
         }
 
-        $interesttype1 = $this->view->adm->viewRecord("ourbank_interesttypes","id","ASC");
+        $interesttype1 = $this->view->adm->viewRecord("ourbank_master_interesttypes","id","ASC");
         foreach($interesttype1 as $interesttypes){
                 $loanForm->interesttype_id->addMultiOption($interesttypes['id'],$interesttypes['description']);
         }

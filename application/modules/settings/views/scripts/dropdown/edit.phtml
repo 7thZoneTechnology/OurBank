@@ -5,10 +5,14 @@
 			<fieldset>
 				<legend>Edit</legend>
 					<table class="fieldsets">	
-						<TR>
-							<TD class="label">Name<span class="reqMark"></span></TD>
-							<TD><?php echo $this->form->name;?></TD>
+<tr>
+<th></th>
+<th></th>
+<th></th>
 
+<th><a href="<?php echo $this->baseUrl();?>/settings/dropdown/delete/id/<?php echo $this->id ?>/ff/<?php echo $this->tableName ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20"></a></th></tr>
+						<TR>
+						<?php echo $this->form;?>
 						</TR>
 
 
@@ -18,8 +22,8 @@
  								<input type="submit" name="Update" id="Submit" value="Update">                 
 							</div>
 								<div class="rtbtns">
-								<a href="<?php echo $this->baseUrl();?>/settings"><?php echo $this->form->Back;?></a>
-								</div>
+ <TD><a href="<?php echo $this->baseUrl(); ?>/settings/dropdown">
+                                <input name="submit" type="submit" class="officebutton" value="Back"></a></TD>								</div>
 						</div>
 			</fieldset>
 		</div>

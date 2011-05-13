@@ -60,7 +60,7 @@ class App_Form_Field extends Zend_Form
 
 				
             if ($decorator) {
-				$translator = $this->getTranslator();
+		$translator = $this->getTranslator();
                 $formVariable->setLabel($translator->translate($labelname));
                 $formVariable->setDecorators(array('ViewHelper',
 							array('Description',array('tag'=>'','escape'=>false)),'Errors',

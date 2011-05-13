@@ -17,24 +17,34 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-class Crop_Model_Crop  extends Zend_Db_Table {
-    protected $_name = 'ourbank_member';
-
+class Crop_Model_Crop  extends Zend_Db_Table 
+{
+    protected $_name = 'ourbank_cropdetails';
     public function getCrop()
     {
         $select=$this->select()
                         ->setIntegrityCheck(false)
-                        ->join(array('a'=>'ourbank_crop'),array('a.id'));
+                        ->join(array('a'=>'ourbank_master_crop'),array('a.id'));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
+  public function getUnits()
+    {
+        $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_master_units'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+
     public function deletecrop($param)  
     {
         $db = $this->getAdapter();
-                    //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
-        $db->delete("ourbank_cropdetails",array('member_id = '.$param));
+                    //$db->delete("ourbank_master_cropdetails",array('member_id = '.$param));
+        $db->delete("ourbank_cropdetails",array('family_id = '.$param));
 
-    // $db->exec("delete from ourbank_cropdetails where member_id = $param");
+    // $db->exec("delete from ourbank_master_cropdetails where member_id = $param");
         return;
     }
     public function getCropdetails($mebmerid)
@@ -42,11 +52,8 @@ class Crop_Model_Crop  extends Zend_Db_Table {
         $select=$this->select($param)
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_cropdetails'),array('a.id'))
-                        ->where('a.member_id=?',$mebmerid);
+                        ->where('a.family_id=?',$mebmerid);
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
 }
-
-?>
-

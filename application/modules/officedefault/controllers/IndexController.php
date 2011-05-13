@@ -32,18 +32,19 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $sessionName = new Zend_Session_Namespace('ourbank');
         $this->view->createdby = $sessionName->primaryuserid;
         $this->view->adm = new App_Model_Adm();
-        $individualcommon=new Individualmcommonview_Model_individualmcommonview();
+        $individualcommon=new Familycommonview_Model_familycommonview();
         $module=$individualcommon->getmodule('Office');
 	//module id for delete path
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
+
     }
 
     public function indexAction() {
     }
 	//add action
-    public function officeaddAction(){
+    public function officeaddAction() {
 	//language translator
         $this->view->title = $this->view->translate("New Office");
 	//session
@@ -63,7 +64,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         if($this->view->officehierarchyselect) {
         $officehierarchyoutid = $office->getOfficehierarchyDetailsout();
         foreach($officehierarchyoutid as $officehierarchyoutids) {
-                $officeForm->officetype_id->addMultiOption($officehierarchyoutids->id,$officehierarchyoutids->type);
+                $officeForm->officetype_id->addMultiOption($officehierarchyoutids->Hierarchy_level,$officehierarchyoutids->type);
                     }
         } else {
 
@@ -75,8 +76,8 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
 	//validate poster values
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-            $formData = $this->_request->getPost();
-            if($officeForm->isValid($formData)){ 
+             $formData = $this->_request->getPost(); 
+            if($officeForm->isValid($formData)){
 		//variable for form data 
                 $officeid=$this->_request->getParam('officetype_id');
                 $parentofficeid=$this->_request->getParam('parentoffice_id');
@@ -90,6 +91,21 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                                                 'officetype_id'=>$officeid,
                                                 'parentoffice_id' => $parentofficeid,
                                                 'createddate' =>$createdate,'createdby'=>$this->view->createdby));
+
+               $maxid=$office->findlastlevel();
+               foreach($maxid as $maxid1) {
+               $villagelastid=$maxid1->lastid;}
+               if($villagelastid==$officeid)
+               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+                  $this->view->adm->addRecord("ourbank_master_village",array('id' => '',
+                                                'village_id'=>$lastid,
+                                                'taluk_id' => $this->_request->getParam('taluque'),
+                                                'panchayath_id' => $this->_request->getParam('panchayath'),
+                                                'hobli_id' => $this->_request->getParam('hobli'),
+                                                'district_id'=>$this->_request->getParam('district'),
+                                                'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+               } 
+
 	//insert glsubcode
         for($j=1;$j<=2;$j++){
              $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
@@ -121,6 +137,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 	//create cash and bank glsubcode
            if($j==1){ $headername="Bank";} else {$headername="Cash";}
            $gInsert = $ledger->insertGlsubcode(array('id' => '',
+                           'office_id'=>$lastid,
                            'glsubcode' => $glsubcode,
                            'glcode_id' => $j,
                            'subledger_id' => $ledgertype_id,
@@ -128,8 +145,8 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                            'description' => $headername.$lastid,
                            'created_date' =>$createdate,
                            'created_by'=>$this->view->createdby));
-            }
-        $this->_redirect('/officecommonview/index/commonview/id/'.$lastid);
+           }
+         $this->_redirect('/officecommonview/index/commonview/id/'.$lastid);
 		}
 		}
         }
@@ -146,11 +163,27 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
         $this->view->form=$officeForm;
         $hierarchylevel2=$subOffice->hierarchylevel($officetype_id);
+        $maxid=$subOffice->findlastlevel();
+        foreach($maxid as $maxid1) {
+         $lastid=$maxid1->lastid;}
+        if($lastid==$officetype_id)
+        {
+        $this->view->subform=$lastid;
+        $district = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
+        foreach($district as $district1){
+        $officeForm->district->addMultiOption($district1['id'],$district1['name']);
+        }
+
+        $taluque = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
+        foreach($taluque as $taluque1){
+        $officeForm->taluque->addMultiOption($taluque1['id'],$taluque1['name']);
+        }
+        }
 	//list hierarchy level
         foreach($hierarchylevel2 as $hierarchylevel1) {
             $hierarchylevel=$hierarchylevel1->hierarchylevel; //level
         }
-
+        
         $officetypeIds=$subOffice->officetypeid($hierarchylevel);
         foreach($officetypeIds as $officetypeIds1) {
             $officetypeId=$officetypeIds1->id;
@@ -176,6 +209,87 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         }
     }
+        
+        public function gettalukAction()
+        {
+        $this->_helper->layout()->disableLayout();
+        $path = $this->view->baseUrl();
+        $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
+        $this->view->form=$officeForm;
+        $districteid=$this->view->districtid = $this->_request->getParam('districtid');
+        $subOffice = new Officedefault_Model_officedefault();
+        $taluklist=$subOffice->gettaluklist($districteid);
+        foreach($taluklist as $taluklist1) {
+        $officeForm->taluque->addMultiOption($taluklist1['id'],$taluklist1['name']);
+        }
+        }
+
+        public function gethobliAction()
+        {
+        $this->_helper->layout()->disableLayout();
+        $path = $this->view->baseUrl();
+        $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
+        $this->view->form=$officeForm;
+        $hobliid=$this->view->hobliid = $this->_request->getParam('taluk_id');
+        $subOffice = new Officedefault_Model_officedefault();
+        $hoblilist=$subOffice->gethoblilist($hobliid);
+        foreach($hoblilist as $hoblilist1) {
+        $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
+        }
+        }
+
+        public function getpanchayathAction()
+        {
+        $this->_helper->layout()->disableLayout();
+        $path = $this->view->baseUrl();
+        $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
+        $this->view->form=$officeForm;
+        $panchayath=$this->view->hobliid = $this->_request->getParam('hobli_id');
+        $subOffice = new Officedefault_Model_officedefault();
+        $panchayath=$subOffice->getpanchayathlist($panchayath);
+        foreach($panchayath as $panchayath1) {
+        $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
+        }
+        }
+
+        public function addressAction() {
+	//disable layout
+        $this->_helper->layout()->disableLayout();
+	//view instance for office type
+        $officetype_id=$this->view->officetypeid = $this->_request->getParam('officetype_id');
+        $subOffice = new Officedefault_Model_officedefault();
+        $path = $this->view->baseUrl();
+        $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
+        $this->view->form=$officeForm;
+        $maxid=$subOffice->findlastlevel();
+        foreach($maxid as $maxid1) {
+         $lastid=$maxid1->lastid;}
+        if($lastid==$officetype_id)
+        {
+            $this->view->subform=$lastid;
+        $district = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
+        foreach($district as $district1){
+        $officeForm->district->addMultiOption($district1['id'],$district1['name']);
+        }
+
+//         $taluque = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
+//         foreach($taluque as $taluque1){
+//         $officeForm->taluque->addMultiOption($taluque1['id'],$taluque1['name']);
+//         }
+// 
+//         $hobli = $this->view->adm->viewRecord("ourbank_master_hoblilist","id","DESC");
+//         foreach($hobli as $hobli1){
+//         $officeForm->hobli->addMultiOption($hobli1['id'],$hobli1['name']);
+//         }
+// 
+//         $panchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
+//         foreach($panchayath as $panchayath1){
+//         $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
+//         }
+        }
+
+        }
+
 	//edit office
     public function officeeditAction(){
         $this->view->title = $this->view->translate("New Office");
@@ -190,27 +304,69 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm = new Officedefault_Form_officedefault($path,$this->view->createdby);
         $this->view->form = $officeForm; 
           $office = new Officedefault_Model_officedefault();
+       // $this->view->officeDetails = $office->getOffice();
+      //  $this->view->officehierarchyselect = $office->officehierarchyselect();
         $this->view->id=$office_id=$this->_getParam('id');
-        $officehierarchy = $office->getOfficehierarchyDetails(); 
-	//load office hierarchy drop down
-        foreach($officehierarchy as $officehierarchy) {
-                $officeForm->officetype_id->addMultiOption($officehierarchy->id,$officehierarchy->type);
+//         $officehierarchy = $office->getOfficehierarchyDetails(); 
+// 	//load office hierarchy drop down
+//         foreach($officehierarchy as $officehierarchy) {
+//           $officeForm->officetype_id->addMultiOption($officehierarchy->id,$officehierarchy->type);
+//         }
+        $edit_office = $this->view->adm->editRecord("ourbank_office",$office_id); 
+        $officetype_id=$edit_office[0]['parentoffice_id']; 
+        $typeid=$edit_office[0]['officetype_id'];
+        $office_typeid=$edit_office[0]['officetype_id'];
+        $officetypename=$office->getofficetypename($office_typeid);
+        $this->view->form->officetypename->setValue($officetypename[0]['type']);
+        $parentid = $office->subofficeFromUrledit($officetype_id);
+        $maxid=$office->findlastlevel();
+        foreach($maxid as $maxid1) {
+        $villagelastid=$maxid1->lastid;
         }
-        $edit_office = $this->view->adm->editRecord("ourbank_office",$office_id);
-       $officetype_id=$edit_office[0]['parentoffice_id'];
-       $parentid = $office->subofficeFromUrledit($officetype_id);
+
+        if($villagelastid==$edit_office[0]['officetype_id']){
+        $this->view->villagelastid=$maxid;
+        $villagename=$edit_office[0]['id'];
+        $address=$office->getvillageaddress($villagename);
+
+        $district = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
+        foreach($district as $district1){
+        $officeForm->district->addMultiOption($district1['id'],$district1['name']);
+        }
+
+        $taluque = $office->gettaluklist($address[0]['district_id']);
+        foreach($taluque as $taluque1){
+        $officeForm->taluque->addMultiOption($taluque1['id'],$taluque1['name']);
+        }
+
+        $hoblilist = $office->gethoblilist($address[0]['taluk_id']);
+        foreach($hoblilist as $hoblilist1){
+        $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
+        }
+
+        $panchayath = $office->getpanchayathlist($address[0]['taluk_id']);
+        foreach($panchayath as $panchayath1){
+        $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
+        }
+        $village_id=$address[0]['villageid'];
+        $villageaddressid=$address[0]['id'];
+        $this->view->form->district->setValue($address[0]['district_id']);
+        $this->view->form->taluque->setValue($address[0]['taluk_id']);
+        $this->view->form->hobli->setValue($address[0]['hobli_id']);
+        $this->view->form->panchayath->setValue($address[0]['panchayath_id']);
+        }
 	//load parent office dropdown
        foreach($parentid as $parentid1) {
                 $officeForm->parentoffice_id->addMultiOption($parentid1->id,$parentid1->name);
         }
         $officeForm->populate($edit_office[0]);
-        
+        $officeForm->name->removeValidator('Db_NoRecordExists');
+        $officeForm->officetype_id->setRequired(false);
 	//check and load poster data
-                if ($this->_request->isPost() && $this->_request->getPost('Update')) {
+                if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $formData = $this->_request->getPost(); 
             if($officeForm->isValid($formData)){ 
 		//assign poster values to variable and send to model
-                $officeid=$this->_request->getParam('officetype_id');
                 $parentofficeid=$this->_request->getParam('parentoffice_id');
                 $name=$this->_request->getParam('name');
                 $shortname=$this->_request->getParam('short_name');
@@ -219,11 +375,25 @@ class Officedefault_IndexController extends Zend_Controller_Action{
  		$lastid=$this->view->adm->updateRecord("ourbank_office",$office_id,array('id' => $office_id,
                                                 'name'=>$name,
                                                 'short_name' => $shortname,
-                                                'officetype_id'=>$officeid,
                                                 'parentoffice_id' => $parentofficeid,
                                                 'createddate' =>$createdate,'createdby'=>$this->view->createdby));
-	//update and redirect if valid data
-$this->_redirect('/officecommonview/index/commonview/id/'.$office_id);
+
+echo $typeid;
+               $maxid=$office->findlastlevel();
+               foreach($maxid as $maxid1) {
+               echo $villagelastid=$maxid1->lastid;}
+               if($villagelastid==$typeid)
+               {  /*$villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));*/
+
+                  $office->updatevillage($office_id,array(
+                                                'taluk_id' => $this->_request->getParam('taluque'),
+                                                'district_id'=>$this->_request->getParam('district'),
+                                                'panchayath_id' => $this->_request->getParam('panchayath'),
+                                                'hobli_id' => $this->_request->getParam('hobli'),
+                                                'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+               } 
+//	update and redirect if valid data
+        $this->_redirect('/officecommonview/index/commonview/id/'.$office_id);
 		}}
 		}
 }
@@ -231,12 +401,17 @@ $this->_redirect('/officecommonview/index/commonview/id/'.$office_id);
     //delete action
     public function deleteofficeAction()
     {
-
+        //Acl
+        //$access = new App_Model_Access();
+        //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'editmembernameAction');
+        //if (($checkaccess != NULL)) {
+        //delete action
+    
 	//get poster id
         $id=$this->_request->getParam('id');	  
         $this->view->memberid=$id;
 
-        $delform=new Membername_Form_Delete();
+        $delform=new Officedefault_Form_Delete();
         $this->view->delete=$delform;
 	
 	//validate poster id details
@@ -252,8 +427,8 @@ $this->_redirect('/officecommonview/index/commonview/id/'.$office_id);
                if(!$members && !$office_id)
                {
                 $this->view->adm->deletemember("ourbank_office",$id);
-                $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
-                $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
+                $this->view->adm->deleteSubmodule("ourbank_contact",$id,$this->view->sub_id);
+                $this->view->adm->deleteSubmodule("ourbank_address",$id,$this->view->sub_id);
                 $this->_redirect('/office');
                }
                else
@@ -265,9 +440,22 @@ $this->_redirect('/officecommonview/index/commonview/id/'.$office_id);
         // 	} else {
         //             $this->_redirect('index/index');
         // 	}
-    
-
     }
 
 }
+
+    public function treestructureAction()
+    {
+        $treeobj = new Officedefault_Model_officedefault();
+        $branch = $treeobj->getBranch();
+        $alloffice = $treeobj->fetchoffice();
+        if(count($alloffice)) {
+            $this->view->rootname = $alloffice[0]['name'];
+        }
+        $branchId = $treeobj->getBranchId();
+        if($branchId) {
+            $this->view->branchId = $branchId[0]['id'];
+        }
+   }
+
 }

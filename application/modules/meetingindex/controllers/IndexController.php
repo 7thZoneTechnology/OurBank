@@ -24,7 +24,7 @@ class Meetingindex_IndexController extends Zend_Controller_Action
 {
     public function init() 
     {
-        $this->view->pageTitle='Meetings';
+        $this->view->pageTitle='Group meeting';
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
         $this->view->username = $this->view->globalvalue[0]['username'];
@@ -34,7 +34,7 @@ class Meetingindex_IndexController extends Zend_Controller_Action
 // 			$this->_redirect('index/logout');
 // 		}
         $this->view->adm = new App_Model_Adm();
-        $this->view->dateconvert = new Creditline_Model_dateConvertor();
+        $this->view->dateconvert = new App_Model_Users();
 
         $test = new DH_ClassInfo(APPLICATION_PATH . '/modules/meetingindex/controllers/');
         $module = $test->getControllerClassNames();
@@ -48,15 +48,14 @@ class Meetingindex_IndexController extends Zend_Controller_Action
         if(!$data){
             $this->_redirect('index/login');
         }
-        $this->view->title = "Meetings";
+        $this->view->title = "Group meeting";
         
         $searchForm = new Meeting_Form_Search();
         $this->view->form = $searchForm;
         
-        $meeting = new Meeting_Model_Meeting();
-        $meeting = $meeting->getDays();
-        foreach($meeting as $meeting) {
-            $searchForm->search_weekdays->addMultiOption($meeting['day_value'],$meeting['days_name']);
+        $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
+        foreach($days as $days) {
+            $searchForm->search_weekdays->addMultiOption($days['id'],$days['name']);
         }
         $meeting = new Meeting_Model_Meeting();
         $result = $meeting->fetchAllmeetingdetails();
@@ -69,14 +68,11 @@ class Meetingindex_IndexController extends Zend_Controller_Action
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
-                $this->view->errormsg="Record not found....Try again...";
+
                 if ($searchForm->isValid($formData)) {
                     $meeting = new Meeting_Model_Meeting();
                     $result = $meeting->SearchMeeting($formData);
                     $page = $this->_getParam('page',1);
-                    if(!$paginator)   {       
-                           $this->view->errormsg="Record not found....Try again...";
-                    }
                     $paginator = Zend_Paginator::factory($result);
                     $paginator->setItemCountPerPage(5);
                     $paginator->setCurrentPageNumber($page);

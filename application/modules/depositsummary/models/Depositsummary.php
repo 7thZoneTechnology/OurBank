@@ -33,12 +33,12 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                                 ->where('C.status_id = 3 || C.status_id = 1')
                                 ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','D.name as productname')
                                 ->where('D.category_id = 1')
-                                ->join(array('E'=>'ourbank_member'),'E.id = C.member_id',array('E.name as membername'))
-                                ->join(array('F'=>'ourbank_office'),'F.id = E.office_id',array('F.name as officename'))
-                                ->where('F.id = "'.$office_id.'"');
-//                                 ->group('B.name')
-//                                 ->order('D.name');
-//                 die($select->__toString());
+                                ->join(array('E'=>'ourbank_familymember'),'E.id = C.member_id',array('E.name as membername'))
+                                ->join(array('F'=>'ourbank_office'),'F.id = E.village_id',array('F.name as officename'))
+                                ->where('F.id = "'.$office_id.'"')
+                                 ->group('B.name')
+                                ->order('D.name');
+               //  die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
     }
@@ -54,8 +54,8 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                         ->where('F.recordstatus_id = 3 || F.recordstatus_id = 1')
                         ->join(array('J' =>'ourbank_product'),'B.product_id = J.id')
                         ->where('J.category_id = 1')
-                        ->join(array('E'=>'ourbank_member'),'E.id = A.member_id')
-                        ->join(array('G'=>'ourbank_office'),'G.id = E.office_id')
+                        ->join(array('E'=>'ourbank_familymember'),'E.id = A.member_id')
+                        ->join(array('G'=>'ourbank_office'),'G.id = E.village_id')
                         ->where('G.id = "'.$office_id.'"');
                 //die($select->__toString());
                 $result = $this->fetchAll($select);

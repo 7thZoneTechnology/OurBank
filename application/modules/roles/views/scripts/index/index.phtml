@@ -35,9 +35,9 @@ $(document).ready(function() {
             <table class="fieldsets">
                 <tr>
                     <!-- display the grant name textbox -->
-                    <td><? echo $this->form->grantname;?></td>
+                    <td><?php echo $this->form->grantname;?></td>
                     <!-- display the grant date textbox -->
-                    <td><? echo $this->form->granteddate;?></td>
+                    <td><?php echo $this->form->granteddate;?></td>
                 </tr>
             </table>
             <div class="ltbtns">
@@ -66,7 +66,7 @@ if(count($this->paginator)!=0) { ?>
         <td><a href="<?php echo $this->baseUrl()."/roles/index/rolesview/id/".$roles['id']; ?>">
                      <?php echo $this->escape($roles['name']); ?></a></td>
     <td><?php 
-        	$convertdate = new Creditline_Model_dateConvertor();
+        	$convertdate = new App_Model_dateConvertor();
                 echo $this->escape($convertdate->normalformat($roles['created_date']));?></td>
     <td><?php   echo $this->escape($roles['created_by']);?></td>
                    <?php endforeach; ?>

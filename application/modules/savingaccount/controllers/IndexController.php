@@ -25,21 +25,20 @@ class Savingaccount_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = 'Savings';
         $this->view->title = 'Accounting';
         $this->view->accounts = new Savingaccount_Model_Accounts();
-        $this->view->cl = new Creditline_Model_dateConvertor ();
+        $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
     }
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
         if ($this->_request->getPost('Submit')) {
-			$formData = $this->_request->getPost();
-                        $this->view->errormsg="Record not found.. Try agin...";
-			if ($accountsForm->isValid($formData)) {
-			    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
-			}else{
-                                            $this->view->errormsg="Record not found.. Try agin...";
-                                        }
-
+            $formData = $this->_request->getPost();
+            $this->view->errormsg="Record not found.. Try agin...";
+            if ($accountsForm->isValid($formData)) {
+                $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
+            } else {
+                $this->view->errormsg="Record not found.. Try agin...";
+            }
         }
     }
     public function detailsAction() 
@@ -56,88 +55,86 @@ class Savingaccount_IndexController extends Zend_Controller_Action
     	$code = base64_decode($this->_request->getParam('code'));
         $this->view->account = $this->view->accounts->details($productId,$code);
         $this->view->interestRates = $this->view->accounts->getInterestRates($productId,$code);
-        foreach ($this->view->account as $account) {
+        foreach ($this->view->account as $account) 
+        {
             $minDeposite = $account->minbalance; // Validate for min balance
-			$officeid = $account->officeid;
+	    $officeid = $account->officeid;
         }
-        $savingForm = new Savingaccount_Form_Savings(50,$this->_request->getParam('Id'),$this->_request->getParam('code'));
-		if (substr($code,4,1) == 2) {
-			$group = $this->view->accounts->getMember($officeid);
-			foreach ($group as $group) {
-				$savingForm->group->addMultiOption($group->id,$group->name);
-			}
-		}	
+        $savingForm = new Savingaccount_Form_Savings($minDeposite,$this->_request->getParam('Id'),$this->_request->getParam('code'));
+        if (substr($code,4,1) == 2 || substr($code,4,1) == 3) {
+             $this->view->group = $this->view->accounts->getMember($code);
+        }	
         $this->view->savingsForm = $savingForm;
         if ($this->_request->getPost('Submit')) {
-	    	$formData = $this->_request->getPost();
-			if ($savingForm->isValid($formData)) {
-		    	foreach ($this->view->account as $account) {
-					$begindate = $account->begindate;
-					$officeid = $account->officeid;
-					$typeID = $account->typeID;
-					$glsubID = $account->glsubID;
-					$memberId = $account->id;
-		    	}
-					if ($this->view->cl->phpmysqlformat($this->_request->getPost('date')) < $begindate) {
-					$this->view->maxdate= "Date of account should be After - ".$this->view->cl->phpnormalformat($begindate) ;
-					} else {
-					// Insertion into ourbank_account 
-					$data = array('account_number' => 1,
-										'member_id' => $memberId,
-										'product_id' => $productId,
-										'begin_date' => $begindate,
-										'membertype_id' => $typeID,
-										'accountcreated_date'=> $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
-										'created_by' => 1,
-										'status_id'=>1);
-					$accId = $this->view->adm->addRecord('ourbank_accounts',$data);
-					// Account number formation 
-					// <-----------14 digit number ---------->
-					// <--3-->/<--2-->/<--2-->/<--1-->/<--6-->
-					// 00office_id/0membertype_id/0product_id/typeofacc [L/S/F/R]/00000account_id
-					$b=str_pad($officeid,3,"0",STR_PAD_LEFT); 
-					$t=str_pad($typeID,2,"0",STR_PAD_LEFT);
-					$p=str_pad($productId,2,"0",STR_PAD_LEFT);
-					$i= "S";
-					$a=str_pad($accId,6,"0",STR_PAD_LEFT);
-                        $account = array('account_number' =>$b.$t.$p.$i.$a);
-                        $this->view->accounts->accUpdate($accId,$account);
-					// Insertion into transaction 
-					$input = array('account_id' => $accId,
-                                      'glsubcode_id_to' => $glsubID,
-                                      'transaction_date' => $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
-                                      'amount_to_bank' => $this->_request->getPost('amount'),
-                                      'paymenttype_id' => 1,
-                                      'transactiontype_id' => 1,
-                                      'recordstatus_id' => 3,
-                                      'transaction_description'=> "Opening amount",
-                                      'balance' => $this->_request->getPost('amount'),
-                                      'confirmation_flag' => 0,
-                                      'created_by' => 1);
-      		        $tranID = $this->view->adm->addRecord('ourbank_transaction',$input);
-      		        // Insertion into saving transaction 
-      		        $saving = array('transaction_id' => $tranID,
-      		                      'account_id' => $accId,
-                                      'transaction_date' => $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
-                                      'transactiontype_id' => 1,
-                                      'glsubcode_id_to' => $glsubID,
-                                      'amount_to_bank' => $this->_request->getPost('amount'),
-                                      'paymenttype_id' => 1,
-                                      'transaction_description'=> "Opening amount",
-                                      'transaction_by' => 1);
-      		        $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
-					// Insertion into Liabilities
-					$liabilities = array('office_id' => $officeid,
-										'glsubcode_id_from' => '',
-                                             'glsubcode_id_to' => $glsubID,
-                                             'transaction_id' => $tranID,
-                                             'credit' => $this->_request->getPost('amount'),
-                                             'record_status'=> 3);
-     		        $this->view->adm->addRecord('ourbank_Liabilities',$liabilities);
-     		        $glresult = $this->view->accounts->getGlcode($officeid);
-     		        foreach ($glresult as $glresult) {
-     		             $cashglsubocde = $glresult->id;
-     		        }
+            $formData = $this->_request->getPost();
+            if ($savingForm->isValid($formData)) {
+                foreach ($this->view->account as $account) {
+                        $begindate = $account->begindate;
+                        $officeid = $account->officeid;
+                        $typeID = $account->typeID;
+                        $glsubID = $account->glsubID;
+                        $memberId = $account->id;
+                }
+                if ($this->view->cl->phpmysqlformat($this->_request->getPost('date')) < date('Y-m-d')) {
+                    $this->view->maxdate= "Date of account should be current date ";
+                    } else {
+                    // Insertion into ourbank_account 
+                    $data = array('account_number' => 1,
+                                    'member_id' => $memberId,
+                                    'product_id' => $productId,
+                                    'begin_date' => $begindate,
+                                    'membertype_id' => $typeID,
+                                    'accountcreated_date'=> $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
+                                    'created_by' => 1,
+                                    'status_id'=>1);
+                    $accId = $this->view->adm->addRecord('ourbank_accounts',$data);
+                    // Account number formation 
+                    // <-----------14 digit number ---------->
+                    // <--3-->/<--2-->/<--2-->/<--1-->/<--6-->
+                    // 00office_id/0membertype_id/0product_id/typeofacc [L/S/F/R]/00000account_id
+                    $b=str_pad($officeid,3,"0",STR_PAD_LEFT); 
+                    $t=str_pad($typeID,2,"0",STR_PAD_LEFT);
+                    $p=str_pad($productId,2,"0",STR_PAD_LEFT);
+                    $i= "S";
+                    $a=str_pad($accId,6,"0",STR_PAD_LEFT);
+                    $account = array('account_number' =>$b.$t.$p.$i.$a);
+                    $this->view->accounts->accUpdate($accId,$account);
+                    // Insertion into transaction 
+                    $input = array('account_id' => $accId,
+                                    'glsubcode_id_to' => $glsubID,
+                                    'transaction_date' => $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
+                                    'amount_to_bank' => $this->_request->getPost('amount'),
+                                    'paymenttype_id' => 1,
+                                    'transactiontype_id' => 1,
+                                    'recordstatus_id' => 3,
+                                    'transaction_description'=> "Opening amount",
+                                    'balance' => $this->_request->getPost('amount'),
+                                    'confirmation_flag' => 0,
+                                    'created_by' => 1);
+                    $tranID = $this->view->adm->addRecord('ourbank_transaction',$input);
+                    // Insertion into saving transaction 
+                    $saving = array('transaction_id' => $tranID,
+                                    'account_id' => $accId,
+                                    'transaction_date' => $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
+                                    'transactiontype_id' => 1,
+                                    'glsubcode_id_to' => $glsubID,
+                                    'amount_to_bank' => $this->_request->getPost('amount'),
+                                    'paymenttype_id' => 1,
+                                    'transaction_description'=> "Opening amount",
+                                    'transaction_by' => 1);
+                    $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
+                    // Insertion into Liabilities
+                    $liabilities = array('office_id' => $officeid,
+                                         'glsubcode_id_from' => '',
+                                         'glsubcode_id_to' => $glsubID,
+                                         'transaction_id' => $tranID,
+                                         'credit' => $this->_request->getPost('amount'),
+                                         'record_status'=> 3);
+                    $this->view->adm->addRecord('ourbank_Liabilities',$liabilities);
+                    $glresult = $this->view->accounts->getGlcode($officeid);
+                    foreach ($glresult as $glresult) {
+                            $cashglsubocde = $glresult->id;
+                    }
                     // Insertion into Assets ourbank_Assets
                     $assets =  array('office_id' => $officeid,
                                          'glsubcode_id_from' => '',
@@ -145,26 +142,27 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                                          'transaction_id' => $tranID,
                                          'credit' => $this->_request->getPost('amount'),
                                          'record_status' => 3);
-       		        $this->view->adm->addRecord('ourbank_Assets',$assets);
-					// Group Acc + Transaction entry
-					if ($this->_request->getPost('group')) {
-						$this->view->accounts->goupAcc($this->_request->getPost('group'),
-														$productId,
-														$accId,
-														$this->_request->getPost('amount'),
-														$tranID,
-														$this->view->cl->phpmysqlformat($this->_request->getPost('date')));
+                    $this->view->adm->addRecord('ourbank_Assets',$assets);
+                    // Group Acc + Transaction entry
+                    if ($this->view->group) {
+                        $this->view->accounts->goupAcc($code,
+                                                    $productId,
+                                                    $accId,
+                                                    $this->_request->getPost('amount'),
+                                                    $tranID,
+                                                    $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
+                                                    count($this->view->group));
 
-					}
-       		        $this->_redirect("/savingaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
-        	    }
-			}
-	    }
+                    }
+                $this->_redirect("/savingaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
+            }
+        }
+        }
     }
     public function messageAction() 
     {
         $this->view->pageTitle = 'Accounting';
-		$this->view->acNum = base64_decode($this->_request->getParam('acNum'));
+	$this->view->acNum = base64_decode($this->_request->getParam('acNum'));
     }
 }
 

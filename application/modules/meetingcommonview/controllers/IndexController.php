@@ -22,7 +22,7 @@
 <?php
 class Meetingcommonview_IndexController extends Zend_Controller_Action {
     public function init() {
-        $this->view->pageTitle='Meetings';
+        $this->view->pageTitle='Group meeting';
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
         $this->view->username = $this->view->globalvalue[0]['username'];
@@ -32,7 +32,7 @@ class Meetingcommonview_IndexController extends Zend_Controller_Action {
 //             $this->_redirect('index/logout');
 //         }
         $this->view->adm = new App_Model_Adm();
-        $this->view->dateconvert = new Creditline_Model_dateConvertor();
+        $this->view->dateconvert = new App_Model_dateConvertor();
 
         $test = new DH_ClassInfo(APPLICATION_PATH . '/modules/meetingindex/controllers/');
         $module = $test->getControllerClassNames();
@@ -41,7 +41,7 @@ class Meetingcommonview_IndexController extends Zend_Controller_Action {
     }
 
     public function indexAction(){
-        $this->view->title = "Meetings";
+        $this->view->title = "Group meeting";
                 //Acl
 // 		$access = new App_Model_Access();
 // 		$checkaccess = $access->accessRights('Activity',$this->view->globalvalue[0]['name'],'activityeditAction');

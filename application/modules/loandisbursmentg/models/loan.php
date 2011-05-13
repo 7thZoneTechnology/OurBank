@@ -1,119 +1,88 @@
 <?php
-class Loandisbursmentg_Model_loan extends Zend_Db_Table {
-	protected $_name = 'ob_accounts';
+class Loandisbursmentg_Model_loan extends Zend_Db_Table 
+{
+    protected $_name = 'ourbank_accounts';
 
-    public function searchaccounts($acc) {
+    public function searchaccounts($acc) 
+    {
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
-         $sql="SELECT 
-               A.name as name,
-               B.name as officename,
-               B.id as officeid,
-               A.membercode as code,
-               D.account_number as number,
-               D.id as accId,
-               E.name as loanname,
-               E.glsubcode_id as gl,
-               F.loan_amount as amount,
-               F.loan_installments as installments,
-               substr(A.membercode,5,1) as type,
-               DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
-               F.loan_interest as interest,
-               F.interesttype_id as interesttype,
-               F.savingsaccount_id as sAccId
-               FROM
-               ourbank_member A,
-               ourbank_office B,
-               ourbank_accounts D,
-               ourbank_productsoffer E,
-               ourbank_loanaccounts F
-               WHERE
-               (A.name = '$acc' OR D.account_number = '$acc') AND
-               B.id = A.office_id AND 
-               A.id = D.member_id AND 
-               D.product_id = E.id AND
-               F.account_id = D.id AND
-			   substr(A.membercode,5,1) = E.applicableto
-			   UNION
-			   SELECT 
-               A.name as name,
-               B.name as officename,
-               B.id as officeid,
-               A.groupcode as code,
-               D.account_number as number,
-               D.id as accId,
-               E.name as loanname,
-               E.glsubcode_id as gl,
-               F.loan_amount as amount,
-               F.loan_installments as installments,
-               substr(A.groupcode,5,1) as type,
-               DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
-               F.loan_interest as interest,
-               F.interesttype_id as interesttype,
-               F.savingsaccount_id as sAccId
-               FROM
-               ourbank_group A,
-               ourbank_office B,
-               ourbank_accounts D,
-               ourbank_productsoffer E,
-               ourbank_loanaccounts F
-               WHERE
-               (A.name = '$acc' OR D.account_number = '$acc') AND
-               B.id = A.office_id AND 
-               A.id = D.member_id AND 
-               D.product_id = E.id AND
-               F.account_id = D.id AND
-	       substr(A.groupcode,5,1) = E.applicableto";
+
+        $sql="SELECT 
+                A.name as name,
+                A.familycode as code,
+                B.name as officename,
+                A.uid as uid,
+                B.id as officeid,
+                D.account_number as number,
+                D.id as accId,
+                E.name as loanname,
+                E.glsubcode_id as gl,
+                F.loan_amount as amount,
+                F.loan_installments as installments,
+                DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
+                G.Interest as interest,
+                F.interesttype_id as interesttype,
+                F.savingsaccount_id as sAccId
+                FROM
+                ourbank_familymember A,
+                ourbank_office B,
+                ourbank_accounts D,
+                ourbank_productsoffer E,
+                ourbank_loanaccounts F,
+                ourbank_interest_periods G
+                WHERE 
+                (A.name like '%' '$acc' '%' OR D.account_number = '$acc') AND
+                D.membertype_id = substr(A.familycode,5,1) AND
+                D.member_id = A.id AND
+                B.id=A.village_id AND
+                D.product_id = E.id AND
+                F.account_id = D.id AND
+                F.loan_interest  = G.id
+                UNION
+                SELECT 
+                A.name as name,
+                A.groupcode as code,
+                A.absent_subglcode as uid,
+                B.name as officename,
+                B.id as officeid,
+                D.account_number as number,
+                D.id as accId,
+                E.name as loanname,
+                E.glsubcode_id as gl,
+                F.loan_amount as amount,
+                F.loan_installments as installments,
+                DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
+                G.Interest as interest,
+                F.interesttype_id as interesttype,
+                F.savingsaccount_id as sAccId
+                FROM
+                ourbank_group A,
+                ourbank_office B,
+                ourbank_accounts D,
+                ourbank_productsoffer E,
+                ourbank_loanaccounts F,
+                ourbank_interest_periods G
+                WHERE 
+                (A.name like '%' '$acc' '%' OR D.account_number = '$acc') AND
+                D.membertype_id = substr(A.groupcode,5,1) AND
+                D.member_id = A.id AND
+                (D.membertype_id=2 or D.membertype_id=3) AND
+                B.id=A.village_id AND
+                D.product_id = E.id AND
+                F.account_id = D.id AND
+                F.loan_interest  = G.id";
+        //echo $sql."<br>";
         $result = $db->fetchAll($sql,array($acc));
         return $result;
     }
-    public function activeDisburs($acc) 
-	{
-		$db = Zend_Db_Table::getDefaultAdapter();
-		$db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT 
-			   count(*) as count
-               FROM
-               ourbank_member A,
-               ourbank_office B,
-               ourbank_accounts D,
-               ourbank_productsoffer E,
-               ourbank_loanaccounts F,
-			   ourbank_loan_disbursement G
-               WHERE
-               (A.name = '$acc' OR D.account_number = '$acc') AND
-               B.id = A.office_id AND 
-               A.id = D.member_id AND 
-               D.product_id = E.id AND
-               F.account_id = D.id AND
-			   D.id = G.account_id AND
-			   substr(A.membercode,5,1) = E.applicableto
-			   UNION
-			   SELECT 
-			   count(*) as count
-               FROM
-               ourbank_group A,
-               ourbank_office B,
-               ourbank_accounts D,
-               ourbank_productsoffer E,
-               ourbank_loanaccounts F,
-			   ourbank_loan_disbursement G
-               WHERE
-               (A.name = '$acc' OR D.account_number = '$acc') AND
-               B.id = A.office_id AND 
-               A.id = D.member_id AND 
-               D.product_id = E.id AND
-               F.account_id = D.id AND
-			   D.id = G.account_id AND
-	           substr(A.groupcode,5,1) = E.applicableto";
-        return  $db->fetchAll($sql,array($acc));
-    }
+    
     public function active($accNum)
     {
     	$db = Zend_Db_Table::getDefaultAdapter();
-		$where[] = "account_number = '".$accNum."'";
-		$where[] = "status_id = 3";
-		return $db->update('ourbank_accounts',array('status_id' =>1),$where);
+	$where[] = "account_number = '".$accNum."'";
+	$where[] = "status_id = 3";
+	return $db->update('ourbank_accounts',array('status_id' =>1),$where);
     }
     
     public function getSavingGl($id) 
@@ -140,40 +109,85 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table {
 	$result = $db->fetchAll($sql,array());
 	return $result;
     }
-	public function getMember($accNum)
-	{
-		$db = Zend_Db_Table::getDefaultAdapter();
-		$sql = "select 
-				C.membercode as code,
-				C.name as name,
-				C.id as id
-				from
-				ourbank_group as A,
-				ourbank_groupmembers B,
-				ourbank_member C,
-			    ourbank_accounts D
-				where
-				D.account_number = '".$accNum."' AND
-				D.member_id = A.id AND
-				A.id = B.id AND
-				B.member_id = C.id  
-				";
-		return $result = $db->fetchAll($sql);
-	}
-	public function goupAcc($accNum,$accId,$date,$amt,$tranID)
-	{
-        $db = $this->getAdapter();
-		$group = $this->getMember($accNum);
-        foreach($group as $group) {
-			// Grp loan disbursment entry
-            $accdata = array('transaction_id' => $tranID,
-                          'account_id' => $accId,
-                          'member_id' => $group->id,
-                          'disbursement_date' => 3,
-						  'transacted_by' => 1,
-                          'loanamount' => $amt/2);
-           	$db->insert('ourbank_grouploan_disbursement',$accdata);
-        }
-		return true; 
-	}
+    public function getFee($accNum) 
+    {
+	$db = Zend_Db_Table::getDefaultAdapter();
+	$sql = "select 
+	        A.name as name,
+	        A.value as value,
+	        A.amountype_id as amountype_id,
+	        A.glsubcode_id as feeGl
+	        from 
+	        ourbank_fee A,
+	        ourbank_accountfee B,
+	        ourbank_accounts C
+	        where 
+	        C.account_number = '$accNum' AND
+	        B.account_id = C.id AND
+	        B.fee_id = A.id
+	        ";
+	$result = $db->fetchAll($sql);
+	return $result;
+    }
+
+    public function getdisbursementdetails($accNum)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'))
+                                ->join(array('b'=>'ourbank_loan_disbursement'),'a.id=b.account_id')
+                                ->where('a.account_number=?',$accNum);
+
+//        die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findlastpaid($accNum)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(installment_id) as lastpaidid','SUM(paid_principal) as paidamount','paid_date'))
+                                ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
+                                ->where('b.account_number=?',$accNum)
+                                ->group('b.account_number');
+        //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findwithoutpaid($accNum)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('MIN(installment_id) as lastpaidid','reduced_prinicipal_balance','installment_date'))
+                                ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
+                                ->where('b.account_number=?',$accNum)
+                                ->group('b.account_number');
+        //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function remaininginstallmemnt($accNum)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('COUNT(a.id) as countnumber','installment_id'))
+                                ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
+                                ->where('a.installment_status=3 or a.installment_status=4')
+                                ->where('b.account_number=?',$accNum)
+                                ->group('b.account_number');
+ //       die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function updateold($accId,$input=array())
+    {
+    $where[] = "account_id = '".$accId."'";
+    $where[] = "installment_status = 3 or installment_status = 4";
+    $db = $this->getAdapter();
+    $result = $db->update('ourbank_installmentdetails',$input,$where);
+    }
 }

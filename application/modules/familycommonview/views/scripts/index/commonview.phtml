@@ -1,0 +1,785 @@
+<!--show the individual member details and edit option !-->
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Family Details"); ?></th>
+        <th class = "secondtd"></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/familydefault/index/editfamily/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+    </tr>
+
+    <?php 
+    $convertdate = new App_Model_dateConvertor();
+    foreach($this->membername as $family_view){ ?>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Family ID:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['family_id']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Sujeevana No:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['sujeevana']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("House No:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['house_no']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['street']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Rev Village:"); ?></td>
+        <td class = "secondtd"><?php echo $this->revvillagename; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+
+        <tr>
+        <td class="firsttd"><?php echo $this->translate("Family type:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['familytype']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Minority:"); ?></td>
+        <?php if ($family_view['minority_id']) { ?>
+        <td class = "secondtd"><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"></td>
+        <?php } else { ?>
+        <td class = "secondtd">----</td>
+        <?php } ?>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Category:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['caste']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Caste:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['subcaste']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Ration card:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['ration']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td class = "secondtd"><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
+            
+        }?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['nregs_jobno']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Major source of income:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['income']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+        <tr>
+        <td class="firsttd"><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['phone']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Mobile:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['mobile']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <?php } ?>
+</table> 
+<br/>
+
+<!--show the Family members details details and edit option !-->
+
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Family Member Details"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->family)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/familymembers/index/editfamily/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/familymembers/index/addfamily/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>
+
+
+<?php if($this->family) { ?>
+<div style="width:760px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
+<table id="hor-minimalist-b" border="1">
+    <tr>
+        <th><?php echo $this->translate("SL"); ?></th>
+        <th><?php echo $this->translate("UID"); ?></th>
+        <th ><?php echo $this->translate("Name of Member"); ?></th>
+        <th ><?php echo $this->translate("ಹೆಸರು"); ?></th>
+        <th ><?php echo $this->translate("Alias"); ?></th>
+        <th ><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+        <th ><?php echo $this->translate("Breadwinner"); ?></th>
+        <th ><?php echo $this->translate("Head"); ?></th>
+        <th ><?php echo $this->translate("Gender"); ?></th>
+        <th ><?php echo $this->translate("Date of Birth"); ?></th>
+        <th ><?php echo $this->translate("Age"); ?></th>
+        <th ><?php echo $this->translate("Relation to HOF"); ?></th>
+        <th ><?php echo $this->translate("Marital Status"); ?></th>
+        <th ><?php echo $this->translate("Entitlements"); ?></th>
+        <th ><?php echo $this->translate("Education Level"); ?></th>
+        <th ><?php echo $this->translate("Employment Status"); ?></th>
+        <th ><?php echo $this->translate("Profession"); ?></th>
+        <th ><?php echo $this->translate("CBO Status"); ?></th>
+        <th ><?php echo $this->translate("Bank/PO"); ?></th>
+        <th ><?php echo $this->translate("Branch"); ?></th>
+        <th ><?php echo $this->translate("Bank Account No"); ?></th>
+        <th ><?php echo $this->translate("Mobile Phone No"); ?></th>
+        <th ><?php echo $this->translate("Blood group"); ?></th>
+
+    </tr>
+    <?php $convertdate = new App_Model_dateConvertor(); $i=0;
+     foreach($this->family as $family){ $i++;  ?>
+    <tr>
+        <td><?php echo $i; ?></td>
+        <td><?php echo $family['uid']; ?></td>
+        <td><?php echo $family['name']; ?></td>
+        <td><?php echo $family['name_inregional']; ?></td>
+        <td><?php echo $family['alias']; ?></td>
+        <td><?php echo $family['alias_inregional']; ?></td>
+        <td align="center"><?php if($family['breadwinner_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
+        <td align="center"><?php if($family['head_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"><?php } else {echo "-";} ?></td>
+        <td><?php echo $family['gendername']; ?></td>
+        <td><?php echo $convertdate->phpnormalformat($family['dob']); ?></td>
+        <td><?php echo $family['age']; ?></td>
+        <td><?php echo $family['relationname']; ?></td>
+        <td><?php echo $family['maritalname']; ?></td>
+        <td><?php echo $family['entitlements']; ?></td>
+        <td><?php echo $family['qualifyname']; ?></td>
+        <td><?php echo $family['employmentname']; ?></td>
+        <td><?php echo $family['proffessionname']; ?></td>
+        <td align="center"><?php if($family['cbo_member']==1){ ?> <img src="<?php echo $this->baseUrl() ?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
+        <td><?php echo $family['bankname']; ?></td>
+        <td><?php echo $family['branchname']; ?></td>
+        <td><?php echo $family['bank_ac']; ?></td>
+        <td><?php echo $family['mobile_number']; ?></td>
+        <td><?php echo $family['blood']; ?></td>
+    </tr>
+
+    <?php } ?>
+
+</table>
+</div>
+
+
+<!--show the Activities details and edit option !-->
+<!--<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Activities details"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->activities)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/editactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/addactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>-->
+<?php if($this->activities) { ?>
+<table id="hor-minimalist-b">
+<tr>
+    <th ><?php echo $this->translate("Activities willing to takeup to increase the income"); ?></th>
+
+</tr>
+    <?php foreach($this->activities as $crop) {   ?>
+    <tr>
+        <td><?php echo $crop['activity']; ?></td>
+
+    </tr>
+    <?php } ?>
+</table>
+<?php } ?>
+<!--show the Activities details and edit option !-->
+<!--<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Activities details"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->activities)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/editactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/addactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>-->
+<?php if($this->activities) { ?>
+<table id="hor-minimalist-b">
+<tr>
+    <th ><?php echo $this->translate("Activities willing to takeup to increase the income"); ?></th>
+
+</tr>
+    <?php foreach($this->activities as $crop) {   ?>
+    <tr>
+        <td><?php echo $crop['activity']; ?></td>
+
+    </tr>
+    <?php } ?>
+</table>
+<?php } ?>
+<br>
+
+
+
+
+<!--show the Agriculture details and edit option !-->
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Agriculture land"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->agriculture)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>
+<?php if($this->agriculture){ ?>
+<table id="hor-minimalist-b" border="1">
+    <tr>
+        <th align="right"><?php echo $this->translate("Land holding"); ?></th>
+ 		<th align="right"><?php echo $this->translate("Acre"); ?></th>
+        <th align="right"><?php echo $this->translate("Gunta"); ?></th>
+        <th align="right"><?php echo $this->translate("name of owner"); ?></th>
+        <th align="right"><?php echo $this->translate("Survey No"); ?></th>
+        <th align="right"><?php echo $this->translate("Village"); ?></th>
+       
+    </tr>
+    <?php foreach($this->agriculture as $agri){   ?>
+    <tr>
+        <td><?php echo $agri['name']; ?></td>
+        <td align="right"><?php echo $agri['acre']; ?></td>
+        <td align="right"><?php echo $agri['gunta']; ?></td>
+        <td><?php echo $agri['membername']; ?></td>
+        <td align="right"><?php echo $agri['survey_no']; ?></td>
+        <td><?php echo $agri['villagename']; ?></td>
+
+    </tr>
+    <?php } ?>
+    <tr>
+    <?php foreach($this->acretotal as $total){   ?>
+
+   <td><?php echo $this->translate("Total"); ?></td>
+      <td align="right"><?php echo $total['total']; ?></td>
+<?php } ?>
+    <?php foreach($this->guntatotal as $gunta){   ?>
+      <td align="right"><?php echo $gunta['total']; ?></td>
+<?php } ?>
+
+   <td></td>
+   <td></td>
+   <td></td>
+   
+</tr>
+</table>
+<?php } ?>
+<br/>	<!--show the Crop details and edit option !-->
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Crop, quantity and price realisation"); ?></th>
+        <th class = "secondtd"></th>
+        <?php 
+		if(($this->agriculture)!=NULL) {
+		if(($this->crop)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/crop/index/editcrop/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/crop/index/addcrop/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php }} ?>
+    </tr>
+</table>
+<?php if($this->crop){ ?>
+<?php 
+$totalAcer = 0;
+$totalGunta = 0;
+$totalUnit = 0;
+$totalQty = 0;
+$totalMrktd = 0;
+$totalPrice = 0;
+$totalRealised = 0;
+
+?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+    <th ><?php echo $this->translate("Crop"); ?></th>
+    <th align="right"><?php echo $this->translate("Acre"); ?></th>
+    <th align="right"><?php echo $this->translate("Gunta"); ?></th>
+    <th align="right"><?php echo $this->translate("Unit"); ?></th>
+    <th align="right"><?php echo $this->translate("Quantity produced in units"); ?></th>
+    <th align="right"><?php echo $this->translate("Quantity sold in units"); ?></th>
+    <th align="right"><?php echo $this->translate("Price per unit"); ?></th>
+    <th align="right"><?php echo $this->translate("Price realised"); ?></th>
+    <th align="right"><?php echo $this->translate("Sold date"); ?></th>
+
+
+</tr>
+    <?php $dateconvert= new App_Model_dateConvertor(); foreach($this->crop as $crop){   ?>
+    <tr>
+        <td ><?php echo $crop['name']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['acre']); $totalAcer = $totalAcer + $crop['acre']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['gunta']); $totalGunta = $totalGunta + $crop['gunta']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['unit']); $totalUnit = $totalUnit + $crop['unit']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['quantity']); $totalQty = $totalQty + $crop['quantity']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['marketed']); $totalMrktd = $totalMrktd + $crop['marketed']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['price']); $totalPrice = $totalPrice + $crop['price']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['realised']); $totalRealised = $totalRealised + $crop['realised']; ?></td>
+        <td align="right"><?php echo $dateconvert->phpnormalformat($crop['sold_date']);?></td>
+
+    </tr>
+    <?php } ?>
+     <tr>
+        <td ><?php echo $this->translate("Total"); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalAcer); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalGunta); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalUnit); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalQty); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalMrktd); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalPrice); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalRealised); ?></td>
+    </tr>
+</table>
+<?php } ?>
+<br/>
+<table id="hor-minimalist-b">
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("Livestock"); ?></th>
+      <th class = "secondtd"></th>
+      <?php if(($this->livingassets)!=NULL) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/editasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/addasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
+</table>
+<?php if($this->livingassets){ 	$dateconvert= new App_Model_dateConvertor();
+$totalNumber = 0;
+$totalValue = 0;
+?>
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+  <td ><font color="#787878"><?php echo $this->translate("Asset"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("Number"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("Value"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("Date of value"); ?></font></td>
+</tr>
+  <?php foreach($this->livingassets as $livingassets){   ?>
+  <tr>
+      <td><?php echo $livingassets['name']; ?></td>
+      <td align="right"><?php echo $livingassets['number']; $totalNumber+=$livingassets['number']; ?></td>
+      <td align="right"><?php echo sprintf("%4.2f",$livingassets['value']); $totalValue+=$livingassets['value'];?></td>
+      	 <td align="right"><?php echo $dateconvert->phpnormalformat($livingassets['date_of_value']);?></td>
+  </tr>
+  <?php } ?>
+   <tr>
+       <td><?php echo $this->translate("Total"); ?></td>
+ 
+       <td align="right"><?php echo $totalNumber; ?></td>
+       <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+   </tr>
+</table>
+<?php } ?>
+<br>
+
+<!--show the Basic Infrastructure details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Basic Infrastructure"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if((($this->housingtype) || ($this->ownership) || ($this->fuel))!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php  if(($this->housingtype) || ($this->ownership) || ($this->fuel)){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+   <th ><?php echo $this->translate("Sl"); ?></th>
+   <th ><?php echo $this->translate("Access to Basic Infrastructure"); ?></th>
+   <th ><?php echo $this->translate("Types"); ?></th>
+</tr> 
+
+<tr>
+	<TD>1</TD>
+	<td>House</td>
+	<td>
+	<?php foreach($this->housingtype as $housetype){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $housetype['name']; ?></div><?php  } ?>
+	</td>
+</tr>
+
+<tr>
+	<TD>2</TD>
+	<td>House Ownership</td>
+	<td>
+	<?php foreach($this->ownership as $ownership){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $ownership['name']; ?></div><?php  } ?>
+	</td>
+</tr>
+<?php if($this->cookfuel){ ?>
+<tr>
+	<TD>3</TD>
+	<td>Primary cooking fuel</td>
+	<td>
+	<?php foreach($this->cookfuel as $fuel){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $fuel['name']; ?></div><?php  } ?>
+	</td>
+</tr>
+<?php } ?>
+</table>
+<?php } ?>
+<br>
+<!-- end infrastructure-->
+<!--show the NonLiving assets details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Other Assets Owned"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->nonlivingassets)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/nonlivingassets/index/editasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/nonlivingassets/index/addasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->nonlivingassets){
+$totalNumber = 0;
+$totalValue = 0;
+?>
+
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+   <td ><font color="#787878"><?php echo $this->translate("Asset"); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("Number"); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("Value"); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("Date of value"); ?></font></td>
+</tr>
+   <?php foreach($this->nonlivingassets as $nonlivingassets){  			$dateconvert= new App_Model_dateConvertor();
+ ?>
+     <tr>
+       <td><?php echo $nonlivingassets['name']; ?></td>
+       <td align="right"><?php echo $nonlivingassets['number']; $totalNumber+=$nonlivingassets['number']; ?></td>
+       <td align="right"><?php echo sprintf("%4.2f",$nonlivingassets['value']); $totalValue+=$nonlivingassets['value'];?></td>
+      	 <td align="right"><?php echo $dateconvert->phpnormalformat($nonlivingassets['date_of_value']);?></td>
+   </tr>
+   <?php } ?>
+    <tr>
+        <td ><?php echo $this->translate("Total"); ?></td>
+  
+        <td align="right"><?php echo $totalNumber; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+
+    </tr>
+</table>
+<?php } ?><br>
+</br>
+<!--show the Living assets details and edit option !-->
+
+<!--show the Expense details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Expense details"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->expense)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/expense/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/expense/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->expense){
+$totalValue = 0;
+?>
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+   <td><font color="#787878"><?php echo $this->translate("Expense"); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("Value"); ?></font></td>
+</tr>
+   <?php foreach($this->expense as $expense){   ?>
+   <tr>
+       <td><?php echo $expense['name']; ?></td>
+       <td align="right"><?php echo sprintf("%4.2f",$expense['value']); $totalValue+=$expense['value']; ?></td>
+   </tr>
+   <?php } ?>
+    <tr>
+        <td ><?php echo $this->translate("Total"); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+    </tr>
+</table>
+<?php } ?>
+</table> 
+<br>
+<!--show the Loan details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Family loans & savings"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->loandetails)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/loandetails/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/loandetails/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->loandetails){ 
+$laonTotal = 0;
+$oustanding = 0;
+$deposit = 0; ?>
+<table id="hor-minimalist-b" border="1">
+    <tr> 
+        <th ><?php echo $this->translate("Source"); ?></th>
+        <th ><?php echo $this->translate("Famiy member"); ?></th>
+        <th ><?php echo $this->translate("Interest Per Annum %"); ?></th>
+        <th ><?php echo $this->translate("Loan amount"); ?></th>
+        <th ><?php echo $this->translate("Outstanding amount"); ?></th>
+        <th ><?php echo $this->translate("Purpose"); ?></th>
+        <th ><?php echo $this->translate("Savings / deposit amount"); ?></th>
+    </tr>
+
+   <?php foreach($this->loandetails as $loandetails){   ?>
+   <tr>
+       <td><?php echo $loandetails['name']; ?></td>
+       <td><?php echo $loandetails['membername']; ?></td>
+       <td align="right"><?php echo $loandetails['interest']; ?></td>
+       <td align="right"><?php echo $loandetails['loanamount']; 
+       $laonTotal = $laonTotal + $loandetails['loanamount'];
+       ?></td>
+       <td align="right"><?php echo $loandetails['outstanding_amount'];
+       $oustanding = $oustanding + $loandetails['outstanding_amount'];
+       ?></td>
+       <td><?php echo $loandetails['purposename']; ?></td>
+       <td align="right"><?php echo $loandetails['deposit']; 
+       $deposit = $deposit + $loandetails['deposit'];
+       ?></td>
+
+   </tr>
+   <?php } ?>
+<tr>
+   <td><?php echo $this->translate("Total"); ?></td>
+   <td></td>
+   <td align="right"></td>
+   <td align="right"><?php echo sprintf("%4.2f",$laonTotal); ?></td>   
+   <td align="right"><?php echo sprintf("%4.2f",$oustanding); ?></td>
+   <td></td>
+   <td align="right"><?php echo sprintf("%4.2f",$deposit); ?></td>
+</tr>
+</table>
+<?php } ?>
+<br>
+<!--show the income details and edit option !-->
+<table id="hor-minimalist-b">
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("Annual Income and Source of the Income"); ?></th>
+      <th class = "secondtd"></th>
+      <?php if(($this->incomedetails)!=NULL) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/incomedetails/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/incomedetails/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
+</table>
+<?php if($this->incomedetails){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+  <th ><?php echo $this->translate("Source of Income"); ?></th>
+  <th style="text-align:right;"><?php echo $this->translate("Amount of Income"); ?></th>
+</tr>
+  <?php foreach($this->incomedetails as $incomedetails){   ?>
+  <tr>
+      <td><?php echo $incomedetails['name']; ?></td>
+      <td align="right"><?php echo $incomedetails['value']; ?></td>
+  </tr>
+  <?php } ?>
+<tr>
+<?php foreach($this->incometotal as $total){   ?>
+
+  <td><?php echo $this->translate("Total"); ?></td>
+  <td align="right"><?php echo $total['incometotal']; ?></td>
+<?php } ?>
+</tr>
+</table>
+<?php } ?>
+<br>
+<!--show the services details and edit option !-->
+<!--<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Service required by the family"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->servicedetails)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/services/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/services/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>-->
+<?php if($this->servicedetails){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+   <th ><?php echo $this->translate("Service details"); ?></th>
+   <th align="right"><?php echo $this->translate("To whom"); ?></th>
+   <th ><?php echo $this->translate("Own fund"); ?></th>
+   <th ><?php echo $this->translate("Recuired loan/help"); ?></th>
+</tr>
+   <?php foreach($this->servicedetails as $servicedetails){   ?>
+   <tr>
+       <td><?php echo $servicedetails['name']; ?></td>
+       <td><?php echo $servicedetails['to_whom']; ?></td>
+       <td><?php echo $servicedetails['own_land']; ?></td>
+       <td><?php echo $servicedetails['recuired_loan_help']; ?></td>
+   </tr>
+   <?php } ?>
+<!--<tr>
+<?php foreach($this->loandtotal as $total){   ?>
+
+   <td><?php echo $this->translate("Total"); ?></td>
+   <td align="right"><?php echo $total['loantotal']; ?></td>
+   <td></td>
+   <td align="right"><?php echo $total['repaytotal']; ?></td>
+   <td align="right"><?php echo $total['duetotal']; ?></th>
+   <td align="right"><?php echo $total['outstandingtotal']; ?></th>
+<?php } ?>
+</tr>-->
+</table>
+<?php } ?>
+<!-- <br> -->
+
+<!--show the PRA Service Requirement details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd" colspan="4"><?php echo $this->translate("(PRA Based) Service requirement at family member level"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->praservice)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/praservice/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/praservice/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php  if($this->praservice){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+  <th ><?php echo $this->translate("Member Name"); ?></th>
+  <th ><?php echo $this->translate("Services"); ?></th>
+</tr>
+<?php 
+foreach($this->getfamilymembers as $familymembers){ ?>
+<tr>
+<td>
+ <?php echo $familymembers['name']; ?>
+</td>
+<td>
+<?php
+    foreach($this->praservice as $servicedetails){ 
+            if($servicedetails['member_id'] == $familymembers['id']){
+                    echo $servicedetails['name']."<br>";
+            }
+    }
+?>
+</td>
+</tr>
+<?php
+ } ?>
+</table>
+
+<?php } ?>
+<br>
+
+<!--show the health details and edit option !-->
+<table id="hor-minimalist-b">
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("Health"); ?>*</th>
+      <th class = "secondtd"></th>
+      <?php if((($this->gethabithealth) || ($this->gethabitchallenge))!=NULL) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
+</table>
+<?php if($this->gethabithealth) { ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+  <th ><?php echo $this->translate("Name"); ?></th>
+  <th ><?php echo $this->translate("Habit"); ?></th>
+  <th ><?php echo $this->translate("Physical challenge"); ?></th> 
+  <th ><?php echo $this->translate("Chronic disease"); ?></th> 
+</tr>
+  <?php 
+
+
+foreach($this->getfamilymembers as $familymembers){ ?>
+<tr>
+<td>
+ <?php echo $familymembers['name']; ?>
+</td>
+<td>
+<?php
+    foreach($this->gethabithealth as $health) {
+            if($familymembers['name'] == $health['membername']){
+                    echo $health['habitname']."<br>";
+            }
+    }
+?>
+</td>
+
+
+<td>
+<?php
+ foreach($this->gethabitchallenge as $challenge) {
+            if($familymembers['name'] == $challenge['membername']){
+                    echo $challenge['challengename']."<br>";
+            }
+    }
+?>
+</td>
+
+<td>
+<?php
+ foreach($this->getchronicdisease as $chronic) {
+            if($familymembers['name'] == $chronic['membername']){
+                    echo $chronic['suggestion']."<br>";
+            }
+    }
+?>
+</td>
+</tr>
+<?php
+ } ?>
+</table>
+<?php } ?>
+<br>
+<?php
+ } ?>
+
+
+ <div class="btnhouse">
+    <div class="rtbtns">
+        <a href="<?php echo $this->baseUrl(); ?>/family"><input type="button" name="back" value="<?php echo $this->translate("Back"); ?>"></a>
+    </div>
+ </div>

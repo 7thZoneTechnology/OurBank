@@ -53,7 +53,8 @@ class Usercommonview_Model_Usercommon extends Zend_Db_Table {
                 ->where('b.recordstatus_id=3')
 
 ->join(array('c' => 'ob_gender'),'a.gender = c.gender_id')
-                ->join(array('d' => 'ob_designation'),'a.designation = d.designation_id') ;
+                ->join(array('d' => 'ob_designation'),'a.designation = d.designation_id') 
+            ->join(array('f'=>'ourbank_master_department'),'a.department = f.id',array('name as deapartment'));
 
         $result=$this->fetchAll($select);
         return $result->toArray();

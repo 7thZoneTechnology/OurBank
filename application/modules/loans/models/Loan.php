@@ -2,6 +2,37 @@
 class Loans_Model_Loan extends Zend_Db_Table {
     protected $_name = 'ourbank_product';
 
+    public function getLoan() 
+    {
+        $select = $this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a' => 'ourbank_productsoffer'),array('id'),array('a.id as offerid','a.name as productname','a.shortname as shortname1'))
+                    ->join(array('b'=>'ourbank_productsloan'),'a.id = b.productsoffer_id')
+                    ->join(array('c'=>'ourbank_product'),'a.product_id = c.id')
+                    ->where('c.category_id=2')
+                    ->order('a.id DESC');
+
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+    }
+
+        public function fetchAllglsubcode($id)
+        {
+            $select = $this->select()
+                        ->setIntegrityCheck(false)  
+                        ->join(array('a' => 'ourbank_glsubcode'),array('id'))
+                        ->where('a.subledger_id = '.$id);
+            $result = $this->fetchAll($select);
+            return $result->toArray();
+        }
+
+
+
+
+
+
+
+
         public function fetchProductloan($table,$param)
         {
             $select = $this->select()
@@ -37,20 +68,6 @@ class Loans_Model_Loan extends Zend_Db_Table {
             return $result->toArray();
         }
 
-        public function getLoan() 
-        {
-            $select = $this->select()
-                        ->setIntegrityCheck(false)
-                        ->join(array('a' => 'ourbank_productsoffer'),array('id'),array('a.id as offerid','a.name as productname','a.shortname as shortname1'))
-                        ->join(array('b'=>'ourbank_productsloan'),'a.id = b.productsoffer_id')
-                        ->join(array('c'=>'ourbank_product'),'a.product_id = c.id')
-                        ->where('c.category_id=2')
-                        ->order('a.id DESC');
-
-            $result = $this->fetchAll($select);
-            return $result->toArray();
-        }
-
         public function getloantype() 
         {
             $result = $this->fetchAll();
@@ -77,15 +94,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
             return $result->toArray();
         }
 
-        public function fetchAllglsubcode($id)
-        {
-            $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_glsubcode'),array('id'))
-                        ->where('a.subledger_id = '.$id);
-            $result = $this->fetchAll($select);
-            return $result->toArray();
-        }
+
         public function fetchAllglsubcodeforincome()
         {
             $select = $this->select()
@@ -104,9 +113,9 @@ class Loans_Model_Loan extends Zend_Db_Table {
                         ->join(array('a' => 'ourbank_productsoffer'),array('id'),array('id','a.name as productname','a.shortname as productshortname','a.description as productdescription','begindate','closedate','applicableto','fee_glsubcode_id','Interest_glsubcode_id','glsubcode_id'))
                         ->where('a.id = ?',$offerproduct_id)
                         ->join(array('b' => 'ourbank_productsloan'),'a.id = b.productsoffer_id') 
-                        ->join(array('c' => 'ourbank_membertypes'),'c.id = a.applicableto')
+                        ->join(array('c' => 'ourbank_master_ledgertypes'),'c.id = a.applicableto')
                         ->join(array('h' => 'ourbank_glsubcode'),'a.glsubcode_id = h.id')
-                        ->join(array('j' => 'ourbank_interesttypes'),'b.interesttype_id = j.id')
+                        ->join(array('j' => 'ourbank_master_interesttypes'),'b.interesttype_id = j.id')
                         ->join(array('f' => 'ourbank_product'),'f.id = a.product_id',array('f.id as productid','f.name as productname1'));
             $result = $this->fetchAll($select);
             return $result->toArray();
@@ -126,7 +135,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
 
         public function addProductDetails($post) 
         {
-            $this->view->dateconvert = new Creditline_Model_dateConvertor();
+            $this->view->dateconvert = new App_Model_dateConvertor();
             $this->db = Zend_Db_Table::getDefaultAdapter();
             $data = array('id'=>'',
                             'name'=>$post['offerproductname'],
@@ -145,7 +154,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
 
         public function editOffer($table,$post,$id) 
         {
-            $this->view->dateconvert = new Creditline_Model_dateConvertor();
+            $this->view->dateconvert = new App_Model_dateConvertor();
             $this->db = Zend_Db_Table::getDefaultAdapter();
             $where='id = '.$id;
             $data = array(  'name'=>$post['offerproductname'],
@@ -183,7 +192,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
         {
                 $select = $this->select()
                         ->setIntegrityCheck(false)
-                        ->join(array('a' => 'ourbank_membertypes'),array('id'))
+                        ->join(array('a' => 'ourbank_master_ledgertypes'),array('id'))
                                 ->where('a.id = ?',$applicableto);
         $result = $this->fetchAll($select);
         return $result->toArray();

@@ -37,6 +37,7 @@ class Fixedtransaction_Form_FixedStatus extends Zend_Form
 
             $newStatus = new Zend_Form_Element_Select('newStatus');
             $newStatus->setAttrib('class', 'NormalBtn');
+            $newStatus->setRegisterInArrayValidator(false);
             $newStatus->setRequired(true);
             $newStatus->addMultiOption('','Select...');
 

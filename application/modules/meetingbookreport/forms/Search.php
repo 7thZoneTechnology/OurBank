@@ -38,7 +38,7 @@ class Meetingbookreport_Form_Search extends Zend_Form {
 //         $meetingno = $formfield->field('Text','meetingno','','','mand','meetingno',true,'','','','','',0,'');
 
         $meetingno = new Zend_Form_Element_Select('meetingno');
-        $meetingno->addMultiOption('','Select...');
+        $meetingno->addMultiOption('','Week  - Date');
         $meetingno->setAttrib('class', 'mand');
         $meetingno->setAttrib('id', 'meetingno');
         $meetingno->setRegisterInArrayValidator(false);

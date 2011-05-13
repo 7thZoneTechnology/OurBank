@@ -20,7 +20,7 @@ class Groupm_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = "Groupm";
+        $this->view->pageTitle = "Group";
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession(); // get session values
 		$this->view->username = $this->view->globalvalue[0]['username'];
@@ -33,7 +33,7 @@ class Groupm_IndexController extends Zend_Controller_Action
     public function indexAction()
     { 
 		$searchForm = new Groupm_Form_Search();
-        $group = new Groupm_Model_Group();
+                $group = new Groupm_Model_Group();
 		$this->view->form = $searchForm;
  		if ($this->_request->isPost() && $this->_request->getPost('Search')){
 			$result = $group->searchDetails($this->_request->getPost());	// get search criteria values

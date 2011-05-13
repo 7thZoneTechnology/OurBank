@@ -37,35 +37,35 @@
 
 <?php if($this->result) { ?>
     <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-	<tr>
-	    <Th>Member Code</Th>
-	    <Th>Name / Group Name</th>
-            <Th>Branch</th>
-	    <Th>Type</Th>
+        <tr>
+            <Th>Member Code</Th>
+            <Th>Name / Group Name</th>
+            <Th></th>
+            <Th>Type</Th>
             <th></th>
-	</tr>
-	<?php foreach($this->result as $member) : ?>
-	<tr>
-		<td><a href="<?php echo $this->baseUrl();?>/recurringaccount/index/details/Id/<?php echo base64_encode($member->id);?>/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
-		<td><?php  echo $member->name;?></td>
-		<td><?php  echo $member->officename;?></td>
-		<td>
-		<?php if ($member->type==1) { 
-		 echo $member->membertype;
-		} else {
-		  echo "-"; 
-		} ?>
-		</td>
-		<td>
-		<?php if($member->type==2) { 
-		echo $member->membertype;
-		} else {
-		echo "-";
-		}?>
-		</td>
-	</tr>
-	<?php endforeach; ?>
-	</table>
- <?php } else {
-         echo "<font color=red>".$this->errormsg."</font>";
+        </tr>
+        <?php foreach($this->result as $member) { ?>
+        <tr>
+            <td><a href="<?php echo $this->baseUrl();?>/recurringaccount/index/details/Id/<?php echo base64_encode($member->id);?>/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
+            <td><?php  echo $member->name;?></td>
+            <td><?php  echo $member->officename;?></td>
+            <td>
+            <?php if ($member->type==1) {
+                echo $member->membertype;
+            } else {
+                echo "-"; 
+            } ?>
+            </td>
+            <td>
+            <?php if($member->type==2) {
+                echo $member->membertype;
+            } else {
+                echo "-";
+            } ?>
+            </td>
+        </tr>
+        <?php } ?>
+        </table>
+<?php } else {
+        echo $this->errormsg;
     }

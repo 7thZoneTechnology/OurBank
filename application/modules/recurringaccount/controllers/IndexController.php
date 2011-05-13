@@ -27,7 +27,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = 'Recurring';
         $this->view->title = 'Accounting';
         $this->view->accounts = new Recurringaccount_Model_Accounts();
-        $this->view->cl = new Creditline_Model_dateConvertor ();
+        $this->view->cl = new App_Model_dateConvertor();
         $this->view->adm = new App_Model_Adm ();
     }
 
@@ -43,7 +43,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
                     if($result) {
                         $this->view->result =$result;
                     } else {
-                        $this->view->errormsg = "Record not found..Try Again..";
+                        $this->view->errormsg = "No records found";
                     }
                 }
             }

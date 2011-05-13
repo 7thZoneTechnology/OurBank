@@ -1,43 +1,94 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
+<script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+<script language="javascript">
+ function getBranch(bankid) { 
+            targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
+            $.ajax({ url: targeturl, success: function(data){ $('#branch').html(data) }});
+       }
 
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/membershipgroupm.js"></script>
+</script>
+ <?php
+if(fsockopen("www.google.com", 80)){
+?>
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript">
+   </script>
+</head>
+<?php } ?>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/group/membershipgroupm.js"></script>
+<script>
+</script>
 <div id = "searchDiv">
     <fieldset>
         <legend>Group details</legend>
-        <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/groupaccount" method="POST" onsubmit="return valid()">
+        <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/groupaccount" method="POST" onsubmit="return valid()" id="addgroup">
             <table class="fieldsets"> 
+                
+                <tr>
+                    <TD><label class="mand">Group type</label></td>
+                    <td colspan="3">
+                    <?php if($this->gtype) { $gtype = $this->gtype; } ?>
+                    <input type="radio" name="grouptype" id="grouptype" class ="required"  <?php if($gtype == 2) { ?> checked <?php } ?> value=2>SHG
+                    <input type="radio" name="grouptype" id="grouptype" class ="required" <?php if($gtype == 3) { ?> checked <?php } ?> value=3>JLG
+                    </TD>
+               </TR>
                 <TR>
-                    <TD><label for="fld1" class="mand">Branch name:</td>
+                    <TD><label for="fld1" class="mand">Village name</td>
                     <TD><?php echo $this->form->office;?></TD>
-                </TR>	
-                <TR>		
+                    <TD><?php echo $this->form->bank;?></TD>
+                    <TD><label class="mand">Bank branch</label></TD>
+                    <TD><div id="branch"><?php echo $this->form->branch;?></div></TD>
                     <TD><?php echo $this->form->groupname;?></TD>
+                </TR> 
+                 <TR>
+                    <TD><?php echo $this->form->savingamt;?></td>
+                    <TD><?php echo $this->form->penaltylate;?></TD>
+                    <TD><?php echo $this->form->penaltyabsence;?></TD>
+                </TR>  
+
+                <TR>
+                    <TD><?php echo $this->form->place;?></td>
+                    <TD><?php echo $this->form->times;?></TD>
+                    <TD><?php echo $this->form->day;?></TD>
                 </TR>
                 <TR>
-                    <TD ><?php echo $this->form->Created_Date;?></TD></TD>
-                </TR>
+                    <TD><?php echo $this->form->interest;?></TD>
+                    <TD colspan="2"><?php echo $this->form->Created_Date;?></TD>
+                </tr>
             </table><br/>
-            <table class="fieldsets">
-                    <TR id="membersdiv">
-                    </TR>
-            </table>
+         <div id='error'>&nbsp;</div>
+
+            <table class="fieldsets" width="100%">
+        <div style="width:600px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+            <TR  align="center" id="membersdiv">
+            </TR>
+        </div>
+</table>
+<br>
+<?php 
+if(fsockopen("www.google.com", 80)){
+?>
+        <div id="map" style="width: 250px; height:200px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+        </div>
+            <input type="text" id="latitude" name = "latitude" size="15"/>
+            <input type="text" id="longitude" name = "longitude" size="15"/>
+ 
+            
+              <script type="text/javascript">
+                var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: new google.maps.LatLng(15.085866972731804,76.94207031250001),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                google.maps.event.addListener(map, 'click', function(event) {
+                if (event.latLng) {
+                    document.getElementById('latitude').value = event.latLng.lat();
+                    document.getElementById('longitude').value = event.latLng.lng();
+                }
+                });
+            </script>
+<?php } ?>
             <div class="btnhouse">
                 <div class="ltbtns">
                     <?php echo $this->form->Submit;?>
@@ -49,6 +100,6 @@
         </form>
     </fieldset>
 </div>
-<?php if($this->error) { echo "<font color = 'red'><b>Improper Group head selection !</b>"; } ?>
+<?php if($this->error) { echo "<font color = 'red'><b>".$this->error."</b></font>"; } ?>
 
 

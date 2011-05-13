@@ -28,7 +28,7 @@ class Depositsummary_IndexController extends Zend_Controller_Action
      { 
          $this->view->pageTitle = $this->view->translate('Deposit summary');
          $this->view->tilte = $this->view->translate('Reports');
-         $this->view->type = "others";
+         $this->view->type = "generalFields";
          $this->view->adm = new App_Model_Adm();
 
      }
@@ -296,7 +296,7 @@ $page->drawLine($xy, $y1, $xy, $startlinepoint);//1st vertical line
         $pdf->save('/var/www'.$projname.'/reports/depositsummaryreport.pdf');
         $path = '/var/www'.$projname.'/reports/depositsummaryreport.pdf';
         chmod($path,0777);
-//          $this->_redirect('/depositsummary/index/');
+        $this->_redirect('depositsummary/index');
      }
     
     function reportdisplayAction() {

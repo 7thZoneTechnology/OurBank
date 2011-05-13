@@ -24,16 +24,15 @@ class Loansupplementary_IndexController extends Zend_Controller_Action
     function init() { 
         $this->view->pageTitle = $this->view->translate('Loan Supplementary');
 	$this->view->title =$this->view->translate('Reports');
-        $this->view->type = "others";
+        $this->view->type = "financialReports";
     }
 
     function indexAction() {
         $searchForm = new Loansupplementary_Form_Search();
         $this->view->form = $searchForm;
-        
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
-            if ($searchForm->isValid($formData)) {  
+            if ($searchForm->isValid($formData)) {
                 $Dispdate = $this->_request->getParam('datefrom'); 
  	        $this->view->field1 = $Dispdate;
 	        $dateconvertor = new App_Model_dateConvertor();
@@ -43,7 +42,8 @@ class Loansupplementary_IndexController extends Zend_Controller_Action
 // //              //Loan Account Credit and Debit
                 $loanCredit = $transaction->totalloanCredit($Date);
 		$this->view->loanCredit=$loanCredit;
-
+// echo "<pre>";
+// var_dump($loanCredit);
 	        $loanDebit = $transaction->totalloanDebit($Date);
 	        $this->view->loanDedit=$loanDebit;
             }
@@ -69,8 +69,6 @@ class Loansupplementary_IndexController extends Zend_Controller_Action
 // 
 // 
 // }
-
-
     function pdftransactionAction() {
 	$app = $this->view->baseUrl();
 	$word=explode('/',$app);
@@ -186,19 +184,19 @@ class Loansupplementary_IndexController extends Zend_Controller_Action
 
 
         foreach($loanCredit as $loansCredit) { $i++; $columntotal=0;
-if(($loansCredit->paymenttype_mode == 1) or ($loansCredit->paymenttype_mode == 5)) {
+if(($loansCredit->paymenttype_id == 1) or ($loansCredit->paymenttype_id == 5)) {
             $page->drawText($i,$x1, $y1);
-	    $productname ="To ".$loansCredit->offerproductname;
+	    $productname ="To ".$loansCredit->account_number;
             $page->drawText($productname,$x2, $y1);
 	    $page->drawText($loansCredit->account_id,$x3, $y1);
-            if($loansCredit->paymenttype_mode == 1) {
-                $page->drawText($loansCredit->transaction_amount,$x4, $y1);
-                $totalCredit = $totalCredit + $loansCredit->transaction_amount;
-		$columntotal += $loansCredit->transaction_amount;
-            } elseif($loansCredit->paymenttype_mode == 5) {
-                $page->drawText($loansCredit->transaction_amount,$x5, $y1);
-                $totalTransferCredit = $totalTransferCredit + $loansCredit->transaction_amount; 
-		$columntotal += $loansCredit->transaction_amount;
+            if($loansCredit->paymenttype_id == 1) {
+                $page->drawText($loansCredit->amount_to_bank,$x4, $y1);
+                $totalCredit = $totalCredit + $loansCredit->amount_to_bank;
+		$columntotal += $loansCredit->amount_to_bank;
+            } elseif($loansCredit->paymenttype_id == 5) {
+                $page->drawText($loansCredit->amount_to_bank,$x5, $y1);
+                $totalTransferCredit = $totalTransferCredit + $loansCredit->amount_to_bank; 
+		$columntotal += $loansCredit->amount_to_bank;
             }
  		$page->drawText(sprintf("%4.2f",$columntotal),$x6, $y1);
 		$page->drawText(sprintf("%4.2f",$columntotal),$x6, $y1);
@@ -206,19 +204,19 @@ if(($loansCredit->paymenttype_mode == 1) or ($loansCredit->paymenttype_mode == 5
             $y1 = $y1 - 15;
         } } $i=0;
         foreach($loanDebit as $loansDebit) {  $i++;$columntotald=0;
-if($loansDebit->paymenttype_mode == 1 or $loansDebit->paymenttype_mode == 5 ) {
+if($loansDebit->paymenttype_id == 1 or $loansDebit->paymenttype_id == 5 ) {
             $page->drawText($i,$x7, $y2);
-	    $productnamed = "By ".$loansDebit->offerproductname;
+	    $productnamed = "By ".$loansDebit->account_number;
             $page->drawText($productnamed,$x8, $y2);
 	    $page->drawText($loansDebit->account_id,$x9, $y2);
-            if($loansDebit->paymenttype_mode == 1) {
-                $page->drawText($loansDebit->transaction_amount,$x10, $y2);
-                $totalDebit = $totalCredit + $loansDebit->transaction_amount;
-		$columntotald += $loansDebit->transaction_amount;
-            } elseif($loansDebit->paymenttype_mode == 5) {
-                $page->drawText($loansDebit->transaction_amount,$x11, $y2);
-                $totalTransferDebit = $totalTransferDebit + $loansDebit->transaction_amount; 
-		$columntotald += $loansDebit->transaction_amount;
+            if($loansDebit->paymenttype_id == 1) {
+                $page->drawText($loansDebit->amount_from_bank,$x10, $y2);
+                $totalDebit = $totalCredit + $loansDebit->amount_from_bank;
+		$columntotald += $loansDebit->amount_from_bank;
+            } elseif($loansDebit->paymenttype_id == 5) {
+                $page->drawText($loansDebit->amount_from_bank,$x11, $y2);
+                $totalTransferDebit = $totalTransferDebit + $loansDebit->amount_from_bank; 
+		$columntotald += $loansDebit->amount_from_bank;
             }
 		$page->drawText(sprintf("%4.2f",$columntotald),$x12, $y2);
 		$page->drawText(sprintf("%4.2f",$columntotald),$x12, $y2);

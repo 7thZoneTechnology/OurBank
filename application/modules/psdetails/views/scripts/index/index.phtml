@@ -1,3 +1,50 @@
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/toggel.js"></script> 
+<?php if (count($this->details)) { ?>
+<div style="float:left;width:350px"> 
+    <?php foreach($this->details as $details) { ?>
+        <table id="hor-minimalist-s">
+            <TR>
+                <TH>Member details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td>Name </td>
+                <TD><?php echo $details->name; ?></TD>
+            </TR>
+
+            <TR>
+                <td>Branch</td>
+                <TD><?php echo $details->officename; ?></TD>
+            </TR>
+            <TR>
+                <td>Code</td>
+                <TD><?php echo $details->code; ?></TD>
+
+            </TR>
+            <TR>
+                <TH>Account details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td> Account number</td>
+                <td><?php echo $details->number; ?></TD>
+            </TR>
+            <TR>
+                <td>Product name</td>
+                <td><?php echo $details->offername; ?></TD>
+            </TR>
+            <TR>
+                <td>Created date</td>
+                <td><?php echo $details->createdDate; ?></TD>
+            </TR>
+            <TR>
+                <td>Balance</td>
+                <td><b><font color="green"><?php echo $this->balance; ?></font></b></TD>
+            </TR>
+        </table> 
+    <?php } ?>
+</div>
+<?php } else { ?>
     <fieldset>
         <legend>Search account</legend>
         <form action="<?php echo $this->baseUrl();?>/psdetails/index" method="POST">
@@ -14,73 +61,37 @@
             </div>
         </form>
     </fieldset>
-<?php if (count($this->details)) { ?>
-
-    <?php foreach($this->details as $details) { ?>
-        <table id="hor-minimalist-b">
-            <TR>
-                <TH>Member details</TH>
-                <TH></TH>
-            </TR>
-            <TR>
-                <td>Name </td>
-                <TD><?php echo $details->name ?></TD>
-            </TR>
-
-            <TR>
-                <td>Branch</td>
-                <TD><?php echo $details->officename ?></TD>
-            </TR>
-            <TR>
-                <td>Code</td>
-                <TD><?php echo $details->code ?></TD>
-
-            </TR>
-            <TR>
-                <TH>Account details</TH>
-                <TH></TH>
-            </TR>
-            <TR>
-                <td> Account number</td>
-                <td><?php echo $details->number ?></TD>
-            </TR>
-            <TR>
-                <td>Product name</td>
-                <td><?php echo $details->offername ?></TD>
-            </TR>
-            <TR>
-                <td>Created date</td>
-                <td><?php echo $details->createdDate ?></TD>
-            </TR>
-<!--            <TR>
-                <td>Balance</td>
-                <td><?php echo $details->balance ?></TD>
-            </TR>-->
-        </table> 
-    <?php } ?>
-	<?php if(count($this->group)) { ?>
-        <table id="hor-minimalist-b">
-            <TR>
-                <TH>Member code </TH>
-                <TH>Member name</TH>
-            </TR>
-		<?php foreach ($this->group as $group) { ?>
-            <TR>
-                <td><?php echo $group->code; ?></b></td>
-                <td><?php echo $group->name; ?></TD>
-            </TR>
-		<?php }?>
-		</table>
-	<?php } ?>
-<?php } //if ?>
-
-</br>
+<?php } ?>
+<?php if(count($this->group)) { ?>
+    <div style="float:right;width:350px"> 
+        <div class="container">
+	   <h2 class="trigger"><a href="#">Group Members</a></h2>
+            <div class="toggle_container">
+                <div class="block">
+                    <table id="hor-minimalist-s">
+                        <TR>
+                            <TH>Member code </TH>
+                            <TH>Member name</TH>
+                        </TR>
+                        <?php foreach ($this->group as $group) { ?>
+			  <TR>
+                            <td><?php echo $group->code; ?></td></td>
+                            <td><?php echo $group->name; ?></TD>
+                        </TR>
+                        <?php }?>
+		    </table>
+                </div>
+            </div>
+	</div>
+    </div>
+<?php } ?>
 <?php if (count($this->tran)) {?>
+</br>
 <table id="hor-minimalist-b">
     <tr>
         <th>V No.</td>
         <th>Transaction date</td>
-        <th>Credit</td>
+        <th>Creidt</td>
         <th>Debit</td>
         <th>Payment mode</td>
         <th>Transacted by</td>  

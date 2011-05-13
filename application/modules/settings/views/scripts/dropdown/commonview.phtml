@@ -12,19 +12,19 @@
 <?php }}  ?>
         <?php foreach($this->details as $details) {  ?>
                 <TR>
-                    <TD>Marital status</TD>
+                    <TD>Name</TD>
                     <TD><?php echo $details['name'];?></TD>
+<td></td>
+<td></td>
                     <TD><a href="<?php echo $this->baseUrl();?>/settings/dropdown/edit/id/<?php echo $details['id'];?>/ff/<?php echo $this->tableName ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th></TD>
-                    <TD><a href="<?php echo $this->baseUrl();?>/category/index/categoryedit/id/<?php echo $edit_id['id'];?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20"></a></th></TD>
+                   
                     
                 </TR>
 
                
-                    <TD><a href="<?php echo $this->baseUrl(); ?>/settings">
-                                <input name="submit" type="submit" class="officebutton" value="Back"></a></TD>
-<td></td>
-<td></td>
-<td></td>
+
+<td><a href="<?php echo $this->baseUrl(); ?>/settings/dropdown">
+                                <input name="submit" type="submit" class="officebutton" value="Back"></a></td>
 
               </TR>
         </TABLE>

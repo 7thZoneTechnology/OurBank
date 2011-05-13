@@ -20,38 +20,57 @@
 ?>
 
 <?php
-class Fee_IndexController extends Zend_Controller_Action
+class Fee_Indexcontroller extends Zend_Controller_Action
 {
 	public function init() 
 	{
-		 $this->view->pageTitle=$this->view->translate('Fee');
+		$this->view->pageTitle='Fee';
 
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
-		$this->view->username = $this->view->globalvalue[0]['username'];
+         $this->view->globalvalue = $globalsession->getSession();
+    $sessionName = new Zend_Session_Namespace('ourbank');
+	 $this->view->createdby = $sessionName->primaryuserid;
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
 		$this->view->adm = new App_Model_Adm();   	
 	}
+	 public function getcategoryAction()
+    {
+        $this->_helper->layout->disableLayout();
 
+        $path = $this->view->baseUrl();
+        $feeForm = new Fee_Form_Fee();
+        $this->view->Form = $feeForm;
+        $catID=$this->_request->getParam('selectedval');
+
+        $fee = new Feecommon_Model_Feecommon();
+        $cats=$fee->getcategory($catID);
+       
+         foreach($cats as $cats) {
+           $feeForm->feefor_id->addMultiOption($cats['id'],$cats['name']);
+        }
+    }
 	public function indexAction() 
 	{
                
 	$searchForm = new Fee_Form_Search();
 		$this->view->form = $searchForm;
 		$individual = new Fee_Model_Fee();
-
+ $id=$this->_getParam('id');
+			$this->view->id=$id;
 		$page = $this->_getParam('page',1);
-		$paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ob_fee","id","DESC"));
+		$paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ourbank_fee","id","DESC"));
 
-		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+	if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+			$formData = $this->_request->getPost();
 			if ($this->_request->isPost()) {
-				if ($searchForm->isValid($this->_request->getPost())) {
+				$formData = $this->_request->getPost();
+				if ($searchForm->isValid($formData)) {
 					$result = $individual->feeSearch($searchForm->getValues());
 					$page = $this->_getParam('page',1);
 					$paginator = Zend_Paginator::factory($result);
+		$this->view->paginator = $paginator;
 				} 
 				if (!$result){
 					echo "<font color='RED'>Records Not Found Try Again...</font>";
@@ -61,6 +80,7 @@ class Fee_IndexController extends Zend_Controller_Action
 		$paginator->setItemCountPerPage($this->view->adm->paginator());
 		$paginator->setCurrentPageNumber($page);
 		$this->view->paginator = $paginator;
+
 	}
 public function viewAction() 
 	{
@@ -69,19 +89,17 @@ public function viewAction()
 //         $checkaccess = $access->accessRights('Fee',$this->view->globalvalue[0]['name'],'viewAction');
 // 		if (($checkaccess != NULL)) {
 			$id=$this->_request->getParam('id');
+		$this->view->id = $id;
 			$form = new Commonviewfee_Form_Feedetails();
 			$this->view->form=$form;
 			$fee = new Fee_Model_Fee;
 			$this->view->feedetails=$fee->getFee($id);
-
-			$membertype = $this->view->adm->viewRecord("ourbank_membertypes","id","DESC");
-			foreach($membertype as $membertype){
-				$form->membertype->addMultiOption($membertype['id'],$membertype['type']);
-			}
+			$this->view->fetchfee=$fee->fetchfee($id);
 // 		} else {
 //             $this->_redirect('index/error');
 // 		}
 	}	
+
 	public function addAction() 
 	{
 //Acl
@@ -90,21 +108,56 @@ public function viewAction()
 //        	if (($checkaccess != NULL)) {
 			$form = new Fee_Form_Fee();
 			$this->view->form=$form;
+
 			$appliesTo = new Feecommon_Model_Feecommon();
-			$membertype = $this->view->adm->viewRecord("ourbank_membertypes","id","DESC");
-			foreach($membertype as $membertype){
-				$form->membertype_id->addMultiOption($membertype['id'],$membertype['type']);
+
+			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+			foreach($hierarchy_id as $hierarchy_id){
+				$form->hierarchy_id->addMultiOption($hierarchy_id['id'],$hierarchy_id['type']);
 			}
-			$glcode = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
+			
+			$glcode = $this->view->adm->viewRecord("ourbank_feeamounttypes","id","DESC");
 			foreach($glcode as $glcode){
-				$form->glsubcode_id->addMultiOption($glcode['id'],$glcode['header']);
+				$form->amountype_id->addMultiOption($glcode['id'],$glcode['name']);
 			}
+
+			$glcode = $this->view->adm->viewRecord("ourbank_category","id","DESC");
+			foreach($glcode as $glcode){
+				$form->category_id->addMultiOption($glcode['id'],$glcode['name']);
+			}
+			$glcode = $this->view->adm->viewRecord("ourbank_feetype","id","DESC");
+			foreach($glcode as $glcode){
+				$form->feetype_id->addMultiOption($glcode['id'],$glcode['name']);
+			}
+
+        $office_id1 = $appliesTo->getOffice();
+        foreach($office_id1 as $office_id) {
+                $form->glsubcode_id->addMultiOption($office_id['id'],
+                                                     $office_id['glsubcode']);
+        }
+
+// 			$this->view->categorydetails=$appliesTo->getcategory();
+			$this->view->memberdetails=$appliesTo->getmembertypes();
+
+
+
 			if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 				$formData = $this->_request->getPost();
 				if ($this->_request->isPost()) {
 					if ($form->isValid($formData)) {  
-						$id = $this->view->adm->addRecord("ob_fee",$form->getValues());
-						$this->_redirect('/fee/index/view/id/'.$id);
+
+										$formdata1=array('name'=>$formData['name'],
+                                    					'description'=>$formData['description'],
+                                    					'hierarchy_id'=>$formData['hierarchy_id'],
+                                    					'feetype_id'=> $formData['feetype_id'],
+                                    					'category_id'=>$formData['category_id'],
+                                    					'glsubcode_id'=>$formData['glsubcode_id'],
+
+                                    					'amountype_id'=>$formData['amountype_id'],
+                                    					'created_by'=>$this->view->createdby,
+														'value'=>$formData['value']);						
+						$id = $this->view->adm->addRecord("ourbank_fee",$formdata1);
+			$this->_redirect("/fee");
    					}
 				}
 			}
@@ -121,30 +174,77 @@ public function viewAction()
 // 		if (($checkaccess != NULL)) {
 			$form = new Fee_Form_Fee();
 			$this->view->form=$form;
-			$membertype = $this->view->adm->viewRecord("ourbank_membertypes","id","DESC");
-			foreach($membertype as $membertype){
-				$form->membertype_id->addMultiOption($membertype['id'],$membertype['type']);
+
+			$appliesTo = new Feecommon_Model_Feecommon();
+
+			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+			foreach($hierarchy_id as $hierarchy_id){
+				$form->hierarchy_id->addMultiOption($hierarchy_id['id'],$hierarchy_id['type']);
 			}
-			$glcode = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
+			$glcode = $this->view->adm->viewRecord("ourbank_feeamounttypes","id","DESC");
 			foreach($glcode as $glcode){
-				$form->glsubcode_id->addMultiOption($glcode['id'],$glcode['header']);
+				$form->amountype_id->addMultiOption($glcode['id'],$glcode['name']);
 			}
+			$glcode = $this->view->adm->viewRecord("ourbank_category","id","DESC");
+			foreach($glcode as $glcode){
+				$form->category_id->addMultiOption($glcode['id'],$glcode['name']);
+			}
+			$glcode = $this->view->adm->viewRecord("ourbank_feetype","id","DESC");
+			foreach($glcode as $glcode){
+				$form->feetype_id->addMultiOption($glcode['id'],$glcode['name']);
+			}
+  $office_id1 = $appliesTo->getOffice();
+        foreach($office_id1 as $office_id) {
+                $form->glsubcode_id->addMultiOption($office_id['id'],
+                                                     $office_id['glsubcode']);
+        }
+
+// 			$this->view->categorydetails=$appliesTo->getcategory();
+//			$this->view->memberdetails=$appliesTo->getmembertypes();
+
+
 			$id=$this->_getParam('id');
-			$this->view->fee_id=$id;
+			$this->view->id=$id;
 			$fee = new Fee_Model_Fee;
-			$feedetails = $fee->getFee($id);
 
-			$form->populate($feedetails);
+			$feedetails = $fee->getffee($id);
+//print_r($feedetails);
+			$this->view->feedetails=$feedetails;
 
+
+			$details = $fee->fetchfee($id);
+foreach($details as $fedetails) {
+							$this->view->form->name->setValue($fedetails['name']);
+								$this->view->form->description->setValue($fedetails['description']);
+								$this->view->form->hierarchy_id->setValue($fedetails['hierarchy_id']);
+								//$this->view->form->feetype_id->setValue($fedetails['feetype_id']);
+								$this->view->form->glsubcode_id->setValue($fedetails['glsubcode_id']);
+
+								$this->view->form->category_id->setValue($fedetails['category_id']);
+								$this->view->form->amountype_id->setValue($fedetails['amountype_id']);
+								$this->view->form->value->setValue($fedetails['value']);
+
+						}
 			if ($this->_request->isPost() && $this->_request->getPost('Update')) { 
-		            $editfee = $this->view->adm->editRecord("ob_fee",$id);
+if ($this->_request->isPost()) {
+		$formData = $this->_request->getPost();
+		if ($form->isValid($formData)) {
 
-					$this->view->adm->updateLog("ob_fee_log",$editfee[0],$this->view->createdby);
-					//update 					
-					$this->view->adm->updateRecord("ob_fee",$id,$form->getValues());
-			$this->_redirect("/fee");
+														$formdata1=array('name'=>$formData['name'],
+                                    					'description'=>$formData['description'],
+                                    					'hierarchy_id'=>$formData['hierarchy_id'],
+                                    					'feetype_id'=> $formData['feetype_id'],
+                                    					'category_id'=>$formData['category_id'],
+                                    					'amountype_id'=>$formData['amountype_id'],
+                                    					'created_by'=>$this->view->createdby,
+														'value'=>$formData['value']);	
+		
+		            $editfee = $this->view->adm->editRecord("ourbank_fee",$id);
+					$this->view->adm->updateLog("ourbank_fee_log",$editfee[0],$this->view->createdby);
+					$this->view->adm->updateRecord("ourbank_fee",$id,$formdata1);
+ 			$this->_redirect("/fee");
 	
-			}
+			}}}
 // 		} else {
 //             $this->_redirect('index/error');
     }		
@@ -159,23 +259,21 @@ public function viewAction()
 //      $checkaccess = $acl->isAllowed($role,'Fee',$accessid);
 //      if(($role) && ($checkaccess != NULL)) {
  		$id=$this->_request->getParam('id');
-		$modId=$this->_request->getParam('mod_id');
-		$subId=$this->_request->getParam('sub_id');
-		$this->view->user_id=$id;
-		$this->view->mod_id=$modId;
-		$this->view->sub_id=$subId;
+// 		$modId=$this->_request->getParam('mod_id');
+// 		$subId=$this->_request->getParam('sub_id');
+ 		$this->view->id=$id;
+// 		$this->view->mod_id=$modId;
+// 		$this->view->sub_id=$subId;
 		$individualcommon=new Feecommon_Model_Feecommon;
-$userdetails=new User_Model_User();
-		$user_details=$userdetails->getuser($id);		$this->view->feedetails=$user_details;
- 		$delform=new Userdetails_Form_Delete();
-		$this->view->delete=$delform;
-		if ($this->_request->isPost() && $this->_request->getPost('Submit')){
-			$formdata = $this->_request->getPost();
-			if($delform->isValid($formdata)) { 
-							$redirect = $this->view->adm->deleteRecord("ob_fee_log",$id);
+		$fee = new Fee_Model_Fee;
+			$this->view->feedetails=$fee->getFee($id);
+			$this->view->fetchfee=$fee->fetchfee($id);
 
- 				$this->_redirect('/fee');
-			}
-		}
+ 		$delform=new Fee_Form_Delete();
+		$this->view->deleteform = $delform;
+		if ($this->_request->isPost() && $this->_request->getPost('Delete')){
+ $redirect = $this->view->adm->deleteRecord("ourbank_fee",$id);
+					//update
+            $this->_redirect('/fee');		}
 	}
 }

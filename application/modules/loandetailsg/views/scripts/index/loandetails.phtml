@@ -1,4 +1,6 @@
-<div style="float:left;width:350px"> 
+
+<?php if (count($this->details)) { ?>
+ <div style="float:left;width:350px"> 
     <?php foreach($this->details as $details) { ?>
         <table id="hor-minimalist-s">
             <TR>
@@ -80,7 +82,7 @@
             </TR>
 		</table>
 </div>
-<?php $convertdate = new Creditline_Model_dateConvertor(); ?>
+<?php $convertdate = new App_Model_dateConvertor(); ?>
 
     <table id="hor-minimalist-b">
         <tr>
@@ -116,7 +118,7 @@
 
 
             <td><?php echo $convertdate->phpnormalformat($instalments['installment_date']);  ?></td>
-            <td><?php echo $instalments['description'];  ?></td>
+            <td><?php echo $instalments['name'];  ?></td>
 
             <td><?php echo $instalments['installment_amount']; 
                 $total5 = $total5 + $instalments['installment_amount'];
@@ -133,3 +135,6 @@
             <th>R$ <?php echo sprintf("%4.2f", $total5); ?></th>
         </tr>
     </table>
+    <?php } else { ?>
+    Invalid number
+<?php } ?>

@@ -1,0 +1,123 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<html>
+  <head>
+    <script type='text/javascript' src='<?php  echo $this->baseUrl();?>/js/jquery-1.3.2.min.js'></script>
+    <script type='text/javascript' src='<?php  echo $this->baseUrl();?>/js/jquery-1.3.1.js'></script>
+    <script type='text/javascript'>
+$(document).ready(
+  function() {
+    $('input#tmpAddRow').click(
+      function() {
+        var newRow = $('tr#tmp').clone(true).removeAttr('id');
+        newRow.children("select").each( function() {
+            $(this).children(':first').attr('selected', 'selected');
+        });
+        newRow.children("input:text").val("");
+        newRow.appendTo('tbody');
+      }
+    );
+
+    $('tr input[type=text]').focus(
+      function() {
+        $(this).addClass('myFocused');
+      }
+    ).blur(
+      function() {
+        $(this).removeClass('myFocused');
+      }
+    );
+
+    $('.delete-icon').click(function() {$(this).closest('tr').remove()});
+  }
+);
+ </script>
+<div class="profile_tab"> 
+	 <table id="hor-minimalist-b">	
+            <tr><th colspan="4"><b>GROUP MEMBER DETAILS</b></Th></tr>
+	    <th colspan="4">1.Member details</th>
+                <tr>
+                    <?php echo $this->form->accountnumber;?>
+                    <?php echo $this->form->name;?>
+                    <?php echo $this->form->lastname;?>
+                    <?php echo $this->form->age;?>
+                    <?php echo $this->form->address1;?>
+                    <?php echo $this->form->address2;?>  
+                    <?php echo $this->form->city;?> 
+                    <?php echo $this->form->state;?>
+                    <?php echo $this->form->pin;?> 
+               </tr>
+	  </table>
+	<br>
+   <table id="hor-minimalist-b" width="100%">
+    <tr><Th colspan="10">Premium Payment Mode is Annual</Th></tr>
+                <tr>
+                    <td align="center" width="10" colspan="2"><b>Option</b></td>
+                    <td align="center" width="20" colspan="2"><b>Sum amount</b></td>
+                    <td align="center" width="20" colspan="2"><b>Base premium</b></td>
+                    <td align="center" width="20" colspan="2"><b>Service tax</b></td>
+                    <td align="center" width="20" colspan="2"><b>Total premium</b></td>
+                </tr>
+                <tr>
+                    <TD align="center" width="10" colspan="2"><?php echo $this->form->option;?></TD>
+                    <TD align="center" width="20" colspan="2"><?php echo $this->form->sumamount;?></TD>
+                    <TD align="center" width="20" colspan="2"><?php echo $this->form->basepremium;?></TD>
+                    <TD align="center" width="20" colspan="2"><?php echo $this->form->service;?></TD>
+                    <TD align="center" width="20" colspan="2"><?php echo $this->form->total;?></TD>
+                </tr>
+ 
+<tr><TD><input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"></TD></tr>
+
+  </table>
+<br>
+ 
+  <table id="hor-minimalist-b">	
+      <tr>
+            <th colspan="6">2.Nominee</th>
+      </tr>
+     <tr>
+        <TD>Full name</TD>
+        <TD><?php echo $this->form->fullname;?></TD>
+        <TD>Relationship with nominee</TD>
+        <TD> <?php echo $this->form->relationship;?></TD>
+        <TD>Age as of last birthday</TD>
+        <TD><?php echo $this->form->relationship;?></TD>
+    </tr>
+  </table>
+<br>
+  <table id="hor-minimalist-b">	
+    <tr>
+        <th colspan="5">3.Members consent and good health declaration</th>
+    </tr>
+    <tr><td colspan="5"><font color="Green"><b>Good Health Declarationn</b></font></td></tr>
+    <tr><TD>
+    <p align="justify">I Declare that i am in sound and that i am not suffering from any physical deformity, mental disorder, critical illness * or any condition requring medical treatment for a critical illness as on date. I have been hospital for a period of more than 15 consecutive days in the last 12 months (this period does not include hospitalization, if any, for reason of injuries and accidents).</p></td>
+    <tr>
+    
+
+   
+    <tr>
+        <th colspan="5">4.Anyother material facts pretaining to health otherwise</th>
+        <tr><Td width="30%"><br><br><br><br>DATE : <?php echo date('d-m-Y');?></td>
+        <Td align="right"><br><br><br><br>Signature / Thumb impression of Member:____________________</td></tr>
+    </tr>
+   </table>
+ </div>
+

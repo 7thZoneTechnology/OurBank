@@ -1,0 +1,111 @@
+
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+    function Getsubcaste(casteid,path) {
+	if(casteid) {
+	   targeturl=path+"/familydefault/index/getsubcaste?casteid="+casteid; 
+	   $.ajax({ url: targeturl, success: function(data){ $(".subcaste").html(data) }});
+	}
+    }
+
+// $(function(){
+//   $("#health-1").click ( function() {
+//     
+//     if ( !$(this).is ( ":checked" ) )
+//     {
+//       $(".child").attr ( "disabled" , true );
+//     }
+//     else
+//     {
+//       $(".child").removeAttr ( "disabled" );
+//     }
+//   });
+// });
+
+
+ 
+
+</script>
+
+<!-- add individual member action !-->
+<form action="<?php echo $this->baseUrl();?>/familydefault/index/addfamily" method="POST" name="addForm">
+<span id=details></span>
+<fieldset>
+<legend>Family Details*</legend>
+    <table class="fieldsets" id="hor-minimalist-b">
+        <tr>
+            <td>Family ID</td>
+            <td><?php echo $this->form->familyid; ?></td>
+        </tr>
+        <tr>
+            <td>Sujeevana No. *</td>
+            <td><?php echo $this->form->sujeevana; ?></td>
+        </tr>
+        <tr>
+            <td>House No *</td>
+            <td><?php echo $this->form->houseno; ?></td>
+        </tr>
+        <tr> 
+            <td>Street/Road/Lane</td>
+            <td><?php echo $this->form->street; ?></td>
+        </tr>
+        <tr>
+            <td>Colony/Village *</td>
+            <td><?php echo $this->form->village; ?></td>
+        </tr>
+        <tr>
+            <td>Rev village *</td>
+            <td><?php echo $this->form->rev_village; ?></td>
+        </tr>
+        <tr>
+            <td>Family type *</td>
+            <td><?php echo $this->form->familytype; ?></td>
+        </tr>
+        <tr>
+            <td>Minority</td>
+            <td><?php echo $this->form->minority; ?></td>
+        </tr>
+        <tr>
+            <td>Category *</td>
+            <td><?php echo $this->form->caste; ?></td>
+        </tr>
+        <tr>
+            <td>Caste *</td>
+            <td class="subcaste"><?php echo $this->form->subcaste; ?></td>
+        </tr>
+        <tr>
+            <td>Ration card </td>
+            <td><?php echo $this->form->ration; ?></td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">Health Insurance *</td>
+            <td><?php echo $this->form->health; ?></td>
+
+        </tr>
+        <tr>
+            <td>NREGS job card No *</td>
+            <td><?php echo $this->form->jobno; ?></td>
+        </tr>
+        <tr>
+            <td>Major source of income *</td>
+            <td><?php echo $this->form->income; ?></td>
+        </tr>
+        <tr>
+            <td>Phone number</td>
+            <td><?php echo $this->form->phone; ?></td>
+        </tr>
+        <tr>
+            <td>Mobile</td>
+            <td><?php echo $this->form->mobile; ?></td>
+        </tr>
+    </table>
+    <div class="btnhouse">
+        <div class="ltbtns">
+            <input type="submit" name="Submit" id="Submit" value="<?php echo $this->translate("Submit"); ?>">
+        </div>
+        <div class="rtbtns">
+            <a href="<?php echo $this->baseUrl();?>/family"><input type="submit" name="back" id="back" value="<?php echo $this->translate("Back"); ?>"></a>
+        </div>
+    </div>
+</fieldset>
+</form>

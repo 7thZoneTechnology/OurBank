@@ -18,8 +18,10 @@
 !-->
 
 
-<?php if($this->savings) { ?><h5 align="right"><?php echo $this->translate("As of "); ?><?php echo "<font color='red'>".$this->field1."</font>"; ?></h5>
-<h5 style="text-align:right">* <?php echo $this->translate("Amount in"); ?><font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
+<?php if($this->savings) { ?>
+<h1><b><?php echo "Branch: ".$this->officename; ?></b></h1>
+<h5 align="right"><?php echo $this->translate("As of "); ?><?php echo "<font color='red'>".$this->field1."</font>"; ?></h5>
+<h5 style="text-align:right">* 	<?php echo $this->translate("Amount in"); ?><font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
 
 <div style="float:left;width:370px">
     <?php $amountCredit = "0";
@@ -43,7 +45,7 @@
         <TR>
             <TD><?php echo $l; ?></TD>
             <TD><?php echo $savingsCredit->account_number; ?> </TD>
-            <TD><?php echo $savingsCredit->amount_to_bank;
+            <TD style="text-align:right;"><?php echo $savingsCredit->amount_to_bank;
             $amountCredit = $amountCredit + $savingsCredit->amount_to_bank; ?></TD>
         </TR>
 
@@ -55,15 +57,15 @@
             <td><b><?php echo $this->translate("Total"); ?></b></td>
             <td></td>
             <?php if($amountCredit != "0") { ?>
-            <TD><B><?php echo sprintf("%4.2f", $amountCredit); ?></B></TD>
+            <TD style="text-align:right;"><B><?php echo sprintf("%4.2f", $amountCredit); ?></B></TD>
             <?php } else { ?>
-            <TD><B>----</B></TD>
+            <TD style="text-align:right;"><B>----</B></TD>
             <?php } ?>
             			<?php } else {?>
 				<tr>
 				        <TD></TD>
 					<td><?php echo "----";?></td>
-					<td><?php echo "----";?></td>
+					<td style="text-align:right;"><?php echo "----";?></td>
 				</tr>
 		
 			<?php } }  $i=0;$j=0; ?>
@@ -86,7 +88,7 @@
         <TR>
             <TD ><?php echo $k; ?></TD>
             <TD ><?php echo $savingsDebit->account_number; ?></TD>
-            <TD ><?php echo $savingsDebit->amount_from_bank; 
+            <TD style="text-align:right;"><?php echo $savingsDebit->amount_from_bank; 
              $amountDebit = $amountDebit + $savingsDebit->amount_from_bank;?></TD>
         </TR>
         
@@ -99,15 +101,15 @@
             <td><b><?php echo $this->translate("Total"); ?></b></td>
             <td></td>
             <?php if($amountDebit != "0") { ?>
-            <TD ><B><?php echo sprintf("%4.2f", $amountDebit); ?></B></TD>
+            <TD style="text-align:right;"><B><?php echo sprintf("%4.2f", $amountDebit); ?></B></TD>
             <?php } else { ?>
-            <TD ><B>----</B></TD>
+            <TD style="text-align:right;"><B>----</B></TD>
             <?php } ?>
             <?php } else {?>
 				<tr>
 				        <TD></TD>
 					<td><?php echo "----";?></td>
-					<td ><?php echo "----";?></td>
+					<td style="text-align:right;"><?php echo "----";?></td>
 				</tr>
 		
 			<?php } }  $i=0;$j=0; ?>
@@ -118,7 +120,9 @@
 
 <form action="<?php echo $this->baseUrl();?>/transferscroll/index/pdftransaction" method="POST"
 onClick="window.open('<?php echo $this->baseUrl(); ?>/transferscroll/index/reportdisplay/file/transferscroll.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
-            <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
+            <input type="hidden" name="date" value="<?php echo $this->field1; ?>">
+            <input type="hidden" name="office" value="<?php echo $this->branchid; ?>">
+
                          <div class="btnhouse">
 				<div class="ltbtns">
 					<TD > <input type="submit" value="<?php echo $this->translate('PDF'); ?>" id="submit"></TD>
@@ -129,6 +133,27 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/transferscroll/index/repor
           
 </form>
 
-<?php } 
+<?php } else {?>
+<div id="searchDiv">
+<fieldset>
+    <legend><?php echo $this->translate('Search'); ?> </legend>
+               <table  width="100%">
+                <form action="<?php echo $this->baseUrl();?>/transferscroll/index" method="POST">
+                    <TR>
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><?php echo $this->form->branch;?></td>
+
+                            <TD ><?php echo $this->translate('As of date'); ?></TD>
+                            <TD ><?php echo $this->form->datefrom;?></TD>
+                    </TR>
+                    <TR>
+                    <TD><?php echo $this->form->Search;?></TD>
+                    <TD></TD></TR>
+                </form>
+            </table>
+      
+</fieldset>
+</div>
+<?php } ?>
 
 

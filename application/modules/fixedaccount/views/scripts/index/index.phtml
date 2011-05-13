@@ -40,12 +40,12 @@
 	    <Th>Member Code</Th>
 	    <Th>Name / Group Name</th>
             <Th>Branch</th>
-	    <Th>Individual</Th>
-            <th>Group</th>
+	    <td class="centertd" align="center">Member Type</td>
+            <th></th>
 	</tr>
 	<?php foreach($this->result as $member) : ?>
 	<tr>
-		<td><a href="<?php echo $this->baseUrl();?>/fixedaccount/index/details/Id/<?php echo base64_encode($member->id);?>/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
+		<td><a href="<?php echo $this->baseUrl();?>/fixedaccount/index/details/Id/<?php echo base64_encode($member->id);?>/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></Th>
 		<td><?php  echo $member->name;?></td>
 		<td><?php  echo $member->officename;?></td>
 		<td>
@@ -56,7 +56,7 @@
 		} ?>
 		</td>
 		<td>
-		<?php if($member->type==2) { 
+		<?php if($member->type==2 or $member->type==3) { 
 		echo $member->membertype;
 		} else {
 		echo "-";
@@ -64,8 +64,8 @@
 		</td>
 	</tr>
 	<?php endforeach; ?>
-
 	</table>
-    <?php } else { 
-        echo "<font color=red>".$this->errormsg."</font>";
-    } ?>
+    <?php } else {
+        echo $this->errormsg;
+    }
+    ?>

@@ -19,31 +19,16 @@
 */
 class Familymembers_Form_Familymembers extends Zend_Form
 {
-    public function __construct($id,$subId) 
-    {
-        parent::__construct($id,$subId); 
-        $formfield = new App_Form_Field ();
+            public function init() {
 
-        $cropId = new Zend_Form_Element_Select('crop_id[]');
-        $cropId->setAttrib('class', 'txt_put');
-        $cropId->setAttrib('id','crop_id[]');
-   
-       // $cropId = $formfield->field('Select','crop_id[]','','','','',true,'','','','','',0,0);
-        $acre = $formfield->field('Text','acre[]','','','','',true,'','','','','',0,0);
-        $acre->setAttrib('size',8);
-        $quantity = $formfield->field('Text','quantity[]','','','','',true,'','','','','',0,0);
-        $quantity->setAttrib('size',12);
-        $marketed = $formfield->field('Text','marketed[]','','','','',true,'','','','','',0,0);
-        $marketed->setAttrib('size',12);
-        $price = $formfield->field('Text','price[]','','','','',true,'','','','','',0,0);
-        //hidden feilds
-        $id = $formfield->field('Hidden','id[]','','','','',false,'','','','','',0,$id);
-        $subId = $formfield->field('Hidden','submodule_id[]','','','','',false,'','','','','',0,$subId);
-        $createdBy = $formfield->field('Hidden','created_by[]','','','','',false,'','','','','',0,1);
-        $createdDate = $formfield->field('Hidden','created_date[]','','','','',false,'','','','','',0,date("y/m/d H:i:s"));
-        $crpid = $formfield->field('Hidden','crpid[]','','','','','','','','','','',0,0);
-        $this->addElements(array($id,$cropId,$acre,$quantity,$marketed,$price,$subId,$createdBy,$createdDate,$crpid));
-    }
+                // create instance for common form field
+                $formfield = new App_Form_Field ();
+                // send required parameters to get respective form fields ( first parameter is a input type)
+                $memberdateofbirth = $formfield->field('Text','memberdateofbirth','','','','',false,'','','','','',0,0);
+
+                $this->addElements(array($memberdateofbirth));
+            }
+
 }
 
 

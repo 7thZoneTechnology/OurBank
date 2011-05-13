@@ -29,7 +29,7 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
 
       public function getOffice() {
               $select = $this->select()
-                       ->setIntegrityCheck(false)  
+                       ->setIntegrityCheck(false)
                        ->join(array('a' => 'ourbank_office'),array('a.name,a.short_name'))
                        ->join(array('c'=>'ourbank_officehierarchy'),'a.officetype_id = c.id','c.type');
        $result = $this->fetchAll($select);
@@ -145,7 +145,7 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
           $select = $this->select()
                   ->setIntegrityCheck(false)  
                   ->join(array('a' => 'ourbank_member'),array('a.id'))
-                  ->where('a.office_id =?',$id);
+                  ->where('a.village_id =?',$id);
           $result = $this->fetchAll($select);
           return $result->toArray();
         }
@@ -158,6 +158,128 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
                   ->where('a.parentoffice_id =?',$id);
           $result = $this->fetchAll($select);
           return $result->toArray();
+        }
+
+        public function gettaluklist($districteid)
+        {
+          $select = $this->select()
+                  ->setIntegrityCheck(false)  
+                  ->join(array('a' => 'ourbank_master_taluklist'),array('a.id'))
+                  ->where('a.district_id =?',$districteid);
+          //die($select->__toString($select));
+          $result = $this->fetchAll($select);
+          return $result->toArray();
+
+        }
+
+        public function gethoblilist($hobliid)
+        {
+          $select = $this->select()
+                  ->setIntegrityCheck(false)  
+                  ->join(array('a' => 'ourbank_master_hoblilist'),array('a.id'))
+                  ->where('a.taluk_id =?',$hobliid);
+         //die($select->__toString($select));
+          $result = $this->fetchAll($select);
+          return $result->toArray();
+        }
+
+        public function getpanchayathlist($panchayath)
+        {
+          $select = $this->select()
+                  ->setIntegrityCheck(false)  
+                  ->join(array('a' => 'ourbank_master_gillapanchayath'),array('a.id'))
+                  ->where('a.hobli_id = ?',$panchayath);
+         //die($select->__toString($select));
+          $result = $this->fetchAll($select);
+          return $result->toArray();
+        }
+
+        public function findlastlevel()
+        {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT MAX(id) as lastid FROM `ourbank_officehierarchy`";
+        $result = $this->db->fetchAll($sql,array());
+        return $result;
+
+        }
+
+        public function getBranch() {
+       $db = $this->getAdapter();
+           $sql = 'select * from ourbank_office
+                       where officetype_id in
+                   (select id from ourbank_officehierarchy
+                       where Hierarchy_level in
+                   (select max(Hierarchy_level) from ourbank_officehierarchy))';
+       $result = $db->fetchAll($sql);
+       return $result;
+   }
+
+    public function getBranchId() {
+       $db = $this->getAdapter();
+           $sql = 'select id from ourbank_officehierarchy
+                   where Hierarchy_level in
+                   (select max(Hierarchy_level) from ourbank_officehierarchy)';
+       $result = $db->fetchAll($sql);
+       return $result;
+   }
+
+       public function get($index) {
+       $db = $this->getAdapter();
+           $sql = "SELECT a.id,a.name,a.officetype_id,a.parentoffice_id,a.short_name FROM ourbank_office a,ourbank_officehierarchy b where a.parentoffice_id='".$index."' and a.officetype_id = b.id and a.officetype_id != '1'";
+       $result = $db->fetchAll($sql);
+       return $result;
+   }
+
+    public function fetchoffice()
+       {
+           $db = $this->getAdapter();
+
+           $sql = "select * from ourbank_office where officetype_id = 1";
+// echo $sql;
+           $result = $db->fetchAll($sql);
+         return $result;
+       }
+
+       public function fetchofficesub($input)
+       {
+         $select = $this->select()
+               ->setIntegrityCheck(false)  
+               ->join(array('a' => 'ourbank_office'),array('a.id'))
+//                 ->where('a.officetype_id !=3')
+               ->where('a.parentoffice_id = ?',$input);
+         $result = $this->fetchAll($select);
+         return $result->toArray();
+       }
+
+       public function getofficetypename($officetype_id)
+       {
+         $select = $this->select()
+               ->setIntegrityCheck(false)  
+               ->join(array('a' => 'ourbank_officehierarchy'),array('a.id'),array('a.id','a.type'))
+//                 ->where('a.officetype_id !=3')
+               ->where('a.id = ?',$officetype_id);
+        //die($select->__toString($select));
+         $result = $this->fetchAll($select);
+         return $result->toArray();
+       }
+
+       public function getvillageaddress($villageid)
+       {
+         $select = $this->select()
+               ->setIntegrityCheck(false)  
+               ->join(array('a' => 'ourbank_master_villagelist'),array('a.id'),array('a.name','a.id as villageid'))
+               ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.village_id ')
+               ->where('a.village_id = ?',$villageid);
+         //die($select->__toString($select));
+         $result = $this->fetchAll($select);
+         return $result->toArray();
+       }
+
+      public function updatevillage($village,$input = array()) { echo $village;
+        $where[] = "village_id = '".$village."'";
+        $db = $this->getAdapter();
+        $result = $db->update('ourbank_master_village',$input,$where);
         }
 
 

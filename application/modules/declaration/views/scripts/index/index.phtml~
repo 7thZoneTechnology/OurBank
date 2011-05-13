@@ -1,0 +1,176 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<?php if(!$this->result && !$this->groupresult) { ?>
+<div id="searchDiv">
+<fieldset>
+	<legend>Search member</legend>
+		<form action="<?php echo $this->baseUrl();?>/declaration/index" method="POST">
+			<table class="fieldsets">
+                            <TR>
+                                <TD><label class="mand">Member code / Group code :</label></TD>
+                                <TD><? echo $this->form->membercode;?></TD>
+                            </TR>
+                        </table>
+                        <div class="btnhouse">
+                            <div class="ltbtns">
+                                <input type="Submit" name="Submit" value="Search">
+
+                            </div>
+                        </div>
+	 </form>
+
+</fieldset>
+</div>
+
+<?php if($this->result) { ?>
+    <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+	<tr>
+	    <Th>Member Code</Th>
+	    <Th>Name / Group Name</th>
+            <Th>Branch</th>&nbsp;
+	    <Th>Type</Th>
+            <th></th>
+	</tr>
+	<?php foreach($this->result as $member) : ?>
+	<tr>
+		<td><a href="<?php echo $this->baseUrl();?>/savingaccount/index/details/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
+		<td><?php  echo $member->name;?></td>
+		<td><?php  echo $member->officename;?></td>
+		<td>
+		<?php if ($member->type==1) { 
+		 echo $member->membertype; 
+		} else {
+		  echo "-"; 
+		} ?>
+		</td>
+		<td>
+		<?php if($member->type==2 || $member->type==3) { 
+		echo $member->membertype;
+		} else {
+		echo "-";
+		}?>
+		</td>
+	</tr>
+	<?php endforeach; ?>
+
+	</table>
+<?php }?>
+
+<?php } $dateconvert= new App_Model_dateConvertor();
+ if($this->groupresult) {
+ foreach($this->groupresult as $groupresult) { } ?>
+ <table id="hor-minimalist-b"><tr><Th colspan="2">GROUP DETAILS</Th></tr>
+                            <TR><TD width="20%" >Group head:</TD><TD width="50%"><?php echo $groupresult['head'];?></TD></TR>
+                            <TR><TD width="20%" >Group Code:</TD><TD width="50%"><?php echo $groupresult['groupcode'];?></TD></TR>
+                            <TR><TD width="20%" >Group Name:</TD><TD width="50%"><?php echo $groupresult['name'];?></TD></TR>
+                            <tr><TD>Village:</TD><TD><?php echo  $groupresult['village'];?></TD></tr>
+                            <tr><TD width="20%" >Created Date:</TD><TD><?php echo  $dateconvert->normalformat($groupresult['created_date']);?></TD></tr>
+                           </TR>
+                        </table><br>
+
+<?php } else if($this->result) {
+ foreach($this->result as $result) { } 
+if($this->relation[0]['relaname']=='Son') { 
+                                $sonname=$this->relation[0]['membername'];
+                                $sonage=$this->relation[0]['age'];
+                                 }
+                        if($this->relation[1]['relaname']=='Father') { $fathername=$this->relation[1]['membername']; } ?>
+ <table id="hor-minimalist-b"><tr><Th colspan="2">MEMBER DETAILS</Th></tr>
+                            <TR><TD width="20%" >Borrower Name:</TD><TD width="50%"><?php echo $result['name'];?></TD></TR>
+                                <tr><TD width="20%" >Age:</TD><TD width="50%"><?php echo $result['age'];?></TD></tr>
+                                <tr><TD width="20%" >Address:</TD><TD><?php echo $result['street'];?> </TD></tr>
+                                <tr><TD>Village:</TD><TD><?php echo  $result['village'];?></TD></tr>
+                                <tr><TD width="20%" >Father Name:</TD><TD><?php echo $this->relation[0]['fathername'];?></TD></tr>
+                                <tr><TD width="20%" >Created Date:</TD><TD><?php echo  $dateconvert->normalformat($result['created_date']);?></TD></tr>
+                                <tr><TD width="20%" >Land Owner Name:</TD><TD><?php echo  $result['landowner_name'];?></TD></tr>
+                           </TR>
+                        </table><br>
+
+<?php }
+
+$results = array();
+ if(($this->groupresult) or ($this->result)) { 
+
+if($this->groupresult){
+$results = $this->groupresult;
+}
+
+if($this->result){
+$results = $this->result;
+}
+
+foreach($results as $result){
+?>
+<fieldset>
+    <legend>Declaration</legend>
+        <div class="search" style="margin-left:20px;">
+            <form action="<?php echo $this->baseUrl();?>/declaration/index" method="POST">
+                <table >
+        <tr><TD align="center"><b>(TO BE SUBMITTED BY THE BORROWER UNDER SBI JOINT LIABILITY GROUP)</b></TD></tr><br>
+
+            <tr><TD><br><br>
+                    <?php if($this->relation[0]['relaname']=='Son') { 
+                                $sonname=$this->relation[0]['membername'];
+                                $sonage=$this->relation[0]['age'];
+                                 }
+                        if($this->relation[1]['relaname']=='Father') { $fathername=$this->relation[1]['membername']; } ?>
+           <p>I, <?php echo "<font color=red>".$sonname."</font>";?>  (Name of the borrower),
+             Son of <?php echo "<font color=red>".$fathername."</font>";?> </p>
+            <p>Aged around  <?php echo "<font color=red>".$sonage."</font>";?>  years,presently residing at <?php echo "<font color=red>".$result['street']."</font>";?> do here by</p><br>
+
+            <p>Solemnly affirm and sincerely state on Oath as follows:</p>
+            <p><b>i)</b> I propose to avail a crop loan under SBI JLG scheme against hypothecation of the crop which the loan is to be sanctioned.</p>
+
+            <p align="justify"><b>ii)</b> In this connection, I confirm that and declare that I am land less labourer / share cropper /tenant farmer /oral lessee
+                 ( Stricke out which ever not applicable ).</p>
+
+            <p align="justify"><b>iii)</b> I hereby declare and confirm furture that the properties mentioned in the schedule to the affidavit is the property which is the subject matter of lease (Oral /written) in my favour for year to year or for period of <?php echo "<font color=red>". $dateconvert->normalformat($result['created_date'])."</font>";?> year as mentioned in the document and the lease is presently in force and Sri <?php echo "<font color=red>". $result['landowner_name']."</font>";?> is the lesser and the owner of the property (a copy of the lease deed is enclosed). </p>
+
+            <p align="justify"><b>iv)</b> I hereby declare and confirm further that I have not committed any default in paying the lease amount to the lesser and have not committed any breach of the terms and conditions of the lease.Moreover,I declare further that there are no arrears of any lease amount.</p>
+
+            <p align="justify"><b>v)</b> I have also not resorted to outside borrowing against security of the present crop which is the subject matter of the bank finance.The crop to be raised is free from the charge/encumbrances.</p>
+
+            </TD></tr>
+                <tr>
+                    <TD align="right">
+			<a href="<?php echo $this->baseUrl();?>/declaration"><input type = "button" name = "Back" value = "Back"></a>
+	   	   </TD></tr>
+            </table> 
+
+
+<form action="<?php echo $this->baseUrl();?>/declaration/index/pdfgeneration" <? echo $this->view->result;?> method="POST"
+
+onClick="window.open('<?php echo $this->baseUrl();?>/declaration/index/reportdisplay/file/declaration.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="<?php echo $this->translate('PDF'); ?>" id="submit">
+                <input type="hidden" name="membercode" value="<?php echo $this->membercode; ?>"/>
+                <input type="hidden" name="membercode1" value="<?php echo $this->membercode1; ?>"/>
+</form>
+</form>
+    </div>
+</fieldset> 
+<?php } }?>
+
+
+
+
+
+
+

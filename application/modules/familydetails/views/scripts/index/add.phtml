@@ -21,10 +21,8 @@
     function fn(path,memberid)
     { 
         var id=document.getElementById('number').value;
-        if (isNaN(id)) { alert("Enter only digits");
-            
-        } else {
-        targeturl=path+"/familydetails/index/getfamilymembers?id="+id+"&memberid="+memberid; 
+        if(id) {
+            targeturl=path+"/familydetails/index/getfamilymembers?id="+id+"&memberid="+memberid; 
             $.ajax({ url: targeturl, success: function(data){ $("#familymember").html(data) }});
         }
     }

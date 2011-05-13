@@ -23,215 +23,222 @@
 class Fixedaccount_Model_Accounts extends Zend_Db_Table {
      protected $_name = 'ourbank_accounts';
 
-     public function insertAccounts() 
-     {
-        $data = array('account_id'=> '');
-        $this->insert($data);
-
-     }
-
-     public function UpDateAccounts($account_id,$accountNumber,$memberId,$productId,$grouporIndividualNumber,$createby) 
-     {
-        $data = array('account_number' =>$accountNumber,
-                      'member_id' => $memberId,
-                      'product_id' => $productId,
-                      'membertype_id' => $grouporIndividualNumber,
-                      'accountcreated_date' => date("Y-m-d"),
-                      'accountcreated_by' => $createby,
-                      'accountstatus_id'=> 1);
-        $where = 'account_id = '.$account_id;
-        $this->update($data , $where );
-    }
-	
-    public function search($membercode) 
+    public function search($code) 
     {
-        $this->db = Zend_Db_Table::getDefaultAdapter();
+       $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+      
+
+        $sql="SELECT 
+              DISTINCT a.id as id,
+              a.familycode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
+              from
+              ourbank_familymember a,
+              ourbank_office b,
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
+              where
+              a.village_id= b.id and
+              a.id = d.member_id and
+              (a.name like '%' '$code' '%'  or a.familycode like '%' '$code' '%') AND
+              substr(a.familycode,5,1) = c.id  
+              union
+              SELECT
+	      DISTINCT a.id as id,
+              a.groupcode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
+              from
+              ourbank_group a,
+              ourbank_office b,
+              ourbank_master_membertypes c
+              where
+              a.village_id= b.id and
+              (a.name like '%' '$code' '%'  or a.groupcode like '%' '$code' '%') AND
+              substr(a.groupcode,5,1) = c.id";
+             // echo $sql;
+        $result = $this->db->fetchAll($sql,array($code));
+        return $result;
+    }
+    
+    public function getDetails($code)
+    {
+       $db = Zend_Db_Table::getDefaultAdapter();
+        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+   
+
         $sql="SELECT 
                     a.id as id,
-                    a.membercode as code,
+                    a.familycode as code,
                     a.name as name,
-                    b.name as officename,
+                    substr(a.familycode,5,1) as type,
                     c.type as membertype,
-                    c.id as type
-                    from  
-                        ourbank_member a,
-                        ourbank_office b,
-                        ourbank_membertypes c
-                    where 
-                        b.id = a.office_id  AND 
-                        substr(a.membercode,5,1) = c.id AND
-                        (a.name like '%' '$membercode' '%'  or a.membercode like '%' '$membercode' '%')
-                UNION
-                SELECT
+                    b.name as officename,
+                    d.name as groupname
+                    from
+                    ourbank_familymember a,
+                    ourbank_office b,
+                    ourbank_master_membertypes c,
+                    ourbank_group d,
+                    ourbank_groupmembers e
+                    where
+                    a.id= e.member_id and 
+                    e.group_id= d.id and 
+                    a.village_id= b.id and 
+                    substr(a.familycode,5,1) = c.id and
+                    a.familycode like '%' '$code' '%'
+
+              union
+
+              SELECT 
                     a.id as id,
                     a.groupcode as code,
                     a.name as name,
-                    b.name as officename,
+                    substr(a.groupcode,5,1) as type,
                     c.type as membertype,
-                    c.id as type
-                    from  
-                        ourbank_group a,
-                        ourbank_office b,
-                        ourbank_membertypes c
+                    b.name as officename,
+                    a.name as groupname
+                    from
+                    ourbank_group a,
+                    ourbank_office b,
+                    ourbank_master_membertypes c
                     where
-                        a.office_id= b.id AND
-                        substr(a.groupcode,5,1) = c.id AND
-                        (a.name like '%' '$membercode' '%'  or a.groupcode like '%' '$membercode' '%')";
- 
-        $result = $this->db->fetchAll($sql,array($membercode));
-        return $result;
-    }
-    
-    public function getDetails($membercode)
-    {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql="SELECT 
-                     b.id as id,
-                     b.membercode as code,
-                     b.name as name,
-                     c.name as officename
-                     from  
-                        ourbank_member b,
-                        ourbank_office c,
-                        ourbank_membertypes d
-                     where 
-                        c.id = b.office_id  AND 
-                        substr(b.membercode,5,1) = '1' AND
-                        (b.membercode like '$membercode' '%') 
-            UNION
-                SELECT 
-                     b.id as id,
-                     b.groupcode as code,
-                     b.name as name,
-                     c.name as officename
-                     from  
-                        ourbank_group b,
-                        ourbank_office c,
-                        ourbank_membertypes d
-                     where 
-                        c.id = b.office_id  AND 
-                        substr(b.groupcode,5,1) = '2' AND
-                        (b.groupcode like '$membercode' '%')";
-        $result = $db->fetchAll($sql,array($membercode));
+                    a.village_id= b.id and 
+                    substr(a.groupcode,5,1) = c.id and
+                    a.groupcode like '%' '$code' '%'";
+//               echo $sql;
+        $result = $db->fetchAll($sql,array($code));
         return $result;
     }
 
-    
-    public function fetchSavingsProducts($applicableto) {
-        $db = Zend_Db_Table::getDefaultAdapter();
+
+    public function fetchSavingsProducts($code) {
+       $db = Zend_Db_Table::getDefaultAdapter();
 
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "select name,id
-                from ourbank_productsoffer 
-                where applicableto = $applicableto AND product_id in(select id from ourbank_product where shortname ='fd')";
-
-        $result = $db->fetchAll($sql,array($applicableto));
+        $sql = "select 
+                A.name as name,
+                A.id as id
+                from 
+                ourbank_productsoffer A,
+                ourbank_product B,
+                ourbank_familymember C
+                where 
+                C.familycode = $code AND 
+                (substr(C.familycode,5,1) = A.applicableto OR
+                A.applicableto = 4) AND 
+                A.product_id = B.id AND 
+                B.category_id = 1 AND
+                B.shortname = 'fd'
+                UNION
+                select 
+                A.name as name,
+                A.id as id
+                from 
+                ourbank_productsoffer A,
+                ourbank_product B,
+                ourbank_group C
+                where 
+                C.groupcode = $code AND 
+                (substr(C.groupcode,5,1) = A.applicableto OR
+                A.applicableto = 4) AND 
+		A.product_id = B.id AND 
+		B.category_id = 1 AND
+		B.shortname = 'fd' ";
+        $result = $db->fetchAll($sql,array($code));
         return $result;
     }
-    
-    public function accountsSearch($membercode) 
+
+    public function accountsSearch($code) 
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
+ $db = Zend_Db_Table::getDefaultAdapter();
 
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT 
-                    A.account_number as number,
-                    B.name as name
+                A.account_number as number,
+                B.name as name
                 FROM
-                    ourbank_accounts A,
-                    ourbank_productsoffer B,
-                    ourbank_product C,
-                    ourbank_member D
+                ourbank_accounts A,
+                ourbank_productsoffer B,
+                ourbank_product C,
+                ourbank_familymember D
                 WHERE
-                    (D.membercode like '$membercode' '%') AND
-                    A.member_id = D.id AND 
-                    
-                    substr(A.account_number,5,1) = '1' AND
-                    A.product_id = B.id AND 
-                    B.product_id = C.id AND 
-                    C.shortname = 'fd' AND
-                    C.category_id = 1
-
+                D.familycode = $code AND
+                substr(A.account_number,8,1) = 'F' AND
+                substr(D.familycode,5,1) = A.membertype_id AND
+                A.member_id = D.id AND
+                A.product_id = B.id AND
+                B.product_id = C.id AND
+                C.category_id = 1
                 UNION
-
                 SELECT 
-                    A.account_number as number,
-                    B.name as name
+                A.account_number as number,
+                B.name as name
                 FROM
-                    ourbank_accounts A,
-                    ourbank_productsoffer B,
-                    ourbank_product C,
-                    ourbank_group D
+                ourbank_accounts A,
+                ourbank_productsoffer B,
+                ourbank_product C,
+                ourbank_group D
                 WHERE
-                    (D.groupcode like '$membercode' '%') AND
-                    A.member_id = D.id AND 
-                    substr(A.account_number,5,1) = '2' AND
-                    A.product_id = B.id AND 
-                    B.product_id = C.id AND 
-                    C.shortname = 'fd' AND
-                    C.category_id = 1";
-// echo $sql;
-        $result = $db->fetchAll($sql,array($membercode));
+                D.groupcode = $code AND
+                substr(A.account_number,8,1) = 'F' AND
+		substr(D.groupcode,5,1) = A.membertype_id AND
+		A.member_id = D.id AND
+                A.product_id = B.id AND
+                B.product_id = C.id AND
+                C.category_id = 1";
+
+        $result = $db->fetchAll($sql,array($code));
         return $result;
-    }
-    
+           }
 
-
-
-
-    public function details($productId,$memberId) 
+    public function detailsforgroup($membercode) 
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT 
-                    E.membercode as code,
-                    substr(E.membercode,5,1) as type,
-                    E.name as name,
-                    F.name as officename,
-                    F.id as officeid,
-                    B.name as productname,
-                    B.begindate as begindate,
-                    B.glsubcode_id as glsubID,
-                    C.minimum_deposit_amount as minbalance,
-                    C.penal_Interest as mininterest
-                    FROM 
-                    ourbank_productsoffer B,
-                    ourbank_product_fixedrecurring C,
-                    ourbank_member E,
-                    ourbank_office F
-                    WHERE
-                    (E.membercode like '$memberId' '%') AND 
-                    B.id = $productId AND
-                    B.id = C.productsoffer_id AND
-                    F.id = E.office_id
-                UNION
-                SELECT 
-                    E.groupcode as code,
-                    substr(E.groupcode,5,1) as type,
-                    E.name as name,
-                    F.name as officename,
-                    F.id as officeid,
-                    B.name as productname,
-                    B.begindate as begindate,
-                    B.glsubcode_id as glsubID,
-                    C.minimum_deposit_amount as minbalance,
-                    C.penal_Interest as mininterest
-                    FROM 
-                    ourbank_productsoffer B,
-                    ourbank_product_fixedrecurring C,
-                    ourbank_group E,
-                    ourbank_office F
-                    WHERE
-                    (E.groupcode like '$memberId' '%') AND 
-                    B.id = $productId AND
-                    B.id = C.productsoffer_id AND
-                    F.id = E.office_id";
-// echo $sql;
-        $result = $db->fetchAll($sql);
-        return $result;
+        $select = $this->select()
+            ->setIntegrityCheck(false)  
+            ->join(array('D' => 'ourbank_office'),array('id'),array('D.name as officename','D.id as officeid'))
+            ->join(array('C' => 'ourbank_group'),'D.id  = C.village_id',array('C.name as name','C.name as groupname','C.groupcode as code','substr(C.groupcode,5,1) as type'))
+            ->where('C.groupcode like "%" ? "%" ' ,$membercode);
+	$result = $this->fetchAll($select);
+        return $result->toArray();
+// // die($select->__toString($select));
+    } 
+
+ public function getofferdetails($productId) 
+    {
+
+        $select = $this->select()
+            ->setIntegrityCheck(false)  
+            ->join(array('A' => 'ourbank_productsoffer'),array('id'),array('A.name as productname','A.begindate as begindate','A.glsubcode_id as glsubID'))
+            ->join(array('B' => 'ourbank_product_fixedrecurring'),'A.id = B.productsoffer_id',array('B.minimum_deposit_amount as minbalance','B.maximum_deposit_amount as maxbalance','B.penal_Interest as mininterest'))
+            ->where('A.id ='. $productId);
+	$result = $this->fetchAll($select);
+        return $result->toArray();
     }
+
+
+ public function detailsforindividual($membercode) 
+    {
+
+$select = $this->select()
+        ->setIntegrityCheck(false)  
+        ->join(array('D' => 'ourbank_office'),array('id'),array('D.name as officename','D.id as officeid'))
+        ->join(array('C' => 'ourbank_familymember'),'D.id  = C.village_id',array('C.name as name','C.familycode as code','substr(C.familycode,5,1) as type'))
+        ->join(array('F' => 'ourbank_groupmembers'),'F.member_id  = C.id',array('member_id'))
+        ->join(array('E' => 'ourbank_group'),'F.group_id   = E.id',array('E.name as groupname'))
+        ->where('C.familycode like "%" ? "%" ' ,$membercode);
+// die($select->__toString($select));
+$result = $this->fetchAll($select);
+        return $result->toArray();
+}
 
     public function getInterestRates($id)
     {
@@ -248,43 +255,45 @@ class Fixedaccount_Model_Accounts extends Zend_Db_Table {
         $result = $db->fetchAll($sql,array($id));
         return $result;
     }
-    
+
     public function accUpdate($accId,$input)
     {
-    	$where[] = "id = '".$accId."'";
-	$db = $this->getAdapter();
+        $where[] = "id = '".$accId."'";
+        $db = $this->getAdapter();
         $result = $db->update('ourbank_accounts',$input,$where);
     }
-    
+
     public function getGlcode($officeId)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-	$sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId and glcode_id=2";
-	return $result = $db->fetchAll($sql);
+        $sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId and glcode_id=2";
+        return $result = $db->fetchAll($sql);
     }
 
     public function interestperiods($productId) {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select  max(period_ofrange_monthto) as maxperiod 
-                from ourbank_interest_periods 
-                where offerproduct_id='$productId' 
-                AND intereststatus_id=3 ";
-        $result = $db->fetchAll($sql);
-        return $result;
+
+$select = $this->select()
+			->setIntegrityCheck(false)  
+			->from(array('a' => 'ourbank_interest_periods'),array('min(a.period_ofrange_monthfrom) as minperiod','max(a.period_ofrange_monthto) as maxperiod'))
+                        ->where('a.offerproduct_id='.$productId.' AND a.intereststatus_id=3');
+//         die($select->__toString($select));
+	$result = $this->fetchAll($select);
+        return $result->toArray();
     }
 
     public function getInterestvalue($productId,$interestId) {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select  Interest from ourbank_interest_periods 
+        $sql = "select  Interest,id from ourbank_interest_periods 
                 where offerproduct_id= $productId 
                 AND $interestId between period_ofrange_monthfrom and period_ofrange_monthto";
         $result = $db->fetchAll($sql);
         return $result;
     }
+
     public function fetchmembers($group_id) {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select  id,name from ourbank_member 
-                where id in (select member_id from ourbank_groupmembers where id = $group_id)";
+        $sql = "select  id,name from ourbank_familymember 
+                where id in (select member_id from ourbank_groupmembers where group_id = $group_id)";
         $result = $db->fetchAll($sql);
         return $result;
     }

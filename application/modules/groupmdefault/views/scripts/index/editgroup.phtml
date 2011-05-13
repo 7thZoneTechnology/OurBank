@@ -16,38 +16,112 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+<script language="javascript">
+ function getBranch(bankid) { 
+            targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
+            $.ajax({ url: targeturl, success: function(data){ $('#branch').html(data) }});
+       }
 
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/membershipgroupmedit.js"></script>
+</script>
+<?php 
+$Netconnection = "No";
+if(fsockopen("www.google.com", 80)){
+$Netconnection = "Yes";
+}
+?>
+<?php 
+if($Netconnection == "Yes") { 
+?>
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript">
+   </script>
+</head>
+<?php } ?>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/group/membershipgroupmedit.js"></script>
 <fieldset>
-    <legend>Edit group<a href="<?php echo $this->baseUrl();?>/groupmdefault/index/deletegroup/id/<? echo $this->groupid;?>">
-                    <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 align="right" width="16" height="16"></a></legend>
+    <legend>Edit group</legend>
     <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/editgroup/id/<?echo $this->groupid;?>" method="POST">
-
+        <div class="btnhouse">
+            <div class="rtbtns">
+                    <a href="<?php echo $this->baseUrl();?>/groupmdefault/index/deletegroup/id/<? echo $this->groupid;?>">
+                    <img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a>
+            </div>
+        </div>
         <table  class="fieldsets">
-            <TR >
-                <td><label for="fld1" class="mand">Branch name:</td>
-                <TD><?php echo $this->form->office;?></TD>
-            </TR>	  
-            <TR >		
-                <TD ><?php echo $this->form->groupname;?></span></TD>
-            </TR>
-            <TR >
-                <TD><?php echo $this->form->Created_Date;?></TD></TD>
-            </TR>
+                <tr>
+                    <TD><label class="mand">Group type</label></td>
+                    <td colspan="3">
+                        <?php
+                             if($this->grouptype == 2)
+                             {?>
+                             <input type="text" value="SHG" readonly="true">
+                             <?php } else { ?>
+                             <input type="text" value="JLG" readonly="true">
+                       <?php } ?>
+                    </TD>
+               </TR>
+             <TR>
+                    <TD><label for="fld1" class="mand">Village name</td>
+                    <TD><?php echo $this->form->offedit;?></TD>
+                    <?php echo $this->form->offeditv;?>
+                    <TD><?php echo $this->form->bank;?></TD>
+                    <TD><label class="mand">Bank branch</label></TD>
+                    <TD><div id="branch"><?php echo $this->form->branch;?></div></TD>
+                    <TD><?php echo $this->form->groupname;?></TD>
+                    <td></td>
+                </TR> 
+                <TR>
+                    <TD><?php echo $this->form->savingamt;?></td>
+                    <TD><?php echo $this->form->penaltylate;?></TD>
+                    <TD><?php echo $this->form->penaltyabsence;?></TD>
+                </TR>  
+                 <TR>
+                    <TD><?php echo $this->form->place;?></td>
+                    <TD><?php echo $this->form->times;?></TD>
+                    <TD><?php echo $this->form->day;?></TD>
+                </TR>
+                <TR>
+                    <TD><?php echo $this->form->interest;?></TD>
+                    <TD colspan="2"><?php echo $this->form->Created_Date;?></TD>
+                </tr>
         </table>
         <table class="fieldsets">
-            <TR id="membersdiv">
-            </TR>
+            <TR  align="center" id="membersdiv">
+                    </TR>
         </table>
-
+ <br>
+<?php 
+if($Netconnection == "Yes") { 
+?>
+        <div id="map" style="width: 250px; height:200px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+</div>
+            <input type="text" id="latitude" name = "latitude"/>
+            <input type="text" id="longitude" name = "longitude"/>
+              <script type="text/javascript">
+                var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: new google.maps.LatLng(15.085866972731804,76.94207031250001),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+                google.maps.event.addListener(map, 'click', function(event) {
+                if (event.latLng) {
+                    document.getElementById('latitude').value = event.latLng.lat();
+                    document.getElementById('longitude').value = event.latLng.lng();
+                }
+                });
+            </script>
+<?php } ?>
         <div class="btnhouse">
             <div class="ltbtns">
                 <?php echo $this->form->Submit;?>
             </div>
             <div class="rtbtns">
-                <a href="<?php echo $this->baseUrl();?>/groupmcommonview/index/commonview/id/<?echo $this->groupid; ?>"><?php echo $this->form->Back;?></a>
+                <a href="<?php echo $this->baseUrl();?>/groupcommonview/index/commonview/id/<?echo $this->groupid; ?>"><?php echo $this->form->Back;?></a>
             </div>
         </div>
-        <?php if($this->error) { echo "<font color = 'red'><b>You are wrongly chosen group head , please chose again</b>"; } ?>
     </form>
 </fieldset>
+<?php if($this->error) { echo "<font color = 'red'><b>".$this->error."</b></font>"; } ?>

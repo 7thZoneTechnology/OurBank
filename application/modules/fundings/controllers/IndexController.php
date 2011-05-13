@@ -25,11 +25,11 @@ class Fundings_IndexController extends Zend_Controller_Action
     public function init()
      {
         $this->view->pageTitle='Fundings';
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
-		$this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
+        $glourbankalsession = new App_Model_Users();
+        $this->view->glourbankalvalue = $glourbankalsession->getSession();
+		$this->view->createdby = $this->view->glourbankalvalue[0]['id'];
+		$this->view->username = $this->view->glourbankalvalue[0]['username'];
+//         if (($this->view->glourbankalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
 		$this->view->adm = new App_Model_Adm();
@@ -39,14 +39,14 @@ class Fundings_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {   
         $this->view->title='Fundings';
-		$searchForm = new Management_Form_Search();
+		$searchForm = new Fundings_Form_Search();
 		$this->view->form = $searchForm;
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	    	$formData = $this->_request->getPost();
 	    	if ($this->_request->isPost()) {
 				$formData = $this->_request->getPost();
 				if ($searchForm->isValid($formData)) {
-                                $convertdate = new Creditline_Model_dateConvertor();
+                                $convertdate = new Fundings_Model_dateConvertor();
                                 if($formData['field7']){
                                 $formData['field7']=$convertdate->phpmysqlformat($formData['field7']);}
                                 if($formData['field8']){
@@ -54,16 +54,14 @@ class Fundings_IndexController extends Zend_Controller_Action
 		    		$fundings = new Fundings_Model_Fundings();
 		    		$page = $this->_getParam('page',1);
 		    		$paginator = Zend_Paginator::factory($fundings->SearchFundings($formData));
-                                $this->view->errormsg="Record not found..Try again...";
+
 				}
 	    	}
 		} else {
             $fundings = new Fundings_Model_Fundings();
             $page = $this->_getParam('page',1);
-            $paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ob_funding","id","DESC"));
-            if(!$paginator){
-                $this->view->errormsg="Record not found..Try again...";
-		}
+            $paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ourbank_funding","id","DESC"));
+
 		}
             $paginator->setItemCountPerPage($this->view->adm->paginator());
             $paginator->setCurrentPageNumber($page);
@@ -75,25 +73,19 @@ class Fundings_IndexController extends Zend_Controller_Action
         $this->view->title='Add Fundings';
         //Acl
 //         $access = new App_Model_Access();
-//         $checkaccess = $access->accessRights('Fundings',$this->view->globalvalue[0]['name'],'addfundingsAction');
+//         $checkaccess = $access->accessRights('Fundings',$this->view->glourbankalvalue[0]['name'],'addfundingsAction');
 //        	if (($checkaccess != NULL)) {
 	
 			$form = new Fundings_Form_Fundings();
 			$this->view->form = $form;
 			$this->view->submitform = new Bank_Form_Submit();
 
-			$funder = $this->view->adm->viewRecord("ob_funder","id","DESC");
+			$funder = $this->view->adm->viewRecord("ourbank_funder","id","DESC");
 			foreach($funder as $funder) {
 				$form->funder_id->addMultiOption($funder['id'],$funder['name']);
 			}
-			
-			$institution = $this->view->adm->viewRecord("ob_institution","id","DESC");
-
-			foreach($institution as $institution) {
-				$form->institution_id->addMultiOption($institution['id'],$institution['name']);
-			}
-			
-			$currency = $this->view->adm->viewRecord("ob_currency","id","DESC");
+		
+			$currency = $this->view->adm->viewRecord("ourbank_master_currency","id","DESC");
 			foreach($currency as $currency) {
 				$form->currency_id->addMultiOption($currency['id'],$currency['name']);
 			}
@@ -106,7 +98,7 @@ class Fundings_IndexController extends Zend_Controller_Action
 					$formData = $this->_request->getPost();
 					if ($form->isValid($formData)) { 
 
-						$id = $this->view->adm->addRecord("ob_funding",$form->getValues());		
+						$id = $this->view->adm->addRecord("ourbank_funding",$form->getValues());		
 						$this->_redirect('/fundingscommonview/index/commonview/id/'.$id);
 					}
 				}
@@ -122,25 +114,21 @@ class Fundings_IndexController extends Zend_Controller_Action
         $this->view->title='Edit Fundings';
 		//Acl
 //         $access = new App_Model_Access();
-//         $checkaccess = $access->accessRights('Fundings',$this->view->globalvalue[0]['name'],'editfundingsAction');
+//         $checkaccess = $access->accessRights('Fundings',$this->view->glourbankalvalue[0]['name'],'editfundingsAction');
 //        	if (($checkaccess != NULL)) {
         $form = new Fundings_Form_Fundings();
         $this->view->form = $form;
         
         $fundings = new Fundings_Model_Fundings();
         
-			$funder = $this->view->adm->viewRecord("ob_funder","id","DESC");
+			$funder = $this->view->adm->viewRecord("ourbank_funder","id","DESC");
 			foreach($funder as $funder) {
 				$form->funder_id->addMultiOption($funder['id'],$funder['name']);
 			}
 			
-			$institution = $this->view->adm->viewRecord("ob_institution","id","DESC");
 
-			foreach($institution as $institution) {
-				$form->institution_id->addMultiOption($institution['id'],$institution['name']);
-			}
 			
-			$currency = $this->view->adm->viewRecord("ob_currency","id","DESC");
+			$currency = $this->view->adm->viewRecord("ourbank_master_currency","id","DESC");
 			foreach($currency as $currency) {
 				$form->currency_id->addMultiOption($currency['id'],$currency['name']);
 			}
@@ -154,11 +142,11 @@ class Fundings_IndexController extends Zend_Controller_Action
 		if ($form->isValid($formData)) {
 			$id=$this->_request->getParam("id");
  
-		            $editfundings = $this->view->adm->editRecord("ob_funding",$id);
+		            $editfundings = $this->view->adm->editRecord("ourbank_funding",$id);
 
-					$this->view->adm->updateLog("ob_funding_log",$editfundings[0],1);
+					$this->view->adm->updateLog("ourbank_funding_log",$editfundings[0],1);
 					//update 					
-					$this->view->adm->updateRecord("ob_funding",$id,$form->getValues());
+					$this->view->adm->updateRecord("ourbank_funding",$id,$form->getValues());
 					$this->_redirect("/fundings");
 
     	            //$this->_redirect('/fundingscommonview/index/commonview/id/'.$this->_request->getPost('funding_id'));
@@ -184,13 +172,13 @@ class Fundings_IndexController extends Zend_Controller_Action
 	{
     	//Acl
 //         $access = new App_Model_Access();
-//         $checkaccess = $access->accessRights('Fundings',$this->view->globalvalue[0]['name'],'deletefundingsAction');
+//         $checkaccess = $access->accessRights('Fundings',$this->view->glourbankalvalue[0]['name'],'deletefundingsAction');
 //        	if (($checkaccess != NULL)) {    
 		$this->view->title='Delete funding';
         
 
         
-        $form = new Institution_Form_Delete();
+        $form = new Fundings_Form_Delete();
         $this->view->form = $form;
         
         $this->view->id = $this->_request->getParam('id');
@@ -200,7 +188,7 @@ class Fundings_IndexController extends Zend_Controller_Action
         		$this->view->id = $this->_request->getParam('id');
 			$id=$this->_request->getParam("id");
 
-				$this->view->adm->deleteAction("ob_funding","fundings",$id);//  				}
+				$this->view->adm->deleteAction("ourbank_funding","fundings",$id);//  				}
 				$this->_redirect("/fundings");
 			}
 //     } else {

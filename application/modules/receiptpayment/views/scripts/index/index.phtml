@@ -18,9 +18,9 @@
 !-->
 
 <?php if($this->savings) { ?><h5 align="right">From <?php echo "<font color='#039'>".$this->field1."</font>"; ?> </h5><h5 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h5>  <br>
-<h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5><div style="float:left;width:400px">
-<fieldset>
-    <legend>Receipt</legend>
+<h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5>
+<div style="float:left;width:370px">
+
             <?php 
               $amountCredit = 0.00;
               $amountDebit = 0.00;
@@ -32,7 +32,7 @@
               $countvalue2 =count($this->savingsDebit);
               $count = $countvalue1>$countvalue2?$countvalue1:$countvalue2; 
             ?>
-    <table id="hor-minimalist-b">
+    <table id="hor-minimalist-s">
         <TR>
             <TH >Particulars</TH>
             <TH class = "label">Amount</TH>
@@ -40,7 +40,7 @@
         <?php foreach($this->savingsCredit as $savingsCredit) { $i++;?>
         <TR>
 
-            <TD ><?php echo $savingsCredit->offerproductname ?></TD>
+            <TD ><?php echo $savingsCredit->name ?></TD>
             <TD align = "right"><?php echo $savingsCredit->savingcredit; 
             $amountCredit = $amountCredit + $savingsCredit->savingcredit; ?></TD>
         </TR>
@@ -73,12 +73,10 @@
 	<?php } }   $i=0;$j=0;?>
 
     </table>
-</fieldset>
 </div>
-<div style="float:left;width:400px">
-<fieldset>
-    <legend>Payment</legend>
-    <table id="hor-minimalist-b">
+<div style="float:left;width:370px">
+
+    <table id="hor-minimalist-s">
         <TR>
             <TH >Payment</TH>
             <TH class = "label">Amount</TH>
@@ -86,7 +84,7 @@
         <?php foreach($this->savingsDebit as $savingsDebit) { $i++; ?>
         <TR>
 
-            <TD ><?php echo $savingsDebit->offerproductname ?></TD>
+            <TD ><?php echo $savingsDebit->name ?></TD>
             <TD align = "right" ><?php echo $savingsDebit->savingdebit; 
             $amountDebit = $amountDebit + $savingsDebit->savingdebit; ?></TD>
         </TR>
@@ -119,9 +117,9 @@
 			<?php } }  ?>
     </table>
 </div>
-</fieldset>
-<form action="<?php echo $this->baseUrl();?>/reports/receiptspayments/pdftransaction" method="POST"
-onClick="window.open('/ourbank/public/reports/receiptspayments/reportdisplay/file/ReceiptsPayments.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+<form action="<?php echo $this->baseUrl();?>/receiptspayments/pdftransaction" method="POST"
+onClick="window.open('/ourbank/public/receiptspayments/reportdisplay/file/ReceiptsPayments.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
             <input type="hidden" name="field2" value="<?php echo $this->field2;?>">
             <input type="submit" value="PDF" id="submit">
@@ -135,9 +133,9 @@ onClick="window.open('/ourbank/public/reports/receiptspayments/reportdisplay/fil
                 <form action="<?php echo $this->baseUrl();?>/receiptpayment" method="POST">
                     <TR>
                             <TD >Date From</TD>
-                            <TD ><?php echo $this->form->date1;?></TD>
+                            <TD ><?php echo $this->form->field1;?></TD>
                             <TD >Date To</TD>
-                            <TD ><?php echo $this->form->date2;?></TD>
+                            <TD ><?php echo $this->form->field2;?></TD>
                     </TR>
                    
 

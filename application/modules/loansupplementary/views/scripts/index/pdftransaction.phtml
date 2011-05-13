@@ -1,45 +1,27 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-<?php if($this->loanCredit) { ?>
+<?php
+// <!--
+// ############################################################################
+// #  This file is part of OurBank.
+// ############################################################################
+// #  OurBank is free software: you can redistribute it and/or modify
+// #  it under the terms of the GNU Affero General Public License as
+// #  published by the Free Software Foundation, either version 3 of the
+// #  License, or (at your option) any later version.
+// ############################################################################
+// #  This program is distributed in the hope that it will be useful,
+// #  but WITHOUT ANY WARRANTY; without even the implied warranty of
+// #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// #  GNU Affero General Public License for more details.
+// ############################################################################
+// #  You should have received a copy of the GNU Affero General Public License
+// #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// ############################################################################
+// !-->
+if($this->loanCredit) { ?>
 	<h5 align="right"><?php echo $this->translate('As of'); ?> <?php echo "<font color='#039'>".$this->field1."</font>"; ?></h5>
 
 	<h5 style="text-align:right">* <?php echo $this->translate('Amount in'); ?> <font color="red"><?php echo $this->translate('Rs'); ?></font></h5>
-<div style="float:left;width:370px"> 
+<div style="float:left;width:375px"> 
         <?php 
 		$i = 0;
 		$j = 0;
@@ -68,19 +50,19 @@
 			<TH class = "label"><?php echo $this->translate('Total'); ?></TH>
 		</TR>
 		<?php foreach($this->loanCredit as $loanCredit) { $i++; $columntotal=0;
-			if(($loanCredit->paymenttype_mode == 1) or ($loanCredit->paymenttype_mode == 5)) {
+			if(($loanCredit->paymenttype_id == 1) or ($loanCredit->paymenttype_id == 5)) {
 		?>
 		<TR>
 				<TD ><?php echo $i; ?></TD>
 				<TD ><?php echo $this->translate('To'); ?> 
                                 <?php echo $loanCredit->account_number; ?></TD>
 				<TD ><?php echo $loanCredit->account_id; ?></TD>
-				<?php if($loanCredit->paymenttype_mode == 1) {?>
+				<?php if($loanCredit->paymenttype_id == 1) {?>
 				<TD align = "right"><?php echo $loanCredit->amount_to_bank; 
 				$totalCredit = $totalCredit + $loanCredit->amount_to_bank;
 				$columntotal += $loanCredit->amount_to_bank;
 				?></TD><td></td>
-				<?php } elseif($loanCredit->paymenttype_mode == 5) { ?>
+				<?php } elseif($loanCredit->paymenttype_id == 5) { ?>
 				<td></td><TD align = "right"><?php echo $loanCredit->amount_to_bank; 
 				$totalTransferCredit = $totalTransferCredit + $loanCredit->amount_to_bank; 
 				$columntotal += $loanCredit->amount_to_bank;
@@ -131,7 +113,7 @@
  } $k=0;$j=0; ?>
 
 <?php if($this->loanDedit) { ?>
-<div style="float:left;width:370px">
+<div style="float:left;width:375px">
 <h5>Debit</h5>
 <table id="hor-minimalist-s">
 		<TR>
@@ -145,19 +127,19 @@
 		</TR> 
 		<?php foreach($this->loanDedit as $loanDebit) { 
 		$j++;
-		if($loanDebit->paymenttype_mode == 1 or $loanDebit->paymenttype_mode == 5 ){
+		if($loanDebit->paymenttype_id == 1 or $loanDebit->paymenttype_id == 5 ){
 		?>
 			<TR>
 				
 				<TD ><?php echo $j; ?></TD>
                                 <TD ><?php echo $this->translate('By'); ?> <?php echo $loanDebit->account_number; ?></TD>
 				<TD ><?php echo $loanDebit->account_id ?></TD>
-				<?php if($loanDebit->paymenttype_mode == 1) {?>
+				<?php if($loanDebit->paymenttype_id == 1) {?>
 				<td align = "right" ><?php echo $loanDebit->amount_from_bank;
 				$totalDebit = $totalDebit + $loanDebit->amount_from_bank; 
 				$columntotal += $loanDebit->amount_from_bank;
 				?></TD><td></td>
-				<?php } elseif($loanDebit->paymenttype_mode == 5) { ?>
+				<?php } elseif($loanDebit->paymenttype_id == 5) { ?>
 				<TD></TD>
 				<TD align = "right"><?php echo $loanDebit->amount_from_bank; 
 				$totalTransferDebit = $totalTransferDebit + $loanDebit->amount_from_bank; 
@@ -207,9 +189,9 @@
 
 <?php  } 
 if(($this->loanCredit) && ($this->loanDedit))  { ?>
-<div style="float:left;width:370px">
-<form action="<?php echo $this->baseUrl();?>/reports/loansupplementary/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/reports/loansupplementary/reportdisplay/file/loansupplementary.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+<div style="float:left;width:375px">
+<form action="<?php echo $this->baseUrl();?>/loansupplementary/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/loansupplementary/index/reportdisplay/file/loansupplementary.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
             
             <input type="submit" value="PDF" id="submit">

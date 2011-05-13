@@ -1,0 +1,66 @@
+<div style="float:left;width:380px">
+<fieldset>
+<legend>Account From</legend>
+<form action="<?php echo $this->baseUrl();?>/transaction/amounttransfer/transferto" method="POST">
+    <TABLE id="hor-minimalist-b">
+        <?php foreach($this->savingDetailsFrom as $savingDetails) {  ?>
+                <TR>
+                    <TD>Name</TD>
+                    <TD><?php echo $savingDetails['name'];?></TD>
+
+                </TR>
+
+                <TR>
+                    <TD>Account Name</TD>
+                    <TD><?php echo $savingDetails['offerproductname'];?></TD>
+
+                </TR>
+
+                <TR>
+                    <TD>Account Number</TD>
+                    <TD><?php echo $savingDetails['account_number'];?></TD>
+
+                </TR>
+                <TR>
+                    <TD>Balance</TD>
+                    <TD><?php echo $this->balanceFrom;?></TD>
+
+                </TR>
+
+        <?php } ?>
+        </TABLE>
+</fieldset>
+</div>
+<div style="float:left;width:380px">
+<fieldset>
+<legend>Account To</legend>
+    <TABLE id="hor-minimalist-b">
+        <?php foreach($this->savingDetailsTo as $savingDetailsTo) {  ?>
+                <TR>
+                    <TD>Name</TD>
+                    <TD><?php echo $savingDetailsTo['name'];?></TD>
+
+                </TR>
+
+                <TR>
+                    <TD>Account Name</TD>
+                    <TD><?php echo $savingDetailsTo['offerproductname'];?></TD>
+
+                </TR>
+
+                <TR>
+                    <TD>Account Number</TD>
+                    <TD><?php echo $savingDetailsTo['account_number'];?></TD>
+
+                </TR>
+                <TR>
+                    <TD>Balance</TD>
+                    <TD><?php echo $this->balanceTo;?></TD>
+
+                </TR>
+
+        <?php } ?>
+        </TABLE>
+</fieldset>
+</form>
+</div>

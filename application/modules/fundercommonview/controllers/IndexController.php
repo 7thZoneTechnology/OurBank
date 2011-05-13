@@ -56,14 +56,14 @@ class Fundercommonview_IndexController extends Zend_Controller_Action
             $id=$this->_request->getParam('id');
             $this->view->id = $id;		
             $this->view->fundername=$this->view->funder->getfunder($id);
-            $this->view->address = $this->view->adm->getModule("address",$id,"Funder");
-            $this->view->contact = $this->view->adm->getModule("contact",$id,"Funder");
+            $this->view->address = $this->view->adm->getModule("ourbank_address",$id,"Funder");
+            $this->view->contact = $this->view->adm->getModule("ourbank_contact",$id,"Funder");
 
 	// get module id
             $module=$this->view->funder->getmodule('Funder');
             foreach($module as $module_id){ }
             $this->view->mod_id=$module_id['parent'];
-            $this->view->sub_id=$module_id['module_id'];file:///var/www/ourbankM/application/modules/fundercommonview/controllers/IndexController.php
+            $this->view->sub_id=$module_id['module_id'];
 //         }else {$this->_redirect('index/index');}
     } 
 }	

@@ -26,18 +26,18 @@ class Holiday_Model_Holiday extends Zend_Db_Table {
 	public function getHolidayDetails() {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_holiday'),array('a.id','a.name','a.createddate'))
-									->join(array('b'=>'ourbank_office'),'a.office_id = b.id',array('b.name as officename') );
-
+			->join(array('a' => 'ourbank_holiday'),array('a.id','a.name','DATE(a.holiday_from)=".date("d-m-y")."'))
+									->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename') );
+ 	//	die($select->__toString($select));
+// 
 		$result = $this->fetchAll($select);
 		return $result->toArray();
-// 		die($select->__toString($select));
 	}
 //getting office
 public function getOffice() {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_office'),array('id'));
+			->join(array('a' => 'ourbank_officehierarchy'),array('id'));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 //die($select->__toString($select));
@@ -49,7 +49,7 @@ public function getOffice() {
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_holiday'),array('id'))
 			->where('a.id = ?',$id)
-			->join(array('b'=>'ourbank_office'),'a.office_id = b.id',array('b.name as officename') );
+			->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename'));
 
 		$result = $this->fetchAll($select);
 		return $result->toArray();
@@ -79,7 +79,7 @@ public function getOffice() {
 			->where('a.name like "%" ? "%"',$post['name'])
 			->where('a.holiday_from like "%" ? "%"',$post['holiday_from'])
 			->where('a.holiday_upto like "%" ? "%"',$post['holiday_upto'])
-									->join(array('b'=>'ourbank_office'),'a.office_id = b.id',array('b.name as officename') );
+									->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename') );
 
 		$result = $this->fetchAll($select);
 		return $result->toArray();

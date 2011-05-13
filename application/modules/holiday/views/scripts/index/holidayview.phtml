@@ -31,7 +31,7 @@
 <?php }}  ?>
         <?php foreach($this->holidaydetails as $holiday) {  ?>
                 <TR>
-                    <TD>Holiday Name</TD>
+                    <TD>Holiday Name :</TD>
                     <TD><?php echo $holiday['name'];?></TD>
                     <TD></TD>
                     <TD></TD>
@@ -39,28 +39,28 @@
                 </TR>
 
                 <TR>
-                    <TD>Office name</TD>
+                    <TD>Office name :</TD>
                     <TD><?php echo $holiday['officename'];?></TD>
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
  <TR>
-                    <TD>Holiday from</TD>
-                    <TD><?php echo $holiday['holiday_from'];?></TD>
+                    <TD>Holiday from :</TD>
+                    <TD><?php echo $this->escape($dateconvert->normalformat($holiday['holiday_from']));?></TD>
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
  <TR>
-                    <TD>Holiday upto</TD>
+                    <TD>Holiday upto :</TD>
                     <TD><?php echo $holiday['holiday_upto'];?></TD>
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
                 </TR>
 <TR>
-                    <TD>Repayment date</TD>
+                    <TD>Repayment date :</TD>
                     <TD><?php echo $holiday['repayment_date'];?></TD>
                     <TD></TD>
                     <TD></TD>

@@ -63,7 +63,7 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $form = new Funderdetails_Form_funderdetails($this->view->id);
         $this->view->form=$form;
 	//load funder type drop down
-        $fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");					
+        $fundertype = $this->view->adm->viewRecord("ourbank_funder_types","id","DESC");					
         foreach($fundertype as $fundertype1) { 
                 $form->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
         }
@@ -101,7 +101,7 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 	$form = new Funderdetails_Form_funderdetails($this->view->id);
 	$this->view->form=$form;
 
-	$fundertype = $this->view->adm->viewRecord("ob_funder_types","id","DESC");
+	$fundertype = $this->view->adm->viewRecord("ourbank_funder_types","id","DESC");
         //load funder type drop down 	
 	foreach($fundertype as $fundertype1) { 
 	$form->type->addMultiOption($fundertype1['id'],$fundertype1['fundertype']);
@@ -148,9 +148,9 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $this->view->funderid=$id;
 	// create instance of delete
         $delform=new Funderdetails_Form_Delete();
-        $this->view->delete1=$delform;
+        $this->view->delete=$delform;
 	// search for the search criterias
-        if ($this->_request->isPost() && $this->_request->getPost('Delete'))
+        if ($this->_request->isPost() && $this->_request->getPost('Submit'))
         {
             $formdata = $this->_request->getPost();
 		// form data validate
@@ -162,16 +162,14 @@ class Funderdetails_IndexController extends Zend_Controller_Action
                 $redirect = $this->view->adm->deleteAction("ob_funder","funder",$id);
                 $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
                 $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
-$this->_redirect('/funder');
-
                 }
 		// if not valid redirct action
-               
-        
-      }
-
-    
+                $this->_redirect("/".$redirect);
+            }
+        }
+//         }
+//         else {
+//         $this->_redirect('index/index');
 //         }
     }
-}
 }

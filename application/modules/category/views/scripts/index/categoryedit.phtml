@@ -18,29 +18,18 @@
 !-->
 
 <form action="<?php echo $this->baseUrl();?>/category/index/categoryedit/id/<?php echo $this->id; ?>" method="POST">
- 	<div id="container-1">
-		<div class="profile_tab">
-
-			<TABLE id="hor-minimalist-b">
-<tr>
-						<th>Edit category Information</th>
-						<th ><a href="<?php echo $this->baseUrl();?>/category/index/categorydelete/id/<? echo $this->id; ?>" method="POST"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" border=0 width="16" height="16"></a>
-                                                </th>	</tr>
-		
-					
-						<?php echo $this->form;?>
-
-
- 					</table>
-						<div class="btnhouse">
-							<div class="ltbtns">
- 								<input type="submit" name="Update" id="Submit" value="Update">                 
-							</div>
-								<div class="rtbtns">
-								<a href="<?php echo $this->baseUrl();?>/fee"><?php echo $this->form->Back;?></a>
-								</div>
-						</div>
-			
-		</div>
-	</div>
+<fieldset>
+<table class="fieldsets" id="hor-minimalist-b">
+    <tr><Th colspan="2">Edit category <a href="<?php echo $this->baseUrl();?>/category/index/categorydelete/id/<?php echo $this->id; ?>" method="POST"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></Th></tr>
+         <?php echo $this->form;?>
+	</table>
+        <div class="btnhouse">
+            <div class="ltbtns">
+                    <input type="submit" name="Update" id="Submit" value="Update">                 
+            </div>
+            <div class="rtbtns">
+                <a href="<?php echo $this->baseUrl();?>/category/index"><input name="submit" type="submit" class="officebutton" value="Back"></a>
+            </div>
+        </div>
+</fieldset>
 </form>

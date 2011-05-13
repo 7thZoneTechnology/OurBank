@@ -1,0 +1,95 @@
+<script type="text/javascript">
+function page2(pagenumber) { alert(pagenumber);
+// 	if(officetype_id) {
+// 		targeturl=path+"/officedefault/index/suboffice?officetype_id="+officetype_id;
+// 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+// 	}
+}
+
+</script>
+
+<style type="text/css" >
+th
+{
+   background-color: #EBDDE2;
+}
+</style>
+
+<?php if(!$this->result) { ?>
+
+<?php } $dateconvert= new App_Model_dateConvertor();
+if($this->result) { 
+foreach ($this->result as $result) {
+?>
+<fieldset>
+	<legend>Template</legend>
+        <div align="center"><h3><b><u>Group law</u></b></h3></div>
+        <br>
+
+        <table>
+            <TR>
+                <TD valign="top" width="20px">1.</TD>
+                <TD><p align="justify">The vision of Ourbank is to stimulate local development by offering small and medium sized micro financial institutions (MFIs) a true free and open source software solution, based on community-driven software development, named OurBank.</p></TD>
+            </TR>
+
+            <TR>
+                <TD valign="top" width="20px">7.</TD>
+                <TD><p>The vision of Ourbank is to <u> <FONT color="RED"><?php echo $result['dayname']; ?></FONT></u> stimulate local development by <u> <FONT color="RED"><?php echo $result['place']; ?></FONT></u> offering small and medium <u> <FONT color="RED"><?php echo $result['time']; ?></FONT></u> sized micro financial institutions (MFIs) a true free and open source software solution, based on community-driven software development, named OurBank.
+</p></TD>
+            </TR>
+
+            <TR>
+                <TD valign="top" width="20px">8.</TD>
+                <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['saving_perweek']; ?></FONT></u> kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
+            </TR>
+
+            <TR>
+                <TD valign="top" width="40px">17.</TD>
+                <TD> <p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['rateinterest']; ?></FONT></u> ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
+            </TR>
+
+            <TR>
+                <TD valign="top" width="40px">17.</TD>
+                <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['penalty_latecoming']; ?></FONT></u> ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
+            </TR>
+
+            <TR>
+                <TD valign="top" width="40px">18.</TD>
+                <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['penalty_notcoming']; ?></FONT></u> ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
+            </TR>
+
+            <TR>
+                <TD valign="top" width="40px">31.</TD>
+                <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $this->datechange->phpnormalformat($result['group_created_date']); ?></FONT></u> ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas  <u> <FONT color="RED"><?php echo $result['name']; ?></FONT></u>  vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></p></TD>
+            </TR>
+        </table>
+
+        <div align="left">
+        <table  width="100%" border="1">
+        <tr>
+            <th>Member name</th>
+            <th>Father name</th>
+            <th>Nominee</th>
+            <th>Nominee relationship</th>
+            <th>Signature</th>
+        </tr>
+        <?php foreach($this->groupmembers as $member) {?>
+        <tr>
+        <td><?php echo $member['membername']; ?></td>
+        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']); 
+                if($fatherdetails) { echo $fatherdetails[0]['fathername']; } ?></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+        <?php } ?>
+        </table>
+        </div>
+</fieldset>
+<?php } } ?>
+
+
+
+
+
+

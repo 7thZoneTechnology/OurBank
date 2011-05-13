@@ -21,24 +21,52 @@
 
 <?php
 class Health_Model_health  extends Zend_Db_Table {
-    protected $_name = 'ob_member';
+    protected $_name = 'ourbank_healthhabitdetails';
 
-// edit family details with respective to member id...
-    public function edit_health($member_id)
-    {
-       $select=$this->select()
-                        ->setIntegrityCheck(false)
-                        ->join(array('a'=>'ourbank_familyhealth'),array('a.id'))
-                        ->where('a.member_id=?',$member_id);
-       $result=$this->fetchAll($select);
-       return $result->toArray();
+        public function gethabittypes()
+        {
+        $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a'=>'ourbank_master_habit'),array('a.id')); // get all habits
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
+
+    public function getchallengetypes()
+        {
+        $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a'=>'ourbank_master_phychallenge'),array('a.id')); // get all physical challenges
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
+
+        public function getfamilymemberdetails($familyid){
+            $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('name as membername','id as memberid'))
+                ->join(array('b'=>'ourbank_family'),'b.id = a.family_id')
+                ->where('b.id='.$familyid);
+            $result=$this->fetchAll($select);
+            return $result->toArray(); // return family memberdetails
+        }
+
+    public function getselectedhabit($memberid){
+            $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_healthhabitdetails'),array('a.id'),array('habit_id'))
+                ->where('a.member_id='.$memberid);
+            $result=$this->fetchAll($select);
+            return $result->toArray(); // return the habit details for particular member
+            }
+
+    public function getphysicalchallenge($memberid){
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_healthphychallenge'),array('a.id'),array('phychallenge_id'))
+                ->where('a.member_id='.$memberid);
+        $result=$this->fetchAll($select);
+        return $result->toArray();  // return the physical details for particular member
+
     }
-
-//update the family details with respective to member id...
-    public function updatehealth($memberId,$input = array()) {
-    $where[] = "familymember_id = '".$memberId."'";
-    $db = $this->getAdapter();
-    $result = $db->update('ourbank_familyhealth',$input,$where);
-    }
-
 }

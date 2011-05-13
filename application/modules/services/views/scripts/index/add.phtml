@@ -26,23 +26,23 @@
     <th width="17%"><?php echo $this->translate("Recuired loan/help"); ?></th>
 </tr>
 <?php  
-for($i=1;$i<=$this->number;$i++) {
-    $a='services'.$i;
-    $c='whom'.$i;
-    $d='fund'.$i;
-    $e='help'.$i;
-    $f='source_id'.$i;
+ foreach($this->service_details as $servicedetails){
+    $a='services'.$servicedetails['id'];
+    $c='whom'.$servicedetails['id'];;
+    $d='fund'.$servicedetails['id'];;
+    $e='help'.$servicedetails['id'];;
+    $f='source_id'.$servicedetails['id'];;
 
 ?>
 <tr>
-    <td><?php echo $this->form->$a; ?></td>
+    <td><?php echo $servicedetails['name']; ?></td>
     <td><?php echo $this->form->$c; ?></td>
     <td><?php echo $this->form->$d; ?></td>
     <td><?php echo $this->form->$e; echo $this->form->$f; ?></td>
 </tr> 
 <?php }?>
 <tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
-<td><a href="<?php echo $this->baseUrl();?>/individualmcommonview/index/commonview/id/<?php echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+<td><a href="<? echo $this->baseUrl();?>/individualmcommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
 </tr>
 </table>
 

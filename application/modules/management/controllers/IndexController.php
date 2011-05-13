@@ -39,8 +39,7 @@ class Management_IndexController extends Zend_Controller_Action {
 	if(!$data){
 		$this->_redirect('index/login');
 	}
-       $this->view->title = "Management";
+        $this->view->pageTitle='Management';
     }
-
 }
 

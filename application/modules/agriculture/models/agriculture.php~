@@ -27,17 +27,66 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         {
         $select=$this->select()
                                 ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_landtypes'),array('a.id'));
+                                ->join(array('a'=>'ourbank_master_landtypes'),array('a.id'));
         $result=$this->fetchAll($select);
         return $result->toArray();
 //         die ($select->__toString($select));
         }
 
-//update the family details with respective to member id...
-    public function updatehealth($memberId,$input = array()) {
-    $where[] = "familymember_id = '".$memberId."'";
-    $db = $this->getAdapter();
-    $result = $db->update('ourbank_familyhealth',$input,$where);
+    public function getagriculturedetails($mebmerid)
+    {
+        $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
+                        ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name as landtypename'))
+                        ->where('a.family_id=?',$mebmerid);
+//         die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
     }
 
+        public function getlog_details($mebmerid)
+    {
+        $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
+                        ->where('a.family_id=?',$mebmerid);
+//         die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+
+       public function deleteagri($param)  
+    {
+        $db = $this->getAdapter();
+                    //$db->delete("ourbank_cropdetails",array('member_id = '.$param));
+        $db->delete("ourbank_agriculture",array('family_id = '.$param));
+
+    // $db->exec("delete from ourbank_cropdetails where member_id = $param");
+        return;
+    }
+
+ public function owner($id)
+        {
+        $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a'=>'ourbank_family'),array('a.id'))
+            ->join(array('b'=>'ourbank_familymember'),'b.family_id=a.id',array('b.id as memberid','b.name'))
+            ->where('a.id=?',$id);
+         //die ($select->__toString($select));
+
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
+ public function village($id)
+        {
+        $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a'=>'ourbank_master_villagelist'),array('a.id'));
+         //die ($select->__toString($select));
+
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
 }

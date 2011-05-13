@@ -1,0 +1,128 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+<script>
+$(document).ready(function() {
+//        $('addkoota').validate();
+$('.show').click(function(){
+var groupid = $(this).val();
+        if($('input[name=group_'+groupid+']').is(':checked')){
+            $('tr[name=row_'+groupid+']').show();
+         } else {
+            $('tr[name=row_'+groupid+']').hide();
+       }
+});
+});
+</script>
+<fieldset>
+    <legend>Edit group</legend>
+    <form action="<?php echo $this->baseUrl();?>/kootadefault/index/editkoota/id/<?echo $this->kootaid;?>" method="POST" class="frm">
+        <div class="btnhouse">
+            <div class="rtbtns">
+                <a href="<?php echo $this->baseUrl();?>/kootadefault/index/deletekoota/id/<? echo $this->kootaid;?>">
+                <img src="<?php echo $this->baseUrl();?>/images/delete.gif" border=0 width="16" height="16"></a>
+            </div>
+        </div>
+        <table class="fieldsets"> 
+                <TR>
+                    <TD><label for="fld1" class="mand">Koota name</td>
+                    <TD><?php echo $this->form->koota;?></TD>
+
+                </TR> 
+                 <TR>
+                    <TD><?php echo $this->form->penaltylate;?></TD>
+                    <TD><?php echo $this->form->penaltyabsence;?></TD>
+                </TR> 
+                <TR>
+                    <TD><?php echo $this->form->interest;?></TD>
+                    <TD colspan="2"><?php echo $this->form->dateedit;?></TD>
+                </tr>
+            </table><br/>
+        <div style="width:600px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+        <table id="hor-minimalist-s" width="100%" style="float:right;">
+            <tr>
+                    <th>Group name
+                    </th> 
+                    <th>Group members
+                    </th>
+            </tr>
+        <?php 
+$dbobj = new Kootadefault_Model_Kootadefault();
+$exist = array();
+$exist = $this->Existmembers;
+foreach($this->groups as $groupdetails) { 
+   $groupmembers =  $dbobj->getmemberdetails($groupdetails['group_id']);
+?>
+            <TR class="tdbrownheading">
+                <td colspan="3">
+                    <input type="checkbox" class="show" checked="true" name="group_<?php echo $groupdetails['group_id']; ?>" value="<?php echo $groupdetails['group_id']; ?>"> <?php echo $groupdetails['groupname'];?>
+                </td>
+            </tr>
+<?php
+        foreach($groupmembers as $groupmembersdetails) { ?>
+            <tr name="row_<?php echo $groupmembersdetails['group_id'];?>">
+                <td></td>
+                <td colspan="2">
+                <?php if(in_array($groupmembersdetails['representative_id'],$exist)) { ?>
+                <input type="checkbox" name="members[]" checked="true" value="<?php echo $groupmembersdetails['representative_id']; ?>">
+                <?php } else { ?>
+                <input type="checkbox" name="members[]" value="<?php echo $groupmembersdetails['representative_id']; ?>">
+                <?php } ?>
+                <?php echo $groupmembersdetails['membername'];?>
+
+                </td>
+                </TR>
+        <?php } ?>
+        <?php } ?>
+<?php
+
+foreach($this->newgroups as $newgroupdetails) {
+ 
+   $newgroupmembers =  $dbobj->getmemberdetails($newgroupdetails['id']);
+ ?>
+             <TR class="tdbrownheading">
+                 <td colspan="3">
+                     <input type="checkbox" class="show" name="group_<?php echo $newgroupdetails['id']; ?>" value="<?php echo $newgroupdetails['id']; ?>"> <?php echo $newgroupdetails['name'];?>
+                 </td>
+             </tr>
+ <?php
+         foreach($newgroupmembers as $newgroupmembersdetails) { ?>
+             <tr name="row_<?php echo $newgroupmembersdetails['group_id'];?>">
+                 <td></td>
+                 <td colspan="2">
+                 <input type="checkbox" name="members[]" value="<?php echo $newgroupmembersdetails['representative_id']; ?>">
+                 <?php echo $newgroupmembersdetails['membername'];?>
+                 </td>
+                 </TR>
+         <?php } ?>
+         <?php } ?>
+
+        </table>
+        </div>
+<br>
+        <div class="btnhouse">
+            <div class="ltbtns">
+                <?php echo $this->form->Submit;?>
+            </div>
+            <div class="rtbtns">
+                <a href="<?php echo $this->baseUrl();?>/kootacommonview/index/commonview/id/<?echo $this->kootaid; ?>"><?php echo $this->form->Back;?></a>
+            </div>
+        </div>
+    </form>
+</fieldset>
+<?php if($this->error) { echo "<font color = 'red'><b>".$this->error."</b></font>"; } ?>

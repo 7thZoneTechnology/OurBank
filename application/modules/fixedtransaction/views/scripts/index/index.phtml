@@ -25,12 +25,15 @@
         <legend>Search</legend>
             <div class="cont-rgt-data">
                 <form action="<?php echo $this->baseUrl();?>/fixedtransaction/index/index" method="POST">
-                    <table  summary="Employee Pay Sheet">
+                    <table class="fieldsets">
                         <tr>
-                            <td><br>Account Number/Membercode:</td>
+                            <td>Account Number/Membercode</td>
                             <td><?php echo $this->form->member_id;?></td>
                         </tr>
-                    </table><?php echo $this->form->Search;?>
+                        <tr>
+                            <TD colspan = "2"><?php echo $this->form->Search;?></TD>
+                        </tr>
+                    </table>
                 </form>
             </div>
     </fieldset>
@@ -54,7 +57,9 @@
 
 <? }?>
 
-<?php if ($this->membertype_ID==1 ) { ?>
+<?php if ($this->membertype_ID==1 ) { 
+$dateconvertor = new App_Model_dateConvertor();
+?>
 
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b" summary="Employee Pay Sheet">
@@ -68,11 +73,11 @@
                 </TR>
                 <TR class="tdbrown">
                     <TD width="20%">Begin date</TD>
-                    <TD width="20"><?php echo $this->begin_date;?></TD>
+                    <TD width="20"><?php echo $dateconvertor->phpnormalformat($this->begin_date);?></TD>
                 </TR>
                 <TR class="tdbrown">
                     <TD width="20%">Mature date</TD>
-                    <TD width="20"><?php echo $this->mature_date;?></TD>
+                    <TD width="20"><?php echo $dateconvertor->phpnormalformat($this->mature_date);?></TD>
                 </TR>
 
             </table>

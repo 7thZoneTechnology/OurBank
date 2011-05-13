@@ -17,12 +17,10 @@
 ############################################################################
 !-->
 
-<fieldset>
-<legend><?php echo $this->translate("Edit OfficeHierarchy"); ?></legend>
 	<div class="cont-rgt-data">
 			<form action="<?php  echo $this->baseUrl();?>/officehierarchy/index/edit" method="POST" name="joe">
-
 	<table id="hor-minimalist-b" summary="Employee Pay Sheet">
+            <tr><Th colspan="3"><b><?php echo $this->translate("Edit OfficeHierarchy"); ?></b></Th></tr>
 		<tr class="tdbrownheading">
   			<tr class="tdbrownheading">
 				<th width="33%"><?php echo $this->translate("Office level"); ?></th>
@@ -40,7 +38,10 @@
 		?>
 		<tr class="tdbrown">
    			<td><?php echo $i." Office Level" ;?></td>
-    		<td> <?php   ?><?php echo $this->form1->$c;  ?><?php echo $this->form1->$d; echo $this->form1->$a; ?></td> 
+    		<td><?php echo $this->form1->$c; ?>
+				<?php echo $this->form1->$a; ?>
+				<?php echo $this->form1->$d; ?>
+				</td> 
     		<td> <?php echo $this->form1->$b;  ?></td>
     	</tr>
 		<?php }?>
@@ -50,20 +51,25 @@
 	<?php }  else { ?>
 		<tr class="tdbrown">
    			<td><?php echo $this->hierarchyLevel.$this->translate("Office Level");?></td>
-    		<td> <?php echo $this->form1->officeType;  ?><?php echo $this->form1->hierarchyLevel;  ?><?php echo $this->form1->id;  ?></td> 
+    		<td> <?php echo $this->form1->hierarchyLevel;  ?>
+				 <?php echo $this->form1->officeType;  ?>
+				<?php echo $this->form1->id;  ?>
+				</td> 
     		<td> <?php echo $this->form1->officeCode;  ?></td>
 		</tr>
 	<?php } ?>
 	</table>
 
 	<table id="hor-minimalist-b" summary="Employee Pay Sheet">
-		<tr><TD colspan="5">			<div style="float:left"><?echo $this->form1->Edit;?></div>
-			<div style="float:left"><a href="<?php echo $this->baseUrl();?>"><input name="submit" type="submit" class="officebutton" 
-				value="<?php echo $this->translate('cancel'); ?>"></a></div></td>
+		<tr><TD colspan="5">
+                    <div style="float:left">
+                    <?echo $this->form1->Edit;?>
+                    <td align="right"><a href="<?php echo $this->baseUrl();?>/officehierarchy"><input name="submit" type="submit" class="officebutton" value="<?php echo $this->translate('cancel'); ?>"></a></td>
+                    </td>
     	</tr>
    	</table>
 	</form>
 	</div>
 <CENTER class="updateerror"><?php echo $this->officeTypeExisted; ?></CENTER>
 <CENTER class="updateerror"><?php echo $this->updatEerror; ?></CENTER>
-</filedset>
+

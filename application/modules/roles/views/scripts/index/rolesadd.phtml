@@ -24,15 +24,14 @@
  <fieldset>
   <?php $activity = new Roles_Model_Roles(); // create instance for roles model ?>
      
-    <form action="<?php echo $this->baseUrl();?>/roles/index/rolesadd" method="POST" name="myform" class="cmxform"  id="signupForm">
+    <form action="<?php echo $this->baseUrl();?>/roles/index/rolesadd" method="POST" name="myform" class="cmxform"  id="signupForm" onsubmit="return valid()">
        <table id="hor-minimalist-b">
         <tr>  
-            <th><label for="fld1" class="mand">Grant name</label></th>
-            <th><?php echo $this->form->grantname;?><?php echo $this->errorgrantname;?></th>
+            <th><font color="green">*</font> Grant name</th>
+            <th><?php echo $this->form->grantname;?></th>
             <th></th><th></th><th></th>
         </tr>
        </table>
-    
     <table id="hor-minimalist-b">
          <tr bgcolor="Gray">
             <td>Modules</td>
@@ -45,6 +44,7 @@
     <?php $dbobj = new Roles_Model_Roles();
         if($this->module) { 
             $modules = $this->module;
+            $modle = 0;
             foreach($modules as $moduleslist){
                 if($moduleslist['parent']=="0") { $moduleid = $moduleslist['module_id'];?>		
                     <tr>
@@ -52,7 +52,8 @@
                         <td colspan="6">
                             <input type="checkbox" id="module_<?php echo $moduleslist['module_id']; ?>"  class="mainmoduleClass" name="mainModule_<?php echo $moduleslist['module_id']; ?>"  value="<?php echo $moduleslist['module_id']; ?>"><?php echo $moduleslist['module_description']; ?>
                         </td>
-                    </tr>
+                
+</tr>
                         <?php $Submodule = $dbobj->getSubmodule($moduleid);
                 foreach($Submodule as $Submodulelist){ ?>
                     <tr>

@@ -30,7 +30,7 @@
 
 		$remarks= new Zend_Form_Element_Textarea('remarks', array('rows' => 3,'cols' => 20,));
 		$remarks->setAttrib('class', '');
- 		$remarks->setLabel('');
+		$remarks->setLabel('Remarks');
 		//add validation
 		$remarks->setRequired(true)
 				   ->addValidators(array(array('NotEmpty')));

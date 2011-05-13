@@ -19,9 +19,10 @@
         <ul>
            <li ><a href="<?php echo $this->baseUrl();?>/savingaccount">Personal savings</a></li>
            <li ><a href="<?php echo $this->baseUrl();?>/fixedaccount">Fixed savings</a></li>
-	   	   <li ><a href="<?php echo $this->baseUrl();?>/recurringaccount">Recurring savings</a></li>
-	   	   <li ><a href="<?php echo $this->baseUrl();?>/loanaccount">Loan a/c</a></li>
-
+	   <li ><a href="<?php echo $this->baseUrl();?>/recurringaccount">Recurring savings</a></li>
+	   <li ><a href="<?php echo $this->baseUrl();?>/loanaccount">Loan a/c</a></li>
+	   <li ><a href="<?php echo $this->baseUrl();?>/loanprocess">Loan Request</a></li>
+<!--             <li ><a href="<?php echo $this->baseUrl();?>/declaration">Declaration</a></li>-->
 	</ul>
 	<?php } ?>
         <?php if($this->pageTitle == "Savings") { ?>
@@ -51,6 +52,31 @@
                     <li ><a href="<?php echo $this->baseUrl();?>/loanaccount">Loan a/c</a></li>
                 </ul>
 	<?php } ?>
+
+<?php if($this->pageTitle == "Loan request" || $this->pageTitle == $this->levelname.' approval process') { ?>
+               <h4><a href="#">Accounting</a></h4>
+ 
+               <ul>
+                   <li><a href="<?php  echo $this->baseUrl();?>/loanprocess/index"><img src="<?php echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16">Search</a></li>
+                   <li ><a href="<?php echo $this->baseUrl();?>/loanprocess/index/newprocess"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16">New loan request</a></li>
+               </ul>
+               <ul>
+                   <li ><a href="<?php echo $this->baseUrl();?>/loanprocess/index/loanstatus">Requested status</a></li>
+               </ul>
+                <ul>
+                   <li ><a href="<?php echo $this->baseUrl();?>/loanprocess/index/jlgadvances">Jlg advances</a></li>
+               </ul>
+               <ul>
+                   <li ><a href="<?php echo $this->baseUrl();?>/loanprocess/index/shgindex">Shg advances</a></li>
+               </ul>
+       <?php } ?>
+	
+                <?php if($this->pageTitle == "Declaration") { ?>
+                                <h4><a href="#">Accounting</a></h4>
+                                <ul>
+                                    <li ><a href="<?php echo $this->baseUrl();?>/declaration">Declaration</a></li>
+                                </ul>
+                        <?php } ?>
   </div>
 
     <div id="pagecontent">
@@ -59,7 +85,7 @@
     </div>
 
   <div id="footer">
-    <div id="copytxt"> Mahiti Infotech Pvt. Ltd., <a href="#">Terms &amp; Conditions</a></div>
+    <?php echo $this->render('footer.phtml'); ?>
   </div>
 </div>
 </BODY>

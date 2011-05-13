@@ -1,22 +1,3 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-
 <script> 
 function getXMLHTTP() {
     var xmlhttp=false;	
@@ -66,14 +47,13 @@ function getInterests(interest,path,productId) {
 
 function displayRow(type) {
     var row = document.getElementById("funder");
-    if(type == '2')
+    if(type == '0')
     row.style.display = 'none';
     else if (type == '1')
     row.style.display = '';
 
 }
 </script>
-<div>
 <?php 
 if ($this->account) {
 foreach ($this->account as $account) {
@@ -142,49 +122,47 @@ foreach ($this->account as $account) {
             <form name="addform" action="<?php echo $this->baseUrl();?>/loanaccount/index/createaccount" method="POST">
             <table class="fieldsets">
                     <TR>
-                        <TD><label for="fld1" class="mand">Date of account</label></TD>
+                        <TD><label for="fld1" class="mand">Date of account</TD>
                         <TD><?php echo $this->loanForm->date;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Disbursement amount</label></TD>
+                        <TD><label for="fld1" class="mand">Disbursement amount</TD>
                         <TD><?php echo $this->loanForm->amount;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Installments (Months)</label></TD>
+                        <TD><label for="fld1" class="mand">Installments (Months)</TD>
                         <TD><?php echo $this->loanForm->installments;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Interest rate</label></TD>
+                        <TD><label for="fld1" class="mand">Interest rate</TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->interest;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Interest type</label></TD>
+                        <TD><label for="fld1" class="mand">Interest type</TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->interesttype_id;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Transfer amount to</label></TD>
+                        <TD><label for="fld1" class="mand">Transfer amount to</TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->savingAccount;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Fundings</label></TD>
+                        <TD><label for="fld1" class="mand">Fundings</TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->fundings;?></div></TD>
                     </TR>
                     <TR id = "funder" style="display:none">
-                        <TD><label for="fld1" class="mand">Funder</label></TD>
+                        <TD><label for="fld1" class="mand">Funder</TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->funders;?></div></TD>
                     </TR>
-					<?php if ($this->loanForm->group) { ?>
                     <TR>
-                        <TD><label for="fld1" class="mand">Group Member</label></TD>
-                        <td><?php echo $this->loanForm->group; ?></td>
+                        <TD><label for="fld1" class="mand">Fee</TD>
+                        <TD><?php echo $this->loanForm->fee;?></TD>
                     </TR>
-					<?php } ?>
+                    <TR>
+                        <TD><?php echo $this->loanForm->Submit; ?></TD>
+                        <td><?php echo $this->loanForm->Back; ?></td>
+                    </TR>
                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
                 </table>
-                            <?php echo $this->loanForm->Submit; ?></TD>
-                           <a href="<?php echo $this->baseUrl(); ?>/loanaccount"><input type="button" name="back" value="<?php echo $this->translate("Back");?>"></a>
                 <?php echo $this->loanForm->Id; ?> <?php echo $this->loanForm->code; ?> 
             </form>
-</fieldset>
-</div>
 </div>

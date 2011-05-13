@@ -20,13 +20,13 @@
 <form action="<?php echo $this->baseUrl();?>/incomedetails/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
 <table id="hor-minimalist-b">
 <tr> 
-    <th width="27%"><?php echo $this->translate("Source of loan"); ?></th>
-    <th width="12%"><?php echo $this->translate("Amount of loan"); ?></th>
+    <th width="27%"><?php echo $this->translate("Source of Income"); ?></th>
+    <th width="12%"><?php echo $this->translate("Amount of Income"); ?></th>
 </tr>
 <?php  
 for($i=1;$i<=$this->number;$i++) {
     $a='source'.$i;
-    $b='loanamount'.$i;
+    $b='incomeamount'.$i;
     $c='source_id'.$i;
 
 

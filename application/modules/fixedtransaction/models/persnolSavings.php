@@ -18,10 +18,6 @@
 ############################################################################
 */
 ?>
-
-
-
-
 <?php
 class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         protected $_name = 'ourbank_accounts';
@@ -256,7 +252,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
                         ->join(array('a' => 'ourbank_savings_transaction'),array('transaction_id'))
                         ->order('a.transaction_id DESC LIMIT 5')
                         ->join(array('b' => 'ourbank_transactiontype'),'a.transactiontype_id= b.transactiontype_id')
-                        ->join(array('c' => 'ourbank_paymenttypes'),'a.paymenttype_id = c.paymenttype_id')
+                        ->join(array('c' => 'ourbank_master_paymenttypes'),'a.paymenttype_id = c.paymenttype_id')
                         ->join(array('d' => 'ourbank_accounts'),'a.account_id = d.account_id')
                         ->where('d.account_number = ?',$accountNumber);
                 $result = $this->fetchAll($select);
@@ -267,7 +263,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
                 $sql = "select * from ourbank_savings_transaction A,
-                                ourbank_transactiontype B,ourbank_paymenttypes C,
+                                ourbank_transactiontype B,ourbank_master_paymenttypes C,
                                 ourbank_accounts D,ourbank_transaction E 
                                 where (D.account_number ='$accountNumber' 
                                 AND A.transactiontype_id=B.transactiontype_id 
@@ -313,7 +309,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         public function fetchAll_paymenttype_id() {
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_paymenttypes'),array('paymenttype_id'));
+                        ->join(array('a' => 'ourbank_master_paymenttypes'),array('paymenttype_id'));
                 $result = $this->fetchAll($select);
                 return $result->toArray();
         }
@@ -321,7 +317,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         public function fetchAll_paymenttype_idforloans() {
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_paymenttypes'),array('paymenttype_id'))
+                        ->join(array('a' => 'ourbank_master_paymenttypes'),array('paymenttype_id'))
                         ->where('a.paymenttype_id != 5');
                 $result = $this->fetchAll($select);
                 return $result->toArray();
@@ -330,7 +326,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         public function gettransactionmode($transactionMode) {
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_paymenttypes'),array('id'))
+                        ->join(array('a' => 'ourbank_master_paymenttypes'),array('id'))
                         ->where('a.id = ?',$transactionMode);
                 $result = $this->fetchAll($select);
                 return $result->toArray();
@@ -339,7 +335,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         public function fetchAll_paymenttype() {
                 $select = $this->select()
                         ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_paymenttypes'),array('paymenttype_id'));
+                        ->join(array('a' => 'ourbank_master_paymenttypes'),array('paymenttype_id'));
                 $result = $this->fetchAll($select);
                 return $result->toArray();
         }
@@ -430,8 +426,8 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
                         ->setIntegrityCheck(false)  
                         ->join(array('a' => 'ourbank_accounts'),array('id'))
                         ->where('a.account_number = ?',$accountnumber)
-                        ->where('a.accountstatus_id = 1 or a.accountstatus_id = 3')
-                        ->join(array('b' => 'ourbank_member'),'a.member_id=b.id')
+                        ->where('a.status_id = 1 or a.status_id = 3')
+                        ->join(array('b' => 'ourbank_familymember'),'a.member_id=b.id')
                         ->join(array('c' => 'ourbank_productsoffer'),'a.product_id=c.id');
                 $result = $this->fetchAll($select);
                 return $result->toArray();
@@ -592,7 +588,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
                 $result = $this->db->insert('ourbank_Assets',$input);
-                return $result;
+//                 return $result;
         }
 
         public function insertbankincomeaccounts($input = array())
@@ -627,14 +623,28 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
 
         public function selectbankassetsaccount($branchID) {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select * from   ourbank_glsubcode where substr(header,5)='$branchID' and glcode_id='3'";
+                $sql = "select * from  ourbank_glsubcode where substr(header,5)='$branchID' and glcode_id = (select id from ourbank_glcode where header like '%Bank%')";
+                $result = $this->db->fetchAll($sql,array());
+                return $result;
+        }
+
+        public function selectincomeforoffice($branchID) {
+                $this->db = Zend_Db_Table::getDefaultAdapter();
+                $sql = "select * from  ourbank_glsubcode where substr(header,13)='$branchID' and glcode_id = (select id from ourbank_glcode where header = '%Income%')";
+                $result = $this->db->fetchAll($sql,array());
+                return $result;
+        }
+
+  public function selectexpenditureforoffice($branchID) {
+                $this->db = Zend_Db_Table::getDefaultAdapter();
+                $sql = "select * from  ourbank_glsubcode where substr(header,15)='$branchID' and glcode_id = (select id from ourbank_glcode where header ='expenditure')";
                 $result = $this->db->fetchAll($sql,array());
                 return $result;
         }
 
         public function selectbankcashassetsaccount($branchID) {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select * from   ourbank_glsubcode where substr(header,5)='$branchID' and glcode_id='4'";
+                $sql = "select * from   ourbank_glsubcode where substr(header,5)='$branchID' and  glcode_id=(select id from ourbank_glcode where header like '%Cash%')";;
                 $result = $this->db->fetchAll($sql,array());
                 return $result;
         }

@@ -39,14 +39,16 @@
 		
 	
         $name = $formfield->field('Text','name','','','mand','Name',true,'','','','','',1,0);
-        $officebranch = $formfield->field('Select','bank_id','','','mand','Bank name',true,'','','','','',1,0);
+        $officebranch = $formfield->field('Select','bank_id','','','mand','Office name',true,'','','','','',1,0);
         $gender = $formfield->field('Select','gender','','','mand','Gender',true,'','','','','',1,0);
         $designation = $formfield->field('Select','designation','','','mand','Designation',true,'','','','','',1,0);
+        $department = $formfield->field('Select','department','','','mand','Department',true,'','','','','',1,0);
+
         $grant_id = $formfield->field('Select','grant_id','','','mand','Granted as',true,'','','','','',1,0);
         $username = $formfield->field('Text','username','','','mand','Username',true,'','','','','',1,0);
-        $password = $formfield->field('Text','password','','','mand','Password',true,'','','','','',1,0);
+        $password = $formfield->field('Password','password','','','mand','Password',true,'','','','','',1,0);
 
 					
-	$this->addElements(array($name,$officebranch,$gender,$designation,$grant_id,$username,$password));
+	$this->addElements(array($name,$officebranch,$gender,$designation,$department,$grant_id,$username,$password));
     }
 }

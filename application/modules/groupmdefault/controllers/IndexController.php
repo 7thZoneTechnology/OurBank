@@ -19,8 +19,8 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
 {
     public function init() 
     {
-        $this->view->pageTitle='Groupm';
-        $test = new DH_ClassInfo(APPLICATION_PATH . '/modules/groupm/controllers/');// create instance to get controller name 
+        $this->view->pageTitle = "Group";
+        $test = new DH_ClassInfo(APPLICATION_PATH .'/modules/groupm/controllers/');// create instance to get controller name 
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();// get session values
         $this->view->createdby = $this->view->globalvalue[0]['id'];
@@ -32,70 +32,300 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
         $module = $test->getControllerClassNames();
         $modulename = explode("_", $module[0]);
         $this->view->modulename = strtolower($modulename[0]);
-    
     }
 
     public function addgroupAction() 
     {
+        $app = $this->view->baseUrl();
+        $this->view->pageTitle = "Group";
+        $addForm = new Groupmdefault_Form_groupdefault($app);
+        $this->view->form=$addForm;
+          $convertdate = new App_Model_dateConvertor();
+   $sessionName = new Zend_Session_Namespace('groupsession');
+        if(isset($sessionName)){
+                $this->view->gtype = $sessionName->__get('grouptype');
+                $addForm->office->setValue($sessionName->__get('office'));
+                $addForm->groupname->setValue($sessionName->__get('groupname'));
+                $addForm->bank->setValue($sessionName->__get('bank'));
+                $addForm->savingamt->setValue($sessionName->__get('savingamt'));
+                $addForm->penaltylate->setValue($sessionName->__get('penaltylate'));
+                $addForm->penaltyabsence->setValue($sessionName->__get('penaltyabsence'));
+                $addForm->interest->setValue($sessionName->__get('interest'));
+                $addForm->place->setValue($sessionName->__get('place'));
+                $addForm->times->setValue($sessionName->__get('times'));
+                $addForm->day->setValue($sessionName->__get('day'));
+                $cdate = $sessionName->__get('Created_Date');
+if($cdate) {
+    $addForm->Created_Date->setValue($cdate);
+}
+unset($sessionName->office);
+unset($sessionName->groupname);
+unset($sessionName->bank);
+unset($sessionName->savingamt);
+unset($sessionName->penaltylate);
+unset($sessionName->penaltyabsence);
+unset($sessionName->interest);
+unset($sessionName->place);
+unset($sessionName->times);
+unset($sessionName->day);
+unset($sessionName->Created_Date);
+}
         if($this->_request->getParam('error')) { // display error message for wrong head selection
 			$error = $this->_request->getParam('error');
 			if($error == 1 ) {
 				$this->view->error = "Improper Group head selection ! ";
 			}
+                        if($error == 2 ) {
+				$this->view->error = "Chose single member in a family ! ";
+			}
+                        if($error == 3 ) {
+				$this->view->error = "Improper Group representatives selection ! ";
+			}
+                        if($error == 4 ) {
+                                $this->view->error = "Maximum 3 members can be a representative in a single group!  ";
+                                    }
         }
-        $app = $this->view->baseUrl();
-        $this->view->pageTitle = "Groupm";
-        $addForm = new Groupmdefault_Form_groupdefault($app);
-        $this->view->form=$addForm;
+       
         $dbobj = new Groupmdefault_Model_groupdefault();
+        $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
+        foreach($days as $day) {
+            $addForm->day->addMultiOption($day['id'],$day['name']);
+        }
 
+        $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
+        foreach($bank as $banks) {
+            $addForm->bank->addMultiOption($banks['id'],$banks['name']);
+        }
            $hierarchy = $dbobj->getofficehierarchy();
                foreach($hierarchy as $hiearchyids){
              $hiearchyid = $hiearchyids['hierarchyid'];
             }
+
         $officedetails = $this->view->adm->getRecord('ourbank_office','officetype_id',$hiearchyid);
         foreach($officedetails as $officeiddetails) { 
         $addForm->office->addMultiOption($officeiddetails['id'],$officeiddetails['name']);
         }
-
     }
     public function getmembersaddAction()
     {
          // get branch id and display branch members
         $branch_id = $this->_request->getParam('branch_id');
+        $grouptype = $this->_request->getParam('type');
+        $this->view->familyid = $branch_id;
         $this->_helper->layout->disableLayout();
         $dbobj= new Groupmdefault_Model_groupdefault();
-        $this->view->members = $dbobj->GetBranchMembers($branch_id);
+        $this->view->members = $dbobj->GetBranchMembers($branch_id,$grouptype);
+        $existmem = $dbobj->GetExistMembers($branch_id,$grouptype);
+        $existmembers = array();
+        foreach($existmem as $existmemb){
+        $existmembers[] = $existmemb['family_id'];
+        }
+        $this->view->existmembers = $existmembers;
     }
     public function getmembersAction()
     {
         $branch_id = $this->_request->getParam('branch_id');
         $group_id = $this->_request->getParam('group_id');
+        $grouptype = $this->_request->getParam('grouptype');
 
         $this->_helper->layout->disableLayout();
         $dbobj= new Groupmdefault_Model_groupdefault();
-        $this->view->members = $dbobj->GetBranchMembers1($branch_id,$group_id); //List all members including Joined Memeber //remaining 
+
+        $Allvillagemembers  = $dbobj->GetAllvillagemembers($branch_id); // get All village members
+        $fetchMembers=$dbobj->assignMembers($group_id); //get assigned members
+        $RepMembers=$dbobj->representatives($group_id); //get Representative members
+        $repmembers = array();
+        $fetchAllGroupmembers = $dbobj->fetchAllgroupmembers(); 
+            foreach($RepMembers as $RepMember){
+            $repmembers[] = $RepMember['representative_id'];
+            }
+            $this->view->representative = $repmembers;
+// // Zend_Debug::dump($RepMembers);
+// // Zend_Debug::dump($fetchMembers);
+        $villagemem = array();
+        $Allmem = array();
+        $assign = array();
+        $assignFamids = array();
+        $aa = array();
+        foreach($Allvillagemembers as $Allvillagemem){
+            $villagemem[] = $Allvillagemem['id'];
+        }
+        foreach($fetchAllGroupmembers as $fetchAllGroup){
+            $Allmem[] = $fetchAllGroup['member_id'];
+        } 
+         foreach($fetchMembers as $fetchMem){
+            $assign[] = $fetchMem['member_id'];
+            $assignFamids[] = $fetchMem['family_id'];
+        }
+// // // Zend_Debug::dump($Allmem);
+// // // Zend_Debug::dump($assign);
+        $aa  = array_diff($Allmem, $assign);
+// // // Zend_Debug::dump($aa);
+
+        $villagemem  = array_diff($villagemem, $aa);
+        $this->view->Allmembers = $Allvillagemembers;
+        $this->view->Allmem = $villagemem;
+        $this->view->Exist = $assign;
+        $this->view->Existfamily = $assignFamids;
+// Zend_Debug::dump($this->view->Allmembers);
+// Zend_Debug::dump($this->view->Allmem);
+
         $this->view->groupheaddetails = $dbobj->Getgrouphead($group_id); //get group head
         foreach($this->view->groupheaddetails as $grouphead){
                 $this->view->grouphead = $grouphead['head'];
         }
-        $fetchMembersValue=$dbobj->assignMembers($group_id); //get assigned members
-        $this->view->assignMembers = $fetchMembersValue;
      }
     public function groupaccountAction() 
     {  
+        $dbobj= new Groupmdefault_Model_groupdefault();
+
+        $result = "";
+
         $member_id = $_POST['member_id'];
         $group_head = $_POST['memberhead'];
-        $result = "";
-        if(in_array($group_head,$member_id))
-            {
-               $result = "ok"; // check if selected members and group head is correct 
+        $representative_id = $_POST['representatives'];
+        $latitude = $this->_request->getParam('latitude');
+        $longitude = $this->_request->getParam('longitude');
+        $grouptypeid = $this->_request->getParam('grouptype');
+        $membertypeid = $grouptypeid;
+        $office_id = $this->_request->getParam('office');
+        $groupname = $this->_request->getParam('groupname');
+        $createddate= $this->_request->getParam('Created_Date');
+        $savingamt = $this->_request->getParam('savingamt');
+        $bank = $this->_request->getParam('bank');
+        $branch = $this->_request->getParam('branch');
+        $penaltyabsence = $this->_request->getParam('penaltyabsence');
+        $penaltylate = $this->_request->getParam('penaltylate');
+        $interest = $this->_request->getParam('interest');
+        $place = $this->_request->getParam('place');
+        $times = $this->_request->getParam('times');
+        $day = $this->_request->getParam('day');
+
+
+
+
+                    $sessionName = new Zend_Session_Namespace('groupsession');
+if($grouptypeid){
+                    $sessionName->__set('grouptype',$grouptypeid);
+}
+if($office_id){
+                    $sessionName->__set('office',$office_id);
+}
+if($groupname){
+                    $sessionName->__set('groupname',$groupname);
+}
+if($bank){
+                    $sessionName->__set('bank',$bank);
+}
+if($createddate){
+                    $sessionName->__set('Created_Date',$createddate);
+}
+if($latitude){
+                    $sessionName->__set('latitude',$latitude);
+}
+if($longitude){
+                    $sessionName->__set('longitude',$longitude);
+}
+if($savingamt){
+                    $sessionName->__set('savingamt',$savingamt);
+}
+if($penaltyabsence){
+                    $sessionName->__set('penaltyabsence',$penaltyabsence);
+}
+if($penaltylate){
+                    $sessionName->__set('penaltylate',$penaltylate);
+}
+if($interest){
+                    $sessionName->__set('interest',$interest);
+}
+if($place){
+                    $sessionName->__set('place',$place);
+}
+if($times){
+                    $sessionName->__set('times',$times);
+}
+if($day){
+                    $sessionName->__set('day',$day);
+}
+
+        $headers = array('Absense','Late');
+        $description = array('Penalty for absense','Penalty for late');
+
+        $countreps = count($representative_id);
+        $memberids = array();
+        $famid = array();
+        $memid = array();
+        $countvalues = array();
+        foreach($member_id as $memberid){
+        $memberids[] = explode('_',$memberid);
+        }
+        foreach($memberids as $Memberids){
+        $famid[] = $Memberids[0];
+        $memid[] = $Memberids[1];
+        }
+        $result = array_diff($representative_id,$memid);
+
+        if(in_array($group_head,$memid)){
+            if($result){
+                $error = "3";
             }
+            if($countreps>3){
+                $error = "4";
+            }
+             else {
+                $result="ok";
+                $countvalues[] = array_count_values($famid);
+                    foreach ($countvalues[0] as $key => $value) {
+                if ($value > 1) {
+                    $result="not ok";
+                    $error = "2";
+                } 
+            }
+            }
+            }
+        else {
+              $error = "1";
+        }
         if($result == "ok")
-        { // if result ok get input values
-          $office_id = $this->_request->getParam('office');
-          $groupname = $this->_request->getParam('groupname');
-          $createddate= $this->_request->getParam('Created_Date');
+        { 
+
+        // if ok get all input values
+        $penalglcode = $dbobj->getpenaltyglcode(4,'recurring deposit');
+        $bglcode = $penalglcode->glcode;
+        $glcodeid = $penalglcode->glcodeid;
+
+
+           $ini=substr($bglcode,0,1);
+           $mid = substr($bglcode,1,2);
+
+           $midportion = $ini.$mid;
+
+           $last=substr($bglcode,3,3);
+           $last+=1;
+           $last1 = str_pad($last,3,0,STR_PAD_LEFT);
+           $glsubcode[0]=$midportion.$last1;
+
+        $last +=1;
+        $last = str_pad($last,3,0,STR_PAD_LEFT);
+        $glsubcode[1]=$midportion.$last;
+
+        for($l=0;$l<2;$l++){
+        $penalglcode = $dbobj->checkavailid( $headers[$l]);
+            if(!$penalglcode){
+                        $dbobj->insertGlsubcode(array('id' => '',
+                                    'glsubcode' => $glsubcode[$l],
+                                    'glcode_id' => $glcodeid,
+                                    'subledger_id' => 4,
+                                    'header' => $headers[$l],
+                                    'description' => $description[$l],
+                                    'created_date' =>date('Y-m-d'),
+                                    'created_by'=>$this->view->createdby));
+                    }
+                }
+        $glidforabsense =  $this->view->adm->getsingleRecord('ourbank_glsubcode','id','header','Absense');
+        $glidforlate =  $this->view->adm->getsingleRecord('ourbank_glsubcode','id','header','Late');
+
+
           $convertdate = new App_Model_dateConvertor();
           $createddate=$convertdate->phpmysqlformat($createddate);
             $date=date("y/m/d H:i:s");
@@ -105,52 +335,109 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
                 $messages = $validator->getMessages();	
                     $this->view->errorgroupname=$groupname.'Already Existed';// if name exists display error message
             } else {
-                $groupid = $this->view->adm->addRecord("ourbank_group",array('name' => $groupname)); // Insert group name and get pk id
-            $dbobj= new Groupmdefault_Model_groupdefault();
-            $grouptypeid = $dbobj->getGrouptypeid('Group');
-            // generate group code
-            $groupcode=str_pad($office_id,3,"0",STR_PAD_LEFT)."0".$grouptypeid.str_pad($groupid,5,"0",STR_PAD_LEFT);
-            // update rest of group values
-            $this->view->adm->updateRecord("ourbank_group",$groupid,array('office_id' =>$office_id,'head'=>$group_head,'groupcode' =>$groupcode,'group_created_date'=>$date,'created_by' =>$this->view->createdby,'created_date' =>$createddate ));/* Group created date -> Including timestamp , Created date should contain date only*/
+                $groupid = $this->view->adm->addRecord("ourbank_group",
+                                                        array('name' => $groupname,
+                                                              'bank_id' => $bank,
+                                                              'branch_id' => $branch,
+                                                              'saving_perweek' => $savingamt,
+                                                              'penalty_notcoming' => $penaltyabsence,
+                                                              'penalty_latecoming' => $penaltylate,
+                                                              'late_subglcode' => $glidforabsense,
+                                                              'absent_subglcode' => $glidforlate,
+	                                                      'rateinterest' => $interest,
+                                                              'place' => $place,
+                                                              'time' => $times,
+                                                              'days' => $day,
+                                                              'latitude' => $latitude,
+                                                              'longitude' => $longitude)); // Insert group name and get pk id
 
-                foreach($member_id as $memberid)
+            // generate group code
+            $groupcode=str_pad($office_id,3,"0",STR_PAD_LEFT)."0".$grouptypeid.str_pad($groupid,6,"0",STR_PAD_LEFT);
+            // update rest of group values
+            $this->view->adm->updateRecord("ourbank_group",$groupid,array('village_id' =>$office_id,'head'=>$group_head,'groupcode' =>$groupcode,'group_created_date'=>$date,'created_by' =>$this->view->createdby,'created_date' =>$createddate ));/* Group created date -> Including timestamp , Created date should contain date only*/
+
+                foreach($memid as $Memid)
                  {
-                  $this->view->adm->addRecord("ourbank_groupmembers",array('id' =>$groupid,
-                                                                    'member_id' =>$memberid,
+                  $this->view->adm->addRecord("ourbank_groupmembers",array('id' =>'',
+                                                                    'group_id' =>$groupid,
+                                                                    'member_id' =>$Memid,
                                                                     'groupmember_status' =>3));////add groupmembers with its group id ->($groupid)
+                 } 
+             foreach($representative_id as $representatives)
+                 {
+                  $this->view->adm->addRecord("ourbank_group_representatives",array('id' =>'',
+                                                                    'group_id' =>$groupid,
+                                                                    'representative_id' =>$representatives));////add representatives with its group id ->($groupid)
                  }
+//             $membertypeid = $this->view->adm->getsingleRecord('ourbank_master_membertypes','id','type','Group');
+
                   $account_id = $this->view->adm->addRecord("ourbank_accounts",array('id' =>'',
-                                                                    'membertype_id' =>3,
+                                                                    'membertype_id' =>$membertypeid,
+                                                                    'begin_date' =>$date,
+                                                                    'accountcreated_date' =>$date,
+                                                                    'created_date' =>$createddate,
+                                                                    'created_by' =>$this->view->createdby,
+                                                                    'status_id' => 1)); // insert some value to accounts table for group*/
+
+                $productid = $dbobj->getProductid($grouptypeid);
+                $productcode = $productid.'S';
+//                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
+		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($membertypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
+                $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$groupid,'product_id' =>$productid));
+//  // Group created date -> Including timestamp , Created date should contain date only
+
+$individualtypeid = $this->view->adm->getsingleRecord('ourbank_master_membertypes','id','type','Individual'); // get individual type id
+
+// // insert accounts value for group members
+foreach($memid as $Memid)
+ {
+$account_id = $this->view->adm->addRecord("ourbank_accounts",array('id' =>'',
+                                                                    'membertype_id' =>$individualtypeid,
                                                                     'accountcreated_date' =>$date,
                                                                     'created_date' =>$createddate,
                                                                     'created_by' =>$this->view->createdby,
                                                                     'status_id' => 1)); // insert some value to accounts table
-            $grouptypeid = $dbobj->getGrouptypeid('Group');
-            $productdetails = $dbobj->getProductid($grouptypeid);
-            foreach($productdetails as $productdetail){
-                $productid = $productdetail['id'];
-            }
+//                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
+		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($individualtypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
 
-                $productcode = 'S';
-		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($grouptypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
-$this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$groupid,'product_id' =>$productid));// // Group created date -> Including timestamp , Created date should contain date only
+                $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$Memid,'product_id' =>$productid));
 
-
-                    $this->_redirect('groupmcommonview/index/commonview/id/'.$groupid);
+}
+// // if all the input's are satisfying all our requirements we can unset the session values 
+unset($sessionName->office);
+unset($sessionName->groupname);
+unset($sessionName->bank);
+unset($sessionName->savingamt);
+unset($sessionName->penaltylate);
+unset($sessionName->penaltyabsence);
+unset($sessionName->interest);
+unset($sessionName->place);
+unset($sessionName->times);
+unset($sessionName->day);
+unset($sessionName->Created_Date);
+               $this->_redirect('groupcommonview/index/commonview/id/'.$groupid);
                 }
-        }else{  // if not ok display errormessage 
-            $error = "1";
+        } else{  // // //if not ok display errormessage 
             $this->_redirect('/groupmdefault/index/addgroup/error/'.$error);
             }
     }
     public function editgroupAction()
     {
+
         // check group head , and members are correct 
-        if($this->_request->getParam('error'))
-        {
-        $error = $this->_request->getParam('error');
-        if($error == 1 ){ // display error message for wrongly chosen group head 
-                $this->view->error = "Improper Group head selection ! ";
+        if($this->_request->getParam('error')) { // display error message for wrong head selection
+            $error = $this->_request->getParam('error');
+            if($error == 1 ) {
+                    $this->view->error = "Improper Group head selection ! ";
+            }
+            if($error == 2 ) {
+                    $this->view->error = "Chose single member in a family ! ";
+            }
+             if($error == 3 ) {
+                    $this->view->error = "Improper Group representatives selection ! ";
+            }
+            if($error == 4 ) {
+                    $this->view->error = "Maximum 3 members can be a representative in a single group !  ";
             }
         }
         $app = $this->view->baseUrl();
@@ -159,6 +446,19 @@ $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_num
         $this->view->title = "Edit Group Details"; 
         // create instance for form page with baseurl
         $addForm = new Groupmdefault_Form_groupdefault($app);
+        $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
+        foreach($days as $day) {
+            $addForm->day->addMultiOption($day['id'],$day['name']);
+        }
+        $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
+        foreach($bank as $banks) {
+            $addForm->bank->addMultiOption($banks['id'],$banks['name']);
+        }
+        $branch = $this->view->adm->viewRecord("ourbank_master_branch","id","ASC");
+        foreach($branch as $branch) {
+            $addForm->branch->addMultiOption($branch['id'],$branch['name']);
+        }
+        $addForm->Submit->setLabel('Update');
         $this->view->form=$addForm;
  
         $dbobject = new Groupmdefault_Model_groupdefault();
@@ -172,51 +472,158 @@ $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_num
         $addForm->office->addMultiOption($officeiddetails['id'],$officeiddetails['name']);
         }
 
-        $dbobj = new Groupmcommonview_Model_groupcommon();
+        $dbobj = new Groupcommonview_Model_groupcommon();
         $result = $dbobj->getgroup($group_id);
+
         $convertdate = new App_Model_dateConvertor();
         // assign values with respective form fields
         foreach($result as $group){
-        $addForm->office->setValue($group['officeid']);
-        $addForm->groupname->setValue($group['name']);
+        $this->view->grouptype = $grouptype =  substr($group['groupcode'],4,1);;
+        $this->view->officeid = $group['officeid'];
+        $addForm->offedit->setValue($group['officename']);
+        $addForm->offeditv->setValue($group['officeid']);
+        $addForm->groupname->setValue($group['groupname']);
+        $addForm->bank->setValue($group['bank_id']);
+        $addForm->branch->setValue($group['branch_id']);
+        $addForm->savingamt->setValue($group['saving_perweek']);
+        $addForm->penaltylate->setValue($group['penalty_latecoming']);
+        $addForm->penaltyabsence->setValue($group['penalty_notcoming']);
+        $addForm->interest->setValue($group['rateinterest']);
+        $addForm->place->setValue($group['place']);
+        $addForm->times->setValue($group['time']);
+        $addForm->day->setValue($group['days']);
+
         $addForm->Created_Date->setValue($convertdate->phpnormalformat($group['group_created_date']));
         }
         // enable javascript function to load groupmembers 
-        echo "<script>getMember('".$group['officeid']."','".$app."','".$group['groupid']."');</script>";
+        echo "<script>getMember('".$group['officeid']."','".$app."','".$group['groupid']."','".$grouptype."');</script>";
  
             if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
             {  
                 $mem = $this->_request->getPost('member_id'); // get selected members
                 $group_head = $_POST['memberhead'];// get group head 
-
+                $representative_id = $_POST['representatives'];
+                $countreps = count($representative_id);
                 $result = "";
-                
-                if(in_array($group_head,$mem)){ // check members and group head are correct or not
-                    $result = "ok";
+  
+                $memberids = array();
+                $famid = array();
+                $memid = array();
+                $countvalues = array();
+                foreach($mem as $memberid){
+                $memberids[] = explode('_',$memberid);
                 }
+                foreach($memberids as $Memberids){
+                $famid[] = $Memberids[0];
+                $memid[] = $Memberids[1];
+                }
+
+                       $result = array_diff($representative_id,$memid);
+
+        if(in_array($group_head,$memid)){
+            if($result){
+                $error = "3";
+            } 
+
+            if($countreps>3){
+                $error = "4";
+            }
+            else {
+                $result="ok";
+                $countvalues[] = array_count_values($famid);
+                    foreach ($countvalues[0] as $key => $value) {
+                if ($value > 1) {
+                    $result="not ok";
+                    $error = "2";
+                } 
+            }
+            }
+            }
+        else {
+              $error = "1";
+        }
                 if($result == "ok"){  // if ok then get all input values
-                    $office_id = $this->_request->getParam('office');
+                    $office_id = $this->_request->getParam('offeditv');
                     $groupname = $this->_request->getParam('groupname');
+                    $bank = $this->_request->getParam('bank');
+                    $branch = $this->_request->getParam('branch');
                     $createddate= $this->_request->getParam('Created_Date');
+                    $latitude = $this->_request->getParam('latitude');
+                    $longitude = $this->_request->getParam('longitude');
+                    $savingamt = $this->_request->getParam('savingamt');
+                    $penaltyabsence = $this->_request->getParam('penaltyabsence');
+                    $penaltylate = $this->_request->getParam('penaltylate');
+                    $interest = $this->_request->getParam('interest');
+                    $place = $this->_request->getParam('place');
+                    $times = $this->_request->getParam('times');
+                    $day = $this->_request->getParam('day');
+
                     $convertdate = new App_Model_dateConvertor();
                     $createddate=$convertdate->phpmysqlformat($createddate);
                     $date=date("y/m/d H:i:s");
                     $groupdetails = $dbobject->getgroupdetails($group_id); // get group details for particular id
                     $this->view->adm->addRecord("ourbank_group_log",$groupdetails[0]);  // add group details to log table
-                    $this->view->adm->updateRecord("ourbank_group",$group_id,array('office_id' =>$office_id,'name' =>$groupname,'head'=>$group_head,'group_created_date'=>$date,'created_by' =>$this->view->createdby,'created_date' =>$createddate)); // update group details
+        $glidforabsense =  $this->view->adm->getsingleRecord('ourbank_glsubcode','id','header','Absense');
+        $glidforlate =  $this->view->adm->getsingleRecord('ourbank_glsubcode','id','header','Late');
+
+
+                    $this->view->adm->updateRecord("ourbank_group",$group_id,array('village_id' =>$office_id,'bank_id' => $bank,'branch_id' => $branch,
+                                                                        'name' =>$groupname,
+                                                                        'saving_perweek' => $savingamt,
+                                                                        'penalty_notcoming' => $penaltyabsence,
+                                                                        'latitude' => $latitude,
+                                                                        'longitude' => $longitude, 
+                                                                        'penalty_latecoming' => $penaltylate,
+                                                                        'late_subglcode' => $glidforlate,
+                                                                        'absent_subglcode' =>$glidforabsense ,                                'rateinterest' => $interest,
+                                                                        'place' => $place,
+                                                                        'time' => $times,
+                                                                        'days' => $day,
+                                                                        'head'=>$group_head,
+                                                                        'group_created_date'=>$date,
+                                                                        'created_by' =>$this->view->createdby,
+                                                                        'created_date' =>$createddate)); // update group details
+
+                $groupmemberdetails = $this->view->adm->getRecord('ourbank_groupmembers','group_id',$group_id); // get groupmembers details for particular id
+                foreach($groupmemberdetails as $groupmemberDetails){
+                $this->view->adm->addRecord("ourbank_groupmembers_log",
+                                            array('record_id' =>'',
+                                                  'id' =>$groupmemberDetails['id'],
+                                                  'group_id' => $groupmemberDetails['group_id'],
+                                                  'member_id' => $groupmemberDetails['member_id'],
+                                                  'groupmember_status' => $groupmemberDetails['groupmember_status']));
+                                                    
+                 } // add group members details to log table
                     $dbobject->UpdateGroupdetails($group_id);
-                    // insert group members 
-                    foreach($mem as $memberid){
-                    $this->view->adm->addRecord("ourbank_groupmembers",array('id' =>$group_id,
+                // insert group members 
+                    foreach($memid as $memberid){
+                    $this->view->adm->addRecord("ourbank_groupmembers",array('id' =>'',
+                                                'group_id' =>$group_id,
                                                 'member_id' =>$memberid,
                                                 'groupmember_status' =>3));
                     }
-                    $this->_redirect('groupmcommonview/index/commonview/id/'.$group_id);
+             $grouprepdetails = $this->view->adm->getRecord('ourbank_group_representatives','group_id',$group_id); // get groupmembers details for particular id
+                foreach($grouprepdetails as $grouprepmemDetails){
+                $this->view->adm->addRecord("ourbank_group_representatives_log",
+                                            array('record_id' =>'',
+                                                  'id' =>$grouprepmemDetails['id'],
+                                                  'group_id' => $grouprepmemDetails['group_id'],
+                                                  'representative_id' => $grouprepmemDetails['representative_id']));
+                                                    
+                 } // add group Representative members details to log table
+
+                    $dbobject->UpdateGroupreps($group_id);
+ foreach($representative_id as $representatives)
+                 {
+                  $this->view->adm->addRecord("ourbank_group_representatives",array('id' =>'',
+                                                                    'group_id' =>$group_id,
+                                                                    'representative_id' =>$representatives));////add representatives with its group id ->($groupid)
+                 }
+                    $this->_redirect('groupcommonview/index/commonview/id/'.$group_id);
                         }
                 else{ // display error message for wrong group head selection
-                    $error = "1";
                     $this->_redirect('groupmdefault/index/editgroup/id/'.$group_id.'/error/'.$error);
-            
+
                 }
             }
         }
@@ -229,9 +636,9 @@ $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_num
         $this->view->form=$deleteForm; 
         // create instance for Groupmdefault model page
         $dbobj= new Groupmdefault_Model_groupdefault();
-        // create instance for Groupmcommonview model page
-        $groupcommon=new Groupmcommonview_Model_groupcommon();
-        $module=$groupcommon->getmodule('groupm');
+        // create instance for groupcommonview model page
+        $groupcommon=new Groupcommonview_Model_groupcommon();
+        $module=$groupcommon->getmodule('group');
         // get module id for group dynamically
         foreach($module as $module_id){ }
         $moduleid=$module_id['module_id'];
@@ -256,6 +663,17 @@ $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_num
                 }
                 if($flag == true){ // if there is no account for that group we can delete
                     $redirect = $this->view->adm->deleteAction("ourbank_group",$this->view->modulename,$this->view->groupid);
+
+                    $groupmemberdetails = $this->view->adm->getRecord('ourbank_groupmembers','group_id',$this->view->groupid); // get groupmembers details for particular id
+                foreach($groupmemberdetails as $groupmemberDetails){
+                $this->view->adm->addRecord("ourbank_groupmembers_log",
+                                            array('record_id' =>'',
+                                                  'id' =>$groupmemberDetails['id'],
+                                                  'group_id' => $groupmemberDetails['group_id'],
+                                                  'member_id' => $groupmemberDetails['member_id'],
+                                                  'groupmember_status' => $groupmemberDetails['groupmember_status']));
+                                                    
+                 } // add group members details to log table
                     $this->view->adm->deleteSubmodule("address",$this->view->groupid,$moduleid);
 
                     $dbobj->UpdateGroupdetails($this->view->groupid);
@@ -267,4 +685,27 @@ $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_num
                 }
 	}
 	}
+
+        public function branchAction()
+        {
+
+        $app = $this->view->baseUrl();
+        $this->_helper->layout->disableLayout();
+
+        $bankid = $this->_request->getParam('bankid');
+
+        $groupForm = new Groupmdefault_Form_groupdefault($app);
+        $this->view->form = $groupForm;
+
+$dbobj = new Groupmdefault_Model_groupdefault();
+//             $branches = $this->view->adm->getRecord('ourbank_master_branch','bank_id',$bankid);
+$branches = $dbobj->Getbranch($bankid);
+// Zend_Debug::dump($branches);
+//                 // load applicable to values
+		foreach($branches as $bankbranch) {
+			$groupForm->branch->addMultiOption($bankbranch['id'],$bankbranch['name']);
+		}
+        
+        
+        }
 }

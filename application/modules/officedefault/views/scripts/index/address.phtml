@@ -1,0 +1,44 @@
+<script type="text/javascript">
+function gettaluk(district_id,path) {
+	if(district_id) {
+		targeturl=path+"/officedefault/index/gettaluk?districtid="+district_id;
+		$.ajax({ url: targeturl, success: function(data){ $("#talukdiv").html(data) }});
+	}
+}
+
+function gethobli(taluk_id,path){
+	if(taluk_id) {
+		targeturl=path+"/officedefault/index/gethobli?taluk_id="+taluk_id;
+		$.ajax({ url: targeturl, success: function(data){ $("#hoblidiv").html(data) }});
+	}
+}
+
+function getpanchayath(hobli_id,path){
+	if(hobli_id) {
+		targeturl=path+"/officedefault/index/getpanchayath?hobli_id="+hobli_id;
+		$.ajax({ url: targeturl, success: function(data){ $("#panchayathdiv").html(data) }});
+	}
+}
+</script>
+<table> 
+<?php 
+if($this->subform){ ?>
+    <tr>
+    <td width="62%"><br><?php echo $this->translate('District'); ?></td>
+    <td width="47%"><br><?php echo $this->form->district; ?></td>
+    </tr>
+    <tr>
+    <td><br><?php echo $this->translate('Taluk'); ?></td>
+    <td id="talukdiv"><br><?php  echo $this->form->taluque; ?></td>
+    </tr>
+    <tr>
+        <td><br><?php echo $this->translate('Hobli'); ?></td>
+        <td id="hoblidiv"><br><?php  echo $this->form->hobli; ?></td>
+    </tr>
+    <tr>
+    <td><br><?php echo $this->translate('Gilla panchayath'); ?></td>
+    <td id="panchayathdiv"><br><?php  echo $this->form->panchayath; ?></td>
+    </tr>
+ <? }
+ ?>
+</table>

@@ -28,33 +28,49 @@ class Transferscroll_IndexController extends Zend_Controller_Action
     function init() 
     { 
         $this->view->pageTitle = $this->view->translate("Transfer scroll");
-	$this->view->type = "others";
+	$this->view->type = "financialReports";
 	$this->view->title =  $this->view->translate('Reports');
+	            		$this->view->adm = new App_Model_Adm();
+
+	
     }
 	//view action
     function indexAction() 
     {
         $searchForm = new Transferscroll_Form_Search();
         $this->view->form = $searchForm;
+
+        $villageoffice = new Transferscroll_Model_Transferscroll();
+        $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+			foreach($officename as $officename){
+				$searchForm->branch->addMultiOption($officename['id'],$officename['type']);
+			}
+
         //get poster and validate
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
 	$dateconvertor = new App_Model_dateConvertor();
-        if ($searchForm->isValid($formData)) { 
+
 	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
 	$Date = $dateconvertor->mysqlformat($fromDate);
+        $branchid = $this->_request->getParam('branch');
+        $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
+
 	
             $formData = $this->_request->getPost();
                 $this->view->savings = 10;
                 $this->view->pageTitle = "Transfer scroll";
+
                 $dbobj = new Transferscroll_Model_Transferscroll();
-
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $dbobj->totalSavingsCredit($fromDate);
-                $this->view->savingsDebit = $dbobj->totalSavingsDebit($fromDate);
-                $this->view->field1 = $this->_request->getParam('datefrom');
-
-         } }
+                $this->view->savingsCredit = $dbobj->totalSavingsCredit($fromDate,$branchid);
+                $officename=$dbobj-> officename($branchid);
+                $this->view->officename=$officename[0]['officename'];
+                $this->view->savingsDebit = $dbobj->totalSavingsDebit($fromDate,$branchid);
+ 
+              $this->view->field1 = $this->_request->getParam('datefrom');
+         }
     }
 
 	//pdf view action
@@ -72,6 +88,14 @@ class Transferscroll_IndexController extends Zend_Controller_Action
 	//pdf action
     function pdftransactionAction() 
     { 
+            //rupees right alignment
+            function position($amt,$posValue) {
+                      $len=strlen($amt);
+                      $pos=($posValue-35)-($len*4);
+                      return $pos;
+               }
+
+	$dateconvertor = new App_Model_dateConvertor();
         $pdf = new Zend_Pdf();
         $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
         $pdf->pages[] = $page;
@@ -88,51 +112,71 @@ class Transferscroll_IndexController extends Zend_Controller_Action
         $page->setLineWidth(1)->drawLine(25, 25, 25, 820); //left vertical
         $page->setLineWidth(1)->drawLine(570, 25, 570, 820); //right vertical
         $page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
+
+        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 9);
+
+        $page->drawText("Transfer Scroll",270, 780);
+        $page->drawText("Transfer Scroll",270, 780);
+
         //set the font
         $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
-    	
-        $text = array("Transfer Scroll",
+        $y1=745;
+        $page->drawText("Credit",50,$y1);
+        $page->drawText("Debit",310,$y1); 
+
+	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date'));
+	$date = $dateconvertor->mysqlformat($fromDate);
+        $branchid = $this->_request->getParam('office');
+        $this->view->field1 = $this->_request->getParam('date');
+        $this->view->branchid = $branchid;
+
+        $y1=745;	$y2=740;
+        $page->drawText("As of From ".$fromDate,465,$y1);//For Top Header
+
+        $text = array("",
                     "Sl No.",
                     "Credit",
                     "Amount",
                     "Total",
                     "Debit");
-
+// As of From ".$this->_request->getParam('date')
         $this->view->savings = 10;
         $page->drawText("Date : ".date('d-m-Y'),500, 800); //date('Y-m-d')
-        $page->drawText("Date : ".date('d-m-Y'),500, 800); 
+//         $page->drawText("Date : ".date('d-m-Y'),500, 800); 
         $page->drawText($text[0],240, 780);$page->drawText($text[0],240, 780);
+
 
         $x1 = 60; 
         $x2 = 120; 
-        $x3 = 220;
+        $x3 = 275;
         $x4 = 340;
         $x5 = 400;
-        $x6 = 500;
-    
+        $x6 = 575;
+
         $page->drawLine(50, 740, 550, 740);
         $page->drawLine(50, 720, 550, 720);
 
         $page->drawText($text[1], $x1, 725);
         $page->drawText($text[2], $x2, 725);
-        $page->drawText($text[3], $x3, 725);
+        $page->drawText($text[3], 220, 725);
         $page->drawText($text[1], $x4, 725);
         $page->drawText($text[5], $x5, 725);
-        $page->drawText($text[3], $x6, 725);
+        $page->drawText($text[3], 500, 725);
     
         $y1 = 710;
         $y2 = 710;
 
-        $date = $this->_request->getParam('field1'); 
 
-        $transaction = new Transferscroll_Model_Transferscroll();
+       $transaction = new Transferscroll_Model_Transferscroll();
 
-        $this->view->savingsCredit = $transaction->totalSavingsCredit($date);
-        $this->view->savingsDebit = $transaction->totalSavingsDebit($date);
+        $this->view->savingsCredit = $transaction->totalSavingsCredit($date,$branchid);
+                $officename=$transaction-> officename($branchid);
+                $this->view->officename=$officename[0]['officename'];
+        $this->view->savingsDebit = $transaction->totalSavingsDebit($date,$branchid);
 
         //Saving Account Credit and Debit
-        $savingsCredit = $transaction->totalSavingsCredit($date);
-        $savingsDebit = $transaction->totalSavingsDebit($date);
+        $savingsCredit = $transaction->totalSavingsCredit($date,$branchid);
+        $savingsDebit = $transaction->totalSavingsDebit($date,$branchid);
 
          $amountCredit = "0";
          $amountDebit = "0";
@@ -144,7 +188,9 @@ class Transferscroll_IndexController extends Zend_Controller_Action
             $i++;
             $page->drawText($i,$x1, $y1);
             $page->drawText($savingsCredit->account_number,$x2, $y1);
-            $page->drawText($savingsCredit->amount_to_bank,$x3, $y1);
+               $pos=position(sprintf("%4.2f",$savingsCredit->amount_to_bank),$x3);
+               $page->drawText(sprintf("%4.2f",$savingsCredit->amount_to_bank),$pos+2,$y1);
+//             $page->drawText($savingsCredit->amount_to_bank,$x3, $y1);
             $amountCredit = $amountCredit + $savingsCredit->amount_to_bank;
             $y1 = $y1 - 15;
         }
@@ -152,20 +198,29 @@ class Transferscroll_IndexController extends Zend_Controller_Action
             $j++;
             $page->drawText($j,$x4, $y2);
             $page->drawText($savingsDebit->account_number,$x5, $y2);
-            $page->drawText($savingsDebit->amount_from_bank,$x6, $y2);
+//             $page->drawText($savingsDebit->amount_from_bank,$x6, $y2);
+               $pos=position(sprintf("%4.2f",$savingsDebit->amount_from_bank),$x6);
+               $page->drawText(sprintf("%4.2f",$savingsDebit->amount_from_bank),$pos+2,$y2);
             $amountDebit = $amountDebit + $savingsDebit->amount_from_bank;
-            $y2 = $y2 - 15;
+            $y2 = $y2 - 15; 
         }
        
-        $page->drawLine(50, $y1, 550, $y1);
-        $page->drawLine(50, $y1 -20, 550, $y1 -20);
+
+//         $page->drawLine(50, $y1 -20, 550, $y1 -20);
+//         $page->drawLine(50, $y1, 550, $y1);
+
+        $page->drawLine(50, $y1 = $y1 - 20, 550, $y1);
+        $page->drawLine(50, $y1 -20, 550, $y1-20);
+
     
         $page->drawText($text[4], $x1, $y1 -15);$page->drawText($text[4], $x1, $y1 -15);
         $page->drawText(sprintf("%4.2f", $amountCredit), $x3, $y1 -15);
         $page->drawText(sprintf("%4.2f", $amountCredit), $x3, $y1 -15);
         $page->drawText($text[4], $x4, $y1 -15); $page->drawText($text[4], $x4, $y1 -15);
-        $page->drawText(sprintf("%4.2f", $amountDebit), $x6, $y1 -15);
-        $page->drawText(sprintf("%4.2f", $amountDebit), $x6, $y1 -15);
+               $pos=position(sprintf("%4.2f",$amountDebit),$x6);
+               $page->drawText(sprintf("%4.2f",$amountDebit),$pos+2,$y1 -15);
+//         $page->drawText(sprintf("%4.2f", $amountDebit), $x6, $y1 -15);
+//         $page->drawText(sprintf("%4.2f", $amountDebit), $x6, $y1 -15);
     
         // Virtual table
         $page->setLineWidth(1)->drawLine(50, $y1 - 20, 50, 740); //Table left vertical
@@ -177,7 +232,7 @@ class Transferscroll_IndexController extends Zend_Controller_Action
         $pdf->save('/var/www/'.$projname.'/reports/transferscroll.pdf');
 	$path = '/var/www/'.$projname.'/reports/transferscroll.pdf';
     
-//         chmod($path,0777);
+        chmod($path,0777);
 
     }
 }

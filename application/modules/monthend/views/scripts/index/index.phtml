@@ -1,0 +1,8 @@
+<form name="form1" action="<?php echo $this->baseUrl();?>/monthend/index/index" method="POST">
+<table id="hor-minimalist-b">
+    <tr>
+        <th>Month end process for <?php echo date("Y-m-d", mktime(0, 0, 0, date("m") , date("d")-date("d")+1, date("Y")));?> - <?php echo date("Y-m-d", mktime(0, 0, 0, date("m")+1 , date("d")-date("d"), date("Y")));?></th>
+    </tr>
+    <td><input type = "submit" name = "Procced" value = "Procced"></td>
+</table>
+</form>

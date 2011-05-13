@@ -27,8 +27,10 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('Income details');
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
+//         $this->view->globalvalue = $globalsession->getSession();
+//         $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $this->view->createdby = $sessionName->primaryuserid;
         $this->view->username = $this->view->globalvalue[0]['username'];
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
@@ -49,22 +51,18 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 	$this->view->submoduleid =$moduleid= $this->_getParam('subId');
 	//count number of family members
         $family_model=new incomedetails_Model_incomedetails();
-        $this->view->loan_details=$count_loan = $family_model->edit_incometypes();
+        $this->view->income_details=$count_loan = $family_model->editIncometypes();
         $this->view->number=$number=count($count_loan);
 	//load form with respective to number of family member
         $addForm = new incomedetails_Form_incomedetails($number);
         $this->view->form=$addForm;
 	//set the value of member name and sex
 	
-        for($i=1;$i<=$number;$i++){
         foreach($count_loan as $count_loan1){
-            $a='source'.$i;
-            $b='source_id'.$i;
-           $addForm->$a->setValue($count_loan1['name']);
-           $addForm->$b->setValue($count_loan1['id']);
-            $i++;
+            $b='source_id'.$count_loan1['id'];
+          $addForm->$b->setValue($count_loan1['id']);
          }
-        }
+        
 
 	//insert the family health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
@@ -97,7 +95,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 	$this->view->submoduleid =$moduleid= $this->_getParam('subId');
 	//count number of family members
         $family_model=new incomedetails_Model_incomedetails();
-        $this->view->loan_details=$count_income = $family_model->edit_incometypes();
+        $this->view->income_details=$count_income = $family_model->editIncometypes();
         $this->view->number=$number=count($count_income);
 	//load form with respective to number of family member
         $addForm = new incomedetails_Form_incomedetails($number);
@@ -115,7 +113,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
         }
 
 	// // //set the value of expense...
-        $detailsdetails = $family_model->get_incomedetails($member_id); 
+        $detailsdetails = $family_model->getIncomedetails($member_id); 
         $i=1;
         foreach($detailsdetails as $detailsdetails1){ 
         $c='incomeamount'.$detailsdetails1['income_id'];
@@ -130,7 +128,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
         {
 		$moduleid= $this->_getParam('subid');  
  		$expense_db = new Incomedetails_Model_Incomedetails ();
-            $editExpense = $expense_db->get_incomedetails($member_id);
+            $editExpense = $expense_db->getIncomedetails($member_id);
             for ($j = 0 ; $j< count($editExpense); $j++) {
                 $this->view->adm->addRecord("ourbank_incomedetails_log",$editExpense[$j]);
             }
@@ -138,12 +136,12 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 
 
 	    for($i=1;$i<=$number;$i++)
-            {	if($this->_request->getParam('loanamount'.$i)){
+            {	if($this->_request->getParam('incomeamount'.$i)){
                 $this->view->adm->addRecord("ourbank_incomedetails",array('id' => '',
                                             'member_id'=>$member_id,
                                             'submodule_id'=>$moduleid ,
                                             'income_id'=>$this->_request->getParam('source_id'.$i),
-                                            'value' => $this->_request->getParam('loanamount'.$i),
+                                            'value' => $this->_request->getParam('incomeamount'.$i),
                                             'created_date'=>date("y/m/d H:i:s"),
                                             'created_by'=>$this->view->createdby
                                             ));

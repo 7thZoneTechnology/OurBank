@@ -1,3 +1,5 @@
+
+
 <?php
 /*
 ############################################################################
@@ -29,40 +31,32 @@ class Summarymfi_Model_Summary extends Zend_Db_Table
                 $select = $this->select()
                                 ->setIntegrityCheck(false) 
                                 ->from(array('A' => 'ourbank_office'),array('COUNT(name)'));
-                                
                             // die($select->__toString());
-
                 $result = $this->fetchAll($select);
                 return $result;
-            
         }
         public function allMembers() {
-
                 $select = $this->select()
                                 ->setIntegrityCheck(false) 
-                                ->from(array('A' => 'ourbank_members'),array('COUNT(member_id)'));
-                                                                
+                                ->from(array('A' => 'ourbank_familymember'),array('COUNT(id)'));
                             // die($select->__toString());
-
                 $result = $this->fetchAll($select);
                 return $result;
                                    }
-
         public function activeMembers() {
  
                  $select = $this->select()
                                  ->setIntegrityCheck(false)
-                                 ->from(array('A' => 'ourbank_membername'),array('COUNT(member_id)'));
+                                 ->from(array('A' => 'ourbank_familymember'),array('COUNT(id)'));
                                  // die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result;
                                      }
-
            public function inactiveMembers() {
  
                  $select = $this->select()
                                  ->setIntegrityCheck(false)
-                                 ->from(array('A' => 'ourbank_membername'),array('COUNT(member_id)'));
+                                 ->from(array('A' => 'ourbank_familymember'),array('COUNT(id)'));
                                  // die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result;
@@ -127,7 +121,7 @@ class Summarymfi_Model_Summary extends Zend_Db_Table
                 public function funders() {
                       $select = $this->select()
                                  ->setIntegrityCheck(false)
-                                 ->from(array('A' => 'ob_funder'),array('COUNT(DISTINCT(name))'));
+                                 ->from(array('A' => 'ourbank_funder'),array('COUNT(DISTINCT(name))'));
                                            // die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result;
@@ -162,11 +156,10 @@ class Summarymfi_Model_Summary extends Zend_Db_Table
                 public function query2() {
                         $this->db = Zend_Db_Table::getDefaultAdapter();
                         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-                                $sql1="SELECT ROUND(100 * SUM(paid_amount ) / (SELECT SUM( amount_disbursed ) FROM ourbank_loan_disbursement )) rate FROM ourbank_loan_repayment";
+                                $sql1="SELECT ROUND(100 * SUM(paid_amount ) / (SELECT SUM(amount_disbursed ) FROM ourbank_loan_disbursement )) rate FROM ourbank_loan_repayment";
                         $result = $this->db->fetchAll($sql1);
                         return $result;
                 }
-
                 public function query3() {
                         $this->db = Zend_Db_Table::getDefaultAdapter();
                         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);

@@ -10,34 +10,26 @@
 $(document).ready(function() {
     $("#loanAccountdate").datepicker({"dateFormat":"dd/mm/yy"});
     $("#date").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#date1").datepicker({"dateFormat":"dd/mm/yy"});
+
 });
 </script>
-</head> 
 
-<<<<<<< HEAD
 <?php echo $this->render('header.phtml'); ?>
 
 
-=======
-
-
-
-    <div id="ourbanklogo">
-      <h1><a href="#" title="OurBank">OurBank</a></h1>
-    </div>
-    <div id="welcomebar"><span class="welcomusr">Welcome <a href="#"><?php echo $this->username;?></a></span> <span class="longdate"><?php echo date("r");?></span><span class="signout"><a href="<?php  echo $this->baseUrl();?>/index/logout">signout</a></span>
-    </div>
-
->>>>>>> 9d681687dc91919053fa75e01dd2414250ce7e3a
     <div id="navigation">
       <div id="mainmenu">
      <ul>
 	<li class="selected"><a href="<?php  echo $this->baseUrl();?>/accounting"><span>Accounting</span></a></li>
 	<li><a href="<?php  echo $this->baseUrl();?>/transaction"><span>Transaction</span></a></li>
+	<li><a href="<?php  echo $this->baseUrl();?>/maintenance"><span>Maintenance</span></a></li>
 	<li><a href="<?php  echo $this->baseUrl();?>/meetingmain"><span>Meeting</span></a></li>
         <li><a href="<?php  echo $this->baseUrl();?>/membership"><span>Membership</span></a></li>
 	<li><a href="<?php  echo $this->baseUrl();?>/management"><span>Management</span></a></li>
-        <li><a href="<?php  echo $this->baseUrl();?>/settings/dropdown"><span>Setting</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/dropdown"><span>Setting</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/reports"><span>Reports</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/loanprocessing"><span>Loan process</span></a></li>
         </ul>
       </div>
       <div id="submenu">
@@ -49,6 +41,9 @@ $(document).ready(function() {
            <li ><a href="<?php echo $this->baseUrl();?>/fixedaccount">Fixed savings</a></li>
             <li ><a href="<?php echo $this->baseUrl();?>/recurringaccount">Recurring savings</a></li>
             <li ><a href="<?php echo $this->baseUrl();?>/loanaccount">Loan a/c</a></li>
+    	   <li ><a href="<?php echo $this->baseUrl();?>/loanprocess">Loan request</a></li>
+<!--            <li ><a href="<?php echo $this->baseUrl();?>/declaration">Declaration</a></li>-->
+
 
 	   <?php } ?>
         </ul>

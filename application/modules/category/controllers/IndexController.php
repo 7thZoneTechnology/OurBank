@@ -18,70 +18,86 @@
 ############################################################################
 */
 ?>
-
-
-
 <?php
 class Category_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-		$this->view->pageTitle='Category';
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->pageTitle='Category';
+                $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();
+		$this->view->createdby = 1; //$this->view->globalvalue[0]['id'];
 //		$this->view->username = $this->view->globalvalue[0]['username'];
 //        if (($this->view->globalvalue[0]['id'] == 0)) {
 //            $this->_redirect('index/logout');
 //        }
-		$this->view->adm = new App_Model_Adm();   	
+		$this->view->adm = new App_Model_Adm();   
+                $dbobj = new Category_Model_Category();
+                $categoryvalues = $dbobj->getAllCategory();
+
+                $name = array('Savings','Loan');
+                $desc = array('For savings products','For loan products');
+
+                if(empty($categoryvalues)){
+                for($i=0;$i<=1;$i++){
+                    $dbobj->insertbaseCategory(array('id' => '',
+                        'name' => $name[$i],'description' => $desc[$i],
+                        'created_by' =>$this->view->createdby,'created_date'=>date("Y-m-d")));
+                }
+                }
+
 	}
 
 	public function indexAction() 
 	{
-               
-		$this->view->title = "Category";
+       		$this->view->title = "Category";
+		$this->view->pageTitle = "Category";
 //		$storage = new Zend_Auth_Storage_Session();
 //		$data = $storage->read();
 //		if(!$data){
 //			$this->_redirect('index/login');
 //		}
 
+        //  when delete particular category we should check that particular category is a basic one or not
+                if($this->_helper->flashMessenger->getMessages()){
+                $messages = $this->_helper->flashMessenger->getMessages();
+                    foreach($messages as $error){
+                        echo "<script> alert('$error');</script>";
+                }
+                }
 
 //calling the category model
 		$category = new Category_Model_Category();
 		$categorydetails=$category->getCategoryinformation();
 		$searchForm = new Category_Form_Search();
 		$this->view->form = $searchForm;
-		$result = $category->getCategoryDetails();
-//pagination  -   for set of 5 at a time
+                //pagination  -   for set of 5 at a time
 		$page = $this->_getParam('page',1);
-		$paginator = Zend_Paginator::factory($result);
-		$paginator->setItemCountPerPage(5);
-		$paginator->setCurrentPageNumber($page);
-		$this->view->paginator = $paginator;
-//search action
+		//search action
 		if ($this->_request->isPost() && $this->_request->getPost('Search')){
 			if ($this->_request->isPost()){
 				if ($searchForm->isValid($this->_request->getPost())){
 					$result = $category->SearchCategory($searchForm->getValues());
-                                         $this->view->errormsg="Record not found";
-//pagination for the search result
-					$page = $this->_getParam('page',1);
-					$paginator = Zend_Paginator::factory($result);
-                                         if(!$paginator){
-                                            $this->view->errormsg="Record not found";
-            }
-					$paginator->setItemCountPerPage(5);
-					$paginator->setCurrentPageNumber($page);
-					$this->view->paginator = $paginator;
+                //pagination for the search result
+                                        $paginator = Zend_Paginator::factory($result);
 				}
 			}
+                $this->view->search = true;
 		}
+                else {
+		$result = $category->getCategoryDetails();
+		$paginator = Zend_Paginator::factory($result);
+                // assign default values into paginator
+                $paginator = Zend_Paginator::factory($result);
+                }
+        $paginator->setItemCountPerPage($this->view->adm->paginator());
+        $paginator->setCurrentPageNumber($page);
+        $this->view->paginator = $paginator;
 	}
 	public function categoryaddAction() 
 	{
 //calling the form		
+		$this->view->title = "Category";
 		$categoryForm = new Category_Form_category();
 		$this->view->form = $categoryForm;
 //submit action
@@ -100,12 +116,20 @@ class Category_IndexController extends Zend_Controller_Action
 	
 	public function categoryeditAction() 
 	{
+                	$this->view->title = "Category";
 //calling the form
 			$categoryForm = new Category_Form_category();
 			$this->view->form = $categoryForm;
 //getting the id
 			$id=$this->_getParam('id');
 			$this->view->id = $id;
+                        // check the id whether its belongs to base value 
+                        if(($id == 1) || ($id == 2)){
+                            $this->_helper->flashMessenger->addMessage('You cannot edit this category, its a basic category');
+                            $this->_helper->redirector('index');
+                       }
+
+                        
 //calling the category model
 			$category = new Category_Model_Category;
 			$categorydetails = $category->getCategory($id);
@@ -117,10 +141,11 @@ class Category_IndexController extends Zend_Controller_Action
 				//print_r($formData);
 				if ($categoryForm->isValid($formData)) { 
 //editing the record
+
 					$previousdata = $this->view->adm->editRecord("ourbank_category",$id);
-//updating the previous data
-					$this->view->adm->updateLog("ourbank_category_log",$previousdata[0],1);
-					//update 					
+// //updating the previous data
+					$this->view->adm->updateLog("ourbank_category_log",$previousdata[0],$this->view->createdby);
+// 					//update 					
 					$this->view->adm->updateRecord("ourbank_category",$id,$categoryForm->getValues());
 					$this->_redirect('category/index/');
 				}
@@ -128,14 +153,16 @@ class Category_IndexController extends Zend_Controller_Action
     }		
 	public function categoryviewAction() 
 	{
+     		$this->view->title = "Category";
 		//Acl
-        $id=$this->_request->getParam('id');
+                $id=$this->_request->getParam('id');
 //calling the category model			
-			$category = new Category_Model_Category;
-			$this->view->categorydetails=$category->getCategory($id);
+                $category = new Category_Model_Category;
+                $this->view->categorydetails=$category->getCategory($id);
 	}
 	public function categorydeleteAction() 
 	{
+      		$this->view->title = "Category";
 //calling the delete form
 		$delform = new Category_Form_Delete();
 		$this->view->deleteform = $delform;
@@ -145,18 +172,28 @@ class Category_IndexController extends Zend_Controller_Action
 //calling the category model
 		$category = new Category_Model_Category;
 		$this->view->categorydetails=$category->getCategory($id);
-// 				$this->view->sectorname =  $Sectordetails['name'];
-// 			}
+                $getstatus = $category->getcategorystatus($id);
+//         // if that product id is not used by anyone we can delete that record
+        if(!$getstatus)
+            {
 //delete action
 		if($this->_request->isPost() && $this->_request->getPost('Delete')) {
-		$formdata = $this->_request->getPost();
+		      $formdata = $this->_request->getPost();
 				if ($delform->isValid($formdata)) { 
-//deleting  record
-       $redirect = $this->view->adm->deleteRecord("ourbank_category",$id);
-					//update
-            $this->_redirect('/category');
+//editing the record 
+                                    $previousdata = $this->view->adm->editRecord("ourbank_category",$id);
+// //updating the previous data
+                                    $this->view->adm->updateLog("ourbank_category_log",$previousdata[0],$this->view->createdby);
+// delete that particular record
+                                    $this->view->adm->deleteRecord('ourbank_category',$id);
+                                    $this->_redirect('category/index/');
 				}
-			}
-		
+                }
 	}
+ // if that category id is used by someone then we should assign message 
+              else { 
+                    $this->_helper->flashMessenger->addMessage('You cannot delete this product, its in usage');
+                    $this->_helper->redirector('index');
+               }
+    }
 }

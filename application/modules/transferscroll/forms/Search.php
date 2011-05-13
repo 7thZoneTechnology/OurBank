@@ -30,14 +30,16 @@ class Transferscroll_Form_Search extends Zend_Form {
 	public function __construct($options = null) {
 		Zend_Dojo::enableForm($this);
 		parent::__construct($options);
+	$formfield = new App_Form_Field ();
+        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
+        $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
+// 		$field1 = new Zend_Form_Element('datefrom');
+// 		$field1->setAttrib('class', 'txt_put');
 	
-		$field1 = new Zend_Form_Element('datefrom');
-		$field1->setAttrib('class', 'txt_put');
-	        $field1->setRequired(true);
 	
 		$submit = new Zend_Form_Element_Submit('Search');
 		$pdf=new Zend_Form_Element_Submit('PDF');
 		//add element to form
-		$this->addElements(array($field1,$submit,$pdf));
+		$this->addElements(array($branch,$datefrom,$submit,$pdf));
 	}
 }

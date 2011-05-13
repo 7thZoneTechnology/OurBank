@@ -75,7 +75,7 @@ class Address_IndexController extends Zend_Controller_Action
                 $formData = $this->_request->getPost();
                 if($addForm->isValid($formData))
                 {
-                $this->view->adm->addRecord("address",$addForm->getValues());
+                $this->view->adm->addRecord("ourbank_address",$addForm->getValues());
                 $this->_redirect('/'.$path1.'/index/commonview/id/'.$id);
                 }
         }
@@ -108,9 +108,9 @@ class Address_IndexController extends Zend_Controller_Action
         $formData = $this->_request->getPost();
                 if($addForm->isValid($formData))
                 {
-                $olddate = $this->view->adm->editRecord("address",$id); 
-                $this->view->adm->updateLog("address_log",$olddate[0],$this->view->createdby);
-                $addressmodel->updateRecord("address",$id,$addForm->getValues(),$sub_id);
+                $olddate = $this->view->adm->editRecord("ourbank_address",$id); 
+                $this->view->adm->updateLog("ourbank_address_log",$olddate[0],$this->view->createdby);
+                $addressmodel->updateRecord("ourbank_address",$id,$addForm->getValues(),$sub_id);
                 $this->_redirect('/'.$path1.'/index/commonview/id/'.$id);
                 }
         }

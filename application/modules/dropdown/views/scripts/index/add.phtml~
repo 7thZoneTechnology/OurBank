@@ -1,0 +1,162 @@
+    <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+
+<script type="text/javascript">
+function getstate(state,path) { 
+	if(state) {
+	 	targeturl=path+"/dropdown/index/district?state="+state;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+</script>
+<script type="text/javascript">
+function gettaluk(taluk,path) { 
+	if(taluk) {
+	 	targeturl=path+"/dropdown/index/hobli?taluk="+taluk;
+		$.ajax({ url: targeturl, success: function(data){ $("#talukdiv").html(data) }});
+	}
+}
+</script>
+<script type="text/javascript">
+function getpanchayath(gillapanchayath,path) { 
+	if(gillapanchayath) {
+	 	targeturl=path+"/dropdown/index/village?gillapanchayath="+gillapanchayath;
+		$.ajax({ url: targeturl, success: function(data){ $("#gillapanchayathdiv").html(data) }});
+	}
+} 
+</script>
+<form action="<?php echo $this->baseUrl();?>/dropdown/index/add/id/<?php echo $this->id; ?>/name/<?php  echo $this->tableName; ?>" method="POST">
+ 	<div id="container-1">
+		<div class="profile_tab">
+
+			<fieldset>
+				<legend>New <?php echo substr($this->tableName,15);?></legend>
+					<table class="fieldsets">	
+<tr>
+<th></th>
+<th></th>
+<th></th>
+			<TR>
+				<?php if($this->tableName == 'ourbank_master_districtlist') {?>
+				<td>State</td>
+                <TD ><?php echo $this->form->state;?></TD>
+			</tr>
+				<?php }?>
+				<?php if($this->tableName == 'ourbank_master_taluklist') {?>
+				<td>State</td>
+                <TD ><?php echo $this->form->state;?></TD></tr>
+			<tr>
+				<td>District</td>
+                <TD ><div id="statediv"><?php echo $this->form->district;?></div></TD>
+			</tr>
+				<?php }?>
+				<?php if($this->tableName == 'ourbank_master_hoblilist') {?>
+				<td>State</td>
+                <TD ><?php echo $this->form->state;?></TD>
+			</tr>
+			<tr>
+				<td>District</td>
+                <TD ><div id="statediv"><?php echo $this->form->district;?></div></TD>
+			</tr>
+			<tr>
+				<td>Taluk</td>
+                <TD ><?php echo $this->form->taluk;?></TD>
+			</tr>
+			<tr>
+				<?php }?>
+				<?php if($this->tableName == 'ourbank_master_gillapanchayath') {?>
+				<td>State</td>
+                <TD ><?php echo $this->form->state;?></TD>
+			</tr>
+			<tr>
+				<td>District</td>
+                <TD ><div id="statediv"><?php echo $this->form->district;?></div></TD>
+			</tr>
+			<tr>
+				<td>Taluk</td>
+                <TD ><?php echo $this->form->taluk;?></TD>
+			</tr><tr>
+				<td>Hobli</td>
+                <TD ><div id="talukdiv"><?php echo $this->form->hobli;?></div></TD>
+			</tr>
+				<?php }?>
+				<?php if($this->tableName == 'ourbank_master_villagelist') {?>
+				<td>State</td>
+                <TD ><?php echo $this->form->state;?></TD>
+			</tr>
+				<tr><td>District</td>
+                <TD ><div id="statediv"><?php echo $this->form->district;?></div></TD></tr>
+			<tr>
+				<td>Taluk</td>
+                <TD ><?php echo $this->form->taluk;?></TD>
+			</tr>
+<tr>
+				<td>Hobli</td>
+                <TD ><div id="talukdiv"><?php echo $this->form->hobli;?></TD>
+			</tr>
+
+<tr>
+				<td>Gilla panchayath</td>
+                <TD ><?php echo $this->form->gillapanchayath;?></div></TD>
+			</tr>
+			
+				<?php }?>
+<?php if($this->tableName == 'ourbank_master_habitation') {?>
+				<td>State</td>
+                <TD ><?php echo $this->form->state;?></TD>
+			</tr>
+				<tr><td>District</td>
+                <TD ><div id="statediv"><?php echo $this->form->district;?></div></TD></tr>
+			<tr>
+				<td>Taluk</td>
+                <TD ><?php echo $this->form->taluk;?></TD>
+			</tr>
+<tr>
+				<td>Hobli</td>
+                <TD ><div id="talukdiv"><?php echo $this->form->hobli;?></TD>
+			</tr>
+
+<tr>
+				<td>Gilla panchayath</td>
+                <TD ><?php echo $this->form->gillapanchayath;?></TD>
+			</tr>
+			<tr>
+				<td>Village</td>
+                <TD ><div id="gillapanchayathdiv"><?php echo $this->form->village;?></div></TD>
+			</tr>
+				<?php }?>
+		<?php if($this->tableName == 'ourbank_master_branch') {?>
+				<td>Bank</td>
+                <TD ><?php echo $this->form->bank;?></TD>
+			</tr>
+				
+				<?php }?>
+<?php if($this->tableName == 'ourbank_master_mastertables') {?>
+<tr>
+				<td>Table name</td>
+                <TD><?php echo $this->form->name;?></TD>
+				<td>Description</td>
+                <TD ><?php echo $this->form->description;?></TD>
+
+			</tr>
+				<?php }?>
+				<TD> Add new <? echo substr($this->tableName,15); ?>
+				</TD>
+                <TD ><?php echo $this->form->commonname;?></TD>
+			</TR>
+
+
+ 					</table>
+						<div class="btnhouse">
+								<div class="ltbtns">
+ 									<input type="submit" name="SAVE" id="Submit" value="SAVE">                 
+								</div>
+								<div class="rtbtns">
+ 									<TD><a href="<?php echo $this->baseUrl(); ?>/dropdown">
+                                	<input name="submit" type="submit" class="officebutton" value="Back"></a></TD></div>
+								</div>
+			</fieldset>
+		</div>
+	</div>
+</form>
+
+<form action="<?php echo $this->baseUrl();?>/settings/dropdown/edit/id/<?php echo $this->id; ?>" method="POST">

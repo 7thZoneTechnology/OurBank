@@ -17,28 +17,25 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-	class App_Form_Search extends Zend_Form {
-		public function __construct() 
-		{
-	    	parent::__construct();
-			//$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-			$formfield = new App_Form_Field ();
-			//$vtype=array('Alpha');
-			$activity = $formfield->field('Select','Activityname','','','','Activity name',true,'','','','','',0,'');
-			$credit = $formfield->field('Select','Creditline','','','','Creditline details',false,'','','','','',0,'');
-			$datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
-			$dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
-			//$sector = $formfield->field('Text','sector','','','mand','Sector',true,$vtype,'','','','',1,'');
-// 			$staffname = array('PDF', 'Bar Graph');
-// 			         $pdf = new Zend_Form_Element_Radio('pdf');
-// 			         $pdf->setRequired(false) // field required
-// 				     ->setValue('R') // first radio button selected
-// 				     ->setMultiOptions($staffname); // add array of values / labels for radio group
-			$this->addElements(array($activity,$credit,$datefrom,$dateto));
-			return ;
-	
-		}
-	}
+class App_Form_Search extends Zend_Form 
+{
+    public function __construct() 
+    {
+        parent::__construct();
+        //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+        $formfield = new App_Form_Field ();
+        //$vtype=array('Alpha');
+        $activity = $formfield->field('Select','Activityname','','','','Activity name',true,'','','','','',0,'');
+        $credit = $formfield->field('Select','Creditline','','','','Creditline details',false,'','','','','',0,'');
+        $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
+        $dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
+        //$sector = $formfield->field('Text','sector','','','mand','Sector',true,$vtype,'','','','',1,'');
+        // $staffname = array('PDF', 'Bar Graph');
+        //$pdf = new Zend_Form_Element_Radio('pdf');
+        //$pdf->setRequired(false) // field required
+        //->setValue('R') // first radio button selected
+        //->setMultiOptions($staffname); // add array of values / labels for radio group
+        $this->addElements(array($activity,$credit,$datefrom,$dateto));
+        return ;
+    }
+}

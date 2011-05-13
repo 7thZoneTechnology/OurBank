@@ -26,8 +26,19 @@
 class Daybook_Model_Daybook extends Zend_Db_Table
 {
     protected $_name = 'ourbank_transaction';
+
+    public function officedetials() 
+    {
+        $select = $this->select()
+                       ->setIntegrityCheck(false)
+                        ->from(array('a' => 'ourbank_office'),array('a.id','a.name'))
+                        ->where('a.officetype_id = 4');
+                      //  die($select->__toString($select));
+        return $this->fetchAll($select);
+    }
+
 	//credit
-    public function totalSavingsCredit($mode,$fromDate) {
+    public function totalSavingsCredit($mode,$fromDate,$branchid) {
         $select = $this->select()
                        ->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_transaction'),array('SUM(amount_to_bank) as amount_to_bank'))
@@ -40,13 +51,18 @@ class Daybook_Model_Daybook extends Zend_Db_Table
                         ->join(array('D' =>'ourbank_product'),'D.id = B.product_id')                        
 			->group('D.shortname')
                         ->join(array('F' =>'ourbank_glsubcode'),'F.id = A.glsubcode_id_to')
-                        ->join(array('G' =>'ourbank_glcode'),'G.id = F.glcode_id');
+                        ->join(array('G' =>'ourbank_glcode'),'G.id = F.glcode_id')
+
+                        ->join(array('h' =>'ourbank_group'),'C.member_id = h.id','h.name as groupname')
+                        ->join(array('j' =>'ourbank_familymember'),'C.member_id = j.id',array('j.name as memname'))
+                        ->where('j.village_id = "'.$branchid.'"');
+                   // die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result;
     }
 
 	//debit
- public function totalSavingsDebit($mode,$fromDate) {
+ public function totalSavingsDebit($mode,$fromDate,$branchid) {
         $select = $this->select()
                        ->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_transaction'),array('SUM(amount_from_bank) as amount_from_bank'))
@@ -59,19 +75,26 @@ class Daybook_Model_Daybook extends Zend_Db_Table
                         ->join(array('D' =>'ourbank_product'),'D.id = B.product_id')                        
 			->group('D.shortname')
                         ->join(array('F' =>'ourbank_glsubcode'),'F.id = A.glsubcode_id_to')
-                        ->join(array('G' =>'ourbank_glcode'),'G.id = F.glcode_id');
+                        ->join(array('G' =>'ourbank_glcode'),'G.id = F.glcode_id')
+
+                        ->join(array('h' =>'ourbank_group'),'C.member_id = h.id','h.name as groupname')
+                        ->join(array('j' =>'ourbank_familymember'),'C.member_id = j.id',array('j.name as memname'))
+                        ->where('j.village_id = "'.$branchid.'"');
+ //die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result;
     }
 	//search
-	public function openingBalance($fromDate) {
+	public function openingBalance($fromDate,$branchid) {
         $select = $this->select()
                        ->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_Assets'),array('(SUM(credit) - SUM(debit) ) as openingBalance'))
 
                         ->join(array('D'=>'ourbank_transaction'),'A.transaction_id = D.transaction_id')
                         ->where('D.transaction_date < "'.$fromDate.'" ')
-                        ->join(array('B'=>'ourbank_glsubcode'),'A.glsubcode_id_to = B.glcode_id');
+                        ->join(array('B'=>'ourbank_glsubcode'),'A.glsubcode_id_to = B.glcode_id')
+                        ->where('A.office_id = "'.$branchid.'"');
+                        //die($select->__toString($select));
         return $this->fetchAll($select);
     }
 }

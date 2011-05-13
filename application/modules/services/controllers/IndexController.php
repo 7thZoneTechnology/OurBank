@@ -27,9 +27,11 @@ class Services_IndexController extends Zend_Controller_Action
 //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('Services required by the family');
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
+        $this->view->globalvalue = $globalsession->getSession();/*
         $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
+        $this->view->username = $this->view->globalvalue[0]['username'];*/
+	$sessionName = new Zend_Session_Namespace('ourbank');
+           $this->view->createdby = $sessionName->primaryuserid;
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
 //         }
@@ -47,22 +49,17 @@ class Services_IndexController extends Zend_Controller_Action
         $this->view->memberid=$member_id=$this->_getParam('id');
 //count number of family members
         $family_model=new Services_Model_services();
-        $this->view->loan_details=$count_loan = $family_model->get_servicesdetails();
+        $this->view->service_details=$count_loan = $family_model->get_servicesdetails();
         $this->view->number=$number=count($count_loan);
 //load form with respective to number of family member
         $addForm = new Services_Form_services($number);
         $this->view->form=$addForm;
 //set the value of member name and sex
 
-        for($i=1;$i<=$number;$i++){
         foreach($count_loan as $count_loan1){
-            $a='services'.$i;
-            $b='source_id'.$i;
-           $addForm->$a->setValue($count_loan1['name']);
+            $b='source_id'.$count_loan1['id'];
            $addForm->$b->setValue($count_loan1['id']);
-            $i++;
          }
-        }
 
 //insert the Services details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
@@ -92,22 +89,17 @@ class Services_IndexController extends Zend_Controller_Action
         $this->view->memberid=$member_id=$this->_getParam('id');
 //count number of family members
         $family_model=new Services_Model_services();
-        $this->view->loan_details=$count_loan = $family_model->get_servicesdetails();
+        $this->view->service_details=$count_loan = $family_model->get_servicesdetails();
         $this->view->number=$number=count($count_loan);
 //load form with respective to number of family member
         $addForm = new Services_Form_services($number);
         $this->view->form=$addForm;
 //set the value of member name and sex
 
-        for($i=1;$i<=$number;$i++){
         foreach($count_loan as $count_loan1){
-            $a='services'.$i;
-            $b='source_id'.$i;
-           $addForm->$a->setValue($count_loan1['name']);
-           $addForm->$b->setValue($count_loan1['id']);
-            $i++;
+            $b='source_id'.$count_loan1['id'];
+            $addForm->$b->setValue($count_loan1['id']);
          }
-        }
 
 //set the value of Services details
          $loandetails = $family_model->get_service($member_id); 

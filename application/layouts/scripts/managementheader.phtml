@@ -32,9 +32,9 @@ $(document).ready(function() {
 
     $("#beginingdate").datepicker({"dateFormat":"yy-mm-dd"});
     $("#closingdate").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#holiday_from").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#holiday_upto").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#repayment_date").datepicker({});
+    $("#holiday_from").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#holiday_upto").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#repayment_date").datepicker({"dateFormat":"dd/mm/yy"});
     $("#begindate").datepicker({"dateFormat":"dd/mm/yy"});
     $("#closedate").datepicker({"dateFormat":"dd/mm/yy"});
     $("#begindate33").datepicker({"dateFormat":"yy-mm-dd"});
@@ -48,26 +48,22 @@ $(document).ready(function() {
 </script>
 </head> 
 
-<<<<<<< HEAD
 <?php echo $this->render('header.phtml'); ?>
 
-=======
-    <div id="ourbanklogo">
-      <h1><a href="#" title="OurBank">OurBank</a></h1>
-    </div>
-    <div id="welcomebar"><span class="welcomusr">Welcome <a href="#"><?php echo $this->username;?></a></span> <span class="longdate"><?php echo date("r");?></span><span class="signout"><a href="<?php  echo $this->baseUrl();?>/index/logout">signout</a></span>
-    </div>
->>>>>>> 9d681687dc91919053fa75e01dd2414250ce7e3a
 
     <div id="navigation">
       <div id="mainmenu">
      <ul>
 	<li ><a href="<?php  echo $this->baseUrl();?>/accounting"><span>Accounting</span></a></li>
 	<li><a href="<?php  echo $this->baseUrl();?>/transaction"><span>Transaction</span></a></li>
-	<li><a href="<?php  echo $this->baseUrl();?>/meetingmain"><span>Meeting</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/maintenance"><span>Maintenance</span></a></li>
+ 	<li><a href="<?php  echo $this->baseUrl();?>/meetingmain"><span>Meeting</span></a></li> 
         <li><a href="<?php  echo $this->baseUrl();?>/membership"><span>Membership</span></a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/management"><span>Management</span></a></li>
-        <li><a href="<?php  echo $this->baseUrl();?>/settings/dropdown"><span>Setting</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/dropdown"><span>Settings</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/reports"><span>Reports</span></a></li>
+                <li><a href="<?php  echo $this->baseUrl();?>/loanprocessing"><span>Loan process</span></a></li>
+
         </ul>
       </div>
 
@@ -128,6 +124,24 @@ $(document).ready(function() {
                     <?php } else { ?>
                         <li><a href="<?php  echo $this->baseUrl();?>/loans">Loans</a></li>
                 <?php } ?>
+
+   <?php if($this->pageTitle == "Fee") { ?>
+                    <li><a href="<?php  echo $this->baseUrl();?>/fee">Fee</a></li>
+                    <?php } else { ?>
+                        <li><a href="<?php  echo $this->baseUrl();?>/fee">Fee</a></li>
+                <?php } ?>
+
+  <?php if($this->pageTitle == "Holiday") { ?>
+                    <li><a href="<?php  echo $this->baseUrl();?>/holiday">Holiday</a></li>
+                    <?php } else { ?>
+                        <li><a href="<?php  echo $this->baseUrl();?>/holiday">Holiday</a></li>
+                <?php } ?>
+ <?php if($this->pageTitle == "User") { ?>
+                    <li><a href="<?php  echo $this->baseUrl();?>/user">User</a></li>
+                    <?php } else { ?>
+                        <li><a href="<?php  echo $this->baseUrl();?>/user">User</a></li>
+                <?php } ?>
+
 
     </ul>
       </div>

@@ -34,7 +34,7 @@ class Attendancecommonview_IndexController extends Zend_Controller_Action{
 // 			$this->_redirect('index/logout');
 // 		}
 		$this->view->adm = new App_Model_Adm();
-		$this->view->dateconvert = new Creditline_Model_dateConvertor();
+		$this->view->dateconvert = new App_Model_dateConvertor();
 	}
 
 	public function indexAction() {
@@ -48,12 +48,18 @@ class Attendancecommonview_IndexController extends Zend_Controller_Action{
 		$path = $this->view->baseUrl();
 
 		$this->view->attendance_id=$attendance_id=$this->_request->getParam('attendance_id');
-		$fetchattendance=new Attendance_Model_Attendance();
-		$this->view->fetchattendance=$fetchattendance1=$fetchattendance->fetchattendancedetailsforID($attendance_id);
+		$this->view->week=$week=$this->_request->getParam('week');
+		$fetchattendance=new Attendancecommonview_Model_attendanceview();
+		$this->view->fetchattendance=$fetchattendance1=$fetchattendance->fetchattendancedetailsforID($attendance_id,$week);  
 		foreach($fetchattendance1 as $fetchattendance1){$this->view->count1=10; }
+		//fetch member absentees
+		$this->view->absentees=$absentees=$fetchattendance->absentmembers($attendance_id); 
 		
-		$this->view->fetchMembers=$fetchMembers=$fetchattendance->fetchMembers_attendance_ID($attendance_id);
-		
+		//fetch discussion 
+		$this->view->attendancediscussion=$discussion=$fetchattendance->attendancediscussion($attendance_id);
+		//fetch decision
+		$this->view->attendancedecision=$decision=$fetchattendance->attendancedecision($attendance_id);
+
 // 		} else {
 // 		$this->_redirect('index/index');
 // 		}

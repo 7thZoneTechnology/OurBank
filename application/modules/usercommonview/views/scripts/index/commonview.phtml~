@@ -28,12 +28,12 @@
 <!-- foreach function !-->
 <? foreach($this->userdetails as $edit_id) { ?>
 			<tr>
-				<td class = "firsttd">User name:</td>
+				<td class = "firsttd">Username:</td>
 				<td class = "secondtd"><?php echo $edit_id['username'];?></td>
 				<td class = "third"></td>
 			</tr>
 			<tr>
-				<td class = "firsttd">Bank:</td>
+				<td class = "firsttd">Office name:</td>
 				<td class = "secondtd"><?php echo $edit_id['name'];?></td>
 				<td class = "thirdtd"></td>
 			</tr>
@@ -44,7 +44,7 @@
 			</tr>
 			<tr>
 				<td class = "firsttd">Designation:</td>
-				<td class = "secondtd"><?php echo $edit_id['designation_name'];?></td>
+				<td class = "secondtd"><?php echo $edit_id['desi_name'];?></td>
 				<td class = "third"></td>
 			</tr>
 			<tr>
@@ -54,14 +54,10 @@
 			</tr>
 			<tr>
 				<td class = "firsttd">username:</td>
-				<td class = "secondtd"><?php echo $edit_id['username'];?></td>
+				<td class = "secondtd"><?php echo $edit_id['usename'];?></td>
 				<td class = "third"></td>
 			</tr>
-			<tr>
-				<td class = "firsttd">password:</td>
-				<td class = "secondtd"><?php echo $edit_id['password'];?></td>
-				<td class = "third"></td>
-			</tr>
+			
 		<br/>
 		<?php } ?>
   

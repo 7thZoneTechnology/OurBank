@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,31 +16,39 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-!-->
-<?php
-class Funder_Model_funder extends Zend_Db_Table {
-    protected $_name = 'ob_funder';
+*/
+?>
 
-    public function funderDetails() {
+<?php
+/*
+ *  model page for fetch and return funder details, filtered search details
+ */
+class Funder_Model_funder extends Zend_Db_Table 
+{
+    protected $_name = 'ourbank_funder';
+
+    public function funderDetails() 
+    {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ob_funder'),array('a.id'))
-			->join(array('b' => 'ob_funder_types'),'b.id=a.type',array('b.fundertype'))
+			->join(array('a' => 'ourbank_funding'),array('a.id'))
+			->join(array('b' => 'ourbank_master_fundertype'),'b.id=a.type',array('b.name as fundertype'))
 			->order(array('a.id DESC'));
-	//die($select->__toString());		
+	//return funder details
 	return $this->fetchAll($select);
     }
 
-    public function searchDetails($post = array()) {
+    public function searchDetails($post = array()) 
+    {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ob_funder'),array('a.id'))
-			->join(array('b' => 'ob_funder_types'),'b.id=a.type',array('b.fundertype'))
+			->join(array('a' => 'ourbank_funder'),array('a.id'))
+			->join(array('b' => 'ourbank_master_fundertype'),'b.id=a.type',array('b.name as fundertype'))
                         ->where('a.type like "%" ? "%"',$post['type'])
 			->where('a.code like "%" ? "%"',$post['code'])
 			->where('a.name like "%" ? "%"',$post['name'])
 			->order(array('a.id DESC'));
-	//die($select->__toString());		
+	//return funder searched details	
 	return $this->fetchAll($select);
     }
 

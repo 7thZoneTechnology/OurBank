@@ -1,30 +1,23 @@
 <?php
-class Summaryloan_Form_Search extends Zend_Dojo_Form {
-    public function init() {
+class Par_Form_Search extends Zend_Dojo_Form 
+{
+        public function init() 
+        {
+        Zend_Dojo::enableForm($this);
+	}
 
-        $field1 = new Zend_Form_Element_Select('field1');
-        $field1->addMultiOption('','Select');
-        $field1->setAttrib('class', 'txt_put');
-
-        $field2 = new Zend_Form_Element_Text('field2');
-        $field2->setAttrib('class', 'txt_put');
-
-        $field3 = new Zend_Form_Element_Text('field3');
-        $field3->setAttrib('class', 'txt_put');
-
-        $field4 = new Zend_Form_Element_Text('field4');
-        $field4->setAttrib('class', 'txt_put');
-
-        $field5 = new Zend_Form_Element_Select('field5');
-        $field5->addMultiOption('','Select');
-        $field5->setAttrib('class', 'txt_put');
-
-        $field6 = new Zend_Form_Element_Text('field6');
-        $field6->setAttrib('class', 'txt_put');
-
+	public function __construct($path) 
+        {
+        Zend_Dojo::enableForm($this);
+	parent::__construct($path);
+	$formfield = new App_Form_Field ();
+// 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+        $branch = $formfield->field('Select','branch','','','','',false,'','','','','',0,0);
+	$branch->setAttrib('onchange', 'Getuser(this.value,"'.$path.'")');
+        $loanofficer = $formfield->field('Select','loanofficer','','','','',false,'','','','','',0,0);
+        $fromdate = $formfield->field('Text','fromdate','','','','',false,'','','','','',0,0);
         $submit = new Zend_Form_Element_Submit('Search');
-
-        $this->addElements(array($field1,$field2,$field3,$field4,$field5,$field6,$submit));
-
-    }
+        $pdf=new Zend_Form_Element_Submit('PDF');
+        $this->addElements(array($fromdate,$branch,$loanofficer,$submit,$pdf));
+	}
 }

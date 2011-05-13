@@ -157,14 +157,14 @@ function officehierarchy() {
 
 </script>
 
-<?php if($this->noOfficeLevel == 0) { ?>		
+<?php if($this->noOfficeLevel == 0) { ?>	
     <div class="cont-rgt-data">
         <form action="<?php  echo $this->baseUrl();?>/officehierarchy?officeNo=<?php  echo $this->cat;?>" method="POST">
             <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                 <tr class="tdbrownheading">
                     <th width="33%"><?php echo $this->translate('Office level'); ?></th>
                     <th width="33%"><?php echo $this->translate('Office Type'); ?></th>
-                    <th width="33%"><?php echo $this->translate('Office TypeCode'); ?></th>
+                    <th width="33%" colspan="2"><?php echo $this->translate('Office TypeCode'); ?></th>
                 </tr>
                 <tr>
                     <td><?php echo $this->translate('Enter number of office level'); ?></td>
@@ -194,7 +194,6 @@ function officehierarchy() {
     </table>
     </form>
     </div>
-</fieldset>
         <? } else { ?>	
 
 
@@ -204,7 +203,7 @@ function officehierarchy() {
                     <tr class="tdbrownheading">
                         <th width="33%"><?php echo $this->translate('Office level'); ?></th>
                         <th width="33%"><?php echo $this->translate('Office Type'); ?></th>
-                        <th width="33%" colspan='2'><?php echo $this->translate('Office TypeCode'); ?></th>
+                        <th width="33%" colspan="2"><?php echo $this->translate('Office TypeCode'); ?></th>
                     </tr>
                     <?php echo $this->form1->officeNo;  ?>
                         <? $i=1; foreach($this->officeHierarchySelect as $eacharraysent) { 
@@ -217,51 +216,49 @@ function officehierarchy() {
                     <tr id="statediv<?php echo $eacharraysent->id;?>">
                         <td><?php echo $i." Office Level" ;?></td>
                         <td><?php echo $eacharraysent->type;?> </td> 
-
-                        <td><span style="float:left; width:55px;"><?php echo $this->form1->$b;?> <?php echo $eacharraysent->short_name;?></span>
+                        <td><span style="float:left; width:55px;"><?php echo $this->form1->$b;?><?php echo $eacharraysent->short_name;?></span><br>
                             <Input style="float: left;" type="button" <?php //echo $this->$e;?> onclick="getState(<?php echo $eacharraysent->id;?>);" value="<?php echo $this->translate('edit'); ?>"  class="b1" <?php if($this->$e=='') {?> style="margin-left:2px;"<?php }?>>
                             <a style="float: left;" href="<?php echo $this->baseUrl();?>/officehierarchy/index/delete/officeTypeId/<?php echo $eacharraysent->id;?>/delete=del be less then '+(current+1)+' and more then 0')ete">
                             <Input type="button" <?php echo $this->$e;?> value="delete"  class="b1" <?php if($this->$e=='') {?> style="margin-left:2px;"<?php }?>></a>
 	               	</td>
-			<td width='10px'><?php echo $this->form1->$a;?><?php echo $this->form1->$d;?><?php echo $this->form1->$c; ?>
-			</td>		
+				<td width='10px'><?php echo $this->form1->$a;?><?php echo $this->form1->$d;?><?php echo $this->form1->$c; ?>
                     </tr>
                 <?php $i++;
             } ?>
+
         </table>
 
             <br />
             <div style="display:none;" id="mainField">
-
-        <table>
+        <table >
             <TR class="tdbrown">
-                <td width="33%"><label for="Office_Level'+current+'"><?php echo $this->translate('After WhichLevel'); ?></label>
-                &nbsp;&nbsp;<?php echo $this->form1->officeLevel;  ?><span class="reqMark">*</span></td>
-                <TD width="33%"><input type="text" id="officeType<?php echo $this->noOfficeLevel+1;?>" 
+                <td width="33%"><label for="Office_Level'+current+'"><?php echo $this->translate('After Which Level'); ?></label>
+                &nbsp;&nbsp;<font color="green"><b>*</b></font><?php echo $this->form1->officeLevel;  ?></td>
+                <TD width="33%"><font color="green"><b>*</b></font>&nbsp;<input type="text" id="officeType<?php echo $this->noOfficeLevel+1;?>" 
                                         name="officeType<?php echo $this->noOfficeLevel+1;  ?>" size="15" class="txt_put" />
-                                        &nbsp;<span class="reqMark">*</span></td>
-                <td width="33%"><input id="officeCode<?php echo $this->noOfficeLevel+1;  ?>" 
+                                        </td>
+                <td width="33%"><font color="green"><b>*</b></font>&nbsp;<input id="officeCode<?php echo $this->noOfficeLevel+1;  ?>" 
                                         name="officeCode<?php echo $this->noOfficeLevel+1;?>" size="2" class="txt_put"/>
-                        &nbsp;<span class="falsereqMark">*</span></td>
+                        &nbsp;</td>
             </TR>
         </table>
-
   </div>
     </div>
         <table>
-            <tr><TD colspan="5"><div style="display:none;" id="next">
+            <tr><TD colspan="5" align="right"><div style="display:none;" id="next">
                 <div style="float:left"><input type="submit" name="Next" id="Next" value="Next" onclick="return officehierarchy();"></div>
                 <div style="float:left"><a href="<?php echo $this->baseUrl();?>/officehierarchy"><input name="submit" type="submit" class="officebutton" 
-                     value="<?php echo $this->translate('cancel'); ?>"></a></div>
+                     value="<?php echo $this->translate('Cancel'); ?>"></a></div>
                 </div>
-                <input type="button" id="addofficehierarchy" class="officebutton"
-                        value="Add New Level"></TD></tr>
+               </TD></tr>
+                <div class="ltbtns">
+                 <input type="button" id="addofficehierarchy" class="officebutton"
+                        value="Add New Level"></div>
           </table>
     </form>
 
 <?php if($this->errorExisted) { ?>
 <CENTER class="updateerror"><?php echo $this->errorExisted; ?></CENTER>
 <?php } ?>
-
 <?php } ?>
 

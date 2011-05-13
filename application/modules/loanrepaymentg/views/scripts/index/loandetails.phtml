@@ -1,7 +1,4 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
- 
-<script type="text/javascript" src="jquery-1.3.1.js"></script>
 	<script type="text/javascript">
 	    $(document).ready(function(){
 	        $(".txt").each(function() {
@@ -9,8 +6,29 @@
                 calculateSum();
 	            });
 	        });
-	    });
-	    function calculateSum() {
+
+        $('#paymenttype').change(function() {
+
+            var v = $(this).val();
+            if(v!=1){
+                if(v==5){
+                        $('#etransfer').show();
+                        $('#textbox').show();
+                        $('#cheque').hide();
+                }else{
+                        $('#cheque').show();
+                        $('#textbox').show();
+                        $('#etransfer').hide();
+                }
+            }
+            else{
+                        $('#etransfer').hide();
+                        $('#textbox').hide();
+                        $('#cheque').hide();
+            }
+         }); 
+
+	function calculateSum() {
 	        var sum = 0;
 	        $(".txt").each(function() {
             if(!isNaN(this.value) && this.value.length!=0) {
@@ -18,7 +36,12 @@
            }
 	        });
 	        $("#amount").val(sum.toFixed(2));
-	    }
+	}
+
+        function toggleField() {
+        //alert('Hi');
+        }
+ });
 </SCRIPT> 
 <?php if (count($this->active) == 1 ){ ?> 
     <table id="hor-minimalist-b">
@@ -38,7 +61,10 @@
                 <td>Name </td>
                 <TD><?php echo $details->name ?></TD>
             </TR>
-
+            <TR>
+                <td>UID </td>
+                <TD><?php echo $details->uid ?></TD>
+            </TR>
             <TR>
                 <td>Branch</td>
                 <TD><?php echo $details->officename ?></TD>
@@ -115,7 +141,7 @@
     <?php } ?>
     <br/>
 </div>
-<?php $convertdate = new Creditline_Model_dateConvertor(); ?>
+<?php $convertdate = new App_Model_dateConvertor(); ?>
 
 <div style="float:right;width:350px"> 
         <table id="hor-minimalist-s">
@@ -145,36 +171,43 @@
                     <TD><label for="fld1" class="mand">Date</label></TD>
                     <TD><?php echo $this->loan->date; ?></TD>
                 </TR>
-				<?php if (count($this->group) !=0) { ?>
-				<TR>
+	   <?php //if (count($this->group) !=0) { ?>
+<!--				<TR>
  					<TD><label for="fld1" class="mand"></label></TD>
                     <TD>Amount</TD>
 				</TR>
-				<?php foreach ($this->group as $group) {?>
+				<?php //foreach ($this->group as $group) {?>
 				<TR>
- 					<TD>-&nbsp;<?php echo $group->name;?></TD>
-                    <TD><input type = "text" id = "<?php echo $group->id?>" name = "<?php echo $group->id?>" size ="8" class="txt" onkeyup = "totalAmount(this.value)"></TD>
+ 					<TD>-&nbsp;<?php //echo $group->name;?></TD>
+                    <TD><input type = "text" id = "<?php //echo $group->id?>" name = "<?php //echo $group->id?>" size ="8" class="txt" onkeyup = "totalAmount(this.value)"></TD>
 				</TR>
 				<?php } ?>
                 <TR>
                     <TD><label for="fld1" class="mand">Amount R$</label></TD>
                     <TD><input type = "text" id = "amount" name = "amount" size ="8"></TD>
-                </TR>
-				<?php } else { ?>
+                </TR>-->
+				<?php //} else { ?>
                 <TR>
                     <TD><label for="fld1" class="mand">Amount R$</label></TD>
                     <TD><?php echo $this->loan->amount;?></TD>
                 </TR>
-				<?php } ?>
+                <?php if($this->amounterr){ ?>
+                <tr>
+                <TD></TD>
+                    <TD><?php echo $this->amounterr; ?></TD>
+                </tr>
+                <?php } ?>
+				<?php //} ?>
                 <TR>
                     <TD><label for="fld1" class="mand">Payment mode</label></TD>
-                    <TD><?php echo $this->loan->transactionMode;?></TD>
+                    <TD><?php echo $this->loan->transactionMode;?>
+                    </TD>
                 </TR>
-                <TR>
-                    <TD></TD>
-                    <TD><?php echo $this->loan->paymenttype_details;?>
-                    <h id="details" style="display:none">voucher/cheque/draft number</h></TD>
-                </TR>
+                <tr>
+                    <td id="cheque" style="display:none">Voucher/cheque/draft</td>
+                    <td id="etransfer" style="display:none">Account number</td>
+                    <td id="textbox" style="display:none"><?php echo $this->loan->othertext;?></td> 
+                </tr>
                 <TR>
                     <TD><label for="fld1" class="mand">Description</label></TD>
                     <TD><?php echo $this->loan->description;?></TD>
@@ -198,4 +231,4 @@
         </form>
     </fieldset>
 </div>
-<?php } ?>
+<?php //} ?>

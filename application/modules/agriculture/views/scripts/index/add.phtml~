@@ -18,13 +18,68 @@
 !-->
 <html>
   <head>
+
+    <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.2.js"></script>
+    <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
+
     <script type='text/javascript' src='js/jquery-1.3.2.js'></script>
     <script type='text/javascript'>
+
+$(document).ready(function() {
+    $('#pluginForm').submit(function(e) {
+        var isValid = true;
+        $(this).find(':text.required').each(function() {
+            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
+                isValid = false;
+                if($(this).next('span').length == 0 ) {
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                }
+                e.preventDefault();
+                return;
+            } else {
+                if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();
+            }
+        });
+
+ $(this).find(':text.range').each(function() { 
+            if(($(this).val()<0) || ($(this).val()>=40)) { //alert('inner');
+                isValid = false;
+                if($(this).next('span').length == 0 ) {
+                   $(this).after('<span style="color: #FF0000">Should be 0 to 39.</span>');
+                }
+                e.preventDefault();
+                return;
+            } else { //alert('hi');
+                if($(this).next('span').length > 0  && isValid)
+                    $(this).next('span').remove();
+            }
+        }); 
+
+
+        $(this).find(':text.numeric').each(function() {
+            var regex = new RegExp(/^[1-9][0-9]*$/);
+            if(!regex.test($(this).val()) && isValid) {
+                isValid = false;
+                if($(this).next('span').length == 0 ) {
+                   $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
+                }
+                e.preventDefault();
+                return;
+            } else {
+                if($(this).next('span').length > 0  && isValid)
+                    $(this).next('span').remove();
+            }
+        }); 
+    });
+});
+
 $(document).ready(
   function() {
     $('input#tmpAddRow').click(
       function() {
-        $('tr#tmp').clone(true).removeAttr('id').appendTo('tbody');
+        $('tr#tmp').clone(true).removeAttr('id').appendTo('.crop tbody');      
+        newRow.find("input:text").val("");
        $(":text").val(""); 
       }
     );
@@ -43,50 +98,113 @@ $(document).ready(
         $(this).removeClass('myFocused');
       }
     );
-    $('.delete-icon').click(function() {$(this).closest('tr').remove()});
-  }
-);
+    $('.delete-icon').click(function() {
+    $(this).closest('tr').not('#tmp').remove();
+        arrangeCheckboxNames();
+    });
 
     </script>
 </head>
 <body>
+  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+   <tr>
+        <th><?php echo $this->translate("Family information"); ?></th>
+        <th></th>
+        <th></th>
+        <th></th>
+   </tr>
+    <?php 
+    $convertdate = new App_Model_dateConvertor();
+    foreach($this->membername as $family_view){ ?>
+
+    <tr>
+        <td ><?php echo $this->translate("Family ID:"); ?></td>
+        <td ><?php echo $family_view['family_id']; ?></td>
+        <td ><?php echo $this->translate("Caste:"); ?></td>
+        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+    <tr>
+        <td ><?php echo $this->translate("House No:"); ?></td>
+        <td ><?php echo $family_view['house_no']; ?></td>
+        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $family_view['ration']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $family_view['street']; ?></td>
+        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
+        }?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $family_view['villagename']; ?></td>
+        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $this->revvillagename; ?></td>
+        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
+    </tr>
+    <tr>
+        <td ><?php echo $this->translate("Family type:"); ?></td>
+        <td ><?php echo $family_view['familytype']; ?></td>
+        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $family_view['caste']; ?></td>
+        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
+    </tr>
+   <?php } ?>
+</table> 
+<br/>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
-<form action="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>" method="POST">
-<table id="hor-minimalist-b">
+<form class="cmxform" id="pluginForm" action="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>" method="POST">
+<table id="hor-minimalist-b" class="crop">
 <tr> 
-    <th><?php echo $this->translate("Details of land"); ?></th>
-    <th><?php echo $this->translate("Acquisition type"); ?></th>
-    <th><?php echo $this->translate("Owner name"); ?></th>
-    <th><?php echo $this->translate("Village"); ?></th>
-    <th><?php echo $this->translate("Survey no"); ?></th>
+    <th><?php echo $this->translate("Land holding"); ?></th>
     <th><?php echo $this->translate("Acre"); ?></th>
-    <th><?php echo $this->translate("Value"); ?></th>
+    <th><?php echo $this->translate("Gunta"); ?></th>
+    <th><?php echo $this->translate("Owner name"); ?></th>
+    <th><?php echo $this->translate("Survey no"); ?></th>
+    <th><?php echo $this->translate("Village"); ?></th>
     <th>Action</th>
 </tr>
  <tr id='tmp'>
             <td><select name = tenant[]>
                             <?php foreach ($this->land_details as $land_details) { ?>
-                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['landtype_name']?></option>
+                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name']?></option>
                             <?php } ?>
                         </select>
             </td>  
-            <td><select name = ownertype[]>
-                                <?php foreach ($this->ownertype as $ownertype) { ?>
-                                <option value="<?php echo $ownertype['id']?>"><?php echo $ownertype['ownertype']?></option>
+			<td><INPUT type="text" name = "acre[]" size="5" maxlength="3" class="required numeric"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" maxlength="2" class="required numeric range"></td>
+ 			<td><select name = ownername[]>
+			<?php foreach ($this->owner as $owner) { ?>
+			<option value="<?php echo $owner['landowner_name']?>"><?php echo $owner['name']?></option>
+			<?php } ?>
+                            </select>
+            </td> 
+            <td><INPUT type="text" name = "survey[]" size="5" maxlength="5" class="required numeric"></td>
+								<td><select name = villagename[]>
+                                <?php foreach ($this->village as $village) { ?>
+                                <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
                                 <?php } ?>
                             </select>
             </td> 
-            <td><INPUT type="text" name = "ownername[]" size="15"></td> 
-            <td><INPUT type="text" name = "villagename[]" ></td>
-            <td><INPUT type="text" name = "survey[]" size="5"></td>
-            <td><INPUT type="text" name = "acre[]" size="5"></td>
-            <td><INPUT type="text" name = "acrevalue[]" size="5"></td>
             <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
         </tr>
     </table>  
  <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">
-    <input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/individualmcommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+    <input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
-</div>
+    </div>
 </body>
 </html>

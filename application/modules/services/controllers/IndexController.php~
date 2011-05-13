@@ -25,11 +25,13 @@ class Services_IndexController extends Zend_Controller_Action
     public function init() 
     {
 //it is create session and implement ACL concept...
-        $this->view->pageTitle=$this->view->translate('Loan details');
+        $this->view->pageTitle=$this->view->translate('Services required by the family');
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
+        $this->view->globalvalue = $globalsession->getSession();/*
         $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
+        $this->view->username = $this->view->globalvalue[0]['username'];*/
+	$sessionName = new Zend_Session_Namespace('ourbank');
+           $this->view->createdby = $sessionName->primaryuserid;
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
 //         }
@@ -47,40 +49,31 @@ class Services_IndexController extends Zend_Controller_Action
         $this->view->memberid=$member_id=$this->_getParam('id');
 //count number of family members
         $family_model=new Services_Model_services();
-        $this->view->loan_details=$count_loan = $family_model->get_servicesdetails();
+        $this->view->service_details=$count_loan = $family_model->get_servicesdetails();
         $this->view->number=$number=count($count_loan);
 //load form with respective to number of family member
         $addForm = new Services_Form_services($number);
         $this->view->form=$addForm;
 //set the value of member name and sex
 
-//         for($i=1;$i<=$number;$i++){
-//         foreach($count_loan as $count_loan1){
-//             $a='source'.$i;
-//             $b='source_id'.$i;
-//            $addForm->$a->setValue($count_loan1['name']);
-//            $addForm->$b->setValue($count_loan1['id']);
-//             $i++;
-//          }
-//         }
+        foreach($count_loan as $count_loan1){
+            $b='source_id'.$count_loan1['id'];
+           $addForm->$b->setValue($count_loan1['id']);
+            $i++;
+         }
 
-       
-
-
-//insert the family health details 
+//insert the Services details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
         {
             $formData = $this->_request->getPost();
             for($i=1;$i<=$number;$i++)
-            {	if($this->_request->getParam('loanamount'.$i)){
-                $this->view->adm->addRecord("ourbank_loandetails",array('id' => '',
+            {	if($this->_request->getParam('whom'.$i)){
+                $this->view->adm->addRecord("ourbank_servicedetails",array('id' => '',
                                             'member_id'=>$member_id,
-                                            'source_id'=>$this->_request->getParam('source_id'.$i),
-                                            'loanamount' => $this->_request->getParam('loanamount'.$i),
-                                            'purpose'=>$this->_request->getParam('purpose'.$i),
-                                            'repaymentamount' => $this->_request->getParam('repayment'.$i),
-                                            'dueamount'=>$this->_request->getParam('due'.$i), 
-                                            'outstandingloan'=>$this->_request->getParam('outstanding'.$i),
+                                            'service_id' => $this->_request->getParam('source_id'.$i),
+                                            'to_whom'=>$this->_request->getParam('whom'.$i),
+                                            'own_land'=>$this->_request->getParam('fund'.$i),
+                                            'recuired_loan_help' => $this->_request->getParam('help'.$i),
                                             'created_date'=>date("y/m/d H:i:s"),
                                             'created_by'=>$this->view->createdby
                                             ));
@@ -93,49 +86,33 @@ class Services_IndexController extends Zend_Controller_Action
 //edit family health details
     public function editAction() 
     {
-        $this->view->title = $this->view->translate("Edit health information");
+        $this->view->title = $this->view->translate("Edit loan details");
         $this->view->memberid=$member_id=$this->_getParam('id');
 //count number of family members
-        $family_model=new Loandetails_Model_loandetails();
-        $this->view->loan_details=$count_loan = $family_model->edit_loantypes();
+        $family_model=new Services_Model_services();
+        $this->view->service_details=$count_loan = $family_model->get_servicesdetails();
         $this->view->number=$number=count($count_loan);
 //load form with respective to number of family member
-        $addForm = new Loandetails_Form_loandetails($number);
+        $addForm = new Services_Form_services($number);
         $this->view->form=$addForm;
 //set the value of member name and sex
 
-        for($i=1;$i<=$number;$i++){
         foreach($count_loan as $count_loan1){
-            $a='source'.$i;
-            $b='source_id'.$i;
-           $addForm->$a->setValue($count_loan1['name']);
-           $addForm->$b->setValue($count_loan1['id']);
-            $i++;
+            $b='source_id'.$count_loan1['id'];
+            $addForm->$b->setValue($count_loan1['id']);
          }
-        }
 
-	$purpose = $this->view->adm->viewRecord("ourbank_loanpurpose","id","DESC");
-        for($i=1;$i<=$number;$i++)
-        {   $health_id = "purpose".$i;
-            foreach($purpose as $purpose1){ 
-            $addForm->$health_id->addMultiOption($purpose1['id'],$purpose1['name']);
-            }
-        }
-// //set the value of health problem and other drop down box...
-        $loandetails = $family_model->get_loandetails($member_id); 
+//set the value of Services details
+         $loandetails = $family_model->get_service($member_id); 
         $i=1;
         foreach($loandetails as $loandetails1){ 
-        $c='loanamount'.$i;
-        $d='purpose'.$i;
-        $e='repayment'.$i;
-        $f='due'.$i;
-        $g='outstanding'.$i;
+        $c='whom'.$loandetails1['service_id'];
+        $d='fund'.$loandetails1['service_id'];
+        $e='help'.$loandetails1['service_id'];
         $h='record_id'.$i;
-        $addForm->$c->setValue($loandetails1['loanamount']);
-        $addForm->$d->setValue($loandetails1['purpose']);
-        $addForm->$e->setValue($loandetails1['repaymentamount']);
-        $addForm->$f->setValue($loandetails1['dueamount']);
-        $addForm->$g->setValue($loandetails1['outstandingloan']);
+        $addForm->$c->setValue($loandetails1['to_whom']);
+        $addForm->$d->setValue($loandetails1['own_land']);
+        $addForm->$e->setValue($loandetails1['recuired_loan_help']);
         $addForm->$h->setValue($loandetails1['id']);
         $i++;
         }
@@ -143,47 +120,31 @@ class Services_IndexController extends Zend_Controller_Action
 //update the family health details...
         if ($this->_request->isPost() && $this->_request->getPost('update')) 
         {
-            $formData = $this->_request->getPost();  
+           
 //update the family health is already exiting...
+
+            $editservice = $family_model->get_service($member_id);
+            for ($j = 0 ; $j< count($editservice); $j++) {
+                $this->view->adm->addRecord("ourbank_servicedetails_log",$editservice[$j]);
+            }
+            $family_model->deleteservice($member_id);
             for($i=1;$i<=$number;$i++)
-            {   $loan_id=$this->_request->getParam('record_id'.$i);
-                if($this->_request->getParam('record_id'.$i)) {
-                $family_model->update($loan_id,array(
+            {	
+                if($this->_request->getParam('whom'.$i)){
+                $this->view->adm->addRecord("ourbank_servicedetails",array('id' => '',
                                             'member_id'=>$member_id,
-                                            'source_id'=>$this->_request->getParam('source_id'.$i),
-                                            'loanamount' => $this->_request->getParam('loanamount'.$i),
-                                            'purpose'=>$this->_request->getParam('purpose'.$i),
-                                            'repaymentamount' => $this->_request->getParam('repayment'.$i),
-                                            'dueamount'=>$this->_request->getParam('due'.$i), 
-                                            'outstandingloan'=>$this->_request->getParam('outstanding'.$i),
+                                            'service_id' => $this->_request->getParam('source_id'.$i),
+                                            'to_whom'=>$this->_request->getParam('whom'.$i),
+                                            'own_land'=>$this->_request->getParam('fund'.$i),
+                                            'recuired_loan_help' => $this->_request->getParam('help'.$i),
                                             'created_date'=>date("y/m/d H:i:s"),
                                             'created_by'=>$this->view->createdby
-                                            )); }
-
-		
-	    }
-
-	    for($i=1; $i<=$number; $i++)
-		{
-			if(!$this->_request->getParam('record_id'.$i) && $this->_request->getParam('loanamount'.$i))
-			{
-			$this->view->adm->addRecord("ourbank_loandetails",array('id' => '',
-							'member_id'=>$member_id,
-							'source_id'=>$this->_request->getParam('source_id'.$i),
-							'loanamount' => $this->_request->getParam('loanamount'.$i),
-							'purpose'=>$this->_request->getParam('purpose'.$i),
-							'repaymentamount' => $this->_request->getParam('repayment'.$i),
-							'dueamount'=>$this->_request->getParam('due'.$i), 
-							'outstandingloan'=>$this->_request->getParam('outstanding'.$i),
-							'created_date'=>date("y/m/d H:i:s"),
-							'created_by'=>$this->view->createdby
-							)); 
-			}
+                                            ));
 		}
-		}
-            
-            
-         $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
+          }
+          $this->_redirect('/individualmcommonview/index/commonview/id/'.$member_id);
+
         }
 	
+}
 }

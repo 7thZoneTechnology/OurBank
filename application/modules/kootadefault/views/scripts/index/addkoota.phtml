@@ -1,0 +1,81 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+<script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+<script language="javascript">
+ function getGroup(kootaid) { 
+            targeturl='<?php echo $this->baseUrl();?>/kootadefault/index/getgroup?kootaid='+kootaid; 
+            $.ajax({ url: targeturl, success: function(data){ $('#group').html(data) }});
+       }
+
+</script>
+
+<div id = "searchDiv">
+    <fieldset>
+        <legend>Group details</legend>
+        <form action="<?php echo $this->baseUrl();?>/kootadefault/index/addkoota" method="POST" id="addkoota">
+            <table class="fieldsets"> 
+                <TR>
+                    <TD><label for="fld1" class="mand">Koota name</td>
+                    <TD><?php echo $this->form->koota;?></TD>
+
+                </TR> 
+                 <TR>
+                    <TD><?php echo $this->form->penaltylate;?></TD>
+                    <TD><?php echo $this->form->penaltyabsence;?></TD>
+                </TR> 
+                <TR>
+                    <TD><?php echo $this->form->interest;?></TD>
+                    <TD colspan="2"><?php echo $this->form->Created_Date;?></TD>
+                </tr>
+            </table><br/>
+        <div style="width:600px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
+        <table id="hor-minimalist-s" width="100%" style="float:right;">
+<?php if($this->groups) { ?>
+            <tr>
+                    <th>Group name
+                    </th> 
+                    <th>Group members
+                    </th>
+            </tr>
+        <?php }
+$dbobj = new Kootadefault_Model_Kootadefault();
+//foreach($this->groups as $groupdetails) { 
+   //$groupmembers =  $dbobj->getmemberdetails($groupdetails['id']);
+?>
+            <TR id="group">
+            </tr>
+<?php
+ //} ?>
+        </table>
+        </div>
+<br>
+           <div class="btnhouse">
+                <div class="ltbtns">
+                    <?php echo $this->form->Submit;?>
+                </div>
+                <div class="rtbtns">
+                    <a href="<?php echo $this->baseUrl();?>/koota/index"><?php echo $this->form->Back;?></a>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+</div>
+<?php if($this->error) { echo "<font color = 'red'><b>".$this->error."</b></font>"; } ?>
+
+

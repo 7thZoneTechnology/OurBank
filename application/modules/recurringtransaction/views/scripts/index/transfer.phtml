@@ -72,34 +72,6 @@
     </div>
 </div>
 
-<DIV style="float:left;width:50%">
-<?php If($this->membertypr_id==2) { ?>
-<a href="#" id="open">groupMembers</a>
-<div class="box1">
-<div id="content1">
-    <fieldset>
-        <legend>Members in account</legend>
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-                <tr class="tdbrownheading">
-                        <td width="30%">Name</td>
-                        <td width="50%">code</td>
-                </tr>
-                <?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
-                <tr class="tdbrown">
-                        <TD width="30%"><?php echo $arrayroles1['memberfirstname'];?></TD>
-                        <TD width="50%"><?php echo $arrayroles1['membercode'];?></TD>
-                </tr>
-                <?php }?>
-            </table>
-        </div>
-    </fieldset>
-<p><a href="#" id="close">hide</a></p>
-</div>
-</div>
-<?php }	?>
-<table width="100%"><TR><TD></TD></TR></table>
-</DIV>
 
 <div style="float:left;width:50%">
 
@@ -129,12 +101,12 @@
 
     <div id="loanRepayment" style="float:left;width:100%">
         <?php if(!$this->Submit) { ?>
-    <fieldset>
-          <table id="hor-minimalist-b" summary="Employee Pay Sheet">
-    <tr><Th colspan="2">Account close and transfer funds</Th></tr>
+        <fieldset> 
+            <legend>Account close and transfer funds</legend>
                 <div class="cont-rgt-data">
                     <form action="<?php echo $this->baseUrl();?>/recurringtransaction/index/transfer/accountId/<?php  echo $this->accountid;?>/productId/<?php  echo $this->productid;?>" method="POST">
-                             <tr>
+                        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                            <tr>
                                 <td class="label">Amount:</td>
                                 <td><?php echo $this->transferForm->accountId; echo $this->transferForm->productId; echo $this->transferForm->matured;?></td>
                             </tr>
@@ -142,14 +114,15 @@
                                 <td class="label">Account number:</td>
                                 <td><?php  echo $this->transferForm->account_number;?></td>
                             </tr>
-                            
+                            <tr>
+                                <td class="label"><? echo $this->transferForm->Confirm;?></td>
+                                                                <td><a href="<?php echo $this->baseUrl();?>">
+                                        <input name="submit" type="submit"  value="back" tabindex="25"></a></TD>
+                            </tr>
                             <tr>
                                 <td colspan="4"><B style="color:red"><? echo $this->noaccounts;?></B></td>
                             </tr>
-                        </table><tr>
-                                <td class="label"><? echo $this->transferForm->Confirm;?></td>
-                                <td><a href="<?php echo $this->baseUrl();?>"><input name="submit" type="submit"  value="back" tabindex="25"></a></TD>
-                            </tr>
+                        </table>
                     </form>
         </fieldset>
                 <?php } ?>

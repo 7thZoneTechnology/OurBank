@@ -17,44 +17,39 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-class Receiptpayment_IndexController extends Zend_Controller_Action {
-	public function init() {
-		$this->view->pageTitle='Receipts and payments';
-		$this->view->type='loans';
-    $sessionName = new Zend_Session_Namespace('ourbank');
+class Receiptpayment_IndexController extends Zend_Controller_Action 
+{
+    public function init() 
+    {
+        $this->view->pageTitle='Receipts and payments';
+        $sessionName = new Zend_Session_Namespace('ourbank');
 	$userid=$this->view->createdby = $sessionName->primaryuserid;
 	$login=new App_Model_Users();
-$this->view->type = "others";
+        $this->view->type = "operationalReport";
 
 	$loginname=$login->username($userid);
 	foreach($loginname as $loginname) {
 	$this->view->username=$loginname['username'];
+        }
+        $this->view->adm = new App_Model_Adm();
     }
-		$this->view->adm = new App_Model_Adm();
-
-	}
-
-	public function indexAction() 
-	{
- $searchForm = new Receiptpayment_Form_Search();
+    public function indexAction() 
+    {
+        $searchForm = new Receiptpayment_Form_Search();
         $this->view->form = $searchForm;
-		$this->view->title = "Receipts and payments";
-		 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+	$this->view->title = "Receipts and payments";
+	 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
 
 
 	$dateconvertor = new App_Model_dateConvertor();
-	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
-		$toDate = $dateconvertor->mysqlformat($this->_request->getParam('date2'));
-
-            $this->view->pageTitle = "Receipt and Payment";
-
-
-            $formData = $this->_request->getPost();
-            if ($searchForm->isValid($formData)) {
+	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('field1'));
+	$toDate = $dateconvertor->mysqlformat($this->_request->getParam('field2'));
+        $this->view->field1 = $this->_request->getParam('field1');
+        $this->view->field2 = $this->_request->getParam('field2');
+        $this->view->pageTitle = "Receipt and Payment";
+        $formData = $this->_request->getPost();
+        if ($searchForm->isValid($formData)) {
                 $this->view->savings = 10;
                 $transaction = new Receiptpayment_Model_Receiptpayment();
 

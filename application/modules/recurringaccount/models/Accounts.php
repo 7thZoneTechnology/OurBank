@@ -43,78 +43,91 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
         $this->update($data , $where );
     }
 	
-    public function search($membercode) 
+    public function search($code) 
     {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql="SELECT 
-                    a.id as id,
-                    a.membercode as code,
-                    a.name as name,
-                    b.name as officename,
-                    c.type as membertype,
-                    c.id as type
-                    from  
-                        ourbank_member a,
-                        ourbank_office b,
-                        ourbank_membertypes c
-                    where 
-                        b.id = a.office_id  AND 
-                        substr(a.membercode,5,1) = c.id AND
-                        (a.name like '$membercode' '%'  or a.membercode like '$membercode' '%')
-                UNION
-                SELECT
-                    a.id as id,
-                    a.groupcode as code,
-                    a.name as name,
-                    b.name as officename,
-                    c.type as membertype,
-                    c.id as type
-                    from  
-                        ourbank_group a,
-                        ourbank_office b,
-                        ourbank_membertypes c
-                    where
-                        a.office_id= b.id AND
-                        substr(a.groupcode,5,1) = c.id AND
-                        (a.name like '$membercode' '%'  or a.groupcode like '$membercode' '%')";
+         $sql="SELECT 
+              DISTINCT a.id as id,
+              a.familycode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
+              from
+              ourbank_familymember a,
+              ourbank_office b,
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
+              where
+              a.village_id= b.id and
+              a.id = d.member_id and
+              (a.name like '%' '$code' '%'  or a.familycode like '%' '$code' '%') AND
+              substr(a.familycode,5,1) = c.id  
+              union
+              SELECT
+	      DISTINCT a.id as id,
+              a.groupcode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
+              from
+              ourbank_group a,
+              ourbank_office b,
+              ourbank_master_membertypes c
+              where
+              a.village_id= b.id and
+              (a.name like '%' '$code' '%'  or a.groupcode like '%' '$code' '%') AND
+              substr(a.groupcode,5,1) = c.id";
+             // echo $sql;
  
-        $result = $this->db->fetchAll($sql,array($membercode));
+        $result = $this->db->fetchAll($sql,array($code));
         return $result;
     }
     
-    public function getDetails($membercode)
+    public function getDetails($code)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql="SELECT 
-                    b.id as id,
-                    b.membercode as code,
-                    b.name as name,
-                    c.name as officename
-                    from  
-                    ourbank_member b,
-                    ourbank_office c,
-                    ourbank_membertypes d
-                    where 
-                    c.id = b.office_id  AND 
-                    substr(b.membercode,5,1) = '1' AND
-                    (b.membercode like '$membercode' '%') 
-            UNION
-                SELECT 
-                    b.id as id,
-                    b.groupcode as code,
-                    b.name as name,
-                    c.name as officename
-                    from  
-                    ourbank_group b,
-                    ourbank_office c,
-                    ourbank_membertypes d
-                    where 
-                    c.id = b.office_id  AND 
-                    substr(b.groupcode,5,1) = '2' AND
-                    (b.groupcode like '$membercode' '%')";
-        $result = $db->fetchAll($sql,array($membercode));
+              DISTINCT a.id as id,
+              a.familycode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
+              from
+              ourbank_familymember a,
+              ourbank_office b,
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
+              where
+              a.village_id= b.id and
+              a.id = d.member_id and
+              (a.name like '%' '$code' '%'  or a.familycode like '%' '$code' '%') AND
+              substr(a.familycode,5,1) = c.id  
+              union
+              SELECT
+	      DISTINCT a.id as id,
+              a.groupcode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
+              from
+              ourbank_group a,
+              ourbank_office b,
+              ourbank_master_membertypes c
+              where
+              a.village_id= b.id and
+              (a.name like '%' '$code' '%'  or a.groupcode like '%' '$code' '%') AND
+              substr(a.groupcode,5,1) = c.id";
+        $result = $db->fetchAll($sql,array($code));
         return $result;
     }
 
@@ -182,8 +195,8 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT 
-                    E.membercode as code,
-                    substr(E.membercode,5,1) as typeID,
+                    E.familycode as code,
+                    substr(E.familycode,5,1) as typeID,
                     E.name as name,
                     F.name as officename,
                     F.id as officeid,
@@ -195,13 +208,13 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                     FROM 
                     ourbank_productsoffer B,
                     ourbank_product_fixedrecurring C,
-                    ourbank_member E,
+                    ourbank_familymember E,
                     ourbank_office F
                     WHERE
-                    (E.membercode like '$memberId' '%') AND 
+                    (E.familycode like '$memberId' '%') AND 
                     B.id = $productId AND
                     B.id = C.productsoffer_id AND
-                    F.id = E.office_id
+                    F.id = E.village_id
                 UNION
                 SELECT 
                     E.groupcode as code,
@@ -223,7 +236,7 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                     (E.groupcode like '$memberId' '%') AND 
                     B.id = $productId AND
                     B.id = C.productsoffer_id AND
-                    F.id = E.office_id";
+                    F.id = E.village_id";
         $result = $db->fetchAll($sql);
         return $result;
     }

@@ -16,13 +16,77 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script type="text/javascript">
+$(document).ready(function() {
+
+$('#feetype_id').change(function(){
+baseurl=$('#baseurl').val();
+ selectedval=$(this).val();
+
+ url='<?php echo $this->baseUrl();?>/fee/index/getcategory'
+  $.ajax({
+  url:url,
+  data: 'selectedval='+selectedval,
+  success: function(data){
+     $('#feefor_id').parent().html(data);
+      },
+  
+  });
+
+});
+
+
+});
+
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#feetype_id').val();
+if(va == 1){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+
+</script>
 
 <form action="<?php echo $this->baseUrl();?>/fee/index/add/id/<?php echo $this->fee_id; ?>/modId/<?php echo $this->mod_id; ?>/subId/<?php echo $this->sub_id; ?>" method="POST">
 	<div class="profile_tab"> 
 		<fieldset>
 			<legend>Fee details</legend>
 				<table class="fieldsets">	
-					<?php echo $this->form;?>
+
+            <TR >
+                <TD ><?php echo $this->form->name;?></TD>
+            </TR>
+<TR >
+                <TD ><?php echo $this->form->description;?></TD>
+            </TR>
+			<TR >
+                <TD ><?php echo $this->form->hierarchy_id;?></TD>
+            </TR>
+ 			<TR >
+                <TD ><label for="fld1" class="mand">Fee type</TD>
+
+                <TD id="show"><?php echo $this->form->feetype_id;?></TD>
+            </TR>
+			<TR id="hide">
+                <TD ><label for="fld1" class="mand">Fee for</TD>
+                <td><?php echo $this->form->category_id;?></td>
+            </TR>
+				<TR>
+                <TD ><label for="fld1" class="mand">GL code</TD>
+                <td><?php echo $this->form->glsubcode_id;?></td>
+            </TR>
+			<TR >
+                <TD ><?php echo $this->form->amountype_id;?></TD>
+            </TR>
+			<TR >
+                <TD ><?php echo $this->form->value;?></TD>
+            </TR>
 				</table>
 					<div class="btnhouse">
 						<div class="ltbtns">
