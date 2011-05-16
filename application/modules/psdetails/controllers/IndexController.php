@@ -35,25 +35,38 @@ class Psdetails_IndexController extends Zend_Controller_Action
         if ($this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
             if ($this->view->form->isValid($formData)) {
-                $this->view->tran = $this->view->savingsModel->transaction($this->_request->getParam('accNum'));
                 $this->view->details = $this->view->savingsModel->search($this->_request->getParam('accNum'));
                 $accNum = $this->_request->getParam('accNum');
+                $this->view->acc = $accNum;
                 $Balance = $this->view->psdetails->getbalance($accNum);
                 foreach($Balance as $balances){
                     $this->view->balance =  $balance = $balances['Balance'];
                 }
+
               // check its default savings or not
-//               $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$accNum);
-// if($tagAcc != 0){
-//               $tagAccdetails = $this->view->adm->getRecord('ourbank_accounts','account_number',$accNum);
-// Zend_Debug::dump($tagAccdetails);
-// }
+              $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$accNum);
+if($tagAcc != 0){
+
+ $this->view->transactions = $this->view->psdetails->transaction($this->_request->getParam('accNum'));
+ $credit = $this->view->psdetails->getCreditbalance($this->_request->getParam('accNum'));
+foreach($credit as $creditbal){
+$Cbalance = $creditbal['Credit'];
+}
+ $debit = $this->view->psdetails->getDebitbalance($this->_request->getParam('accNum'));
+foreach($debit as $debitbal){
+$Dbalance = $debitbal['Debit'];
+}
+$balance = $Cbalance - $Dbalance;
+$this->view->balanceamount = $balance;
+                    $this->view->group = $this->view->savingsModel->getMember($accNum);
+}else
+{
+    $this->view->tran = $this->view->savingsModel->transaction($this->_request->getParam('accNum'));
+}
                 //if group members
                 if (substr($accNum,4,1) == 2 or substr($accNum,4,1) == 3) {
                     $this->view->group = $this->view->savingsModel->getMember($accNum);
                 }
-
-
             }
        }
     }

@@ -33,6 +33,44 @@ class Psdetails_Model_Savingsdeposit extends Zend_Db_Table
 // die($select->__toString($select));
     }  
 
+    public function transaction($acc) 
+    {
+         $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a' => 'ourbank_accounts'),array('id'),array('id'))
+                ->join(array('b' => 'ourbank_group_savingstransaction'),'a.id = b.account_id')
+                ->join(array('c' => 'ourbank_user'),'c.id = b.transacted_by',array('name as createdby'))
+                ->where('a.account_number = ?',$acc);
+        $result = $this->fetchAll($select);
+        return $result->toArray(); // return get Transaction details
+// die($select->__toString($select));
+    }  
+
+    public function getCreditbalance($acc) 
+    {
+         $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a' => 'ourbank_accounts'),array('id'),array('id'))
+                ->join(array('b' => 'ourbank_group_savingstransaction'),'a.id = b.account_id',array('sum(transaction_amount) as Credit'))
+                ->where('b.transaction_type = 1')
+                ->where('a.account_number = ?',$acc);
+        $result = $this->fetchAll($select);
+        return $result->toArray(); // return Credit details
+// die($select->__toString($select));
+    }    
+
+   public function getDebitbalance($acc) 
+    {
+         $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a' => 'ourbank_accounts'),array('id'),array('id'))
+                ->join(array('b' => 'ourbank_group_savingstransaction'),'a.id = b.account_id',array('sum(transaction_amount) as Debit'))
+                ->where('b.transaction_type = 2')
+                ->where('a.account_number = ?',$acc);
+        $result = $this->fetchAll($select);
+        return $result->toArray(); // return Credit details
+// die($select->__toString($select));
+    }  
+
+
 }
-
-

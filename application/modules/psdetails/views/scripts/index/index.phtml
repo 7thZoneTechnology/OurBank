@@ -1,5 +1,7 @@
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/toggel.js"></script> 
-<?php if (count($this->details)) { ?>
+<?php if (count($this->details)) { 
+$dbobj = new Psdetails_Model_Savingsdeposit();
+?>
 <div style="float:left;width:350px"> 
     <?php foreach($this->details as $details) { ?>
         <table id="hor-minimalist-s">
@@ -39,7 +41,8 @@
             </TR>
             <TR>
                 <td>Balance</td>
-                <td><b><font color="green"><?php echo $this->balance; ?></font></b></TD>
+                <td><b><font color="green"><?php  if (!$this->transactions) {
+echo $this->balance;  } else  { echo $this->balanceamount; } ?></font></b></TD>
             </TR>
         </table> 
     <?php } ?>
@@ -91,8 +94,9 @@
     <tr>
         <th>V No.</td>
         <th>Transaction date</td>
-        <th>Creidt</td>
+        <th>Credit</td>
         <th>Debit</td>
+        <th>Balance</td>
         <th>Payment mode</td>
         <th>Transacted by</td>  
     </tr>
@@ -110,9 +114,48 @@
        <?php } else { ?>
        <td>----</td>
        <?php } ?>
-
+        <td>
+       <?php 
+            $acc = $this->acc;
+            $balance = $dbobj->getbalance($this->acc);
+            foreach($balance as $balan){
+            $Cbalance = $balan['Balance'];
+            }
+         echo $Cbalance;
+        ?></td>
        <td><?php echo $transaction->mode; ?></td>
        <td><?php echo $transaction->name; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<?php } ?>
+
+<?php if ($this->transactions) {?>
+</br>
+<table id="hor-minimalist-b">
+    <tr>
+        <th>V No.</td>
+        <th>Transaction date</td>
+        <th>Credit</td>
+        <th>Debit</td>
+        <th>Transacted by</td>  
+    </tr>
+    <?php foreach($this->transactions as $transaction) : ?>
+    <tr>
+       <td><?php echo $transaction['transaction_id']; ?></td>
+       <td><?php echo $transaction['transaction_date']; ?></td>
+       <?php if ($transaction['transaction_type'] == 1) {?>
+       <td><?php echo $transaction['transaction_amount']; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+       <?php if ($transaction['transaction_type'] == 2) { ?> 
+       <td><?php echo $transaction['transaction_amount']; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+
+       <td><?php echo $transaction['createdby']; ?></td>
     </tr>
     <?php endforeach; ?>
 </table>
