@@ -40,6 +40,7 @@ class Groupcommonview_IndexController extends Zend_Controller_Action{
         $groupcommon=new Groupcommonview_Model_groupcommon();
         $group_name=$groupcommon->getgroup($id); // get group details
         $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
+// // // Zend_Debug::dump($group_location);
         foreach($group_location as $location){
                 $this->view->latitude = $location['latitude'];
                 $this->view->longitude = $location['longitude'];
@@ -50,7 +51,7 @@ class Groupcommonview_IndexController extends Zend_Controller_Action{
         $groupreps=$groupcommon->groupreps($id); // get group representatives
         $this->view->groupreps=$groupreps;
 
-        $dbobj= new Groupmdefault_Model_groupdefault();
+        $dbobj= new Groupmdefault_Model_Groupdefault();
         $groupheaddetails = $dbobj->Getgrouphead($id); //Get group head
             foreach($groupheaddetails as $grouphead){
                     $this->view->grouphead = $grouphead['head'];

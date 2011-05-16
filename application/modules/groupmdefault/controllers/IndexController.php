@@ -32,6 +32,8 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
         $module = $test->getControllerClassNames();
         $modulename = explode("_", $module[0]);
         $this->view->modulename = strtolower($modulename[0]);
+        
+        $this->view->dbobj = new Groupmdefault_Model_Groupdefault();
     }
 
     public function addgroupAction() 
@@ -86,7 +88,7 @@ unset($sessionName->Created_Date);
                                     }
         }
        
-        $dbobj = new Groupmdefault_Model_groupdefault();
+//         $dbobj = new Groupmdefault_Model_Groupdefault();
         $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
         foreach($days as $day) {
             $addForm->day->addMultiOption($day['id'],$day['name']);
@@ -96,7 +98,7 @@ unset($sessionName->Created_Date);
         foreach($bank as $banks) {
             $addForm->bank->addMultiOption($banks['id'],$banks['name']);
         }
-           $hierarchy = $dbobj->getofficehierarchy();
+           $hierarchy = $this->view->dbobj->getofficehierarchy();
                foreach($hierarchy as $hiearchyids){
              $hiearchyid = $hiearchyids['hierarchyid'];
             }
@@ -113,7 +115,7 @@ unset($sessionName->Created_Date);
         $grouptype = $this->_request->getParam('type');
         $this->view->familyid = $branch_id;
         $this->_helper->layout->disableLayout();
-        $dbobj= new Groupmdefault_Model_groupdefault();
+        $dbobj= new Groupmdefault_Model_Groupdefault();
         $this->view->members = $dbobj->GetBranchMembers($branch_id,$grouptype);
         $existmem = $dbobj->GetExistMembers($branch_id,$grouptype);
         $existmembers = array();
@@ -129,7 +131,7 @@ unset($sessionName->Created_Date);
         $grouptype = $this->_request->getParam('grouptype');
 
         $this->_helper->layout->disableLayout();
-        $dbobj= new Groupmdefault_Model_groupdefault();
+        $dbobj= new Groupmdefault_Model_Groupdefault();
 
         $Allvillagemembers  = $dbobj->GetAllvillagemembers($branch_id); // get All village members
         $fetchMembers=$dbobj->assignMembers($group_id); //get assigned members
@@ -177,7 +179,7 @@ unset($sessionName->Created_Date);
      }
     public function groupaccountAction() 
     {  
-        $dbobj= new Groupmdefault_Model_groupdefault();
+        $dbobj= new Groupmdefault_Model_Groupdefault();
 
         $result = "";
 
@@ -383,7 +385,7 @@ if($day){
                 $productcode = $productid.'S';
 //                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
 		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($membertypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
-                $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$groupid,'product_id' =>$productid));
+                $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$groupid,'product_id' =>$productid,'tag_account' => $account_id));
 //  // Group created date -> Including timestamp , Created date should contain date only
 
 $individualtypeid = $this->view->adm->getsingleRecord('ourbank_master_membertypes','id','type','Individual'); // get individual type id
@@ -391,16 +393,18 @@ $individualtypeid = $this->view->adm->getsingleRecord('ourbank_master_membertype
 // // insert accounts value for group members
 foreach($memid as $Memid)
  {
-$account_id = $this->view->adm->addRecord("ourbank_accounts",array('id' =>'',
+$account_ids = $this->view->adm->addRecord("ourbank_accounts",array('id' =>'',
                                                                     'membertype_id' =>$individualtypeid,
+                                                                    'begin_date' =>$date,
+                                                                    'tag_account' =>$account_id,
                                                                     'accountcreated_date' =>$date,
                                                                     'created_date' =>$createddate,
                                                                     'created_by' =>$this->view->createdby,
                                                                     'status_id' => 1)); // insert some value to accounts table
 //                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
-		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($individualtypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
+		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($individualtypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_ids,6,"0",STR_PAD_LEFT);
 
-                $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$Memid,'product_id' =>$productid));
+                $this->view->adm->updateRecord("ourbank_accounts",$account_ids,array('account_number' =>$accountNumber,'member_id'=>$Memid,'product_id' =>$productid));
 
 }
 // // if all the input's are satisfying all our requirements we can unset the session values 
@@ -461,7 +465,7 @@ unset($sessionName->Created_Date);
         $addForm->Submit->setLabel('Update');
         $this->view->form=$addForm;
  
-        $dbobject = new Groupmdefault_Model_groupdefault();
+        $dbobject = new Groupmdefault_Model_Groupdefault();
          $hierarchy = $dbobject->getofficehierarchy();
                foreach($hierarchy as $hiearchyids){
              $hiearchyid = $hiearchyids['hierarchyid'];
@@ -635,7 +639,7 @@ unset($sessionName->Created_Date);
         $deleteForm = new Groupmdefault_Form_Delete();
         $this->view->form=$deleteForm; 
         // create instance for Groupmdefault model page
-        $dbobj= new Groupmdefault_Model_groupdefault();
+        $dbobj= new Groupmdefault_Model_Groupdefault();
         // create instance for groupcommonview model page
         $groupcommon=new Groupcommonview_Model_groupcommon();
         $module=$groupcommon->getmodule('group');
@@ -697,7 +701,7 @@ unset($sessionName->Created_Date);
         $groupForm = new Groupmdefault_Form_groupdefault($app);
         $this->view->form = $groupForm;
 
-$dbobj = new Groupmdefault_Model_groupdefault();
+$dbobj = new Groupmdefault_Model_Groupdefault();
 //             $branches = $this->view->adm->getRecord('ourbank_master_branch','bank_id',$bankid);
 $branches = $dbobj->Getbranch($bankid);
 // Zend_Debug::dump($branches);

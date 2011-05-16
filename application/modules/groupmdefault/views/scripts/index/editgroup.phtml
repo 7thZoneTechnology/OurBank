@@ -25,13 +25,27 @@
 
 </script>
 <?php 
-$Netconnection = "No";
-if(fsockopen("www.google.com", 80)){
-$Netconnection = "Yes";
+function checkConnection()
+{
+    //Initiates a socket connection to www.itechroom.com at port 80
+    $conn = @fsockopen("www.itechroom.com", 80, $errno, $errstr, 30);
+    if ($conn)
+    {
+        $status = "OK";
+        fclose($conn);
+    }
+    else
+    {
+        $status = "NO";
+//         $status .= "$errstr ($errno)";
+    }
+    return $status;
 }
+
+$status = checkConnection();
 ?>
 <?php 
-if($Netconnection == "Yes") { 
+if($status == "OK"){
 ?>
 <head> 
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
@@ -94,7 +108,7 @@ if($Netconnection == "Yes") {
         </table>
  <br>
 <?php 
-if($Netconnection == "Yes") { 
+if($status == "OK"){
 ?>
         <div id="map" style="width: 250px; height:200px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
 </div>
@@ -113,13 +127,18 @@ if($Netconnection == "Yes") {
                 }
                 });
             </script>
-<?php } ?>
+<?php } 
+else {
+
+echo "<font color ='red'>Internet connection is not available due to that google map not displayed...</font>";
+
+} ?>
         <div class="btnhouse">
             <div class="ltbtns">
                 <?php echo $this->form->Submit;?>
             </div>
             <div class="rtbtns">
-                <a href="<?php echo $this->baseUrl();?>/groupcommonview/index/commonview/id/<?echo $this->groupid; ?>"><?php echo $this->form->Back;?></a>
+                <a href="<?php echo $this->baseUrl();?>/groupmcommonview/index/commonview/id/<?echo $this->groupid; ?>"><?php echo $this->form->Back;?></a>
             </div>
         </div>
     </form>
