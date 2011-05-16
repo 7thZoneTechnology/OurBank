@@ -1,16 +1,20 @@
 ﻿Follow this procedure to run our Application “Ourbank”
 
-1.Download the  Application from our website (http://ourbank.in/download)
-2.Put that application into /var/www in any name (Here project avail in ourbank) you can rename it as what you like
-3.Now you go to https://www.zend.com/en/user/  and create user account.
-4.After getting login page goto this  url http://www.zend.com/en/community/downloads and download the Zend Framework 1.11 full (recommended) 
-5.put the downloaded file into /var/www/ourbank /library
+Here the Procedure is applicable only to linux Operating System
 
-6.open your phpmyadmin  page and create new database and import the downloaded Database  and keep in mind what database name you given 
-7.Now go to application.ini file which is in /var/www/ourbank(your application name)/application/configs/application.ini  and give the database name and mysql username , password 
-8. resources.db.params.username = root (type new user name)	 
-9. resources.db.params.password = root  (type password of new username)
-10. resources.db.params.dbname = ourbank(your database name)
+1.Download the  Application from our website (http://ourbank.in/download)
+2.Downloaded file may be in tar format or zip format . So extract the file 
+3.Put that application into /var/www in any name (Here project avail in ourbank) you can rename it as what you like
+4.Now you go to https://www.zend.com/en/user/  and create user account
+5.After getting login page goto this  url http://www.zend.com/en/community/downloads and download the Zend Framework 1.11 full (recommended) [Library file]
+6.Extract the downloaded library file 
+6.put the downloaded file into /var/www/ourbank /library
+7.Now copy the zend folder from the downloaded library file and paste it inside the library folder of our application
+8.open your phpmyadmin  page and create new database and import the downloaded Database  and keep in mind what database name you given 
+9.Now go to application.ini file which is in /var/www/ourbank(your application name)/application/configs/application.ini  and give the database name and mysql username , password 
+10. resources.db.params.username = root (type new user name)	 
+11. resources.db.params.password = root  (type password of new username)
+12. resources.db.params.dbname = ourbank(your database name)
 Now you have to give the read and write permission to that application . There are two ways to give the permission one is manually other one is through Terminal
 		Manual method :
 			-> Go to home folder & then /var/www/ &  properties by right click the (ourbank) application now you can see permissions as a one of the tab , just click that and chose respective permission mode as given below
@@ -50,4 +54,6 @@ Through Terminal :
 		-> /etc/init.d/apache2 restart
 
 Now the Application is ready to use ..
-go to your browser and type http://localhost/
+go to your browser and type http://localhost/ourbank/public
+default username and password is admin admin 
+and continue to using the application
