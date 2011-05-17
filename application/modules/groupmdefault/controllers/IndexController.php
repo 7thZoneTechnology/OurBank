@@ -85,7 +85,10 @@ unset($sessionName->Created_Date);
 			}
                         if($error == 4 ) {
                                 $this->view->error = "Maximum 3 members can be a representative in a single group!  ";
-                                    }
+                        }
+                        if($error == 5 ) {
+                                $this->view->error = "Chose Bank branch name";
+                        }
         }
        
 //         $dbobj = new Groupmdefault_Model_Groupdefault();
@@ -265,17 +268,27 @@ if($day){
         $famid[] = $Memberids[0];
         $memid[] = $Memberids[1];
         }
-        $result = array_diff($representative_id,$memid);
+        $results = array_diff($representative_id,$memid);
 
+        $error = 0;
         if(in_array($group_head,$memid)){
-            if($result){
+            $result="ok";
+            if($results){
                 $error = "3";
+                $result="not ok";
             }
             if($countreps>3){
                 $error = "4";
+                $result="not ok";
+
+            } 
+        if(!$branch){
+                $error = "5";
+                $result="not ok";
+
             }
+
              else {
-                $result="ok";
                 $countvalues[] = array_count_values($famid);
                     foreach ($countvalues[0] as $key => $value) {
                 if ($value > 1) {
@@ -288,7 +301,8 @@ if($day){
         else {
               $error = "1";
         }
-        if($result == "ok")
+
+        if($result == "ok" && $error == 0)
         { 
 
         // if ok get all input values
@@ -443,6 +457,9 @@ unset($sessionName->Created_Date);
             if($error == 4 ) {
                     $this->view->error = "Maximum 3 members can be a representative in a single group !  ";
             }
+            if($error == 5 ) {
+                    $this->view->error = "Chose Bank branch name";
+            }
         }
         $app = $this->view->baseUrl();
         $group_id=$this->_getParam('id');
@@ -523,17 +540,22 @@ unset($sessionName->Created_Date);
                 }
 
                        $result = array_diff($representative_id,$memid);
-
+        $error = 0;
         if(in_array($group_head,$memid)){
             if($result){
+                $result="not ok";
                 $error = "3";
             } 
 
             if($countreps>3){
+                $result="not ok";
                 $error = "4";
             }
+            if(!$branch){
+                            $error = "5";
+                            $result="not ok";
+                        }
             else {
-                $result="ok";
                 $countvalues[] = array_count_values($famid);
                     foreach ($countvalues[0] as $key => $value) {
                 if ($value > 1) {
@@ -546,7 +568,7 @@ unset($sessionName->Created_Date);
         else {
               $error = "1";
         }
-                if($result == "ok"){  // if ok then get all input values
+                if($result == "ok" && $error == 0){  // if ok then get all input values
                     $office_id = $this->_request->getParam('offeditv');
                     $groupname = $this->_request->getParam('groupname');
                     $bank = $this->_request->getParam('bank');

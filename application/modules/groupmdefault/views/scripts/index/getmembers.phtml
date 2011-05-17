@@ -44,10 +44,6 @@ $dbobj = new Groupmdefault_Model_groupdefault();
             ?>
             <?php if($members['breadwinner_id']==1) { 
                 $fami = $dbobj->getfamilyMembersforedit($familyid);
-//                  foreach($fami as $familym){ 
-//                     $breadwner[] = $familym['id'];
-//                  }
-
             ?>
                 <tr>
                 <td colspan="5">
@@ -62,7 +58,7 @@ $dbobj = new Groupmdefault_Model_groupdefault();
                 <td>
                     <input type="checkbox" name="member_id[]" <?php if(in_array($familymem["id"],$exist)) {?> checked ="true" <?php } ?> value="<?php echo $familymem['family_id'];?>_<?php echo $familymem["id"];?>"><? echo $familymem["name"];?>
                 </td>
-                <td width="30%"><?php echo $members["uid"];?>
+                <td width="30%"><?php echo $familymem["uid"];?>
                 </td>
                  <td align="center">
                     <input type="radio" name="memberhead" <?php if($familymem["id"]==$head) { ?> checked ="true" <?php } ?> value="<?php echo $familymem["id"];?>">
