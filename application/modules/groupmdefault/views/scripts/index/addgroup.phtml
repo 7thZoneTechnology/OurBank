@@ -4,8 +4,9 @@
             targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
             $.ajax({ url: targeturl, success: function(data){ $('#branch').html(data) }});
        }
-
 </script>
+
+
 <?php
 function checkConnection()
 {

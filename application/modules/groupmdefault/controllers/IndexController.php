@@ -395,7 +395,7 @@ if($day){
                                                                     'created_by' =>$this->view->createdby,
                                                                     'status_id' => 1)); // insert some value to accounts table for group*/
 
-                $productid = $dbobj->getProductid($grouptypeid);
+                $productid = $dbobj->getProductid();
                 $productcode = $productid.'S';
 //                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
 		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($membertypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
@@ -463,7 +463,7 @@ unset($sessionName->Created_Date);
         }
         $app = $this->view->baseUrl();
         $group_id=$this->_getParam('id');
-        $this->view->groupid=$group_id;
+        $this->view->groupid = $group_id;
         $this->view->title = "Edit Group Details"; 
         // create instance for form page with baseurl
         $addForm = new Groupmdefault_Form_groupdefault($app);
@@ -518,10 +518,41 @@ unset($sessionName->Created_Date);
         }
         // enable javascript function to load groupmembers 
         echo "<script>getMember('".$group['officeid']."','".$app."','".$group['groupid']."','".$grouptype."');</script>";
- 
+            $gacc = array(); 
+            $gmembersacc = array(); 
+
             if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
-            {  
+            {
                 $mem = $this->_request->getPost('member_id'); // get selected members
+
+                $groupmembersid = $this->view->adm->getRecord('ourbank_groupmembers','group_id',$this->view->groupid); // Fetch group members
+                foreach($groupmembersid as $groupmembers)
+                {
+                    $macc = $dbobject->Getaccdetails($groupmembers['member_id']); // Get account id from accounts table
+
+                    foreach($macc as $memberaccount){
+                        $acc = $memberaccount['id']; // get account id
+                        $gacc[] = $acc;
+                        $savingdetails = $dbobject->getsavings($acc); // get savings details
+                            foreach($savingdetails as $saving){
+                                    if($saving['Amount'] > 0){
+                                        $gmembersacc[] = $groupmembers['member_id'];
+                                    }
+                            }
+                    }
+                }
+
+            if($gmembersacc){
+                    foreach($gmembersacc as $gmacc){
+                         $meminfor = $this->view->adm->getRecord('ourbank_familymember','id',$gmacc);
+                                foreach($meminfor as $membersinfo){
+                                            echo "<font color = 'green' ><b>".$membersinfo['name']."</b> <br> </font>";
+                                }
+                    }
+
+                    echo "<font color ='red'> <b>These group members are having valid accounts. you cannot edit the group members.. </b></font>";
+
+            }else {
                 $group_head = $_POST['memberhead'];// get group head 
                 $representative_id = $_POST['representatives'];
                 $countreps = count($representative_id);
@@ -542,24 +573,25 @@ unset($sessionName->Created_Date);
                        $result = array_diff($representative_id,$memid);
         $error = 0;
         if(in_array($group_head,$memid)){
+            $results="ok";
             if($result){
-                $result="not ok";
+                $results="not ok";
                 $error = "3";
             } 
 
             if($countreps>3){
-                $result="not ok";
+                $results="not ok";
                 $error = "4";
             }
             if(!$branch){
                             $error = "5";
-                            $result="not ok";
+                            $results="not ok";
                         }
             else {
                 $countvalues[] = array_count_values($famid);
                     foreach ($countvalues[0] as $key => $value) {
                 if ($value > 1) {
-                    $result="not ok";
+                    $results="not ok";
                     $error = "2";
                 } 
             }
@@ -568,7 +600,9 @@ unset($sessionName->Created_Date);
         else {
               $error = "1";
         }
-                if($result == "ok" && $error == 0){  // if ok then get all input values
+
+                if($results == "ok" && $error == 0){  // if ok then get all input values
+
                     $office_id = $this->_request->getParam('offeditv');
                     $groupname = $this->_request->getParam('groupname');
                     $bank = $this->_request->getParam('bank');
@@ -587,7 +621,40 @@ unset($sessionName->Created_Date);
                     $convertdate = new App_Model_dateConvertor();
                     $createddate=$convertdate->phpmysqlformat($createddate);
                     $date=date("y/m/d H:i:s");
-                    $groupdetails = $dbobject->getgroupdetails($group_id); // get group details for particular id
+
+
+                    // updation and insertion in Accounts table
+                        foreach($gacc as $gaccountid){ } //get the account id
+                        $tagacc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','id',$gaccountid);
+                        $data = array('tag_account' => 0,
+                                      'status_id' => 0);
+                        foreach($gacc as $gaccountid){  //get the account id
+                                $where = array('id = '.$gaccountid,
+                                               'membertype_id = 1');
+                                $dbobject->updateaccount('ourbank_accounts',$data,$where); // make tag account and status id as zero
+                        }
+
+                    $individualtypeid = $this->view->adm->getsingleRecord('ourbank_master_membertypes','id','type','Individual'); // get individual type id
+                    $productid = $dbobject->getProductid();
+                    $productcode = $productid.'S';
+                    // // insert accounts value for group members
+                    foreach($memid as $Memid)
+                    {
+                    $account_ids = $this->view->adm->addRecord("ourbank_accounts",array('id' =>'',
+                                                                                        'membertype_id' =>$individualtypeid,
+                                                                                        'begin_date' =>$date,
+                                                                                        'tag_account' =>$tagacc,
+                                                                                        'accountcreated_date' =>$date,
+                                                                                        'created_date' =>$createddate,
+                                                                                        'created_by' =>$this->view->createdby,
+                                                                                        'status_id' => 1)); // insert some value to accounts table
+                    //                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
+                                    $accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($individualtypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_ids,6,"0",STR_PAD_LEFT);
+                                    $this->view->adm->updateRecord("ourbank_accounts",$account_ids,array('account_number' =>$accountNumber,'member_id'=>$Memid,'product_id' =>$productid));
+
+                    }
+
+                  $groupdetails = $dbobject->getgroupdetails($group_id); // get group details for particular id
                     $this->view->adm->addRecord("ourbank_group_log",$groupdetails[0]);  // add group details to log table
         $glidforabsense =  $this->view->adm->getsingleRecord('ourbank_glsubcode','id','header','Absense');
         $glidforlate =  $this->view->adm->getsingleRecord('ourbank_glsubcode','id','header','Late');
@@ -650,6 +717,7 @@ unset($sessionName->Created_Date);
                 else{ // display error message for wrong group head selection
                     $this->_redirect('groupmdefault/index/editgroup/id/'.$group_id.'/error/'.$error);
 
+                }
                 }
             }
         }
@@ -731,7 +799,5 @@ $branches = $dbobj->Getbranch($bankid);
 		foreach($branches as $bankbranch) {
 			$groupForm->branch->addMultiOption($bankbranch['id'],$bankbranch['name']);
 		}
-        
-        
         }
 }
