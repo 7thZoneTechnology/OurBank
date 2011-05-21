@@ -151,29 +151,21 @@ foreach($this->membername as $name){
 
 <tr>
     <td width="20%">Habits</td>
-    <?php $h = 0; foreach($this->habitdetails as $habits){ $h++; ?>
+    <?php  foreach($this->habitdetails as $habits){  ?>
     <td colspan="2">
-<?php if($h==1) { ?>
-    <input type="checkbox" name="habit[]" checked value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-<?php } else {?>
     <input type="checkbox" name="habit[]"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-<?php } ?>
-    <?php echo $habits['name']; ?>
+    <?php echo $habits['name']; ?> 
     </td>
-   <?php } ?>
+<?php } ?>
 
 </tr>
 <tr>
     <td width="20%">Physical challenge</td>
-    <?php $c = 0; foreach($this->challengedetails as $challenge){ $c++; ?>
-    <td colspan="2">
-<?php if($c==1) { ?>
-<input type="checkbox" name="challenge[]" checked value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-<?php } else {?>
+    <?php  foreach($this->challengedetails as $challenge){  ?>
+  
+<td colspan="2">
 <input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-<?php } ?>
-
-    <?php echo $challenge['name']; ?>
+<?php  echo $challenge['name']; ?>
     </td>
    <?php } 
 ?>

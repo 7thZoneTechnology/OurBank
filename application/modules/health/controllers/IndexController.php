@@ -52,6 +52,7 @@ class Health_IndexController extends Zend_Controller_Action
         $this->view->habitdetails = $dbmodel->gethabittypes();
         $this->view->challengedetails = $dbmodel->getchallengetypes();
         $this->view->membername = $membername = $dbmodel->getfamilymemberdetails($familyid);
+
 //count number of family members
         $this->view->membercount = $totalmembers = count($this->view->membername);
 // //insert the health details 
