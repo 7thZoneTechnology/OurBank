@@ -33,6 +33,7 @@ $(document).ready(
         newRow.find("input:checkbox").removeAttr('checked');
         newRow.find("input:hidden").removeAttr('value');
         newRow.find("input:radio").removeAttr('checked');
+        newRow.find('span').remove();
         newRow.appendTo('.family tbody');
         $('tr#tmp').closest('table').find('input:text.date').each(function() 
         {
@@ -77,6 +78,11 @@ $(document).ready(
     $('tr#tmp').find('input.agechange').attr( 'id', 'age-'+length );
     $('tr#tmp').find('div.branchclass').attr( 'id', 'branchdiv-'+length );
     $('tr#tmp').find('select.bankfilter').attr( 'id', 'bank-'+length );
+    $('tr#tmp').find('select.interest').attr( 'id', 'source-'+length );
+    $('tr#tmp').find('input.disableid').attr( 'id', 'disable-'+length );
+    $('tr#tmp').find('input.disableamt').attr( 'id', 'amtdisable-'+length );
+    $('tr#tmp').find('select.entitleid').attr( 'name', 'entitle-'+length+'[]');
+    $('tr#tmp').find('select.profid').attr( 'name', 'profession-'+length+'[]');
     length++;
 
     $('tr#tmp').nextAll('tr').each( function() {;
@@ -84,9 +90,14 @@ $(document).ready(
         $(this).find('input.agechange').attr( 'id', 'age-'+length );
         $(this).find('div.branchclass').attr( 'id', 'branchdiv-'+length );
         $(this).find('select.bankfilter').attr( 'id', 'bank-'+length );
+        $(this).find('select.interest').attr('id', 'source-'+length);
+        $(this).find('input.disableid').attr('id', 'disable-'+length);
+        $(this).find('input.disableamt').attr('id', 'amtdisable-'+length);
+        $(this).find('select.entitleid').attr( 'name', 'entitle-'+length+'[]');
+        $(this).find('select.profid').attr( 'name', 'profession-'+length+'[]');
         length++;
     });
-};
+    };
 
 
     var arrangeRadioNames = function() {
@@ -115,6 +126,26 @@ $(document).ready(
         $('#date-'+id[1]).val(dob);
     });
 
+    $('.interest').change(function() {
+        var id=$(this).attr("id").split("-");
+        var selectvalue=$(this).val();
+        if(selectvalue==4){
+        $('#disable-'+id[1]).hide(); 
+        $('#disable-'+id[1]).removeAttr('value');
+        }
+        else{
+        $('#disable-'+id[1]).show();
+        }
+
+        if(selectvalue==3){
+        $('#amtdisable-'+id[1]).hide();
+        $('#amtdisable-'+id[1]).removeAttr('value');
+        }
+        else{
+        $('#amtdisable-'+id[1]).show();
+        }
+    })
+
     $('.bankfilter').change(function() {
         var id=$(this).attr("id").split("-");
         if($(this).val())
@@ -139,7 +170,7 @@ $(document).ready(
      }
 
     $('#pluginForm').submit(function(e) {
-        $(this).find(':text.required').each(function() {
+        $(this).find('.required').each(function() {
             if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
                 if($(this).next('span').length == 0 )
                     $(this).after('<span style="color: #FF0000">Field is required</span>');
@@ -151,7 +182,7 @@ $(document).ready(
             }
         });
 
-     $(this).find(':select.selectvalid').each(function() {
+      $(this).find(':select.selectvalid').each(function() {
             if($(this).val() == 0) {
                 if($(this).next('span').length == 0 ){
                     $(this).after('<span style="color: #FF0000">Field is required</span>');
