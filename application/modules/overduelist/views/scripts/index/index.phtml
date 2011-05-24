@@ -29,8 +29,8 @@ function Getofficer(id,path) {
 <?php if(!$this->loanView){ ?>
 <div id="searchDiv">
 <form action="<?php echo $this->baseUrl();?>/overduelist" method="POST">
-
                     <TABLE id="hor-minimalist-b">
+					<th colspan="4">Overdue List</th>
                     <tr>
                         <td class="label">Branch:</td>
                         <td ><? echo $this->form->bank_id;?></td>

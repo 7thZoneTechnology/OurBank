@@ -23,6 +23,8 @@ $(document).ready(
                 newrowobj=$(this).children(':first');
                 inputobj=newRow.find("input:text");
                 inputobj.val("");
+                newRow.find('span').remove();
+
         newRow.appendTo('.nonasset tbody');
         $(selectobj).attr('id', 'select'+rowindex);
              trobjec.each(function (index, domEle) {
@@ -35,11 +37,21 @@ $(document).ready(
        });
         
            $('tr#tmp').closest('table').find('input:text.date').each(function() {
-           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy'});
+           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate : '+0D',});
         });
 
       }
     );
+
+     
+      $('.select').change(function(){
+            if($(this).val() == 'Select'){
+                    $(this).after('<span style="color: #FF0000">Choose proper Asset</span>');
+            } else {
+                    $(this).next('span').remove();
+            }
+    });
+
 
 
     $('tr input[type=text]').focus(
@@ -51,7 +63,9 @@ $(document).ready(
         $(this).removeClass('myFocused');
       }
     );
-    $(".date").datepick({dateFormat: 'dd/mm/yyyy'});
+
+        $(".date").datepick("option",{dateFormat: 'dd/mm/yyyy', maxDate : '+0D', });
+
 
     $('.delete-icon').click(function() {
         $(this).closest('tr').not('#tmp').remove();
@@ -72,6 +86,17 @@ $(document).ready(function() {
                 if($(this).next('span').length > 0 )
                     $(this).next('span').remove();
             }
+        });
+
+ $(this).find(':select.select').each(function() {
+            if($(this).val() == 'Select'){
+                        if($(this).next('span').length == 0 ) {
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                }
+                e.preventDefault();
+                return;            } else {
+                        if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();            }
         });
         $(this).find(':text.numeric').each(function() {
             var regex = new RegExp(/^[1-9][0-9]*$/);
@@ -114,8 +139,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+        <!--td ><?php echo $this->translate("Caste:"); ?></td>
+        <td ><?php echo $family_view['subcaste']; ?></td> -->   </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -130,19 +155,19 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
-
-    <tr>
-        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
-        <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
-        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
-
-    <tr>
+	<tr>
         <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $this->revvillagename; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
-        <td ><?php echo $family_view['income']; ?></td>
+		<td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>
     </tr>
+    <tr>
+        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
+		<td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
+            </tr>
+
     <tr>
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
@@ -169,7 +194,9 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <th>Action</th>
 </tr>
  <tr id='tmp'>
-            <td><select name = assettype[] id="select1">
+            <td><select name = assettype[] id="select1" class="select">
+                <option>Select</option>
+
                             <?php foreach ($this->nonliveasset_details as $nonliveassets) { ?>
                             <option value="<?php echo $nonliveassets['id']?>"><?php echo $nonliveassets['name']?></option>
                             <?php } ?>
@@ -177,8 +204,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
             </td>  
 
             <td><INPUT type="text" size="6" name = "number[]" class="required numeric" maxlength="6"></td>
-            <td><INPUT type="text" name = "value[]" class="required numeric" maxlength="6"></td>
-			<td><INPUT type="text" name = "date[]"  id="date" class="date required"></td>
+            <td><INPUT type="text" name = "value[]" maxlength="6"></td>
+			<td><INPUT type="text" name = "date[]" class="date"></td>
 
             <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
 

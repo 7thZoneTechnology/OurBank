@@ -405,6 +405,7 @@ class Meetingbook_Model_Loanrepayment extends Zend_Db_Table {
     {  
         $db = Zend_Db_Table::getDefaultAdapter();
         $acc = $this->searchaccounts($data["accNum"]); //echo '<pre>';print_r($acc);
+        $tranId = $data["transID"];
         foreach ($acc as $acc) {
                $accId = $acc->accId;
                $gl = $acc->gl;
@@ -412,17 +413,17 @@ class Meetingbook_Model_Loanrepayment extends Zend_Db_Table {
                $interest = $acc->interest; 
                $intGl = $acc->intGl;
         }
-        $tranData= array('account_id' => $accId,
-                        'glsubcode_id_to' => $gl,
-                        'transaction_date' => $data["date"],
-                        'amount_to_bank' => $data["amount"],
-                        'paymenttype_id' => $data["paymentMode"],
-                        'recordstatus_id' => 3,
-                        'transactiontype_id' => 1,
-                        'transaction_description'=>$data["description"],
-                        'created_by'=>1);
-        $db->insert("ourbank_transaction",$tranData);
-        $tranId = $db->lastInsertId('id');
+//         $tranData= array('account_id' => $accId,
+//                         'glsubcode_id_to' => $gl,
+//                         'transaction_date' => $data["date"],
+//                         'amount_to_bank' => $data["amount"],
+//                         'paymenttype_id' => $data["paymentMode"],
+//                         'recordstatus_id' => 3,
+//                         'transactiontype_id' => 1,
+//                         'transaction_description'=>$data["description"],
+//                         'created_by'=>1);
+//         $db->insert("ourbank_transaction",$tranData);
+//         $tranId = $db->lastInsertId('id');
         // Installment update
         $sql = "select installment_id from ourbank_installmentdetails where account_id='".$accId."' AND installment_status = 4 limit 1";
         $idData = $db->fetchAll($sql);
@@ -459,13 +460,13 @@ class Meetingbook_Model_Loanrepayment extends Zend_Db_Table {
                          'record_status' => 3);
        	$db->insert('ourbank_Assets',$glassets);
         // Insertion into Assets ourbank_Liabilities productgl Cr entry
-		$glLia =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $gl,
-                         'glsubcode_id_to' => '',
-                         'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
-                         'record_status' => 3);
-       	$db->insert('ourbank_Liabilities',$glLia);
+// 		$glLia =  array('office_id' => $officeid,
+//                          'glsubcode_id_from' => $gl,
+//                          'glsubcode_id_to' => '',
+//                          'transaction_id' => $tranId,
+//                          'credit' => $data["amount"],
+//                          'record_status' => 3);
+//        	$db->insert('ourbank_Liabilities',$glLia);
         // Insertion into Assets ourbank_Assets interest Cr entry
         $interest =  array('office_id' => $officeid,
                          'glsubcode_id_from' => $intGl,

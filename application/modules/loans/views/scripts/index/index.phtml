@@ -5,33 +5,27 @@
                 <form action="<?php echo $this->baseUrl();?>/loans/index" method="POST">
                     <table width="100%">
                         <tr>
-                            <td class="label"><br><? echo $this->translate("Product name");?>:</td>
+                            <td class="label"><? echo $this->translate("Product name");?>:</td>
                             <td ><? echo $this->form->field6;?></td>
-                            <td class="label"><br><? echo $this->translate("Product short name");?>:</td>
+                            <td class="label"><? echo $this->translate("Product short name");?>:</td>
                             <td ><? echo $this->form->field2;?></td>
                         </tr>
 
                         <tr>
-                            <td class="label"><br><? echo $this->translate("Minimum frequency");?>:</td>
+                            <td class="label"><? echo $this->translate("Minimum Frequency");?>:</td>
                             <td ><? echo $this->form->field3;?></td>
-                            <td class="label"><br><? echo $this->translate("Maximum loan amount");?>:</td>
+                            <td class="label"><? echo $this->translate("Maximum loan amount");?>:</td>
                             <td ><? echo $this->form->field4;?></td>
                         </tr>
+                        <tr>
+                            <td colspan="4" align="justify"><? echo $this->form->Search;?></td>
+                        </tr>
                     </table>
-                    <br>
-                      <div class="ltbtns">
-                    <input type = "Submit" name = "Search" id="Search" value = "Search"/>
-                    </div>
                 </form>	
             </div>
     </fieldset> 
 </div>  
-
-<?php  if(count($this->paginator)!="")  { 
-
-// check search result is not empty and assign values
-if(count($this->paginator)!=0) { ?>
-
+   <?php if (count($this->paginator)): ?>
 <table id="hor-minimalist-b">
     <tr>
         <th><? echo $this->translate("Product name");?></th>
@@ -39,7 +33,7 @@ if(count($this->paginator)!=0) { ?>
         <th><? echo $this->translate("Minimum frequency");?></td>
         <th><? echo $this->translate("Maximum loan amount");?></th>
     </tr>
-        <?php if (count($this->paginator)): ?>
+     
         <?php foreach ($this->paginator as $loan ): ?>
     <tr>
         <td><a href="<?php echo $this->baseUrl()."/loanscommonview/index/index/id/".$loan['offerid']; ?>">
@@ -54,9 +48,6 @@ if(count($this->paginator)!=0) { ?>
         <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
                                     '/partials/my_pagination_control.phtml'); ?></div></td>
     </tr>
+
+
 </table>
-<?php } } else { echo "<font color='RED'>Records Not Found Try Again...</font>";
-} ?>
-
-
-

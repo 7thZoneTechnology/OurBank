@@ -23,10 +23,11 @@
 
 <tr>
 <td>Savings Acc.No:</td><td>
-<?php 
+<?php  
 if($memberaccNum) {
-echo $memberaccNum[0]['account_number']; 
-} else {
+echo $memberaccNum[0]['account_number']; ?>
+<input type="hidden" name="groupaccID" value="<?php echo $memberaccNum[0]['id']; ?>"/>
+<?php } else {
 echo "<span style='color:red;'>Your Account is closed</span>";
 }
 ?></td>

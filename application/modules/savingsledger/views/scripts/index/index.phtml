@@ -18,25 +18,25 @@
 !-->
 <fieldset>
     <legend> search </legend>
-        <div class="cont-rgt-data">
-            <table id="hor-minimalist-b">
+
+            <table >
                 <form action="<?php echo $this->baseUrl();?>/savingsledger/index" method="POST">
                     <TR>
-                            <TD >Date from</TD>
+                            <TD align="center"><br>Date from :</TD>
                             <TD ><?php echo $this->form->datefrom;?></TD>
-                            <TD >Date to</TD>
+                            <TD ><br>Date to :</TD>
                             <TD ><?php echo $this->form->dateto;?></TD>
                     </TR>
                     <TR>
-                            <TD >Account number</TD>
+                            <TD align="center"><br>Account number :</TD>
                             <TD ><?php echo $this->form->acc;?></TD>
                             <TD ></TD>
-                            <TD ><?php echo $this->form->Search;?></TD>
-                    </TR>
 
+                    </TR>
+                        <tr><TD align="center"><?php echo $this->form->Search;?></TD></tr>
                 </form>
             </table>
-        </div>
+
 </fieldset>
 
 

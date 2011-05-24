@@ -39,6 +39,7 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
                    ->setIntegrityCheck(false)
                    ->from(array('a' => 'ourbank_office'),array('name as villagename','id as village_id'))
                    ->where('a.officetype_id =?',$hiearchyid);
+
            //die($select->__toString($select));
            return $this->fetchAll($select);
        }
@@ -120,7 +121,7 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
                 ->join(array('a'=>'ourbank_insurance'),array('a.id'))
                 ->join(array('b'=>'ourbank_master_insurance'),'b.id=a.insurance_id',array('b.name as insurancename'))
                 ->where('a.family_id=?',$id);
-      //      die($select->__toString($select));
+//            die($select->__toString($select));
             $result=$this->fetchAll($select);
             return $result->toArray();
     }
@@ -135,13 +136,23 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
         return;
     }
 
-	public function getsubcaste($id) {
+// 	public function getsubcaste($id) {
+// 		$select=$this->select()
+// 			->setIntegrityCheck(false)
+// 			->join(array('a'=>'ourbank_master_subcaste'),array('id'),array('a.name as subcastename','a.id as subcaste_id'))
+// 			->join(array('b'=>'ourbank_master_castetype'),'b.id = a.caste_id')
+//                         ->where('b.id=?',$id);
+//                 //die($select->__toString($select));
+// 		$result = $this->fetchAll($select);
+// 		return $result->toArray();
+// 	}
+
+	public function gethabitation($id) {
 		$select=$this->select()
 			->setIntegrityCheck(false)
-			->join(array('a'=>'ourbank_master_subcaste'),array('id'),array('a.name as subcastename','a.id as subcaste_id'))
-			->join(array('b'=>'ourbank_master_castetype'),'b.id = a.caste_id')
-                        ->where('b.id=?',$id);
-                //die($select->__toString($select));
+			->join(array('a'=>'ourbank_master_habitation'),array('id'),array('a.name as villagename','a.id'))
+                        ->where('a.village_id =?',$id);
+         //die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}

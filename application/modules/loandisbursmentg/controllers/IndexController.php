@@ -323,7 +323,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                         'credit' => $feeamount,
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$fee);
-            //$this->_redirect("/loandisbursmentg/index/message/amt/".base64_encode($this->_request->getPost('Amount'))."/accNum/".base64_encode($number));
+            $this->_redirect("/loandisbursmentg/index/message/amt/".base64_encode($this->_request->getPost('Amount'))."/accNum/".base64_encode($number));
             }
         }
     }

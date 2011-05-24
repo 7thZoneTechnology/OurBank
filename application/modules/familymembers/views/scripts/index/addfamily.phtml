@@ -24,8 +24,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+        <td ><?php //echo $this->translate("Caste:"); ?></td>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -163,7 +163,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </select>
                 </td>
 
-                <td><select name = "profession-1[]" class="selectvalid profid" multiple="true" size="3">
+                <td>
+                <select name = "profession-1[]" class="selectvalid profid" multiple="true" size="3">
                     <option value=0>Select</option>
                     <?php foreach ($this->proffession as $proffession) { ?>
                     <option value="<?php echo $proffession['id']?>"><?php echo $proffession['name']?></option>

@@ -18,7 +18,7 @@
 ############################################################################
 */
 class Meetingbook_Model_Savings extends Zend_Db_Table {
-
+    protected $_name = 'ourbank_transaction';
 public function search($acc) 
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -108,21 +108,14 @@ public function search($acc)
         $result = $db->fetchAll($sql);
         return $result;
     }
-    public function deposit($acc,$amount,$date,$type,$transactionMode,$description) 
-    {
+
+    public function getTransactionID($groupaccID,$amount,$date,$type,$transactionMode,$description){
+	// Transaction entry
 	$cl = new App_Model_dateConvertor ();
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
-	$accData = $this->search($acc);  echo '<pre>'; print_r($accData);
-	foreach ($accData as $accData) {
-	   $accId = $accData->accId;
-	   $gl = $accData->gl;
-	   $officeid = $accData->officeid;
-	}
-
-	// Transaction entry
-	$input = array('account_id' => $accId,
-                      'glsubcode_id_to' => $gl,
+	$input = array('account_id' => $groupaccID,
+                      'glsubcode_id_to' => '',
                        'transaction_date' => $date,
                        'amount_to_bank' => $amount,
                        'transactiontype_id' => 1,
@@ -134,6 +127,36 @@ public function search($acc)
                        'created_by' => 1);
 	$db->insert("ourbank_transaction",$input);
 	$tranId = $db->lastInsertId('ourbank_transaction');
+	return $tranId;
+    }
+
+    public function deposit($acc,$amount,$date,$type,$transactionMode,$description,$tranId) 
+    {
+	$cl = new App_Model_dateConvertor ();
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+	$accData = $this->search($acc);  //echo '<pre>'; print_r($accData);
+	foreach ($accData as $accData) {
+	   $accId = $accData->accId;
+	   $gl = $accData->gl;
+	   $officeid = $accData->officeid;
+	}
+
+// 	// Transaction entry
+// 	$input = array('account_id' => $accId,
+//                       'glsubcode_id_to' => $gl,
+//                        'transaction_date' => $date,
+//                        'amount_to_bank' => $amount,
+//                        'transactiontype_id' => 1,
+//                        'recordstatus_id' => 3,
+//                        'paymenttype_id'=> 1,
+//                        'transaction_description' => $description, 
+//                        'balance' => $amount,
+//                        'confirmation_flag' => 0,
+//                        'created_by' => 1);
+// 	$db->insert("ourbank_transaction",$input);
+// 	$tranId = $db->lastInsertId('ourbank_transaction');
+
 	// Saving transaction entry 
         $saving = array('transaction_id' => $tranId,
       	                'account_id' => $accId,
@@ -159,13 +182,13 @@ public function search($acc)
             $cashglsubocde = $glresult->id;
 	}
         // Insertion into Assets ourbank_Assets
-        $assets =  array('office_id' => $officeid,
-			'glsubcode_id_from' => '',
-			'glsubcode_id_to' => $cashglsubocde,
-			'transaction_id' => $tranId,
-			'credit' => $amount,
-			'record_status' => 3);
-	$db->insert('ourbank_Assets',$assets);
+//         $assets =  array('office_id' => $officeid,
+// 			'glsubcode_id_from' => '',
+// 			'glsubcode_id_to' => $cashglsubocde,
+// 			'transaction_id' => $tranId,
+// 			'credit' => $amount,
+// 			'record_status' => 3);
+// 	$db->insert('ourbank_Assets',$assets);
 	return $tranId;
 
     }
@@ -194,5 +217,46 @@ public function search($acc)
 		B.member_id = C.id  
 		";
 	return $result = $db->fetchAll($sql);
+    }
+
+public function updateRecord($table,$param,$data)  
+    {
+	$db = $this->getAdapter();
+        $db->update($table, $data , array('transaction_id = '.$param)); 
+        return;
+    }
+public function updateRecord1($table,$param,$data)  
+    {
+	$db = $this->getAdapter();
+        $db->update($table, $data , array('tranasction_id = '.$param)); 
+        return;
+    }
+
+public function fetchsavingsdetails($transId)
+    {
+        $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->from(array('a' => 'ourbank_transaction'),array('a.transaction_id'))
+                ->where('a.recordstatus_id = 3')
+                ->where('a.transaction_id = '.$transId)
+                ->join(array('b' => 'ourbank_group_savingstransaction'),'a.transaction_id=b.transaction_id', array('b.member_id', 'b.transaction_amount'));
+
+// 	die($select->__toString($select));
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+    }
+public function fetchloandetails($transId)
+    {
+        $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->from(array('a' => 'ourbank_transaction'),array('a.transaction_id'))
+                ->where('a.recordstatus_id = 3')
+                ->where('a.transaction_id = '.$transId)
+                ->join(array('b' => 'ourbank_accounts'),'a.account_id=b.id',array('b.member_id'))
+                ->join(array('c' => 'ourbank_loan_repayment'),'b.id=c.account_id', array('c.paid_amount'));
+
+// 	die($select->__toString($select));
+        $result = $this->fetchAll($select);
+        return $result->toArray();
     }
 }

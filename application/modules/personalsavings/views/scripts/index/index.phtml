@@ -17,10 +17,10 @@
 ############################################################################
 !-->
 <form action="<?php echo $this->baseUrl();?>/personalsavings/index/pdfgeneration" method="POST">   
-<fieldset>
-    <legend>Personal Savings Members</legend>
+
+	<table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
+    <th colspan="8"><b>Personal Savings Members</b></th>
         <div class="search">
-            <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
                 <TR>
                     <TH>Account Number</TH> 
                     <TH>Account Name</TH> 
@@ -41,10 +41,10 @@
                         <TD><?php echo $savings['loginname']; ?></TD>  
                     </TR>
                 <?php } ?>
+			 </div>
             </table>
             <input type="submit" value="PDF" id="submit">
 	   <?php echo $this->Error;?>
-        </div>
-</fieldset>
+
 </form>
 

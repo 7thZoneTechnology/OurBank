@@ -9,6 +9,62 @@ class Loans_IndexController extends Zend_Controller_Action{
 
         $this->view->adm = new App_Model_Adm();
         $this->view->dateconvert = new App_Model_dateConvertor();
+
+            $dbobj = new Loans_Model_Loan();
+            $glcodevalues = $dbobj->getAllGlcode();
+            $name = array('loan');
+            $saving ="not exist";
+            foreach($glcodevalues as $glcodes){
+                    if(in_array($glcodes->header,$name)){ 
+                        $saving = "exist";
+                    }
+            }
+            $desc = array('for loan');
+
+            if($saving == "not exist"){
+            for($i=0;$i<1;$i++){
+            $Ledgertypeid = $this->view->adm->getsingleRecord('ourbank_master_ledgertypes','id','name','Assets'); // Get id for Liability
+
+            $generateGl = $dbobj->generateGlCode($Ledgertypeid); // get Maximum value for particular ledger 
+            $glCode=$generateGl->id;
+            $result = $this->view->adm->getRecord('ourbank_master_ledgertypes','id',$Ledgertypeid); // Get id for Liability
+                    foreach($result as $result1) {
+                    $headerCon = substr($result1['name'], 0, 1);
+                    }
+                    if ($glCode) {
+                        $fetchGlcode= $this->view->adm->getsingleRecord('ourbank_glcode','glcode','id',$glCode); // Get glcode 
+                        $glCode=substr($fetchGlcode, 1, 2);
+                        $glcodeId=str_pad($headerCon.(str_pad(($glCode + 1),2,0,STR_PAD_LEFT)),(8 - strlen($glCode) ),"0"); 
+                        $glcode = $glcodeId;
+                    } else {
+                        $glcodeId=str_pad($headerCon."01",6,"0");
+                        $glcode = $glcodeId;
+                    }
+
+            $dbobj->insertGlcode(array('id' => '',
+                                        'glcode' => $glcode,
+                                        'ledgertype_id' => $Ledgertypeid,
+                                        'header' => $name[$i],
+                                        'description' => $desc[$i],
+                                        'created_date' =>date("Y-m-d"),
+                                        'created_by'=>$this->view->createdby));
+            }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     public function indexAction() 
@@ -76,16 +132,16 @@ class Loans_IndexController extends Zend_Controller_Action{
         }
 
         $loan = new Loans_Model_Loan();
-        $glsubcode = $loan->fetchAllglsubcode('3');//ledger id for Assets
-        foreach($glsubcode as $glsubcode) {
-            $loanForm->glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
-        }
+//         $glsubcode = $loan->fetchAllglsubcode('3');//ledger id for Assets
+//         foreach($glsubcode as $glsubcode) {
+//             $loanForm->glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
+//         }
 
-        $glsubcode = $loan->fetchAllglsubcode('2');//ledger id for income 2
-        foreach($glsubcode as $glsubcode) {
-            $loanForm->fee_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
-            $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
-        }
+//         $glsubcode = $loan->fetchAllglsubcode('2');//ledger id for income 2
+//         foreach($glsubcode as $glsubcode) {
+//             $loanForm->fee_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
+//             $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
+//         }
 
         $interesttype1 = $this->view->adm->viewRecord("ourbank_master_interesttypes","id","ASC");
         foreach($interesttype1 as $interesttypes){
@@ -129,6 +185,37 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $result = $interestLoans->Addinterestdetails($From,$To,$Rate,$period_ofrange_description,$offerproduct_id);
 
                         $memberCount = $this->_request->getParam('memberCount');
+
+
+                    $headerCon = "A";
+                    $glsubcode = $loan->getGlCode('loan');
+                    $glcode = $loan->getGlCodeid('loan');
+                    $glcodeexist = $loan->getGlCodeexist('loan');
+                        
+                    $glco=substr($glcodeexist, 1, 2);
+
+                    if($glsubcode){
+                        $first=substr($glsubcode, 0, 3);
+                        $existcode=substr($glsubcode, 3, 3);
+                        $existcode++;
+                        $last = str_pad(($existcode),3,0,STR_PAD_LEFT);
+                        $newglsubcode = $first.$last;                  
+                    }
+                    else{
+                        $glcodeId=$headerCon.$glco."001";
+                        $newglsubcode = $glcodeId;
+                    }
+                    $date=date("y/m/d H:i:s");
+                    $glsubcodeid = $this->view->adm->addRecord('ourbank_glsubcode',
+                                array('id' => '',
+                                        'glsubcode' => $newglsubcode,
+                                        'glcode_id' => $glcode,
+                                        'subledger_id' => $glcode,
+                                        'header' => $formData['offerproductname'],
+                                        'description' => $formData['offerproduct_description'],
+                                        'created_date' =>$date,
+                                        'created_by'=>$this->view->createdby));
+
                         for ($i = 1;$i<=$memberCount; $i++)
                         {
                             $From = $this->_request->getParam('from'.$i);

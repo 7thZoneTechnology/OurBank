@@ -16,27 +16,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<?php
-function checkConnection()
-{
-    //Initiates a socket connection to www.itechroom.com at port 80
-    $conn = @fsockopen("www.itechroom.com", 80, $errno, $errstr, 30);
-    if ($conn)
-    {
-        $status = "OK";
-        fclose($conn);
-    }
-    else
-    {
-        $status = "NO";
-//         $status .= "$errstr ($errno)";
-    }
-    return $status;
-}
-$status = checkConnection();
-
-if($status == "OK"){
-?>
 <html>
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
@@ -83,17 +62,11 @@ if($status == "OK"){
   }
 </script>
 </head>
-
 <body onload="initialize()">
 <div>
   <input id="latlng" type="hidden" value="<?php echo $this->latitude.",".$this->longitude;?>">
 </div>
 <div id="map_canvas" style="width: 350px; height: 300px; border: 1px solid black;"></div>
-<?php } else {
-
-echo "<font color ='red'>Internet connection is not available due to that google map not displayed...</font>";
-
-} ?>
 <div id = "searchDiv">
 <table id="hor-minimalist-b">
     <tr>

@@ -89,7 +89,7 @@ value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?
         <?php if($memberaccNum) { ?>
         <input type="text" id="<?php echo 'amount'.$members['id']; ?>" class="savingspaid numeric1" name="savingspaid[]"  value=""  size="5px" onkeyup = "calsavings(this.value),calculatetotalpaid(<?php echo $members['id']; ?>);">
         <?php } else { ?>
-        <input type="text" id="<?php echo 'amount'.$members['id']; ?>" class="savingspaid" name="savingspaid[]"  value=""  size="5px" onkeyup = "calsavings(this.value),calculatetotalpaid(<?php echo $members['id']; ?>);" readonly>
+        <input type="text" id="<?php echo 'amount'.$members['id']; ?>" class="savingspaid" name="savingspaid[]"  value="hh"  size="5px" onkeyup = "calsavings(this.value),calculatetotalpaid(<?php echo $members['id']; ?>);" readonly>
         <?php } ?>
         </td>
 
@@ -135,7 +135,7 @@ value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?
         <td style="text-align:right;"><?php echo $currentbalance3; ?></td>
         <td style="text-align:right;"><?php echo $loandue2; ?></td>
         <td style="text-align:right;"><input type="text" readonly size="5px" class="dueamount" value=""></td>
-        <td style="text-align:right;"><input type="text" readonly size="5px" id="overallpaid" class="overallpaid" value=""></td>
+        <td style="text-align:right;"><input type="text" readonly size="5px" id="overallpaid" class="overallpaid" value="" name="overallpaid"></td>
     </TR>
         </table>
 

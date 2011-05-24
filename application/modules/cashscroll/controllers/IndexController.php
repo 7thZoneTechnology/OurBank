@@ -41,10 +41,10 @@ $this->view->adm = new App_Model_Adm();
 //         $this->view->sample = $sample;
         $villageoffice = new Cashscroll_Model_Cashscroll();
 
-       $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
-			foreach($officename as $officename){
-				$searchForm->branch->addMultiOption($officename['id'],$officename['type']);
-			}
+        $office = $villageoffice->officedetials(); //echo '<pre>'; print_r($meeting);
+        foreach($office as $office1){ 
+            $searchForm->branch->addMultiOption($office1['id'],$office1['name']);
+        }
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	$dateconvertor = new App_Model_dateConvertor();

@@ -25,14 +25,11 @@ class Family_IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->view->pageTitle =$this->view->translate("Family"); 
-        $globalsession = new App_Model_Users();
-//         $this->view->globalvalue = $globalsession->getSession();
-//                 $this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//             $this->_redirect('index/logout');
-//         }
-                $this->view->adm = new App_Model_Adm();
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $this->view->createdby = $sessionName->primaryuserid;
+		$this->view->adm = new App_Model_Adm();
     }
+                
 
 //index action call individual index page...
     public function indexAction()
@@ -44,14 +41,14 @@ class Family_IndexController extends Zend_Controller_Action
         $this->view->form = $searchForm;
 //create a object for individual model...
         $individual = new Family_Model_familymodel();
-        $result = $individual->getMemberDetails();
-//         $max_id=$individual->getoffice_hierarchy();
-//         $maxlevel=$max_id[0]['id'];
-//         $officename=$individual->getoffice($maxlevel);
+        $result = $individual->getMemberDetails($this->view->createdby);
+        $max_id=$individual->getoffice_hierarchy();
+        $maxlevel=$max_id[0]['id'];
+        $officename=$individual->getoffice($maxlevel);
 //load office names and gender names into the drop down list box...
-        $officename = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
+//         $officename = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
         foreach($officename as $officename1){
-        $searchForm->office->addMultiOption($officename1['village_id'],$officename1['name']);
+        $searchForm->office->addMultiOption($officename1['office_id'],$officename1['name']);
         }
 //paginator 
         $page = $this->_getParam('page',1);
@@ -62,7 +59,7 @@ class Family_IndexController extends Zend_Controller_Action
         $formData = $this->_request->getPost();
                 if ($searchForm->isValid($formData)) 
                 {
-                $result = $individual->searchDetails($searchForm->getValues());
+                $result = $individual->searchDetails($this->view->createdby,$searchForm->getValues());
                 $page = $this->_getParam('page',1);
                 $paginator = Zend_Paginator::factory($result);
                 $this->view->paginator = $paginator;

@@ -95,6 +95,10 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $dateconvert= new App_Model_dateConvertor();
 	$crop = new Crop_Model_Crop ();
 	$this->view->cropdetails = $crop->getCrop();
+	$this->view->seasondetails = $crop->getSeason();
+        $this->view->land_details=$count_member = $crop->edit_landtypes();
+
+
 	$this->view->units = $crop->getUnits();
 
         if ($this->_request->getPost('submit')) {
@@ -103,6 +107,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
             if($formdata['enteredacre']>=$formdata['availableacre']){ 
             $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
             } else {   
+            $land_id=$this->_getParam('tenant');   
+            $season=$this->_getParam('season');   
+
             $acer=$this->_getParam('acre');   
             $gunta=$this->_getParam('gunta');
             $unit=$this->_getParam('unit');
@@ -116,6 +123,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                         if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
                 $crop = array('family_id' => $member_id,
                               'crop_id' => $val,
+                              'land_id' => $land_id[$i],
+                              'season_id' => $season[$i],
+
                               'acre' => $acer[$i],
                               'gunta' => $gunta[$i],
                               'unit'=>$unit[$i],
@@ -137,6 +147,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
     {
         $this->view->title=$this->view->translate('Edit Contact');
         $this->view->title=$this->view->translate('Add Crop');
+	$crop = new Crop_Model_Crop ();
+
+
         //Base line data
         $familycommon = new Familycommonview_Model_familycommonview(); 
         $this->view->memberid = $this->_getParam('id');
@@ -145,6 +158,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $this->view->agriculture=$edit_agriculture =$familycommon->getagriculturedetails($this->_getParam('id'));
  $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $this->view->guntatotal =$familycommon->getguntatotal($this->_getParam('id'));
+	$this->view->seasondetails = $crop->getSeason();
 
         $revvillageid = $this->view->membername[0]['rev_village_id'];
         if ($revvillageid) {
@@ -157,6 +171,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
             $this->view->mod_id=$module_id['parent'];
             $this->view->sub_id=$module_id['module_id'];
             $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
+
         //load crop details form with two arguments ...
         $form = new Crop_Form_Crop($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->form = $form;
@@ -184,9 +199,14 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                 $this->view->adm->addRecord("ourbank_cropdetails_log",$editCrop[$j]);
             }
             $crop->deletecrop($id);
+            $land_id=$this->_getParam('tenant');   
+
+
             $acer=$this->_getParam('acre');
             $gunta=$this->_getParam('gunta');
             $unit=$this->_getParam('unit');
+            $season=$this->_getParam('season');   
+
             $quantity=$this->_getParam('quantity');
             $marketed=$this->_getParam('marketed');
             $price=$this->_getParam('price');
@@ -198,6 +218,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                         if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
                 $crop = array('family_id' => $id,
                               'crop_id' => $val,
+                              'season_id' => $season[$i],
+
+                              'land_id' => $land_id[$i],
                               'acre' => $acer[$i],
                               'gunta' => $gunta[$i],
                               'unit'=>$unit[$i],

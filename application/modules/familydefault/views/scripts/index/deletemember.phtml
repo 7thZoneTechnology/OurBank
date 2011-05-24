@@ -6,9 +6,7 @@
 		<table id="hor-minimalist-b">
                            <tr><th>Member Information</th><th></th><th></th><th></th></tr>
 
-			<tr><td><font color="red">Do you want to delete</font><?php echo $this->delete; ?></td><td></td><td></td><td></td></tr> 
-			<tr><td></td><td><a href="<?php echo $this->baseUrl();?>/familycommonview/index/commonview/id/<?php echo $this->memberid ?>"><input type="button" name="no" value="<?php echo $this->translate("Cancel"); ?>"></a></td></td><td></td><td></tr>
-			
+			<tr><td><font color="red">Do you want to delete ?</font><?php echo $this->delete; ?></td><td colspan="4" align="right"><br><br><br><br><br><br><br><a href="<?php echo $this->baseUrl();?>/familycommonview/index/commonview/id/<?php echo $this->memberid ?>"><input type="button" name="no" value="<?php echo $this->translate("Cancel"); ?>"></a></td></tr> 
 		</table>
 </div>
 </div>

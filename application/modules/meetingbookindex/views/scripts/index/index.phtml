@@ -64,7 +64,7 @@ $(document).ready(function() {
             <?php foreach ($this->paginator as $attendance): ?>
 	<tr>
 		
-            <td><a href="<?php echo $this->baseUrl();?>/meetingbookcommonview/index/index/attendance_id/<? echo $attendance['attid']; ?>/week/<? echo $attendance['week_no']; ?>"><?php echo $this->escape($attendance['name']);?></a></td>
+            <td><a href="<?php echo $this->baseUrl();?>/meetingbookcommonview/index/index/attendance_id/<? echo $attendance['attid']; ?>/week/<? echo $attendance['week_no']; ?>/transID/<? echo $attendance['transaction_id']; ?>"><?php echo $this->escape($attendance['name']);?></a></td>
             <td><?php echo $this->escape($attendance['week_no']); ?></td>
             <td><?php echo $this->escape($convertdate->phpnormalformat($attendance['meeting_date'])); ?></td>
                     <?php endforeach; ?>

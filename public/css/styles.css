@@ -50,6 +50,9 @@ p {
 	height:60px;
 	text-indent:-1000em;
 }
+ul.errors{ color:#f00 !important;}
+
+
 #welcomebar {
 	background:url(../images/welcome_bg.gif) no-repeat left top;
 	float:right;

@@ -66,11 +66,12 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         $this->view->membername=$member_name;
 //      $this->view->family =$familycommon->getfamilydetails($id);
         $this->view->agriculture=$edit_agriculture =$familycommon->getagriculturedetails($id);
- $this->view->acretotal =$familycommon->getacretotal($id);
+ 		$this->view->acretotal =$familycommon->getacretotal($id);
         $this->view->guntatotal =$familycommon->getguntatotal($id);
         $this->view->family =$familycommon->getfamilydetails($id);
+//        $this->view->getentitlement=$familycommon->getentitlement();
         $this->view->crop=$familycommon->getcrop($id);
-      $this->view->loandetails=$familycommon->getloandetails($id);
+      $this->view->loandetails=$familycommon->getloandetails();
         $this->view->savingsdetails=$familycommon->getsavingsdetails($id);
         $this->view->gethabithealth=$familycommon->gethabithealth($id);
         $this->view->gethabitchallenge=$familycommon->gethabitphychallenge($id);

@@ -84,12 +84,14 @@ class Expense_IndexController extends Zend_Controller_Action
         {
 
         $submoduleid = $this->_getParam('subId');
-
+            $flag = false;
             $formData = $this->_request->getPost();
             if($addForm->isValid($formData)){
             for($i=1;$i<=$number;$i++)
             {	if($this->_request->getParam('value'.$i)){
-                $this->view->adm->addRecord("ourbank_expensedetails",
+
+            $flag = true;
+            $this->view->adm->addRecord("ourbank_expensedetails",
                                             array('id' => '',
                                             'submodule_id' => $submoduleid,
                                             'family_id'=>$member_id,
@@ -100,7 +102,10 @@ class Expense_IndexController extends Zend_Controller_Action
                                             ));
 		}
             }
-             $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+            if($flag == true){
+                $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+                } 
+
             }
         }
     }

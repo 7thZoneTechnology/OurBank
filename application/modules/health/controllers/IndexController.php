@@ -52,6 +52,12 @@ class Health_IndexController extends Zend_Controller_Action
         $this->view->habitdetails = $dbmodel->gethabittypes();
         $this->view->challengedetails = $dbmodel->getchallengetypes();
         $this->view->membername = $membername = $dbmodel->getfamilymemberdetails($familyid);
+        $this->view->disease = $this->view->adm->viewRecord('ourbank_master_diseasetypes','id','ASC');
+
+//         $nameid = array();
+//         foreach($membername as $name){
+//             $nameid[] = $name['memberid'];
+//         }
 //count number of family members
         $this->view->membercount = $totalmembers = count($this->view->membername);
 // //insert the health details 
@@ -64,20 +70,20 @@ class Health_IndexController extends Zend_Controller_Action
 
 
         foreach($membername as $memberna){
-         if($this->_getParam('suggestion_'.$memberna['memberid'])) {
-                    $suggestion = $this->_getParam('suggestion_'.$memberna['memberid']);
-                }else {
-                    $suggestion = "No suggestion";
-                }
-             $this->view->adm->addRecord("ourbank_healthdiseasedetails",
+         if($this->_getParam('healthdisease_'.$memberna['memberid'])) {
+                $disease = $this->_getParam('healthdisease_'.$memberna['memberid']);
+                    foreach($disease as $diseasetype){
+                        $this->view->adm->addRecord("ourbank_healthdiseasedetails",
                                                 array('id' => '',
                                                 'submodule_id' => $submoduleid,
                                                 'family_id'=>$this->view->memberid,
                                                 'member_id'=>$memberna['memberid'],
-                                                'suggestion'=>$suggestion,
+                                                'healthdisease'=>$diseasetype,
                                                 'created_by'=>$this->view->createdby,
                                                 'created_date'=>date("y/m/d H:i:s")
                                                 ));
+                    }
+            }
         }
     foreach($habit as $habitid){
         explode('_',$habitid);
@@ -120,6 +126,9 @@ class Health_IndexController extends Zend_Controller_Action
         $dbmodel=new Health_Model_health();
         $this->view->habitdetails = $dbmodel->gethabittypes();
         $this->view->challengedetails = $dbmodel->getchallengetypes();
+        $this->view->diseasedetails = $this->view->adm->viewRecord('ourbank_master_diseasetypes','id','ASC');
+// // Zend_Debug::dump($this->view->diseasedetails);
+
         $this->view->membername = $membername = $dbmodel->getfamilymemberdetails($familyid);
 //count number of family members
         $this->view->membercount = count($this->view->membername);
@@ -177,24 +186,23 @@ class Health_IndexController extends Zend_Controller_Action
                                                 'created_date'=>date("y/m/d H:i:s")
                                                 ));
 		}
-            
- foreach($membername as $memberna){
-         if($this->_getParam('suggestion_'.$memberna['memberid'])) {
-                    $suggestion = $this->_getParam('suggestion_'.$memberna['memberid']);
-                }else {
-                    $suggestion = "No suggestion";
-                }
-             $this->view->adm->addRecord("ourbank_healthdiseasedetails",
-                                                array('id' => '',
-                                                'submodule_id' => $submoduleid,
-                                                'family_id'=>$this->view->memberid,
-                                                'member_id'=>$memberna['memberid'],
-                                                'suggestion'=>$suggestion,
-                                                'created_by'=>$this->view->createdby,
-                                                'created_date'=>date("y/m/d H:i:s")
-                                                ));
-        }
 
+        foreach($membername as $memberna){
+                if($this->_getParam('healthdisease_'.$memberna['memberid'])) {
+                        $disease = $this->_getParam('healthdisease_'.$memberna['memberid']);
+                            foreach($disease as $diseasetype){
+                                $this->view->adm->addRecord("ourbank_healthdiseasedetails",
+                                                        array('id' => '',
+                                                        'submodule_id' => $submoduleid,
+                                                        'family_id'=>$this->view->memberid,
+                                                        'member_id'=>$memberna['memberid'],
+                                                        'healthdisease'=>$diseasetype,
+                                                        'created_by'=>$this->view->createdby,
+                                                        'created_date'=>date("y/m/d H:i:s")
+                                                        ));
+                            }
+                    }
+                }
 
              $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
 		}

@@ -474,13 +474,14 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                          'record_status' => 3);
        	$db->insert('ourbank_Assets',$glassets);
         // Insertion into Assets ourbank_Liabilities productgl Cr entry
-		$glLia =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $gl,
-                         'glsubcode_id_to' => '',
-                         'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
-                         'record_status' => 3);
-       	$db->insert('ourbank_Liabilities',$glLia);
+// 		$glLia =  array('office_id' => $officeid,
+//                          'glsubcode_id_from' => $gl,
+//                          'glsubcode_id_to' => '',
+//                          'transaction_id' => $tranId,
+//                          'credit' => $data["amount"],
+//                          'record_status' => 3);
+//        	$db->insert('ourbank_Liabilities',$glLia);
+
         // Insertion into Assets ourbank_Assets interest Cr entry
         $interest =  array('office_id' => $officeid,
                          'glsubcode_id_from' => $intGl,

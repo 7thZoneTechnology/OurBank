@@ -60,8 +60,8 @@ function onSubmit()
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+        <!--td ><?php echo $this->translate("Caste:"); ?></td>
+        <td ><?php echo $family_view['subcaste']; ?></td> -->   </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -76,19 +76,19 @@ function onSubmit()
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
-
-    <tr>
-        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
-        <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
-        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
-
-    <tr>
+	<tr>
         <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $this->revvillagename; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
-        <td ><?php echo $family_view['income']; ?></td>
+		<td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>
     </tr>
+    <tr>
+        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
+		<td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
+            </tr>
+
     <tr>
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
@@ -101,8 +101,7 @@ function onSubmit()
         <td ><?php echo $family_view['caste']; ?></td>
         <td ><?php echo $this->translate("Mobile:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
-    </tr>
-   <?php } ?>
+    </tr>   <?php } ?>
 </table> 
 <br/>
 <form action="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>" method="POST">
@@ -142,7 +141,12 @@ foreach($this->membername as $name){
         </tr>
         <tr>
         <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
-        <td colspan="2"><textarea  rows="3" cols="18" name="suggestion_<?php echo $nameid[$i]; ?>"></textarea>
+        <td colspan="2">
+        <select multiple="true" name="healthdisease_<?php echo $nameid[$i];?>[]" size="5">
+                   <?php foreach ($this->disease as $disease) { ?>
+                            <option value="<?php echo $disease['id']?>"><?php echo $disease['name']?></option>
+                            <?php } ?>
+        </select>
         </TD>
         </tr>
     </table>
@@ -151,29 +155,21 @@ foreach($this->membername as $name){
 
 <tr>
     <td width="20%">Habits</td>
-    <?php $h = 0; foreach($this->habitdetails as $habits){ $h++; ?>
+    <?php  foreach($this->habitdetails as $habits){  ?>
     <td colspan="2">
-<?php if($h==1) { ?>
-    <input type="checkbox" name="habit[]" checked value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-<?php } else {?>
     <input type="checkbox" name="habit[]"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-<?php } ?>
-    <?php echo $habits['name']; ?>
+    <?php echo $habits['name']; ?> 
     </td>
-   <?php } ?>
+<?php } ?>
 
 </tr>
 <tr>
     <td width="20%">Physical challenge</td>
-    <?php $c = 0; foreach($this->challengedetails as $challenge){ $c++; ?>
-    <td colspan="2">
-<?php if($c==1) { ?>
-<input type="checkbox" name="challenge[]" checked value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-<?php } else {?>
+    <?php  foreach($this->challengedetails as $challenge){  ?>
+  
+<td colspan="2">
 <input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-<?php } ?>
-
-    <?php echo $challenge['name']; ?>
+<?php  echo $challenge['name']; ?>
     </td>
    <?php } 
 ?>

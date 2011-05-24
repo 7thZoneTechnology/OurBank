@@ -30,51 +30,46 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $formfield = new App_Form_Field ();
         $vtype=array('Digits');
 
-        $familyid = $formfield->field('Text','familyid','','','','',true,'','','','','',0,0);
-        $familyid->addValidators(array(
-          array('stringLength', false, array(1,5)),
-        ));
-        $familyid->addValidator(new Zend_Validate_Alnum());
+        $familyid = $formfield->field('Text','familyid','','','mand','',true,'','','','','',0,0);
+        $familyid->setAttrib('maxLength',5);
         $sujeevana = $formfield->field('Text','sujeevana','','','','',true,'','','','','',0,0);
+		$sujeevana->setAttrib('maxLength',5);
         $sujeevana->addValidator(new Zend_Validate_Alnum());
+
         $houseno=$formfield->field('Text','houseno','','','','',true,'','','','','',0,0);
-        $houseno->addValidators(array(
-          array('stringLength', false, array(1,6)),
-        ));
+        $houseno->setAttrib('maxLength',10);
         $minority=$formfield->field('Checkbox','minority','','','','',false,'','','','','',0,0);
-        $caste = $formfield->field('Select','caste','','','','',true,'','','','','',0,0);
-        $caste->setAttrib('onchange', 'Getsubcaste(this.value,"'.$path.'")');
-        $subcaste = $formfield->field('Select','subcaste','','','','',true,'','','','','',0,0);
-	$subcaste->setRegisterInArrayValidator(false);
+
+// 		$subcaste = $formfield->field('Select','subcaste','','','','',true,'','','','','',0,0);
+// 		$subcaste->setRegisterInArrayValidator(false);
+		$caste = $formfield->field('Select','caste','','','','',true,'','','','','',0,0);
+//         $caste->setAttrib('onchange', 'Getsubcaste(this.value,"'.$path.'")');
+
         $health = $formfield->field('MultiCheckbox','health','','','','',true,'','','','','',0,0);
         $health->setSeparator(" ");
         //$health->setAttrib('onclick','setCheck(this.value)'); 
         $health->setAttrib('class','child'); 
         $ration = $formfield->field('Select','ration','','','','',false,'','','','','',0,0);
         $jobno = $formfield->field('Text','jobno','','','','',false,'','','','','',0,0);
-        $jobno->addValidators(array(
-                            array('alnum'),
-                            array('stringLength', false, array(16, 16)),
-                            ));    
+        $jobno->setAttrib('maxLength', 16);
         $income = $formfield->field('Select','income','','','','',true,'','','','','',0,0);
         $familytype = $formfield->field('Select','familytype','','','','',true,'','','','','',0,0);
         $street = $formfield->field('Text','street','','','','',false,'','','','','',0,0);
         $phone = $formfield->field('Text','phone','','','','',false,'','','','','',0,0);
-        $phone->addValidator(new Zend_Validate_Digits());
-        $phone->addValidators(array(
-          array('stringLength', false, array(11,11)),
-        ));
-        $village = $formfield->field('Select','village','','','','',true,'','','','','',0,0);
-        $village->setAttrib('onchange','getAreaDetails("'.$path.'",this.value)');
-        $rev_village = $formfield->field('Select','rev_village','','','','',true,'','','','','',0,0);
-        $dateofbirth = $formfield->field('Text','memberdateofbirth','','','','',false,'','','','','',1,0);
-	$mobile = $formfield->field('Text','mobile','','','','',false,'','','','','',0,0);
-        $mobile->addValidator(new Zend_Validate_Digits());
-        $mobile->addValidators(array(
-          array('stringLength', false, array(10,10)),
-        ));
+		$phone->setAttrib('maxLength', 12);
+		$rev_village = $formfield->field('Select','rev_village','','','','',true,'','','','','',0,0);
+		$rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value)');
 
-        $this->addElements(array($familyid,$sujeevana,$houseno,$minority,$street,$village,$rev_village,$familytype,$caste,$subcaste,$ration,$health,$jobno,$income,$phone,$mobile));
+        $village = $formfield->field('Select','village','','','','',true,'','','','','',0,0);
+        $village->setRegisterInArrayValidator(false);
+
+//         $village->setAttrib('onchange','getAreaDetails("'.$path.'",this.value)');
+
+        $dateofbirth = $formfield->field('Text','memberdateofbirth','','','','',false,'','','','','',1,0);
+	    $mobile = $formfield->field('Text','mobile','','','','',false,'','','','','',0,0);
+        $mobile->setAttrib('maxLength', 11);
+
+        $this->addElements(array($familyid,$sujeevana,$houseno,$minority,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
 
     }
 }

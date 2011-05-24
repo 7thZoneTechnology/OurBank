@@ -27,7 +27,7 @@ class Meetingbook_Model_Meetingbook extends Zend_Db_Table
     {
         $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ourbank_attendance'),array('a.id'),array('a.meeting_id','a.meeting_date', 'a.notes', 'a.resolution', 'a.resolution','a.time as attendancetime','a.week_no as week'))
+                ->join(array('a' => 'ourbank_attendance'),array('a.id'),array('a.meeting_id','a.meeting_date', 'a.notes', 'a.resolution', 'a.transaction_id','a.resolution','a.time as attendancetime','a.week_no as week'))
                 ->where('a.id = '.$attendance_id)
                 ->group('a.id')
                 ->join(array('b' => 'ourbank_group'),'a.meeting_id = b.id')
@@ -40,7 +40,7 @@ class Meetingbook_Model_Meetingbook extends Zend_Db_Table
     {
         $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ourbank_attendance'),array('a.id'),array('a.meeting_id','a.meeting_date', 'a.notes', 'a.resolution', 'a.resolution','a.time as attendancetime','a.week_no as week'))
+                ->join(array('a' => 'ourbank_attendance'),array('a.id'),array('a.meeting_id','a.meeting_date', 'a.notes', 'a.resolution', 'a.resolution', 'a.transaction_id','a.time as attendancetime','a.week_no as week'))
                 ->where('a.id = '.$attendance_id)
                 ->group('a.id')
                 ->join(array('b' => 'ourbank_group'),'a.meeting_id = b.id');
@@ -184,7 +184,7 @@ public function deletedecision($attendance_id)
 public function fetchmaxid($maxid){ 
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $sql="SELECT max(week_no)+1 as meetingno FROM ourbank_attendance WHERE meeting_id=".$maxid;
-        $result = $this->db->fetchAll($sql); echo $sql;
+        $result = $this->db->fetchAll($sql); //echo $sql;
         return $result;
 }
 

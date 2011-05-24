@@ -294,7 +294,7 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
     public function getGlcode($officeId)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId and glcode_id=2";
+        $sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId";
         return $result = $db->fetchAll($sql);
     }
 

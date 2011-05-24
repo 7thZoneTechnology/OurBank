@@ -32,15 +32,14 @@
         <td class="thirdtd"></td>
     </tr>
 
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Colony/Village:"); ?></td>
+	<tr>
+        <td class="firsttd"><?php echo $this->translate("Rev Village:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
         <td class="thirdtd"></td>
     </tr>
-
     <tr>
-        <td class="firsttd"><?php echo $this->translate("Rev Village:"); ?></td>
-        <td class = "secondtd"><?php echo $this->revvillagename; ?></td>
+        <td class="firsttd"><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['names']; ?></td>
         <td class="thirdtd"></td>
     </tr>
 
@@ -51,6 +50,17 @@
         <td class="thirdtd"></td>
     </tr>
     <tr>
+        <td class="firsttd"><?php echo $this->translate("Category:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['caste']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <!--<tr>
+        <td class="firsttd"><?php echo $this->translate("Caste:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['subcaste']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>-->
+	<tr>
         <td class="firsttd"><?php echo $this->translate("Minority:"); ?></td>
         <?php if ($family_view['minority_id']) { ?>
         <td class = "secondtd"><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"></td>
@@ -59,18 +69,6 @@
         <?php } ?>
         <td class="thirdtd"></td>
     </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Category:"); ?></td>
-        <td class = "secondtd"><?php echo $family_view['caste']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Caste:"); ?></td>
-        <td class = "secondtd"><?php echo $family_view['subcaste']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-
     <tr>
         <td class="firsttd"><?php echo $this->translate("Ration card:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['ration']; ?></td>
@@ -173,10 +171,14 @@
         <td><?php echo $family['age']; ?></td>
         <td><?php echo $family['relationname']; ?></td>
         <td><?php echo $family['maritalname']; ?></td>
-        <td><?php echo $family['entitlements']; ?></td>
+        <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
+                   $entitlment=$familycommon->getentitlement($family['id']);
+                  $m=1; foreach($entitlment as $entitlment1)  {  echo $m.". ".$entitlment1['entitlename']."<br>"; $m++;  } ?></td>
         <td><?php echo $family['qualifyname']; ?></td>
         <td><?php echo $family['employmentname']; ?></td>
-        <td><?php echo $family['proffessionname']; ?></td>
+        <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
+                   $profession=$familycommon->getprofession($family['id']);
+                  $m=1; foreach($profession as $profession1)  {  echo $m.". ".$profession1['professionname']."<br>"; $m++;  } ?></td>
         <td align="center"><?php if($family['cbo_member']==1){ ?> <img src="<?php echo $this->baseUrl() ?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
         <td><?php echo $family['bankname']; ?></td>
         <td><?php echo $family['branchname']; ?></td>
@@ -256,7 +258,7 @@
         <?php if(($this->agriculture)!=NULL) { ?>
         <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
         <?php } else { ?>
-        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
         <?php } ?>
     </tr>
 </table>
@@ -392,7 +394,8 @@ $totalValue = 0;
       <td><?php echo $livingassets['name']; ?></td>
       <td align="right"><?php echo $livingassets['number']; $totalNumber+=$livingassets['number']; ?></td>
       <td align="right"><?php echo sprintf("%4.2f",$livingassets['value']); $totalValue+=$livingassets['value'];?></td>
-      	 <td align="right"><?php echo $dateconvert->phpnormalformat($livingassets['date_of_value']);?></td>
+      	  <td align="right"><?php if($livingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($livingassets['date_of_value']); } else { echo "Null"; } ?>
+        </td>
   </tr>
   <?php } ?>
    <tr>
@@ -486,7 +489,7 @@ $totalValue = 0;
        <td><?php echo $nonlivingassets['name']; ?></td>
        <td align="right"><?php echo $nonlivingassets['number']; $totalNumber+=$nonlivingassets['number']; ?></td>
        <td align="right"><?php echo sprintf("%4.2f",$nonlivingassets['value']); $totalValue+=$nonlivingassets['value'];?></td>
-      	 <td align="right"><?php echo $dateconvert->phpnormalformat($nonlivingassets['date_of_value']);?></td>
+      	 <td align="right"><?php if($nonlivingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($nonlivingassets['date_of_value']); } else { echo "Null"; } ?></td>
    </tr>
    <?php } ?>
     <tr>
@@ -555,8 +558,8 @@ $deposit = 0; ?>
     <tr> 
         <th ><?php echo $this->translate("Source"); ?></th>
         <th ><?php echo $this->translate("Famiy member"); ?></th>
-        <th ><?php echo $this->translate("Interest Per Annum %"); ?></th>
         <th ><?php echo $this->translate("Loan amount"); ?></th>
+        <th ><?php echo $this->translate("Interest Per Annum %"); ?></th>
         <th ><?php echo $this->translate("Outstanding amount"); ?></th>
         <th ><?php echo $this->translate("Purpose"); ?></th>
         <th ><?php echo $this->translate("Savings / deposit amount"); ?></th>
@@ -566,10 +569,10 @@ $deposit = 0; ?>
    <tr>
        <td><?php echo $loandetails['name']; ?></td>
        <td><?php echo $loandetails['membername']; ?></td>
-       <td align="right"><?php echo $loandetails['interest']; ?></td>
        <td align="right"><?php echo $loandetails['loanamount']; 
        $laonTotal = $laonTotal + $loandetails['loanamount'];
        ?></td>
+       <td align="right"><?php echo $loandetails['interest']; ?></td>
        <td align="right"><?php echo $loandetails['outstanding_amount'];
        $oustanding = $oustanding + $loandetails['outstanding_amount'];
        ?></td>
@@ -583,8 +586,9 @@ $deposit = 0; ?>
 <tr>
    <td><?php echo $this->translate("Total"); ?></td>
    <td></td>
+   <td align="right"><?php echo sprintf("%4.2f",$laonTotal); ?></td> 
    <td align="right"></td>
-   <td align="right"><?php echo sprintf("%4.2f",$laonTotal); ?></td>   
+  
    <td align="right"><?php echo sprintf("%4.2f",$oustanding); ?></td>
    <td></td>
    <td align="right"><?php echo sprintf("%4.2f",$deposit); ?></td>

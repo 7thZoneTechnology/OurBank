@@ -1,79 +1,64 @@
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/city.js"></script>
-
-<script type="text/javascript">
-
-function Getsubcaste(casteid,path) {
-	if(casteid) {
-		targeturl=path+"/familydefault/index/getsubcaste?casteid="+casteid; 
-		$.ajax({ url: targeturl, success: function(data){ $(".subcaste").html(data) }});
-	}
-}
-
-</script>
 
 <form action="<?php echo $this->baseUrl();?>/familydefault/index/editfamily/id/<?php echo $this->memberid; ?>" method="POST">
 <fieldset>
-<legend>Member details</legend>
-<div class="btnhouse">
-<div class="rtbtns">
-    <td><a href="<?php echo $this->baseUrl();?>/familydefault/index/deletemember/id/<?php echo $this->memberid; ?>/sub_id/<?php echo $this->sub_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="16" height="16"></a></td>
-	</div>
-</div>
         <table class="fieldsets" id="hor-minimalist-b">
+		<th colspan="2">Member details<a href="<?php echo $this->baseUrl();?>/familydefault/index/deletemember/id/<?php echo $this->memberid; ?>/sub_id/<?php echo $this->sub_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></th>
         <tr>
-            <td>Family ID</td>
+            <td><label class="mand">Family ID</td>
             <td><?php echo $this->form->familyid; ?></td>
         </tr>
         <tr>
-            <td>Sujeevana No.</td>
+            <td><label class="mand">Sujeevana No.</td>
             <td><?php echo $this->form->sujeevana; ?></td>
         </tr>
         <tr>
-            <td>House No</td>
+            <td><label class="mand">House No</td>
             <td><?php echo $this->form->houseno; ?></td>
         </tr>
         <tr> 
             <td>Street/Road/Lane</td>
             <td><?php echo $this->form->street; ?></td>
         </tr>
-        <tr>
-            <td>Colony/Village</td>
-            <td><?php echo $this->form->village; ?></td>
-        </tr>
-        <tr>
-            <td>Rev village</td>
+		<tr>
+            <td><label class="mand">Rev village</td>
             <td><?php echo $this->form->rev_village; ?></td>
         </tr>
         <tr>
-            <td>Family type</td>
+           <td><label class="mand">Colony/Habitation</td>
+            <td><div id="village"><?php echo $this->form->village; ?></div></td>
+        </tr>
+        <tr>
+            <td><label class="mand">Family type</td>
             <td><?php echo $this->form->familytype; ?></td>
         </tr>
         <tr>
-            <td>Minority</td>
-            <td><?php echo $this->form->minority; ?></td>
-        </tr>
-        <tr>
-            <td>Category</td>
+            <td><label class="mand">Category</td>
             <td><?php echo $this->form->caste; ?></td>
         </tr>
-        <tr>
+        <!--<tr>
             <td>Caste</td>
             <td class="subcaste"><?php echo $this->form->subcaste; ?></td>
+        </tr>-->
+		<tr>
+            <td>Minority</td>
+            <td><?php echo $this->form->minority; ?></td>
         </tr>
         <tr>
             <td>Ration card</td>
             <td><?php echo $this->form->ration; ?></td>
         </tr>
-        <tr>
-            <td style="vertical-align: top;">Health Insurance</td>
-            <td><?php echo $this->form->health; ?></td>
+<tr>
+            <td style="vertical-align: top;"><label class="mand">Health Insurance</td>
+            <td><?php echo $this->form->health; ?>
+                <input type="hidden" name="count" id="count" value="<?php echo $this->countvalue; ?>">
+            </td>
         </tr>
         <tr>
             <td>NREGS Job Card NO</td>
             <td><?php echo $this->form->jobno; ?></td>
         </tr>
         <tr>
-            <td>Major source of income</td>
+            <td><label class="mand">Major source of income</td>
             <td><?php echo $this->form->income; ?></td>
         </tr>
         <tr>

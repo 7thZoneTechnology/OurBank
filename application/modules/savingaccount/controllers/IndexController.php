@@ -33,7 +33,7 @@ class Savingaccount_IndexController extends Zend_Controller_Action
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
         if ($this->_request->getPost('Submit')) {
             $formData = $this->_request->getPost();
-            $this->view->errormsg="Record not found.. Try agin...";
+//             $this->view->errormsg="Record not found.. Try agin...";
             if ($accountsForm->isValid($formData)) {
                 $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
             } else {
@@ -132,8 +132,12 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                                          'record_status'=> 3);
                     $this->view->adm->addRecord('ourbank_Liabilities',$liabilities);
                     $glresult = $this->view->accounts->getGlcode($officeid);
-                    foreach ($glresult as $glresult) {
-                            $cashglsubocde = $glresult->id;
+                    if($glresult){
+                        foreach ($glresult as $glresult) {
+                                $cashglsubocde = $glresult->id;
+                        }
+                    }else {
+                                $cashglsubocde = 0 ;
                     }
                     // Insertion into Assets ourbank_Assets
                     $assets =  array('office_id' => $officeid,

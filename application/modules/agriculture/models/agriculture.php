@@ -32,7 +32,15 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         return $result->toArray();
 //         die ($select->__toString($select));
         }
-
+  public function ownershiptypes()
+        {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_master_ownershiptype'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+//         die ($select->__toString($select));
+        }
     public function getagriculturedetails($mebmerid)
     {
         $select=$this->select()

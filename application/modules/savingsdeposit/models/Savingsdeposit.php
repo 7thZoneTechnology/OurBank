@@ -172,9 +172,14 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
                             'record_status'=> 3);
 	$db->insert('ourbank_Liabilities',$liabilities);
 	$glresult = $this->getGlcode($officeid);
-	foreach ($glresult as $glresult) {
-            $cashglsubocde = $glresult->id;
-	}
+	 if($glresult){
+                        foreach ($glresult as $glresult) {
+                                $cashglsubocde = $glresult->id;
+                        }
+                    }else {
+                                $cashglsubocde = 0 ;
+                    }
+
         // Insertion into Assets ourbank_Assets
         $assets =  array('office_id' => $officeid,
 			'glsubcode_id_from' => '',

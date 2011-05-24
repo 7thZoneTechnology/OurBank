@@ -70,12 +70,13 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 	//insert the family health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
         {
-
+            $flag = false;
             $formData = $this->_request->getPost();
             if($addForm->isValid($formData)){
             $moduleid= $this->_getParam('subid');
                 for($i=1;$i<=$number;$i++)
                 {	if($this->_request->getParam('incomeamount'.$i)){
+                    $flag = true;
                     $this->view->adm->addRecord("ourbank_incomedetails",array('id' => '',
                                                 'member_id'=>$member_id,
                                                 'submodule_id'=>$moduleid ,
@@ -86,8 +87,12 @@ class Incomedetails_IndexController extends Zend_Controller_Action
                                                 ));
                     }
                 }
-             $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
-            }
+             if($flag == true){
+                $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+            } else {
+                echo "<script>alert('Nothing Entered');</script>";
+                }
+            } 
         }
     }
 
@@ -134,6 +139,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 	//update the family health details...
         if ($this->_request->isPost() && $this->_request->getPost('update')) 
         {
+            $flag = false;
             $formData = $this->_request->getPost();
             if($addForm->isValid($formData)){
 		$moduleid= $this->_getParam('subid');  
@@ -147,7 +153,10 @@ class Incomedetails_IndexController extends Zend_Controller_Action
 
 
 	    for($i=1;$i<=$number;$i++)
-            {	if($this->_request->getParam('incomeamount'.$i)){
+            {	
+
+                if($this->_request->getParam('incomeamount'.$i)){
+            $flag = true;
                 $this->view->adm->addRecord("ourbank_incomedetails",array('id' => '',
                                             'member_id'=>$member_id,
                                             'submodule_id'=>$moduleid ,
@@ -158,7 +167,13 @@ class Incomedetails_IndexController extends Zend_Controller_Action
                                             ));
 		}
 		}
+             if($flag == true){
                  $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+            } else {
+                echo "<script>alert('Nothing Entered');</script>";
+                }
+
+//                  $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
 		}
             }
         }

@@ -21,11 +21,12 @@
 </script>
 </head> 
 
+
+    <legend>New Loan</legend>
         <div class="register">
             <div class="profile_tab">
                 <form action="<?php echo $this->baseUrl();?>/loans/index/loansadd" method="POST"  name= "myform">
                     <table id="hor-minimalist-b" class="fieldsets">
-                        <tr><Th colspan="4"><b>New Loan</b></Th></tr>
                         <TR>
                             <TH>Product Details</TH>
                             <TH></TH>
@@ -79,12 +80,12 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr> 
+                       <!-- <tr> 
                             <TD ><label for="fld1" class="mand">Glsubcode</TD>
-                            <td><? echo $this->form->glsubcode_id;?></td>
+                            <td><?// echo $this->form->glsubcode_id;?></td>
                             <td></td>
                             <td></td>
-                        </tr>
+                        </tr>-->
 
                         <TR>
                             <TH>Loan Amount</TH>
@@ -119,12 +120,12 @@
                             <TD ><label for="fld1">Interest type</TD>
                             <td><? echo $this->form->interesttype_id;?></td>
                         </tr>
-                        <tr> 
+                       <!-- <tr> 
                             <TD ><label for="fld1" class="mand">Penal glsubcode</TD>
-                            <td><? echo $this->form->fee_glsubcode_id;?></td>
-                            <TD ><label for="fld1">Interest glsubcode</TD>
-                            <td><? echo $this->form->interest_glsubcode_id;?></td>
-                        </tr>
+                            <td><?// echo $this->form->fee_glsubcode_id;?></td>-->
+                           <!--<TD ><label for="fld1">Interest glsubcode</TD>
+                            <td><?// echo $this->form->interest_glsubcode_id;?></td>
+                        </tr>-->
 
                         <TR>
                             <TH>Grace Period</TH>
@@ -160,8 +161,8 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <TD><?php echo $this->form->Submit;?></TD><td></td><td></td>
-                            <td align="right"><a href="<?php echo $this->baseUrl(); ?>/loans/index">
+                            <TD><?php echo $this->form->Submit;?></TD>
+                            <td><a href="<?php echo $this->baseUrl(); ?>/loans/index">
                             <input name="submit" type="submit" class="NormalBtn" value="Back"></a></td>
                         </TR>
                 </table>

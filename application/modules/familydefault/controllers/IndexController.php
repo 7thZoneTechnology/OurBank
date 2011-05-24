@@ -74,6 +74,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
         }
 
         $this->view->insurance = $this->view->adm->viewRecord("ourbank_master_insurance","id","ASC");
+        $this->view->countvalue=count($this->view->insurance);
         foreach($this->view->insurance as $insurance1){
                 $addForm->health->addMultiOption($insurance1['id'],$insurance1['name']);
         }
@@ -93,8 +94,8 @@ class Familydefault_IndexController extends Zend_Controller_Action
        	foreach($institution as $institution)
        	{
           //$searchForm->bank_id->addMultiOption($institution['village_id'],$institution['villagename']);
-        $addForm->village->addMultiOption($institution['village_id'],$institution['villagename']);
-        $addForm->rev_village->addMultiOption($institution['village_id'],$institution['villagename']);
+		$addForm->rev_village->addMultiOption($institution['village_id'],$institution['villagename']);
+//         $addForm->village->addMultiOption($institution['village_id'],$institution['villagename']);
        	}
  
 
@@ -124,7 +125,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'familytype_id' => $this->_request->getParam('familytype'), 
                                         'minority_id' => $this->_request->getParam('minority'), 
                                         'caste_id'=>$this->_request->getParam('caste'),
-                                        'subcaste_id'=>$this->_request->getParam('subcaste'),
+//                                         'subcaste_id'=>$this->_request->getParam('subcaste'),
                                         'ration_id'=>$this->_request->getParam('ration'),                                        'nregs_jobno'=>$this->_request->getParam('jobno'),
                                         'income_id'=>$this->_request->getParam('income'),
                                         'created_date' =>date("y/m/d H:i:s"),
@@ -139,7 +140,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
             }
 //create a member code
 
-                $o=str_pad($this->_request->getParam('village'),4,"0",STR_PAD_LEFT);
+                $o=str_pad($this->_request->getParam('village'),3,"0",STR_PAD_LEFT);
                 $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
                 $code=$o.$u;
                 $this->view->adm->updateRecord("ourbank_family",$lastid,array('code'=>$code));
@@ -177,6 +178,8 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $this->view->title = $this->view->translate("Family Information"); 
 
 //load individual form
+		$familymodel = new Familydefault_Model_familydefault();
+
         $addForm = new Familydefault_Form_familydefault($path);
         $convertdate = new App_Model_dateConvertor();
         $this->view->form=$addForm;
@@ -198,9 +201,13 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $addForm->ration->addMultiOption($rationcard1['id'],$rationcard1['name']);
         }
 
-        $insurance = $this->view->adm->viewRecord("ourbank_master_insurance","id","ASC");
-        foreach($insurance as $insurance1){
-        $addForm->health->addMultiOption($insurance1['id'],$insurance1['name']);
+        $this->view->insurance = $insurance=$this->view->adm->viewRecord("ourbank_master_insurance","id","ASC");
+        $this->view->countvalue=count($this->view->insurance);
+        $i=0;
+
+//        $addForm->health->addMultiOption(1,'none');
+        foreach($insurance as $insurance1){ 
+                $addForm->health->addMultiOption($insurance1['id'],$insurance1['name']);
         }
 
         $sourceincome = $this->view->adm->viewRecord("ourbank_master_sourceofincome","id","DESC");
@@ -208,7 +215,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $addForm->income->addMultiOption($sourceincome1['id'],$sourceincome1['name']);
         }
 
-		$familymodel = new Familydefault_Model_familydefault();
+
 		$hierarchy = $familymodel->getofficehierarchy();
        	foreach($hierarchy as $hiearchyids){
        	$hiearchyid = $hiearchyids['hierarchyid'];
@@ -218,7 +225,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
        	foreach($institution as $institution)
        	{
           //$searchForm->bank_id->addMultiOption($institution['village_id'],$institution['villagename']);
-        $addForm->village->addMultiOption($institution['village_id'],$institution['villagename']);
+//         $addForm->village->addMultiOption($institution['village_id'],$institution['villagename']);
         $addForm->rev_village->addMultiOption($institution['village_id'],$institution['villagename']);
        	}
 
@@ -233,28 +240,31 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $insurancedetails=$this->view->commonmodel->getinsurance($family_id);
         foreach($insurancedetails as $details){ $inarray[]=$details['insurance_id'];
         }
-         $this->view->form->health->setValue($inarray);
-        $casteid=$edit_member[0]['caste_id'];
-       $subcaste = $familydefaultmodule->getsubcaste($casteid);
-        foreach($subcaste as $subcaste1){
-        $addForm->subcaste->addMultiOption($subcaste1['subcaste_id'],$subcaste1['subcastename']);
+          $this->view->form->health->setValue($inarray);
+//         $casteid=$edit_member[0]['caste_id'];
+//         $subcaste = $familydefaultmodule->getsubcaste($casteid);
+//         foreach($subcaste as $subcaste1){
+//         $addForm->subcaste->addMultiOption($subcaste1['subcaste_id'],$subcaste1['subcastename']);
+//         }
+		$villageid=$edit_member[0]['rev_village_id']; 
+		$habitation = $familydefaultmodule->gethabitation($villageid);
+        foreach($habitation as $village){
+        $addForm->village->addMultiOption($village['id'],$village['villagename']);
         }
-
+   
         foreach($edit_member as $editmembername)
         {   $this->view->form->familyid->setValue($editmembername['family_id']);
             $this->view->form->sujeevana->setValue($editmembername['sujeevana']);
             $this->view->form->minority->setValue($editmembername['minority_id']);
             $this->view->form->houseno->setValue($editmembername['house_no']);
             $this->view->form->street->setValue($editmembername['street']);
-            $this->view->form->village->setValue($editmembername['village_id']);
             $this->view->form->rev_village->setValue($editmembername['rev_village_id']);
+            $this->view->form->village->setValue($editmembername['village_id']);
             $this->view->form->phone->setValue($editmembername['phone']);
             $this->view->form->mobile->setValue($editmembername['mobile']);  
             $this->view->form->familytype->setValue($editmembername['familytype_id']);
             $this->view->form->caste->setValue($editmembername['caste_id']);
-            $this->view->form->subcaste->setValue($editmembername['subcaste_id']);
             $this->view->form->ration->setValue($editmembername['ration_id']);
-//            $this->view->form->health->setValue($editmembername['health_ins_id']);
             $this->view->form->jobno->setValue($editmembername['nregs_jobno']);
             $this->view->form->income->setValue($editmembername['income_id']);
         }
@@ -266,7 +276,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if($addForm->isValid($formData))
             {
-            $healtharray=$this->_request->getParam('health'); 
+            $healtharray=$this->_request->getParam('health');
             $olddate = $this->view->adm->editRecord("ourbank_family",$family_id);
             $this->view->adm->updateLog("ourbank_family_log",$olddate[0],$this->view->createdby);
 
@@ -284,7 +294,6 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'familytype_id' => $this->_request->getParam('familytype'), 
                                         'minority_id' => $this->_request->getParam('minority_id'), 
                                         'caste_id'=>$this->_request->getParam('caste'),
-                                        'subcaste_id'=>$this->_request->getParam('subcaste'),
                                         'ration_id'=>$this->_request->getParam('ration'),
                                         'nregs_jobno'=>$this->_request->getParam('jobno'),
                                         'income_id'=>$this->_request->getParam('income'),
@@ -299,7 +308,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'insurance_id'=>$health));
             }
 
-            $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
+           $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
             }
         }
         // // 	} else {
@@ -364,17 +373,35 @@ class Familydefault_IndexController extends Zend_Controller_Action
     }
 
 
-	public function getsubcasteAction() {
+// 	public function getsubcasteAction() {
+//          	$this->_helper->layout->disableLayout();
+//                 $path = $this->view->baseUrl();
+// 	        $casteid = $this->_request->getParam('casteid');
+//  	        $searchForm = new Familydefault_Form_familydefault($path);
+//                 $this->view->form = $searchForm;
+//  	        $familymodel= new Familydefault_Model_familydefault();
+//  	        $this->view->subcaste=$familymodel->getsubcaste($casteid);
+// 	        foreach($this->view->subcaste as $subcaste) 
+//                 {
+// 	        $searchForm->subcaste->addMultiOption($subcaste['subcaste_id'],$subcaste['subcastename']);
+// 	        }
+// 	}
+
+	public function gethabitationAction() {
          	$this->_helper->layout->disableLayout();
-                $path = $this->view->baseUrl();
-	        $casteid = $this->_request->getParam('casteid');
+            $path = $this->view->baseUrl();
+
+	        $rev_villageid = $this->_request->getParam('rev_village');
+
  	        $searchForm = new Familydefault_Form_familydefault($path);
-                $this->view->form = $searchForm;
- 	        $familymodel= new Familydefault_Model_familydefault();
- 	        $this->view->subcaste=$familymodel->getsubcaste($casteid);
-	        foreach($this->view->subcaste as $subcaste) 
-                {
-	        $searchForm->subcaste->addMultiOption($subcaste['subcaste_id'],$subcaste['subcastename']);
+            $this->view->form = $searchForm;
+
+ 	        $habitation= new Familydefault_Model_familydefault();
+// 
+ 	        $this->view->village=$habitation->gethabitation($rev_villageid);
+ 	        foreach($this->view->village as $village) 
+            {
+	        $searchForm->village->addMultiOption($village['id'],$village['villagename']);
 	        }
 	}
 }

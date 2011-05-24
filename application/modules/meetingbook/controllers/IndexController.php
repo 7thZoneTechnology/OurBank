@@ -76,7 +76,7 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
 
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
-         $formData = $this->_request->getPost(); 
+         $formData = $this->_request->getPost();  //echo '<pre>'; print_r($formData);
          $accNum=$this->_request->getPost('accNum');
             if ($attendanceform->isValid($formData))
             {
@@ -94,14 +94,19 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
                   if($maxid1[0]['meetingno']=="") { $maxid='1'; 
                         } else { $maxid=$maxid1[0]['meetingno'];  }
 
+
            //savings details insertion
           $this->view->details = $this->view->savings->search($this->_request->getParam('accNum'));
           $totsavings=$this->_request->getPost('totsavingspaid');
           $description=$this->_request->getPost('notes');
           $type = 1;
           $transactionMode =1;
+            //for getting common transaction id
+     $totsavings=$formData['overallpaid'];
+     $groupaccID=$formData['groupaccID'];
+     $tranId = $this->view->savings->getTransactionID($groupaccID,$totsavings,$date,$type,$transactionMode,$description);
 
-     $tranId = $this->view->savings->deposit($accNum,$totsavings,$date,$type,$transactionMode,$description);
+     $this->view->savings->deposit($accNum,$totsavings,$date,$type,$transactionMode,$description,$tranId);
 
        		    foreach ($this->view->details as $details) {
        		       $accID = $details->accId;
@@ -142,7 +147,8 @@ foreach($loanaccNum as $loanaccNum){
                 'amount' => $loanamount[$increment],
                 'paymentMode' =>1,
                 'description' => $description,
-                'accNum' => $loanaccNum);
+                'accNum' => $loanaccNum,
+                'transID' => $tranId);
 
   $this->view->details = $this->view->loanModel->searchaccounts($loanaccNum);
 
@@ -168,6 +174,7 @@ $increment++;
 
                  //member attendance insertion
                  $attendance_id=$this->view->adm->addRecord("ourbank_attendance",array('id' => '',
+                                                'transaction_id'=>$tranId,
                                                 'week_no'=>$maxid,
 						'meeting_id' => $formData['meeting_name'],
 						'meeting_date'=> $meeting_date,
@@ -339,14 +346,20 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
             $this->view->groupid=$fetchattendance1['meeting_id'];
             $this->view->attendanceform->meeting_name->setValue($fetchattendance1['meeting_id']); 
             $this->view->weekno=$fetchattendance1['week'];
+            $this->view->vNo=$vNo=$fetchattendance1['transaction_id'];
 
             $this->view->attendanceform->meeting_time->setValue($fetchattendance1['attendancetime']); 
             $this->view->attendanceform->meeting_date->setValue($convertdate->phpnormalformat($fetchattendance1['meeting_date']));
 	    $this->view->attendanceform->notes->setValue($fetchattendance1['notes']);
         }
         //Fetches all the memberes in that group of particular meeting ID
-        echo "<script>getMembers(".$fetchattendance1['meeting_id'].",'".$path."',".$attendance_id.");</script>";
-        echo "<script>getMeeting(".$fetchattendance1['meeting_id'].",'".$path."',".$attendance_id.");</script>";
+$transId=$this->view->vNo;
+echo "<script>getMembers(".$fetchattendance1['meeting_id'].",'".$path."',".$attendance_id.",".$transId.");</script>";
+echo "<script>getMeeting(".$fetchattendance1['meeting_id'].",'".$path."',".$attendance_id.");</script>";
+
+        //fetch savings details
+//         $this->view->savingsdetails=$this->view->savings->fetchsavingsdetails($vNo); 
+// echo '<pre>'; print_r($this->view->savingsdetails); 
 
 	//update
         if($this->_request->isPost() && $this->_request->getPost('Update')) {
@@ -357,6 +370,108 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
                 $member_id=$this->_request->getPost('member_id');
         	$convertdate = new App_Model_dateConvertor();
 		$meeting_date=$convertdate->phpmysqlformat($formData['meeting_date']);
+                $date=$meeting_date;
+
+         $accNum=$this->_request->getPost('accNum');
+            if ($attendanceform->isValid($formData))
+            {
+    if($accNum) {
+                $insertattendance=new Meetingbook_Model_Meetingbook();
+                $member_id=array();
+                $formData = $this->_request->getPost(); 
+                $member_id=$this->_request->getPost('member_id');
+        	$convertdate = new App_Model_dateConvertor();
+		$meeting_date=$convertdate->phpmysqlformat($formData['meeting_date']);
+                $date=$meeting_date;
+                $amount=$this->_request->getPost('savingspaid');
+		//insert attendance details
+               $maxid1=$insertattendance->fetchmaxid($formData['meeting_name']); 
+                  if($maxid1[0]['meetingno']=="") { $maxid='1'; 
+                        } else { $maxid=$maxid1[0]['meetingno'];  }
+
+
+           //savings details insertion
+          $this->view->details = $this->view->savings->search($this->_request->getParam('accNum'));
+          $totsavings=$this->_request->getPost('totsavingspaid');
+          $description=$this->_request->getPost('notes');
+          $type = 1;
+          $transactionMode =1;
+
+     //update existing transaction id as inactive
+     $this->view->savings->updateRecord("ourbank_transaction",$vNo,array('recordstatus_id' => 2));
+     $this->view->savings->updateRecord("ourbank_Assets",$vNo,array('record_status' => 2));
+     $this->view->savings->updateRecord("ourbank_Liabilities",$vNo,array('record_status' => 2));
+     $this->view->savings->updateRecord1("ourbank_Income",$vNo,array('recordstatus_id' => 2));
+     //for getting common transaction id
+     $totsavings=$formData['overallpaid'];
+     $groupaccID=$formData['groupaccID'];
+     $tranId = $this->view->savings->getTransactionID($groupaccID,$totsavings,$date,$type,$transactionMode,$description);
+
+     $this->view->savings->deposit($accNum,$totsavings,$date,$type,$transactionMode,$description,$tranId);
+
+       		    foreach ($this->view->details as $details) {
+       		       $accID = $details->accId;
+       		    }
+          $group = $this->view->savings->getMember($accNum);
+          $amount=$this->_request->getPost('savingspaid'); 
+                    //inserting individual members savings
+                    $id=0;
+                    foreach ($group as $group)  { //echo $group->id;
+                         if (($group->id) != 0) { 
+                            $this->_request->getParam($group->id);
+                            $this->view->adm->addRecord("ourbank_group_savingstransaction", 
+                                            array('transaction_id' => $tranId,
+                                            'account_id' => $accID,
+                                            'transaction_date' => $date,
+                                            'transaction_type' => 1,
+                                            'transaction_amount' => $amount[$id],
+                                            'member_id' => $group->id,
+                                            'transacted_by' => 1));
+                        $id++;
+                         }
+                    }
+//end of savings details insertion 
+
+
+//start loan repayment
+        $loanaccNum = $this->_request->getParam('loanaccNum'); //print_r($accNum[0]);
+        $loanamount=$this->_request->getParam('loanpaid');
+        $this->view->details = $this->view->loanModel->searchaccounts($loanaccNum);
+        $this->view->paid = $this->view->loanModel->paid($loanaccNum);
+        $this->view->unpaid = $this->view->loanModel->unpaid($loanaccNum);
+        $instalments = $this->view->loanModel->loanInstalments($loanaccNum);
+
+        $increment=0;
+foreach($loanaccNum as $loanaccNum){
+        if($loanaccNum){
+        $data = array('date' => $date,
+                'amount' => $loanamount[$increment],
+                'paymentMode' =>1,
+                'description' => $description,
+                'accNum' => $loanaccNum,
+                'transID' => $tranId);
+
+  $this->view->details = $this->view->loanModel->searchaccounts($loanaccNum);
+
+            foreach ($this->view->details as $details) 
+            {
+                $intType = $details->interesttype; // Intereset type  
+            }
+                switch ($intType) 
+                    {
+                        CASE 1:
+                                $int = $this->view->loanModel->declain($data);
+                                BREAK;
+                        CASE 2:
+                                $int = $this->view->loanModel->emi($data);
+                                BREAK;
+                        CASE 3:
+                                BREAK;
+                    }
+        $array = $this->view->loanModel->insertTran($data);
+}
+$increment++;
+} //end of the loan repayment
 
 	   // for attendance log details
 		$attendancelog = $this->view->adm->getRecord('ourbank_attendance','id',$attendance_id); 
@@ -393,6 +508,7 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
 
                  $this->view->adm->updateRecord("ourbank_attendance",$attendance_id,
                                                 array('id' => $attendance_id,
+                                                'transaction_id'=>$tranId,
                                                 'week_no'=>$this->view->weekno,
 						'meeting_id' => $formData['meeting_name'],
 						'meeting_date'=> $meeting_date,
@@ -504,7 +620,10 @@ for($j=0;$j<count($latemember_id);$j++){
 
                 $this->_redirect('meetingbookindex/index');
         }
-
+    } else { 
+            $this->view->result="<p style='color:red'>This Group Savings Account is closed<p>";
+            }
+        }
 // 		} else {
 // 		$this->_redirect('index/index');
 // 		}
@@ -600,6 +719,13 @@ for($j=0;$j<count($latemember_id);$j++){
         $this->_helper->layout->disableLayout();
         $path = $this->view->baseUrl();
 	$fetchMembers=new Meetingbook_Model_Attend();
+        $transID=$this->_request->getParam('transID');
+            
+
+    $this->view->savingsdetails=$this->view->savings->fetchsavingsdetails($transID); 
+//     $this->view->loandetails=$this->view->savings->fetchloandetails($transID);
+//         echo '<pre>'; print_r($this->view->savingsdetails);
+
         $this->view->members=$aa=$fetchMembers->fetchMembers($this->_request->getParam('meeting_ID')); 
         $check=array();
         $fetchMembersForAttendance=new Meetingbook_Model_Meetingbook();

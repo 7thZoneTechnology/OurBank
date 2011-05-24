@@ -25,11 +25,11 @@ class Loans_Form_Loan extends Zend_Form {
         $begindate = $formfield->field('Text','begindate','','','mand','',true,'','','','','','','');
         $closedate = $formfield->field('Text','closedate','','','mand','',true,'','','','','','','');
         $applicableto = $formfield->field('Select','applicableto','','','mand','',true,'','','','','','','');
-        $glsubcode_id = $formfield->field('Select','glsubcode_id','','','mand','',true,'','','','','','','');
+//         $glsubcode_id = $formfield->field('Select','glsubcode_id','','','mand','',true,'','','','','','','');
 
-        $fee_glsubcode_id = $formfield->field('Select','fee_glsubcode_id','','','mand','',true,'','','','','','','');
+//         $fee_glsubcode_id = $formfield->field('Select','fee_glsubcode_id','','','mand','',true,'','','','','','','');
 
-        $interest_glsubcode_id = $formfield->field('Select','interest_glsubcode_id','','','mand','',true,'','','','','','','');
+//         $interest_glsubcode_id = $formfield->field('Select','interest_glsubcode_id','','','mand','',true,'','','','','','','');
         $interesttype = $formfield->field('Select','interesttype_id','','','mand','',true,'','','','','','','');
 
         $minmumloanamount = $formfield->field('Text','minmumloanamount','','','mand','',true,'','','','','','','');
@@ -62,6 +62,6 @@ class Loans_Form_Loan extends Zend_Form {
                                         $begindate,$closedate,
                                         $applicableto,$minmumloanamount,
                                         $maximunloanamount,$minimumfrequency,
-                                        $maximumfrequency,$graceperiodnumber,$product_id,$submit,$penal_Interest,$glsubcode_id,$interesttype,$fee_glsubcode_id,$interest_glsubcode_id));
+                                        $maximumfrequency,$graceperiodnumber,$product_id,$submit,$penal_Interest,$interesttype));
     }
 }

@@ -31,8 +31,8 @@
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+        <!--td ><?php echo $this->translate("Caste:"); ?></td>
+        <td ><?php echo $family_view['subcaste']; ?></td> -->   </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -47,19 +47,19 @@
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
-
-    <tr>
-        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
-        <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
-        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
-
-    <tr>
+	<tr>
         <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $this->revvillagename; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
-        <td ><?php echo $family_view['income']; ?></td>
+		<td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>
     </tr>
+    <tr>
+        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
+		<td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
+            </tr>
+
     <tr>
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
@@ -72,8 +72,7 @@
         <td ><?php echo $family_view['caste']; ?></td>
         <td ><?php echo $this->translate("Mobile:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
-    </tr>
-   <?php } ?>
+    </tr>   <?php } ?>
 </table> 
 <br/>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;"> 
@@ -146,7 +145,7 @@
         <?php }  ?>
 </table>
 
-<input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="update" name="update" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+<input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="update" name="update" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
 
 </form>
 </div>

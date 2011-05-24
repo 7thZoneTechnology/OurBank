@@ -20,11 +20,30 @@
 class Crop_Model_Crop  extends Zend_Db_Table 
 {
     protected $_name = 'ourbank_cropdetails';
+
+   public function edit_landtypes()
+        {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_master_landtypes'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+//         die ($select->__toString($select));
+        }
+
     public function getCrop()
     {
         $select=$this->select()
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_master_crop'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+ public function getSeason()
+    {
+        $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_master_seasons'),array('a.id'));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }

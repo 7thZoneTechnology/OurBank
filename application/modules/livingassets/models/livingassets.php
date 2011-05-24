@@ -32,7 +32,7 @@ class Livingassets_Model_livingassets  extends Zend_Db_Table {
     }
     public function getAssetdetails($mebmerid)
     {
-        $select=$this->select($param)
+        $select=$this->select()
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_liveassetdetails'),array('a.id'))
                         ->where('a.family_id=?',$mebmerid);

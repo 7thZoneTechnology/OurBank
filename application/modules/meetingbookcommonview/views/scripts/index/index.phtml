@@ -71,7 +71,8 @@ foreach($this->members as $members) { $memberaccid=$members['id']; }
 	<TR>
 		<TH colspan="2"><?php echo $this->translate("Meeting Information"); ?></TH>
                 <TH></TH>
-		<TH class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/meetingbook/index/attendanceedit/attendance_id/<?php echo $this->attendance_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></TH>
+		<TH class = "thirdtd">
+<a href="<?php echo $this->baseUrl();?>/meetingbook/index/attendanceedit/attendance_id/<?php echo $this->attendance_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></TH>
 		
 	</TR>
 
@@ -128,8 +129,8 @@ foreach($this->members as $members) { $memberaccid=$members['id']; }
 	<table id="hor-minimalist-b"> 
             <TR style="border-bottom: 4px solid #CBCBCB;">
                 <th colspan='6' style="border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Member details"); ?></th>
-                <th colspan='2' style="border-right: solid 1px #CBCBCB; text-align:center; !important;"><?php echo $this->translate("Savings"); ?></th>
-                <th colspan='2' style="border-right: solid 1px #CBCBCB; text-align:center; !important;"><?php echo $this->translate("Loans"); ?></th>
+                <th colspan='3' style="border-right: solid 1px #CBCBCB; text-align:center; !important;"><?php echo $this->translate("Savings"); ?></th>
+                <th colspan='3' style="border-right: solid 1px #CBCBCB; text-align:center; !important;"><?php echo $this->translate("Loans"); ?></th>
                 <th style="border-right: solid 1px #CBCBCB; text-align:center; !important;"></th>
             </TR>
 
@@ -141,14 +142,20 @@ foreach($this->members as $members) { $memberaccid=$members['id']; }
                 <th style="width:5px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Late"); ?></th>
                 <th style="width:5px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Absent"); ?></th>
                 <th style="width:55px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Balance"); ?></th>
-                <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("pay"); ?></th>
+                <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Pay"); ?></th>
+                <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Paid"); ?></th>
                 <th style="width:55px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Outstanding"); ?></th>
                 <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Due"); ?></th>
+                <th style="width:30px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Paid"); ?></th>
                 <th style="width:60px; border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Total"); ?></th>
             </TR>
 
-<? $no=1;  $Topay=0; $total1=0; $currentbalance1=0; $currentbalance2=0; $currentbalance3=0; $loandue1=0; $loandue2=0; $currentpay=0; $totallatefee=0; $totalabsentfee=0; $loanoutstanding1=0;
-$currentbalance=new Meetingbookreport_Model_Meetingbook();
+<? $no=1;  $Topay=0; $total1=0; $currentbalance1=0; $currentbalance2=0; $currentbalance3=0; $loandue1=0; $loandue2=0; $currentpay=0; $totallatefee=0; $totalabsentfee=0; $loanoutstanding1=0; $savings=0; $savings1=0;
+$loanpaid=0; $loanpaid1=0;
+
+// $currentbalance=new Meetingbookreport_Model_Meetingbook();
+    $currentbalance=new Meetingbookcommonview_Model_attendanceview();
+
  foreach($this->groupmembers as $members) {  //echo '<pre>';print_r($this->groupmembers);
 $memberid=$members['memberid'];  
 ?>
@@ -181,6 +188,18 @@ $memberid=$members['memberid'];
                      echo $currentbalance1;  } else { echo '0'; }  $currentbalance2+=$currentbalance1;  ?>
         </td>
         <td style="text-align:right;"><?php echo $perweek=$members['saving_perweek'];?></td> 
+        <td style="text-align:right;">
+    <?php 
+//     $savingsview=new Meetingbookcommonview_Model_attendanceview();
+    $savingsdetails=$currentbalance->fetchsavingsdetails($this->transaction_id); //echo '<pre>'; print_r($savingsdetails);
+            foreach($savingsdetails as $savingsdetails){
+              if($savingsdetails['member_id']==$members['memberid']) { 
+                $savings=$savingsdetails['transaction_amount']; 
+                    echo round($savings);
+            }  } 
+        $savings1+=$savings; 
+        ?>
+        </td> 
         <td style="text-align:right;">    <?php  
                     $loanoutstanding=$currentbalance->loanoutstanding($memberid);
                   if($loanoutstanding[0]['outstanding']) { 
@@ -197,6 +216,19 @@ $memberid=$members['memberid'];
                         } else { echo $loandue1; }
                        $loandue2+=$loandue1;  ?>
         </td>
+     <td style="text-align:right;">
+    <?php 
+//     $savingsview=new Meetingbookcommonview_Model_attendanceview();
+    $savingsdetails=$currentbalance->fetchloandetails($this->transaction_id); 
+//echo '<pre>'; print_r($savingsdetails);
+            foreach($savingsdetails as $savingsdetails){
+              if($savingsdetails['member_id']==$members['memberid']) { 
+                $loanpaid=$savingsdetails['paid_amount']; 
+                    echo round($loanpaid);
+            }  } 
+        $loanpaid1+=$loanpaid; 
+        ?>
+        </td> 
         <td style="text-align:right;"><?php 
             $total=$latefee+$absentfee+$currentbalance1+$loandue1; 
             echo $total;
@@ -216,8 +248,10 @@ $Topay+=$members['saving_perweek'];
         <td style="text-align:right;"><?php echo $currentbalance2; ?></td>
         <td style="text-align:right;"><?php echo $Topay; ?></td> 
 
+        <td style="text-align:right;"><?php echo $savings1; ?></td>
         <td style="text-align:right;"><?php echo $currentbalance3; ?></td>
         <td style="text-align:right;"><?php echo $loandue2; ?></td>
+        <td style="text-align:right;"><?php echo $loanpaid1; ?></td>
         <td style="text-align:right;"><?php echo $total1; ?></td>
     </TR>
         </table>

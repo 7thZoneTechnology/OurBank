@@ -2,7 +2,7 @@
   <head>
     <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.2.js"></script>
     <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
-
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jqueryAddmethod.js"></script>
 <script type='text/javascript'>
 function calculateacre(bal) {
             var sum=0;
@@ -16,6 +16,39 @@ function calculateacre(bal) {
             caltotalacre();
 }
 
+function calculaterealised(thi) { //alert('h');
+            var sum=0;
+	    //iterate through each textboxes and add the values
+	    $(".marketed").each(function() {
+/*            if(!isNaN(this.value) && (this.value.length!=0)) {*/
+	    sum += parseFloat(this.value); //alert(sum);
+/*           }*/
+	   });
+	   $(".realised").val(sum); 
+           calproduct();
+}
+function calproduct(thi) { //alert('h');
+            var sum=0;
+	    //iterate through each textboxes and add the values
+	    $(".product").each(function() {
+/*            if(!isNaN(this.value) && (this.value.length!=0)) {*/
+	    sum += parseFloat(this.value); //alert(sum);
+/*           }*/
+	   });
+	   $(".realised").val(sum); 
+          calculaterealised();
+}
+// function calculaterealised(bal) { alert('hi');
+//             var sum=0;
+// 	    //iterate through each textboxes and add the values
+// 	    $(".marketed").each(function() {
+// /*            if(!isNaN(this.value) && (this.value.length!=0)) {*/
+// 	    sum = parseFloat(this.value); alert(sum);
+// /*           }*/
+// 	   });
+// 	   $(".realised").val(Number(sum)); 
+//             //caltotalacre();
+// }
 function calculateguntas(thi) {
             var sum=0;
 	    //iterate through each textboxes and add the values
@@ -60,7 +93,7 @@ $(document).ready(
         newRow.find("input:checkbox").removeAttr('checked');
         newRow.appendTo('.crop tbody');
         $('tr#tmp').closest('table').find('input:text.date').each(function() {
-           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy'});
+           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate: '+0D'});
         });
 //         arrangeCheckboxNames();
             arrangehiddenid();
@@ -81,8 +114,9 @@ $(document).ready(
     $(this).closest('tr').not('#tmp').remove();
         arrangeCheckboxNames();
     });
-    $(".date").datepick({dateFormat: 'dd/mm/yyyy'});
-  }
+$(".date").datepick({dateFormat: 'dd/mm/yyyy',maxDate: '+0D'});  
+
+}
 );
 
 var arrangehiddenid = function() {
@@ -99,77 +133,27 @@ length++;
 };
 
 $(document).ready(function() {
-    $('#pluginForm').submit(function(e) {
-        var isValid = true;
-        $(this).find(':text.required').each(function() {
-            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                    $(this).after('<span style="color: #FF0000">Field is required</span>');
-                }
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0 )
-                    $(this).next('span').remove();
-            }
-        });
-        $(this).find(':text.numeric').each(function() {
-            var regex = new RegExp(/^[1-9][0-9]*$/);
-            if(!regex.test($(this).val()) && isValid) {
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0  && isValid)
-                    $(this).next('span').remove();
-            }
-        }); 
+ 
+   $(".numeric1").keyup(
+    function(){
+        currentObject=$(this).attr('name')
+       if (currentObject=='marketed[]'){
+             Qobj=$(this).parent().next();
+       
+            tobj=$(this).parent().next().next();}
+       else
+          {
+                 Qobj=$(this).parent().prev();
+       
+                tobj=$(this).parent().next();
+        }   
+       
+        Qty=$('input',Qobj).val();
+       tot=$(this).val()*Qty;
+        $('input',tobj).val(tot)
 
-$(this).find(':text.numeric1').each(function() {
-          var regex = new RegExp(/^[1-9][0-9]*$/);
-          if(!regex.test($(this).val()) && $(this).val() != "") {
-              if($(this).next('span').length == 0 ) {
-                 $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
-              }
-              e.preventDefault();
-              return;
-          } else {
-                  $(this).next('span').remove();
-          }
-      });
-//range fixing
-        $(this).find(':text.range').each(function() { 
-            if(($(this).val()<0) || ($(this).val()>=40)) { //alert('inner');
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Suould be 0 to 39.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else { //alert('hi');
-                if($(this).next('span').length > 0  && isValid)
-                    $(this).next('span').remove();
-            }
-        }); 
-//comparission
-        $(this).find(':text.comp2').each(function() { 
-            if(($('.comp1').val()) < ($('.comp2').val())) { //alert('inner');
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Suould be less than or equal to Quantity produced.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else { 
-                    $(this).next('span').remove();
-            }
-        });
-
-    });
+     });
+    $('#pluginForm').validate();
 });
 
 </script>
@@ -288,8 +272,11 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <form name="form1" id = "pluginForm" action="<?php echo $this->baseUrl();?>/crop/index/editcrop/id/<?php echo $this->id; ?>/subId/<?php echo 1; ?>/modId/<?php echo 2; ?>" method="POST">
         <table id="hor-minimalist-b" class="crop">
             <tr> 
+
+                <th ><?php echo $this->translate("Land holding"); ?></th>
+
                 <th ><?php echo $this->translate("Crop"); ?></th>
-                <th ></th>
+                     <th ><?php echo $this->translate("Season"); ?></th>
                 <th ><?php echo $this->translate("Acre"); ?></th>
                 <th ><?php echo $this->translate("Gunta"); ?></th>
                 <th ><?php echo $this->translate("Unit"); ?></th>
@@ -306,9 +293,16 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
              <?php if ($i == 1) { ?>
              <tr id='tmp'>
             <?php } else { ?>
-            <tr>
             <?php } ?>
+  <td <?php $i = 1;  ?>><select name = tenant[] id="select<?php echo $i++; ?>" >
+                  <option>Select</option>
+                            <?php foreach ($this->agriculture as $land_details) { ?>
+                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name']?></option>
+                            <?php } ?>
+                        </select>
+            </td>  
                 <td><select name = "crop_id[]">
+                                <option>Select</option>
                     <OPTION value="<?php echo $editCrop["crop_id"]; ?>">
                     <?php echo $editCrop["name"]; ?>
                     </OPTION>
@@ -318,9 +312,17 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <?php } } $dateconvert= new App_Model_dateConvertor();?>
                 </select>    
                 </td>
-                <td align="right">*</td>
-                <td><INPUT type="text" maxlength="3" name = "acre[]" id = "acre1" value = "<?php echo $editCrop["acre"];?>" size = 10 class="acre required numeric" onkeyup = "calculateacre(this.value);"></td>
-                <td><INPUT type="text" name = "gunta[]" id = "gunta1"  value = "<?php echo $editCrop["gunta"];?>" size = 5 maxlength="2" onkeyup = "calculateguntas(this.value);" class="gunta required numeric range"></td>
+                  <td><select name = "season[]">
+                                  <option>Select</option>
+                    <?php foreach ($this->seasondetails as $seasondetails) { ?>
+                    <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['name']?></option>
+
+                    <?php } ?>
+
+
+                </select> </td>
+                <td><INPUT type="text" maxlength="3" name = "acre[]" id = "acre1" required_group="eithergroup" value = "<?php echo $editCrop["acre"];?>" size = 10 class="acre number" onkeyup = "calculateacre(this.value);"></td>
+                <td><INPUT type="text" name = "gunta[]" id = "gunta1"  value = "<?php echo $editCrop["gunta"];?>" size = 5 maxlength="2" onkeyup = "calculateguntas(this.value);" class="gunta number range eithergroup"></td>
                 <td><INPUT type="text" name = "unit[]"  value = "<?php echo $editCrop["unit"];?>" size = 5 maxlength="3" class="required numeric"></td>
                 <td><INPUT type="text" name = "quantity[]" id =  "quantity1" value = "<?php echo $editCrop["quantity"];?>" size = 10 maxlength="3" class="quantity required numeric comp1"></td>
                 <td><INPUT type="text" name = "marketed[]" id = "marketed1" value = "<?php echo $editCrop["marketed"];?>" size = 10 maxlength="5" class="marketed comp2 numeric1"></td>
