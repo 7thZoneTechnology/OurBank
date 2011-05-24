@@ -88,7 +88,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th><?php echo $this->translate("Entitlement"); ?></th>
                 <th><?php echo $this->translate("Education Level"); ?></th>
                 <th><?php echo $this->translate("Employment Status"); ?></th>
-                <th><?php echo $this->translate("Proffession"); ?></th>
+                <th><?php echo $this->translate("Profession"); ?></th>
                 <th><?php echo $this->translate("CBO Status"); ?></th>
                 <th><?php echo $this->translate("Bank/PO"); ?></th>
                 <th><?php echo $this->translate("Branch"); ?></th>
@@ -109,7 +109,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><INPUT type="text" name = "dob[]" class="date required datechange" id="date-1">
                 <INPUT type="hidden" name = "currentdate[]" id="currentdate" value="<?php echo $this->currentdate?>"></td>
                 <td><INPUT type="text" name = "age[]" maxlength="2" size="3" class="agechange" id="age-1"></td> 
-                <td><select name = "relation[]" class="selectvalid">
+                <td><select name = "relation[]" class="selectvalid required">
                     <option value=0>Select</option>
                     <?php foreach ($this->relation as $relation) { ?>
                     <option value="<?php echo $relation['id']?>"><?php echo $relation['name']?></option>
@@ -132,10 +132,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="<?php echo $marital['id']?>"><?php echo $marital['name']?></option>
 
                     <?php } ?>
-                </select>   
+                </select>
                 </td>
 
-                <td><select name = "entitle[]" class="selectvalid">
+                <td><select name = "entitle-1[]" class="selectvalid entitleid" multiple="true" size="3">
                     <option value=0>Select</option>
                     <?php foreach ($this->entitlements as $entitlement) { ?>
                     <option value="<?php echo $entitlement['id']?>"><?php echo $entitlement['name']?></option>
@@ -159,11 +159,11 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                                 if($employment['id']!= $familydetails["eductaion_id"]) { ?>
                     <option value="<?php echo $employment['id']?>"><?php echo $employment['name']?></option>
 
-                    <?php }} ?>inner
+                    <?php }} ?>
                 </select>
                 </td>
 
-                <td><select name = "proffesion[]" class="selectvalid">
+                <td><select name = "profession-1[]" class="selectvalid profid" multiple="true" size="3">
                     <option value=0>Select</option>
                     <?php foreach ($this->proffession as $proffession) { ?>
                     <option value="<?php echo $proffession['id']?>"><?php echo $proffession['name']?></option>
@@ -193,7 +193,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><INPUT type="text" name = "banckAccount[]" maxlength="15"></td>
 
                 <td><INPUT type="text" name = "mobile[]" class="numeric" maxlength="10"></td>
-                <td><select name = "blood[]" class="selectvalid">
+                <td><select name = "blood[]" class="selectvalid required">
                     <option value=0>Select</option>
                     <?php foreach ($this->blood as $blood) { ?>
                     <option value="<?php echo $blood['id']?>"><?php echo $blood['name']?></option>

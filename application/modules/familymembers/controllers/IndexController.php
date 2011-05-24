@@ -48,6 +48,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
     public function indexAction() 
     {
+
     }
 
     public function getbranchAction() { 
@@ -96,8 +97,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $gender=$this->_getParam('gender');
                     $marital = $this->_getParam('marital');
                     $education=$this->_getParam('education');
-                    $proffession = $this->_getParam('proffesion');
-                    $entitlement=$this->_getParam('entitle');
                     $cboID=$this->_getParam('cbomember');
                     $bank=$this->_getParam('bank');
                     $branch=$this->_getParam('branch');
@@ -113,6 +112,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $j=0; $k=0; $l=0;
             for($i = 0; $i< $countname; $i++) 
             {
+
                 if ($breadwinner[$j] == $i+1) {
                     $bread = 1;
                     $j++;
@@ -131,9 +131,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 } else {
                     $cbo = 0;
                 }
-//                 $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
-//                 $u=str_pad($family_id,4,"0",STR_PAD_LEFT);
-//                 $code=$o.$u;
+                $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
+                $u=str_pad($family_id,4,"0",STR_PAD_LEFT);
+                $code=$o.$u;
                 $familymembers = array('family_id' => $family_id,
                                     'breadwinner_id' => $bread,
                                     'head_id' => $head,
@@ -151,8 +151,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'maritalstatus_id' => $marital[$i],
                                     'eductaion_id' => $education[$i],
                                     'employment_status'=>$employment[$i],
-                                    'profession_id' => $proffession[$i],
-                                    'entitlements' => $entitlement[$i],
                                     'cbo_member' => $cbo,
                                     'bank' => $bank[$i],
                                     'branch_po' => $branch[$i],
@@ -163,17 +161,30 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'created_date'=>date("y/m/d H:i:s")
                                    );
                $lastid=$this->view->adm->addRecord("ourbank_familymember",$familymembers);
-
-                //create a member code
+                $inc = $i;
+                $inc++;
+                $entitlement=$this->_getParam('entitle-'.$inc);
+                $ecount=count($entitlement);
+                for($n=0; $n<$ecount; $n++){
+                $entitledetails=array('member_id'=>$lastid,'entitlement_id'=>$entitlement[$n]);
+                $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
+                }
+                $profession=$this->_getParam('profession-'.$inc);
+                $pcount=count($profession);
+                for($n=0; $n<$pcount; $n++){
+                $profdetails=array('member_id'=>$lastid,'profession_id'=>$profession[$n]);
+                $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
+                }
+//                 create a member code
                 $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
                 $p = "01";
                 $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
                 $membercode=$o.$p.$u;
-                $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
+               $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
             }
 
 
-           $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
+          $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
         }
     }
 
@@ -296,8 +307,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'maritalstatus_id' => $marital[$i],
                                     'eductaion_id' => $education[$i],
                                     'employment_status'=>$employment[$i],
-                                    'profession_id' => $proffession[$i],
-                                    'entitlements' => $entitlement[$i],
                                     'cbo_member' => $cbo,
                                     'bank' => $bank[$i],
                                     'branch_po' => $branch[$i],
@@ -308,6 +317,24 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'created_date'=>date("y/m/d H:i:s")
                                    );
                $familyobj->update($recordid[$i],$familymembers);
+               $familyobj->deleterecord('ourbank_memberentitlememnt',$recordid[$i]);
+               $familyobj->deleterecord('ourbank_memberprofession',$recordid[$i]);
+
+                $inc = $i;
+                $inc++;
+                $entitlement=$this->_getParam('entitle-'.$inc);
+                $ecount=count($entitlement);
+                for($n=0; $n<$ecount; $n++){
+                $entitledetails=array('member_id'=>$recordid[$i],'entitlement_id'=>$entitlement[$n]);
+                $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
+                }
+                $profession=$this->_getParam('profession-'.$inc);
+                $pcount=count($profession);
+                for($n=0; $n<$pcount; $n++){
+                $profdetails=array('member_id'=>$recordid[$i],'profession_id'=>$profession[$n]);
+                $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
+                }
+
             }
 // check the i value with Exist members value to add new members 
             else
@@ -328,8 +355,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'maritalstatus_id' => $marital[$i],
                                     'eductaion_id' => $education[$i],
                                     'employment_status'=>$employment[$i],
-                                    'profession_id' => $proffession[$i],
-                                    'entitlements' => $entitlement[$i],
                                     'cbo_member' => $cbo,
                                     'bank' => $bank[$i],
                                     'branch_po' => $branch[$i],
@@ -341,6 +366,20 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                    );
                $lastid=$this->view->adm->addRecord("ourbank_familymember",$familymembers);
 
+                $inc = $i;
+                $inc++;
+                $entitlement=$this->_getParam('entitle-'.$inc);
+                $ecount=count($entitlement);
+                for($n=0; $n<$ecount; $n++){
+                $entitledetails=array('member_id'=>$lastid,'entitlement_id'=>$entitlement[$n]);
+                $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
+                }
+                $profession=$this->_getParam('profession-'.$inc);
+                $pcount=count($profession);
+                for($n=0; $n<$pcount; $n++){
+                $profdetails=array('member_id'=>$lastid,'profession_id'=>$profession[$n]);
+                $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
+                }
  // create a member code
                 $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
                 $p = "01";

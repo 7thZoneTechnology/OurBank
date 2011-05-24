@@ -98,7 +98,7 @@
                 <th><?php echo $this->translate("Entitlement"); ?></th>
                 <th><?php echo $this->translate("Education Level"); ?></th>
                 <th><?php echo $this->translate("Employment Status"); ?></th>
-                <th><?php echo $this->translate("Proffession"); ?></th>
+                <th><?php echo $this->translate("Profession"); ?></th>
                 <th><?php echo $this->translate("CBO Status"); ?></th>
                 <th><?php echo $this->translate("Bank/PO"); ?></th>
                 <th><?php echo $this->translate("Branch"); ?></th>
@@ -154,6 +154,7 @@
                         <OPTION value="<?php echo $familydetails["gender_id"]; ?>">
                             <?php echo $familydetails["gendername"]; ?>
                         </OPTION>
+                        <option>select</option>
                 <?php 
                 foreach ($this->gender as $gender) 
                 {
@@ -179,19 +180,38 @@
                 }     ?>
                 </select>
                 </td>
+         <?php 
+            $entitlelist = array();
+            $proflist = array();
+            $familyobj = new Familymembers_Model_Familymembers();
+            $professionlist=$familyobj->getprofession($familydetails['id']);
 
-                <td><select name = "entitle[]">
-                        <OPTION value="<?php echo $familydetails["entitlements"]; ?>">
-                            <?php echo $familydetails["entitlementsname"]; ?>
-                        </OPTION>
-                <?php 
-                foreach ($this->entitlements as $entitlements) 
+            foreach($professionlist as $professionlist){ 
+                    $proflist[] = $professionlist['profession_id'];
+            //print_r($proflist);
+            }
+                $entitlementslist=$familyobj->getentitlement($familydetails['id']);
+                foreach($entitlementslist as $entitlementslist){ 
+                $entitlelist[] = $entitlementslist['entitlement_id']; 
+            }
+
+          ?>
+                <td><select name = "entitle-<?php echo $i; ?>[]" class="selectvalid entitleid" multiple="true" size="3">
+                <?php
+                foreach($this->entitlements as $entitlements)
                 {
-                    if($entitlements['id']!= $familydetails["entitlements"]) { ?>
-                        <option value="<?php echo $entitlements['id']?>"><?php echo $entitlements['name']?></option>
+                    if(in_array($entitlements['id'],$entitlelist)) { ?>
+                        <option value="<?php echo $entitlements['id']; ?>" selected ><?php echo $entitlements['name'];?></option>
+                            <?php
+                    }
+                    else
+                    { ?>
+                        <option value="<?php echo $entitlements['id']; ?>"  ><?php echo $entitlements['name'];?></option> 
+                        <?php
+                    }
+                }    ?>
 
-                    <?php }
-                }     ?>
+
                 </select>
                 </td>
 
@@ -219,15 +239,21 @@
                 </select>
                 </td>
 
-                <td><select name = "proffesion[]">
-                        <OPTION value="<?php echo $familydetails["profession_id"]; ?>">
-                            <?php echo $familydetails["proffessionname"]; ?>
-                        </OPTION>
-                    <?php foreach ($this->proffession as $proffession) { 
-                         if($proffession['id']!= $familydetails["profession_id"]) { ?>
-                    <option value="<?php echo $proffession['id']?>"><?php echo $proffession['name']?></option>
-                    <?php } } ?>
-                </select>    
+                <td><select name = "profession-<?php echo $i; ?>[]" class="selectvalid profid" multiple="true" size="3">
+                <?php
+                foreach($this->proffession as $proffession)
+                {
+                    if(in_array($proffession['id'],$proflist)) { ?>
+                        <option value="<?php echo $proffession['id']; ?>" selected ><?php echo $proffession['name'];?></option>
+                            <?php  
+                    }
+                    else
+                    { ?>
+                        <option value="<?php echo $proffession['id']; ?>"  ><?php echo $proffession['name'];?></option> 
+                        <?php
+                    }
+                }    ?>
+                </select>
                 </td>
                 <?php if($familydetails['cbo_member']==1){ ?>
                 <td align="center"><INPUT type="checkbox" name = "cbomember[]" checked="true" value = "<?php echo $i ?>"></td>
@@ -283,7 +309,6 @@
                     <?php } } ?>
                 </select>
                 </td>
-
 
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr>
