@@ -1,4 +1,4 @@
-<?php
+<!--
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,28 +15,9 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
+!-->
 
-	class Groupmdefault_Form_Delete extends Zend_Form {
 
-	public function init() 
-        {
-            // create instance for common form field
-            $formfield = new App_Form_Field ();
-             $remarks= new Zend_Form_Element_Textarea('remarks', array('rows' => 3,'cols' => 20,));
-            $remarks->setAttrib('class', '');
-            $remarks->setLabel('Remarks');
-            $remarks->setRequired(true)
-                                ->addValidators(array(array('NotEmpty')));
-
-            $submit = new Zend_Form_Element_Submit('Submit');
-            $submit->setAttrib('id', 'Delete')
-                            ->setLabel('Delete');
-            $back = new Zend_Form_Element_Submit('Back');
-            $back->setAttrib('id', 'Back')
-                            ->setLabel('Back');
-            $this->addElements(array($remarks,$submit,$back));
-
-			
-
-	}
-}
+<center><embed src= "<?php echo $this->filename;?>" id="myFrame" width="1000" height="700"></embed></center>
+<center><a href="<?php echo $this->baseUrl(array('controller'=>'index','action'=>'index')); ?>">
+                                <input name="submit" type="submit" class="officebutton" value="<?php echo $this->translate('back'); ?>"></a><center>

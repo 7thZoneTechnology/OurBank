@@ -32,7 +32,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         return $result->toArray();
 //         die ($select->__toString($select));
         }
-  public function edit_landtypes()
+ public function ownershiptypes()
         {
         $select=$this->select()
                                 ->setIntegrityCheck(false)
@@ -41,6 +41,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         return $result->toArray();
 //         die ($select->__toString($select));
         }
+
     public function getagriculturedetails($mebmerid)
     {
         $select=$this->select()

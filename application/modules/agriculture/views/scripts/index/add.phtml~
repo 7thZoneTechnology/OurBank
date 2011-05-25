@@ -90,6 +90,7 @@ $(document).ready(
               sval=$("#select"+index).selectedValues();
                selectedval.push(sval);}
         });
+alert('sss');
        var newRow = $('tr#tmp').clone(true).removeAttr('id');
                 selectobj=newRow.find("select");
                 newrowobj=$(this).children(':first');

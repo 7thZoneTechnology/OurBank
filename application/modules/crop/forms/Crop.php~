@@ -43,7 +43,7 @@ class Crop_Form_Crop extends Zend_Form
         $createdBy = $formfield->field('Hidden','created_by[]','','','','',false,'','','','','',0,1);
         $createdDate = $formfield->field('Hidden','created_date[]','','','','',false,'','','','','',0,date("y/m/d H:i:s"));
         $crpid = $formfield->field('Hidden','crpid[]','','','','','','','','','','',0,0);
-        $this->addElements(array($id,$cropId,$acre,$quantity,$marketed,$price,$subId,$createdBy,$createdDate,$crpid,$season));
+        $this->addElements(array($id,$cropId,$acre,$quantity,$marketed,$price,$subId,$createdBy,$createdDate,$crpid));
     }
 }
 

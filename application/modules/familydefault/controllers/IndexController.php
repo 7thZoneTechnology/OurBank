@@ -343,15 +343,14 @@ class Familydefault_IndexController extends Zend_Controller_Action
             $delete=new Familydefault_Model_familydefault();
             $account=$delete->findaccount($id);
 //delete member details, contact and address details...
-            if(!$account){
+            if($account){
             $this->view->adm->deletemember("ourbank_family",$id);
             }
              else
                 { echo "<font color=red>This member having active accounts</font>";
                 }
             }$this->_redirect('/family');
-            
-        }	
+        }
         // 	} else {
         //             $this->_redirect('index/index');
         // 	}

@@ -51,14 +51,16 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
-
-    public function getcrop($mebmerid)
+  public function getcrop($mebmerid)
    {
        $select=$this->select()
                        ->setIntegrityCheck(false)
                        ->join(array('a'=>'ourbank_cropdetails'),array('a.id'))
                        ->where('a.family_id=?',$mebmerid)
-                       ->join(array('b'=>'ourbank_master_crop'),'b.id=a.crop_id',array('b.name'));
+                       ->join(array('b'=>'ourbank_master_crop'),'b.id=a.crop_id',array('b.name'))
+                        ->join(array('c'=>'ourbank_master_landtypes'),'c.id=a.land_id',array('c.name as landtypename'))
+                        ->join(array('d'=>'ourbank_master_seasons'),'d.id=a.season_id',array('d.name as season'));
+
        // die($select->__toString($select));
        $result=$this->fetchAll($select);
        return $result->toArray();

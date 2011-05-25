@@ -1,4 +1,5 @@
-<?php
+
+/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,28 +16,34 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
+*/
+/**to select the value of sub office when there is any changes in office type*/					
 
-	class Groupmdefault_Form_Delete extends Zend_Form {
 
-	public function init() 
-        {
-            // create instance for common form field
-            $formfield = new App_Form_Field ();
-             $remarks= new Zend_Form_Element_Textarea('remarks', array('rows' => 3,'cols' => 20,));
-            $remarks->setAttrib('class', '');
-            $remarks->setLabel('Remarks');
-            $remarks->setRequired(true)
-                                ->addValidators(array(array('NotEmpty')));
+    function Getsubcaste(casteid,path) {
+        if(casteid) {
+        targeturl=path+"/familydefault/index/getsubcaste?casteid="+casteid; 
+        $.ajax({ url: targeturl, success: function(data){ $(".subcaste").html(data) }});
+        }
+    }
+    function gethabitationDetails(path,rev_villageid) {
+    if(rev_villageid) { 
+            targeturl=path+"/familydefault/index/gethabitation?rev_village="+rev_villageid; 
+            $.ajax({ url: targeturl, success: function(data){ $("#village").html(data) }});
+    }
+    }
 
-            $submit = new Zend_Form_Element_Submit('Submit');
-            $submit->setAttrib('id', 'Delete')
-                            ->setLabel('Delete');
-            $back = new Zend_Form_Element_Submit('Back');
-            $back->setAttrib('id', 'Back')
-                            ->setLabel('Back');
-            $this->addElements(array($remarks,$submit,$back));
-
-			
-
-	}
-}
+    $(function(){
+    $(".child").click ( function() {
+        var count=$("#count").val();
+        if($("#health-1").is(':checked')) {
+            for( i=2; i <= count; i++){
+                $("#health-"+i).attr ( "disabled" , true );
+            }
+        } else {
+            for( i=2; i <= count; i++){
+                $("#health-"+i).attr ( "disabled" , false );
+            }
+        }
+    });
+    });

@@ -70,14 +70,10 @@ class Agriculture_IndexController extends Zend_Controller_Action
 //count number of family members
         $family_model=new Agriculture_Model_agriculture();
         $this->view->land_details=$count_member = $family_model->edit_landtypes();
-        $this->view->acquistion=$acquistion = $family_model->ownershiptypes();
-
         $this->view->family_number=$number=count($count_member);
 //load form with respective to number of family member
         $addForm = new Agriculture_Form_agriculture($number);
         $this->view->form=$addForm;
-                $this->view->acquistion=$acquistion = $family_model->ownershiptypes();
-
 //set the value of member name and sex
 
 //         for($i=1;$i<=$number;$i++){
@@ -99,8 +95,6 @@ class Agriculture_IndexController extends Zend_Controller_Action
         if ($this->_request->getPost('submit')) {
             $land_id=$this->_request->getParam('tenant');
             $village_id=$this->_request->getParam('villagename');
-            $acquistion=$this->_request->getParam('acquistion');
-
             $owner_id=$this->_request->getParam('ownertype');
             $ownername=$this->_request->getParam('ownername');
             $survey_no=$this->_request->getParam('survey');
@@ -112,7 +106,6 @@ class Agriculture_IndexController extends Zend_Controller_Action
                 $agri = array('id' => '',
                             'family_id'=>$member_id,
                             'landowner_name'=>$ownername[$i],
-                            'acquistion_id'=>$acquistion[$i],
                             'land_id'=>$land_id[$i],
                             'villagename'=>$village_id[$i],
                             'survey_no' => $survey_no[$i],
@@ -139,6 +132,7 @@ class Agriculture_IndexController extends Zend_Controller_Action
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
         $this->view->owner = $agriculture->owner($this->_getParam('id'));
         $this->view->village = $agriculture->village($this->_getParam('id'));
+        $this->view->acquistion=$acquistion = $agriculture->ownershiptypes();
 
 
         if ($revvillageid) {
@@ -163,8 +157,7 @@ class Agriculture_IndexController extends Zend_Controller_Action
         $owner = $this->view->adm->viewRecord("ourbank_master_ownershiptype","id","DESC");
        $this->view->ownertype = $owner;
         $this->view->agriculture=$family_model->getagriculturedetails($member_id);
-                $this->view->acquistion=$acquistion = $family_model->ownershiptypes();
-
+        
 
             if ($this->_request->getPost('submit')) {
             $id=$this->_getParam('id');
@@ -187,9 +180,9 @@ class Agriculture_IndexController extends Zend_Controller_Action
             foreach($this->_getParam('tenant') as $val) {
                 $agri = array('id' => '',
                             'family_id'=>$member_id,
+                            'landowner_name'=>$ownername[$i],
                             'acquistion_id'=>$acquistion[$i],
 
-                            'landowner_name'=>$ownername[$i],
                             'land_id'=>$land_id[$i],
                             'villagename'=>$village_id[$i],
                             'survey_no' => $survey_no[$i],

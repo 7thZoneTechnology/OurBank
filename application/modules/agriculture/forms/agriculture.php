@@ -35,9 +35,6 @@ class Agriculture_Form_agriculture extends Zend_Form {
       
 
         $ownername = $formfield->field('Text','ownername','','','','',true,'','','','','',0,0);
- $acquistion = new Zend_Form_Element_Select('acquistion[]');
-        $acquistion->setAttrib('class', 'txt_put');
-        $acquistion->setAttrib('id','acquistion[]');
         $survey = $formfield->field('Text','survey','','','','',true,'','','','','',0,0);
         $survey->setAttrib('size',10);
         $acre = $formfield->field('Text','acre','','','','',true,'','','','','',0,0);
@@ -61,7 +58,7 @@ class Agriculture_Form_agriculture extends Zend_Form {
         $ownertype->removeDecorator('label');
 
         $land_id = $formfield->field('Hidden','land_id','','','','','','','','','','',0,0);
-        $this->addElements(array($tenant,$ownername,$village,$survey,$acre,$acrevalue,$ownertype,$land_id,$acquistion));
+        $this->addElements(array($tenant,$ownername,$village,$survey,$acre,$acrevalue,$ownertype,$land_id));
 	
     }
 

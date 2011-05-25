@@ -19,12 +19,12 @@
 <html>
   <head>
 
-    
+     <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.2.js"></script>
     <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jqueryAddmethod.js"></script>
 
-    <script type='text/javascript' src="/IDF/public/js/jquery.selectboxes.pack.js"></script>
+<script type='text/javascript'>
 
-    <script type='text/javascript'>
 
 
 
@@ -68,6 +68,16 @@ $(document).ready(
 //                     $("#select"+rowindex+" option[value='"+sval+"']").remove();
 //                 }
     });
+
+ $('.select').change(function(){
+            if($(this).val() == 'Select'){
+                    $(this).after('<span style="color: #FF0000">Choose proper Asset</span>');
+            } else {
+                    $(this).next('span').remove();
+            }
+    });
+
+
            $('tr#tmp').closest('table').find('input:text.date').each(function() {
             $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate : '+0D',});        });
    
@@ -87,27 +97,50 @@ $(document).ready(
         $(this).closest('tr').not('#tmp').remove();
     });   
   
-  
+   $('#pluginForm').submit(function(e) {
+        $(this).find(':text.required').each(function() {
+            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
+                if($(this).next('span').length == 0 )
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                e.preventDefault();
+                return;
+            } else {
+                if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();
+            }
+        });
+
+     $(this).find(':select.selectvalid').each(function() {
+            if($(this).val() == 0) {
+                if($(this).next('span').length == 0 ){
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                e.preventDefault();
+                return;
+                }
+             }   else {
+                if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();
+                }
+        });
+
+        $(this).find(':text.numeric').each(function() {
+           var regex = new RegExp(/^[1-9][0-9]*$/);
+           if(!regex.test($(this).val()) && $(this).val() != "") {
+               if($(this).next('span').length == 0 ) {
+                  $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
+               }
+               e.preventDefault();
+               return;
+           } else {
+                   $(this).next('span').remove();
+           }
+       });
+
+
+    });
+
       
-    $.validator.addMethod("noSpecialChars", function(value, element) {
-   
-    
-      return this.optional(element) || /^[\w,-]+$/i.test(value);
-  }, "Username must contain only letters, numbers, or underscore.");
- 
-    $.validator.addMethod('required_group', function(value, element, param ) {
-        objgroup=$('.'+param);
-        flag=false;
-         $.each(objgroup, function(){
-                if($(this).val())
-                     {flag=true;
-                     
-                      }
-              
-                });
-                
-         return flag
-        }, "Fill either acre or kunta");
+  
     
     
       }
@@ -121,7 +154,6 @@ $(document).ready(
     }
     </style>
 </head>
-
 <body>
   <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
@@ -189,7 +221,6 @@ $(document).ready(
     <th><?php echo $this->translate("Land holding"); ?></th>
     <th><?php echo $this->translate("Acquistion type"); ?></th>
 
-
     <th><?php echo $this->translate("Acre"); ?></th>
     <th><?php echo $this->translate("Gunta"); ?></th>
     <th><?php echo $this->translate("Owner name"); ?></th>
@@ -201,16 +232,16 @@ $(document).ready(
 
 <?php if( $records== $emt) { ?>
 <tr id='tmp'>
-            <td <?php $i = 1;  ?>><select name = tenant[] id="select<?php echo $i++; ?>" >
-                <option>Select</option>
+            <td <?php $i = 1;  ?>><select name = tenant[] id="select<?php echo $i++; ?>" class="selectvalid required" >
+                    <option value=0>Select</option>
 
                             <?php foreach ($this->land_details as $land_details) { ?>
                             <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name']?></option>
                             <?php } ?>
                         </select>
             </td>  
- <td><select name = acquistion[]>
-                <option>Select</option>
+<td><select name = acquistion[] class="selectvalid">
+                    <option value=0>Select</option>
 
                             <?php foreach ($this->acquistion as $acquistion) { ?>
                             <option value="<?php echo $acquistion['id']?>"><?php echo $acquistion['name']?></option>
@@ -218,18 +249,19 @@ $(document).ready(
                         </select>
             </td>
 			<td><INPUT type="text" name = "acre[]" size="5" required_group="eithergroup" class="numeric eithergroup"  maxlength="3" ></td>
-            <td><INPUT type="text" name = "gunta[]" size="5"  class="numeric eithergroup" min="0" max="39"></td>
- 			<td><select name = ownername[]>
+            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number eithergroup error" min="0" max="39"></td>
+ 			<td><select name = ownername[] class="selectvalid">
 			<?php foreach ($this->owner as $owner) { ?>
-                <option>Select</option>
+                    <option value=0>Select</option>
 
 			<option value="<?php echo $owner['landowner_name']?>"><?php echo $owner['name']?></option>
 			<?php } ?>
                             </select>
             </td> 
-            <td><INPUT type="text" name = "survey[]" size="5" maxlength="10" class="noSpecialChars"></td>
-								<td><select name = villagename[]>
-                <option>Select</option>
+            <td><INPUT type="text" name = "survey[]" size="5" maxlength="8" class="noSpecialChars"></td>
+								<td><select name = villagename[] class="selectvalid">
+                    <option value=0>Select</option>
+
 
                                 <?php foreach ($this->village as $village) { ?>
                                 <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
@@ -244,43 +276,52 @@ $(document).ready(
                 foreach ($this->agriculture as $agri) { $i++; ?>
                 <tr<?php if ($i==1) { ?> id="tmp" <?php } ?>>
 
-                <td > <select name = "tenant[]" id="select<?php echo $i; ?>">
-                <option>Select</option>
-
-                    <?php foreach ($this->land_details as $land) {    ?>
-                    <OPTION value="<?php echo $land["id"]; ?>">
-                    <?php echo $land["name"]; ?>
+              <td><select name = "tenant[]">
+               
+                    <OPTION value="<?php echo $agri["land_id"]; ?>">
+                    <?php echo $agri["landtypename"]; ?>
                     </OPTION>
-                    <?php } ?>
- <td><select name = acquistion[]>
-                <option>Select</option>
-
-                            <?php foreach ($this->acquistion as $acquistion) { ?>
-                            <option value="<?php echo $acquistion['id']?>"><?php echo $acquistion['name']?></option>
-                            <?php } ?>
-                        </select>
-            </td>
-
+                    <?php foreach ($this->land_details as $assetdetails) {  ?>
+                        <? if($agri["landtypename"] != $assetdetails["name"] ) {?>
+                           <option value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['name']?></option>
+                    <?php } } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
+  <td><select name = "acquistion[]">
+               
+                    <OPTION value="<?php echo $agri["acquistion_id"]; ?>">
+                    <?php echo $agri["ownership"]; ?>
+                    </OPTION>
+                    <?php foreach ($this->acquistion as $acquistion) {  ?>
+                        <? if($agri["ownership"] != $acquistion["name"] ) {?>
+                           <option value="<?php echo $acquistion['id']?>"><?php echo $acquistion['name']?></option>
+                    <?php } } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
                     <td><INPUT type="text" name = "acre[]" size="5" required_group="eithergroup" class="number eithergroup" maxlength="3" value = "<?php echo $agri["acre"];?>"></td>
-            <td><INPUT type="text" name = "gunta[]" size="5" class="number eithergroup" maxlength="2" min="0" max="39" value="<?php echo $agri["gunta"]; ?>"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number eithergroup error" maxlength="2" min="0" max="39" value="<?php echo $agri["gunta"]; ?>"></td>
 
 
-            <td><select name = ownername[]>
-                <option>Select</option>
+          <td><select name = "ownername[]">
+               
+                    <OPTION value="<?php echo $agri["landowner_name"]; ?>">
+                    <?php echo $agri["ownername"]; ?>
+                    </OPTION>
+                    <?php foreach ($this->owner as $owner) {  ?>
+                        <? if($agri["ownername"] != $owner["name"] ) {?>
+                           <option value="<?php echo $owner['id']?>"><?php echo $owner['name']?></option>
+                    <?php } } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
 
-                                <?php foreach ($this->owner as $owner) { ?>
-                                <option value="<?php echo $owner['id']?>"><?php echo $owner['name']?></option>
-                                <?php } ?>
-                            </select>
-            </td> 
-            <td><INPUT type="text" name = "survey[]" size="5" class="noSpecialChars" value = "<?php echo $agri["survey_no"];?>"></td>
-
-								<td><select name = villagename[]>
-                				<option>Select</option>
-                                <?php foreach ($this->village as $village) { ?>
-                                <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
-                                <?php } ?>
-                            </select>
+            <td><INPUT type="text" name = "survey[]" size="5" class="noSpecialChars" maxlength="8" value = "<?php echo $agri["survey_no"];?>"></td>
+  <td><select name = "villagename[]">
+               
+                    <OPTION value="<?php echo $agri["villagename"]; ?>">
+                    <?php echo $agri["village"]; ?>
+                    </OPTION>
+                    <?php foreach ($this->village as $village) {  ?>
+                        <? if($agri["village"] != $village["village"] ) {?>
+                           <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
+                    <?php } } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
             </td> 
            
             <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
@@ -288,7 +329,7 @@ $(document).ready(
         <?php } ?>
     </table> 
 
- <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">
+ <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"  >
     <input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 </div>
