@@ -136,10 +136,11 @@
                 <td><INPUT type="text" name = "dob[]" class="date required datechange" id="date-<?php echo $i; ?>" value="<?php echo $convertdate->normalformat($familydetails['dob']); ?>"></td>
                 <INPUT type="hidden" name = "currentdate[]" id="currentdate" value="<?php echo $this->currentdate?>"></td>
                 <td><INPUT type="text" name = "age[]" size="3" maxlength="2" value="<?php echo $familydetails['age']?>" class="agechange" id="age-<?php echo $i; ?>"></td> 
-                <td><select name = "relation[]">
+                <td><select name = "relation[]" class="selectvalid required">
                         <OPTION value="<?php echo $familydetails["relationship_id"]; ?>">
                             <?php echo $familydetails["relationname"]; ?>
                         </OPTION>
+                        <option value=0>select</option>
                 <?php 
                 foreach ($this->relation as $relation) 
                 {
@@ -152,11 +153,11 @@
                 </td>
 
 
-                <td><select name = "gender[]">
+                <td><select name = "gender[]" class="selectvalid required">
                         <OPTION value="<?php echo $familydetails["gender_id"]; ?>">
                             <?php echo $familydetails["gendername"]; ?>
                         </OPTION>
-                        <option>select</option>
+                        <option value=0>select</option>
                 <?php 
                 foreach ($this->gender as $gender) 
                 {
@@ -168,10 +169,11 @@
                 </select>
                 </td>
 
-                <td><select name = "marital[]">
+                <td><select name = "marital[]" class="selectvalid required">
                         <OPTION value="<?php echo $familydetails["maritalstatus_id"]; ?>">
                             <?php echo $familydetails["maritalname"]; ?>
                         </OPTION>
+                        <option value=0>select</option>
                 <?php 
                 foreach ($this->marital as $marital) 
                 {
@@ -217,10 +219,11 @@
                 </select>
                 </td>
 
-                <td><select name = "education[]">
+                <td><select name = "education[]" class="selectvalid required">
                         <OPTION value="<?php echo $familydetails["eductaion_id"]; ?>">
                             <?php echo $familydetails["qualifyname"]; ?>
                         </OPTION>
+                        <option value=0>select</option>
                     <?php foreach ($this->qualify as $qualify) { 
                                 if($qualify['id']!= $familydetails["eductaion_id"]) { ?>
                     <option value="<?php echo $qualify['id']?>"><?php echo $qualify['name']?></option>
@@ -229,10 +232,11 @@
                 </select>    
                 </td>
 
-                <td><select name = "employ_status[]">
+                <td><select name = "employ_status[]" class="selectvalid required">
                         <OPTION value="<?php echo $familydetails["employment_status"]; ?>">
                             <?php echo $familydetails["employmentname"]; ?>
                         </OPTION>
+                        <option value=0>select</option>
                     <?php foreach ($this->employment as $employment) { 
                                 if($employment['id']!= $familydetails["employment_status"]) { ?>
                     <option value="<?php echo $employment['id']?>"><?php echo $employment['name']?></option>
@@ -269,6 +273,7 @@
                 <OPTION value="<?php echo $familydetails["promoter_id"]; ?>">
                     <?php echo $familydetails["promoter"]; ?>
                 </OPTION>
+                        <option value=0>select</option>
                     <option value=0>Select</option>
                     <?php foreach ($this->promoter as $cbopromoter) {
                     if($cbopromoter['id']!= $familydetails["promoter_id"]) { ?>
@@ -278,7 +283,7 @@
                 </td>
 
                 <td><div id="cbodiv-1" class="cboclass">
-                        <select name = "cbo[]" class="selectvalid">
+                        <select name = "cbo[]" class="selectvalid required">
                 <OPTION value="<?php echo $familydetails["cbo_id"]; ?>">
                     <?php echo $familydetails["cbos"]; ?>
                 </OPTION>
@@ -311,6 +316,7 @@
                     <OPTION value="<?php echo $familydetails["bank"]; ?>">
                         <?php echo $familydetails["bankname"]; ?>
                     </OPTION>
+                        <option value=0>select</option>
                 <?php
                         foreach ($banknames as $banknames) {  
                         if($banknames['id']!= $familydetails["bank"]) { ?>
@@ -324,10 +330,11 @@
                 <td>
 
                 <div id="branchdiv-<?php echo $i; ?>" class="branchclass">
-                    <select name = "branch[]">
+                    <select name = "branch[]" class="selectvalid required">
                 <OPTION value="<?php echo $familydetails["branch_po"]; ?>">
                     <?php echo $familydetails["branchname"]; ?>
                 </OPTION>
+                        <option value=0>select</option>
                     <?php
                      foreach ($branchname as $branch) {  
                      if($branch['id']!= $familydetails["branch_po"]) { ?>
@@ -343,10 +350,11 @@
                    <INPUT type="hidden" name = "recordid[]" value="<?php echo $familydetails['id']?>">
                 </td>
 
-                <td><select name = "blood[]">
+                <td><select name = "blood[]" class="selectvalid required">
                 <OPTION value="<?php echo $familydetails["blood_id"]; ?>">
                     <?php echo $familydetails["blood"]; ?>
                 </OPTION>
+                        <option value=0>select</option>
                     <?php foreach ($this->blood as $blood) { 
                       if($blood['id']!= $familydetails["blood_id"]) { ?>
                     <option value="<?php echo $blood['id']?>"><?php echo $blood['name']?></option>
