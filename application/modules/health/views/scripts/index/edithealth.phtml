@@ -16,6 +16,21 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+<script language="javascript">
+$(document).ready(function(){
+        $('.none').click(function(){
+        ids = $(this).attr('id').split('_');
+        if($("#none_"+ids[1]).is(':checked')) {
+            
+            $('.alldisease'+ids[1]).attr('disabled',true);
+            $('.alldisease'+ids[1]).attr('checked',false);
+        } else {
+            $('.alldisease'+ids[1]).attr('disabled',false);
+        }
+        });
+});
+</script>
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
@@ -26,11 +41,11 @@
     <?php 
     foreach($this->membernames as $family_view){ ?>
 
-    <tr>
+<tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+        <td ><?php //echo $this->translate("Caste:"); ?></td>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -47,14 +62,14 @@
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
         <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
-        <td ><?php echo $this->revvillagename; ?></td>
+        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
         <td ><?php echo $this->translate("Major source of income:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
@@ -77,6 +92,9 @@
 <form action="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>" method="POST">
 <div style="width:750px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
 <?php 
+$dbmodel=new Health_Model_health();
+
+
 $hlen = count($this->habitdetails);
 $clen = count($this->challengedetails);
 $actlen = $hlen > $clen ? $hlen : $clen;
@@ -105,7 +123,8 @@ $adm = new App_Model_Adm();
 for($i=0;$i<$this->membercount;$i++) { 
 $selectedHabits = array();
 $selectedChallenges = array();
-
+$nonemembers = array();
+$nonemembers = $this->nonemem;
 ?>
 <br>
     <table id="hor-minimalist-b" border="1" width="100%">
@@ -117,10 +136,53 @@ $selectedChallenges = array();
         </td>
         </tr>
         <tr>
-        <?php $chronic = $adm->getsingleRecord('ourbank_healthdiseasedetails','suggestion','member_id',$nameid[$i]);?>
+         <?php 
+
+//             $diseasetype = $dbmodel->getselecteddisease($nameid[$i]); // get selected disease id's
+//             foreach ($diseasetype as $diseasetypes){
+//                     $diseaseselect[] = $diseasetypes['healthdisease']; // set all avail disease list 
+//                 }
+?>
         <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
-            <td colspan="2"><textarea  rows="3" cols="18" name="suggestion_<?php echo $nameid[$i]; ?>"><?php echo $chronic;?></textarea>
-            </TD>
+       <!-- <td colspan="2">
+        <select multiple="true" name="healthdisease_<?php //echo $nameid[$i];?>[]" >
+                <?php //
+                //foreach($this->diseasedetails as $masterdisease)
+               // {
+                   // if(in_array($masterdisease['id'],$diseaseselect)) { ?>
+                        <option value="<?php //echo $masterdisease['id']; ?>" selected ><?php //echo //$masterdisease['name'];?></option>
+                            <?php  //
+                   // }/
+                   // else
+                    //{ ?>
+                        <option value="<?php //echo $masterdisease['id']; ?>"  ><?php //echo $masterdisease['name'];?></option> 
+                        <?php
+                  //  }
+              //  }    ?>    
+        </select>-->
+<td colspan="2">
+     <!--   <select multiple="true" name="healthdisease_<?php //echo $nameid[$i];?>[]" size="5">
+                   <?php //foreach ($this->disease as $disease) { ?>
+                            <option value="<?php //echo $disease['id']?>"><?php //echo $disease['name']?></option>
+                            <?php //} ?>
+        </select>-->
+        <?php if(in_array($nameid[$i],$nonemembers)) { ?>
+        <input type="checkbox" name="none" class="none" checked="true" id="none_<?php echo $nameid[$i];?>" />None <br>
+
+        <?php } else {  ?>
+
+<input type="checkbox" name="none" class="none"  id="none_<?php echo $nameid[$i];?>" />None <br>
+
+
+        <?php 
+        }
+//             $a='none'.$nameid[$i];
+            $b='healthdisease'.$nameid[$i];
+//             echo $this->form->$a;
+            echo $this->form->$b;
+        ?>
+        </TD>
+
         </tr>
 
     </table>
@@ -129,7 +191,6 @@ $selectedChallenges = array();
     <td width="20%"><b>Habits</b></td>
     <?php foreach($this->habitdetails as $habits){ 
 
-    $dbmodel=new Health_Model_health();
     $selectedHab = $dbmodel->getselectedhabit($nameid[$i]); // get selected health id's
 
     foreach ($selectedHab as $selectedHabit){

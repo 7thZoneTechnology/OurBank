@@ -69,4 +69,15 @@ class Health_Model_health  extends Zend_Db_Table {
         return $result->toArray();  // return the physical details for particular member
 
     }
+
+     public function getselecteddisease($memberid){
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_healthdiseasedetails'),array('a.id'),array('healthdisease'))
+                ->where('a.member_id='.$memberid);
+        $result=$this->fetchAll($select);
+        return $result->toArray();  // return the health disease details for particular member
+
+    }
+
 }
