@@ -29,6 +29,10 @@ $(document).ready(
         newRow.find("select").each( function() {
             $(this).children(':first').attr('selected', 'selected');
         });
+        valueselect = newRow.find("select").val();
+        if(valueselect!=0){
+            newRow.find("select").val(0);
+        }
         newRow.find("input:text").val("");
         newRow.find("input:checkbox").removeAttr('checked');
         newRow.find("input:hidden").removeAttr('value');
@@ -43,6 +47,8 @@ $(document).ready(
                        parseDate:'dd/mm/yyyy',
                        commandsAsDateFormat:true,});
         });
+
+        $('')
         arrangeCheckboxNames();
         arrangeRadioNames();
         arrangedateid();
@@ -78,6 +84,10 @@ $(document).ready(
     $('tr#tmp').find('input.agechange').attr( 'id', 'age-'+length );
     $('tr#tmp').find('div.branchclass').attr( 'id', 'branchdiv-'+length );
     $('tr#tmp').find('select.bankfilter').attr( 'id', 'bank-'+length );
+    $('tr#tmp').find('div.cboclass').attr( 'id', 'cbodiv-'+length );
+    $('tr#tmp').find('div.bankclass').attr( 'id', 'bankdiv-'+length );
+    $('tr#tmp').find('select.cbofilter').attr( 'id', 'cbopromoter-'+length );
+    $('tr#tmp').find('select.findbank').attr( 'id', 'accounttype-'+length );
     $('tr#tmp').find('select.interest').attr( 'id', 'source-'+length );
     $('tr#tmp').find('input.disableid').attr( 'id', 'disable-'+length );
     $('tr#tmp').find('input.disableamt').attr( 'id', 'amtdisable-'+length );
@@ -90,6 +100,10 @@ $(document).ready(
         $(this).find('input.agechange').attr( 'id', 'age-'+length );
         $(this).find('div.branchclass').attr( 'id', 'branchdiv-'+length );
         $(this).find('select.bankfilter').attr( 'id', 'bank-'+length );
+        $(this).find('div.cboclass').attr( 'id', 'cbodiv-'+length );
+        $(this).find('div.bankclass').attr( 'id', 'bankdiv-'+length );
+        $(this).find('select.cbofilter').attr( 'id', 'cbopromoter-'+length );
+        $(this).find('select.findbank').attr( 'id', 'accounttype-'+length );
         $(this).find('select.interest').attr('id', 'source-'+length);
         $(this).find('input.disableid').attr('id', 'disable-'+length);
         $(this).find('input.disableamt').attr('id', 'amtdisable-'+length);
@@ -146,13 +160,33 @@ $(document).ready(
         }
     })
 
-    $('.bankfilter').change(function() {
+    $('.bankfilter').change(function() { alert('Hi prakash');
         var id=$(this).attr("id").split("-");
         if($(this).val())
         {  bank_id=$(this).val();
            path=$('#baseurl').val();
            targeturl=path+"/familymembers/index/getbranch?bank_id="+bank_id;
 	   $.ajax({ url: targeturl, success: function(data){ $('#branchdiv-'+id[1]).html(data) }});
+        }
+    });
+
+    $('.cbofilter').change(function() {
+        var id=$(this).attr("id").split("-");
+        if($(this).val())
+        {  cbo_id=$(this).val();
+           path=$('#baseurl').val();
+           targeturl=path+"/familymembers/index/getcbo?cbo_id="+cbo_id;
+	   $.ajax({ url: targeturl, success: function(data){ $('#cbodiv-'+id[1]).html(data) }});
+        }
+    });
+
+    $('.findbank').change(function(){
+        var id=$(this).attr("id").split("-");
+        if($(this).val())
+        {  type_id=$(this).val();
+           path=$('#baseurl').val();
+           targeturl=path+"/familymembers/index/getbank?type_id="+type_id+"&divid="+id[1]; alert(targeturl);
+	   $.ajax({ url: targeturl, success: function(data){ $('#bankdiv-'+id[1]).html(data) }});
         }
     });
 
