@@ -53,9 +53,9 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         $familycommon=new Familycommonview_Model_familycommonview(); 
         $member_name=$familycommon->getfamily($id);
         $revvillageid=$member_name[0]['rev_village_id'];
-//         if($revvillageid){
-//         $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-//         $this->view->revvillagename=$revvillagename[0]['name']; }
+        if($revvillageid){
+        $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+        $this->view->revvillagename=$revvillagename[0]['name']; }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }

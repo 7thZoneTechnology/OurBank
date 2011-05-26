@@ -264,9 +264,13 @@ public function getchronicdisease($familyid){
         ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
         ->join(array('i'=>'ourbank_master_branch'),'a.branch_po=i.id',array('i.name as branchname'))
         ->join(array('j'=>'ourbank_master_bloodtype'),'a.blood_id=j.id',array('j.name as blood'))
-        ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name as bankname'))                ->join(array('k'=>'ourbank_master_gender'),'a.gender_id = k.id',array('k.name as gendername'));
+        ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name as bankname'))                ->join(array('k'=>'ourbank_master_gender'),'a.gender_id = k.id',array('k.name as gendername'))
 
-        //die($select->__toString($select));
+        ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name as promoter'))
+        ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
+        ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name as accountype'));
+
+     //   die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
    }

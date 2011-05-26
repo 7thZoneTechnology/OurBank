@@ -147,7 +147,9 @@
         <th ><?php echo $this->translate("Education Level"); ?></th>
         <th ><?php echo $this->translate("Employment Status"); ?></th>
         <th ><?php echo $this->translate("Profession"); ?></th>
-        <th ><?php echo $this->translate("CBO Status"); ?></th>
+        <th ><?php echo $this->translate("CBO promoter"); ?></th>
+        <th ><?php echo $this->translate("CBO"); ?></th>
+        <th ><?php echo $this->translate("Account type"); ?></th>
         <th ><?php echo $this->translate("Bank/PO"); ?></th>
         <th ><?php echo $this->translate("Branch"); ?></th>
         <th ><?php echo $this->translate("Bank Account No"); ?></th>
@@ -179,7 +181,9 @@
         <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
                    $profession=$familycommon->getprofession($family['id']);
                   $m=1; foreach($profession as $profession1)  {  echo $m.". ".$profession1['professionname']."<br>"; $m++;  } ?></td>
-        <td align="center"><?php if($family['cbo_member']==1){ ?> <img src="<?php echo $this->baseUrl() ?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
+        <td><?php echo $family['promoter']; ?></td>
+        <td><?php echo $family['cbos']; ?></td>
+        <td><?php echo $family['accountype']; ?></td>
         <td><?php echo $family['bankname']; ?></td>
         <td><?php echo $family['branchname']; ?></td>
         <td><?php echo $family['bank_ac']; ?></td>
@@ -258,7 +262,7 @@
         <?php if(($this->agriculture)!=NULL) { ?>
         <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
         <?php } else { ?>
-        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
         <?php } ?>
     </tr>
 </table>

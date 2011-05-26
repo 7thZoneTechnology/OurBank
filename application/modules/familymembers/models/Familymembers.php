@@ -33,7 +33,10 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                 ->join(array('g'=>'ourbank_master_branch'),'a.branch_po=g.id',array('g.name as branchname'))
                 ->join(array('i'=>'ourbank_master_bloodtype'),'i.id=a.blood_id',array('i.name as blood'))
                 ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
-                ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name as gendername'));
+                ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name as gendername'))
+            ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name as promoter'))
+            ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
+            ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name as accountype'));
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
@@ -77,6 +80,28 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                 ->setIntegrityCheck(false)
                 ->join(array('a'=>'ourbank_master_branch'),array('a.id'),array('a.id','a.name as branchname'))
                 ->where('a.bank_id=?',$bank_id);
+//        die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function getcbo($cbo_id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_cbos'),array('a.id'),array('a.id','a.name as cboname'))
+                ->where('a.cbopromoter_id=?',$cbo_id);
+//        die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function getbank($type_id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_bank'),array('a.id'),array('a.id','a.name as bankname'))
+                ->where('a.accounttype_id =?',$type_id);
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
