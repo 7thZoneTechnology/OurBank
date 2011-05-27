@@ -41,7 +41,7 @@ class Meetingbookindex_Model_Meetingbookindex extends Zend_Db_Table {
     {
         $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ourbank_attendance'),array('id'),array('a.id as attid','a.meeting_date','a.week_no'))
+                ->join(array('a' => 'ourbank_attendance'),array('id'),array('a.id as attid','a.meeting_date','a.week_no','a.transaction_id'))
                 ->group('a.id')
                 ->join(array('b' => 'ourbank_group'),'a.meeting_id = b.id');
 // die($select->__toString($select));

@@ -24,6 +24,8 @@ $(document).ready(
                 newrowobj=$(this).children(':first');
                 inputobj=newRow.find("input:text");
                 inputobj.val("");
+                newRow.find('span').remove();
+
         newRow.appendTo('.asset tbody');
         $(selectobj).attr('id', 'select'+rowindex);
              trobjec.each(function (index, domEle) {
@@ -36,11 +38,22 @@ $(document).ready(
        });
         
            $('tr#tmp').closest('table').find('input:text.date').each(function() {
-           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy'});
+           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate : '+0D',});
         });
 
       }
     );
+
+  $('.select').change(function(){
+            if($(this).val() == 'Select'){
+                    $(this).after('<span style="color: #FF0000">Choose proper Asset</span>');
+            } else {
+                    $(this).next('span').remove();
+            }
+    });
+
+
+
     $('tr input[type=text]').focus(
       function() {
         $(this).addClass('myFocused');
@@ -50,8 +63,9 @@ $(document).ready(
         $(this).removeClass('myFocused');
       }
     );
-    $(".date").datepick({dateFormat: 'dd/mm/yyyy'});
+      $(".date").datepick("option",{dateFormat: 'dd/mm/yyyy', maxDate : '+0D', });
 
+       
     $('.delete-icon').click(function() {
         $(this).closest('tr').not('#tmp').remove();
     });
@@ -71,6 +85,17 @@ $(document).ready(function() {
                 if($(this).next('span').length > 0 )
                     $(this).next('span').remove();
             }
+        });
+
+ $(this).find(':select.select').each(function() {
+            if($(this).val() == 'Select'){
+                        if($(this).next('span').length == 0 ) {
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                }
+                e.preventDefault();
+                return;            } else {
+                        if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();            }
         });
         $(this).find(':text.numeric').each(function() {
             var regex = new RegExp(/^[1-9][0-9]*$/);
@@ -109,12 +134,11 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <?php 
     $convertdate = new App_Model_dateConvertor();
     foreach($this->membername as $family_view){ ?>
-
-    <tr>
+<tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+        <td ><?php //echo $this->translate("Caste:"); ?></td>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -131,14 +155,14 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
         <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
-        <td ><?php echo $this->revvillagename; ?></td>
+        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
         <td ><?php echo $this->translate("Major source of income:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
@@ -174,11 +198,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
             <?php } else { ?>
             <tr>
             <?php } ?>
-        <td><select name = "assettype[]" id="select1">
-
+        <td><select name = "assettype[]" id="select1" class="select">
+               
                     <OPTION value="<?php echo $editAsset["liveasset_id"]; ?>">
                     <?php echo $editAsset["name"]; ?>
                     </OPTION>
+ <option>Select</option>
                     <?php foreach ($this->liveasset_details as $assetdetails) { ?>
                         <? if($editAsset["name"] != $assetdetails["name"] ) {?>
                            <option value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['name']?></option>
@@ -186,9 +211,9 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 					?>
                 </select>    
                 </td>
-                <td><INPUT type="text" name = "number[]" size="6" class="required numeric" maxlength="6" value = "<?php echo $editAsset["number"] ;?>" class="required"></td>
-                <td><INPUT type="text" name = "value[]" class="required numeric" maxlength="6" value = "<?php echo $editAsset["value"];?>" class="required"></td>
-		<td><INPUT type="text" name = "date[]" class="date required" value = "<?php echo $dateconvert->phpnormalformat($editAsset['date_of_value']) ?>"></td>
+                <td><INPUT type="text" name = "number[]" size="6" class="required numeric " maxlength="6" value = "<?php echo $editAsset["number"] ;?>" class="required"></td>
+                <td><INPUT type="text" name = "value[]"  maxlength="6" value = "<?php echo $editAsset["value"];?>" ></td>
+		<td><INPUT type="text" name = "date[]" class="date" value = "<?php if($editAsset['date_of_value'] != null) { echo $dateconvert->phpnormalformat($editAsset['date_of_value']); } else { echo "Null"; }  ?>"></td>
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr> 
 				<input type="hidden" name="subid" value="<?php echo $this->submoduleid;?>">

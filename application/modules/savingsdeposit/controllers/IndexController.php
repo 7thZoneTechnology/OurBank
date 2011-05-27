@@ -46,13 +46,17 @@ class Savingsdeposit_IndexController extends Zend_Controller_Action
             $acc = $this->_request->getPost('accNum');
                 if($searchform->isValid($formdata)){
                     $validaccno = $fixedSavings->savingsAccountsSearch($acc);
-                         if ($validaccno){
-                             $this->_redirect("/savingsdeposit/index/deposit/accNum/".base64_encode($acc));
-                        }else
-                            {
-                                $this->view->error = "Account number does not exist";
-                            }
-                }
+                    $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
+                                if($tagAcc!=0){
+                                            $this->view->error = "Enter valid Account number";
+                                }else {
+                                    if ($validaccno){
+                                        $this->_redirect("/savingsdeposit/index/deposit/accNum/".base64_encode($acc));
+                                    }else{
+                                            $this->view->error = "Account number does not exist";
+                                    }
+                                }
+                }   
         }
     }
     public function depositAction()

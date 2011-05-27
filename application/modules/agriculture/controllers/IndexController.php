@@ -132,6 +132,7 @@ class Agriculture_IndexController extends Zend_Controller_Action
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
         $this->view->owner = $agriculture->owner($this->_getParam('id'));
         $this->view->village = $agriculture->village($this->_getParam('id'));
+        $this->view->acquistion=$acquistion = $agriculture->ownershiptypes();
 
 
         if ($revvillageid) {
@@ -167,6 +168,8 @@ class Agriculture_IndexController extends Zend_Controller_Action
 
             $family_model->deleteagri($id);
             $land_id=$this->_request->getParam('tenant');
+            $acquistion=$this->_request->getParam('acquistion');
+
             $village_id=$this->_request->getParam('villagename');
             $ownername=$this->_request->getParam('ownername');
             $survey_no=$this->_request->getParam('survey');
@@ -178,6 +181,8 @@ class Agriculture_IndexController extends Zend_Controller_Action
                 $agri = array('id' => '',
                             'family_id'=>$member_id,
                             'landowner_name'=>$ownername[$i],
+                            'acquistion_id'=>$acquistion[$i],
+
                             'land_id'=>$land_id[$i],
                             'villagename'=>$village_id[$i],
                             'survey_no' => $survey_no[$i],

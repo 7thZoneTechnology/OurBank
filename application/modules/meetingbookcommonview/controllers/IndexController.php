@@ -49,6 +49,7 @@ class Meetingbookcommonview_IndexController extends Zend_Controller_Action{
 
 		$this->view->attendance_id=$attendance_id=$this->_request->getParam('attendance_id');
 		$this->view->week=$week=$this->_request->getParam('week');
+		$this->view->transaction_id=$transaction_id=$this->_request->getParam('transID');
                 $this->view->meetingweek=$week;
 		$fetchattendance=new Meetingbookcommonview_Model_attendanceview();
 		$this->view->fetchattendance=$fetchattendance1=$fetchattendance->fetchattendancedetailsforID($attendance_id,$week); 

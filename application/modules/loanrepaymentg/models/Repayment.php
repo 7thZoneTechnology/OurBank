@@ -144,6 +144,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
 	       sum(A.installment_interest_amount) as intrest,
                sum(A.installment_amount) as totalAmt,
                 A.installment_amount as installmentAmt,
+                A.installment_date,
                 A.account_id as accId
                FROM
                ourbank_installmentdetails A,
@@ -181,47 +182,8 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         }
         return $int;
     }
-    public function declainDetalis($accNum,$accId,$date)
-    {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select 
-                *
-                from
-                ourbank_installmentdetails 
-                where account_id='".$accId."' 
-                AND installment_status = 4";
-        //echo $sql;
-        $data = $db->fetchAll($sql);
-        foreach ($data as $data) {
-                $int = $data->installment_interest_amount;
-                $id = $data->installment_id;
-                $instAmt = $data->installment_amount;
-                $principal = $data->installment_principal_amount;
-                $rPrincipal = $data->reduced_prinicipal_balance;
-                $closeddate = $data->installment_date;
-        }
-        $acc = $this->searchaccounts($accNum);
-        foreach ($acc as $acc) {
-            $accId = $acc->accId;
-            $loanAmt = $acc->amount;
-            $interest = $acc->interest;
-        }
-        //$dateDiff = 1;
-        $date;
-        $dateDiff = $this->dateDiff(date("Y-m-d"),$date);
-        if ($dateDiff  == 0) {
-            $dateDiff = 1;
-        } 
-        //PTR
-        $si = ($rPrincipal*$dateDiff*$interest)/(100*365); // interest per day
-        $capital = $si+$rPrincipal;
-        return array('principal' => $rPrincipal,
-                    'intrest' => round($si,2),
-                    'totalAmt' => round($capital,2),
-                    'si' => $si,
-                    'capital' => $capital);
-    }
-    public function declain($data) 
+
+    public function declain($data,$totalAmt,$int,$p)
     {
         $cl = new App_Model_dateConvertor ();
         $amt = $data["amount"];
@@ -233,35 +195,73 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
             $interest = $acc->interest;
             $installments = $acc->installments;
         }
-        $installments = $this->declainDetalis($data["accNum"],$accId,$data["date"]);
-        $rPrincipal = $installments["principal"];
-        $int = $installments["intrest"];
-        $si = $installments["si"];
-        $totalAmt = $installments["totalAmt"];
-        $capital = $installments["capital"];
-        $where[] = "account_id = '".$accId."'";
-        $where[] = "installment_status = 4";
-        $set =  array('installment_status' => '2',
-                        'paid_amount' => $amt,
-                        'installment_principal_amount' => $amt - $int,
-                        'installment_interest_amount' => $int);
-        $db->update('ourbank_installmentdetails',$set,$where);
-        
-        $sql = "select id from ourbank_installmentdetails where account_id='".$accId."' AND installment_status = 2 limit 1";
+
+        $sql = "select MAX(installment_id) as id from ourbank_installmentdetails where account_id='".$accId."' AND installment_status = 2 limit 1";
+
         $idData = $db->fetchAll($sql);
+        if($idData){
         foreach ($idData as $idData) {
-                $pram = $idData->id;
+                $pram = $idData->id+1;
         }
-        $status = 4;
+        }
+        else
+        {
+            $pram = 1;
+        }
         $instl = array('account_id' => $accId,
-                            'installment_id' => ($pram + 2),
-                            'installment_date' => "2011-09-09",
-                            'installment_amount' => ($rPrincipal - $amt),
-                            'reduced_prinicipal_balance'=> ($rPrincipal - $amt),
-                            'installment_status' => $status,
-                            'created_by' => 1);
+                            'installment_id' => $pram,
+                            'installment_date' => $cl->phpmysqlformat($data['date']),
+                            'installment_amount' => $totalAmt,
+                            'reduced_prinicipal_balance'=>$totalAmt-$data["amount"],
+                            'paid_amount' => $data["amount"],
+                            'installment_interest_amount'=> $int,
+                            'installment_principal_amount'=> $p,
+                            'installment_status' => 2,
+                            'created_by' => 1); 
         $this->addRecord('ourbank_installmentdetails',$instl);
-        return $int; 
+
+        return $int;
+    }
+
+    public function maxid($accNum)
+    {
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+        ->join(array('b'=>'ourbank_installmentdetails'),'a.id=b.account_id',array('MAX(b.installment_id) as maxid'))
+        ->where('a.account_number=?',$accNum)
+        ->group('a.account_number');
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+
+    }
+
+    public function declainedpaid($accNum,$maxid)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+                                ->join(array('b'=>'ourbank_installmentdetails'),'a.id=b.account_id',array('b.reduced_prinicipal_balance','b.installment_id','b.installment_date'))
+                                ->where('a.account_number=?',$accNum)
+                                ->where('b.installment_id=?',$maxid);
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function declaineddisbursed($accno)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+                                ->join(array('b'=>'ourbank_loan_disbursement'),'a.id=b.account_id',array('b.loandisbursement_date','SUM(b.amount_disbursed) as amount'))
+                                ->where('a.account_number=?',$accno)
+                                ->group('a.account_number');
+        //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+
     }
     public function more($accId,$amt,$accNum) 
     {
@@ -474,13 +474,14 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                          'record_status' => 3);
        	$db->insert('ourbank_Assets',$glassets);
         // Insertion into Assets ourbank_Liabilities productgl Cr entry
-		$glLia =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $gl,
-                         'glsubcode_id_to' => '',
-                         'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
-                         'record_status' => 3);
-       	$db->insert('ourbank_Liabilities',$glLia);
+// 		$glLia =  array('office_id' => $officeid,
+//                          'glsubcode_id_from' => $gl,
+//                          'glsubcode_id_to' => '',
+//                          'transaction_id' => $tranId,
+//                          'credit' => $data["amount"],
+//                          'record_status' => 3);
+//        	$db->insert('ourbank_Liabilities',$glLia);
+
         // Insertion into Assets ourbank_Assets interest Cr entry
         $interest =  array('office_id' => $officeid,
                          'glsubcode_id_from' => $intGl,
@@ -509,7 +510,8 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql="SELECT 
                 count(*) as paidCount,
-                sum(A.paid_amount) as paidAmt
+                sum(A.paid_amount) as paidAmt,
+                sum(A.installment_principal_amount) as principal_amount
                 FROM
                 ourbank_installmentdetails A,
                 ourbank_accounts B
@@ -517,10 +519,31 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 B.account_number = '$accNum' AND
                 B.id = A.account_id AND 
                 (A.installment_status = 2 OR
-                A.installment_status = 8 )
+                A.installment_status = 8 ) group by account_number
                 ";
+        //echo $sql;
         return $db->fetchAll($sql);
     }
+
+    public function disbursedamount($accNum)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql="SELECT 
+                count(*) as paidCount,
+                sum(A.amount_disbursed) as disbursedAmt
+                FROM
+                ourbank_loan_disbursement A,
+                ourbank_accounts B
+                WHERE
+                B.account_number = '$accNum' AND
+                B.id = A.account_id
+                ";
+
+        return $db->fetchAll($sql);
+
+    }
+
     public function unpaid($accNum) 
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -535,8 +558,10 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                B.account_number = '$accNum' AND
                B.id = A.account_id AND 
                (A.installment_status = 3 OR
-			   A.installment_status = 4)";
+			   A.installment_status = 4) group by account_number";
+        //echo $sql;
 		return $db->fetchAll($sql);
+
     }
     public function getMember($accNum)
     {
@@ -580,13 +605,20 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
     }
     public function dateDiff($date1,$date2)
     {
-        //explode the date by "-" and storing to array
-        $date_parts1=explode("-", $date1);
-        $date_parts2=explode("-", $date2);
-        //gregoriantojd() Converts a Gregorian date to Julian Day Count
-        $start_date=gregoriantojd($date_parts1[1], $date_parts1[2], $date_parts1[0]);
-        $end_date=gregoriantojd($date_parts2[1], $date_parts2[2], $date_parts2[0]);
-        return $end_date - $start_date;
+
+            $start_ts = strtotime($date1);
+            $end_ts = strtotime($date2);
+            $diff = $end_ts - $start_ts;
+            return round($diff / 86400);
+
+
+//         explode the date by "-" and storing to array
+//         $date_parts1=explode("-", $date1);
+//         $date_parts2=explode("-", $date2);
+//         gregoriantojd() Converts a Gregorian date to Julian Day Count
+//         $start_date=gregoriantojd($date_parts1[1], $date_parts1[2], $date_parts1[0]);
+//         $end_date=gregoriantojd($date_parts2[1], $date_parts2[2], $date_parts2[0]);
+//         return $end_date - $start_date;
     }
 
     public function getdisbursementdetails($accNum)

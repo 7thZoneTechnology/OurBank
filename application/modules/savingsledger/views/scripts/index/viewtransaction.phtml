@@ -18,29 +18,28 @@
 !-->
 
 <?php if($this->accountDetails) { ?>
-<fieldset>
-    <legend>Account Details</legend>
 	<div class="cont-rgt-data">
-            <TABLE id="hor-minimalist-b" summary="">
+            <TABLE id="hor-minimalist-b" >
+		<th colspan="4" >Account Details</th>
             <?php foreach($this->accountDetails as $accountDetails) : ?>
             <TR>
-                <TD >Name</TD>
+                <TD >Name :</TD>
                 <TD ><?php echo $accountDetails["membername"];?></TD>
-                <TD >A/c name</TD>
+                <TD >A/c name :</TD>
                 <TD ><?php echo $accountDetails["offername"];?></TD>
 
             </TR>
             <TR >
-                <TD >ID</TD>
+                <TD >ID :</TD>
                 <TD ><?php echo $accountDetails["membercode"];?></TD>
-                <TD >A/c number</TD>
+                <TD >A/c number :</TD>
                 <TD ><?php echo $accountDetails["account_number"];?></TD>
             </TR>
            
             <TR >
-                <TD >Branch name</TD>
+                <TD >Branch name :</TD>
                 <TD ><?php echo $accountDetails["office_name"];?></TD>
-                <TD>Balance</TD>
+                <TD>Balance :</TD>
                 <TD ><?php $accno=$accountDetails["account_number"];
 			$bal=new Savingsledger_Model_Savingsledger();
 			$balance=$bal->balance($accno);	
@@ -50,21 +49,16 @@
             <?php endforeach; ?>
             </TABLE>
     </div>
-</fieldset>
 <?php } ?>
 
 
 
 <br>
 <form action="<? echo $this->baseUrl();?>/reports/transactiondetails/viewtransaction/field1/<? echo $this->fromdate; ?>/field2/<? echo $this->todate; ?>/field4/<? echo $this->accno; ?>/pagetitle/<? echo $this->pagetitlevalue; ?>" method="POST">
-<fieldset>
-    <legend>Transaction Details</legend>
-<br>
-<p style="text-align:left; font-size:15px;"><? echo $this->resultshow; ?></p>
+<TABLE id="hor-minimalist-b" >
+    <th colspan="8">Transaction Details</th>
 <h3 style="text-align:right"><font color="red">*</font> Amount in <font color="red">Rs</font></h3>
 	<div class="cont-rgt-data">
-
-            <TABLE id="hor-minimalist-b" >
                 <tr class="tdbrownheading">
                     <th>V.No</th>
 		    <th>Name</th>
@@ -116,10 +110,11 @@
 				</div>
 			</td>
    		 </tr>
-		
-                </TABLE>
-    </div>
-</fieldset>
+		</div>
+                </TABLE><br>
+<p style="text-align:left; font-size:15px;"><? echo $this->resultshow; ?></p>
+    
+
 </form>
 
 <form action="<?php echo $this->baseUrl();?>/savingsledger/index/pdftransaction/fromdate/<?php echo $this->fromdate;?>/todate/<?php echo $this->todate;?>/accno/<?php echo $this->accno;?>/pagetitle/<? echo $this->pagetitlevalue;?>" method="POST"

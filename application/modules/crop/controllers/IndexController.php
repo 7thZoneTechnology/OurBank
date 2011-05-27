@@ -95,6 +95,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $dateconvert= new App_Model_dateConvertor();
 	$crop = new Crop_Model_Crop ();
 	$this->view->cropdetails = $crop->getCrop();
+	$this->view->seasondetails = $crop->getSeason();
+
+
 	$this->view->units = $crop->getUnits();
 
         if ($this->_request->getPost('submit')) {
@@ -103,6 +106,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
             if($formdata['enteredacre']>=$formdata['availableacre']){ 
             $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
             } else {   
+            $tenant=$this->_getParam('tenant');
+            $season=$this->_getParam('season');
+
             $acer=$this->_getParam('acre');   
             $gunta=$this->_getParam('gunta');
             $unit=$this->_getParam('unit');
@@ -116,6 +122,8 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                         if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
                 $crop = array('family_id' => $member_id,
                               'crop_id' => $val,
+ 'land_id' => $tenant[$i],
+                              'season_id' => $season[$i],
                               'acre' => $acer[$i],
                               'gunta' => $gunta[$i],
                               'unit'=>$unit[$i],
@@ -170,6 +178,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $path1= $this->view->path1=strtolower($path1);
 	$crop = new Crop_Model_Crop ();
 	$this->view->cropdetails = $crop->getCrop();
+	$this->view->seasondetails = $crop->getSeason();
+	$this->view->units = $crop->getUnits();
+
         //update contact details
         if ($this->_request->getPost('submit')) {
                     $formdata=$this->_request->getPost();
@@ -184,8 +195,11 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                 $this->view->adm->addRecord("ourbank_cropdetails_log",$editCrop[$j]);
             }
             $crop->deletecrop($id);
+            $tenant=$this->_getParam('tenant');
             $acer=$this->_getParam('acre');
             $gunta=$this->_getParam('gunta');
+            $season=$this->_getParam('season');
+
             $unit=$this->_getParam('unit');
             $quantity=$this->_getParam('quantity');
             $marketed=$this->_getParam('marketed');
@@ -198,6 +212,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                         if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
                 $crop = array('family_id' => $id,
                               'crop_id' => $val,
+                            'land_id' => $tenant[$i],
+                              'season_id' => $season[$i],
+
                               'acre' => $acer[$i],
                               'gunta' => $gunta[$i],
                               'unit'=>$unit[$i],

@@ -108,6 +108,14 @@ class Savingswithdrawal_Model_Withdrawal extends Zend_Db_Table
         $result = $db->fetchAll($sql);
         return $result;
     }
+
+    public function getAccountid($memberid)
+            {
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $sql = "select id from ourbank_accounts where member_id = $memberid and tag_account != 0";
+                return $result = $db->fetchOne($sql);
+            }
+
     public function deposit($acc,$amount,$date,$type,$transactionMode,$description,$paymenttype_details,$createdby) 
     {
 	$cl = new App_Model_dateConvertor ();
@@ -151,8 +159,11 @@ class Savingswithdrawal_Model_Withdrawal extends Zend_Db_Table
             $group = $this->getMember($acc);
       	    $count = count($group);
             foreach ($group as $group) {
+
+        $Accid = $this->getAccountid($group->id);
+
                 $groupsaving = array('transaction_id' => $tranId,
-                                    'account_id' => $accId,
+                                    'account_id' => $Accid,
                                     'member_id' => $group->id,
                                     'transaction_date' => $cl->phpmysqlformat($date),
        			 	    'transaction_type' => 2,
@@ -170,9 +181,13 @@ class Savingswithdrawal_Model_Withdrawal extends Zend_Db_Table
                             'record_status'=> 3);
         $db->insert('ourbank_Liabilities',$liabilities);
         $glresult = $this->getGlcode($officeid);
-        foreach ($glresult as $glresult) {
-                $cashglsubocde = $glresult->id;
-        }
+         if($glresult){
+                        foreach ($glresult as $glresult) {
+                                $cashglsubocde = $glresult->id;
+                        }
+                    }else {
+                                $cashglsubocde = 0 ;
+                    }
         // Insertion into Assets ourbank_Assets
         $assets =  array('office_id' => $officeid,
                         'glsubcode_id_from' => '',

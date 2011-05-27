@@ -44,7 +44,8 @@ class Livingassets_IndexController extends Zend_Controller_Action
                 //Base line data
         $familycommon = new Familycommonview_Model_familycommonview(); 
         $this->view->memberid = $this->_getParam('id');
-        $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
+        $this->view->membername = $aa = $familycommon->getfamily($this->_getParam('id'));
+// //         print_r($this->view->membername);
         $revvillageid = $this->view->membername[0]['rev_village_id'];
         if ($revvillageid) {
             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
@@ -64,8 +65,7 @@ class Livingassets_IndexController extends Zend_Controller_Action
         $this->view->liveasset_details = $this->view->adm->viewRecord("ourbank_master_liveassets","id","DESC");
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
             {
-			$dateconvert= new App_Model_dateConvertor();
-
+            $dateconvert= new App_Model_dateConvertor();
             $number = $this->_getParam('number');
             $value = $this->_getParam('value');
             $submoduleid = $this->_getParam('subid');
@@ -73,14 +73,26 @@ class Livingassets_IndexController extends Zend_Controller_Action
 
             $i = 0;
             foreach($this->_getParam('assettype') as $val) {
+                    if($date[$i]){
+                        $dates = $dateconvert->mysqlformat($date[$i]);
+                    } else {
+                        $dates = '0000/00/00';
+                    }
+                    if($value[$i]){
+                        $values = $value[$i];
+                    } else {
+                        $values = 0;
+                    }
+        
                 $assettype = array('submodule_id' => $submoduleid,
                                     'family_id' => $member_id,
                                     'liveasset_id' => $val,
                                     'number'=>$number[$i],
-                                    'date_of_value'=>$dateconvert->mysqlformat($date[$i]),
-                                    'value'=>$value[$i]);
+                                    'date_of_value'=>$dates,
+                                    'value'=>$values);
                 $this->view->adm->addRecord("ourbank_liveassetdetails",$assettype);
                 $i++;
+
             }
              $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
         }
@@ -130,12 +142,22 @@ class Livingassets_IndexController extends Zend_Controller_Action
 
             $i = 0;
             foreach($this->_getParam('assettype') as $val) {
+                   if($date[$i]){
+                        $dates = $dateconvert->mysqlformat($date[$i]);
+                    } else {
+                        $dates = '0000/00/00';
+                    }
+                    if($value[$i]){
+                        $values = $value[$i];
+                    } else {
+                        $values = 0;
+                    }
                 $assettype = array('submodule_id' => $submoduleid,
                                     'family_id' => $id,
                                     'liveasset_id' => $val,
                                     'number'=>$number[$i],
-                                    'date_of_value'=>$dateconvert->mysqlformat($date[$i]),
-                                    'value'=>$value[$i]);
+                                    'date_of_value'=>$dates,
+                                    'value'=>$values);
                 $i++;
                 $this->view->adm->addRecord("ourbank_liveassetdetails",$assettype);
             }

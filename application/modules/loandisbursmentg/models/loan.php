@@ -133,11 +133,10 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
     public function getdisbursementdetails($accNum)
     {
         $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_accounts'),array('a.id'))
-                                ->join(array('b'=>'ourbank_loan_disbursement'),'a.id=b.account_id')
-                                ->where('a.account_number=?',$accNum);
-
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_accounts'),array('a.id'))
+                ->join(array('b'=>'ourbank_loan_disbursement'),'a.id=b.account_id')
+                ->where('a.account_number=?',$accNum);
 //        die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
@@ -146,12 +145,38 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
     public function findlastpaid($accNum)
     {
         $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(installment_id) as lastpaidid','SUM(paid_principal) as paidamount','paid_date'))
-                                ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
-                                ->where('b.account_number=?',$accNum)
-                                ->group('b.account_number');
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(installment_id) as lastpaidid','SUM(paid_principal) as paidamount','paid_date'))
+        ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
+        ->where('b.account_number=?',$accNum)
+        ->group('b.account_number');
         //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function maxid($accNum)
+    {
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+        ->join(array('b'=>'ourbank_installmentdetails'),'a.id=b.account_id',array('MAX(b.installment_id) as maxid'))
+        ->where('a.account_number=?',$accNum)
+        ->group('a.account_number');
+      //  die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function declainedpaid($accNum,$maxid)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+                                ->join(array('b'=>'ourbank_installmentdetails'),'a.id=b.account_id')
+                                ->where('a.account_number=?',$accNum)
+                                ->where('b.installment_id=?',$maxid);
+         //die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -187,6 +212,14 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
     {
     $where[] = "account_id = '".$accId."'";
     $where[] = "installment_status = 3 or installment_status = 4";
+    $db = $this->getAdapter();
+    $result = $db->update('ourbank_installmentdetails',$input,$where);
+    }
+
+    public function updateinstallment($accId,$installmentid,$input=array())
+    {
+    $where[] = "account_id = '".$accId."'";
+    $where[] = "installment_id  = '".$installmentid."'";
     $db = $this->getAdapter();
     $result = $db->update('ourbank_installmentdetails',$input,$where);
     }

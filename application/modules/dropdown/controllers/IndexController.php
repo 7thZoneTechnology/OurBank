@@ -131,6 +131,19 @@ $tName=$this->_request->getParam('name');
 
 
 }
+	if($tName == 'ourbank_master_gillapanchayath') {
+ 		$id=$this->_request->getParam('hobli');
+ 		$common=$this->_request->getParam('commonname');
+
+									$formdata1=array('id'=>'',
+									'hobli_id'=>$id,
+									'name'=>$common);
+						$id = $this->view->adm->addRecord($tName,$formdata1);
+ 			$this->_redirect('/dropdown');
+
+
+}
+
 if($tName == 'ourbank_master_branch') {
  		$bank=$this->_request->getParam('bank');
  		$common=$this->_request->getParam('commonname');

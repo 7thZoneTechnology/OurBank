@@ -72,9 +72,6 @@ public function fetchaccNum($groupid)
     public function fetchMembers($meeting_ID) {
         $select = $this->select()
                 ->setIntegrityCheck(false)
-
-//                 ->join(array('a' => 'ourbank_group'),array('a.id'))
-//                 ->where('a.id =?',$meeting_ID)
                 ->join(array('b' => 'ourbank_group'),array('b.id'),array('b.id as group_id','b.saving_perweek', 'b.penalty_latecoming','b.penalty_notcoming','b.late_subglcode','b.absent_subglcode'))
             ->where('b.id =?',$meeting_ID)
 		->join(array('c' => 'ourbank_groupmembers'),'c.group_id = b.id',array('c.member_id as memberid'))
@@ -87,8 +84,6 @@ public function fetchaccNum($groupid)
 public function creditbalance($memberid) {
         $select = $this->select()
                 ->setIntegrityCheck(false)
-// 		->join(array('e' => 'ourbank_group_acccounts'),array('e.account_id'))
-//                 ->where('e.member_id = '.$memberid)
             ->from(array('a' => 'ourbank_accounts'),array('a.id'))
              ->where("a.status_id=1")
             ->join(array('b' => 'ourbank_group_savingstransaction'),"b.account_id=a.id and b.transaction_type='1' AND b.member_id=".$memberid, array('sum(b.transaction_amount) as currentbalance'))

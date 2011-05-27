@@ -73,19 +73,28 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
             $number = $this->_getParam('number');
             $value = $this->_getParam('value');
             $submoduleid = $this->_getParam('subid');
-                        $date = $this->_getParam('date');
+            $date = $this->_getParam('date');
 
             $i = 0;
 			$dateconvert= new App_Model_dateConvertor();
 
             foreach($this->_getParam('assettype') as $val) {
+                      if($date[$i]){
+                        $dates = $dateconvert->mysqlformat($date[$i]);
+                    } else {
+                        $dates = '0000/00/00';
+                    }
+                    if($value[$i]){
+                        $value = $value[$i];
+                    } else {
+                        $value = 0;
+                    }
                 $assettype = array('submodule_id' => $submoduleid,
                                     'family_id' => $member_id,
                                     'nonliveasset_id' => $val,
                                     'number'=>$number[$i],
-                                    'date_of_value'=>$dateconvert->mysqlformat($date[$i]),
-
-                                    'value'=>$value[$i]);
+                                    'date_of_value'=>$dates,
+                                    'value'=>$value);
                 $i++;
                 $this->view->adm->addRecord("ourbank_nonlivingassetsdetails",$assettype);
             }
@@ -137,14 +146,22 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
 			$dateconvert= new App_Model_dateConvertor();
 
             foreach($this->_getParam('assettype') as $val) {
-
+                    if($date[$i]){
+                        $dates = $dateconvert->mysqlformat($date[$i]);
+                    } else {
+                        $dates = '0000/00/00';
+                    }
+                    if($value[$i]){
+                        $values = $value[$i];
+                    } else {
+                        $values = 0;
+                    }
                 $assettype = array('submodule_id' => $submoduleid,
                                     'family_id' => $id,
                                     'nonliveasset_id' => $val,
                                     'number'=>$number[$i],
-                                    'date_of_value'=>$dateconvert->mysqlformat($date[$i]),
-
-                                    'value'=>$value[$i]);
+                                    'date_of_value'=>$dates,
+                                    'value'=>$values);
                 $i++;
                 $this->view->adm->addRecord("ourbank_nonlivingassetsdetails",$assettype);
             }

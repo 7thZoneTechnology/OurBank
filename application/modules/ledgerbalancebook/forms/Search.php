@@ -28,8 +28,6 @@ class Ledgerbalancebook_Form_Search extends ZendX_JQuery_Form {
                 $formfield = new App_Form_Field ();
                 //$vtype=array('Alpha');
                 $datefrom = $formfield->field('Text','date1','','','mand','From date',true,'','','','','',0,'');
-               
-
 			
 			$this->addElements(array($datefrom));
 		}

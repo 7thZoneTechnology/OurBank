@@ -46,5 +46,19 @@ class App_Model_dateConvertor  {
         $ndate=$mdate[2]."/".$mdate[1]."/".$mdate[0];
         return $ndate;
     }
+
+
+    public function dateDiff($start, $end) {
+            $start_ts = strtotime($start);
+            $end_ts = strtotime($end);
+            $diff = $end_ts - $start_ts;
+            return round($diff / 86400);
+    }
+
+    public function position($amt,$posValue) {
+            $len=strlen($amt);
+            $pos=($posValue-35)-($len*4);
+            return $pos;
+    }
 }
 

@@ -67,7 +67,13 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
 
     public function fetchTransactionDetails($accountNo,$dateFrom,$dateTo)
     {
-
+            $type = substr($accountNo,4,1);
+            if($type == 2 or $type == 3)
+                        {
+                            $table = 'ourbank_group';
+                        }else {
+                            $table = 'ourbank_familymember';
+                        }
 
         if($accountNo && !$dateFrom && !$dateTo) {
                   $select = $this->select()
@@ -81,7 +87,7 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                     ->join(array('g' => 'ourbank_transactiontype'),'f.transactiontype_id = g.id')
                     ->join(array('h' => 'ourbank_master_paymenttypes'),'f.paymenttype_id = h.id',array('name as paymenttype'))
                     ->join(array('i' => 'ourbank_user'),'f.created_by = i.id')
-		    ->join(array('j' => 'ourbank_familymember'),'a.member_id = j.id');
+		    ->join(array('j' => $table),'a.member_id = j.id');
 
         } 
         else if(!$accountNo && $dateFrom && $dateTo) {
@@ -112,7 +118,7 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                     ->join(array('g' => 'ourbank_transactiontype'),'f.transaction_type_id = g.id')
                     ->join(array('h' => 'ourbank_master_paymenttypes'),'f.paymenttype_id = h.id',array('name as paymenttype'))
                     ->join(array('i' => 'ourbank_user'),'f.created_by = i.id')
-		    ->join(array('j' => 'ourbank_familymember'),'a.member_id = j.id');
+		    ->join(array('j' => $table),'a.member_id = j.id');
 
         }
 
@@ -129,11 +135,12 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                     ->join(array('g' => 'ourbank_transactiontype'),'f.transaction_type_id = g.id')
                     ->join(array('h' => 'ourbank_master_paymenttypes'),'f.paymenttype_id = h.id',array('name as paymenttype'))
                     ->join(array('i' => 'ourbank_user'),'f.created_by = i.id')
-		    ->join(array('j' => 'ourbank_familymember'),'a.member_id = j.id');
+		    ->join(array('j' => $table),'a.member_id = j.id');
 
         }
 	
 	else if(!$accountNo && $dateFrom && !$dateTo) {
+                
         $select = $this->select()
                     ->setIntegrityCheck(false) 
                     ->join(array('a' => 'ourbank_accounts'),array('id'))
@@ -151,6 +158,7 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
 
         }
 	else if(!$accountNo && !$dateFrom && $dateTo) {
+
         $select = $this->select()
                     ->setIntegrityCheck(false) 
                     ->join(array('a' => 'ourbank_accounts'),array('id'))
@@ -169,6 +177,8 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
         }
 
         else  {
+
+                
         $select = $this->select()
                     ->setIntegrityCheck(false) 
                     ->join(array('a' => 'ourbank_accounts'),array('id'))
@@ -181,8 +191,9 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                     ->join(array('g' => 'ourbank_transactiontype'),'f.transactiontype_id = g.id')
                     ->join(array('h' => 'ourbank_master_paymenttypes'),'f.paymenttype_id = h.id',array('name as paymenttype'))
                     ->join(array('i' => 'ourbank_user'),'f.created_by = i.id')
-		    ->join(array('j' => 'ourbank_familymember'),'a.member_id = j.id');
+		    ->join(array('j' => $table),'a.member_id = j.id');
         }
+// die($select->__toString($select));
         return $this->fetchAll($select);
 
     }

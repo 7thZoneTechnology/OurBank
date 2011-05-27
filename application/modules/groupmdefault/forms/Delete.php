@@ -22,7 +22,12 @@
         {
             // create instance for common form field
             $formfield = new App_Form_Field ();
-            $remarks = $formfield->field('Textarea','remarks','','','mand','',true,'','','',3,18,1,0);
+             $remarks= new Zend_Form_Element_Textarea('remarks', array('rows' => 3,'cols' => 20,));
+            $remarks->setAttrib('class', '');
+            $remarks->setLabel('Remarks');
+            $remarks->setRequired(true)
+                                ->addValidators(array(array('NotEmpty')));
+
             $submit = new Zend_Form_Element_Submit('Submit');
             $submit->setAttrib('id', 'Delete')
                             ->setLabel('Delete');

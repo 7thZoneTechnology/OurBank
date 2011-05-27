@@ -2,6 +2,7 @@
   <head>
     <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.2.js"></script>
     <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jqueryAddmethod.js"></script>
 
 <script type='text/javascript'>
 function calculateacre(bal) {
@@ -93,7 +94,7 @@ $(document).ready(
         newRow.find("input:checkbox").removeAttr('checked');
         newRow.appendTo('.crop tbody');
         $('tr#tmp').closest('table').find('input:text.date').each(function() {
-           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy'});
+           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate: '+0D'});
         });
 //         arrangeCheckboxNames();
             arrangehiddenid();
@@ -114,7 +115,7 @@ $(document).ready(
     $(this).closest('tr').not('#tmp').remove();
         arrangeCheckboxNames();
     });
-    $(".date").datepick({dateFormat: 'dd/mm/yyyy'});
+$(".date").datepick({dateFormat: 'dd/mm/yyyy',maxDate: '+0D'});  
   }
 );
 
@@ -141,12 +142,57 @@ $(document).ready(function() {
         Qty=$('input',Qobj).val();
        tot=$(this).val()*Qty;
         $('input',tobj).val(tot)
-       alert(tot);
          
 
      });
+    $('#pluginForm').validate();
+
     $('#pluginForm').submit(function(e) {
+
+
+
+
         var isValid = true;
+
+ $(this).find(':text.required').each(function() {
+            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
+                if($(this).next('span').length == 0 )
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                e.preventDefault();
+                return;
+            } else {
+                if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();
+            }
+        });
+
+     $(this).find(':select.selectvalid').each(function() {
+            if($(this).val() == 0) {
+                if($(this).next('span').length == 0 ){
+                    $(this).after('<span style="color: #FF0000">Field is required</span>');
+                e.preventDefault();
+                return;
+                }
+             }   else {
+                if($(this).next('span').length > 0 )
+                    $(this).next('span').remove();
+                }
+        });
+
+        $(this).find(':text.numeric').each(function() {
+           var regex = new RegExp(/^[1-9][0-9]*$/);
+           if(!regex.test($(this).val()) && $(this).val() != "") {
+               if($(this).next('span').length == 0 ) {
+                  $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
+               }
+               e.preventDefault();
+               return;
+           } else {
+                   $(this).next('span').remove();
+           }
+       });
+
+
         $(this).find(':text.required').each(function() {
             if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
                 isValid = false;
@@ -296,6 +342,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 <table id="hor-minimalist-b" border="1">
     <tr>
         <th align="right"><?php echo $this->translate("Land holding"); ?></th>
+
+
  		<th align="right"><?php echo $this->translate("Acre"); ?></th>
         <th align="right"><?php echo $this->translate("Gunta"); ?></th>
         <th align="right"><?php echo $this->translate("name of owner"); ?></th>
@@ -336,8 +384,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <form name="form1" id = "pluginForm" action="<?php echo $this->baseUrl();?>/crop/index/addcrop/id/<?php echo $this->id; ?>/subId/<?php echo $this->subId; ?>/modId/<?php echo $this->modId; ?>" method="POST">
         <table id="hor-minimalist-b" class = 'crop'>
             <tr> 
+                <th ><?php echo $this->translate("Land holding"); ?></th>
+
                 <th ><?php echo $this->translate("Crop"); ?></th>
-                <th ></th>
+                <th ><?php echo $this->translate("Season"); ?></th>
                 <th ><?php echo $this->translate("Acre"); ?></th>
                 <th ><?php echo $this->translate("Gunta"); ?></th>
                 <th ><?php echo $this->translate("Unit"); ?></th>
@@ -345,12 +395,23 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th ><?php echo $this->translate("Quantity sold in units"); ?></th>
                 <th ><?php echo $this->translate("Price per units"); ?></th>
                 <th ><?php echo $this->translate("Price realised"); ?></th>
-                <th ></th>
                 <th ><?php echo $this->translate("Sold date"); ?></th>
                 <th ><?php echo $this->translate("Action"); ?></th>
             </tr>
             <tr id='tmp'>
-                <td><select name = "crop_id[]">
+ <td <?php $i = 1;  ?>><select name = tenant[] id="select<?php echo $i++; ?>" class="selectvalid">
+                    <option value=0>Select</option>
+
+                            <?php foreach ($this->agriculture as $land_details) {  ?>
+                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name']?></option>
+
+                            <?php }print_r($land_details);
+ ?>
+                        </select></td>
+
+                <td><select name = "crop_id[]" class="selectvalid" >
+                    <option value=0>Select</option>
+
                     <?php foreach ($this->cropdetails as $cropdetails) { ?>
                     <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
 
@@ -361,11 +422,22 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </td>
  
 
-                <td align="right">*</td>
-                <td><INPUT type="text" maxlength="3" name = "acre[]" id = "acre1" size = 10 class="acre required numeric" onkeyup = "calculateacre(this.value);"></td>
-                <td><INPUT type="text" name = "gunta[]" id = "gunta1" size = 5 maxlength="2" class="gunta required numeric range" min="0" max="40" onkeyup = "calculateguntas(this.value);"></td>
+                <td><select name = "season[]" class="selectvalid">
+                    <option value=0>Select</option>
+
+                    <?php foreach ($this->seasondetails as $seasondetails) { ?>
+                    <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['name']?></option>
+
+                    <?php } ?>
+             </select> </td>
+                <td><INPUT type="text" maxlength="3" name = "acre[]" id = "acre1" size = 10 required_group="eithergroup" 
+ class="acre number eithergroup" onkeyup = "calculateacre(this.value);"></td>
+                <td><INPUT type="text" name = "gunta[]" id = "gunta1" size = 5 maxlength="2" class="gunta number range eithergroup error" min="0" max="40" onkeyup = "calculateguntas(this.value);"></td>
 <td><select name = "unit[]">
+                    <option value=0>Select</option>
+
                     <?php foreach ($this->units as $unit) { ?>
+
                     <option value="<?php echo $unit['id']?>"><?php echo $unit['name']?></option>
 
                     <?php } ?>
@@ -374,11 +446,9 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </select>    
                 </td>
 <td><INPUT type="text" name = "quantity[]" id =  "quantity1" size = 10 maxlength="3" class="quantity required numeric produced"></td>
-                <td><INPUT type="text" name = "marketed[]" id = "marketed1" size = 10 maxlength="5" class="marketed sold " 
-></td>
+                <td><INPUT type="text" name = "marketed[]" id = "marketed1" size = 10 maxlength="5" class="marketed sold " ></td>
                 <td><INPUT type="text" name = "price[]" id =  "price[]" size = 10 maxlength="6" class="numeric1 product" ></td>
                 <td><INPUT type="text" name = "realised[]" id = "realised[]" size = 10 maxlength="6"  class="realised "></td>
-                <td align="right">*</td>
                 <td><INPUT type="text" name = "date[]"  class="date" readonly></td>
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr> 

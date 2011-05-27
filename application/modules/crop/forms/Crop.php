@@ -26,7 +26,9 @@ class Crop_Form_Crop extends Zend_Form
                 $cropId = new Zend_Form_Element_Select('crop_id[]');
         $cropId->setAttrib('class', 'txt_put');
         $cropId->setAttrib('id','crop_id[]');
-   
+    $season = new Zend_Form_Element_Select('season[]');
+        $season->setAttrib('class', 'txt_put');
+        $season->setAttrib('id','crop_id[]');
        // $cropId = $formfield->field('Select','crop_id[]','','','','',true,'','','','','',0,0);
         $acre = $formfield->field('Text','acre[]','','','','',true,'','','','','',0,0);
         $acre->setAttrib('size',8);
@@ -41,7 +43,7 @@ class Crop_Form_Crop extends Zend_Form
         $createdBy = $formfield->field('Hidden','created_by[]','','','','',false,'','','','','',0,1);
         $createdDate = $formfield->field('Hidden','created_date[]','','','','',false,'','','','','',0,date("y/m/d H:i:s"));
         $crpid = $formfield->field('Hidden','crpid[]','','','','','','','','','','',0,0);
-        $this->addElements(array($id,$cropId,$acre,$quantity,$marketed,$price,$subId,$createdBy,$createdDate,$crpid));
+        $this->addElements(array($id,$cropId,$acre,$quantity,$marketed,$price,$subId,$createdBy,$createdDate,$crpid,$season));
     }
 }
 

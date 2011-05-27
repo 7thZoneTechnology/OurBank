@@ -52,12 +52,15 @@ class Savings_IndexController extends Zend_Controller_Action{
                         $newglsubcode = $glcodeId;
                     }
                     $date=date("y/m/d H:i:s");
+                    $ledgertype = $this->view->adm->getsingleRecord('ourbank_master_ledgertypes','id','name','Liabilities');// get the ledgertype for Liability
+                    $officeid = $this->view->adm->getsingleRecord('ourbank_user','bank_id','id',$this->view->createdby);// get the ledgertype for Liability
                     // Insert glsubcode details
                     $glsubcodeid = $this->view->adm->addRecord('ourbank_glsubcode',
                                 array('id' => '',
+                                        'office_id' => $officeid,
                                         'glsubcode' => $newglsubcode,
                                         'glcode_id' => $glcode,
-                                        'subledger_id' => $glcode,
+                                        'subledger_id' => $ledgertype,
                                         'header' => 'Savings',
                                         'description' => 'Savings',
                                         'created_date' =>date("Y-m-d"),

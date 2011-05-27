@@ -15,6 +15,52 @@ class Loans_Model_Loan extends Zend_Db_Table {
         $result = $this->fetchAll($select);
         return $result->toArray();
     }
+ public function getAllGlcode(){
+            $this->db = $this->getAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = 'select header from ourbank_glcode';
+            $result = $this->db->fetchALL($sql,array());
+            return $result;
+        }
+
+  public function generateGlCode($ledgertype_id)
+            {
+                $this->db = $this->getAdapter();
+                $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+                $result = $this->db->fetchRow("SELECT MAX(id) as id 
+                                                FROM  ourbank_glcode 
+                                                where (ledgertype_id = '$ledgertype_id')");
+        
+                return $result;
+            }
+    public function insertGlcode($input)
+            {
+                $this->db = $this->getAdapter();
+                $this->db->insert('ourbank_glcode',$input);
+                return '1';
+            } 
+
+ public function getGlCode($header){
+                $db = $this->getAdapter();
+                        $sql = "select max(glsubcode) as glsubcode from ourbank_glsubcode where glcode_id =(select id from ourbank_glcode where header like '%".$header."%')";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+        } 
+
+
+        public function getGlCodeid($header){
+                $db = $this->getAdapter();
+                        $sql = "select id from ourbank_glcode where header like '%".$header."%'";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+        } 
+
+        public function getGlCodeexist($header){
+                $db = $this->getAdapter();
+                        $sql = "select glcode from ourbank_glcode where header like '%".$header."%'";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+        }
 
         public function fetchAllglsubcode($id)
         {
@@ -145,10 +191,10 @@ class Loans_Model_Loan extends Zend_Db_Table {
                             'begindate'=>$this->view->dateconvert->phpmysqlformat($post['begindate']),
                             'closedate'=>$this->view->dateconvert->phpmysqlformat($post['closedate']),
                             'applicableto'=>$post['applicableto'],
-                            'glsubcode_id'=>$post['glsubcode_id'],
-                            'capital_glsubcode_id' => '',
-                            'Interest_glsubcode_id'=>$post['interest_glsubcode_id'],
-                            'fee_glsubcode_id'=>$post['fee_glsubcode_id']);
+//                             'glsubcode_id'=>$post['glsubcode_id'],
+                            'capital_glsubcode_id' => '');
+//                             'Interest_glsubcode_id'=>$post['interest_glsubcode_id'],
+//                             'fee_glsubcode_id'=>$post['fee_glsubcode_id']);
             $this->db->insert('ourbank_productsoffer',$data);
         }
 

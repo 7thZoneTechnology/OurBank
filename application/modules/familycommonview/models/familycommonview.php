@@ -30,14 +30,12 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
             ->join(array('a'=>'ourbank_family'),array('a.id'))
             ->join(array('c'=>'ourbank_master_castetype'),'c.id=a.caste_id',array('c.name as caste'))
             ->join(array('d'=>'ourbank_master_familytype'),'d.id=a.familytype_id',array('d.name as familytype'))
-            ->join(array('f'=>'ourbank_master_villagelist'),'f.village_id =a.village_id',array('f.name as villagename'))
-            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))
+            ->join(array('f'=>'ourbank_office'),'f.id =a.rev_village_id',array('f.name as villagename'))
+/*            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))*/
             ->join(array('g'=>'ourbank_master_rationcard'),'g.id =a.ration_id',array('g.name as ration'))
-             ->join(array('i'=>'ourbank_master_sourceofincome'),'i.id =a.income_id',array('i.name as income'))
-            ->join(array('j'=>'ourbank_master_village'),'j.village_id =f.village_id')
-             ->join(array('k'=>'ourbank_master_taluklist'),'k.id =j.taluk_id',array('k.name as talukname'))
-//           ->join(array('l'=>'ourbank_master_districtlist'),'l.id =j.district_id',array('l.name as districtname'))
-            ->where('a.id=?',$id);
+            ->join(array('i'=>'ourbank_master_sourceofincome'),'i.id =a.income_id',array('i.name as income'))
+ 			 ->where('a.id=?',$id)
+		    ->join(array('j'=>'ourbank_master_habitation'),'j.id =a.village_id',array('j.name as names'));
       //  die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
@@ -53,14 +51,16 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
-
-    public function getcrop($mebmerid)
+  public function getcrop($mebmerid)
    {
        $select=$this->select()
                        ->setIntegrityCheck(false)
                        ->join(array('a'=>'ourbank_cropdetails'),array('a.id'))
                        ->where('a.family_id=?',$mebmerid)
-                       ->join(array('b'=>'ourbank_master_crop'),'b.id=a.crop_id',array('b.name'));
+                       ->join(array('b'=>'ourbank_master_crop'),'b.id=a.crop_id',array('b.name'))
+                        ->join(array('c'=>'ourbank_master_landtypes'),'c.id=a.land_id',array('c.name as landtypename'))
+                        ->join(array('d'=>'ourbank_master_seasons'),'d.id=a.season_id',array('d.name as season'));
+
        // die($select->__toString($select));
        $result=$this->fetchAll($select);
        return $result->toArray();
@@ -117,12 +117,11 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
       return $result->toArray();
   }
 
-  public function getloandetails($mebmerid)
+  public function getloandetails()
   {
       $select=$this->select()
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_loandetails'),array('a.id'))
-                      ->where('a.family_id=?',$mebmerid)
 		      ->join(array('b'=>'ourbank_master_loanpurpose'),'b.id=a.purpose_id',array('b.name as purposename'))
                       ->join(array('c'=>'ourbank_master_loansource'),'c.id=a.source_id',array('c.name'))
                       ->join(array('d'=>'ourbank_familymember'),'d.id=a.member_id',array('d.name as membername'));
@@ -262,17 +261,42 @@ public function getchronicdisease($familyid){
         ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
         ->join(array('d'=>'ourbank_master_employmenttype'),'d.id =a.employment_status',array('d.name as employmentname'))
         ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))
-        ->join(array('e'=>'ourbank_master_profession'),'a.profession_id=e.id',array('e.name as proffessionname'))
-        ->join(array('aa'=>'ourbank_master_entitlements'),'a.entitlements=aa.id',array('aa.name as entitlements'))
         ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
         ->join(array('i'=>'ourbank_master_branch'),'a.branch_po=i.id',array('i.name as branchname'))
         ->join(array('j'=>'ourbank_master_bloodtype'),'a.blood_id=j.id',array('j.name as blood'))
-        ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name as bankname'))                ->join(array('k'=>'ourbank_master_gender'),'a.gender_id = k.id',array('k.name as gendername'));
+        ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name as bankname'))                ->join(array('k'=>'ourbank_master_gender'),'a.gender_id = k.id',array('k.name as gendername'))
 
-        //die($select->__toString($select));
+        ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name as promoter'))
+        ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
+        ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name as accountype'));
+
+     //   die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
    }
+
+        public function getentitlement($id){
+	$select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_memberentitlememnt'),array('a.id'),array('a.entitlement_id'))
+                    ->join(array('c'=>'ourbank_master_entitlements'),'c.id=a.entitlement_id',array('c.name as entitlename'))
+                    ->where('a.member_id=?',$id);
+         // die($select->__toString($select));
+	$result=$this->fetchAll($select);
+	return $result->toArray();
+        }
+
+        public function getprofession($id){
+	$select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_memberprofession'),array('a.id'),array('a.profession_id'))
+                    ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name as professionname'))
+                    ->where('a.member_id=?',$id);
+         // die($select->__toString($select));
+	$result=$this->fetchAll($select);
+	return $result->toArray();
+        }
+
 //pra based services
         public function praservice($mebmerid)
 	{

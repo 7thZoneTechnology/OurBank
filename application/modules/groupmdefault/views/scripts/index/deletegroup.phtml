@@ -18,16 +18,16 @@
 !-->
 
 <div id = "searchDiv">
-    <fieldset>
+    <fieldset><legend>Group Delete</legend>
         <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/deletegroup/id/<?php echo $this->groupid; ?>" method="POST">
-            <table class = "fieldsets">
+            <table >
                 <TR>
-                    <TD><font color="red">Are you sure you want to delete</font></TD>
                     <TD><?php echo $this->form->remarks;?></TD>
-                </TR>
+	            </TR>
+				<tr><TD><font color="red">Are you sure you want to delete ?</font></TD></tr>
                 <tr>
                     <td class = "firsttd"><input type = "Submit" name = "Submit" id="Submit" value = "Delete"/></td>
-                    <td class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/groupcommonview/index/commonview/id/<?echo $this->groupid; ?>"><input type = "Button" name = "Back" id="Back" value = "No"/></a></td>
+                    <td class = "secondtd"><a href="<?php echo $this->baseUrl();?>/groupcommonview/index/commonview/id/<?echo $this->groupid; ?>"><input type = "Button" name = "Back" id="Back" value = "cancel"/></a></td>
                 </tr>
         </table>
         </form>

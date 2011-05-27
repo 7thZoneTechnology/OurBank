@@ -32,19 +32,30 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         return $result->toArray();
 //         die ($select->__toString($select));
         }
+ public function ownershiptypes()
+        {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_master_ownershiptype'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+//         die ($select->__toString($select));
+        }
 
-    public function getagriculturedetails($mebmerid)
+  public function getagriculturedetails($mebmerid)
     {
         $select=$this->select()
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
                         ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name as landtypename'))
+                        ->join(array('c'=>'ourbank_master_ownershiptype'),'c.id=a.acquistion_id',array('c.name as ownership'))
+                        ->join(array('d'=>'ourbank_master_villagelist'),'d.id=a.villagename',array('d.name as village'))
+                        ->join(array('e'=>'ourbank_familymember'),'e.id=a.landowner_name',array('e.name as ownername'))
                         ->where('a.family_id=?',$mebmerid);
 //         die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
-
         public function getlog_details($mebmerid)
     {
         $select=$this->select()

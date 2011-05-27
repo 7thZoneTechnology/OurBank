@@ -130,6 +130,8 @@
                 <TD colspan="9"><?php echo $paid->paidAmt ; ?></TD>
 				<?php } ?>
             </TR>
+            <?php if($this->unpaid) { ?>
+
             <TR>
                 <TD width="50">Due</TD>
 				<?php foreach ($this->unpaid as $unpaid) { ?>
@@ -137,6 +139,14 @@
                 <TD colspan="9"><?php echo $unpaid->unpaidAmt ; ?></TD>
 				<?php } ?>
             </TR>
+            <?php } else { ?>
+            <TR>
+                <TD width="50">Due</TD>
+                <TD align="center">---</TD>
+                <TD colspan="9" align="right"><?php echo $this->totalamount ?></TD>
+            </TR>
+
+            <?php } ?>
 		</table>
     <?php } ?>
     <br/>
@@ -151,15 +161,15 @@
                 </TR>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Principal</label></TD>
-                    <TD bgcolor="#FAFAFA"><?php echo $this->loan->p; ?></TD>
+                    <TD bgcolor="#FAFAFA"><?php echo $this->p; ?></TD>
                 </TR>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Interest</label></TD>
-                    <TD bgcolor="#FAFAFA"><?php echo $this->loan->int;?></TD>
+                    <TD bgcolor="#FAFAFA"><?php echo $this->int;?></TD>
                 </TR>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Total</label></TD>
-                    <TD bgcolor="#FAFAFA"><?php echo $this->loan->totalAmt;?></TD>
+                    <TD bgcolor="#FAFAFA"><?php echo $this->totalamount;?></TD>
                 </TR>
 			</table>
 	<br>

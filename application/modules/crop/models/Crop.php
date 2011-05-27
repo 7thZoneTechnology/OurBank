@@ -28,6 +28,14 @@ class Crop_Model_Crop  extends Zend_Db_Table
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
+ public function getSeason()
+    {
+        $select=$this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a'=>'ourbank_master_seasons'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
   public function getUnits()
     {
         $select=$this->select()

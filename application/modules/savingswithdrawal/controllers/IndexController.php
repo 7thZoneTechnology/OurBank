@@ -42,19 +42,23 @@ public function indexAction()
 		$this->view->form = $searchform = new Savingswithdrawal_Form_Search();
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
 
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-                    $formdata = $this->_request->getPost();
-                    $acc = $this->_request->getPost('accNum');
-                    if($searchform->isValid($formdata)){
-                        $validaccno = $fixedSavings->savingsAccountsSearch($acc);
-              if ($validaccno){
-                        $this->_redirect("/savingswithdrawal/index/withdrawal/accNum/".base64_encode($acc));
-                    }else
-                    {
-                        $this->view->error = "Account number does not exist";
-                    }
+                if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+                            $formdata = $this->_request->getPost();
+                            $acc = $this->_request->getPost('accNum');
+                            if($searchform->isValid($formdata)){
+                                $validaccno = $fixedSavings->savingsAccountsSearch($acc);
+                                $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
+                                if($tagAcc!=0){
+                                            $this->view->error = "Enter valid Account number";
+                                }else {
+                                        if ($validaccno) {
+                                                $this->_redirect("/savingswithdrawal/index/withdrawal/accNum/".base64_encode($acc));
+                                        }else{
+                                                $this->view->error = "Account number does not exist";
+                                        }
+                                }
+                            }
                 }
-            }
         }
 	public function withdrawalAction()
 	{
@@ -158,14 +162,17 @@ public function indexAction()
                     foreach ($this->view->details as $details) {
                         $accID = $details->accId;
                     }
-                    foreach ($group as $group)  {
-                        if ($this->_request->getParam($group->id) != 0) {
+                    foreach ($group as $Group)  {
+
+                       $Accid = $this->view->savingsModel->getAccountid($Group->id);
+
+                        if ($this->_request->getParam($Group->id) != 0) {
                             $trandata = array('transaction_id' => $tranId,
-                                            'account_id' => $accID,
+                                            'account_id' => $Accid,
                                             'transaction_date' => $cl->phpmysqlformat($date),
                                             'transaction_type' => 2,
-                                            'transaction_amount' => $this->_request->getParam($group->id),
-                                            'member_id' => $group->id,
+                                            'transaction_amount' => $this->_request->getParam($Group->id),
+                                            'member_id' => $Group->id,
                                             'transacted_by' => 1);
                             $this->view->savingsModel->groupWithdrawal($trandata);
                         }

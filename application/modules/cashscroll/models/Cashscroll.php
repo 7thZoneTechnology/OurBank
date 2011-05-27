@@ -56,14 +56,13 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
         $select = $this->select()
                        ->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_transaction'))
+                        ->where('A.amount_to_bank >0')
                         ->where('A.recordstatus_id = 3 OR A.recordstatus_id = 1')
-                        ->where('A.transactiontype_id = 1 AND A.paymenttype_id <= 4')
-                        ->where('A.transaction_date = "'.$date.'"')
+  						->where('A.paymenttype_id <= 4')
+/*                        ->where('A.transactiontype_id = 1 AND A.paymenttype_id <= 4')*/
+                        ->where('A.transaction_date <= "'.$date.'"')
                         ->join(array('C'=>'ourbank_accounts'),'C.id = A.account_id')
                         ->where('C.status_id =3 OR C.status_id =1' )
-                        ->join(array('B'=>'ourbank_productsoffer'),'C.product_id = B.product_id')
-                        ->join(array('D' =>'ourbank_product'),'D.id = B.product_id')
-                        ->join(array('e' =>'ourbank_group'),'C.member_id = e.id')
                         ->join(array('f' =>'ourbank_familymember'),'C.member_id = f.id')
                         ->where('f.village_id = "'.$branchid.'"');
                        //die($select->__toString($select));
@@ -75,17 +74,16 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
          $select = $this->select()
                        ->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_transaction'))
+                        ->where('A.amount_from_bank >0')
                         ->where('A.recordstatus_id = 3 OR A.recordstatus_id = 1')
-                        ->where('A.transactiontype_id = 2 AND A.paymenttype_id <= 4')
-                        ->where('A.transaction_date = "'.$date.'"')
+ 						 ->where('A.paymenttype_id <= 4')
+/*                        ->where('A.transactiontype_id = 2 AND A.paymenttype_id <= 4')*/
+                        ->where('A.transaction_date <= "'.$date.'"')
                         ->join(array('C'=>'ourbank_accounts'),'C.id = A.account_id')
                         ->where('C.status_id =3 OR C.status_id =1' )
-                        ->join(array('B'=>'ourbank_productsoffer'),'C.product_id = B.product_id')
-                        ->join(array('D' =>'ourbank_product'),'D.id = B.product_id')
-                        ->join(array('e' =>'ourbank_group'),'C.member_id = e.id')
                         ->join(array('f' =>'ourbank_familymember'),'C.member_id = f.id')
                         ->where('f.village_id = "'.$branchid.'"');
-                    //die($select->__toString($select));
+                   // die($select->__toString($select));
         return $this->fetchAll($select);
 
     }

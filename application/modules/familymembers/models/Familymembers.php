@@ -28,18 +28,41 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                 ->where('a.family_id =?',$mebmerid)
                 ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
                 ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))
-                ->join(array('d'=>'ourbank_master_entitlements'),'a.entitlements=d.id',array('d.name as entitlementsname'))
                 ->join(array('l'=>'ourbank_master_employmenttype'),'a.employment_status=l.id',array('l.name as employmentname'))
-                ->join(array('e'=>'ourbank_master_profession'),'a.profession_id=e.id',array('e.name as proffessionname'))
                 ->join(array('f'=>'ourbank_master_bank'),'a.bank=f.id',array('f.name as bankname'))
                 ->join(array('g'=>'ourbank_master_branch'),'a.branch_po=g.id',array('g.name as branchname'))
                 ->join(array('i'=>'ourbank_master_bloodtype'),'i.id=a.blood_id',array('i.name as blood'))
                 ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
-                ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name as gendername'));
+                ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name as gendername'))
+            ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name as promoter'))
+            ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
+            ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name as accountype'));
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
+
+        public function getentitlement($id){
+	$select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_memberentitlememnt'),array('a.id'),array('a.entitlement_id'))
+                    ->join(array('c'=>'ourbank_master_entitlements'),'c.id=a.entitlement_id',array('c.name as entitlename'))
+                    ->where('a.member_id=?',$id);
+       // die($select->__toString($select));
+	$result=$this->fetchAll($select);
+	return $result->toArray();
+        }
+
+        public function getprofession($id){
+	$select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_memberprofession'),array('a.id'),array('a.profession_id'))
+                    ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name as professionname'))
+                    ->where('a.member_id=?',$id);
+         // die($select->__toString($select));
+	$result=$this->fetchAll($select);
+	return $result->toArray();
+        }
 
     public function getfamilydetails1($mebmerid)
     {
@@ -62,10 +85,39 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
         return $result->toArray();
     }
 
+    public function getcbo($cbo_id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_cbos'),array('a.id'),array('a.id','a.name as cboname'))
+                ->where('a.cbopromoter_id=?',$cbo_id);
+//        die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function getbank($type_id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_bank'),array('a.id'),array('a.id','a.name as bankname'))
+                ->where('a.accounttype_id =?',$type_id);
+//        die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
     public function deleteFamily($param)  
     {
         $db = $this->getAdapter();
         $db->delete('ourbank_familymember',array('id = '.$param));
+        return;
+    }
+
+    public function deleterecord($table,$param)  
+    {
+        $db = $this->getAdapter();
+        $db->delete($table,array('member_id = '.$param));
         return;
     }
 
@@ -74,6 +126,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
     $db = $this->getAdapter();
     $result = $db->update('ourbank_familymember',$input,$where);
     }
+
 }
 
 ?>

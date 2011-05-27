@@ -29,10 +29,15 @@ $(document).ready(
         newRow.find("select").each( function() {
             $(this).children(':first').attr('selected', 'selected');
         });
+        valueselect = newRow.find("select").val();
+        if(valueselect!=0){
+            newRow.find("select").val(0);
+        }
         newRow.find("input:text").val("");
         newRow.find("input:checkbox").removeAttr('checked');
         newRow.find("input:hidden").removeAttr('value');
         newRow.find("input:radio").removeAttr('checked');
+        newRow.find('span').remove();
         newRow.appendTo('.family tbody');
         $('tr#tmp').closest('table').find('input:text.date').each(function() 
         {
@@ -42,6 +47,8 @@ $(document).ready(
                        parseDate:'dd/mm/yyyy',
                        commandsAsDateFormat:true,});
         });
+
+        $('')
         arrangeCheckboxNames();
         arrangeRadioNames();
         arrangedateid();
@@ -77,6 +84,15 @@ $(document).ready(
     $('tr#tmp').find('input.agechange').attr( 'id', 'age-'+length );
     $('tr#tmp').find('div.branchclass').attr( 'id', 'branchdiv-'+length );
     $('tr#tmp').find('select.bankfilter').attr( 'id', 'bank-'+length );
+    $('tr#tmp').find('div.cboclass').attr( 'id', 'cbodiv-'+length );
+    $('tr#tmp').find('div.bankclass').attr( 'id', 'bankdiv-'+length );
+    $('tr#tmp').find('select.cbofilter').attr( 'id', 'cbopromoter-'+length );
+    $('tr#tmp').find('select.findbank').attr( 'id', 'accounttype-'+length );
+    $('tr#tmp').find('select.interest').attr( 'id', 'source-'+length );
+    $('tr#tmp').find('input.disableid').attr( 'id', 'disable-'+length );
+    $('tr#tmp').find('input.disableamt').attr( 'id', 'amtdisable-'+length );
+    $('tr#tmp').find('select.entitleid').attr( 'name', 'entitle-'+length+'[]');
+    $('tr#tmp').find('select.profid').attr( 'name', 'profession-'+length+'[]');
     length++;
 
     $('tr#tmp').nextAll('tr').each( function() {;
@@ -84,9 +100,18 @@ $(document).ready(
         $(this).find('input.agechange').attr( 'id', 'age-'+length );
         $(this).find('div.branchclass').attr( 'id', 'branchdiv-'+length );
         $(this).find('select.bankfilter').attr( 'id', 'bank-'+length );
+        $(this).find('div.cboclass').attr( 'id', 'cbodiv-'+length );
+        $(this).find('div.bankclass').attr( 'id', 'bankdiv-'+length );
+        $(this).find('select.cbofilter').attr( 'id', 'cbopromoter-'+length );
+        $(this).find('select.findbank').attr( 'id', 'accounttype-'+length );
+        $(this).find('select.interest').attr('id', 'source-'+length);
+        $(this).find('input.disableid').attr('id', 'disable-'+length);
+        $(this).find('input.disableamt').attr('id', 'amtdisable-'+length);
+        $(this).find('select.entitleid').attr( 'name', 'entitle-'+length+'[]');
+        $(this).find('select.profid').attr( 'name', 'profession-'+length+'[]');
         length++;
     });
-};
+    };
 
 
     var arrangeRadioNames = function() {
@@ -115,13 +140,53 @@ $(document).ready(
         $('#date-'+id[1]).val(dob);
     });
 
-    $('.bankfilter').change(function() {
+    $('.interest').change(function() {
+        var id=$(this).attr("id").split("-");
+        var selectvalue=$(this).val();
+        if(selectvalue==4){
+        $('#disable-'+id[1]).hide(); 
+        $('#disable-'+id[1]).removeAttr('value');
+        }
+        else{
+        $('#disable-'+id[1]).show();
+        }
+
+        if(selectvalue==3){
+        $('#amtdisable-'+id[1]).hide();
+        $('#amtdisable-'+id[1]).removeAttr('value');
+        }
+        else{
+        $('#amtdisable-'+id[1]).show();
+        }
+    })
+
+    $('.bankfilter').change(function() { alert('Hi prakash');
         var id=$(this).attr("id").split("-");
         if($(this).val())
         {  bank_id=$(this).val();
            path=$('#baseurl').val();
            targeturl=path+"/familymembers/index/getbranch?bank_id="+bank_id;
 	   $.ajax({ url: targeturl, success: function(data){ $('#branchdiv-'+id[1]).html(data) }});
+        }
+    });
+
+    $('.cbofilter').change(function() {
+        var id=$(this).attr("id").split("-");
+        if($(this).val())
+        {  cbo_id=$(this).val();
+           path=$('#baseurl').val();
+           targeturl=path+"/familymembers/index/getcbo?cbo_id="+cbo_id;
+	   $.ajax({ url: targeturl, success: function(data){ $('#cbodiv-'+id[1]).html(data) }});
+        }
+    });
+
+    $('.findbank').change(function(){
+        var id=$(this).attr("id").split("-");
+        if($(this).val())
+        {  type_id=$(this).val();
+           path=$('#baseurl').val();
+           targeturl=path+"/familymembers/index/getbank?type_id="+type_id+"&divid="+id[1]; alert(targeturl);
+	   $.ajax({ url: targeturl, success: function(data){ $('#bankdiv-'+id[1]).html(data) }});
         }
     });
 
@@ -139,7 +204,7 @@ $(document).ready(
      }
 
     $('#pluginForm').submit(function(e) {
-        $(this).find(':text.required').each(function() {
+        $(this).find('.required').each(function() {
             if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
                 if($(this).next('span').length == 0 )
                     $(this).after('<span style="color: #FF0000">Field is required</span>');
@@ -151,7 +216,7 @@ $(document).ready(
             }
         });
 
-     $(this).find(':select.selectvalid').each(function() {
+      $(this).find(':select.selectvalid').each(function() {
             if($(this).val() == 0) {
                 if($(this).next('span').length == 0 ){
                     $(this).after('<span style="color: #FF0000">Field is required</span>');

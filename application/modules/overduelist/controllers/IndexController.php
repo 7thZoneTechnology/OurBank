@@ -22,7 +22,7 @@ class Overduelist_IndexController extends Zend_Controller_Action
 {
     function init() 
     { 
-        $this->view->pageTitle = "Overdue list";
+        
 	$sessionName = new Zend_Session_Namespace('ourbank');
 	$userid=$this->view->createdby = $sessionName->primaryuserid;
 	$login=new App_Model_Users();

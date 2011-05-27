@@ -71,8 +71,8 @@ class Health_IndexController extends Zend_Controller_Action
 // //insert the health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
         {
-        $habit = $this->_getParam('habit');
-        $challenge = $this->_getParam('challenge');
+//         $habit = $this->_getParam('habit');
+//         $challenge = $this->_getParam('challenge');
         $submoduleid = $this->_getParam('subId');
         $familyid = $this->_getParam('memId');
 
@@ -93,31 +93,42 @@ class Health_IndexController extends Zend_Controller_Action
                     }
             }
         }
-    foreach($habit as $habitid){
-        explode('_',$habitid);
-                $this->view->adm->addRecord("ourbank_healthhabitdetails",
+        foreach($membername as $memberna){
+            if($this->_getParam('habit-'.$memberna['memberid'])) {
+                $habits = $this->_getParam('habit-'.$memberna['memberid']);
+                    foreach($habits as $habitstype){
+                        explode('_',$habitstype);
+                        $this->view->adm->addRecord("ourbank_healthhabitdetails",
+                                                                        array('id' => '',
+                                                                        'submodule_id' => $submoduleid,
+                                                                        'family_id'=>$this->view->memberid,
+                                                                        'member_id'=>$habitstype[0],
+                                                                        'habit_id'=>$habitstype[2],
+                                                                        'created_by'=>$this->view->createdby,
+                                                                        'created_date'=>date("y/m/d H:i:s")
+                                                                        ));
+                    }
+            }
+        }
+        foreach($membername as $memberna){
+            if($this->_getParam('challenge-'.$memberna['memberid'])) {
+                $challenge = $this->_getParam('challenge-'.$memberna['memberid']);
+                    foreach($challenge as $challengetype){
+                        explode('_',$challengetype);
+
+                        $this->view->adm->addRecord("ourbank_healthphychallenge",
                                                 array('id' => '',
                                                 'submodule_id' => $submoduleid,
                                                 'family_id'=>$this->view->memberid,
-                                                'member_id'=>$habitid[0],
-                                                'habit_id'=>$habitid[2],
+                                                'member_id'=>$challengetype[0],
+                                                'phychallenge_id'=>$challengetype[2],
                                                 'created_by'=>$this->view->createdby,
                                                 'created_date'=>date("y/m/d H:i:s")
                                                 ));
                     }
-  foreach($challenge as $challengeid){
-    explode('_',$challengeid);
-                $this->view->adm->addRecord("ourbank_healthphychallenge",
-                                                array('id' => '',
-                                                'submodule_id' => $submoduleid,
-                                                'family_id'=>$this->view->memberid,
-                                                'member_id'=>$challengeid[0],
-                                                'phychallenge_id'=>$challengeid[2],
-                                                'created_by'=>$this->view->createdby,
-                                                'created_date'=>date("y/m/d H:i:s")
-                                                ));
-		}
+            }
 
+        }
              $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
         }
     }
@@ -135,19 +146,17 @@ class Health_IndexController extends Zend_Controller_Action
         $this->view->habitdetails = $dbmodel->gethabittypes();
         $this->view->challengedetails = $dbmodel->getchallengetypes();
         $this->view->diseasedetails = $disease = $this->view->adm->viewRecord('ourbank_master_diseasetypes','id','ASC');
-// // Zend_Debug::dump($this->view->diseasedetails);
 
         $this->view->membername = $membername = $dbmodel->getfamilymemberdetails($familyid);
 //count number of family members
         $this->view->membercount = count($this->view->membername);
 
   $nameid = array();
-  $nonemem = array();
         foreach($membername as $name){
             $nameid[] = $name['memberid'];
         } 
 $diseaseselect = array();
- $this->view->form = new Health_Form_health($nameid);
+$this->view->form = new Health_Form_health($nameid);
         foreach($nameid as $nameids){
          $a='healthdisease'.$nameids;
             foreach($disease as $diseasetype){
@@ -157,16 +166,15 @@ $diseaseselect = array();
 foreach($nameid as $namewithid){
         $diseasetype = $dbmodel->getselecteddisease($namewithid); // get selected disease id's
         $a='healthdisease'.$namewithid;
+        if($diseasetype){
             foreach ($diseasetype as $diseasetypes){
                     $diseaseselect[] = $diseasetypes['healthdisease']; // set all avail disease list 
                 }
-            if($diseaseselect){
-                $this->view->form->$a->setValue($diseaseselect);
-                unset($diseaseselect);
-            } else {
-                $nonemem[] = $namewithid;
-            }
-        $this->view->nonemem = $nonemem;
+            $this->view->form->$a->setValue($diseaseselect);
+            unset($diseaseselect);
+
+        }
+
 }
 
 
@@ -175,8 +183,6 @@ foreach($nameid as $namewithid){
         $submoduleid = $this->_getParam('subId');
         $familyid = $this->_getParam('memId');
 
-        $habit = $this->_getParam('habit');
-        $challenge = $this->_getParam('challenge');
 
         $habits = $this->view->adm->getRecord('ourbank_healthhabitdetails','family_id',$familyid);
          for ($j = 0 ; $j< count($habits); $j++) {
@@ -197,33 +203,7 @@ foreach($nameid as $namewithid){
         $this->view->adm->deleteRecordwithparam('ourbank_healthphychallenge','family_id',$familyid);
         $this->view->adm->deleteRecordwithparam('ourbank_healthdiseasedetails','family_id',$familyid);
  
-
-        foreach($habit as $habitid){
-        explode('_',$habitid);
-                    $this->view->adm->addRecord("ourbank_healthhabitdetails",
-                                                array('id' => '',
-                                                'submodule_id' => $submoduleid,
-                                                'family_id'=>$this->view->memberid,
-                                                'member_id'=>$habitid[0],
-                                                'habit_id'=>$habitid[2],
-                                                'created_by'=>$this->view->createdby,
-                                                'created_date'=>date("y/m/d H:i:s")
-                                                ));
-                    }
-     foreach($challenge as $challengeid){
-     explode('_',$challengeid);
-                $this->view->adm->addRecord("ourbank_healthphychallenge",
-                                                array('id' => '',
-                                                'submodule_id' => $submoduleid,
-                                                'family_id'=>$this->view->memberid,
-                                                'member_id'=>$challengeid[0],
-                                                'phychallenge_id'=>$challengeid[2],
-                                                'created_by'=>$this->view->createdby,
-                                                'created_date'=>date("y/m/d H:i:s")
-                                                ));
-		}
-
-       foreach($membername as $memberna){
+foreach($membername as $memberna){
          if($this->_getParam('healthdisease'.$memberna['memberid'])) {
                 $disease = $this->_getParam('healthdisease'.$memberna['memberid']);
                     foreach($disease as $diseasetype){
@@ -239,6 +219,83 @@ foreach($nameid as $namewithid){
                     }
             }
         }
+        foreach($membername as $memberna){
+            if($this->_getParam('habit-'.$memberna['memberid'])) {
+                $habits = $this->_getParam('habit-'.$memberna['memberid']);
+                    foreach($habits as $habitstype){
+                        explode('_',$habitstype);
+                        $this->view->adm->addRecord("ourbank_healthhabitdetails",
+                                                                        array('id' => '',
+                                                                        'submodule_id' => $submoduleid,
+                                                                        'family_id'=>$this->view->memberid,
+                                                                        'member_id'=>$habitstype[0],
+                                                                        'habit_id'=>$habitstype[2],
+                                                                        'created_by'=>$this->view->createdby,
+                                                                        'created_date'=>date("y/m/d H:i:s")
+                                                                        ));
+                    }
+            }
+        }
+        foreach($membername as $memberna){
+            if($this->_getParam('challenge-'.$memberna['memberid'])) {
+                $challenge = $this->_getParam('challenge-'.$memberna['memberid']);
+                    foreach($challenge as $challengetype){
+                        explode('_',$challengetype);
+
+                        $this->view->adm->addRecord("ourbank_healthphychallenge",
+                                                array('id' => '',
+                                                'submodule_id' => $submoduleid,
+                                                'family_id'=>$this->view->memberid,
+                                                'member_id'=>$challengetype[0],
+                                                'phychallenge_id'=>$challengetype[2],
+                                                'created_by'=>$this->view->createdby,
+                                                'created_date'=>date("y/m/d H:i:s")
+                                                ));
+                    }
+            }
+
+        }
+//         foreach($habit as $habitid){
+//         explode('_',$habitid);
+//                     $this->view->adm->addRecord("ourbank_healthhabitdetails",
+//                                                 array('id' => '',
+//                                                 'submodule_id' => $submoduleid,
+//                                                 'family_id'=>$this->view->memberid,
+//                                                 'member_id'=>$habitid[0],
+//                                                 'habit_id'=>$habitid[2],
+//                                                 'created_by'=>$this->view->createdby,
+//                                                 'created_date'=>date("y/m/d H:i:s")
+//                                                 ));
+//                     }
+//      foreach($challenge as $challengeid){
+//      explode('_',$challengeid);
+//                 $this->view->adm->addRecord("ourbank_healthphychallenge",
+//                                                 array('id' => '',
+//                                                 'submodule_id' => $submoduleid,
+//                                                 'family_id'=>$this->view->memberid,
+//                                                 'member_id'=>$challengeid[0],
+//                                                 'phychallenge_id'=>$challengeid[2],
+//                                                 'created_by'=>$this->view->createdby,
+//                                                 'created_date'=>date("y/m/d H:i:s")
+//                                                 ));
+// 		}
+// 
+//        foreach($membername as $memberna){
+//          if($this->_getParam('healthdisease'.$memberna['memberid'])) {
+//                 $disease = $this->_getParam('healthdisease'.$memberna['memberid']);
+//                     foreach($disease as $diseasetype){
+//                         $this->view->adm->addRecord("ourbank_healthdiseasedetails",
+//                                                 array('id' => '',
+//                                                 'submodule_id' => $submoduleid,
+//                                                 'family_id'=>$this->view->memberid,
+//                                                 'member_id'=>$memberna['memberid'],
+//                                                 'healthdisease'=>$diseasetype,
+//                                                 'created_by'=>$this->view->createdby,
+//                                                 'created_date'=>date("y/m/d H:i:s")
+//                                                 ));
+//                     }
+//             }
+//         }
 
              $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
 		}

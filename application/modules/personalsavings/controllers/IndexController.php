@@ -93,15 +93,15 @@ class Personalsavings_IndexController extends Zend_Controller_Action
 
         $page->drawText($text[0],$x1, $y2);
         $page->drawText($text[1],$x2, $y2);
-        $page->drawText($text[2],$x3, $y2);
+        $page->drawText($text[2],230, $y2);
         $page->drawText($text[3],$x4, $y2);
         $page->drawText($text[4],$x5, $y2);
         $page->drawText($text[5],$x6, $y2);
         $page->drawText($text[6],$x7, $y2);
         $page->drawLine(50, 740, 550, 740);
-    
+
         $pageNumber = 1;
-        
+
         $page->drawText($pageNumber,550, 30);
         foreach($savingsSelect as $savings) {
 
@@ -109,11 +109,11 @@ class Personalsavings_IndexController extends Zend_Controller_Action
             if($y1 > "30") { 
                 $page->drawText($savings['account_number'],$x1, $y1);
                 $page->drawText($savings['offername'],$x2, $y1);
-                $page->drawText($savings['membercode'],$x3, $y1);
+                $page->drawText($savings['membercode'],230, $y1);
                 $page->drawText($savings['membername'],$x4, $y1);
                 $page->drawText($savings['balance'],$x5, $y1);
                 $page->drawText($savings['created_date'],$x6, $y1);
-                $page->drawText($savings['loginname'],$x7, $y1);
+                $page->drawText($savings['loginname'],530, $y1);
                 } 
             else {
                 $y1 = 740;

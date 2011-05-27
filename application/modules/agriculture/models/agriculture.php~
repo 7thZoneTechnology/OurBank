@@ -32,6 +32,15 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         return $result->toArray();
 //         die ($select->__toString($select));
         }
+ public function ownershiptypes()
+        {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_master_ownershiptype'),array('a.id'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+//         die ($select->__toString($select));
+        }
 
     public function getagriculturedetails($mebmerid)
     {
@@ -72,7 +81,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         $select=$this->select()
             ->setIntegrityCheck(false)
             ->join(array('a'=>'ourbank_family'),array('a.id'))
-            ->join(array('b'=>'ourbank_familymember'),'b.family_id=a.id',array('b.id as memberid','b.name'))
+            ->join(array('b'=>'ourbank_familymember'),'b.family_id=a.id',array('b.id as landowner_name','b.name'))
             ->where('a.id=?',$id);
          //die ($select->__toString($select));
 

@@ -24,7 +24,7 @@ class Family_Model_familymodel extends Zend_Db_Table
 {
         protected $_name = 'ourbank_family';
   // fetch the member details query
-    public function getMemberDetails() {
+    public function getMemberDetails($userid) {
 
 //         $selectC = $this->select()
 //                         ->setIntegrityCheck(false)  
@@ -33,23 +33,27 @@ class Family_Model_familymodel extends Zend_Db_Table
         $selectA = $this->select()
                         ->setIntegrityCheck(false)  
                         ->join(array('a' => 'ourbank_family'),array('a.id'))
-                        ->join(array('d'=>'ourbank_office'),'d.id=a.village_id',array('d.name as villagename'));
-        //die($select->__toString($select));	
+                        ->join(array('d'=>'ourbank_office'),'d.id=a.rev_village_id',array('d.name as villagename'))
+                        ->join(array('c'=>'ourbank_user'),'c.id=a.created_by',array('c.name as username'))
+                        ->where('c.id=?',$userid);
+    //    die($selectA->__toString($selectA));	
 	return $this->fetchAll($selectA);
     }
 
 //fetch the member details from search options...
-    public function searchDetails($post = array()) {
+    public function searchDetails($userid,$post = array()) {
 
         $select = $this->select()
                         ->setIntegrityCheck(false)  
                         ->join(array('a' => 'ourbank_family'),array('a.id'))
-                        ->join(array('b'=>'ourbank_office'),'b.id=a.village_id',array('b.name as villagename'))
+                        ->join(array('b'=>'ourbank_office'),'b.id=a.rev_village_id',array('b.name as villagename'))
+                        ->join(array('c'=>'ourbank_user'),'c.id=a.created_by',array('c.name as username'))
                         ->where('a.code like "%" ? "%"',$post['code'])
-                        ->where('a.village_id like "%" ? "%"',$post['office'])
+                        ->where('a.rev_village_id like "%" ? "%"',$post['office'])
                         ->where('a.house_no like "%" ? "%"',$post['house'])
                         ->where('a.family_id like "%" ? "%"',$post['familyid'])
-                        ->order(array('a.id DESC'));   
+                        ->order(array('a.id DESC'))
+                        ->where('c.id=?',$userid);
 	return $this->fetchAll($select);
     }
 
@@ -71,3 +75,4 @@ class Family_Model_familymodel extends Zend_Db_Table
 
     }
 }
+

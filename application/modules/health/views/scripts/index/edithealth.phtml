@@ -19,6 +19,81 @@
 <script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
 <script language="javascript">
 $(document).ready(function(){
+        $('.none').click(function(){ // All none categories
+        ids = $(this).attr('id').split('-'); // split the value to get id
+        if($("#none-"+ids[1]).is(':checked')) {
+            $('.alldisease'+ids[1]).attr('disabled',true);
+            $('.alldisease'+ids[1]).attr('checked',false);
+        } else {
+            $('.alldisease'+ids[1]).attr('disabled',false);
+        }
+        });
+
+
+        $('.nonehabit').click(function(){ // All none categories
+            ids = $(this).attr('id').split('-'); // split the value to get id
+            if($("#nonehabit-"+ids[1]).is(':checked')) {
+                $('.habit-'+ids[1]).attr('disabled',true);
+                $('.habit-'+ids[1]).attr('checked',false);
+            } else {
+                $('.habit-'+ids[1]).attr('disabled',false);
+            }
+        }); 
+
+        $('.nonechal').click(function(){ // All none categories
+            ids = $(this).attr('id').split('-'); // split the value to get id
+            if($("#nonechal-"+ids[1]).is(':checked')) {
+                $('.challenge-'+ids[1]).attr('disabled',true);
+                $('.challenge-'+ids[1]).attr('checked',false);
+            } else {
+                $('.challenge-'+ids[1]).attr('disabled',false);
+            }
+        });
+
+
+        $(":checkbox").click(function(){
+
+        ids = $(this).attr('id').split('-');
+            if(ids[0] == 'habit'){
+                habitfields = $("input[name='habit-"+ ids[1] +"[]']").serializeArray(); 
+                len = habitfields.length;
+                if(len != 0){
+                    $("#nonehabit-"+ids[1]).attr('disabled',true);
+                }
+                else {
+                    $("#nonehabit-"+ids[1]).attr('disabled',false);
+                } 
+           }
+
+            if(ids[0] == 'challenge'){
+                chlgfields = $("input[name='challenge-"+ ids[1] +"[]']").serializeArray(); 
+                len = chlgfields.length;
+                if(len != 0){
+                    $("#nonechal-"+ids[1]).attr('disabled',true);
+                }
+                else {
+                    $("#nonechal-"+ids[1]).attr('disabled',false);
+                } 
+           }
+            if(ids[0] != 'none'){
+                noneid = ids[0].substring(13);
+            }else {
+                noneid = ids[1];
+            }
+
+            healthfields = $("input[name='healthdisease"+ noneid +"[]']").serializeArray(); 
+            len = healthfields.length;
+            if(len != 0){
+                $("#none-"+noneid).attr('disabled',true);
+            }
+            else {
+                $("#none-"+noneid).attr('disabled',false);
+            }
+        });
+    });
+</script>
+<!--<script language="javascript">
+$(document).ready(function(){
         $('.none').click(function(){
         ids = $(this).attr('id').split('_');
         if($("#none_"+ids[1]).is(':checked')) {
@@ -30,7 +105,7 @@ $(document).ready(function(){
         }
         });
 });
-</script>
+</script>-->
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
@@ -123,8 +198,6 @@ $adm = new App_Model_Adm();
 for($i=0;$i<$this->membercount;$i++) { 
 $selectedHabits = array();
 $selectedChallenges = array();
-$nonemembers = array();
-$nonemembers = $this->nonemem;
 ?>
 <br>
     <table id="hor-minimalist-b" border="1" width="100%">
@@ -138,47 +211,18 @@ $nonemembers = $this->nonemem;
         <tr>
          <?php 
 
-//             $diseasetype = $dbmodel->getselecteddisease($nameid[$i]); // get selected disease id's
-//             foreach ($diseasetype as $diseasetypes){
-//                     $diseaseselect[] = $diseasetypes['healthdisease']; // set all avail disease list 
-//                 }
 ?>
         <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
-       <!-- <td colspan="2">
-        <select multiple="true" name="healthdisease_<?php //echo $nameid[$i];?>[]" >
-                <?php //
-                //foreach($this->diseasedetails as $masterdisease)
-               // {
-                   // if(in_array($masterdisease['id'],$diseaseselect)) { ?>
-                        <option value="<?php //echo $masterdisease['id']; ?>" selected ><?php //echo //$masterdisease['name'];?></option>
-                            <?php  //
-                   // }/
-                   // else
-                    //{ ?>
-                        <option value="<?php //echo $masterdisease['id']; ?>"  ><?php //echo $masterdisease['name'];?></option> 
-                        <?php
-                  //  }
-              //  }    ?>    
-        </select>-->
+
 <td colspan="2">
-     <!--   <select multiple="true" name="healthdisease_<?php //echo $nameid[$i];?>[]" size="5">
-                   <?php //foreach ($this->disease as $disease) { ?>
-                            <option value="<?php //echo $disease['id']?>"><?php //echo $disease['name']?></option>
-                            <?php //} ?>
-        </select>-->
-        <?php if(in_array($nameid[$i],$nonemembers)) { ?>
-        <input type="checkbox" name="none" class="none" checked="true" id="none_<?php echo $nameid[$i];?>" />None <br>
 
-        <?php } else {  ?>
 
-<input type="checkbox" name="none" class="none"  id="none_<?php echo $nameid[$i];?>" />None <br>
+<input type="checkbox" name="none" class="none"  id="none-<?php echo $nameid[$i];?>" />None <br>
 
 
         <?php 
-        }
-//             $a='none'.$nameid[$i];
+
             $b='healthdisease'.$nameid[$i];
-//             echo $this->form->$a;
             echo $this->form->$b;
         ?>
         </TD>
@@ -188,8 +232,14 @@ $nonemembers = $this->nonemem;
     </table>
 <table id="hor-minimalist-b" border="1" width="100%">
 <tr>
-    <td width="20%"><b>Habits</b></td>
-    <?php foreach($this->habitdetails as $habits){ 
+    <td width="20%"><b>Habits</b>
+    </td>
+    <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
+    <?php if($c == 1) { ?>
+        <td colspan="2">
+                <input type="checkbox" name="nonehabit" class="nonehabit" id="nonehabit-<?php echo $nameid[$i];?>" />None <br>
+        </td>
+    <?php } 
 
     $selectedHab = $dbmodel->getselectedhabit($nameid[$i]); // get selected health id's
 
@@ -198,45 +248,46 @@ $nonemembers = $this->nonemem;
     }
 
  if(in_array($habits['id'],$selectedHabits)) { ?>
-
     <td>
-        <input type="checkbox" name="habit[]"  checked="true"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-         <?php echo $habits['name']; ?>
+        <input type="checkbox" checked="true" name="habit-<?php echo $nameid[$i];?>[]" id="habit-<?php echo $nameid[$i];?>" class="habit-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+        <?php echo $habits['name']; ?> 
     </td>
 <?php  }  else { ?>
-
-<td><input type="checkbox" name="habit[]"  value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-<?php echo $habits['name']; ?>
-</td>
-
+    <td>
+        <input type="checkbox" name="habit-<?php echo $nameid[$i];?>[]" id="habit-<?php echo $nameid[$i];?>" class="habit-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+        <?php echo $habits['name']; ?> 
+    </td>
 <?php } 
-
 }
 
 ?>
 </tr>
 <tr>
-    <td width="20%"><b> Physical challenge</b></td>
-    <?php foreach($this->challengedetails as $challenge){ 
-
+    <td width="20%"><b> Physical challenge</b>
+    </td>
+    <?php $p = 0; foreach($this->challengedetails as $challenge){ $p++; ?>
+    <?php if($p == 1) { ?>
+    <td colspan="2">
+            <input type="checkbox" name="nonechal" class="nonechal" id="nonechal-<?php echo $nameid[$i];?>" />None <br>
+    </td>
+    <?php } 
     $selectedPhysical = $dbmodel->getphysicalchallenge($nameid[$i]); // get selected physical challenge id's
-
     foreach ($selectedPhysical as $selectedPhy){
         $selectedChallenges[] = $selectedPhy['phychallenge_id']; // set all avail physical challenge list 
     }
-
  if(in_array($challenge['id'],$selectedChallenges)) { ?>
-
-    <td><input type="checkbox" name="challenge[]" checked="true" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-    <?php echo $challenge['name']; ?>
-</td>
-<?php }  else { ?>
-
-  <td><input type="checkbox" name="challenge[]" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-    <?php echo $challenge['name']; ?>
-
-</td>
-   <?php } }  
+    <td>
+        <input type="checkbox" checked="true" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+        <?php  echo $challenge['name']; ?>
+    </td>
+    <?php }  
+        else { ?>
+     <td>
+        <input type="checkbox" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+        <?php  echo $challenge['name']; ?>
+    </td>
+   <?php } 
+    }  
 ?>
 </tr>
 </table>

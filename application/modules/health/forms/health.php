@@ -28,6 +28,7 @@ class Health_Form_health extends Zend_Form {
         $formfield = new App_Form_Field ();
        foreach($memberid as $memberids) {
         $healthdisease = $formfield->field('MultiCheckbox','healthdisease'.$memberids,'','',' alldisease'.$memberids,'',false,'','','','','',0,0);
+
         $this->addElements(array($healthdisease));
 	}
     }

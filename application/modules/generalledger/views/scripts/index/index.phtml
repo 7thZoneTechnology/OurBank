@@ -24,19 +24,18 @@ if($this->search == 0) { ?>
 <fieldset>
     <legend>Search</legend>
         <TABLE width="100%">
-            <tr>
-                <td class="label">Begin Date</td>
-                <td allign = "right"><?php  echo $this->form->datefrom;?></td>
-                <td class="label">Close Date</td>
-                <td allign = "right"><?php  echo $this->form->dateto;?></td>
+            <tr><br>
+                <td align = "center" class="label">Begin Date :</td>
+                <td align = "center"><?php  echo $this->form->datefrom;?></td>
+                <td class="label">Close Date :</td>
+                <td align = "right"><?php  echo $this->form->dateto;?></td>
             </tr>
             <tr>
-				
-                <Td class="label">Gl Subcode</td>
-                <td allign = "right"><?php  echo $this->form->glcode;?></td>			
+                <Td align = "center" class="label"><br>Gl Subcode :</td>
+                <td align = "center"><br><?php  echo $this->form->glcode;?></td>
             </tr>
             <tr>
-                <TD colspan="4" align="left"><input type="submit" name="Search" value="Search"/></TD>
+                <TD align="center"><br><input type="submit" name="Search" value="Search"></TD>
             </tr>
         </table>
 </fieldset>
