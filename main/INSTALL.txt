@@ -2,7 +2,7 @@
 
 Here the Procedure is applicable only to linux Operating System
 
-1.Download the  Application from our website (http://ourbank.in/download)
+1.Download the Application from our website (http://ourbank.in/download)
 2.Downloaded file may be in tar format or zip format . So extract the file 
 3.Put that application into /var/www in any name (Here project avail in ourbank) you can rename it as what you like
 4.Now you go to https://www.zend.com/en/user/  and create user account
