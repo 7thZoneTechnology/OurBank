@@ -48,7 +48,7 @@
                  $time = $formfield->field('Text','times','','','mand','Time',true,'','','','','',1,'');
                  $day = $formfield->field('Select','day','','','mand','Day',true,'','','','','',1,'');
 
-                $date = $formfield->field('Text','Created_Date','','','mand required','Group registered date',true,'','','','','',1,'');
+                $date = $formfield->field('Text','Created_Date','','','mand dates','Group registered date',true,'','','','','',1,'');
 
                 $code = new Zend_Form_Element_Hidden('code');
                 $submit = new Zend_Form_Element_Submit('Submit');
