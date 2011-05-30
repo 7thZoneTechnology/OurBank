@@ -90,7 +90,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
              if($flag == true){
                 $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
             } else {
-                echo "<script>alert('Nothing Entered');</script>";
+                $this->view->error = "Nothing entered";
                 }
             } 
         }

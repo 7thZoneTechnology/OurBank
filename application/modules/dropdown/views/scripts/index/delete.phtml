@@ -19,25 +19,20 @@
 
 <div style="width:480px;float:left"> 
 
-
-
-
-
-<fieldset>
-	<legend>Confirm Delete</legend>
+	<table id="hor-minimalist-b" class="fieldsets">
+	<th colspan="4">Confirm Delete</th>
 			<div class="cont-rgt-data">
 				<form action="<?php echo $this->baseUrl();?>/dropdown/index/delete/id/<?php echo $this->id; ?>/name/<?php  echo $this->ff; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" summary="Employee Pay Sheet">
+				
 					<TR>
-						<TD  width="35%" align="right" ><label>Remarks<span class="reqMark">*</span></label></TD>
-						<TD  width="65%"  align="left" ><?php echo $this->form->remarks;?></TD>
-									</table>
+						<td></td>
+						<TD><label class="mand">Remarks</label><?php echo $this->form->remarks;?></TD>
+									
 					</tr>
-							<input type="submit" name="Delete" id="Submit" value="Delete">			
-
-						<input name="submit" type="submit"  value="Cancel" ></a></TD>
+							<tr><TD><input type="submit" name="Delete" id="Submit" value="Delete"></TD>
+						<TD align="right"><a href="<?php echo $this->baseUrl();?>/dropdown/index/"> <input name="submit" type="submit"  value="Cancel" ></a></TD>
 					</TR>
 				</form>
-			
-</fieldset>
+			</table>
+
 </div>

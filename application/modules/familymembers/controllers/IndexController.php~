@@ -341,14 +341,14 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
                 $ecount=count($entitlement);
                 for($n=0; $n<$ecount; $n++){
-                $entitledetails=array('member_id'=>$recordid[$i],'entitlement_id'=>$entitlement[$n]);
+                $entitledetails=array('member_id'=>$lastid,'entitlement_id'=>$entitlement[$n]);
                 $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
                 }
                 $profession=array();
                 $profession=$this->_getParam('profid-'.$inc.'-'); //print_r($profession);
                 $pcount=count($profession);
                 for($n=0; $n<$pcount; $n++){
-                $profdetails=array('member_id'=>$recordid[$i],'profession_id'=>$profession[$n]);
+                $profdetails=array('member_id'=>$lastid,'profession_id'=>$profession[$n]);
                 $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
                 }
 
@@ -363,14 +363,14 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
                 $ecount=count($entitlement);
                 for($n=0; $n<$ecount; $n++){
-                $entitledetails=array('member_id'=>$recordid[$i],'entitlement_id'=>$entitlement[$n]);
+                $entitledetails=array('member_id'=>$lastid,'entitlement_id'=>$entitlement[$n]);
                 $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
                 }
                 $profession=array();
                 $profession=$this->_getParam('profid-'.$inc.'-'); //print_r($profession);
                 $pcount=count($profession);
                 for($n=0; $n<$pcount; $n++){
-                $profdetails=array('member_id'=>$recordid[$i],'profession_id'=>$profession[$n]);
+                $profdetails=array('member_id'=>$lastid,'profession_id'=>$profession[$n]);
                 $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
                 }
 

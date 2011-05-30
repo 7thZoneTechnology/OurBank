@@ -16,7 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<?php if($this->membername) { ?>
+
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
@@ -27,7 +27,8 @@
     <?php 
     $convertdate = new App_Model_dateConvertor();
     foreach($this->membernames as $family_view){ ?>
-<tr>
+
+ <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
         <td ><?php //echo $this->translate("Caste:"); ?></td>
@@ -63,7 +64,7 @@
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
         <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['phone']; ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
 
     <tr>
@@ -75,8 +76,9 @@
    <?php } ?>
 </table> 
 <br/>
+
 <div style="height:300px; width=300px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
-	<form  method="POST">
+<form action="<?php echo $this->baseUrl();?>/praservice/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
 <?php
         if($this->service_details){
             $sevice = count($this->service_details);
@@ -101,29 +103,37 @@
         </tr>
     </table>
 	<table id="hor-minimalist-b" border="1">
-
         <tr>
         <?php  $i=1;  
  		foreach($this->service_details as $servicedetails){ 
     		$a='service'.$servicedetails['id'];
-    		//$f='source_id'.$servicedetails['id'];  //echo $a;
         	?>
 		
-			<td><?php  echo $i;  ?></td>
-			<td colspan="2">
-			<input type='checkbox' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
-                        <?php echo $servicedetails['name']; ?></td>
+	<td><?php  echo $i;  ?></td>
+	<td colspan="2">
+     <?php 
+            $pradetails='';
+            $selecteddetails = $this->praservice->get_service($nameid[$j]);
+            foreach($selecteddetails as $pradetails1){ $pradetails[]=$pradetails1['source_id']; }
+            //echo '<pre>';print_r($pradetails);
+            if($pradetails){
+        if(in_array($servicedetails['id'],$pradetails,true)){ ?>
+	<input type='checkbox' checked='true' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
+        <?php } else { ?>
+	<input type='checkbox' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
+        <?php } } else { ?>
+<input type='checkbox' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
+        <?php    }
+            echo $servicedetails['name']; ?></td>
 	<?php  if($i%5 == 0) { echo "</tr><tr>"; } $i++; } ?>
 
 		</tr> 
 </table>
-<?php
-}
-?>
+<?php } ?>
 <br>
 	<table>
 		<tr>
-		      <td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+		      <td><input type="submit" id="update" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
 			<td>
 			</td>
 			<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>">
@@ -133,7 +143,3 @@
 	</table>
 	</form>
 </div>
-
-<?php } else { ?>
-<p style="color:red;">There is no members in this family</p> 
-<?php } ?>

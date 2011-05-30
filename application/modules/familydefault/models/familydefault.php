@@ -38,7 +38,7 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
            $select = $this->select()
                    ->setIntegrityCheck(false)
                    ->from(array('a' => 'ourbank_office'),array('name as villagename','id as village_id'))
-                   ->where('a.officetype_id =?',$hiearchyid);
+                   ->where('a.id =?',$hiearchyid);
 
            //die($select->__toString($select));
            return $this->fetchAll($select);
@@ -93,6 +93,19 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
         $db->insert($table,$param);
         return 1;
     }
+
+	public function finduser($finduser,$officetype)
+       {
+           $select=$this->select()
+                   ->setIntegrityCheck(false)
+                   ->join(array('a'=>'ourbank_user'),array('id'),array('a.id','a.name as username','a.designation'))
+                   ->join(array('b'=>'ourbank_office'),'a.bank_id=b.id',array('b.name as officename','b.id as officeid'))
+                   ->where('a.id=?',$finduser)
+				   ->where('b.officetype_id=?',$officetype);
+            // die($select->__toString($select));
+            $result=$this->fetchAll($select);
+            return $result->toArray();
+       }
 
     public function getIds($id)
     {

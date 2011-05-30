@@ -36,7 +36,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
             ->join(array('i'=>'ourbank_master_sourceofincome'),'i.id =a.income_id',array('i.name as income'))
  			 ->where('a.id=?',$id)
 		    ->join(array('j'=>'ourbank_master_habitation'),'j.id =a.village_id',array('j.name as names'));
-      //  die($select->__toString($select));
+//        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -236,6 +236,7 @@ public function getchronicdisease($familyid){
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_healthdiseasedetails'),array('a.id'))
                       ->where('a.family_id=?',$familyid)
+                        ->join(array('b'=>'ourbank_master_diseasetypes'),'b.id=a.healthdisease',array('b.name as diseasename'))
                       ->join(array('c'=>'ourbank_familymember'),'c.id=a.member_id',array('c.name as membername'));      
       $result=$this->fetchAll($select);
       return $result->toArray();

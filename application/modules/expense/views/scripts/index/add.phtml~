@@ -16,7 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<?php if($this->membername) { ?>
+<form action="<?php echo $this->baseUrl();?>/expense/index/add/id/<?php echo $this->memberid; ?>" method="POST"  id="myform">
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
@@ -26,8 +26,9 @@
    </tr>
     <?php 
     $convertdate = new App_Model_dateConvertor();
-    foreach($this->membernames as $family_view){ ?>
-<tr>
+    foreach($this->membername as $family_view){ ?>
+
+ <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
         <td ><?php //echo $this->translate("Caste:"); ?></td>
@@ -63,7 +64,7 @@
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
         <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['phone']; ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
 
     <tr>
@@ -75,65 +76,29 @@
    <?php } ?>
 </table> 
 <br/>
-<div style="height:300px; width=300px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
-	<form  method="POST">
-<?php
-        if($this->service_details){
-            $sevice = count($this->service_details);
-            $endloop = round($sevice/3);
-        }
-        $names = array();
-        $nameid = array();
-        foreach($this->membername as $name){
-        $nameid[] = $name['memberid'];
-        $names[] = $name['membername'];
-        }
+<table id="hor-minimalist-b">
+<tr> 
+    <th><?php echo $this->translate("Expense"); ?></th>
+    <th><?php echo $this->translate("Value"); ?></th>
+    <th></th>
+</tr>
+<?php  
+foreach($this->expense_details as $expense){
+ $b='value'.$expense['id'];
+ $c='source_id'.$expense['id'];
 ?>
-<?php for($j=0;$j<$this->membercount;$j++) { 
-?>
-<br>
-    <table id="hor-minimalist-b" border="1" width="100%">
-        <tr>
-            <td width="5%" ><?php echo $nameid[$j];?></td>
-            <td width="95%" align="left">
-            <?php  echo "<b>$names[$j] "."<b>"; ?>
-            </td>
-        </tr>
-    </table>
-	<table id="hor-minimalist-b" border="1">
-
-        <tr>
-        <?php  $i=1;  
- 		foreach($this->service_details as $servicedetails){ 
-    		$a='service'.$servicedetails['id'];
-    		//$f='source_id'.$servicedetails['id'];  //echo $a;
-        	?>
-		
-			<td><?php  echo $i;  ?></td>
-			<td colspan="2">
-			<input type='checkbox' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
-                        <?php echo $servicedetails['name']; ?></td>
-	<?php  if($i%5 == 0) { echo "</tr><tr>"; } $i++; } ?>
-
-		</tr> 
-</table>
+<tr>
+<TD> <label><?php echo $expense['name'];?></label> </TD>
+<td><?php echo $this->form->$b; ?></td>
+<td><?php echo $this->form->$c; ?></td>
+</tr>
 <?php
 }
 ?>
-<br>
-	<table>
-		<tr>
-		      <td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
-			<td>
-			</td>
-			<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>">
-				<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
-			</td>
-		</tr>
-	</table>
-	</form>
-</div>
-
-<?php } else { ?>
-<p style="color:red;">There is no members in this family</p> 
-<?php } ?>
+<input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
+<tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit");?>" ></td>
+<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+</tr>
+</table>
+<?php echo "<font color='red' size='5'>".$this->error."</font>";?>
+</form>

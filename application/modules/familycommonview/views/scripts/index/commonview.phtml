@@ -262,7 +262,7 @@
         <?php if(($this->agriculture)!=NULL) { ?>
         <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
         <?php } else { ?>
-        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
         <?php } ?>
     </tr>
 </table>
@@ -771,7 +771,7 @@ foreach($this->getfamilymembers as $familymembers){ ?>
 <?php
  foreach($this->getchronicdisease as $chronic) {
             if($familymembers['name'] == $chronic['membername']){
-                    echo $chronic['suggestion']."<br>";
+                    echo $chronic['diseasename']."<br>";
             }
     }
 ?>

@@ -92,7 +92,20 @@ $(document).ready(function(){
         });
     });
 </script>
-
+<!--<script language="javascript">
+$(document).ready(function(){
+        $('.none').click(function(){
+        ids = $(this).attr('id').split('_');
+        if($("#none_"+ids[1]).is(':checked')) {
+            
+            $('.alldisease'+ids[1]).attr('disabled',true);
+            $('.alldisease'+ids[1]).attr('checked',false);
+        } else {
+            $('.alldisease'+ids[1]).attr('disabled',false);
+        }
+        });
+});
+</script>-->
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
@@ -102,6 +115,7 @@ $(document).ready(function(){
    </tr>
     <?php 
     foreach($this->membernames as $family_view){ ?>
+
 <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
@@ -138,7 +152,7 @@ $(document).ready(function(){
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
         <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['phone']; ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
 
     <tr>
@@ -147,13 +161,15 @@ $(document).ready(function(){
         <td ><?php echo $this->translate("Mobile:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
-  <?php } ?>
+   <?php } ?>
 </table> 
 <br/>
-<form action="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>" method="POST">
+<form action="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>" method="POST">
 <div style="width:750px; height=500px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
-
 <?php 
+$dbmodel=new Health_Model_health();
+
+
 $hlen = count($this->habitdetails);
 $clen = count($this->challengedetails);
 $actlen = $hlen > $clen ? $hlen : $clen;
@@ -165,87 +181,126 @@ foreach($this->membername as $name){
  $names[] = $name['membername'];
 }
  ?>
+
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-            <th  align="left" width="20%">
-            Sno.&nbsp;&nbsp;&nbsp;  Name <br>
-            Description
-            </th>
-            <th colspan="<?php echo $actlen; ?>" align="center" width="80%">
-            What
-            </th>
+        <th  align="left" width="20%">
+        Sno.&nbsp;&nbsp;&nbsp;  Name <br>
+        Description
+        </th>
+        <th colspan="<?php echo $actlen; ?>" align="center" width="80%">
+        What
+        </th>
         </tr>
     </table>
-
-<?php for($i=0;$i<$this->membercount;$i++) { ?>
+<?php 
+$adm = new App_Model_Adm();
+for($i=0;$i<$this->membercount;$i++) { 
+$selectedHabits = array();
+$selectedChallenges = array();
+?>
 <br>
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-            <td width="5%" ><?php echo $nameid[$i];?></td>
-            <td width="95%" align="left">
-            <?php  echo "<b>$names[$i] "."'s<b>"; ?>
-            </td>
+        <td width="5%" ><?php echo $nameid[$i];?></td>
+        <td width="95%" align="left" colspan="<?php echo $actlen-1; ?>">
+        <?php  echo "<b>$names[$i] "."'s<b>"; 
+        ?>
+        </td>
         </tr>
         <tr>
+         <?php 
+
+?>
         <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
-        <td colspan="2">
-        <input type="checkbox" name="none" class="none" id="none-<?php echo $nameid[$i];?>" />None <br>
+
+<td colspan="2">
+
+
+<input type="checkbox" name="none" class="none"  id="none-<?php echo $nameid[$i];?>" />None <br>
+
+
         <?php 
 
             $b='healthdisease'.$nameid[$i];
             echo $this->form->$b;
         ?>
         </TD>
+
         </tr>
+
     </table>
 <table id="hor-minimalist-b" border="1" width="100%">
-
-
 <tr>
-    <td width="20%">Habits</td>
-        <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
-<?php if($c == 1) { ?>
+    <td width="20%"><b>Habits</b>
+    </td>
+    <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
+    <?php if($c == 1) { ?>
+        <td colspan="2">
+                <input type="checkbox" name="nonehabit" class="nonehabit" id="nonehabit-<?php echo $nameid[$i];?>" />None <br>
+        </td>
+    <?php } 
 
- <td colspan="2">
-         <input type="checkbox" name="nonehabit" class="nonehabit" id="nonehabit-<?php echo $nameid[$i];?>" />None <br>
- </td>
+    $selectedHab = $dbmodel->getselectedhabit($nameid[$i]); // get selected health id's
 
-<?php } ?>
+    foreach ($selectedHab as $selectedHabit){
+        $selectedHabits[] = $selectedHabit['habit_id']; // set all avail health list 
+    }
 
-    <td colspan="2">
+ if(in_array($habits['id'],$selectedHabits)) { ?>
+    <td>
+        <input type="checkbox" checked="true" name="habit-<?php echo $nameid[$i];?>[]" id="habit-<?php echo $nameid[$i];?>" class="habit-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
+        <?php echo $habits['name']; ?> 
+    </td>
+<?php  }  else { ?>
+    <td>
         <input type="checkbox" name="habit-<?php echo $nameid[$i];?>[]" id="habit-<?php echo $nameid[$i];?>" class="habit-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
         <?php echo $habits['name']; ?> 
     </td>
-<?php } ?>
+<?php } 
+}
+
+?>
 </tr>
 <tr>
-    <td width="20%">Physical challenge</td>
+    <td width="20%"><b> Physical challenge</b>
+    </td>
     <?php $p = 0; foreach($this->challengedetails as $challenge){ $p++; ?>
-  <?php if($p == 1) { ?>
-
- <td colspan="2">
-         <input type="checkbox" name="nonechal" class="nonechal" id="nonechal-<?php echo $nameid[$i];?>" />None <br>
- </td>
-
-<?php } ?>
-<td colspan="2">
-<input type="checkbox" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-<?php  echo $challenge['name']; ?>
+    <?php if($p == 1) { ?>
+    <td colspan="2">
+            <input type="checkbox" name="nonechal" class="nonechal" id="nonechal-<?php echo $nameid[$i];?>" />None <br>
+    </td>
+    <?php } 
+    $selectedPhysical = $dbmodel->getphysicalchallenge($nameid[$i]); // get selected physical challenge id's
+    foreach ($selectedPhysical as $selectedPhy){
+        $selectedChallenges[] = $selectedPhy['phychallenge_id']; // set all avail physical challenge list 
+    }
+ if(in_array($challenge['id'],$selectedChallenges)) { ?>
+    <td>
+        <input type="checkbox" checked="true" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+        <?php  echo $challenge['name']; ?>
+    </td>
+    <?php }  
+        else { ?>
+     <td>
+        <input type="checkbox" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
+        <?php  echo $challenge['name']; ?>
     </td>
    <?php } 
+    }  
 ?>
-
 </tr>
 </table>
 <?php
 }
+
 ?>
 </div>
 <table>
 <input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
 <input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
 
-<tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+<tr><td><input type="submit" id="submit" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
 <td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
 </tr>
 </table>

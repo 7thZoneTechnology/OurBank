@@ -104,7 +104,9 @@ class Expense_IndexController extends Zend_Controller_Action
             }
             if($flag == true){
                 $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
-                } 
+                } else {
+                $this->view->error = "Nothing entered";
+                }
 
             }
         }

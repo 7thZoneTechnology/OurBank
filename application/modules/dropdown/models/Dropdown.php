@@ -18,9 +18,25 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 	return '1';
       
     }
+	public function editRecord($tName,$id)
+    {
+        $select = $this->select()
+                ->setIntegrityCheck(false)  
+                ->join(array('a' => $tName),array('a.id'))
+                ->where('a.id =?',$id);
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+    }
+	public function deleteRecord($tName,$id)  
+    {
+        $db = $this->getAdapter();
+        $db->delete($tName, $id);
+        return '1';
+    }
+
 public function getdetails($tName,$id) {
 		 $select = $this->select()
-                        ->setIntegrityCheck(false)
+              ->setIntegrityCheck(false)
 			->from(array('a' => $tName),array('id','name'))
 			->where('a.id = ?',$id);
 

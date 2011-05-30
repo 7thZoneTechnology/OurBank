@@ -35,7 +35,9 @@ class Dropdown_IndexController extends Zend_Controller_Action
 }
     public function indexAction() 
     {
-        $addform=new Dropdown_Form_Drop();
+        $path =  $this->view->baseUrl();
+
+        $addform=new Dropdown_Form_Drop($path);
         $this->view->form=$addform;
 		$this->view->title = "Drop Down";
 		//echo $tableName;
@@ -43,23 +45,37 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		foreach($mastertable as $mastertable) {
 				$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
 			}		
-			if ($this->_request->isPost() && $this->_request->getPost('Go')) {
-	    	if ($this->_request->isPost()) {
-				$formData = $this->_request->getPost();
-					if ($addform->isValid($formData)) {
-  				$tablename=$this->_request->getParam('name');
-	       $this->view->tableName = $tablename;
- 		$tabledata = new Dropdown_Model_Dropdown();
-        $tabledatas = $tabledata->tabledata($tablename);
-
-        $this->view->tabledata = $tabledatas;
-
-
-
-			}
-		}
-	}
+// 			if ($this->_request->isPost() && $this->_request->getPost('Go')) {
+// 	    	if ($this->_request->isPost()) {
+// 				$formData = $this->_request->getPost();
+// 					if ($addform->isValid($formData)) {
+//   				$tablename=$this->_request->getParam('name');
+// 	       $this->view->tableName = $tablename;
+//  		$tabledata = new Dropdown_Model_Dropdown();
+//         $tabledatas = $tabledata->tabledata($tablename);
+// 
+//         $this->view->tabledata = $tabledatas;
+// 
+// 
+// 
+// 			}
+// 		}
+// 	}
 }
+public function nameAction()
+{
+
+
+        $app = $this->view->baseUrl();
+        $this->_helper->layout->disableLayout();
+        $tablename = $this->_request->getParam('names');
+        $this->view->tableName = $tablename;
+        $tabledata = new Dropdown_Model_Dropdown();
+        $tabledatas = $tabledata->tabledata($tablename);
+// Zend_Debug::dump($tabledatas);
+        $this->view->tabledata = $tabledatas;
+        }
+
 public function addAction() 
     {
  $path = $this->view->baseUrl();
@@ -76,10 +92,10 @@ $tName=$this->_request->getParam('name');
 		foreach($statename as $statename){
 				$dropdownForm->state->addMultiOption($statename['id'],$statename['name']);
 			}
-// 		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
-// 		foreach($districtname as $districtname){
-// 				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
-// 			}
+		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
+		foreach($districtname as $districtname){
+				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
+			}
 		$taluklist = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
 		foreach($taluklist as $taluklist){
 				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name']);
@@ -96,7 +112,7 @@ $tName=$this->_request->getParam('name');
 		foreach($bank as $bank){
 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
 			}
-		if ($this->_request->isPost() && $this->_request->getPost('SAVE')) {
+		if ($this->_request->isPost() && $this->_request->getPost('Save')) {
 			if($tName == 'ourbank_master_districtlist') {
  		$id=$this->_request->getParam('state');
  		$common=$this->_request->getParam('commonname');
@@ -214,43 +230,72 @@ $settings = new Dropdown_Model_Dropdown;
 	}
 public function editAction() 
     {
- $path = $this->view->baseUrl();
+  							$tName=$this->_request->getParam('name');
+							$this->view->tableName = $tName;
 
+
+			$id=$this->_request->getParam('id');
+			$this->view->id = $id;
+			$settings = new Dropdown_Model_Dropdown;
+
+ 		$path = $this->view->baseUrl();
  		$dropdownForm = new Dropdown_Form_Settings($path);
         $this->view->form = $dropdownForm;
-  		$tName=$this->_request->getParam('name');
-		$this->view->tableName =$tName;
- 		if ($this->_request->isPost() && $this->_request->getPost('Update')) {
-	    	  		 echo $Name=$this->_request->getParam('commonname');
+// //   		$tName=$this->_request->getParam('name');
+// // 		$this->view->tableName =$tName;
+ 		if ($this->_request->isPost() && $this->_request->getPost('Update')) 
+			{
+	    		 echo $Name=$this->_request->getParam('commonname');
 
-   	$tName=$this->_request->getParam('name');
-if ($Name=='') { echo "value cant be empty"; }else {
-		$id=$this->_request->getParam('id');
-  		$tName=$this->_request->getParam('name');
-  		$Name=$this->_request->getParam('commonname');
- $formdata1=array('name'=>$Name);		
+   				$tName=$this->_request->getParam('name');
+				if ($Name=='') {
+						 echo "value cant be empty"; 
+				} else {
+							$id=$this->_request->getParam('id');
+
+  							$Name=$this->_request->getParam('commonname');
+ 							$formdata1=array('name'=>$Name);		
 //Zend_Debug::dump($dropdownForm->getValues());
-  		$previousdata = $this->view->adm->editRecord($tName,$id);
-		$this->view->adm->updateRecord($tName,$id,$formdata1);
-			$this->_redirect('/dropdown');
-}
+  							$previousdata = $this->view->adm->editRecord($tName,$id);
+							$this->view->adm->updateRecord($tName,$id,$formdata1);
+							$this->_redirect('/dropdown');
+				}
+		} else {
+// // 			$dropdownForm = new Dropdown_Form_Settings($path);
+// //        		 $this->view->form = $dropdownForm;
+ 			$statename = $this->view->adm->viewRecord("ourbank_master_state","id","DESC");
+		foreach($statename as $statename){
+				$dropdownForm->state->addMultiOption($statename['id'],$statename['name']);
+			}
+		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
+		foreach($districtname as $districtname){
+				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
+			}
+		$taluklist = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
+		foreach($taluklist as $taluklist){
+				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name']);
+			}
+		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
+		foreach($gillapanchayath as $gillapanchayath){
+				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
+			}
+		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
+		foreach($village as $village){
+				$dropdownForm->village->addMultiOption($village['id'],$village['name']);
+			}
+		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
+		foreach($bank as $bank){
+				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
+			}
 
-// }
-// }
-} else {
-		$dropdownForm = new Dropdown_Form_Settings($path);
-        $this->view->form = $dropdownForm;
- 		$id=$this->_request->getParam('id');
-		$this->view->id = $id;
-		$tName=$this->_request->getParam('name');
-		$this->view->ff = $tName;
-		$settings = new Dropdown_Model_Dropdown;
-		$namedetails = $settings->getdetails($tName,$id);
-		foreach($namedetails as $holidaydetails) {
-				$this->view->form->commonname->setValue($holidaydetails['name']);
-			
-
-		}}
+		
+			$tName=$this->_request->getParam('name');
+			$this->view->ff = $tName;
+			$namedetails = $settings->getdetails($tName,$id);
+				foreach($namedetails as $holidaydetails) {
+					$this->view->form->commonname->setValue($holidaydetails['name']);
+				}
+	}
 
 }
 public function deleteAction() 
@@ -315,4 +360,5 @@ public function hobliAction() {
 
 
 }
+
 }

@@ -17,39 +17,6 @@ function calculateacre(bal) {
             caltotalacre();
 }
 
-function calculaterealised(thi) { //alert('h');
-            var sum=0;
-	    //iterate through each textboxes and add the values
-	    $(".marketed").each(function() {
-/*            if(!isNaN(this.value) && (this.value.length!=0)) {*/
-	    sum += parseFloat(this.value); //alert(sum);
-/*           }*/
-	   });
-	   $(".realised").val(sum); 
-           calproduct();
-}
-function calproduct(thi) { //alert('h');
-            var sum=0;
-	    //iterate through each textboxes and add the values
-	    $(".product").each(function() {
-/*            if(!isNaN(this.value) && (this.value.length!=0)) {*/
-	    sum += parseFloat(this.value); //alert(sum);
-/*           }*/
-	   });
-	   $(".realised").val(sum); 
-          calculaterealised();
-}
-// function calculaterealised(bal) { alert('hi');
-//             var sum=0;
-// 	    //iterate through each textboxes and add the values
-// 	    $(".marketed").each(function() {
-// /*            if(!isNaN(this.value) && (this.value.length!=0)) {*/
-// 	    sum = parseFloat(this.value); alert(sum);
-// /*           }*/
-// 	   });
-// 	   $(".realised").val(Number(sum)); 
-//             //caltotalacre();
-// }
 function calculateguntas(thi) {
             var sum=0;
 	    //iterate through each textboxes and add the values
@@ -84,18 +51,50 @@ function caltotalacre(bal) {
 
 $(document).ready(
   function() {
+ $('#pluginForm').validate();
+        $(".numeric1").keyup(
+    function(){
+        currentObject=$(this).attr('name')
+       if (currentObject=='marketed[]'){
+             Qobj=$(this).parent().next();
+       
+            tobj=$(this).parent().next().next();}
+       else
+          {
+                 Qobj=$(this).parent().prev();
+       
+                tobj=$(this).parent().next();
+        }   
+       
+        Qty=$('input',Qobj).val();
+       tot=$(this).val()*Qty;
+        $('input',tobj).val(tot)
+
+     });
     $('input#tmpAddRow').click(
       function() {
+       tableobj=$(this).parent();
+        selectedval=[];
+     rowindex=$('tr',tableobj).length;
         var newRow = $('tr#tmp').clone(true).removeAttr('id');
-        newRow.find("select").each( function() {
-            $(this).children(':first').attr('selected', 'selected');
-        });
+     selectobj=newRow.find("select");
+                //selectobj="Select";
+                $.each(selectobj,function() {
+                  
+                  $('<option value="" selected="selected">Select</option>').appendTo(this);
+
+                
+                 });
         newRow.find("input:text").val("");
+         acreObj=newRow.find("input.EitherOr");
+                 acreObj.attr('id','acre'+rowindex);
         newRow.find("input:checkbox").removeAttr('checked');
         newRow.appendTo('.crop tbody');
         $('tr#tmp').closest('table').find('input:text.date').each(function() {
            $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate: '+0D'});
         });
+        
+        
 //         arrangeCheckboxNames();
             arrangehiddenid();
       }
@@ -113,7 +112,7 @@ $(document).ready(
 
     $('.delete-icon').click(function() {
     $(this).closest('tr').not('#tmp').remove();
-        arrangeCheckboxNames();
+       // arrangeCheckboxNames();
     });
 $(".date").datepick({dateFormat: 'dd/mm/yyyy',maxDate: '+0D'});  
   }
@@ -132,138 +131,7 @@ length++;
 });
 };
 
-$(document).ready(function() {
- 
-   $(".numeric1").keyup(
-    function(){
-       Qobj=$(this).parent().prev();
-       tobj=$(this).parent().next();
-          
-        Qty=$('input',Qobj).val();
-       tot=$(this).val()*Qty;
-        $('input',tobj).val(tot)
-         
 
-     });
-    $('#pluginForm').validate();
-
-    $('#pluginForm').submit(function(e) {
-
-
-
-
-        var isValid = true;
-
- $(this).find(':text.required').each(function() {
-            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
-                if($(this).next('span').length == 0 )
-                    $(this).after('<span style="color: #FF0000">Field is required</span>');
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0 )
-                    $(this).next('span').remove();
-            }
-        });
-
-     $(this).find(':select.selectvalid').each(function() {
-            if($(this).val() == 0) {
-                if($(this).next('span').length == 0 ){
-                    $(this).after('<span style="color: #FF0000">Field is required</span>');
-                e.preventDefault();
-                return;
-                }
-             }   else {
-                if($(this).next('span').length > 0 )
-                    $(this).next('span').remove();
-                }
-        });
-
-        $(this).find(':text.numeric').each(function() {
-           var regex = new RegExp(/^[1-9][0-9]*$/);
-           if(!regex.test($(this).val()) && $(this).val() != "") {
-               if($(this).next('span').length == 0 ) {
-                  $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
-               }
-               e.preventDefault();
-               return;
-           } else {
-                   $(this).next('span').remove();
-           }
-       });
-
-
-        $(this).find(':text.required').each(function() {
-            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                    $(this).after('<span style="color: #FF0000">Field is required</span>');
-                }
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0 )
-                    $(this).next('span').remove();
-            }
-        });
-        $(this).find(':text.numeric').each(function() {
-            var regex = new RegExp(/^[1-9][0-9]*$/);
-            if(!regex.test($(this).val()) && isValid) {
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0  && isValid)
-                    $(this).next('span').remove();
-            }
-        }); 
-
-$(this).find(':text.numeric1').each(function() {
-          var regex = new RegExp(/^[1-9][0-9]*$/);
-          if(!regex.test($(this).val()) && $(this).val() != "") {
-              if($(this).next('span').length == 0 ) {
-                 $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
-              }
-              e.preventDefault();
-              return;
-          } else {
-                  $(this).next('span').remove();
-          }
-      });
-
-//range fixing
-        $(this).find(':text.range').each(function() { 
-            if(($(this).val()<0) || ($(this).val()>=40)) { //alert('inner');
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Suould be 0 to 39.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else { //alert('hi');
-                if($(this).next('span').length > 0  && isValid)
-                    $(this).next('span').remove();
-            }
-        }); 
-//comparission
-        $(this).find(':text.sold').each(function() { 
-            if(($('.produced').val()) < ($('.sold').val())) { //alert('inner');
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Suould be less than or equal to Quantity produced.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else { 
-                    $(this).next('span').remove();
-            }
-        });
-
-    });
-});
 
 </script>
 <style type="text/css">
@@ -291,8 +159,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
+         </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -399,18 +266,18 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th ><?php echo $this->translate("Action"); ?></th>
             </tr>
             <tr id='tmp'>
- <td <?php $i = 1;  ?>><select name = tenant[] id="select<?php echo $i++; ?>" class="selectvalid">
-                    <option value=0>Select</option>
+ <td <?php $i = 1;  ?>><select name = tenant[] class="selectvalid required">
+                    <option value="">Select</option>
 
                             <?php foreach ($this->agriculture as $land_details) {  ?>
-                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name']?></option>
+                            <option value="<?php echo $land_details['land_id']?>"><?php echo $land_details['name']?></option>
 
                             <?php }print_r($land_details);
  ?>
                         </select></td>
 
-                <td><select name = "crop_id[]" class="selectvalid" >
-                    <option value=0>Select</option>
+                <td><select name = "crop_id[]" class="selectvalid required" >
+                    <option value="">Select</option>
 
                     <?php foreach ($this->cropdetails as $cropdetails) { ?>
                     <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
@@ -422,17 +289,17 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </td>
  
 
-                <td><select name = "season[]" class="selectvalid">
-                    <option value=0>Select</option>
+                <td><select name = "season[]" class="selectvalid required">
+                    <option value="">Select</option>
 
                     <?php foreach ($this->seasondetails as $seasondetails) { ?>
                     <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['name']?></option>
 
                     <?php } ?>
              </select> </td>
-                <td><INPUT type="text" maxlength="3" name = "acre[]" id = "acre1" size = 10 required_group="eithergroup" 
+                <td><INPUT type="text" maxlength="3" name = "acre[]" class="number EitherOr"  id="acre1" size = 10 required_group="eithergroup" 
  class="acre number eithergroup" onkeyup = "calculateacre(this.value);"></td>
-                <td><INPUT type="text" name = "gunta[]" id = "gunta1" size = 5 maxlength="2" class="gunta number range eithergroup error" min="0" max="40" onkeyup = "calculateguntas(this.value);"></td>
+                <td><INPUT type="text" name = "gunta[]" id = "gunta1" size = 5 maxlength="2" class="acre number" min="0" max="40" onkeyup = "calculateguntas(this.value);"></td>
 <td><select name = "unit[]">
                     <option value=0>Select</option>
 
@@ -445,30 +312,15 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
                 </select>    
                 </td>
-<td><INPUT type="text" name = "quantity[]" id =  "quantity1" size = 10 maxlength="3" class="quantity required numeric produced"></td>
-                <td><INPUT type="text" name = "marketed[]" id = "marketed1" size = 10 maxlength="5" class="marketed sold " ></td>
-                <td><INPUT type="text" name = "price[]" id =  "price[]" size = 10 maxlength="6" class="numeric1 product" ></td>
-                <td><INPUT type="text" name = "realised[]" id = "realised[]" size = 10 maxlength="6"  class="realised "></td>
+<td><INPUT type="text" name = "quantity[]" id =  "quantity1" size = 10 maxlength="3" class="quantity required number produced"></td>
+                <td><INPUT type="text" name = "marketed[]" id = "marketed1" size = 10 maxlength="5" min="1" class="marketed sold numeric1 number" ></td>
+                <td><INPUT type="text" name = "price[]" id =  "price[]" size = 10 maxlength="6" min="1" class="numeric1 product number" ></td>
+                <td><INPUT type="text" name = "realised[]" id = "realised[]" size = 10 maxlength="6" readonly class="realised "></td>
                 <td><INPUT type="text" name = "date[]"  class="date" readonly></td>
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr> 
         </table>
-        <table id="hor-minimalist-b" >
-            <tr>
-                <td width="100px">Total</td>
-                <td></td>
-                <td><INPUT type="hidden" class = "totalacre">
-                <INPUT type="text" class = "caltotalacre" name = "enteredacre" id = "totalacre[]" size = 10 readonly value="">
-<?php foreach($this->acretotal as $total){   ?>
-<INPUT type="hidden" name = "availableacre" id = "availableacre" class = "availableacre" value="<?php echo $total['total']; ?>">
-<?php } ?>
-                
-                </td>
-                <td><INPUT type="text" class = "totalgunta" size = 5 readonly></td>
-                <td width="65%">&nbsp;</td>
-
-            </tr>
-</table>
+      
         <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" class="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 <?php echo $this->errormsg; ?>

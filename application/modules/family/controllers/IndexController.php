@@ -50,6 +50,9 @@ class Family_IndexController extends Zend_Controller_Action
         foreach($officename as $officename1){
         $searchForm->office->addMultiOption($officename1['office_id'],$officename1['name']);
         }
+
+
+
 //paginator 
         $page = $this->_getParam('page',1);
         $paginator = Zend_Paginator::factory($result);
@@ -63,6 +66,8 @@ class Family_IndexController extends Zend_Controller_Action
                 $page = $this->_getParam('page',1);
                 $paginator = Zend_Paginator::factory($result);
                 $this->view->paginator = $paginator;
+		        $this->view->search = true;
+
                 } 
         }
         $paginator->setItemCountPerPage($this->view->adm->paginator());
