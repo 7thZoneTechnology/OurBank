@@ -140,7 +140,7 @@ $tName=$this->_request->getParam('name');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-									'gillapanchayath_id'=>$id,
+									'gp_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -148,11 +148,11 @@ $tName=$this->_request->getParam('name');
 
 }
 if($tName == 'ourbank_master_taluklist') {
- 		$id=$this->_request->getParam('taluk');
+ 		$id=$this->_request->getParam('district');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-									'taluk_id'=>$id,
+									'district_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');

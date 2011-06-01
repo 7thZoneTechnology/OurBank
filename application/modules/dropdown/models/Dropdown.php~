@@ -172,12 +172,7 @@ public function getdetails($tName,$id) {
 		return $result->toArray();
     }
  public function district($state) {
-//         $this->db = Zend_Db_Table::getDefaultAdapter();
-//         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-//         $sql = "SELECT * FROM ourbank_master_districtlist WHERE state_id= $state";
-//         $result = $this->db->fetchAll($sql,array());
-// 		die($);
-//         return $result;
+
  $select = $this->select()
              ->setIntegrityCheck(false)
 			->from(array('a' => 'ourbank_master_districtlist'),array('a.id','a.name'))
