@@ -102,10 +102,10 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
 
         if ($this->_request->getPost('submit')) {
             $formdata=$this->_request->getPost();
-//             echo '<pre>'; print_r($formdata);
-            if($formdata['enteredacre']>=$formdata['availableacre']){ 
-            $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
-            } else {   
+             echo '<pre>'; print_r($formdata);
+         //   if($formdata['enteredacre']>=$formdata['availableacre']){ 
+         //   $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
+     //       } else {   
             $tenant=$this->_getParam('tenant');
             $season=$this->_getParam('season');
 
@@ -136,7 +136,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                 $this->view->adm->addRecord("ourbank_cropdetails",$crop);
             }
             $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
-                }
+               // }
         }
     }
     

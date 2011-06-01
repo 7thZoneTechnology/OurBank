@@ -102,7 +102,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
 
         if ($this->_request->getPost('submit')) {
             $formdata=$this->_request->getPost();
-//             echo '<pre>'; print_r($formdata);
+             echo '<pre>'; print_r($formdata);
             if($formdata['enteredacre']>=$formdata['availableacre']){ 
             $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
             } else {   
@@ -123,7 +123,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                 $crop = array('family_id' => $member_id,
                               'crop_id' => $val,
  'land_id' => $tenant[$i],
-                              'season_id ' => $season[$i],
+                              'season_id' => $season[$i],
                               'acre' => $acer[$i],
                               'gunta' => $gunta[$i],
                               'unit'=>$unit[$i],
