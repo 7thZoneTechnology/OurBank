@@ -147,6 +147,18 @@ $tName=$this->_request->getParam('name');
 
 
 }
+if($tName == 'ourbank_master_taluklist') {
+ 		$id=$this->_request->getParam('district');
+ 		$common=$this->_request->getParam('commonname');
+
+									$formdata1=array('id'=>'',
+									'district_id'=>$id,
+									'name'=>$common);
+						$id = $this->view->adm->addRecord($tName,$formdata1);
+ 			$this->_redirect('/dropdown');
+
+
+}
 	if($tName == 'ourbank_master_gillapanchayath') {
  		$id=$this->_request->getParam('hobli');
  		$common=$this->_request->getParam('commonname');
