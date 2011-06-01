@@ -31,48 +31,50 @@
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <!--td ><?php echo $this->translate("Caste:"); ?></td>
-        <td ><?php echo $family_view['subcaste']; ?></td> -->   </tr>
+        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $family_view['ration']; ?></td> </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
-        <td ><?php echo $family_view['ration']; ?></td>
+        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
+        }?></td>
     </tr>
 
     <tr>
         <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
         <td ><?php echo $family_view['street']; ?></td>
-        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
-        <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
-        }?></td>
+        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
     </tr>
     <tr>
         <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
-        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
+        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
 
     <tr>
         <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
         <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
-        <td ><?php echo $family_view['income']; ?></td>
+        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $this->translate("Mobile:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
 
     <tr>
         <td ><?php echo $this->translate("Category:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
-        <td ><?php echo $family_view['mobile']; ?></td>
-    </tr>   <?php } ?>
+        <td></td>
+        <td></td>
+
+    </tr>   
+<?php } ?>
 </table> 
 <br/>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;"> 
@@ -123,9 +125,9 @@
                 </select>
                 </td>
 
-                <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="30" size="15" value="<?php echo $loandetails['loanamount']; ?>"></td>
+                <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="12" size="15" value="<?php echo $loandetails['loanamount']; ?>"></td>
                 <td><INPUT type="text" name = "interest[]" class="numeric disableid" max="99" size="5" value="<?php echo $loandetails['interest']; ?>"  id="disable-<?php echo $i; ?>"></td>
-                <td><INPUT type="text" name = "outstanding[]" maxlength="30" size="15" value="<?php echo $loandetails['outstanding_amount']; ?>"></td>
+                <td><INPUT type="text" name = "outstanding[]" maxlength="12" size="15" value="<?php echo $loandetails['outstanding_amount']; ?>"></td>
                 <td>
                 <select name = "purpose[]" class="selectvalid">
                     <OPTION value="<?php echo $loandetails["purpose_id"]; ?>">
@@ -139,7 +141,7 @@
                     <?php }} ?>
                 </select>
                 </td>
-                <td><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="30" size="15" value="<?php echo $loandetails['deposit']; ?>" id="amtdisable-<?php echo $i; ?>">
+                <td><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="12" size="15" value="<?php echo $loandetails['deposit']; ?>" id="amtdisable-<?php echo $i; ?>">
                 <INPUT type="hidden" name = "recordid[]" value="<?php echo $loandetails['id']?>">
                 </td>
 
