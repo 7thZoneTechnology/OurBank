@@ -129,6 +129,19 @@ public function getdetails($tName,$id) {
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;
+
+				case 'ourbank_master_branch':
+					{ 
+				$select = $this->select()
+				->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','bank_id'))
+				->where('a.id = ?',$id)
+						->from(array('b' => 'ourbank_master_bank'),array('id','name','accounttype_id'))
+				->where('b.accounttype_id  =a.bank_id');
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+
 				case 'ourbank_master_habitation':
 					{ 
  				$select = $this->select()

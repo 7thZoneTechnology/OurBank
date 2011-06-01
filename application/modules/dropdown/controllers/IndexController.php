@@ -178,6 +178,7 @@ if($tName == 'ourbank_master_branch') {
 
 									$formdata1=array('id'=>'',
 									'bank_id'=>$id,
+									'created_by'=>$this->view->createdby,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -351,6 +352,12 @@ public function editAction()
 					foreach($namedetails as $holidaydetails) {
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->state->setValue($holidaydetails['state_id']);
+															}
+										}break;
+					case 'ourbank_master_branch': {
+					foreach($namedetails as $holidaydetails) {
+						$this->view->form->commonname->setValue($holidaydetails['habit']);
+						$this->view->form->bank->setValue($holidaydetails['accounttype_id']);
 															}
 										}break;
 									}

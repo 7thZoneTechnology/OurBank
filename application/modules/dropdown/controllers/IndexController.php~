@@ -178,6 +178,7 @@ if($tName == 'ourbank_master_branch') {
 
 									$formdata1=array('id'=>'',
 									'bank_id'=>$id,
+									'created_by'=>$this->view->createdby,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -185,20 +186,10 @@ if($tName == 'ourbank_master_branch') {
 
 }
 if($tName == 'ourbank_master_habitation') {
-//  		$stateid=$this->_request->getParam('state');
-//  		$districtid=$this->_request->getParam('district');
-//  		$talukid=$this->_request->getParam('taluk');
-//  		$hobliid=$this->_request->getParam('hobli');
-//  		$gillapanchayath=$this->_request->getParam('gillapanchayath');
  		$village=$this->_request->getParam('village');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-							//		'state_id'=>$stateid,
-								//	'district_id'=>$districtid,
-								//	'taluk_id'=>$talukid,
-								//	'hobli_id'=>$hobliid,
-								//	'gillapanchayath_id'=>$gillapanchayath,
 									'village_id'=>$village,
 									'created_by'=>$this->view->createdby,
 									'name'=>$common);
@@ -361,6 +352,12 @@ public function editAction()
 					foreach($namedetails as $holidaydetails) {
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->state->setValue($holidaydetails['state_id']);
+															}
+										}break;
+					case 'ourbank_master_branch': {
+					foreach($namedetails as $holidaydetails) {
+						$this->view->form->commonname->setValue($holidaydetails['habit']);
+						$this->view->form->bank->setValue($holidaydetails['accounttype_id']);
 															}
 										}break;
 									}
