@@ -17,7 +17,8 @@
 ############################################################################
 !-->
 
-<table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+
+   <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
         <th></th>
@@ -71,13 +72,12 @@
         <td ><?php echo $family_view['caste']; ?></td>
         <td ><?php echo $this->translate("Mobile:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
-    </tr>
-	 <?php } ?>
+    </tr>   <?php } ?>
 </table> 
 <br/>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;"> 
-    <form id="pluginForm" action="<?php echo $this->baseUrl();?>/loandetails/index/add/id/<?php echo $this->memberid; ?>" method="POST">
-        <table id="hor-minimalist-b" class="family">
+<form id="pluginForm" action="<?php echo $this->baseUrl();?>/loandetails/index/edit/id/<?php echo $this->memberid; ?>" method="POST" >
+<table id="hor-minimalist-b" class="family">
             <tr> 
                 <th width="27%"><?php echo $this->translate("Source"); ?></th>
                 <th width="17%"><?php echo $this->translate("Family member"); ?></th>
@@ -88,47 +88,67 @@
                 <th width="10%"><?php echo $this->translate("Savings / deposit amount"); ?></th>
                 <th></th>
             </tr>
-
-        <tr id='tmp'>
+            <?php $i=0; foreach ($this->loandetails as $loandetails) { $i++; ?>
+            <?php if ($i == 1) { ?>
+             <tr id='tmp'>
+            <?php } else { ?>
+        <tr>
+            <?php } ?>
                 <td>
-                <select name = "source[]" class="selectvalid required interest" id="source-1">
+                <select name = "source[]" class="selectvalid interest" id="source-<?php echo $i; ?>">
+                    
+                    <OPTION value="<?php echo $loandetails["source_id"]; ?>">
+                        <?php echo $loandetails["sourcename"]; ?>
+                    </OPTION>
                     <option value=0>Select</option>
-                    <?php foreach ($this->loanDetails as $loanDetails) { ?>
-                    <option value="<?php echo $loanDetails['id']?>"><?php echo $loanDetails['name']?></option>
-
-                    <?php } ?>
-                </select>   
+                    <?php foreach ($this->loanDetails as $source) {
+                        if($source['id']!= $loandetails["source_id"]) {  ?>
+                    <option value="<?php echo $source['id']?>"><?php echo $source['name']?></option>
+                    <?php }} ?>
+                </select> 
                 </td>
 
                <td>
-                <select name = "member[]" class="selectvalid required">
+                <select name = "member[]" class="selectvalid interest required">
+                    <OPTION value="<?php echo $loandetails["member_id"]; ?>">
+                        <?php echo $loandetails["membername"]; ?>
+                    </OPTION>
                     <option value=0>Select</option>
-                    <?php foreach ($this->familymember as $member) { ?>
+                    <?php foreach ($this->familymember as $member) { 
+                        if($member['id']!= $loandetails["member_id"]) {
+                    ?>
                     <option value="<?php echo $member['id']?>"><?php echo $member['name']?></option>
 
-                    <?php } ?>
+                    <?php }} ?>
                 </select>
                 </td>
 
-                <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="30" size="15"></td>
-                <td><INPUT type="text" name = "interest[]" class="numeric disableid" maxlength="2" size="5" id="disable-1"></td>
-                <td><INPUT type="text" name = "outstanding[]" class="numeric" maxlength="30" size="15"></td>
+                <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="30" size="15" value="<?php echo $loandetails['loanamount']; ?>"></td>
+                <td><INPUT type="text" name = "interest[]" class="numeric disableid" maxlength="2" size="5" value="<?php echo $loandetails['interest']; ?>"  id="disable-<?php echo $i; ?>"></td>
+                <td><INPUT type="text" name = "outstanding[]" maxlength="30" size="15" value="<?php echo $loandetails['outstanding_amount']; ?>"></td>
                 <td>
                 <select name = "purpose[]" class="selectvalid">
-                   <option value=0>Select</option>
-                    <?php foreach ($this->purpose as $purpose) { ?>
+                    <OPTION value="<?php echo $loandetails["purpose_id"]; ?>">
+                        <?php echo $loandetails["purposename"]; ?>
+                    </OPTION>
+                    <option value=0>Select</option>
+                    <?php foreach ($this->purpose as $purpose) {
+                     if($purpose['id']!= $loandetails["purpose_id"]) {  ?>
                     <option value="<?php echo $purpose['id']?>"><?php echo $purpose['name']?></option>
 
-                    <?php } ?>
+                    <?php }} ?>
                 </select>
                 </td>
-                <td><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="30" size="15" id="amtdisable-1"></td>
+                <td><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="30" size="15" value="<?php echo $loandetails['deposit']; ?>" id="amtdisable-<?php echo $i; ?>">
+                <INPUT type="hidden" name = "recordid[]" value="<?php echo $loandetails['id']?>">
+                </td>
 
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif"       border=0 width='16' height='16'></td>
             </tr>
-        </table>
+        <?php }  ?>
+</table>
 
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+<input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="update" name="update" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
 
-    </form>
+</form>
 </div>

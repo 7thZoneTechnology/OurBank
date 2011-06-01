@@ -91,7 +91,7 @@
 
         <tr id='tmp'>
                 <td>
-                <select name = "source[]" class="selectvalid required interest" id="source-1">
+                <select name = "source[]" class="selectvalid interest" id="source-1">
                     <option value=0>Select</option>
                     <?php foreach ($this->loanDetails as $loanDetails) { ?>
                     <option value="<?php echo $loanDetails['id']?>"><?php echo $loanDetails['name']?></option>
@@ -101,7 +101,7 @@
                 </td>
 
                <td>
-                <select name = "member[]" class="selectvalid required">
+                <select name = "member[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->familymember as $member) { ?>
                     <option value="<?php echo $member['id']?>"><?php echo $member['name']?></option>
@@ -112,7 +112,7 @@
 
                 <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="30" size="15"></td>
                 <td><INPUT type="text" name = "interest[]" class="numeric disableid" maxlength="2" size="5" id="disable-1"></td>
-                <td><INPUT type="text" name = "outstanding[]" class="numeric" maxlength="30" size="15"></td>
+                <td><INPUT type="text" name = "outstanding[]" maxlength="30" size="15"></td>
                 <td>
                 <select name = "purpose[]" class="selectvalid">
                    <option value=0>Select</option>

@@ -124,7 +124,7 @@
                 </td>
 
                 <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="30" size="15" value="<?php echo $loandetails['loanamount']; ?>"></td>
-                <td><INPUT type="text" name = "interest[]" class="numeric disableid" maxlength="2" size="5" value="<?php echo $loandetails['interest']; ?>"  id="disable-<?php echo $i; ?>"></td>
+                <td><INPUT type="text" name = "interest[]" class="numeric disableid" max="99" size="5" value="<?php echo $loandetails['interest']; ?>"  id="disable-<?php echo $i; ?>"></td>
                 <td><INPUT type="text" name = "outstanding[]" maxlength="30" size="15" value="<?php echo $loandetails['outstanding_amount']; ?>"></td>
                 <td>
                 <select name = "purpose[]" class="selectvalid">

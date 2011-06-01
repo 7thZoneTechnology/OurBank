@@ -58,7 +58,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                     ->setIntegrityCheck(false)
                 ->from(array('a'=>'ourbank_familymember'),array('a.uid'))
 		->where('a.uid=?',$uid);
-        //die($select->__toString($select));
+        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
         }

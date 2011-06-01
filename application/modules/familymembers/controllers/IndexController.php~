@@ -78,8 +78,11 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $uid = $this->_request->getParam('uid'); 
         $this->view->hiddenid = $this->_request->getParam('hiddenid');
 	$uiddetails=$this->view->modelfamily->checkuidmodel($uid);
-	if($uiddetails){ 
-        echo "<span style='color: #FF0000'>UID already exist</span>";
+	if($uiddetails){
+	$this->view->uidvalue=0;
+	}
+	else {
+	$this->view->uidvalue=1; echo "no value";
 	}
     }
 
