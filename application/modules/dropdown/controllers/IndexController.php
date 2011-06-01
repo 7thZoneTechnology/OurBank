@@ -140,7 +140,19 @@ $tName=$this->_request->getParam('name');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-									'gillapanchayath_id'=>$id,
+									'gp_id'=>$id,
+									'name'=>$common);
+						$id = $this->view->adm->addRecord($tName,$formdata1);
+ 			$this->_redirect('/dropdown');
+
+
+}
+if($tName == 'ourbank_master_taluklist') {
+ 		$id=$this->_request->getParam('district');
+ 		$common=$this->_request->getParam('commonname');
+
+									$formdata1=array('id'=>'',
+									'district_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -173,20 +185,10 @@ if($tName == 'ourbank_master_branch') {
 
 }
 if($tName == 'ourbank_master_habitation') {
-//  		$stateid=$this->_request->getParam('state');
-//  		$districtid=$this->_request->getParam('district');
-//  		$talukid=$this->_request->getParam('taluk');
-//  		$hobliid=$this->_request->getParam('hobli');
-//  		$gillapanchayath=$this->_request->getParam('gillapanchayath');
  		$village=$this->_request->getParam('village');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-							//		'state_id'=>$stateid,
-								//	'district_id'=>$districtid,
-								//	'taluk_id'=>$talukid,
-								//	'hobli_id'=>$hobliid,
-								//	'gillapanchayath_id'=>$gillapanchayath,
 									'village_id'=>$village,
 									'created_by'=>$this->view->createdby,
 									'name'=>$common);
