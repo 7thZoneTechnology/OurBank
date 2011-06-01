@@ -18,17 +18,146 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 	return '1';
       
     }
-public function getdetails($tName,$id) {
-		 $select = $this->select()
-                        ->setIntegrityCheck(false)
-			->from(array('a' => $tName),array('id','name'))
+	public function editRecord($tName,$id)
+    {
+        $select = $this->select()
+                ->setIntegrityCheck(false)  
+                ->join(array('a' => $tName),array('a.id'))
+                ->where('a.id =?',$id);
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+    }
+	public function deleteRecord($tName,$id)  
+    {
+        $db = $this->getAdapter();
+        $db->delete($tName, $id);
+        return '1';
+    }
+public function getdetailss($tName,$id)  
+    {
+      		$select = $this->select()
+            ->setIntegrityCheck(false)
+			->from(array('a' => $tName),array('id','name as habit'))
 			->where('a.id = ?',$id);
 
-//die($select->__toString($select));
-
-
-       $result = $this->fetchAll($select);
+		$result = $this->fetchAll($select);
        return $result->toArray();
+    }
+
+public function getdetails($tName,$id) {
+// 				$select = $this->select()
+//               ->setIntegrityCheck(false)
+// 						->from(array('a' => $tName),array('id','name as habit'))
+// 				->where('a.id = ?',$id);
+// 
+// 		$result = $this->fetchAll($select);
+//        return $result->toArray();
+
+			switch($tName) {
+
+				case 'ourbank_master_villagelist':
+					{ 
+						$select = $this->select()
+              			->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','gp_id'))
+				->where('a.id = ?',$id)
+						->from(array('b' =>'ourbank_master_gillapanchayath'),array('id','name','hobli_id'))
+				->where('b.id =a.gp_id')
+ 						->from(array('c' =>'ourbank_master_hoblilist'),array('id','name','taluk_id'))
+				->where('c.id =b.hobli_id')
+ 						->from(array('d' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+				->where('d.id =c.taluk_id')
+						->from(array('e' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+                ->where('e.id =d.district_id');
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+				
+				case 'ourbank_master_gillapanchayath':
+					{ 
+						$select = $this->select()
+              			->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','hobli_id'))
+				->where('a.id = ?',$id)
+						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id','name','hobli_id'))
+                ->where('c.id =a.hobli_id')
+						->from(array('d' =>'ourbank_master_hoblilist'),array('id','name','taluk_id'))
+                ->where('d.id =c.hobli_id')
+						->from(array('e' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+                ->where('e.id =d.taluk_id')
+						->from(array('f' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+                ->where('f.id =e.district_id');
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+
+				case 'ourbank_master_hoblilist':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','taluk_id'))
+				->where('a.id = ?',$id)
+						->from(array('b' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+                ->where('b.id =a.taluk_id')
+						->from(array('c' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+                ->where('c.id =b.district_id');
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+				case 'ourbank_master_taluklist':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','district_id'))
+				->where('a.id = ?',$id)
+						->from(array('b' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+                ->where('b.id =a.district_id');
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+				case 'ourbank_master_districtlist':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','state_id'))
+				->where('a.id = ?',$id);
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+				case 'ourbank_master_habitation':
+					{ 
+ 				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','village_id'))
+				->where('a.id = ?',$id)
+						->from(array('b' =>'ourbank_master_villagelist'),array('id','name','gp_id'))
+                ->where('b.id =a.village_id')
+						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id','name','hobli_id'))
+                ->where('c.id =b.gp_id')
+						->from(array('d' =>'ourbank_master_hoblilist'),array('id','name','taluk_id'))
+                ->where('d.id =c.hobli_id')
+						->from(array('e' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+                ->where('e.id =d.taluk_id')
+						->from(array('f' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+                ->where('f.id =e.district_id');
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+		}
+
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+				->from(array('a' => $tName),array('id','name as habit'))
+				->where('a.id = ?',$id);
+
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
 	}
  public function tabledata($tablename)
     {
@@ -41,16 +170,9 @@ public function getdetails($tName,$id) {
 		//die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
-	 
-        
     }
  public function district($state) {
-//         $this->db = Zend_Db_Table::getDefaultAdapter();
-//         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-//         $sql = "SELECT * FROM ourbank_master_districtlist WHERE state_id= $state";
-//         $result = $this->db->fetchAll($sql,array());
-// 		die($);
-//         return $result;
+
  $select = $this->select()
              ->setIntegrityCheck(false)
 			->from(array('a' => 'ourbank_master_districtlist'),array('a.id','a.name'))
@@ -85,6 +207,7 @@ public function hobli($taluk) {
        $result = $this->fetchAll($select);
        return $result->toArray();
     }
+
 public function Createtable($tablename) {
         $db = $this->getAdapter();
 

@@ -1,44 +1,24 @@
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+
+<script type="text/javascript">
+function getnames(names,path) { 
+	if(names) {
+ targeturl=path+'/dropdown/index/name?names='+names; 
+            $.ajax({ url: targeturl, success: function(data){ $('#namelist').html(data) }});
+	}
+}
+</script>
+
+<!--<div id="namelist" style="float: right; clear: right; height:250px; ; overflow-y: auto; overflow-x: hidden;"></div>-->
 
 
-
-
-<div style="float: left; clear: left;"> 	<form action="<?php echo $this->baseUrl();?>/dropdown" method="POST">
+<div style="float: left; clear: left;"> 
+	<form action="<?php echo $this->baseUrl();?>/dropdown" method="POST">
 		<TABLE id="hor-minimalist-s">
-			<tr>
-				<td></td>
-				<td><?php echo $this->form;?></td>
-				<td><input type="submit" name="Go" id="Submit" value="Go"></td>	
-
+			<th colspan="2">Search</th>
+			<tr><td></td>
+				<td><div id="names"><?php echo $this->form;?></div></td>
 			</tr>
 		</table>
 	</form>
-	<?php if ($this->tabledata) : ?>
-
-</div>	
-h3><legend>List of <?php echo substr($this->tableName,15); ?></legend></h3>
-<div style="float: right; clear: right; height:250px; ; overflow-y: auto; overflow-x: hidden;
-"> 			<
-
-		<TABLE id="hor-minimalist-s">
-			<?php foreach ($this->tabledata as $datas ): ?>
-    	<tr>
-        	<td><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>">  <?php echo $datas['name']; ?></a></td>
-		</tr>
-		<?php endforeach; ?><?php endif; ?>
-
-		<?php if (!$this->tabledata) : echo "<font color=red>THERE ARE NO DATAS</font>"; ?>
-		<?php endif; ?>
-
-
-
-	</table>
-</div>
-<div style="float: left; clear: left;"> 	<TABLE id="hor-minimalist-s">
-<?php if ($this->tableName) : ?>
-		<tr>
-			<td><b>add new <?php echo substr($this->tableName,15); ?></b><a href="<?php echo $this->baseUrl();?>/dropdown/index/add/id/<?php echo $datas['id'];?>/name/<?php echo $this->tableName?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a>
-			</td>
-		</tr>
-<?php endif; ?>
-	</TABLE>
 </div>
