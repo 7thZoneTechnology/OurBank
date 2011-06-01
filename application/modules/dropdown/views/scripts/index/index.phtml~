@@ -9,7 +9,7 @@ function getnames(names,path) {
 }
 </script>
 
-<div id="namelist" style="float: right; clear: right; height:250px; ; overflow-y: auto; overflow-x: hidden;"></div>
+<!--<div id="namelist" style="float: right; clear: right; height:250px; ; overflow-y: auto; overflow-x: hidden;"></div>-->
 
 
 <div style="float: left; clear: left;"> 
@@ -21,14 +21,4 @@ function getnames(names,path) {
 			</tr>
 		</table>
 	</form>
-</div>
-<div style="float: left; clear: left;">
-<TABLE id="hor-minimalist-s">
-			<?php if ($this->tableName) : ?>
-			<tr>
-				<td><b>add new <?php echo substr($this->tableName,15); ?></b><a href="<?php echo $this->baseUrl();?>/dropdown/index/add/id/<?php echo $datas['id'];?>/name/<?php echo $this->tableName?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a>
-				</td>
-			</tr>
-			<?php endif; ?>
-</TABLE>
 </div>
