@@ -174,7 +174,7 @@ alert('sss');
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
         <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['mobile']; ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
@@ -191,6 +191,8 @@ alert('sss');
 <table id="hor-minimalist-b" class="crop asset">
 <tr> 
     <th><?php echo $this->translate("Land holding"); ?></th>
+    <th><?php echo $this->translate("Acquistion type"); ?></th>
+
     <th><?php echo $this->translate("Acre"); ?></th>
     <th><?php echo $this->translate("Gunta"); ?></th>
     <th><?php echo $this->translate("Owner name"); ?></th>
