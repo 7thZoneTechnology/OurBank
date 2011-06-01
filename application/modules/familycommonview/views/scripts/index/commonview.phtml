@@ -111,7 +111,7 @@
 </table> 
 <br/>
 
-<!--show the Family members details details and edit option !-->
+<!--show the Family members details and edit option !-->
 
 <table id="hor-minimalist-b">
     <tr>
@@ -131,11 +131,11 @@
 <table id="hor-minimalist-b" border="1">
     <tr>
         <th><?php echo $this->translate("SL"); ?></th>
-        <th><?php echo $this->translate("UID"); ?></th>
-        <th ><?php echo $this->translate("Name of Member"); ?></th>
+        <th ><?php echo $this->translate("Name"); ?></th>
         <th ><?php echo $this->translate("ಹೆಸರು"); ?></th>
         <th ><?php echo $this->translate("Alias"); ?></th>
         <th ><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+        <th><?php echo $this->translate("UID"); ?></th>
         <th ><?php echo $this->translate("Breadwinner"); ?></th>
         <th ><?php echo $this->translate("Head"); ?></th>
         <th ><?php echo $this->translate("Gender"); ?></th>
@@ -144,7 +144,7 @@
         <th ><?php echo $this->translate("Relation to HOF"); ?></th>
         <th ><?php echo $this->translate("Marital Status"); ?></th>
         <th ><?php echo $this->translate("Entitlements"); ?></th>
-        <th ><?php echo $this->translate("Education Level"); ?></th>
+        <th ><?php echo $this->translate("Education"); ?></th>
         <th ><?php echo $this->translate("Employment Status"); ?></th>
         <th ><?php echo $this->translate("Profession"); ?></th>
         <th ><?php echo $this->translate("CBO promoter"); ?></th>
@@ -152,8 +152,8 @@
         <th ><?php echo $this->translate("Account type"); ?></th>
         <th ><?php echo $this->translate("Bank/PO"); ?></th>
         <th ><?php echo $this->translate("Branch"); ?></th>
-        <th ><?php echo $this->translate("Bank Account No"); ?></th>
-        <th ><?php echo $this->translate("Mobile Phone No"); ?></th>
+        <th ><?php echo $this->translate("Account No"); ?></th>
+        <th ><?php echo $this->translate("Mobile"); ?></th>
         <th ><?php echo $this->translate("Blood group"); ?></th>
 
     </tr>
@@ -161,11 +161,11 @@
      foreach($this->family as $family){ $i++;  ?>
     <tr>
         <td><?php echo $i; ?></td>
-        <td><?php echo $family['uid']; ?></td>
         <td><?php echo $family['name']; ?></td>
         <td><?php echo $family['name_inregional']; ?></td>
         <td><?php echo $family['alias']; ?></td>
         <td><?php echo $family['alias_inregional']; ?></td>
+        <td><?php echo $family['uid']; ?></td>
         <td align="center"><?php if($family['breadwinner_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
         <td align="center"><?php if($family['head_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"><?php } else {echo "-";} ?></td>
         <td><?php echo $family['gendername']; ?></td>
@@ -175,12 +175,18 @@
         <td><?php echo $family['maritalname']; ?></td>
         <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
                    $entitlment=$familycommon->getentitlement($family['id']);
-                  $m=1; foreach($entitlment as $entitlment1)  {  echo $m.". ".$entitlment1['entitlename']."<br>"; $m++;  } ?></td>
+		  if(!$entitlment){ echo 'None';
+		  }
+		  else{
+                  $m=1; foreach($entitlment as $entitlment1)  {  echo $m.". ".$entitlment1['entitlename']."<br>"; $m++;  }} ?></td>
         <td><?php echo $family['qualifyname']; ?></td>
         <td><?php echo $family['employmentname']; ?></td>
         <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
                    $profession=$familycommon->getprofession($family['id']);
-                  $m=1; foreach($profession as $profession1)  {  echo $m.". ".$profession1['professionname']."<br>"; $m++;  } ?></td>
+		  if(!$profession){ echo 'None';
+		  }
+		  else{
+                  $m=1; foreach($profession as $profession1)  {  echo $m.". ".$profession1['professionname']."<br>"; $m++;  }} ?></td>
         <td><?php echo $family['promoter']; ?></td>
         <td><?php echo $family['cbos']; ?></td>
         <td><?php echo $family['accountype']; ?></td>
@@ -262,7 +268,7 @@
         <?php if(($this->agriculture)!=NULL) { ?>
         <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
         <?php } else { ?>
-        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/add/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
         <?php } ?>
     </tr>
 </table>
@@ -272,7 +278,7 @@
         <th align="right"><?php echo $this->translate("Land holding"); ?></th>
  		<th align="right"><?php echo $this->translate("Acre"); ?></th>
         <th align="right"><?php echo $this->translate("Gunta"); ?></th>
-        <th align="right"><?php echo $this->translate("name of owner"); ?></th>
+        <th align="right"><?php echo $this->translate("Owner name"); ?></th>
         <th align="right"><?php echo $this->translate("Survey No"); ?></th>
         <th align="right"><?php echo $this->translate("Village"); ?></th>
        
@@ -723,14 +729,14 @@ foreach($this->getfamilymembers as $familymembers){ ?>
   <tr>
       <th class="firsttd"><?php echo $this->translate("Health"); ?>*</th>
       <th class = "secondtd"></th>
-      <?php if((($this->gethabithealth) || ($this->gethabitchallenge))!=NULL) { ?>
+      <?php if((($this->gethabithealth) || ($this->gethabitchallenge) || ($this->getchronicdisease) )) { ?>
       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
       <?php } else { ?>
       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
       <?php } ?>
   </tr>
 </table>
-<?php if($this->gethabithealth) { ?>
+<?php if( ($this->gethabithealth) || ($this->gethabitchallenge) || ($this->getchronicdisease) ) { ?>
 <table id="hor-minimalist-b" border="1">
 <tr>
   <th ><?php echo $this->translate("Name"); ?></th>
@@ -771,7 +777,7 @@ foreach($this->getfamilymembers as $familymembers){ ?>
 <?php
  foreach($this->getchronicdisease as $chronic) {
             if($familymembers['name'] == $chronic['membername']){
-                    echo $chronic['suggestion']."<br>";
+                    echo $chronic['diseasename']."<br>";
             }
     }
 ?>

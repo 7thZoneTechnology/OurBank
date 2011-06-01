@@ -43,35 +43,36 @@ class Familycommonview_IndexController extends Zend_Controller_Action
 //view and edit for member details, address, contact, family details
     public function commonviewAction()
     {
-        //Acl
-        //$access = new App_Model_Access();
-        //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'commonviewAction');
-        //if (($checkaccess != NULL)) {
+// //         //Acl
+// //         //$access = new App_Model_Access();
+// //         //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'commonviewAction');
+// //         //if (($checkaccess != NULL)) {
 
         $id=$this->_request->getParam('id');
         $this->view->memberid=$id;
         $familycommon=new Familycommonview_Model_familycommonview(); 
         $member_name=$familycommon->getfamily($id);
         $revvillageid=$member_name[0]['rev_village_id'];
-        if($revvillageid){
-        $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-        $this->view->revvillagename=$revvillagename[0]['name']; }
+// // // //         if($revvillageid){
+// // // //         $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+// // // //         $this->view->revvillagename=$revvillagename[0]['name']; 
+// // // // 		}
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
         $this->view->insurance=$familycommon->getinsurance($id);
-        //geting family details, family details, health, economic, education details
+//         //geting family details, family details, health, economic, education details
         $this->view->membername=$member_name;
-//      $this->view->family =$familycommon->getfamilydetails($id);
+// //      $this->view->family =$familycommon->getfamilydetails($id);
         $this->view->agriculture=$edit_agriculture =$familycommon->getagriculturedetails($id);
  		$this->view->acretotal =$familycommon->getacretotal($id);
         $this->view->guntatotal =$familycommon->getguntatotal($id);
         $this->view->family =$familycommon->getfamilydetails($id);
-//        $this->view->getentitlement=$familycommon->getentitlement();
+// //        $this->view->getentitlement=$familycommon->getentitlement();
         $this->view->crop=$familycommon->getcrop($id);
-      $this->view->loandetails=$familycommon->getloandetails();
+      $this->view->loandetails=$familycommon->getloandetails($id);
         $this->view->savingsdetails=$familycommon->getsavingsdetails($id);
         $this->view->gethabithealth=$familycommon->gethabithealth($id);
         $this->view->gethabitchallenge=$familycommon->gethabitphychallenge($id);
@@ -81,25 +82,25 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         $this->view->nonlivingassets=$familycommon->getnonlivingassetsdetails($id);
 
 
-	//PRA Based Services
+// 	//PRA Based Services
  	$this->view->praservice = $familycommon->praservice($id); 
         $this->view->expense=$familycommon->getexpense($id);
 
-	// Basic Infrastructure
+// 	// Basic Infrastructure
 	$this->view->housingtype = $familycommon->housingtype($id);
 	$this->view->ownership = $familycommon->ownership($id);
 	$this->view->cookfuel = $familycommon->cookfuel($id);
-	//Annual income details
+// 	//Annual income details
          $this->view->incomedetails=$familycommon->getincomedetails($id);
          $this->view->incometotal=$familycommon->getincometotal($id);
-
-// 	$this->view->loandtotal=$individualcommon->getloantotal($id);
-//         $this->view->servicedetails=$individualcommon->servicedetails($id);
-//         $this->view->family =$individualcommon->getfamilydetails($id);
-//        $this->view->activities=$individualcommon->getactivities($id);
-        //}
-        //else {
-        //$this->_redirect('index/index');
-        //}
+// /*
+// // 	$this->view->loandtotal=$individualcommon->getloantotal($id);
+// //         $this->view->servicedetails=$individualcommon->servicedetails($id);
+// //         $this->view->family =$individualcommon->getfamilydetails($id);
+// //        $this->view->activities=$individualcommon->getactivities($id);
+//         //}
+//         //else {
+//         //$this->_redirect('index/index');
+//         //}*/
     }
 }
