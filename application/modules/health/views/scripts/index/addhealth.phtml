@@ -138,7 +138,7 @@ $(document).ready(function(){
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
         <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['mobile']; ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
@@ -249,5 +249,5 @@ foreach($this->membername as $name){
 <td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
 </tr>
 </table>
-
+<?php echo "<font color='red' size='3'>".$this->error."</font>";?>
 </form>
