@@ -30,10 +30,14 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $formfield = new App_Form_Field ();
         $vtype=array('Digits');
 
-        $familyid = $formfield->field('Text','familyid','','','mand','',true,'','','','','',0,0);
+        $familyid = $formfield->field('Text','familyid','ourbank_family','family_id','mand','',true,'','','','','',0,0);
         $familyid->setAttrib('maxLength',5);
+
+		$familyid1 = $formfield->field('Text','familyid1','','','mand','',true,'','','','','',0,0);
+        $familyid1->setAttrib('maxLength',5);
+
         $sujeevana = $formfield->field('Text','sujeevana','','','','',true,'','','','','',0,0);
-		$sujeevana->setAttrib('maxLength',5);
+	$sujeevana->setAttrib('maxLength',5);
         $sujeevana->addValidator(new Zend_Validate_Alnum());
 
         $houseno=$formfield->field('Text','houseno','','','','',true,'','','','','',0,0);
@@ -69,7 +73,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
 	    $mobile = $formfield->field('Text','mobile','','','','',false,'','','','','',0,0);
         $mobile->setAttrib('maxLength', 11);
 
-        $this->addElements(array($familyid,$sujeevana,$houseno,$minority,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
+        $this->addElements(array($familyid,$sujeevana,$houseno,$minority,$familyid1,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
 
     }
 }
