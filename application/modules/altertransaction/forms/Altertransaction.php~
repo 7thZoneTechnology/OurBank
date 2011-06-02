@@ -37,7 +37,7 @@ class Altertransaction_Form_Altertransaction extends Zend_Form
                 $transaction_interest_amount = new Zend_Form_Element_Text('transaction_interest_amount');
                 $transaction_interest_amount->setAttrib('class', 'NormalBtn');
 
-
+         	
        			$transaction_fine_amount = new Zend_Form_Element_Text('transaction_fine_amount');
                 $transaction_fine_amount->setAttrib('class', 'NormalBtn'); 
 
