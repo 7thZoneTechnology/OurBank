@@ -48,11 +48,11 @@ class Expense_IndexController extends Zend_Controller_Action
         $familycommon = new Familycommonview_Model_familycommonview(); 
         $this->view->memberid = $this->_getParam('id');
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
-        $revvillageid = $this->view->membername[0]['rev_village_id'];
-        if ($revvillageid) {
-            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
-        }
+// // //         $revvillageid = $this->view->membername[0]['rev_village_id'];
+// // //         if ($revvillageid) {
+// // //             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+// // //             $this->view->revvillagename=$revvillagename[0]['name']; 
+// // //         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }
@@ -104,7 +104,9 @@ class Expense_IndexController extends Zend_Controller_Action
             }
             if($flag == true){
                 $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
-                } 
+                } else {
+                $this->view->error = '"There is no proper Expense detail"  - Click Back button to cancel';
+                }
 
             }
         }
@@ -118,11 +120,11 @@ class Expense_IndexController extends Zend_Controller_Action
         $familycommon = new Familycommonview_Model_familycommonview(); 
         $this->view->memberid = $this->_getParam('id');
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
-        $revvillageid = $this->view->membername[0]['rev_village_id'];
-        if ($revvillageid) {
-            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
-        }
+// // // //         $revvillageid = $this->view->membername[0]['rev_village_id'];
+// // // //         if ($revvillageid) {
+// // // //             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+// // // //             $this->view->revvillagename=$revvillagename[0]['name']; 
+// // // //         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }

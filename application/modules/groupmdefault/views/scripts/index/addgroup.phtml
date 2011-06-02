@@ -2,8 +2,8 @@
 $(document).ready(
   function() {
       $('.dates').datepick({dateFormat: 'dd/mm/yyyy',});
-});
-</script> 
+}); 
+</script>
 <script language="javascript">
  function getBranch(bankid) { 
             targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
@@ -47,7 +47,7 @@ if($status == "OK"){
 <div id = "searchDiv">
     <fieldset>
         <legend>Group details</legend>
-        <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/groupaccount" method="POST" onsubmit="return valid()" id="addgroup">
+        <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/groupaccount" method="POST" onsubmit="return valid()" id="addgroup" name="Groupform">
             <table class="fieldsets"> 
                 
                 <tr>
@@ -59,7 +59,7 @@ if($status == "OK"){
                     </TD>
                </TR>
                 <TR>
-                    <TD><label for="fld1" class="mand">Village name</td>
+<!--                     <TD><label for="fld1" class="mand">Village name</td> -->
                     <TD><?php echo $this->form->office;?></TD>
                     <TD><?php echo $this->form->bank;?></TD>
                     <TD><label class="mand">Bank branch</label></TD>

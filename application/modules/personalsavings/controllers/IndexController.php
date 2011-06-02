@@ -26,32 +26,31 @@ class Personalsavings_IndexController extends Zend_Controller_Action
       	$this->view->pageTitle = "Personal Savings";
         $this->view->title = "Reports";
         $this->view->type = "generalFields";
+        $this->view->dc = new App_Model_dateConvertor();
      }
 
      function indexAction()
      {
 
         $personalsavings = new Personalsavings_Model_personalsavings();
-	$savingsSelect = $personalsavings->accountDetails();
+	$savingsGSelect = $personalsavings->accountDetailsgroup();
+	$savingsMSelect = $personalsavings->accountDetailsmem();
+        $savingsSelect = array_merge(array_filter($savingsGSelect),array_filter($savingsMSelect));
+//         $$savingsGSelect,
+// Zend_Debug::dump($savingsGSelect);
+// Zend_Debug::dump($savingsMSelect);
+// Zend_Debug::dump($savingsSelect);
         $this->view->savingslist = $savingsSelect;
-
-// 	$paginator = Zend_Paginator::factory($savingsSelect);
-//         $paginator->setCurrentPageNumber($this->_getParam("page")); 
-//         $paginator->setItemCountPerPage(35);
-//         $paginator->setPageRange(36);
-//         $this->view->page=$this->_request->getParam('page');
-//         $this->view->paginator = $paginator;
-//         $this->view->depositeAmount = 0;
-//         $this->view->withdrawlAmount = 0;
-//         $this->view->totalAmount = 0;
+//         $this->view->savingsMlist = $savingsMSelect;
     }
 
     function pdfgenerationAction() 
     {
 
         $personalsavings = new Personalsavings_Model_personalsavings();
-	$savingsSelect = $personalsavings->accountDetails();
-        $this->view->savingslist = $savingsSelect;
+        $savingsGSelect = $personalsavings->accountDetailsgroup();
+	$savingsMSelect = $personalsavings->accountDetailsmem();
+        $savingsSelect = array_merge(array_filter($savingsGSelect),array_filter($savingsMSelect));        $this->view->savingslist = $savingsSelect;
 
         $pdf = new Zend_Pdf();
         //create a new page
@@ -105,14 +104,15 @@ class Personalsavings_IndexController extends Zend_Controller_Action
         $page->drawText($pageNumber,550, 30);
         foreach($savingsSelect as $savings) {
 
+                    if($savings['BalanceAmt']){
 
             if($y1 > "30") { 
                 $page->drawText($savings['account_number'],$x1, $y1);
                 $page->drawText($savings['offername'],$x2, $y1);
                 $page->drawText($savings['membercode'],230, $y1);
                 $page->drawText($savings['membername'],$x4, $y1);
-                $page->drawText($savings['balance'],$x5, $y1);
-                $page->drawText($savings['created_date'],$x6, $y1);
+                $page->drawText($savings['BalanceAmt'],$x5, $y1);
+                $page->drawText($this->view->dc->normalformat($savings['created_date']),$x6, $y1);
                 $page->drawText($savings['loginname'],530, $y1);
                 } 
             else {
@@ -141,7 +141,7 @@ class Personalsavings_IndexController extends Zend_Controller_Action
     
             }
         $y1 = $y1 - 20; 
-        }
+      }  }
         $pdfData = $pdf->render();
         $account_number = "Loan";
         $pdf->save('/var/www/'.$projname.'/reports/savingsList.pdf');

@@ -30,17 +30,22 @@
                     <TH>Balance</TH>
                     <TH>Created By</TH> 
                 </TR>
-                 <?php foreach($this->savingslist as $savings){?>
+<?php $dateconvertor = new App_Model_dateConvertor(); ?>
+
+                 <?php foreach($this->savingslist as $savings){
+                    if($savings['BalanceAmt']){
+                ?>
                     <TR>
                         <TD><?php echo $savings['account_number']; ?></TD>   
                         <TD><?php echo $savings['offername']; ?></TD> 
                         <TD><?php echo $savings['membercode']; ?></TD> 
                         <TD><?php echo $savings['membername']; ?></TD> 
-                        <TD><?php echo $savings['created_date']; ?></TD> 
-                        <TD><?php echo $savings['balance']; ?></TD> 
+                        <TD><?php echo $dateconvertor->normalformat($savings['accountcreated_date']); ?></TD> 
+                        <TD><?php echo $savings['BalanceAmt']; ?></TD> 
                         <TD><?php echo $savings['loginname']; ?></TD>  
                     </TR>
-                <?php } ?>
+                <?php } } ?>
+
 			 </div>
             </table>
             <input type="submit" value="PDF" id="submit">

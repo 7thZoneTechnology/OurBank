@@ -40,6 +40,7 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
     {
         $app = $this->view->baseUrl();
         $this->view->pageTitle = "Group";
+        $this->view->title = "Group";
         $addForm = new Groupmdefault_Form_groupdefault($app);
         $this->view->form=$addForm;
           $convertdate = new App_Model_dateConvertor();
@@ -51,7 +52,7 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
                 $addForm->bank->setValue($sessionName->__get('bank'));
                 $addForm->savingamt->setValue($sessionName->__get('savingamt'));
                 $addForm->penaltylate->setValue($sessionName->__get('penaltylate'));
-                $addForm->penaltyabsence->setValue($sessionName->__get('penaltyabsence'));
+//                 $addForm->penaltyabsence->setValue($sessionName->__get('penaltyabsence'));
                 $addForm->interest->setValue($sessionName->__get('interest'));
                 $addForm->place->setValue($sessionName->__get('place'));
                 $addForm->times->setValue($sessionName->__get('times'));
@@ -78,16 +79,16 @@ unset($sessionName->Created_Date);
 				$this->view->error = "Improper Group head selection ! ";
 			}
                         if($error == 2 ) {
-				$this->view->error = "Chose single member in a family ! ";
+				$this->view->error = "Choose single member in a family ! ";
 			}
                         if($error == 3 ) {
-				$this->view->error = "Improper Group representatives selection ! ";
+				$this->view->error = "Improper Group representative selection ! ";
 			}
                         if($error == 4 ) {
-                                $this->view->error = "Maximum 3 members can be a representative in a single group!  ";
+                                $this->view->error = "Maximum 3 members can be a representatives in a single group!  ";
                         }
                         if($error == 5 ) {
-                                $this->view->error = "Chose Bank branch name";
+                                $this->view->error = "Choose Bank branch name";
                         }
         }
        
@@ -304,11 +305,22 @@ if($day){
 
         if($result == "ok" && $error == 0)
         { 
+        $date=date("y/m/d H:i:s");
 
-        // if ok get all input values
+//         // if ok get all input values
         $penalglcode = $dbobj->getpenaltyglcode(4,'recurring deposit');
-        $bglcode = $penalglcode->glcode;
-        $glcodeid = $penalglcode->glcodeid;
+            if($penalglcode->glcode == null){
+            $this->view->adm->addRecord('ourbank_glcode',array('id' => '',
+                                    'glcode' => 'L01000', 'ledgertype_id' => 4,
+                                    'header' => 'recurring deposit', 'description' => 'recurring deposit',
+                                    'created_date' =>$date, 'created_by'=> $this->view->createdby));
+            }
+
+
+        $penalglcode = $dbobj->getpenaltyglcode(4,'recurring deposit');
+
+       $bglcode = $penalglcode->glcode;
+       $glcodeid = $penalglcode->glcodeid;
 
 
            $ini=substr($bglcode,0,1);
@@ -326,9 +338,10 @@ if($day){
         $glsubcode[1]=$midportion.$last;
 
         for($l=0;$l<2;$l++){
-        $penalglcode = $dbobj->checkavailid( $headers[$l]);
-            if(!$penalglcode){
+        $penalglcodes = $dbobj->checkavailid( $headers[$l]);
+            if(!$penalglcodes){
                         $dbobj->insertGlsubcode(array('id' => '',
+                                    'office_id' => $office_id,
                                     'glsubcode' => $glsubcode[$l],
                                     'glcode_id' => $glcodeid,
                                     'subledger_id' => 4,
@@ -345,7 +358,7 @@ if($day){
           $convertdate = new App_Model_dateConvertor();
           $createddate=$convertdate->phpmysqlformat($createddate);
             $date=date("y/m/d H:i:s");
-            // validate the group name if name exists or not
+//             // validate the group name if name exists or not
             $validator = new Zend_Validate_Db_RecordExists('ourbank_group','name');
             if ($validator->isValid($groupname)) {
                 $messages = $validator->getMessages();	
@@ -367,9 +380,9 @@ if($day){
                                                               'latitude' => $latitude,
                                                               'longitude' => $longitude)); // Insert group name and get pk id
 
-            // generate group code
+//             // generate group code
             $groupcode=str_pad($office_id,3,"0",STR_PAD_LEFT)."0".$grouptypeid.str_pad($groupid,6,"0",STR_PAD_LEFT);
-            // update rest of group values
+//             // update rest of group values
             $this->view->adm->updateRecord("ourbank_group",$groupid,array('village_id' =>$office_id,'head'=>$group_head,'groupcode' =>$groupcode,'group_created_date'=>$date,'created_by' =>$this->view->createdby,'created_date' =>$createddate ));/* Group created date -> Including timestamp , Created date should contain date only*/
 
                 foreach($memid as $Memid)
@@ -385,7 +398,7 @@ if($day){
                                                                     'group_id' =>$groupid,
                                                                     'representative_id' =>$representatives));////add representatives with its group id ->($groupid)
                  }
-//             $membertypeid = $this->view->adm->getsingleRecord('ourbank_master_membertypes','id','type','Group');
+// //             $membertypeid = $this->view->adm->getsingleRecord('ourbank_master_membertypes','id','type','Group');
 
                   $account_id = $this->view->adm->addRecord("ourbank_accounts",array('id' =>'',
                                                                     'membertype_id' =>$membertypeid,
@@ -397,7 +410,7 @@ if($day){
 
                 $productid = $dbobj->getProductid();
                 $productcode = $productid.'S';
-//                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
+// //                 // create account number <!--(3)office id--(2)individualtype--(3)productoffer with saving code(6)accountid!>
 		$accountNumber=str_pad($office_id,3,"0",STR_PAD_LEFT).str_pad($membertypeid,2,"0",STR_PAD_LEFT).str_pad($productcode,3,"0",STR_PAD_LEFT).str_pad($account_id,6,"0",STR_PAD_LEFT);
                 $this->view->adm->updateRecord("ourbank_accounts",$account_id,array('account_number' =>$accountNumber,'member_id'=>$groupid,'product_id' =>$productid,'tag_account' => $account_id));
 //  // Group created date -> Including timestamp , Created date should contain date only

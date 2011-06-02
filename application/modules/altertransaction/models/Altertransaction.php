@@ -41,12 +41,13 @@ class Altertransaction_Model_Altertransaction extends Zend_Db_Table
                 FROM
                 ourbank_transaction A,
                 ourbank_accounts B,
-                ourbank_transactiontype D, 
+                ourbank_transactiontype D,
                 ourbank_paymenttypes E where (
-                A.transaction_id='.$vochure_number.' &&
+                A.transaction_id=? &&
                 A.account_id = B.id && 
                 A.transactiontype_id = D.id && 
                 A.paymenttype_id = E.id )';
+                
 		
 		$result = $db->fetchAll($sql,array($vochure_number));
 		return $result;

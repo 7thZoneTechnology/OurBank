@@ -90,7 +90,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
              if($flag == true){
                 $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
             } else {
-                echo "<script>alert('Nothing Entered');</script>";
+                $this->view->error = '"There is no proper Income detail"  - Click Back button to cancel';
                 }
             } 
         }
@@ -156,7 +156,6 @@ class Incomedetails_IndexController extends Zend_Controller_Action
             {	
 
                 if($this->_request->getParam('incomeamount'.$i)){
-            $flag = true;
                 $this->view->adm->addRecord("ourbank_incomedetails",array('id' => '',
                                             'member_id'=>$member_id,
                                             'submodule_id'=>$moduleid ,
@@ -167,13 +166,7 @@ class Incomedetails_IndexController extends Zend_Controller_Action
                                             ));
 		}
 		}
-             if($flag == true){
-                 $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
-            } else {
-                echo "<script>alert('Nothing Entered');</script>";
-                }
-
-//                  $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
+                          $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
 		}
             }
         }

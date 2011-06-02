@@ -2,24 +2,21 @@
 	<div class="register">
 		<div class="profile_tab">
             <TABLE id="hor-minimalist-b">
-<?php if(($this->holidaydetails)!=NULL) {
-					foreach($this->holidaydetails as $edit_id) { ?>
-	<tr>
-			<th class = "firsttd">Fee Details</th>
-			<th class = "secondtd"></th>	
-			<th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/holiday/index/holidayedit/id/<?php echo $edit_id['id'];?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
-	</tr>
-		<?php }}  ?>
+			<?php if(($this->holidaydetails)!=NULL) {
+				  foreach($this->holidaydetails as $edit_id) { ?>
+				<tr>
+					<th class = "firsttd">Fee Details</th>
+					<th class = "secondtd"></th>	
+					<th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/holiday/index/holidayedit/id/<?php echo $edit_id['id'];?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
+				</tr>
+			<?php }}  ?>
         <?php foreach($this->details as $details) {  ?>
     <th colspan="4"><a href="<?php echo $this->baseUrl();?>/dropdown/index/edit/id/<?php echo $this->id;?>/name/<?php echo $this->tableName ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" align="right" width="20" height="20"></a></th> 
 	<TR>	
             <TD align="center">Name :</TD>
-            <TD><?php echo $details['habit'];?><?php  echo $details['state_id'];?></TD><TD></TD>
+            <TD><?php echo $this->form->commonname;?>;?></TD><TD></TD>
      </TR>
-		<tr><?php if($this->tableName == 'ourbank_master_districtlist') {?>
-				<td>State</td>
-                <TD colspan="2"><?php  echo $details['state_id'];?></TD></tr>
-			<td></td><td></td>
+	  <TR><td colspan="2"></td>
 			<td align="right"><a href="<?php echo $this->baseUrl(); ?>/dropdown"><input name="submit" type="submit" class="officebutton" value="Back"></a></td>
       </TR>
         </TABLE>

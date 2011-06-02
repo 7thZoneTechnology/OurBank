@@ -71,6 +71,8 @@ class Health_IndexController extends Zend_Controller_Action
 // //insert the health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
         {
+
+ $flag = false;
 //         $habit = $this->_getParam('habit');
 //         $challenge = $this->_getParam('challenge');
         $submoduleid = $this->_getParam('subId');
@@ -79,6 +81,7 @@ class Health_IndexController extends Zend_Controller_Action
 
         foreach($membername as $memberna){
          if($this->_getParam('healthdisease'.$memberna['memberid'])) {
+                $flag = true;
                 $disease = $this->_getParam('healthdisease'.$memberna['memberid']);
                     foreach($disease as $diseasetype){
                         $this->view->adm->addRecord("ourbank_healthdiseasedetails",
@@ -95,6 +98,7 @@ class Health_IndexController extends Zend_Controller_Action
         }
         foreach($membername as $memberna){
             if($this->_getParam('habit-'.$memberna['memberid'])) {
+                $flag = true;
                 $habits = $this->_getParam('habit-'.$memberna['memberid']);
                     foreach($habits as $habitstype){
                         explode('_',$habitstype);
@@ -112,6 +116,7 @@ class Health_IndexController extends Zend_Controller_Action
         }
         foreach($membername as $memberna){
             if($this->_getParam('challenge-'.$memberna['memberid'])) {
+             $flag = true;
                 $challenge = $this->_getParam('challenge-'.$memberna['memberid']);
                     foreach($challenge as $challengetype){
                         explode('_',$challengetype);
@@ -129,7 +134,11 @@ class Health_IndexController extends Zend_Controller_Action
             }
 
         }
-             $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
+//                 if($flag == true){
+                                $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
+//                             } else {
+//                                 $this->view->error = "Click back if you have not add any health details";
+//                                 }
         }
     }
 

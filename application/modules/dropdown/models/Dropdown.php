@@ -119,7 +119,19 @@ public function getdetails($tName,$id) {
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;
-				case 'ourbank_master_districtlist':
+				case 'ourbank_master_mastertables':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','descriptions'))
+				->where('a.id = ?',$id);
+				
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+
+
+case 'ourbank_master_districtlist':
 					{ 
 				$select = $this->select()
               ->setIntegrityCheck(false)
@@ -129,6 +141,22 @@ public function getdetails($tName,$id) {
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;
+
+
+
+				case 'ourbank_master_branch':
+					{ 
+				$select = $this->select()
+				->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','bank_id'))
+				->where('a.id = ?',$id)
+						->from(array('b' => 'ourbank_master_bank'),array('id','accounttype_id'))
+				->where('b.id  =a.bank_id');
+/*die($select->__toString($select));*/
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+
 				case 'ourbank_master_habitation':
 					{ 
  				$select = $this->select()

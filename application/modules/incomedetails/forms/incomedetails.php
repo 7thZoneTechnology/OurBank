@@ -37,12 +37,9 @@ class Incomedetails_Form_Incomedetails extends Zend_Form {
         $source = $formfield->field('Text','source'.$i,'','','','',false,'','','','','',0,0);
         $source->setAttrib('readonly','');
         $incomeamount = $formfield->field('Text','incomeamount'.$i,'','','mand','',false,'','','','','',0,0);
-        $graterthan=new Zend_Validate_GreaterThan(0);
-
-        $incomeamount->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
-        $incomeamount->setAttrib('maxlength',10);
-        $incomeamount->setAttrib('size',14);
-
+        $incomeamount->setAttrib('maxlength',12);
+        $incomeamount->addValidator('digits')
+                     ->addErrorMessage('Numeric data only allowed');
 
         $source_id = $formfield->field('Hidden','source_id'.$i,'','','','','','','','','','',0,0);
 	$record_id = $formfield->field('Hidden','record_id'.$i,'','','','','','','','','','',0,0);

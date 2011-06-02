@@ -29,11 +29,21 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $this->view->pageTitle=$this->view->translate('Family Information');
         $globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//         $this->_redirect('index/logout');
-//         }
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+		$this->view->createdby = $sessionName->primaryuserid;
+
+		$model = new Familydefault_Model_familydefault();
+		$officetype=$model->getofficehierarchy();
+		$lastlevelid=$officetype[0]['hierarchyid'];
+		$finduser = $model->finduser($this->view->createdby,$officetype);
+        if ($finduser) {
+            $this->view->officeid=$finduser[0]['officeid'];
+        }
+		else
+		{
+			echo $this->view->officeid="";
+		}
 
         $this->view->adm = new App_Model_Adm();
         $this->view->commonmodel=$individualcommon=new Familycommonview_Model_familycommonview();
@@ -89,7 +99,8 @@ class Familydefault_IndexController extends Zend_Controller_Action
        	foreach($hierarchy as $hiearchyids){
        	$hiearchyid = $hiearchyids['hierarchyid'];
        	}
-       	$institution = $familymodel->office($hiearchyid);
+		
+       	$institution = $familymodel->office($this->view->officeid);
 
        	foreach($institution as $institution)
        	{
@@ -104,17 +115,26 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //         $addForm->village->addMultiOption($village1['village_id'],$village1['name']);
 //         $addForm->rev_village->addMultiOption($village1['village_id'],$village1['name']);
 //         }
-
+		$groupname=$this->_request->getParam('familyid');
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
+			$addForm->familyid1->setRequired(false);
+
             $formData = $this->_request->getPost(); 
             $healtharray=$this->_request->getParam('health'); /*print_r($healtharray); //echo count($healtharray);*/
-            if($addForm->isValid($formData))
+//             if($addForm->isValid($formData))
+//             {
+// 			 $validator = new Zend_Validate_Db_RecordExists('ourbank_family','family_id');
+//             if ($validator->isValid($groupname)) {
+//                 $messages = $validator->getMessages();	
+//                     $this->view->errorgroupname=$groupname.'This Family ID Already Existed';// if name exists display error message
+//             } else {
+			if($addForm->isValid($formData))
             {
         // add individual member
         $lastid = $this->view->adm->addRecord("ourbank_family",array(
                                         'id' => '',
-                                        'family_id'=>$this->_request->getParam('familyid'),
+                                        'family_id'=>$groupname,
                                         'sujeevana'=>$this->_request->getParam('sujeevana'),
                                         'house_no'=>$this->_request->getParam('houseno'),
                                         'street' => $this->_request->getParam('street'),
@@ -162,11 +182,11 @@ class Familydefault_IndexController extends Zend_Controller_Action
                $this->_redirect('/familycommonview/index/commonview/id/'.$lastid);
             }
         }	
-
+	
     }
 
 //edit individual member 
-    public function editfamilyAction()
+     public function editfamilyAction()
     {
         //Acl
         //$access = new App_Model_Access();
@@ -220,7 +240,8 @@ class Familydefault_IndexController extends Zend_Controller_Action
        	foreach($hierarchy as $hiearchyids){
        	$hiearchyid = $hiearchyids['hierarchyid'];
        	}
-       	$institution = $familymodel->office($hiearchyid);
+//        	$institution = $familymodel->office($hiearchyid);
+       	$institution = $familymodel->office($this->view->officeid);
 
        	foreach($institution as $institution)
        	{
@@ -253,8 +274,8 @@ class Familydefault_IndexController extends Zend_Controller_Action
         }
    
         foreach($edit_member as $editmembername)
-        {   $this->view->form->familyid->setValue($editmembername['family_id']);
-            $this->view->form->sujeevana->setValue($editmembername['sujeevana']);
+        {   $this->view->form->familyid1->setValue($editmembername['family_id']);
+			$this->view->form->sujeevana->setValue($editmembername['sujeevana']);
             $this->view->form->minority->setValue($editmembername['minority_id']);
             $this->view->form->houseno->setValue($editmembername['house_no']);
             $this->view->form->street->setValue($editmembername['street']);
@@ -274,8 +295,11 @@ class Familydefault_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Update')) 
         {
             $formData = $this->_request->getPost();
+
+			$addForm->familyid->setRequired(false);
             if($addForm->isValid($formData))
             {
+
             $healtharray=$this->_request->getParam('health');
             $olddate = $this->view->adm->editRecord("ourbank_family",$family_id);
             $this->view->adm->updateLog("ourbank_family_log",$olddate[0],$this->view->createdby);
@@ -283,7 +307,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
             foreach($olddate as $olddate)
             $olddate['membercode'];
             $this->view->adm->updateRecord("ourbank_family",$family_id,array(
-                                        'family_id'=>$this->_request->getParam('familyid'),
+                                        'family_id'=>$this->_request->getParam('familyid1'),
                                         'sujeevana'=>$this->_request->getParam('sujeevana'),
                                         'house_no'=>$this->_request->getParam('houseno'),
                                         'street' => $this->_request->getParam('street'),
@@ -292,7 +316,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'mobile'=>$this->_request->getParam('mobile'),
                                         'phone'=>$this->_request->getParam('phone'),
                                         'familytype_id' => $this->_request->getParam('familytype'), 
-                                        'minority_id' => $this->_request->getParam('minority_id'), 
+                                        'minority_id' => $this->_request->getParam('minority'), 
                                         'caste_id'=>$this->_request->getParam('caste'),
                                         'ration_id'=>$this->_request->getParam('ration'),
                                         'nregs_jobno'=>$this->_request->getParam('jobno'),
@@ -314,7 +338,6 @@ class Familydefault_IndexController extends Zend_Controller_Action
         // // 	} else {
         // //             $this->_redirect('index/index');}
     }
-
     public function viewmemberAction()
     {
     }
@@ -322,13 +345,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //delete individual member 
     public function deletememberAction()
     {
-        //Acl
-        //$access = new App_Model_Access();
-        //$checkaccess = $access->accessRights('Individual',$this->view->globalvalue[0]['name'],'editmembernameAction');
-        //if (($checkaccess != NULL)) {
-        //delete action
-    
-        $id=$this->_request->getParam('id'); 
+      $id=$this->_request->getParam('id'); 
         $this->view->memberid=$id;
 
 //load delete form 
@@ -342,15 +359,20 @@ class Familydefault_IndexController extends Zend_Controller_Action
             { 
             $delete=new Familydefault_Model_familydefault();
             $account=$delete->findaccount($id);
+
+
+// // // Zend_Debug::dump($account);
 //delete member details, contact and address details...
-            if($account){
+            if(!$account){
             $this->view->adm->deletemember("ourbank_family",$id);
+			$this->_redirect('/family');
             }
              else
                 { echo "<font color=red>This member having active accounts</font>";
                 }
-            }$this->_redirect('/family');
-        }
+            }
+            
+        }	
         // 	} else {
         //             $this->_redirect('index/index');
         // 	}

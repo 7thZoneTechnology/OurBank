@@ -30,7 +30,9 @@
                     <TH>Balance</TH>
                     <TH>Created By</TH> 
                 </TR>
-                 <?php foreach($this->savingslist as $savings){?>
+                 <?php foreach($this->savingslist as $savings){
+                    if($savings['BalanceAmt']){
+                 ?>
                     <TR>
                         <TD><?php echo $savings['account_number']; ?></TD>   
                         <TD><?php echo $savings['offername']; ?></TD> 
@@ -40,7 +42,7 @@
                         <TD><?php echo $savings['balance']; ?></TD> 
                         <TD><?php echo $savings['loginname']; ?></TD>  
                     </TR>
-                <?php } ?>
+                <?php } } ?>
             </table>
             <input type="submit" value="PDF" id="submit">
 	   <?php echo $this->Error;?>

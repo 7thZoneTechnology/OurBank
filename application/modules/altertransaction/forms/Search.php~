@@ -17,26 +17,18 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-class Expense_Form_expense extends Zend_Form {
-    public function init()
-    {} 
-
-    public function __construct($number) 
+class Altertransaction_Form_Search extends Zend_Form 
+{
+    public function init() 
     {
-        //$number = number family members
-        //create a health form eleAgriculturements...
-
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-        $formfield = new App_Form_Field ();
 
-       for($i=1;$i<=$number;$i++) {
-        $value = $formfield->field('Text','value'.$i,'','','mand','',false,'','','','','',0,0);
-              $value->setAttrib('maxlength',12);
-              $value->addValidator('digits')
-                ->addErrorMessage('Numeric data only allowed');
-        $source_id = $formfield->field('Hidden','source_id'.$i,'','','','','','','','','','',0,0);
-        $this->addElements(array($value,$source_id));
-	}
+
+        $num = new Zend_Form_Element_Text('vNum');
+        $num->setAttrib('class', 'txt_put');
+		$num->setRequired(true);
+		$num->addValidator(new Zend_Validate_Alnum());
+        $submit = new Zend_Form_Element_Submit('Search');
+        $this->addElements(array($num,$submit));
     }
-
 }
