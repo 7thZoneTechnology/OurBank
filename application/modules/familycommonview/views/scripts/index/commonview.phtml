@@ -33,7 +33,7 @@
     </tr>
 
 	<tr>
-        <td class="firsttd"><?php echo $this->translate("Rev Village:"); ?></td>
+        <td class="firsttd"><?php echo $this->translate("Revenue Village:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
         <td class="thirdtd"></td>
     </tr>
@@ -45,7 +45,7 @@
 
 
         <tr>
-        <td class="firsttd"><?php echo $this->translate("Family type:"); ?></td>
+        <td class="firsttd"><?php echo $this->translate("Family Type:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['familytype']; ?></td>
         <td class="thirdtd"></td>
     </tr>
@@ -90,7 +90,7 @@
     </tr>
 
     <tr>
-        <td class="firsttd"><?php echo $this->translate("Major source of income:"); ?></td>
+        <td class="firsttd"><?php echo $this->translate("Major Source of Income:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['income']; ?></td>
         <td class="thirdtd"></td>
     </tr>
@@ -727,7 +727,7 @@ foreach($this->getfamilymembers as $familymembers){ ?>
 <!--show the health details and edit option !-->
 <table id="hor-minimalist-b">
   <tr>
-      <th class="firsttd"><?php echo $this->translate("Health"); ?>*</th>
+      <th class="firsttd"><?php echo $this->translate("Health"); ?></th>
       <th class = "secondtd"></th>
       <?php if((($this->gethabithealth) || ($this->gethabitchallenge) || ($this->getchronicdisease) )) { ?>
       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
