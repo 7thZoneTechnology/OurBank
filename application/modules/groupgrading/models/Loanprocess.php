@@ -319,7 +319,7 @@ public function finduser($userid)
                             b.name as villagename
                         from
                             ourbank_group as a,
-                            ourbank_master_villagelist as b
+                            ourbank_office as b
                         where 
                             a.id = $groupid and
                             a.village_id = b.id";

@@ -16,7 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<script src="<?php echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+
 <script language="javascript">
  function getBranch(bankid) { 
             targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
@@ -57,7 +57,7 @@ if($status == "OK"){
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/group/membershipgroupmedit.js"></script>
 <fieldset>
     <legend>Edit group</legend>
-    <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/editgroup/id/<?echo $this->groupid;?>" method="POST">
+    <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/editgroup/id/<?echo $this->groupid;?>" method="POST" name="Groupform" id="addgroups">
         <div class="btnhouse">
             <div class="rtbtns">
                     <a href="<?php echo $this->baseUrl();?>/groupmdefault/index/deletegroup/id/<? echo $this->groupid;?>">

@@ -1,9 +1,9 @@
-<script type='text/javascript'>
+<!--<script type='text/javascript'>
 $(document).ready(
   function() {
       $('.dates').datepick({dateFormat: 'dd/mm/yyyy',});
 }); 
-</script>
+</script>-->
 <script language="javascript">
  function getBranch(bankid) { 
             targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
@@ -47,15 +47,15 @@ if($status == "OK"){
 <div id = "searchDiv">
     <fieldset>
         <legend>Group details</legend>
-        <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/groupaccount" method="POST" onsubmit="return valid()" id="addgroup" name="Groupform">
+        <form action="<?php echo $this->baseUrl();?>/groupmdefault/index/groupaccount" method="POST"  id="addgroup" name="Groupform">
             <table class="fieldsets"> 
                 
                 <tr>
                     <TD><label class="mand">Group type</label></td>
                     <td colspan="3">
                     <?php if($this->gtype) { $gtype = $this->gtype; } ?>
-                    <input type="radio" name="grouptype" id="grouptype" class ="required"  <?php if($gtype == 2) { ?> checked <?php } ?> value=2>SHG
-                    <input type="radio" name="grouptype" id="grouptype" class ="required" <?php if($gtype == 3) { ?> checked <?php } ?> value=3>JLG
+                    <input type="radio" name="grouptype" id="grouptype"  checked <?php if($gtype == 2) { ?> checked <?php } ?> value=2>SHG
+                    <input type="radio" name="grouptype" id="grouptype"  <?php if($gtype == 3) { ?> checked <?php } ?> value=3>JLG
                     </TD>
                </TR>
                 <TR>

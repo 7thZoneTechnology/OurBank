@@ -10,7 +10,7 @@ $select=$this->select()
        ->where('groupcode like "%" ? "%"',$membercode)
        ->join(array('b' => 'ourbank_groupmembers'),'a.id=b.group_id',array('b.member_id as memid'))
        ->join(array('d'=>'ourbank_familymember'),'d.id=b.member_id',array('d.name as memname'))
-       ->join(array('c' => 'ourbank_loanprocess'),'b.member_id = c.member_id')
+       ->joinLeft(array('c' => 'ourbank_loanprocess'),'b.member_id = c.member_id')
        ->where('c.membertype=2 or c.membertype=3');
 //        die($select->__toString($select));
        $result=$this->fetchAll($select);

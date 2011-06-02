@@ -405,8 +405,9 @@ class Savings_IndexController extends Zend_Controller_Action{
 																'intereststatus_id'=>3));
 							}
 						}
-						$this->_redirect('savings/index');
 				}
+                                $this->_redirect('savings/index');
+
 			}
 		}
 
@@ -533,8 +534,8 @@ class Savings_IndexController extends Zend_Controller_Action{
 																'intereststatus_id'=>3));
 							}
 						}
-						$this->_redirect('savings/index');
 					}
+                                $this->_redirect('savings/index');
 				}
 			}
 		}

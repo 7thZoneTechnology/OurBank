@@ -8,8 +8,10 @@ class groupgrading_IndexController extends Zend_Controller_Action
         $this->view->accounts = new groupgrading_Model_Loanprocess();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $this->view->createdby = $sessionName->primaryuserid;
+         $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
         $finduser = $this->view->accounts->finduser($this->view->createdby);
         if ($finduser) {
             $levelid=$finduser[0]['officetype_id'];
@@ -274,9 +276,16 @@ class groupgrading_IndexController extends Zend_Controller_Action
         $searchform = $this->view->form = new groupgrading_Form_Search();
         $this->view->title = "Shgadvances";
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-                $membercode = $this->_request->getPost('membercode');
-                $groupdetails = $this->view->accounts->searchgroupdetails($membercode);
-                $this->view->groupdetails = $groupdetails;
+//                 $formdata = $this->getPost();
+                if($searchform->isValid($this->_request->getPost())) {
+                    $membercode = $this->_request->getPost('membercode');
+                    $groupdetails = $this->view->accounts->searchgroupdetails($membercode);
+                    if($groupdetails){
+                        $this->view->groupdetails = $groupdetails;
+                    }  else {
+                        $this->view->error = "Enter valid code";
+                    }
+                }
         }
     }
      public function shgadvancesAction()
@@ -409,11 +418,17 @@ class groupgrading_IndexController extends Zend_Controller_Action
 
         $app = $this->view->baseUrl();
         $word=explode('/',$app);
-        $projname = $word[1];
-        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
+        $projectname = '';
+        foreach($word as $Words){
+            if($Words != 'public'){
+                $projectname .= $Words . "/";
+            }
+        }
 
+//         $projname = $word[1];
+        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
 //         //Image
-        $image_name = "/var/www/".$projname."/public/images/logo.jpg";
+        $image_name = "/var/www".$projectname."public/images/logo.jpg";
         $image = Zend_Pdf_Image::imageWithPath($image_name);
 //         $page->drawImage($image, 25, 770, 570, 820);
         $page->drawImage($image, 30, 770, 130, 820);
@@ -773,41 +788,41 @@ class groupgrading_IndexController extends Zend_Controller_Action
         $y1 = $y1-80;
         $page->drawText($percentage[6], $x1-10, $y1); 
         $page->drawText($percentage[7], $x4-20, $y1);
-// 
-//         $y1 = $y1-15;
-//         $page->drawLine(50, $y1, 550, $y1);
-//         $page->drawLine(50, $y1-20, 550, $y1-20);
-// 
-//         $page->drawText($secondtable[0], $x1, $y1-10);
-//         $page->drawText($secondtable[1], $x5, $y1-10);
-//         $page->drawText($secondtable[2], $x3, $y1-10);
-//         $y1 = $y1-30;
-//         $j=1;
-//         foreach($groupmembers as $groupmem){
-//             $page->drawText($j, $x1, $y1);
-//             $page->drawText($groupmem['membername'], $x5, $y1);
-//             $page->drawLine(50, $y1-5, 550, $y1-5);
-//         }
-//         $y1 = $y1-20;
-//         $Totalvalue = $secondtable[3].$j;
-//         $page->drawText($Totalvalue, $x5, $y1);
-//         $page->drawLine(50, $y1-5, 550, $y1-5);
-// 
-//         $y3 = $y1 + 45 + ($j*5);
-//   // Virtual table
-//         $page->setLineWidth(1)->drawLine(50,$y1-5,50,$y3); //Table left vertical
-//         $page->setLineWidth(1)->drawLine($x1+25,$y1-5,$x1+25,$y3); //Table second left vertical
-// //         $page->setLineWidth(1)->drawLine($x5-5,$y1-5,$x5-5,$y3); //Table center vertical
-//         $page->setLineWidth(1)->drawLine($x3-35,$y1-5,$x3-35,$y3); //Table second center vertical
-//         $page->setLineWidth(1)->drawLine(550,$y1-5 ,550,$y3); //table rigth vertical
-// 
-//         $y1 = $y1-35;
-//         $page->drawText($secondtable[4], $x1+25, $y1);
-//         $page->drawText($secondtable[5], $x2-25, $y1);
-//         $page->drawText($secondtable[6], $x3-25, $y1);
+// // 
+// //         $y1 = $y1-15;
+// //         $page->drawLine(50, $y1, 550, $y1);
+// //         $page->drawLine(50, $y1-20, 550, $y1-20);
+// // 
+// //         $page->drawText($secondtable[0], $x1, $y1-10);
+// //         $page->drawText($secondtable[1], $x5, $y1-10);
+// //         $page->drawText($secondtable[2], $x3, $y1-10);
+// //         $y1 = $y1-30;
+// //         $j=1;
+// //         foreach($groupmembers as $groupmem){
+// //             $page->drawText($j, $x1, $y1);
+// //             $page->drawText($groupmem['membername'], $x5, $y1);
+// //             $page->drawLine(50, $y1-5, 550, $y1-5);
+// //         }
+// //         $y1 = $y1-20;
+// //         $Totalvalue = $secondtable[3].$j;
+// //         $page->drawText($Totalvalue, $x5, $y1);
+// //         $page->drawLine(50, $y1-5, 550, $y1-5);
+// // 
+// //         $y3 = $y1 + 45 + ($j*5);
+// //   // Virtual table
+// //         $page->setLineWidth(1)->drawLine(50,$y1-5,50,$y3); //Table left vertical
+// //         $page->setLineWidth(1)->drawLine($x1+25,$y1-5,$x1+25,$y3); //Table second left vertical
+// // //         $page->setLineWidth(1)->drawLine($x5-5,$y1-5,$x5-5,$y3); //Table center vertical
+// //         $page->setLineWidth(1)->drawLine($x3-35,$y1-5,$x3-35,$y3); //Table second center vertical
+// //         $page->setLineWidth(1)->drawLine(550,$y1-5 ,550,$y3); //table rigth vertical
+// // 
+// //         $y1 = $y1-35;
+// //         $page->drawText($secondtable[4], $x1+25, $y1);
+// //         $page->drawText($secondtable[5], $x2-25, $y1);
+// //         $page->drawText($secondtable[6], $x3-25, $y1);
 
-        $pdf->save('/var/www/'.$projname.'/reports/shgadvances.pdf');
-        $path = '/var/www/'.$projname.'/reports/shgadvances.pdf';
+        $pdf->save('/var/www'.$projectname.'reports/shgadvances.pdf');
+        $path = '/var/www'.$projectname.'reports/shgadvances.pdf';
         chmod($path,0777);
     } 
 }

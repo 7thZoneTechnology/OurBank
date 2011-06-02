@@ -33,6 +33,8 @@ class Groupcommonview_IndexController extends Zend_Controller_Action{
 	{       
 	}
     public function commonviewAction(){
+
+        $this->view->title = "Group";
         $id=$this->_request->getParam('id');
         $this->view->groupid=$id;
         // create instance for groupcommon model page
@@ -50,7 +52,7 @@ class Groupcommonview_IndexController extends Zend_Controller_Action{
         $groupreps=$groupcommon->groupreps($id); // get group representatives
         $this->view->groupreps=$groupreps;
 
-        $dbobj= new Groupmdefault_Model_groupdefault();
+        $dbobj= new Groupmdefault_Model_Groupdefault();
         $groupheaddetails = $dbobj->Getgrouphead($id); //Get group head
             foreach($groupheaddetails as $grouphead){
                     $this->view->grouphead = $grouphead['head'];
