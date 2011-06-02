@@ -1,120 +1,5 @@
 <html>
- <head>
-
-
-<script type='text/javascript' src="/IDF/public/js/jquery-1.3.2.js"></script>
-<script type='text/javascript' src="/IDF/public/js/jquery.selectboxes.pack.js"></script>
-<script type='text/javascript'>
-$(document).ready(
-  function() {
-    $('input#tmpAddRow').click(
-      function() {
-      tableobj=$(this).parent();
-        selectedval=[];
-      rowindex=$('tr',tableobj).length;
-      trobjec=$('tr',tableobj);
-       $('tr',tableobj).each(function (index, domEle) {
-           if(index!=rowindex && index!=0)
-             {
-              sval=$("#select"+index).selectedValues();
-               selectedval.push(sval);
-            }
-        });
-       var newRow = $('tr#tmp').clone(true).removeAttr('id');
-                selectobj=newRow.find("select");
-                newrowobj=$(this).children(':first');
-                inputobj=newRow.find("input:text");
-                inputobj.val("");
-                newRow.find('span').remove();
-//                 selectobj.val("");
-
-        newRow.appendTo('.asset tbody');
-        $(selectobj).attr('id', 'select'+rowindex);
-             trobjec.each(function (index, domEle) {
-                   if(index!=0 && index!=rowindex)
-                     {
-                      sval=$("#select"+index).selectedValues();
-                    $("#select"+rowindex+" option[value='"+sval+"']").remove();
-            
-                }
-       });
-        
-           $('tr#tmp').closest('table').find('input:text.date').each(function() {
-           $(this).removeClass('hasDatepick').datepick({dateFormat: 'dd/mm/yyyy',maxDate : '+0D',});
-        });
-      }
-    );
-
-  $('.select').change(function(){
-            if($(this).val() == 'Select'){
-                    $(this).after('<span style="color: #FF0000">Choose proper Asset</span>');
-            } else {
-                    $(this).next('span').remove();
-            }
-    });
-
-
-     $('tr input[type=text]').focus(
-      function() {
-        $(this).addClass('myFocused');
-      }
-    ).blur(
-      function() {
-        $(this).removeClass('myFocused');
-      }
-    );
-        $(".date").datepick("option",{dateFormat: 'dd/mm/yyyy', maxDate : '+0D', });
-
- 
-
-    $('.delete-icon').click(function() {
-        $(this).closest('tr').not('#tmp').remove();
-    });
-  });
-$(document).ready(function() {
-    $('#pluginForm').submit(function(e) {
-        var isValid = true;
-        $(this).find(':text.required').each(function() {
-            if($(this).val().replace(/^\s+|\s+$/g,"") == "") {
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                    $(this).after('<span style="color: #FF0000">Field is required</span>');
-                }
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0 )
-                    $(this).next('span').remove();
-            }
-        });
-
-        $(this).find(':select.select').each(function() {
-            if($(this).val() == 'Select'){
-                        if($(this).next('span').length == 0 ) {
-                    $(this).after('<span style="color: #FF0000">Field is required</span>');
-                }
-                e.preventDefault();
-                return;            } else {
-                        if($(this).next('span').length > 0 )
-                    $(this).next('span').remove();            }
-        });
-        $(this).find(':text.numeric').each(function() {
-            var regex = new RegExp(/^[1-9][0-9]*$/);
-            if(!regex.test($(this).val()) && isValid) {
-                isValid = false;
-                if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Numeric Data allowed only.</span>');
-                }
-                e.preventDefault();
-                return;
-            } else {
-                if($(this).next('span').length > 0  && isValid)
-                    $(this).next('span').remove();
-            }
-        }); 
-    });
-});
-</script>
+<head>
 <style type="text/css">
 * { font-family: Verdana; font-size: 96%; }
 label { width: 10em; float: left; }
@@ -171,7 +56,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
         <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['mobile']; ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
@@ -182,7 +67,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     </tr>   <?php } ?>
 </table> 
 <br/>
-<form name="form1" id = "pluginForm" action="<?php echo $this->baseUrl();?>/livingassets/index/addasset/id/<?php echo $this->memberid; ?>" method="POST">
+<form name="form1" id = "pluginFormlive" action="<?php echo $this->baseUrl();?>/livingassets/index/addasset/id/<?php echo $this->memberid; ?>" method="POST">
 <table id="hor-minimalist-b" class="asset">
 <tr> 
     <th><?php echo $this->translate("Assets"); ?></th>
@@ -200,8 +85,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                         </select>
             </td>  
             <td><INPUT type="text" size="6" name = "number[]" class="required numeric" maxlength="6" id="numcheck"></td>
-            <td><INPUT type="text" name = "value[]"  maxlength="6"></td>
-   <td><INPUT type="text" name = "date[]" class="date"></td>
+            <td><INPUT type="text" name = "value[]"  maxlength="6" class="numeric"></td>
+   <td><INPUT type="text" name = "date[]" class="date" readonly autocomplete="OFF"></td>
 
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
 <input type="hidden" name="subid" value="<?php echo $this->submoduleid;?>">

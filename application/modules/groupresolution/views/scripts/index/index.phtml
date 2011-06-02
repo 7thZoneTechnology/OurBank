@@ -97,6 +97,10 @@ purpose - <?php  echo $memberdetail['purposename'];?>&nbsp;&nbsp;&nbsp;&nbsp;ban
 onClick="window.open('<?php echo $this->baseUrl();?>/groupresolution/index/reportdisplay/file/groupresolution<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
            <BR> <input type="submit" value="PDF" id="submit">
-</form><?php } ?>
+</form><?php 
+} ?>
+
+<b style="color:red"><?php echo $this->error;?></b>
+
 
 </div>

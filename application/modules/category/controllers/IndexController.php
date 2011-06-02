@@ -25,9 +25,9 @@ class Category_IndexController extends Zend_Controller_Action
 	{
                 $this->view->pageTitle='Category';
                 $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = 1; //$this->view->globalvalue[0]['id'];
-//		$this->view->username = $this->view->globalvalue[0]['username'];
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
 //        if (($this->view->globalvalue[0]['id'] == 0)) {
 //            $this->_redirect('index/logout');
 //        }

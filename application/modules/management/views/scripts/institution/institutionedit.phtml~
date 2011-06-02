@@ -1,6 +1,0 @@
-<fieldset>
-    <legend>Edit Product</legend> 
-            <table id="hor-minimalist-b"> 
-                <?php echo $this->form;?>
-            </table>
-</fieldset>

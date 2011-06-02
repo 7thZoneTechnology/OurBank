@@ -37,12 +37,11 @@ class IndexController extends Zend_Controller_Action
 
         $login=new App_Model_Users();
         $loginname=$login->username($userid);
-
         foreach($loginname as $loginname) {
-        $this->view->primaryid=$loginname['id'];
-        $this->view->id=$loginname['id'];
-        $this->view->username=$loginname['name'];
-        $this->view->primaryrole=$loginname['name'];
+            $this->view->primaryid=$loginname['id'];
+            $this->view->id=$loginname['id'];
+            $this->view->username=$loginname['username'];
+            $this->view->primaryrole=$loginname['name'];
         }
     }
 	

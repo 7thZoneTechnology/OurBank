@@ -5,6 +5,10 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
     	$this->view->title = "Loans";
         $this->view->pageTitle = "Loans disbursement";
 	$this->view->type='loans';
+	$globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
         $this->view->loanModel = new Loandisbursmentg_Model_loan();
         $this->view->cl = new App_Model_Users ();
         $this->view->dateconvector = new App_Model_dateConvertor();

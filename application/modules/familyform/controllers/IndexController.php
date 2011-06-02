@@ -38,7 +38,14 @@ class Familyform_IndexController extends Zend_Controller_Action
 		$familyForm = new Familyform_Form_Familyform();
 		$this->view->form = $familyForm;
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+                $formData = $this->_request->getPost();
+                if ($familyForm->isValid($formData)) {
+
 		$id = $this->_getParam('membercode');
+		
+// 		if($id=="" ) { echo "<font color='red'> record is invalid </font>";} else {
+		if($id=="") 		
+		{		
  		$familydetails = new Familyform_Model_Familyform();
  		$result = $familydetails->getFamilydetails($id);
 		$this->view->familydetails = $result;
@@ -50,8 +57,14 @@ class Familyform_IndexController extends Zend_Controller_Action
 		$this->view->loanrequest =$familydetails-> Searchloanprocess($id);
 		$this->view->loan =$familydetails-> searchaccounts($id);
 		$this->view->membercode = $id;
+	        } else {
+		 
+	        $this->view->error = "Enter valid code";
+	           }
+ 
+}
+                }
 
-	}
 // 		} else {
 //             $this->_redirect('index/error');
 // 		}

@@ -51,7 +51,7 @@ function caltotalacre(bal) {
 
 $(document).ready(
   function() {
- $('#pluginForm').validate();
+ $('#valueForm').validate();
    $(".numeric1").keyup(
     function(){
         currentObject=$(this).attr('name')
@@ -246,7 +246,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 </div>
 <br>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">      
-    <form name="form1" id = "pluginForm" action="<?php echo $this->baseUrl();?>/crop/index/editcrop/id/<?php echo $this->id; ?>/subId/<?php echo 1; ?>/modId/<?php echo 2; ?>" method="POST">
+    <form name="form1" id = "valueForm" action="<?php echo $this->baseUrl();?>/crop/index/editcrop/id/<?php echo $this->id; ?>/subId/<?php echo 1; ?>/modId/<?php echo 2; ?>" method="POST">
         <table id="hor-minimalist-b" class="crop">
             <tr> 
                                <th ><?php echo $this->translate("Land"); ?></th>
@@ -272,58 +272,67 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
             <?php } else { ?>
             <tr>
             <?php } ?>
-   <td><select name = "tenant[]" class="selectvalid required">
 
-                    <OPTION value="<?php echo $editCrop["land_id"]; ?>">
-                    <?php echo $editCrop["landtypename"]; ?>
-                    </OPTION>
-                    <?php foreach ($this->agriculture as $cropdetails) { ?>
-                        <? if($editCrop["landtypename"] != $cropdetails["name"] ) {?>
-                           <option value="<?php echo $cropdetails['land_id']?>"><?php echo $cropdetails['name']?></option>
-                    <?php } } $dateconvert= new App_Model_dateConvertor();?>
-                </select>    
-                </td>
+ <td><select name = "tenant[]" class="selectvalid required">
+                                                                         <option value="">select</option>
 
-                <td><select name = "crop_id[]" class="selectvalid required">
+                    <?php foreach ($this->agriculture as $cropdetails) {  ?>
 
-                    <OPTION value="<?php echo $editCrop["crop_id"]; ?>">
-                    <?php echo $editCrop["name"]; ?>
-                    </OPTION>
-                    <?php foreach ($this->cropdetails as $cropdetails) { ?>
-                        <? if($editCrop["name"] != $cropdetails["name"] ) {?>
-                           <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
-                    <?php } } $dateconvert= new App_Model_dateConvertor();?>
-                </select>    
-                </td>
-
-                <td><select name = "season[]" class="selectvalid required">
-
-                    <OPTION value="<?php echo $editCrop["season_id"]; ?>">
-                    <?php echo $editCrop["season"]; ?>
-                    </OPTION>
-                    <?php foreach ($this->seasondetails as $cropdetails) { ?>
-                        <? if($editCrop["season"] != $cropdetails["name"] ) {?>
-                           <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
-                    <?php } } $dateconvert= new App_Model_dateConvertor();?>
-                </select>    
-                </td>
+                           <option <?php if($cropdetails['land_id'] == $editCrop["land_id"] ) { echo 'selected="selected"';?>
+                           <?php } ?> value="<?php echo $cropdetails['land_id']?>"><?php echo $cropdetails['name']?></option>
+                    <?php  } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
 
 
-                </select> </td>
+<td><select name = "crop_id[]" class="selectvalid required">
+                                                                         <option value="">select</option>
+
+                    <?php foreach ($this->cropdetails as $cropdetails) {  ?>
+
+                           <option <?php if($cropdetails['name'] == $editCrop["name"] ) { echo 'selected="selected"';?>
+                           <?php } ?> value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
+                    <?php  } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
+
+  
+<td><select name = "season[]" class="selectvalid required">
+                                                                         <option value="">select</option>
+
+                    <?php foreach ($this->seasondetails as $cropdetails) {  ?>
+
+                           <option <?php if($cropdetails['name'] == $editCrop["season"] ) { echo 'selected="selected"';?>
+                           <?php } ?> value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
+                    <?php  } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
+
+
+
+
+            
 
                 <td><INPUT type="text" maxlength="3" name = "acre[]" class="number EitherOr"  id="acre1" value = "<?php echo $editCrop["acre"];?>" size = 10 
    onkeyup = "calculateacre(this.value);"></td>
                 <td><INPUT type="text" name = "gunta[]" id = "gunta1" class="acre number" value = "<?php echo $editCrop["gunta"];?>" size = 5 maxlength="2" onkeyup = "calculateguntas(this.value);" class="gunta number range eithergroup error"></td>
-<td><select name = "unit[]" class="selectvalid">
-                    <?php foreach ($this->units as $unit) { ?>
-
-                    <option value="<?php echo $unit['id']?>"><?php echo $unit['name']?></option>
-
-                    <?php } ?>
 
 
-                </select>    
-                </td>                <td><INPUT type="text" name = "quantity[]" id =  "quantity1" value = "<?php echo $editCrop["quantity"];?>" size = 10 maxlength="3" class="quantity required numeric comp1"></td>
+<td><select name = "unit[]" class="selectvalid required">
+                                                                         <option value="">select</option>
+
+                    <?php foreach ($this->units as $unit) {  ?>
+
+                           <option <?php if($unit['id'] == $editCrop["crop_id"] ) { echo 'selected="selected"';?>
+                           <?php } ?> value="<?php echo $unit['id']?>"><?php echo $unit['name']?></option>
+                    <?php  } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
+
+
+
+
+
+
+
+
+           <td><INPUT type="text" name = "quantity[]" id =  "quantity1" value = "<?php echo $editCrop["quantity"];?>" size = 10 maxlength="3" class="quantity required numeric comp1"></td>
                 <td><INPUT type="text" name = "marketed[]" id = "marketed1" value = "<?php echo $editCrop["marketed"];?>" size = 10 maxlength="5" class="marketed comp2 numeric1"></td>
                 <td><INPUT type="text" name = "price[]" value = "<?php echo $editCrop["price"];?>" size = 10 maxlength="6" class="numeric1"></td>
                 <td><INPUT type="text" name = "realised[]"  value = "<?php echo $editCrop["realised"];?>" size = 10 maxlength="6"  class="numeric1"></td>
@@ -334,7 +343,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
         </table>  
 
 
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 <?php echo $this->errormsg; ?>
 </div>

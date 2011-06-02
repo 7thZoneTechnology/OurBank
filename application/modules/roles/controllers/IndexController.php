@@ -21,8 +21,18 @@
 class Roles_IndexController extends Zend_Controller_Action{
     public function init() {
         $this->view->pageTitle='Roles';
+
+
         $sessionName = new Zend_Session_Namespace('ourbank');
-	$this->view->createdby = $sessionName->primaryuserid;
+        $userid = $sessionName->primaryuserid;
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->createdby=$loginname['id'];
+            $this->view->username=$loginname['username'];
+        }
+              
 	
         //  $login=new App_Model_Users();
         //                 $loginname=$login->username($userid);

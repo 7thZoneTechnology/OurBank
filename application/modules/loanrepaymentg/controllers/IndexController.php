@@ -24,6 +24,10 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
         $this->view->title = "Loans";
         $this->view->pageTitle = "Loans repayment";
         $this->view->type='loans';
+	$globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
         $this->view->loanModel = new Loanrepaymentg_Model_Repayment();
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();

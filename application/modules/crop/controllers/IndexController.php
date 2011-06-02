@@ -25,14 +25,10 @@ class crop_IndexController extends Zend_Controller_Action{
     public function init() 
 	{
         $this->view->pageTitle=$this->view->translate('Membership');
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-	$this->view->createdby = $this->view->globalvalue[0]['id'];
-        //$this->view->username = $this->view->globalvalue[0]['username'];
-        //if (($this->view->globalvalue[0]['id'] == 0)) {
-            //$this->_redirect('index/logout');
-        //}
-        //getting module name and change the side bar dynamically 
+       $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
         $this->view->id=$subId=$this->_getParam('id');
         $this->view->subId=$subId=$this->_getParam('subId');
         $this->view->modId=$modId=$this->_getParam('modId');
@@ -66,7 +62,6 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $revvillageid = $this->view->membername[0]['rev_village_id'];
         if ($revvillageid) {
             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
@@ -157,7 +152,6 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $revvillageid = $this->view->membername[0]['rev_village_id'];
         if ($revvillageid) {
             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
@@ -185,9 +179,9 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         if ($this->_request->getPost('submit')) {
                     $formdata=$this->_request->getPost();
 //             echo '<pre>'; print_r($formdata);
-            if($formdata['enteredacre']>=$formdata['availableacre']){ 
-            $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
-            } else { 
+         //   if($formdata['enteredacre']>=$formdata['availableacre']){ 
+         //   $this->view->errormsg="<p style='color:red;'>The Entered acres should be less than or equal to ".$formdata['availableacre']; 
+        //   } else { 
             $id=$this->_getParam('id');
             $crop = new Crop_Model_Crop ();
             $editCrop = $crop->getCropdetails($id);
@@ -227,7 +221,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
                 $this->view->adm->addRecord("ourbank_cropdetails",$crop);
             }
             $this->_redirect('/familycommonview/index/commonview/id/'.$id);
-            }
+         //   }
         } else {
             //set the contact details in the contact form...
             $sub_id=$this->_getParam('subId');

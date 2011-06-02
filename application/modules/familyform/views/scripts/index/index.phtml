@@ -26,15 +26,20 @@ background-color : silver;
 
 <div class="profile_tab"> 
 <!--search form action !-->
-			<form action="<?php echo $this->baseUrl();?>/familyform" method="POST">
-	<table id="hor-minimalist-b" >
+ <fieldset> 
+    <legend>Membership</legend>	
+		<form action="<?php echo $this->baseUrl();?>/familyform" method="POST">
+	<table class="fieldsets">
+<!--	<table id="hor-minimalist-b" >-->
 					<tr>
-						<td class="label">Member code:</td>
+						<td><label class="mand">Member code:</td>
 						<td ><? echo $this->form->membercode;?></td>
 					</tr>
 				</table>
 				<input type="submit" name="Search" id="Submit" value="Search">			
 			</form>	
+	</fieldset>  	
+		<!--</label>	-->
 		<br></br>
 		<br></br>
 </div>
@@ -291,4 +296,9 @@ onClick="window.open('<?php echo $this->baseUrl();?>/familyform/index/reportdisp
 
            <BR> <input type="submit" value="PDF" id="submit">
 </form>
-	<?php } ?></div>
+	<?php } ?>
+	
+	<b style="color:red"><?php echo $this->error;?></b>
+
+
+	</div>

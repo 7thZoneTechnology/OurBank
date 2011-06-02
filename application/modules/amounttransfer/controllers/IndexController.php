@@ -23,15 +23,24 @@ class Amounttransfer_IndexController extends Zend_Controller_Action {
                     $accountNumber= $this->_request->getParam('member_id');
                     $savings = new Amounttransfer_Model_Amounttransfer();
                     $this->view->savingDetails = $savings->searchpersnolsavings($accountNumber);
-                    foreach($this->view->savingDetails as $savingDetails) {
-                       $account_id  =  $savingDetails["account_id"];
-                       $product_id  =  $savingDetails["product_id"];
-						$this->view->account_id  =  $account_id;
-                        $this->view->product_id  =  $product_id;
+                    if ($this->view->savingDetails) 
+                    {
+                        foreach($this->view->savingDetails as $savingDetails) 
+                        {
+                        $account_id  =  $savingDetails["account_id"];
+                        $product_id  =  $savingDetails["product_id"];
+                                                    $this->view->account_id  =  $account_id;
+                            $this->view->product_id  =  $product_id;
+                        }
+                        $balance = $savings->balance($account_id); 
+                        foreach($balance as $balance) 
+                        {
+                            $this->view->balance  =  $balance["balance"];
+                        }
                     }
-                    $balance = $savings->balance($account_id); 
-                    foreach($balance as $balance) {
-                        $this->view->balance  =  $balance["balance"];
+                    else
+                    {
+                            $this->view->error = "Record Not found..Try Again...";
                     }
 
                 }
@@ -48,8 +57,7 @@ class Amounttransfer_IndexController extends Zend_Controller_Action {
   	 $balance = $this->_request->getParam('balance');
   	$product = $this->_request->getParam('product_id');
 
-if (($product <> 1) OR ($balance < $amount)) { echo "<font color='red'>It is not a savings account OR no enough balance</font>"; 
-} else {
+if (($product <> 1) OR ($balance < $amount)) { echo  "It is not a savings account OR no enough balance"; } else {
  														$formdata1=array('transaction_id'=>'',
                                                     'account_id'=>$account_id,
                                                     'glsubcode_id_from'=>0,

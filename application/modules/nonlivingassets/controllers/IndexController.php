@@ -49,10 +49,10 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
         $this->view->memberid = $this->_getParam('id');
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
         $revvillageid = $this->view->membername[0]['rev_village_id'];
-        if ($revvillageid) {
-            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
-        }
+// // //         if ($revvillageid) {
+// // //             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+// // //             $this->view->revvillagename=$revvillagename[0]['name']; 
+// // //         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }
@@ -110,10 +110,10 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
         $this->view->memberid = $this->_getParam('id');
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
         $revvillageid = $this->view->membername[0]['rev_village_id'];
-        if ($revvillageid) {
-            $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
-        }
+// // // //         if ($revvillageid) {
+// // // //             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+// // // //             $this->view->revvillagename=$revvillagename[0]['name']; 
+// // // //         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }

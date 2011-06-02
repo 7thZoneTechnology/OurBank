@@ -129,9 +129,7 @@ public function getdetails($tName,$id) {
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;
-
-
-case 'ourbank_master_districtlist':
+				case 'ourbank_master_districtlist':
 					{ 
 				$select = $this->select()
               ->setIntegrityCheck(false)

@@ -39,9 +39,8 @@ class App_Model_Users extends Zend_Db_Table
         $select = $this->select()
                        ->setIntegrityCheck(false)  
                        ->join(array('a' => 'ourbank_user'),array('id'))
-			->join(array('c'=>'ourbank_grant'),'a.grant_id=c.id')
+			->join(array('c'=>'ourbank_grant'),'a.grant_id=c.id',array('id as grantid','name as grantname'))
 			 ->where('a.id = ?',$userid);
-
         $result = $this->fetchAll($select);
         return $result->toArray();
     }

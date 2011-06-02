@@ -25,6 +25,10 @@ class Externalloan_IndexController extends Zend_Controller_Action
         $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->dbobj = new Externalloan_Model_Dec();
+        $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
     }
 
     public function indexAction() 
@@ -34,20 +38,26 @@ class Externalloan_IndexController extends Zend_Controller_Action
         $this->view->form = $declarationform;
         $this->view->membercode = $memcode = $this->_request->getParam('membercode');
         //submit action
-        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-                $formData = $this->_request->getPost();
-                if ($declarationform->isValid($formData)) {
-
-        $module=$this->view->dbobj->getmodule('Group'); //print_r($module);
-        $this->view->moduleid = $moduleid=$module[0]['module_id'];
-        $this->view->dbobj->groupDeatils($memcode,$moduleid);
-        $this->view->groupresult=$results =  $this->view->dbobj->groupDeatils($memcode,$moduleid);
-
-//         echo '<pre>'; print_r($this->view->groupresult);
-        $this->view->groupmember=$membername =  $this->view->dbobj->getmember($memcode);
-        $this->view->represent=$repname =  $this->view->dbobj->represent($memcode);
-        $this->view->loans=$loans =  $this->view->dbobj->getgrouploans($memcode);
+        if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
+        {
+            $formData = $this->_request->getPost();
+            if ($declarationform->isValid($formData)) 
+            {
+                $module=$this->view->dbobj->getmodule('Group'); //print_r($module);
+                $this->view->moduleid = $moduleid=$module[0]['module_id'];
+                $this->view->dbobj->groupDeatils($memcode,$moduleid);
+                $this->view->groupresult=$results =  $this->view->dbobj->groupDeatils($memcode,$moduleid);
+                if($results)
+                {
+                    $this->view->groupmember=$membername =  $this->view->dbobj->getmember($memcode);
+                    $this->view->represent=$repname =  $this->view->dbobj->represent($memcode);
+                    $this->view->loans=$loans =  $this->view->dbobj->getgrouploans($memcode);
                 }
+                else
+                {
+                    $this->view->error = "Record Not Found...";
+                }
+            }
 
         }
     }

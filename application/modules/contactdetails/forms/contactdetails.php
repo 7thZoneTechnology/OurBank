@@ -39,9 +39,15 @@ class Contactdetails_Form_contactdetails extends Zend_Form
         $vtype=array('Digits');
 	$formfield = new App_Form_Field ();
         $contactPerson = $formfield->field('Text','contact_person','','','mand','Contact person',true,'','','','','',1,0);
+        $contactPerson->setAttrib('maxlength',30);
         $telephone = $formfield->field('Text','telephone','','','mand','Telephone number',true,$vtype,'','','','',1,0);
+        $telephone->setAttrib('maxlength',12);
 	$mobile = $formfield->field('Text','mobile','','','mand','mobile',true,$vtype,1,15,'','',1,0);
+        $mobile->setAttrib('maxlength',10);
+
         $email = $formfield->field('Text','email','','','mand','Email',true,'','','','','',1,0);
+        $email->addValidator('EmailAddress');
+        $email->addErrorMessage('Enter valid email address');
         //hidden feilds
         $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,$id);
         $subId = $formfield->field('Hidden','submodule_id','','','','',false,'','','','','',0,$subId);

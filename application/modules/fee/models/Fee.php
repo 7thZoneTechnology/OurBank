@@ -28,13 +28,12 @@ class Fee_Model_Fee extends Zend_Db_Table
 	{
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_fee'),array('id'),array('a.description as feedescription','name as feename','value','category_id','glsubcode_id'))
+                ->join(array('a'=>'ourbank_fee'),array('id'),array('a.description as feedescription','name as feename','value','category_id','feetype_id'))
                 ->where('a.id=?',$id)
 				->join(array('b' => 'ourbank_category'),'a.category_id = b.id','name as categoryname')
 				->join(array('c' => 'ourbank_feetype'),'a.feetype_id = c.id','name as feetype')
 				->join(array('d' => 'ourbank_officehierarchy'),'a.hierarchy_id = d.id','type as officename')
-				->join(array('e' => 'ourbank_feeamounttypes'),'a.amountype_id = e.id','name as amounttype')
-				->join(array('f' => 'ourbank_glsubcode'),'a.glsubcode_id = f.id','glsubcode as glsubcode');
+				->join(array('e' => 'ourbank_feeamounttypes'),'a.amountype_id = e.id','name as amounttype');
 
 		// die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -44,13 +43,12 @@ class Fee_Model_Fee extends Zend_Db_Table
 	{
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_fee'),array('id'),array('a.description as description','name as name','value','category_id','hierarchy_id','amountype_id','glsubcode_id'))
+                ->join(array('a'=>'ourbank_fee'),array('id'),array('a.description as description','name as name','value','category_id','hierarchy_id','amountype_id','feetype_id'))
                 ->where('a.id=?',$id)
 				->join(array('b' => 'ourbank_category'),'a.category_id = b.id','name as type')
 				->join(array('c' => 'ourbank_feetype'),'a.feetype_id = c.id','name as feetype')
 				->join(array('d' => 'ourbank_officehierarchy'),'a.hierarchy_id = d.id','type as officename')
-				->join(array('e' => 'ourbank_feeamounttypes'),'a.amountype_id = e.id','name as amounttype')
-				->join(array('f' => 'ourbank_glsubcode'),'a.glsubcode_id= f.id','glsubcode as glsubcode');
+				->join(array('e' => 'ourbank_feeamounttypes'),'a.amountype_id = e.id','name as amounttype');
 
 		// die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -61,12 +59,11 @@ public function fetchfee($id)
 	{
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_fee'),array('id'),array('a.description as description','name as name','value','category_id','hierarchy_id','amountype_id','glsubcode_id'))
+                ->join(array('a'=>'ourbank_fee'),array('id'),array('a.description as description','name as name','value','category_id','hierarchy_id','amountype_id','feetype_id'))
                 ->where('a.id=?',$id)
 				->join(array('c' => 'ourbank_feetype'),'a.feetype_id = c.id','name as feetype')
 				->join(array('d' => 'ourbank_officehierarchy'),'a.hierarchy_id = d.id','type as officename')
-				->join(array('e' => 'ourbank_feeamounttypes'),'a.amountype_id = e.id','name as amounttype')
-				->join(array('f' => 'ourbank_glsubcode'),'a.glsubcode_id = f.id','glsubcode as glsubcode');
+				->join(array('e' => 'ourbank_feeamounttypes'),'a.amountype_id = e.id','name as amounttype');
 
 		// die($select->__toString($select));
         $result=$this->fetchAll($select);

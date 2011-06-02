@@ -26,10 +26,10 @@ class Agriculture_IndexController extends Zend_Controller_Action
     {
 //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('Agriculture');
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
+       $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
 //         }
@@ -123,7 +123,6 @@ class Agriculture_IndexController extends Zend_Controller_Action
         $this->view->title = $this->view->translate("Edit agriculture details");
                 //Base line data
         $agriculture = new Agriculture_Model_agriculture(); 
-
         $familycommon = new Familycommonview_Model_familycommonview(); 
         $this->view->memberid = $this->_getParam('id');
         $familycommon = new Familycommonview_Model_familycommonview(); 
@@ -164,11 +163,9 @@ class Agriculture_IndexController extends Zend_Controller_Action
             for ($j = 0 ; $j< count($editagri); $j++) {
                 $this->view->adm->addRecord("ourbank_agriculture_log",$editagri[$j]);
             }
-
             $family_model->deleteagri($id);
             $land_id=$this->_request->getParam('tenant');
             $acquistion=$this->_request->getParam('acquistion');
-
             $village_id=$this->_request->getParam('villagename');
             $ownername=$this->_request->getParam('ownername');
             $survey_no=$this->_request->getParam('survey');
@@ -181,7 +178,6 @@ class Agriculture_IndexController extends Zend_Controller_Action
                             'family_id'=>$member_id,
                             'landowner_name'=>$ownername[$i],
                             'acquistion_id'=>$acquistion[$i],
-
                             'land_id'=>$land_id[$i],
                             'villagename'=>$village_id[$i],
                             'survey_no' => $survey_no[$i],

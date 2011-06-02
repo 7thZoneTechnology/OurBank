@@ -26,6 +26,10 @@ class Grouplaw_IndexController extends Zend_Controller_Action
         $this->view->adm = new App_Model_Adm ();
         $this->view->datechange= new App_Model_dateConvertor();
         $this->view->loan = new Grouplaw_Model_grouplaw ();
+         $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
     }
 
     public function indexAction() 
@@ -35,17 +39,29 @@ class Grouplaw_IndexController extends Zend_Controller_Action
         $this->view->form = $declarationform;
 
         $dec = $this->view->adm->viewRecord("ourbank_declaration","id","DESC");
-        foreach($dec as $dec){
-                        $declarationform->age->addMultiOption($dec['id'],$dec['name']);
+        foreach($dec as $dec)
+        {
+            $declarationform->age->addMultiOption($dec['id'],$dec['name']);
         }
         //submit action
-        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-                $this->view->code = $groupcode = $this->_request->getParam('membercode');
-                $formData = $this->_request->getPost();
-                if ($declarationform->isValid($formData)) {
-                    $this->view->result = $this->view->loan->groupDeatils($groupcode);
-                    $this->view->groupmembers= $this->view->loan->getgroupmembers($groupcode);
+        if ($this->_request->isPost() && $this->_request->getPost('Submit'))
+        {
+            $this->view->code = $groupcode = $this->_request->getParam('membercode');
+            $formData = $this->_request->getPost();
+            if ($declarationform->isValid($formData))
+            {
+                $this->view->loan = new Grouplaw_Model_grouplaw ();
+                $group_name = $this->view->loan->groupDeatils($groupcode);
+                $this->view->groupmembers= $this->view->loan->getgroupmembers($groupcode);
+                if($group_name)
+                {
+                    $this->view->result = $group_name;
                 }
+                else
+                {
+                    $this->view->error = "Record Not Found ... ";
+                }
+            }
         }
     }
 	

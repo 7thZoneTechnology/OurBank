@@ -102,7 +102,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                         ->join(array('b'=>'ourbank_family'),'b.member_id=a.member_id && b.id=a.familymember_id',array('b.name'))
                         ->join(array('c'=>'ourbank_profession'),'c.id=a.profession',array('c.profession'));
        $result=$this->fetchAll($select);
-       return $result->toArray();
+       return $result-toArray();
     }
 
     public function getlivingassetsdetails($mebmerid)
@@ -117,7 +117,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
       return $result->toArray();
   }
 
-  public function getloandetails($familyid)
+   public function getloandetails($familyid)
   {
       $select=$this->select()
                       ->setIntegrityCheck(false)

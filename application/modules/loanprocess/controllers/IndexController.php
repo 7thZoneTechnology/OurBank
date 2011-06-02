@@ -8,8 +8,12 @@ class Loanprocess_IndexController extends Zend_Controller_Action
         $this->view->accounts = new Loanprocess_Model_Loanprocess();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $this->view->createdby = $sessionName->primaryuserid;
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+      //  $sessionName = new Zend_Session_Namespace('ourbank');
+       // $this->view->createdby = $sessionName->primaryuserid;
         $finduser = $this->view->accounts->finduser($this->view->createdby);
         if ($finduser) {
             $levelid=$finduser[0]['officetype_id'];

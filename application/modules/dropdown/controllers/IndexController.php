@@ -196,7 +196,6 @@ if($tName == 'ourbank_master_habitation') {
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
 
-
 }
 if($tName == 'ourbank_master_mastertables') {
  		$description=$this->_request->getParam('description');
@@ -207,7 +206,7 @@ if($tName == 'ourbank_master_mastertables') {
 									'name'=>$commonname);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
 $settings = new Dropdown_Model_Dropdown;
-		$table=$settings->Createtable($commonname);	
+		$table=$settings->Createtable($commonname);
 
  			$this->_redirect('/dropdown');
 

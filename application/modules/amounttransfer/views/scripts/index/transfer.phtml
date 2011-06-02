@@ -1,3 +1,20 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php if ($this->savingDetails) { ?>
+
 <div style="float:left;width:380px">
 <fieldset>
 <legend>Savings Details</legend>
@@ -10,8 +27,6 @@
 
                 </TR>
 
-               
-
                 <TR>
                     <TD>Account Number</TD>
                     <TD><?php echo $accno = $savingDetails['account_number'];?></TD>
@@ -23,12 +38,13 @@
 
                 </TR>
                 <TR>
-                    <TD><a href="<?php echo $this->baseUrl(); ?>/management/category">
+                    <TD><a href="<?php echo $this->baseUrl(); ?>/amounttransfer">
                                 <input name="submit" type="submit" class="officebutton" value="Back"></a></TD>
                     <TD></TD>
 
               </TR>
         <?php } ?>
+
         </TABLE>
 <input type="hidden" name="member_id" value="<?php echo $accno;?>">
     <TABLE id="hor-minimalist-b">
@@ -55,3 +71,27 @@
 </form>
 </div>
 </fieldset>
+
+<?php } else { ?>
+                <fieldset>
+                    <legend>Search</legend>
+                        <div class="cont-rgt-data">
+                            <form action="<?php echo $this->baseUrl();?>/amounttransfer/index/transfer/product_id/<?php echo $this->product_id ;?>" method="POST">
+                                <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                                    <tr>
+                                        <td>From Account Number</td>
+                                        <td><?php echo $this->form->member_id;?></td>
+                                    </tr>
+                                    <tr>
+                                        <TD colspan = "2"><?php echo $this->form->Search;?></TD>
+                                    </tr>
+                                    <tr><TD><?php echo "<font color='red' size='1'>".$this->error."</font>";?></TD></tr>
+                                </table>
+                            </form>
+                        </div>
+                </fieldset>
+<?php } ?>
+
+
+
+

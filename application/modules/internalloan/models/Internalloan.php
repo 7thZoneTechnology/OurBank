@@ -19,13 +19,12 @@
 */
 class Internalloan_Model_Internalloan extends Zend_Db_Table 
 {
-    protected $_name = 'ourbank_declaration';
+    protected $_name = 'ourbank_familymember';
     public function groupDeatils($code)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT
-                count(A.id) as groupNum,
                 A.id,
                 A.name,
                 A.familycode,
@@ -38,11 +37,10 @@ class Internalloan_Model_Internalloan extends Zend_Db_Table
 		ourbank_group C,
 		ourbank_office D
                 WHERE
-                C.groupcode = $code AND
+                C.groupcode = '$code' AND
                	C.id = B.group_id AND
 		B.member_id  = A.id AND
-		C.village_id = D.id
-                ";
+		C.village_id = D.id ";
         $result = $db->fetchAll($sql);
         return $result;
     }

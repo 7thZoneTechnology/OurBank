@@ -27,9 +27,9 @@ class Praservice_IndexController extends Zend_Controller_Action
 //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('(PRA Based) Service Requirement at family member level');
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();/*
+        $this->view->globalvalue = $globalsession->getSession();
         $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];*/
+        $this->view->username = $this->view->globalvalue[0]['username'];
 	$sessionName = new Zend_Session_Namespace('ourbank');
            $this->view->createdby = $sessionName->primaryuserid;
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
@@ -111,15 +111,17 @@ class Praservice_IndexController extends Zend_Controller_Action
             $addForm->$b->setValue($count_details['id']);
          }
 
+// Zend_Debug::dump($count_details);
+
         //set the value of Services details
 //          $this->view->praupdate=$pradetails = $pramodel->get_service($member_id);  
-        $i=1;
-        foreach($count_details as $count_details){ 
-        $f='source_id'.$i;
-
-        $addForm->$f->setValue($count_details['id']);
-        $i++;
-        }
+//         $i=1;
+//         foreach($count_details as $count_details){ 
+//         $f='source_id'.$i;
+// echo $f;
+//         $addForm->$f->setValue($count_details['id']);
+//         $i++;
+//         }
 
         $this->view->membername = $pramodel->getfamilymemberdetails($member_id); 
         foreach($this->view->membername as $members) {  }

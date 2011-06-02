@@ -130,11 +130,7 @@ public function viewAction()
 				$form->feetype_id->addMultiOption($glcode['id'],$glcode['name']);
 			}
 
-        $office_id1 = $appliesTo->getOffice();
-        foreach($office_id1 as $office_id) {
-                $form->glsubcode_id->addMultiOption($office_id['id'],
-                                                     $office_id['glsubcode']);
-        }
+      
 
 // 			$this->view->categorydetails=$appliesTo->getcategory();
 			$this->view->memberdetails=$appliesTo->getmembertypes();
@@ -151,7 +147,6 @@ public function viewAction()
                                     					'hierarchy_id'=>$formData['hierarchy_id'],
                                     					'feetype_id'=> $formData['feetype_id'],
                                     					'category_id'=>$formData['category_id'],
-                                    					'glsubcode_id'=>$formData['glsubcode_id'],
 
                                     					'amountype_id'=>$formData['amountype_id'],
                                     					'created_by'=>$this->view->createdby,
@@ -193,11 +188,7 @@ public function viewAction()
 			foreach($glcode as $glcode){
 				$form->feetype_id->addMultiOption($glcode['id'],$glcode['name']);
 			}
-  $office_id1 = $appliesTo->getOffice();
-        foreach($office_id1 as $office_id) {
-                $form->glsubcode_id->addMultiOption($office_id['id'],
-                                                     $office_id['glsubcode']);
-        }
+ 
 
 // 			$this->view->categorydetails=$appliesTo->getcategory();
 //			$this->view->memberdetails=$appliesTo->getmembertypes();
@@ -217,9 +208,7 @@ foreach($details as $fedetails) {
 							$this->view->form->name->setValue($fedetails['name']);
 								$this->view->form->description->setValue($fedetails['description']);
 								$this->view->form->hierarchy_id->setValue($fedetails['hierarchy_id']);
-								//$this->view->form->feetype_id->setValue($fedetails['feetype_id']);
-								$this->view->form->glsubcode_id->setValue($fedetails['glsubcode_id']);
-
+								$this->view->form->feetype_id->setValue($fedetails['feetype_id']);
 								$this->view->form->category_id->setValue($fedetails['category_id']);
 								$this->view->form->amountype_id->setValue($fedetails['amountype_id']);
 								$this->view->form->value->setValue($fedetails['value']);

@@ -36,6 +36,7 @@
             </div>
     </fieldset> 
 </div> 
+<?php if(!$this->paginator) { ?>
 	<table id="hor-minimalist-b">
 		<tr>
 			<th>Fee name </th>
@@ -60,4 +61,4 @@
                                             '/partials/my_pagination_control.phtml'); ?></div></td>
 		</tr>
 	</table>
-
+<?php } ?>

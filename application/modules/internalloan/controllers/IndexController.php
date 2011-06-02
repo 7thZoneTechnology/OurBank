@@ -25,6 +25,10 @@ class Internalloan_IndexController extends Zend_Controller_Action
         $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->loan = new Internalloan_Model_Internalloan ();
+        $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
     }
 
     public function indexAction() 
@@ -37,14 +41,27 @@ class Internalloan_IndexController extends Zend_Controller_Action
         foreach($dec as $dec){
                         $declarationform->age->addMultiOption($dec['id'],$dec['name']);
         }
-        //submit action
-        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-                $this->view->membercode = $memcode = $this->_request->getParam('membercode');
-                $formData = $this->_request->getPost();
-                if ($declarationform->isValid($formData)) {
-                    $this->view->result = $this->view->loan->groupDeatils($memcode);
 
+         //submit action
+        if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
+        {
+            $this->view->membercode = $memcode = $this->_request->getParam('membercode');
+            $formData = $this->_request->getPost();
+            if ($declarationform->isValid($formData)) 
+            {
+                $id = $this->_getParam('membercode');
+                $this->view->groupid=$id;
+                $groupcommon=new Internalloan_Model_Internalloan();
+                $group_name=$groupcommon->groupDeatils($id);
+                 if($group_name)
+                {
+                    $this->view->result = $group_name;
                 }
+                else
+                {
+                    $this->view->error = "Record Not Found ... ";
+                }
+            }
         }
     }
  	

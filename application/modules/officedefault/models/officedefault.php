@@ -189,7 +189,7 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
                   ->setIntegrityCheck(false)  
                   ->join(array('a' => 'ourbank_master_gillapanchayath'),array('a.id'))
                   ->where('a.hobli_id = ?',$panchayath);
-         //die($select->__toString($select));
+       //  die($select->__toString($select));
           $result = $this->fetchAll($select);
           return $result->toArray();
         }

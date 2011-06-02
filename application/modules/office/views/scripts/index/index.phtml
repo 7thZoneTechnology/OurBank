@@ -26,6 +26,7 @@
             </div>
     </fieldset> 
 </div> 
+        <?php if (count($this->paginator) > 0): ?>
 <p align="right"><a href="<?php echo $this->baseUrl()?>/officedefault/index/treestructure">Office tree structure</a></p>
 <table id="hor-minimalist-b">
     <tr>
@@ -34,7 +35,7 @@
         <th><?php echo $this->translate('Office Type'); ?></th>
 <!--        <th>City</th>-->
            </tr>
-        <?php if (count($this->paginator)): ?>
+
         <?php foreach ($this->paginator as $office): ?>
     <tr>
     <td><a href="<?php echo $this->baseUrl()."/officecommonview/index/commonview/id/".$office['id']; ?>"><?php echo $this->escape($office['name']);?></a></td>

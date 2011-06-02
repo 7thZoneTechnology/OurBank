@@ -51,7 +51,7 @@ function caltotalacre(bal) {
 
 $(document).ready(
   function() {
- $('#pluginForm').validate();
+ $('#valueForm').validate();
         $(".numeric1").keyup(
     function(){
         currentObject=$(this).attr('name')
@@ -249,7 +249,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 </div>
 <br/>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">      
-    <form name="form1" id = "pluginForm" action="<?php echo $this->baseUrl();?>/crop/index/addcrop/id/<?php echo $this->id; ?>/subId/<?php echo $this->subId; ?>/modId/<?php echo $this->modId; ?>" method="POST">
+    <form name="form1" id = "valueForm" action="<?php echo $this->baseUrl();?>/crop/index/addcrop/id/<?php echo $this->id; ?>/subId/<?php echo $this->subId; ?>/modId/<?php echo $this->modId; ?>" method="POST">
         <table id="hor-minimalist-b" class = 'crop'>
             <tr> 
                 <th ><?php echo $this->translate("Land holding"); ?></th>

@@ -134,11 +134,11 @@ class Health_IndexController extends Zend_Controller_Action
             }
 
         }
-//                 if($flag == true){
+                if($flag == true){
                                 $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
-//                             } else {
-//                                 $this->view->error = "Click back if you have not add any health details";
-//                                 }
+                            } else {
+                                $this->view->error = "Click back if you have not add any health details";
+                                }
         }
     }
 

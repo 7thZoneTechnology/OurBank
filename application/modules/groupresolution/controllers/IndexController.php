@@ -35,41 +35,48 @@ class Groupresolution_IndexController extends Zend_Controller_Action
 
 	public function indexAction() 
 	{
-		$familyForm = new Familyform_Form_Familyform();
-		$this->view->form = $familyForm;
-		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-		 $formData = $this->_request->getPost();
-                if ($familyForm->isValid($formData)) {
-		$id = $this->_getParam('membercode');
-        $this->view->groupid=$id;
-        // create instance for groupcommon model page
-        $groupcommon=new Groupresolution_Model_Groupresolution();
-        $group_name=$groupcommon->getgroup($id); // get group details
-        $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
+        $familyForm = new Familyform_Form_Familyform();
+        $this->view->form = $familyForm;
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+            $formData = $this->_request->getPost();
+        if ($familyForm->isValid($formData)) {
 
+            $id = $this->_getParam('membercode');
+            $this->view->groupid=$id;
+//             // create instance for groupcommon model page
+            $groupcommon=new Groupresolution_Model_Groupresolution();
+            $group_name=$groupcommon->getgroup($id); // get group details
 
-        $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
-        foreach($group_location as $location){
-                $this->view->latitude = $location['latitude'];
-                $this->view->longitude = $location['longitude'];
-        }
-        $this->view->groupname=$group_name;
-        $this->view->getgroupaccount=$getgroupaccount;
+// // //            Zend_Debug::dump($group_name);
+            if($group_name) {
+ $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
+            $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
+                foreach($group_location as $location){
+                        $this->view->latitude = $location['latitude'];
+                        $this->view->longitude = $location['longitude'];
+                }
 
-        $group_members=$groupcommon->getgroupmembers($id); // get group members
-        $this->view->groupmembers=$group_members;
-        $dbobj= new Groupmdefault_Model_groupdefault();
-        $groupheaddetails = $dbobj->Getgrouphead($id); //Get group head
-            foreach($groupheaddetails as $grouphead){
-                    $this->view->grouphead = $grouphead['head'];
-            }
-        $this->view->address = $this->view->adm->getmodule("ourbank_address",$id,"Group");// get address for particular group
-        $module=$groupcommon->getmodule('Group');
-        foreach($module as $module_id){ }
-        $this->view->mod_id=$module_id['parent'];
-        $this->view->sub_id=$module_id['module_id'];
+            $this->view->groupname=$group_name;
+            $this->view->getgroupaccount=$getgroupaccount;
+    
+            $group_members=$groupcommon->getgroupmembers($id); // get group members
+            $this->view->groupmembers=$group_members;
+            $dbobj= new Groupmdefault_Model_Groupdefault();
+            $groupheaddetails = $dbobj->Getgrouphead($id); //Get group head
+                foreach($groupheaddetails as $grouphead){
+                        $this->view->grouphead = $grouphead['head'];
+                }
+            $this->view->address = $this->view->adm->getmodule("ourbank_address",$id,"Group");// get address for particular group
+            $module=$groupcommon->getmodule('Group');
+            foreach($module as $module_id){ }
+            $this->view->mod_id=$module_id['parent'];
+            $this->view->sub_id=$module_id['module_id'];
+	} else {
 
-	} }
+$this->view->error = "Enter valid code";
+}
+     }
+    }
 // 		} else {
 //             $this->_redirect('index/error');
 // 		}

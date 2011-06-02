@@ -11,7 +11,7 @@ class Externalloan_Form_Account extends Zend_Form
         $period= $formfield->field('Text','period','','','mand','',false,'','','','','',0,0);
         $membercode = $formfield->field('Text','membercode','','','mand','',true,'','','','','',0,0);
 		$membercode->addValidator('digits')
-		 ->addErrorMessage('Numeric data only allowed');
+		 ->addErrorMessage('Enter Numeric data');
         $submit = $formfield->field('Submit','Submit','','','','',false,'','','','','',1,0);
         $this->addElements(array($name,$address,$period,$membercode,$submit));
     }

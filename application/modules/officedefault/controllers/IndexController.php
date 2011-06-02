@@ -209,7 +209,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         }
     }
-        
+
         public function gettalukAction()
         {
         $this->_helper->layout()->disableLayout();
@@ -344,7 +344,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
         }
 
-        $panchayath = $office->getpanchayathlist($address[0]['taluk_id']);
+        $panchayath = $office->getpanchayathlist($address[0]['hobli_id']);
         foreach($panchayath as $panchayath1){
         $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
         }

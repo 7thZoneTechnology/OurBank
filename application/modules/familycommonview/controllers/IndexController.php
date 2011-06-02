@@ -26,9 +26,13 @@ class Familycommonview_IndexController extends Zend_Controller_Action
     public function init() 
     {
   	$this->view->pageTitle='Family Information';
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-	$this->view->createdby = $this->view->globalvalue[0]['id'];
+		$globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+//        $globalsession = new App_Model_Users();
+//        $this->view->globalvalue = $globalsession->getSession();
+//	$this->view->createdby = $this->view->globalvalue[0]['id'];
 // 	$this->view->username = $this->view->globalvalue[0]['username'];
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
@@ -72,7 +76,7 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         $this->view->family =$familycommon->getfamilydetails($id);
 // //        $this->view->getentitlement=$familycommon->getentitlement();
         $this->view->crop=$familycommon->getcrop($id);
-      $this->view->loandetails=$familycommon->getloandetails($id);
+        $this->view->loandetails=$familycommon->getloandetails($id);
         $this->view->savingsdetails=$familycommon->getsavingsdetails($id);
         $this->view->gethabithealth=$familycommon->gethabithealth($id);
         $this->view->gethabitchallenge=$familycommon->gethabitphychallenge($id);

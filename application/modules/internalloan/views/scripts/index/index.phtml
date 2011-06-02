@@ -11,8 +11,8 @@
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <input type="Submit" name="Submit" value="Search">
-
+                                <input type="Submit" name="Submit" value="Search"><br><br>
+                                <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
                             </div>
                         </div>
 	 </form>
@@ -75,8 +75,6 @@ foreach ($this->result as $result) {
     </div>
 </fieldset>
 <?php } } ?>
-
-
 
 
 
