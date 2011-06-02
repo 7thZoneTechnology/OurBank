@@ -43,6 +43,7 @@
         }
  });
 </SCRIPT> 
+<?if($this->details) { ?>
 <?php if (count($this->active) == 1 ){ ?> 
     <table id="hor-minimalist-b">
     	<TR>
@@ -241,4 +242,7 @@
         </form>
     </fieldset>
 </div>
-<?php //} ?>
+<?php //}
+} else {
+         echo "<font color='red'>Invalid account number</font>";
+    } ?>

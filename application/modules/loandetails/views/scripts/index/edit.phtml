@@ -126,7 +126,7 @@
                 </td>
 
                 <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="12" size="15" value="<?php echo $loandetails['loanamount']; ?>"></td>
-                <td><INPUT type="text" name = "interest[]" class="numeric disableid" max="99" size="5" value="<?php echo $loandetails['interest']; ?>"  id="disable-<?php echo $i; ?>"></td>
+                <td><?php if($loandetails["source_id"]!=2) { ?><INPUT type="text" name = "interest[]" class="numeric disableid" max="99" size="5" value="<?php echo $loandetails['interest']; ?>"  id="disable-<?php echo $i; ?>"><?php } ?></td>
                 <td><INPUT type="text" name = "outstanding[]" maxlength="12" size="15" value="<?php echo $loandetails['outstanding_amount']; ?>"></td>
                 <td>
                 <select name = "purpose[]" class="selectvalid">
@@ -141,8 +141,9 @@
                     <?php }} ?>
                 </select>
                 </td>
-                <td><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="12" size="15" value="<?php echo $loandetails['deposit']; ?>" id="amtdisable-<?php echo $i; ?>">
+                <td><?php if($loandetails["source_id"]!=6) { ?><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="12" size="15" value="<?php echo $loandetails['deposit']; ?>" id="amtdisable-<?php echo $i; ?>">
                 <INPUT type="hidden" name = "recordid[]" value="<?php echo $loandetails['id']?>">
+                <?php } ?>
                 </td>
 
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif"       border=0 width='16' height='16'></td>

@@ -33,13 +33,19 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
     {
         $loansearch = new Loandetailsg_Form_Search();
         $this->view->form = $loansearch;
+        $errormsg=$this->_request->getParam('msg');
+        if($errormsg==1)
+        {
+            echo "<font color='red'>Invalid account number</font>"; 
+        }
     }
 
     public function loandetailsAction() 
     {
         $accNum = $this->_request->getParam('accNum');
         $this->view->details = $this->view->loanModel->searchaccounts($accNum);
-        foreach ($this->view->details as $acc) {
+        if($this->view->details!=""){
+            foreach ($this->view->details as $acc) {
             $accId = $acc->accId;
             $loanAmt = $acc->amount;
             $interest = $acc->interest;
@@ -58,7 +64,9 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
 
         $instalments = $this->view->loanModel->loanInstalments($accNum);
         $disbursed = $this->view->loanModel->getdisbursementdetails($accNum);
+        if($disbursed){
         $disburseddate=$disbursed[0]['loandisbursement_date'];
+        }
         //$this->view->active = $this->view->loanModel->activeDisburs($accNum);
         if (count($this->view->details)) 
         {
@@ -166,7 +174,11 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                 }
             }
         }
+        else {
+                $this->_redirect("/loanrepaymentg/index/index/msg/1");
+        }
     } 
+    }
     public function messageAction() 
     {
         $this->view->amt = base64_decode($this->_request->getParam('amt'));

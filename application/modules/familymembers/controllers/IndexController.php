@@ -136,7 +136,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $countname = count($mem_name);
 
                     $editfamily = $this->view->adm->editRecord("ourbank_family",$family_id);
-                    $villageid=$editfamily[0]['village_id'];
+                    $villageid=$editfamily[0]['rev_village_id'];
 
             $j=0; $k=0; $l=0;
             for($i = 0; $i< $countname; $i++) 
@@ -250,7 +250,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $recordarray[]=$familyarray['id'];
         }
         $editfamily = $this->view->adm->editRecord("ourbank_family",$this->view->id);
-        $villageid=$editfamily[0]['village_id'];
+        $villageid=$editfamily[0]['rev_village_id'];
 
         $this->view->currentdate= date("d/m/Y");
 

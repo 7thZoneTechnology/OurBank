@@ -24,5 +24,5 @@ class Loandetailsg_IndexController extends Zend_Controller_Action
 	$this->view->instalments = $this->view->loanModel->loanInstalments($this->_request->getParam('accNum'));
 	$this->view->paid = $this->view->loanModel->paid($this->_request->getParam('accNum'));
 	$this->view->unpaid = $this->view->loanModel->unpaid($this->_request->getParam('accNum'));
+        }
     }
-}
