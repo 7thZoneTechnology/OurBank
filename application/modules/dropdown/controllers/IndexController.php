@@ -360,6 +360,12 @@ public function editAction()
 						$this->view->form->bank->setValue($holidaydetails['accounttype_id']);
 															}
 										}break;
+					case 'ourbank_master_mastertables': {
+					foreach($namedetails as $holidaydetails) {
+						$this->view->form->commonname->setValue($holidaydetails['habit']);
+						$this->view->form->description->setValue($holidaydetails['descriptions']);
+															}
+										}break;
 									}
 					foreach($namedetails as $holidaydetails) {
 						$this->view->form->commonname->setValue($holidaydetails['habit']); }
