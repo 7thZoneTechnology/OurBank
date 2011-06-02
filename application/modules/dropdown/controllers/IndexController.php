@@ -173,7 +173,7 @@ if($tName == 'ourbank_master_taluklist') {
 }
 
 if($tName == 'ourbank_master_branch') {
- 		$bank=$this->_request->getParam('bank');
+ 		$id=$this->_request->getParam('bank');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
