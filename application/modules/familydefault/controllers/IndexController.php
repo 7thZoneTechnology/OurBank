@@ -27,34 +27,31 @@ class Familydefault_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle=$this->view->translate('Family Information');
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
 
-
-                $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-//        $globalsession = new App_Model_Users();
-//        $this->view->globalvalue = $globalsession->getSession();
-//                 $this->view->username = $this->view->globalvalue[0]['username'];
-// 
-//        $sessionName = new Zend_Session_Namespace('ourbank');
-// 		$this->view->createdby = $sessionName->primaryuserid;
-
-		$model = new Familydefault_Model_familydefault();
-		$officetype=$model->getofficehierarchy();
-		$lastlevelid=$officetype[0]['hierarchyid'];
-		$finduser = $model->finduser($this->view->createdby,$officetype);
+        $model = new Familydefault_Model_familydefault();
+        $officetype=$model->getofficehierarchy();
+        $lastlevelid=$officetype[0]['hierarchyid'];
+        $finduser = $model->finduser($this->view->createdby,$officetype);
         if ($finduser) {
             $this->view->officeid=$finduser[0]['officeid'];
         }
-		else
-		{
-			echo $this->view->officeid="";
-		}
+        else
+        {
+                echo $this->view->officeid="";
+        }
 
         $this->view->adm = new App_Model_Adm();
         $this->view->commonmodel=$individualcommon=new Familycommonview_Model_familycommonview();
-//get the module id and submodule id
+    //get the module id and submodule id
         $module=$individualcommon->getmodule('Family');
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
