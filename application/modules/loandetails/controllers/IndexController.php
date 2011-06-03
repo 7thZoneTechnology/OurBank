@@ -23,10 +23,12 @@ class Loandetails_IndexController extends Zend_Controller_Action
     {
         //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('Family loan details');
-		$globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();/*
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];*/
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $this->view->createdby = $sessionName->primaryuserid;
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
 //         }
@@ -49,41 +51,51 @@ class Loandetails_IndexController extends Zend_Controller_Action
         //count number of family members
         $family_model=new Loandetails_Model_loandetails();
         $this->view->loanDetails=$count_loan = $family_model->edit_loantypes();
+        $this->view->number=$number=count($count_loan);
         //load form with respective to number of family member
-        $addForm = new Loandetails_Form_loandetails();
+        $addForm = new Loandetails_Form_loandetails($number);
         $this->view->form=$addForm;
         //set the value of member name and sex
-        $this->view->familymember = $this->view->adm->getRecord("ourbank_familymember","family_id",$this->view->memberid);
-
-        $this->view->purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","DESC");
-       
+        foreach($count_loan as $count_loan1)
+        {
+            $b='source_id'.$count_loan1['id'];
+            $addForm->$b->setValue($count_loan1['id']);
+         
+         }
+        $intType = $this->view->adm->getRecord("ourbank_familymember","family_id",$this->view->memberid);
+        for($j=1;$j<=$number;$j++)
+        {   $int = "memberId".$j;
+            foreach($intType as $intType1){ 
+            $addForm->$int->addMultiOption($intType1['id'],$intType1['name']);
+            }
+        }
+        $purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","DESC");
+        for($i=1;$i<=$number;$i++)
+        {   $health_id = "purpose".$i;
+            foreach($purpose as $purpose1){ 
+            $addForm->$health_id->addMultiOption($purpose1['id'],$purpose1['name']);
+            }
+        }
         //insert the family health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
         {
             $formData = $this->_request->getPost();
             if($addForm->isValid($formData)){
 
-                    $source=$this->_getParam('source');
-                    $member=$this->_getParam('member');
-                    $loan=$this->_getParam('loan');
-                    $interest=$this->_getParam('interest');
-                    $outstanding=$this->_getParam('outstanding');
-                    $purpose=$this->_getParam('purpose');
-                    $deposit=$this->_getParam('savingamount');
-                    $count=count($source);
-
-            for($i = 0; $i< $count; $i++) 
-            {
-                $loandetails = array('source_id' => $source[$i],
-                                    'member_id' => $member[$i],
-                                    'loanamount' => $loan[$i],
-                                    'interest'=>$interest[$i],
-                                    'outstanding_amount' => $outstanding[$i],
-                                    'purpose_id' => $purpose[$i],
-                                    'deposit' => $deposit[$i],
-                                   );
-               $lastid=$this->view->adm->addRecord("ourbank_loandetails",$loandetails);
-
+            for($i=1;$i<=$number;$i++)
+            {	
+                if ($this->_request->getParam('loanamount'.$i)) {
+                    $this->view->adm->addRecord("ourbank_loandetails",array('id' => '',
+                                                'family_id' => $this->_request->getParam('id'),
+					        'member_id'=>$this->_request->getParam('memberId'.$i),
+						'source_id'=>$this->_request->getParam('source_id'.$i),
+						'interest'=>$this->_request->getParam('interest'.$i),
+						'loanamount' => $this->_request->getParam('loanamount'.$i),
+						'purpose_id'=>$this->_request->getParam('purpose'.$i),
+						'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
+						'deposit' => $this->_request->getParam('deposit'.$i),
+						'created_by'=>$this->view->createdby)); 
+		}
             }
              $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
              }
@@ -99,73 +111,89 @@ class Loandetails_IndexController extends Zend_Controller_Action
         $this->view->insurance=$this->view->familycommon->getinsurance($member_id);
         //count number of family members
         $family_model=new Loandetails_Model_loandetails();
-        $this->view->loanDetails=$count_loan = $family_model->edit_loantypes();
-
+        $this->view->loan_details=$count_loan = $family_model->edit_loantypes();
+        $this->view->number=$number=count($count_loan);
         //load form with respective to number of family member
-        $addForm = new Loandetails_Form_loandetails();
+        $addForm = new Loandetails_Form_loandetails($number);
         $this->view->form=$addForm;
         //set the value of member name and sex
-        $this->view->familymember = $this->view->adm->getRecord("ourbank_familymember","family_id",$this->view->memberid);
-
-        $this->view->purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","DESC");
+        foreach($count_loan as $count_loan1)
+        {
+            $b='source_id'.$count_loan1['id'];
+            $addForm->$b->setValue($count_loan1['id']);
+        }
+        $intType = $this->view->adm->getRecord("ourbank_familymember","family_id",$this->view->memberid);
+        for($j=1;$j<=$number;$j++)
+        {   $int = "memberId".$j;
+            foreach($intType as $intType1){ 
+            $addForm->$int->addMultiOption($intType1['id'],$intType1['name']);
+            }
+        }
+	$purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","DESC");
+        for($i=1;$i<=$number;$i++)
+        {   $health_id = "purpose".$i;
+            foreach($purpose as $purpose1){ 
+            $addForm->$health_id->addMultiOption($purpose1['id'],$purpose1['name']);
+            }
+        }
         
         //set the value of health problem and other drop down box...
-        $this->view->loandetails=$loandetails = $family_model->get_loandetails(); 
+        $this->view->loandetails=$loandetails = $family_model->get_loandetails($member_id); 
+        $i=1;
+        foreach ($loandetails as $loandetails1) { 
+            $c='loanamount'.$loandetails1['source_id'];
+            $j = 'interest'.$loandetails1['source_id'];
+            $d='purpose'.$loandetails1['source_id'];
+            $g='outstanding'.$loandetails1['source_id'];
+            $h='record_id'.$loandetails1['source_id'];
+            $k='deposit'.$loandetails1['source_id'];
+            $addForm->$c->setValue($loandetails1['loanamount']);
+            $addForm->$j->setValue($loandetails1['interest']);
+            $addForm->$d->setValue($loandetails1['purpose_id']);
+            $addForm->$g->setValue($loandetails1['outstanding_amount']);
+            $addForm->$h->setValue($loandetails1['id']);
+            $addForm->$k->setValue($loandetails1['deposit']);
 
-        foreach($loandetails as $loandetails1){
-        $recordarray[]=$loandetails1['id'];
+            $i++;
         }
-
         //update the family health details...
         if ($this->_request->isPost() && $this->_request->getPost('update')) 
         {
             $formData = $this->_request->getPost();  
             //update the family health is already exiting...
             if($addForm->isValid($formData)){
-                    $source=$this->_getParam('source');
-                    $member=$this->_getParam('member');
-                    $loan=$this->_getParam('loan');
-                    $interest=$this->_getParam('interest');
-                    $outstanding=$this->_getParam('outstanding');
-                    $purpose=$this->_getParam('purpose');
-                    $deposit=$this->_getParam('savingamount');
-                    $recordid=$this->_getParam('recordid');
-                    $count=count($source);
 
-            for($i = 0; $i< $count; $i++) 
+            for($i=1;$i<=$number;$i++)
             {
-             if($recordid[$i]!="") {
-                $loandetails = array('source_id' => $source[$i],
-                                    'member_id' => $member[$i],
-                                    'loanamount' => $loan[$i],
-                                    'interest'=>$interest[$i],
-                                    'outstanding_amount' => $outstanding[$i],
-                                    'purpose_id' => $purpose[$i],
-                                    'deposit' => $deposit[$i],
-                                   );
-               $family_model->update($recordid[$i],$loandetails);
-            }
-// check the i value with Exist members value to add new members 
-            else
+                $loan_id=$this->_request->getParam('record_id'.$i);
+                if ($this->_request->getParam('record_id'.$i)) {
+                    $family_model->update($loan_id,array(
+                                           'family_id'=>$member_id,
+       					        'member_id'=>$this->_request->getParam('memberId'.$i),
+						'source_id'=>$this->_request->getParam('source_id'.$i),
+						'interest'=>$this->_request->getParam('interest'.$i),
+						'loanamount' => $this->_request->getParam('loanamount'.$i),
+						'purpose_id'=>$this->_request->getParam('purpose'.$i),
+						'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
+						'deposit' => $this->_request->getParam('deposit'.$i),
+						'created_by'=>$this->view->createdby));  
+                }
+	    }
+	    for($i=1; $i<=$number; $i++)
             {
-                $loandetails = array('source_id' => $source[$i],
-                                    'member_id' => $member[$i],
-                                    'loanamount' => $loan[$i],
-                                    'interest'=>$interest[$i],
-                                    'outstanding_amount' => $outstanding[$i],
-                                    'purpose_id' => $purpose[$i],
-                                    'deposit' => $deposit[$i],
-                                   );
-               $lastid=$this->view->adm->addRecord("ourbank_loandetails",$loandetails);
-            }
-            }
-            $deletearray=array_diff($recordarray,$recordid);
-            foreach($deletearray as $deltearr){
-            $family_model->deleteFamily($deltearr);
-            }
-            }
-
+                if (!$this->_request->getParam('record_id'.$i) && $this->_request->getParam('loanamount'.$i)) {
+		       $this->view->adm->addRecord("ourbank_loandetails",array('id' => '',
+					        'family_id'=>$member_id,
+						'source_id'=>$this->_request->getParam('source_id'.$i),
+						'interest_id'=>$this->_request->getParam('interest'.$i),
+						'loanamount' => $this->_request->getParam('loanamount'.$i),
+						'purpose_id'=>$this->_request->getParam('purpose'.$i),
+						'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
+						'deposit' => $this->_request->getParam('deposit'.$i),
+						'created_by'=>$this->view->createdby));  
+		}
+	   }
            $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
-	} 
+	} }
     }
 }

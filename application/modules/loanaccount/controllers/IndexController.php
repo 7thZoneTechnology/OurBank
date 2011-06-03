@@ -5,13 +5,20 @@ class Loanaccount_IndexController extends Zend_Controller_Action
     {
         $this->view->pageTitle = 'Loans';
         $this->view->title = 'Accounting';
-	$globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
         $this->view->accounts = new Loanaccount_Model_Accounts();
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
+        
+         $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+ 
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data){
+                 $this->_redirect('index/login');
+                 }
     }
 
     public function indexAction() 
@@ -45,12 +52,11 @@ class Loanaccount_IndexController extends Zend_Controller_Action
         $this->view->interestRates = $this->view->accounts->getInterestRates($productId);
         foreach ($this->view->account as $account) {
             $minDeposite = $account->minamount; // Validate for min balance
-            $maxDeposite = $account->maxamount;
             $minInstallments = $account->minInstallments; 
             $maxInstallments = $account->maxInstallments; 
         }
         $app = $this->view->baseUrl();
-        $loanForm = new Loanaccount_Form_Loans($minDeposite,$maxDeposite,$this->_request->getParam('Id'),$this->_request->getParam('code'),$app);
+        $loanForm = new Loanaccount_Form_Loans($minDeposite,$this->_request->getParam('Id'),$this->_request->getParam('code'),$app);
         for($i=$minInstallments;$i<=$maxInstallments;$i++)  {
 		$loanForm->installments->addMultiOption($i,$i);
 	}
@@ -75,20 +81,22 @@ class Loanaccount_IndexController extends Zend_Controller_Action
         $this->view->loanForm = $loanForm;
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 	    $formData = $this->_request->getPost();
- 		if ($loanForm->isValid($formData)) {
+	    if ($this->_request->isPost()) {
+ 		$formData = $this->_request->getPost();
+ 		//if ($loanForm->isValid($formData)) {
 		    foreach ($this->view->account as $account) {
 		        $begindate = $account->begindate;
 		        $closedate = $account->closedate;
 		        $officeid = $account->officeid;
 		        $typeID = $account->typeID;
-		        $glsubID = $account->glsubID;
-			$memberId = $account->memberId;
+		        $glsubID = $account->glsubID; 
+			$memberId = $account->memberId;	
 		    }
 		    if ($this->view->cl->phpmysqlformat($this->_request->getPost('date')) < $begindate) {
 		          $this->view->maxdate= "Date of account should be after - ".$this->view->cl->phpnormalformat($begindate) ;
 		    } else if ($this->view->cl->phpmysqlformat($this->_request->getPost('date')) > $closedate) {
 		          $this->view->maxdate= "Date of account should be before - ".$this->view->cl->phpnormalformat($closedate) ;
-// 
+
 		    }
 		      else {
 		        // Insertion into ourbank_account 
@@ -132,16 +140,11 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                               'fee_id' => $fee);
                             $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
                         }
-                        $memberlist=$this->view->accounts->getmemberlist($memberId,$typeID);
-                        if($memberlist){
-                        foreach($memberlist as $memberid) 
-                        {
-                        $this->view->accounts->Updatestatus($memberid['memberid'],$typeID);
-                        }
-                        }
+                        $this->view->accounts->Updatestatus($memberId);
 		        $this->_redirect("/loanaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
 		    }
-		}
+		//}
+	    }
         }
     }
     

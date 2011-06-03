@@ -32,33 +32,66 @@ class Savingsdeposit_IndexController extends Zend_Controller_Action
         $this->view->adm = new App_Model_Adm ();
         $this->view->dc = new App_Model_dateConvertor();
         $this->view->savingswithdraw = new Savingswithdrawal_Model_Withdrawal ();
- $globalsession = new App_Model_Users();
+
+                $globalsession = new App_Model_Users();
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data)
+                {
+                    $this->_redirect('index/login');
+                }
 
     }
-    public function indexAction() 
+
+ public function indexAction() 
     {
 	$this->view->form = $searchform = new Savingsdeposit_Form_Search();
         $fixedSavings = new Fixedtransaction_Model_fixedSavings();
+$dbobj = new Savingsdeposit_Model_Savingsdeposit();
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formdata = $this->_request->getPost();
             $acc = $this->_request->getPost('accNum');
                 if($searchform->isValid($formdata)){
-                    $validaccno = $fixedSavings->savingsAccountsSearch($acc);
-                    $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
-                                if($tagAcc!=0){
-                                            $this->view->error = "Enter valid Account number";
-                                }else {
+                    $validaccno = $dbobj->savingsAccountsSearch($acc);
+//                     $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
+//                                 if($tagAcc!=0){
+//                                             $this->view->error = "Enter valid Account number";
+//                                 }else {
                                     if ($validaccno){
                                         $this->_redirect("/savingsdeposit/index/deposit/accNum/".base64_encode($acc));
                                     }else{
-                                            $this->view->error = "Account number does not exist";
+                                            $this->view->error = "Enter valid saving account number";
                                     }
-                                }
+//                                 }
                 }   
         }
     }
+//     public function indexAction() 
+//     {
+// 	$this->view->form = $searchform = new Savingsdeposit_Form_Search();
+//         $fixedSavings = new Fixedtransaction_Model_fixedSavings();
+//         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+//             $formdata = $this->_request->getPost();
+//             $acc = $this->_request->getPost('accNum');
+//                 if($searchform->isValid($formdata)){
+//                     $validaccno = $fixedSavings->savingsAccountsSearch($acc);
+//                     $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
+//                                 if($tagAcc!=0){
+//                                             $this->view->error = "Enter valid Account number";
+//                                 }else {
+//                                     if ($validaccno){
+//                                         $this->_redirect("/savingsdeposit/index/deposit/accNum/".base64_encode($acc));
+//                                     }else{
+//                                             $this->view->error = "Account number does not exist";
+//                                     }
+//                                 }
+//                 }   
+//         }
+//     }
     public function depositAction()
     {
 	$accNum = $this->view->accNum = base64_decode($this->_request->getParam('accNum'));

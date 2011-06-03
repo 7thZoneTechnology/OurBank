@@ -16,8 +16,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
-   <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+<table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
         <th></th>
@@ -30,106 +29,90 @@
     <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
-        <td ><?php echo $family_view['ration']; ?></td> </tr>
+        <td ><?php echo $this->translate("Caste:"); ?></td>
+        <td ><?php echo $family_view['subcaste']; ?></td>    </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
+        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $family_view['ration']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $family_view['street']; ?></td>
         <td ><?php echo $this->translate("Health Insurance:"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
-        <td ><?php echo $family_view['street']; ?></td>
+        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $family_view['villagename']; ?></td>
         <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
-    </tr>
+
     <tr>
         <td ><?php echo $this->translate("Rev Village:"); ?></td>
-        <td ><?php echo $family_view['villagename']; ?></td>
+        <td ><?php echo $this->revvillagename; ?></td>
         <td ><?php echo $this->translate("Major source of income:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
-
-    <tr>
-        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
-        <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['phone']; ?></td>
     </tr>
-
     <tr>
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
 
     <tr>
         <td ><?php echo $this->translate("Category:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td></td>
-        <td></td>
-
-    </tr>   
-<?php } ?>
+        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
+    </tr>
+   <?php } ?>
 </table> 
 <br/>
-<div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;"> 
-    <form id="pluginForm" action="<?php echo $this->baseUrl();?>/loandetails/index/add/id/<?php echo $this->memberid; ?>" method="POST">
-        <table id="hor-minimalist-b" class="family">
+    <form action="<?php echo $this->baseUrl();?>/loandetails/index/add/id/<?php echo $this->memberid; ?>" method="POST">
+        <table id="hor-minimalist-b">
             <tr> 
                 <th width="27%"><?php echo $this->translate("Source"); ?></th>
-                <th width="17%"><?php echo $this->translate("Family member"); ?></th>
-                <th width="27%"><?php echo $this->translate("Loan amount"); ?></th>
+                <th width="17%"><?php echo $this->translate("Famiy member"); ?></th>
                 <th width="17%"><?php echo $this->translate("Interest Per Annum %"); ?></th>
+                <th width="27%"><?php echo $this->translate("Loan amount"); ?></th>
                 <th width="37%"><?php echo $this->translate("Outstanding amount"); ?></th>
                 <th width="10%"><?php echo $this->translate("Purpose"); ?></th>
                 <th width="10%"><?php echo $this->translate("Savings / deposit amount"); ?></th>
-                <th></th>
             </tr>
-
-        <tr id='tmp'>
-                <td>
-                <select name = "source[]" class="selectvalid required interest" id="source-1">
-                    <option value=0>Select</option>
-                    <?php foreach ($this->loanDetails as $loanDetails) { ?>
-                    <option value="<?php echo $loanDetails['id']?>"><?php echo $loanDetails['name']?></option>
-
-                    <?php } ?>
-                </select>   
-                </td>
-
-               <td>
-                <select name = "member[]" class="selectvalid required">
-                    <option value=0>Select</option>
-                    <?php foreach ($this->familymember as $member) { ?>
-                    <option value="<?php echo $member['id']?>"><?php echo $member['name']?></option>
-
-                    <?php } ?>
-                </select>
-                </td>
-
-                <td><INPUT type="text" name = "loan[]" class="required numeric" maxlength="12" size="15"></td>
-                <td><INPUT type="text" name = "interest[]" class="numeric disableid" max="99" size="5" id="disable-1"></td>
-                <td><INPUT type="text" name = "outstanding[]" class="numeric" maxlength="12" size="15"></td>
-                <td>
-                <select name = "purpose[]" class="selectvalid">
-                   <option value=0>Select</option>
-                    <?php foreach ($this->purpose as $purpose) { ?>
-                    <option value="<?php echo $purpose['id']?>"><?php echo $purpose['name']?></option>
-
-                    <?php } ?>
-                </select>
-                </td>
-                <td><INPUT type="text" name = "savingamount[]" class="numeric disableamt" maxlength="12" size="15" id="amtdisable-1"></td>
-
-                <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif"       border=0 width='16' height='16'></td>
+            <?php  $i = 0;
+            foreach($this->loanDetails as $loandetails) { $i++;
+                $a = 'memberId'.$loandetails['id'];
+                $j = 'interest'.$loandetails['id'];
+                $b = 'loanamount'.$loandetails['id'];
+                $f = 'outstanding'.$loandetails['id'];
+                $c = 'purpose'.$loandetails['id'];
+                $g = 'source_id'.$loandetails['id'];
+                $h = 'deposit'.$loandetails['id'];
+            ?>
+            <tr>
+                <td><?php echo $loandetails['name']; ?></td>
+                <td><?php echo $this->form->$a; ?></td>
+                <td><?php echo $this->form->$j; ?></td>
+                <td><?php echo $this->form->$b; ?></td>
+                <td><?php echo $this->form->$f; ?></td>
+                <td><?php echo $this->form->$c; ?></td>
+                <?php if ($i != 3) {?>
+                <td><?php echo $this->form->$h; ?></td>
+                <?php } else { ?>
+                <td></td>
+                <?php } ?>
+            </tr>
+            <?php echo $this->form->$g; ?>
+            <?php }?>
+            <tr>
+                <td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+                <td><a href="<?php echo $this->baseUrl();?>/familycommonview/index/commonview/id/<?php echo $this->memberid; ?>"><input type="submit" id="back" name="back" value="<?php echo $this->translate("Back"); ?>"></a></td>
             </tr>
         </table>
-
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
-
     </form>
-</div>

@@ -24,53 +24,35 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
         $this->view->title = "Loans";
         $this->view->pageTitle = "Loans repayment";
         $this->view->type='loans';
-	$globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
         $this->view->loanModel = new Loanrepaymentg_Model_Repayment();
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
+        
+         $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+ 
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data){
+                 $this->_redirect('index/login');
+                 }
     }
 
     public function indexAction() 
     {
         $loansearch = new Loandetailsg_Form_Search();
         $this->view->form = $loansearch;
-        $errormsg=$this->_request->getParam('msg');
-        if($errormsg==1)
-        {
-            echo "<font color='red'>Invalid account number</font>"; 
-        }
     }
 
     public function loandetailsAction() 
     {
         $accNum = $this->_request->getParam('accNum');
-        $this->view->details = $this->view->loanModel->searchaccounts($accNum);
-        if($this->view->details!=""){
-            foreach ($this->view->details as $acc) {
-            $accId = $acc->accId;
-            $loanAmt = $acc->amount;
-            $interest = $acc->interest;
-        }
-        $this->view->paid = $this->view->loanModel->paid($accNum);
-        if($this->view->paid){
-            foreach($this->view->paid as $paidamount){
-                $this->view->paidCount=$paidamount->paidCount;
-                $this->view->paidamount=$paidamount=$paidamount->principal_amount;
-            }
-        }
-        else {
-                $paidamount=$this->view->paidamount=0;
-        }
-        $this->view->unpaid = $this->view->loanModel->unpaid($accNum);
-
-        $instalments = $this->view->loanModel->loanInstalments($accNum);
-        $disbursed = $this->view->loanModel->getdisbursementdetails($accNum);
-        if($disbursed){
-        $disburseddate=$disbursed[0]['loandisbursement_date'];
-        }
+        $this->view->details = $this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
+        $this->view->paid = $this->view->loanModel->paid($this->_request->getParam('accNum'));
+        $this->view->unpaid = $this->view->loanModel->unpaid($this->_request->getParam('accNum'));
+        $instalments = $this->view->loanModel->loanInstalments($this->_request->getParam('accNum'));
         //$this->view->active = $this->view->loanModel->activeDisburs($accNum);
         if (count($this->view->details)) 
         {
@@ -84,40 +66,26 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
             }
             switch ($intType) 
             {
-                CASE 1:
-                        $findmax=$this->view->loanModel->maxid($accNum);
-                        if($findmax){
-                        $maxid=$findmax[0]['maxid'];
+                CASE 1: foreach ($instalments as $instalments) {
+                            $accId = $instalments->accId;
                         }
-                        else { $maxid=1; }
-                        $paiddetails=$this->view->loanModel->declainedpaid($accNum,$maxid);
-                        if($paiddetails)
-                        {
-                            $interestdate=$paiddetails[0]['installment_date'];
-                            $this->view->p=$p=$paiddetails[0]['reduced_prinicipal_balance'];
-                        }
-                        else
-                        {
-                            $disburseddetails=$this->view->loanModel->declaineddisbursed($accNum);
-                            $interestdate=$disburseddetails[0]['loandisbursement_date'];
-                            $this->view->p=$p=$disburseddetails[0]['amount'];
-                        }
+                        $instalments = $this->view->loanModel->declainDetalis($this->_request->getParam('accNum'),$accId);
+                        $p = $instalments["principal"];
+                        $int = $instalments["intrest"];
+                        $totalAmt = $instalments["totalAmt"];
 
-                        $dateDiff = $this->view->loanModel->dateDiff($interestdate,date("Y-m-d"));
-                        $this->view->int= $int = round(($p*$dateDiff*$interest)/(100*365),2);
-                        $this->view->totalamount=$totalAmt = round($int+$p,2);
-                        $loan = new Loanrepaymentg_Form_loanrepayment($accNum); 
+                        $loan = new Loanrepaymentg_Form_loanrepayment($p,$int,$totalAmt,$accNum); 
                         $this->view->loan = $loan;
                         $loan->amount->setValue($totalAmt);
                         BREAK;
                 CASE 2:
                         foreach ($instalments as $instalments) 
                         {
-                            $this->view->p=$p = $instalments->principal;
-                            $this->view->int=$int = $instalments->intrest;
-                            $this->view->totalamount=$totalAmt = $instalments->totalAmt;
+                            $p = $instalments->principal;
+                            $int = $instalments->intrest;
+                            $totalAmt = $instalments->totalAmt;
                         }
-                        $loan = new Loanrepaymentg_Form_loanrepayment($accNum); 
+                        $loan = new Loanrepaymentg_Form_loanrepayment($p,$int,$totalAmt,$accNum); 
                         $this->view->loan = $loan;
                         $loan->amount->setValue($totalAmt);
                         BREAK;
@@ -135,18 +103,16 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
             {
                 $formData = $this->_request->getPost(); 
                 if ($loan->isValid($formData)) {
-
                     $data = array('date' => $this->_request->getParam('date'),
-                    'paymenttype_details'=> $this->_request->getParam('othertext'),
                     'amount' => $this->_request->getParam('amount'),
                     'paymentMode' => $this->_request->getParam('transactionMode'),
                     'description' => $this->_request->getParam('description'),
                     'sms' => $this->_request->getParam('sms'),
                     'accNum' => $this->_request->getParam('accNum'));
-                    switch ($intType)
+                    switch ($intType) 
                     {
                         CASE 1:
-                                $int = $this->view->loanModel->declain($data,$totalAmt,$int,$p);
+                                $int = $this->view->loanModel->declain($data);
                                 BREAK;
                         CASE 2:
                                 $int = $this->view->loanModel->emi($data);
@@ -174,15 +140,11 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                             }
                         }
                     }
-                   $this->_redirect("/loanrepaymentg/index/message/amt/".base64_encode($this->_request->getPost('amount'))."/accNum/".base64_encode($this->_request->getPost('accNum')));
+                    $this->_redirect("/loanrepaymentg/index/message/amt/".base64_encode($this->_request->getPost('amount'))."/accNum/".base64_encode($this->_request->getPost('accNum')));
                 }
             }
         }
-        else {
-                $this->_redirect("/loanrepaymentg/index/index/msg/1");
-        }
     } 
-    }
     public function messageAction() 
     {
         $this->view->amt = base64_decode($this->_request->getParam('amt'));

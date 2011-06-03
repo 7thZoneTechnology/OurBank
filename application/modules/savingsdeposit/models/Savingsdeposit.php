@@ -82,6 +82,24 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
         $result = $db->fetchAll($sql,array($acc));
         return $result;
     }
+
+      public function savingsAccountsSearch($accountNumber) {
+                $type ='S';
+                $select = $this->select()
+                        ->setIntegrityCheck(false)  
+                        ->join(array('A' => 'ourbank_accounts'),array('id'))
+                        ->where('A.account_number = ?',$accountNumber)
+                        ->where('A.account_number like  "%" ? "%"',$type)
+
+                        
+                        ->where('A.status_id = 3 or A.status_id = 1')
+                        ->join(array('B' => 'ourbank_productsoffer'),'A.product_id=B.id');
+// // 		die($select->__toString($select));
+                $result = $this->fetchAll($select);
+                return $result->toArray();
+
+        }
+
     public function transaction($acc) 
     {
         $db = Zend_Db_Table::getDefaultAdapter();

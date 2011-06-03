@@ -1,4 +1,6 @@
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<script type="text/javascript" src="jquery-1.3.1.js"></script>
+<script type="text/javascript" src="toggel.js"></script>
 	<script type="text/javascript">
 	    $(document).ready(function(){
 	        $(".txt").each(function() {
@@ -6,29 +8,8 @@
                 calculateSum();
 	            });
 	        });
-
-        $('#paymenttype').change(function() {
-
-            var v = $(this).val();
-            if(v!=1){
-                if(v==5){
-                        $('#etransfer').show();
-                        $('#textbox').show();
-                        $('#cheque').hide();
-                }else{
-                        $('#cheque').show();
-                        $('#textbox').show();
-                        $('#etransfer').hide();
-                }
-            }
-            else{
-                        $('#etransfer').hide();
-                        $('#textbox').hide();
-                        $('#cheque').hide();
-            }
-         }); 
-
-	function calculateSum() {
+	    });
+	    function calculateSum() {
 	        var sum = 0;
 	        $(".txt").each(function() {
             if(!isNaN(this.value) && this.value.length!=0) {
@@ -36,14 +17,12 @@
            }
 	        });
 	        $("#amount").val(sum.toFixed(2));
-	}
-
+	    }
         function toggleField() {
         //alert('Hi');
         }
- });
+
 </SCRIPT> 
-<?if($this->details) { ?>
 <?php if (count($this->active) == 1 ){ ?> 
     <table id="hor-minimalist-b">
     	<TR>
@@ -131,8 +110,6 @@
                 <TD colspan="9"><?php echo $paid->paidAmt ; ?></TD>
 				<?php } ?>
             </TR>
-            <?php if($this->unpaid) { ?>
-
             <TR>
                 <TD width="50">Due</TD>
 				<?php foreach ($this->unpaid as $unpaid) { ?>
@@ -140,14 +117,6 @@
                 <TD colspan="9"><?php echo $unpaid->unpaidAmt ; ?></TD>
 				<?php } ?>
             </TR>
-            <?php } else { ?>
-            <TR>
-                <TD width="50">Due</TD>
-                <TD align="center">---</TD>
-                <TD colspan="9" align="right"><?php echo $this->totalamount ?></TD>
-            </TR>
-
-            <?php } ?>
 		</table>
     <?php } ?>
     <br/>
@@ -162,15 +131,15 @@
                 </TR>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Principal</label></TD>
-                    <TD bgcolor="#FAFAFA"><?php echo $this->p; ?></TD>
+                    <TD bgcolor="#FAFAFA"><?php echo $this->loan->p; ?></TD>
                 </TR>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Interest</label></TD>
-                    <TD bgcolor="#FAFAFA"><?php echo $this->int;?></TD>
+                    <TD bgcolor="#FAFAFA"><?php echo $this->loan->int;?></TD>
                 </TR>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Total</label></TD>
-                    <TD bgcolor="#FAFAFA"><?php echo $this->totalamount;?></TD>
+                    <TD bgcolor="#FAFAFA"><?php echo $this->loan->totalAmt;?></TD>
                 </TR>
 			</table>
 	<br>
@@ -182,7 +151,7 @@
                     <TD><label for="fld1" class="mand">Date</label></TD>
                     <TD><?php echo $this->loan->date; ?></TD>
                 </TR>
-	   <?php //if (count($this->group) !=0) { ?>
+				<?php //if (count($this->group) !=0) { ?>
 <!--				<TR>
  					<TD><label for="fld1" class="mand"></label></TD>
                     <TD>Amount</TD>
@@ -211,14 +180,13 @@
 				<?php //} ?>
                 <TR>
                     <TD><label for="fld1" class="mand">Payment mode</label></TD>
-                    <TD><?php echo $this->loan->transactionMode;?>
-                    </TD>
+                    <TD><?php echo $this->loan->transactionMode;?></TD>
                 </TR>
-                <tr>
-                    <td id="cheque" style="display:none">Voucher/cheque/draft</td>
-                    <td id="etransfer" style="display:none">Account number</td>
-                    <td id="textbox" style="display:none"><?php echo $this->loan->othertext;?></td> 
-                </tr>
+                <TR>
+                    <TD></TD>
+                    <TD><?php echo $this->loan->paymenttype_details; ?>
+                    <h id="details" style="display:none">voucher/cheque/draft number</h></TD>
+                </TR>
                 <TR>
                     <TD><label for="fld1" class="mand">Description</label></TD>
                     <TD><?php echo $this->loan->description;?></TD>
@@ -242,7 +210,4 @@
         </form>
     </fieldset>
 </div>
-<?php //}
-} else {
-         echo "<font color='red'>Invalid account number</font>";
-    } ?>
+<?php //} ?>

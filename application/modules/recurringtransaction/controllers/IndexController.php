@@ -25,20 +25,27 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
     public function init() {
         $this->view->pageTitle='Recurring transaction';
         $this->view->type="recurring";
-//         $storage = new Zend_Auth_Storage_Session();
-//         $data = $storage->read();
-//         if(!$data){
-//             $this->_redirect('index/login');
-//         }
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+ 
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data){
+                 $this->_redirect('index/login');
+                 }
     }
 
     public function indexAction() 
     {
-//         $storage = new Zend_Auth_Storage_Session();
-//         $data = $storage->read();
-//         if(!$data){
-//             $this->_redirect('index/login');
-//         }
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $Recurringdepositsavings = new Recurringtransaction_Form_Membersearch();
         $this->view->form = $Recurringdepositsavings;
         $recurringSavings = new Recurringtransaction_Model_recurringSavings();
@@ -63,7 +70,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 } else {
                     $this->view->recurringAccountsSearch = $arrayrecurringAccountSearch;
                     foreach($arrayrecurringAccountSearch as $arrayrecurringAccountSearch1) {
-                        $this->view->membername = $arrayrecurringAccountSearch1['membername'];
+                      echo  $this->view->membername = $arrayrecurringAccountSearch1['membername'];
                         $accountID=$this->view->account_id=$arrayrecurringAccountSearch1['account_id'];
                         $this->view->product_id=$arrayrecurringAccountSearch1['product_id'];
                         $this->view->account_number=$arrayrecurringAccountSearch1['account_number'];
@@ -109,7 +116,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $this->view->manualRepayment= $this->_request->getParam('manualRepayment');
         $date = new Zend_Date();
         $this->view->accountid=$accountId;
-        $this->view->productid=$productId;
+       echo $this->view->productid=$productId;
 
         $recurringDetails=new Recurringtransaction_Model_recurringSavings();
         $fixedSavings = new Recurringtransaction_Model_fixedSavings();
@@ -126,6 +133,8 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $IndividualnameFetch = $recurringDetails->fetchMemberName($accountId);
         foreach($IndividualnameFetch as $IndividualnameFetch1) {
             $this->view->memberfirstname=$IndividualnameFetch1['memberfirstname'];
+            $this->view->membercode=$IndividualnameFetch1['membercode'];
+
         }
 
         $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
@@ -165,6 +174,8 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $this->view->maturedate=$matureDate;
         $RateperMonth=$fixedInterest/12;
         $this->view->installmentNumber=$InstalmentNumber;
+
+echo $InstalmentNumber;
         $simpleInterest=((($amountTopay*$InstalmentNumber)*$InstalmentNumber*$RateperMonth)/100);
         $capitalAmount=($amountTopay*$InstalmentNumber);
         $this->view->capitalAmount=$capitalAmount;	
@@ -209,9 +220,11 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
         $fixedSavings = new Recurringtransaction_Model_fixedSavings();
         $recurringDetails=new Recurringtransaction_Model_recurringSavings();
+
                //validate for display ( deposit, renewal, status )
         $this->view->depositcheck1 = $recurringDetails->depositcheck($accountId);
         $this->view->statuscheck1 = $recurringDetails->statuscheck($accountId);
+
         $installmentsDetailsFetch = $recurringDetails->installmentsDetails($accountId,$productId);
         $this->view->installmentsDetails = $installmentsDetailsFetch;
         foreach($installmentsDetailsFetch as $installmentsDetailsFetch1) {
@@ -251,6 +264,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         $this->view->maturedate=$matureDate;
         $RateperMonth=$fixedInterest/12;
         $this->view->installmentNumber=$InstalmentNumber;
+echo $InstalmentNumber;
         $simpleInterest=((($amountTopay*$InstalmentNumber)*$InstalmentNumber*$RateperMonth)/100);
         $capitalAmount=($amountTopay*$InstalmentNumber);
         $this->view->capitalAmount=$capitalAmount;	
@@ -324,7 +338,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
         } else  {
             $recurringInstalmentpayments=$recurringDetails->recurringInstalmentpayments($accountId,$InstalmentNumber-1);
             foreach($recurringInstalmentpayments as $recurringInstalmentpayments1) {
-                $lastPaidDate=$recurringInstalmentpayments1['rec_payment_date']; /*last instalment paid date*/
+                $lastPaidDate=$recurringInstalmentpayments1['rec_payment_date'];
             }
         }
 
@@ -726,7 +740,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 
                     $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
                                             'glsubcode_id_from'=> '',
-                                            'glsubcode_id_to'=>  '',
+                                            'glsubcode_id_to'=>  $bankcashglsubcode,
                                             'transaction_id'=>$transaction_id,
                                             'credit'=>$paidAmounts,
                                             'debit' => '',
@@ -834,7 +848,6 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 $numberofinstallments=$recurringDetails->TotalnoOfInstalmentPaid($accountId);
                 $totalnumberofinstallments=count($numberofinstallments);
                 $this->view->TotalnoOfInstalmentPaid=$totalnumberofinstallments;
-
                 $recurringAccountDetailsFetch = $recurringDetails->recurringAccountDetails($accountId,$productId);
                 $this->view->recurringAccountDetails = $recurringAccountDetailsFetch;
                 $begindate=0;$mature_date=0;
@@ -952,7 +965,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $lastaccountinsertedId = $fixedSavings->insertAccount(array('id' => ''));
                     $arrayroles = $fixedSavings->accountnumber($memberId);
                     foreach($arrayroles as $transaction) {
-                            $groupofficeId=$this->view->memberbranch_id=$transaction['office_id'];
+                            $groupofficeId=$this->view->memberbranch_id=$transaction['village'];
                     }
                     $product_id1 = 'R'; //savings account short form s
                     if($this->view->membertypr_id=='2') {
@@ -1090,7 +1103,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
 // 
                         $transactions=new Recurringtransaction_Model_persnolSavings();
 
-                $banklibalitesaccountinsert = (array('office_id' => $memberbranch_id,
+                $banklibalitesaccountinsert = (array('village' => $memberbranch_id,
                                                 'glsubcode_id_from'=>'',
                                                 'glsubcode_id_to'=>$glsubcode,
                                                 'transaction_id'=>$transaction_id,
@@ -1118,7 +1131,6 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                         $transactionData= array(
                                         'account_id' => $accountId,
                                         'glsubcode_id_from'=> '',
-
                                         'glsubcode_id_to'=>$glsubcode,
                                         'transaction_date'=>date("Y-m-d"),
                                         'amount_to_bank' => '',
@@ -1399,40 +1411,40 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                                         'transaction_by'=> 1,
                                         'created_date'=>date("Y-m-d")));
                         $groupmembertransaction_id=$fixedSavings->insertpersnolsavingstransactionDetails($savingsTransaction);
-// 
-//                         if($this->view->transferedmembertype_id=='2') {
-//                                 $groupNamesSavingsearchFetch = $recurringDetails->groupNamesSavingsearch($searchedAccountId);
-//                                 $this->view->groupNamesSavingearch = $groupNamesSavingsearchFetch;
-//                                 foreach($groupNamesSavingsearchFetch as $groupNamesSavingsearchFetch1) {
-//                                         $this->view->groupname=$groupNamesSavingsearchFetch1['groupname'];
-//                                         $groupid=$this->view->group_id=$groupNamesSavingsearchFetch1['group_id'];
-//                                         $account_number=$groupNamesSavingsearchFetch1['account_number'];
-//                                 }
-// 
-//                                 if($this->view->groupname) {
-//                                         $this->view->groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($account_number,$groupid);
-//                                 }
-// 
-//                                 $noOfMemberinAccount=count($this->view->groupMembersDetails);
-//                                 $individualamounts=$maturedAmount/$noOfMemberinAccount;
-// 
-//                                 if($this->view->groupname) {
-//                                         foreach($this->view->groupMembersDetails as $eachMember) {
-//                                                 $data = array('groupmembersavingtransaction_id'=>'',
-//                                                         'groupmembertransaction_id'=>$transactionId,
-//                                                         'groupaccount_id' => $searchedAccountId,
-//                                                         'groupmemberaccount_id'=>$eachMember['groupmember_id'],
-//                                                         'groupmembertransaction_date'=>date("Y-m-d"),
-//                                                                                         'groupmembertransaction_type' =>1,
-//                                                                                         'groupmembertransaction_amount' => $individualamounts,
-//                                                                                         'groupmembertransaction_interest'=>'',
-//                                                                                         'groupmembertransaction_by'=>$userId,
-//                                         );
-//                                         $insert=$fixedSavings->groupsavingsInsert($data);
-//                                         }
-//                                 }
-//                         }
-// 
+
+                        if($this->view->transferedmembertype_id=='2') {
+                                $groupNamesSavingsearchFetch = $recurringDetails->groupNamesSavingsearch($searchedAccountId);
+                                $this->view->groupNamesSavingearch = $groupNamesSavingsearchFetch;
+                                foreach($groupNamesSavingsearchFetch as $groupNamesSavingsearchFetch1) {
+                                        $this->view->groupname=$groupNamesSavingsearchFetch1['groupname'];
+                                        $groupid=$this->view->group_id=$groupNamesSavingsearchFetch1['group_id'];
+                                        $account_number=$groupNamesSavingsearchFetch1['account_number'];
+                                }
+
+                                if($this->view->groupname) {
+                                        $this->view->groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($account_number,$groupid);
+                                }
+
+                                $noOfMemberinAccount=count($this->view->groupMembersDetails);
+                                $individualamounts=$maturedAmount/$noOfMemberinAccount;
+
+                                if($this->view->groupname) {
+                                        foreach($this->view->groupMembersDetails as $eachMember) {
+                                                $data = array('groupmembersavingtransaction_id'=>'',
+                                                        'groupmembertransaction_id'=>$transactionId,
+                                                        'groupaccount_id' => $searchedAccountId,
+                                                        'groupmemberaccount_id'=>$eachMember['groupmember_id'],
+                                                        'groupmembertransaction_date'=>date("Y-m-d"),
+                                                                                        'groupmembertransaction_type' =>1,
+                                                                                        'groupmembertransaction_amount' => $individualamounts,
+                                                                                        'groupmembertransaction_interest'=>'',
+                                                                                        'groupmembertransaction_by'=>$userId,
+                                        );
+                                        $insert=$fixedSavings->groupsavingsInsert($data);
+                                        }
+                                }
+                        }
+
                 $transactions=new Recurringtransaction_Model_persnolSavings();
 
                 $banklibalitesaccountinsert = (array('office_id' => $memberbranch_id,

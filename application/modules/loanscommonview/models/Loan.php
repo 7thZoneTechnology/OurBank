@@ -88,21 +88,21 @@ class Loans_Model_Loan extends Zend_Db_Table {
     }
 
     public function viewLoan($offerproductupdate_id) {
-echo "dbid".$offerproductupdate_id;
-//         $select = $this->select()
-//                        ->setIntegrityCheck(false)  
-//                        ->join(array('a' => 'ourbank_productsoffer'),array('id'))
-//                        ->where('a.id = ?',$offerproductupdate_id)
-//                        ->join(array('b' => 'ourbank_productsloan'),'a.id = b.productsoffer_id') 
-//                        ->join(array('c' => 'ourbank_master_membertypes'),'c.id = a.applicableto')
-// //                        ->join(array('h' => 'ourbank_glsubcodes'),'a.glsubcode_id = h.glsubcode_id')
-// //                        ->where('h.recordstatus_id = 3 or h.recordstatus_id = 1')
-// //                        ->join(array('i' => 'ourbank_glsubcode'),'h.glsubcode_id = i.glsubcode_id')
-//                        ->join(array('j' => 'ourbank_interest_periods'),'b.interesttype_id  = j.id')
-//                        ->join(array('f' => 'ourbank_product'),'f.id = a.product_id');
-// //                        ->where('f.recordstatus_id = 3 or f.recordstatus_id = 1');
-//        $result = $this->fetchAll($select);
-//        return $result->toArray();
+        $select = $this->select()
+                       ->setIntegrityCheck(false)  
+                       ->join(array('a' => 'ourbank_productsofferdetails'),array('offerproductupdate_id'))
+                       ->where('a.offerproductupdate_id = ?',$offerproductupdate_id)
+                       ->where('a.recordstatus_id = 3 or a.recordstatus_id = 1')
+                       ->join(array('b' => 'ourbank_productsloan'),'a.offerproductupdate_id = b.offerproductupdate_id') 
+                       ->join(array('c' => 'ourbank_membertypes'),'c.membertype_id = a.applicableto')
+                       ->join(array('h' => 'ourbank_glsubcodeupdates'),'a.glsubcode_id = h.glsubcode_id')
+                       ->where('h.recordstatus_id = 3 or h.recordstatus_id = 1')
+                       ->join(array('i' => 'ourbank_glsubcode'),'h.glsubcode_id = i.glsubcode_id')
+                       ->join(array('j' => 'ourbank_interesttypes'),'b.interesttype_id = j.interesttype_id')
+                       ->join(array('f' => 'ourbank_productdetails'),'f.product_id = a.product_id')
+                       ->where('f.recordstatus_id = 3 or f.recordstatus_id = 1');
+       $result = $this->fetchAll($select);
+       return $result->toArray();
     }
 
     public function viewLoan1($offerproductupdate_id) {

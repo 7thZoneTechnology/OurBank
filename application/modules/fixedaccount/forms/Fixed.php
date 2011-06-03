@@ -22,8 +22,8 @@
 <?php
 class Fixedaccount_Form_Fixed extends Zend_Form 
 {
-   public function __construct($path,$minumumbal,$maximumbal) {
-    parent::__construct($path,$minumumbal);
+   public function __construct($path) {
+    parent::__construct($path);
         $date = new ZendX_JQuery_Form_Element_DatePicker('date');
         $date->setAttrib('class', 'txt_put');
         $date->setJQueryParam('dateFormat', 'dd/mm/yy');
@@ -37,18 +37,11 @@ class Fixedaccount_Form_Fixed extends Zend_Form
 
         $interest = new Zend_Form_Element_Text('interest');
         $interest->setAttrib('class', 'txt_put');
-        $interest->setRequired(true);
-
 //         $interest->setAttrib('id', 'interestval');
 //         $interest->setAttrib('readonly', 'true');
 
         $tAmount = new Zend_Form_Element_Text('tAmount');
         $tAmount->setAttrib('class', 'amount1');
-        $tAmount->setRequired(true);
-        $valid  = new Zend_Validate_Between(array('min' => $minumumbal, 'max' => $maximumbal));
-//         $graterthan=new Zend_Validate_GreaterThan($minumumbal);
-        $tAmount->addValidators(array(array($valid,true)));
-
 //         $tAmount->setAttrib('onchange', 'calculateMatureAmount()');
 
         $matureamount = new Zend_Form_Element_Text('matureamount');

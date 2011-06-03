@@ -33,18 +33,15 @@ class Loandetails_Model_loandetails  extends Zend_Db_Table {
 //         die ($select->__toString($select));
         }
 
-	public function get_loandetails()
+	public function get_loandetails($memberid)
         {
         $select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_loandetails'),array('a.id'))
-                ->join(array('b'=>'ourbank_familymember'),'b.id=a.member_id',array('b.name as membername'))
-                ->join(array('c'=>'ourbank_master_loanpurpose'),'c.id=a.purpose_id',array('c.name as purposename'))
-                ->join(array('d'=>'ourbank_master_loansource'),'d.id=a.source_id',array('d.name as sourcename'));
-         //die ($select->__toString($select));
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_loandetails'),array('a.id'))
+				->where('a.family_id=?',$memberid);
         $result=$this->fetchAll($select);
         return $result->toArray();
-
+//         die ($select->__toString($select));
         }
 
 //update the family details with respective to member id...
@@ -52,13 +49,6 @@ class Loandetails_Model_loandetails  extends Zend_Db_Table {
     $where[] = "id = '".$loanId."'";
     $db = $this->getAdapter();
     $result = $db->update('ourbank_loandetails',$input,$where);
-    }
-
-    public function deleteFamily($param)
-    {
-        $db = $this->getAdapter();
-        $db->delete('ourbank_loandetails',array('id = '.$param));
-        return;
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 class Loandisbursmentg_Model_loan extends Zend_Db_Table 
 {
-    protected $_name = 'ourbank_accounts';
+    protected $_name = 'ob_accounts';
 
     public function searchaccounts($acc) 
     {
@@ -32,7 +32,7 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
                 ourbank_loanaccounts F,
                 ourbank_interest_periods G
                 WHERE 
-                (A.name like '%' '$acc' '%' OR D.account_number = '$acc') AND
+                (A.name = '$acc' OR D.account_number = '$acc') AND
                 D.membertype_id = substr(A.familycode,5,1) AND
                 D.member_id = A.id AND
                 B.id=A.village_id AND
@@ -64,7 +64,7 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
                 ourbank_loanaccounts F,
                 ourbank_interest_periods G
                 WHERE 
-                (A.name like '%' '$acc' '%' OR D.account_number = '$acc') AND
+                (A.name = '$acc' OR D.account_number = '$acc') AND
                 D.membertype_id = substr(A.groupcode,5,1) AND
                 D.member_id = A.id AND
                 (D.membertype_id=2 or D.membertype_id=3) AND
@@ -128,99 +128,5 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
 	        ";
 	$result = $db->fetchAll($sql);
 	return $result;
-    }
-
-    public function getdisbursementdetails($accNum)
-    {
-        $select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_accounts'),array('a.id'))
-                ->join(array('b'=>'ourbank_loan_disbursement'),'a.id=b.account_id')
-                ->where('a.account_number=?',$accNum);
-//        die ($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function findlastpaid($accNum)
-    {
-        $select=$this->select()
-        ->setIntegrityCheck(false)
-        ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(installment_id) as lastpaidid','SUM(paid_principal) as paidamount','paid_date'))
-        ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
-        ->where('b.account_number=?',$accNum)
-        ->group('b.account_number');
-        //die ($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function maxid($accNum)
-    {
-        $select=$this->select()
-        ->setIntegrityCheck(false)
-        ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
-        ->join(array('b'=>'ourbank_installmentdetails'),'a.id=b.account_id',array('MAX(b.installment_id) as maxid'))
-        ->where('a.account_number=?',$accNum)
-        ->group('a.account_number');
-      //  die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function declainedpaid($accNum,$maxid)
-    {
-        $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
-                                ->join(array('b'=>'ourbank_installmentdetails'),'a.id=b.account_id')
-                                ->where('a.account_number=?',$accNum)
-                                ->where('b.installment_id=?',$maxid);
-         //die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function findwithoutpaid($accNum)
-    {
-        $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('MIN(installment_id) as lastpaidid','reduced_prinicipal_balance','installment_date'))
-                                ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
-                                ->where('b.account_number=?',$accNum)
-                                ->group('b.account_number');
-        //die ($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function remaininginstallmemnt($accNum)
-    {
-        $select=$this->select()
-                                ->setIntegrityCheck(false)
-                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('COUNT(a.id) as countnumber','installment_id'))
-                                ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
-                                ->where('a.installment_status=3 or a.installment_status=4')
-                                ->where('b.account_number=?',$accNum)
-                                ->group('b.account_number');
- //       die ($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function updateold($accId,$input=array())
-    {
-    $where[] = "account_id = '".$accId."'";
-    $where[] = "installment_status = 3 or installment_status = 4";
-    $db = $this->getAdapter();
-    $result = $db->update('ourbank_installmentdetails',$input,$where);
-    }
-
-    public function updateinstallment($accId,$installmentid,$input=array())
-    {
-    $where[] = "account_id = '".$accId."'";
-    $where[] = "installment_id  = '".$installmentid."'";
-    $db = $this->getAdapter();
-    $result = $db->update('ourbank_installmentdetails',$input,$where);
     }
 }

@@ -28,7 +28,20 @@ class Psdetails_IndexController extends Zend_Controller_Action
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
         $this->view->psdetails = new Psdetails_Model_Savingsdeposit();
+
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data)
+        {
+            $this->_redirect('index/login');
+        }
     }
+
     public function indexAction() 
     {
         $this->view->form = new Savingsdeposit_Form_Search();

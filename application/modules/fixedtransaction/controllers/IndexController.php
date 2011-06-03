@@ -31,12 +31,18 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
         if(!$data){
                 $this->_redirect('index/login');
         }
-        $this->view->adm = new App_Model_Adm();
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
+    $this->view->adm = new App_Model_Adm();
 
+     $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+ 
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data){
+                 $this->_redirect('index/login');
+                 }
     }
 
     public function indexAction() 
@@ -74,8 +80,6 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                     }
                     else {
                         $this->view->fixedAccountsSearch = $arrayfixedAccountSearch;
-// Zend_Debug::dump($arrayfixedAccountSearch);
-
                         foreach($arrayfixedAccountSearch as $arrayfixedAccountSearch1) {
                             $accountID=$this->view->account_id=$arrayfixedAccountSearch1['account_id'];
                             $accountNumber=$this->view->account_number=$arrayfixedAccountSearch1['account_number'];
@@ -106,7 +110,6 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
         }
     }
 
-
     function fixedAction()
     {
         $storage = new Zend_Auth_Storage_Session();
@@ -128,9 +131,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
         $this->view->productid=$productId;
         $membertype = $this->view->adm->getsingleRecord('ourbank_accounts','membertype_id','id',$accountId);
         $fixeddepositaccountdetails11=$fixedSavings->fixedAccountDetails($accountId,$membertype);
-// Zend_Debug::dump($fixeddepositaccountdetails11);
-
-
+// // // Zend_Debug::dump($fixeddepositaccountdetails11);
         foreach($fixeddepositaccountdetails11 as $fixeddetails1) {
                 $begindate=$this->view->begin_date=$fixeddetails1['begin_date'];
                 $maturedate=$this->view->mature_date =$fixeddetails1['mature_date'];
@@ -496,15 +497,15 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                         $individualamount=$maturedinterest/$noOfMemberinAccount;
                         if($this->view->groupname) {
                             foreach($this->view->groupMembersDetails as $eachMember) {
-                                $data = array('id'=>'',
-                                        'transaction_id'=>$transaction_id,
-                                        'account_id' => $accountid,
-                                        'member_id'=>$eachMember['groupmember_id'],
-                                        'transaction_date'=>date("Y-m-d"),
-                                        'transaction_type' => 2,
-                                        'transaction_amount' => $individualamount,
-                                        'transaction_interest'=>'',
-                                        'transaction_by'=>$userId,
+                                $data = array('groupmemberrecurringtransaction_id'=>'',
+                                        'groupmembertransaction_id'=>$transaction_id,
+                                        'groupaccount_id' => $accountid,
+                                        'groupmemberaccount_id'=>$eachMember['groupmember_id'],
+                                        'groupmembertransaction_date'=>date("Y-m-d"),
+                                        'groupmembertransaction_type' => 2,
+                                        'groupmembertransaction_amount' => $individualamount,
+                                        'groupmembertransaction_interest'=>'',
+                                        'groupmembertransaction_by'=>$userId,
                                 );
                                 $insert=$fixedSavings->groupfixedInsert($data);
                             }
@@ -764,7 +765,7 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                 }
                 $this->view->accountid=$accountId;
                 $this->view->productid=$productId;
-                $this->view->groupMembersDetails = $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId); 
+$this->view->groupMembersDetails = $groupNamesSearchFetch = $fixedSavings->groupNamesSearchs($accountId); 
 //                 $findmemberaccountsetails=$fixedSavings->findmembertypeid($accountId);
 //                 foreach($findmemberaccountsetails as $findmemberaccountsetails1) {
 //                         $memberid=$findmemberaccountsetails1['member_id'];
@@ -828,17 +829,17 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
 // // // // // //                         $diffpreMM=(-1*$diffpreMM);
 // // // // // //                 }
 // // // // // // */
-            function noofdays($begindate,$maturedate) {
-                $day = 86400; // Day in seconds
-                $format = 'Y-m-d'; // Output format (see PHP date funciton)
-                $sTime = strtotime($begindate); // Start as time
-                $eTime = strtotime($maturedate); // End as time
-                $numDays = round(($eTime - $sTime) / $day) + 1;
-                return abs($numDays);
-            }
+    function noofdays($begindate,$maturedate) {
+        $day = 86400; // Day in seconds
+        $format = 'Y-m-d'; // Output format (see PHP date funciton)
+        $sTime = strtotime($begindate); // Start as time
+        $eTime = strtotime($maturedate); // End as time
+        $numDays = round(($eTime - $sTime) / $day) + 1;
+        return abs($numDays);
+    }
 // // // // // Calculation = (interest/100)*(noofdays/365)*principal
-            $numDays = noofdays($begindate,$maturedate);
-            $interestamt = ($fixedinterest/100)*($numDays/365)*$fixedamount;
+    $numDays = noofdays($begindate,$maturedate);
+    $interestamt = ($fixedinterest/100)*($numDays/365)*$fixedamount;
 
 // // // // //         $fisedfinalinterest=($fixedinterest/12);
 // // // // //         $this->view->maturedinterest=$fisedfinalinterest;
@@ -924,8 +925,8 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                 if ($this->_request->isPost() && $this->_request->getPost('Confirm')) {
                     $formData = $this->_request->getPost();
                     $paymenttype = $this->view->paymenttype=$this->_request->getParam('paymenttype');
-                    if( $paymenttype ==1){
-                            $this->view->form2->othertext->setRequired(false);
+                    if( $paymenttype ==1 || $paymenttype ==""  ){
+                            $this->view->form2->paymenttype_details->setRequired(false);
                     }
                     if ($transaferfunds->isValid($formData)) {
                         $sessionName = new Zend_Session_Namespace('ourbank');
@@ -933,43 +934,29 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                         $this->view->accountid=$accountid= $this->_request->getParam('accountId');
                         $this->view->memberid=$memberId= $this->_request->getParam('memberId'); 
                         $this->view->productid=$productId= $this->_request->getParam('productId'); 
-                        if($paymenttype != 1){
-                         $this->view->chequeno = $chequeno =  $this->_request->getParam('othertext'); 
-                        $this->view->form2->othertext->setValue($chequeno);
-                        }
+
                         $modedetails= $this->view->paymenttype_details=$this->_request->getParam('paymenttype_details');
                         $description= $this->view->transactiondescription=$this->_request->getParam('transactiondescription');
 
                         $this->view->form2->paymenttype1->setValue($this->_request->getPost('paymenttype'));
                         $this->view->form2->paymenttype_details1->setValue($this->_request->getPost('paymenttype_details'));
                         $this->view->form2->transactiondescription1->setValue($this->_request->getPost('transactiondescription'));
-                        
+
                         $transaction_mode =$savingsDetails->gettransactionmode($paymenttype);
                          foreach($transaction_mode as $transaction_modes) {
                                  $this->view->transactionModetype=$transaction_modes['name'];
                          }
-// // 
-                        if($paymenttype!='1') {
+
+                        if($paymenttype=='5') {
                             $accountNumber= $accountid;
-                            $savingsAccountsSearch = $fixedSavings->savingsAccountsForid($accountNumber);
-                            if($paymenttype=='5') {
-                                $validaccno = $fixedSavings->savingsAccountsSearch($chequeno);
-                            if ((!$savingsAccountsSearch) or (!$validaccno)) {
-                                    $this->view->noaccount1 = "This account number does not exist";
+                            $savingsAccountsSearch = $fixedSavings->savingsAccountsSearch($accountNumber);
+                            if (!$savingsAccountsSearch) {
+                                    $this->view->noaccount1= "This account number does not exist";
                             } else {
                                     $this->view->Submit = 'confirm';
                             }
-
-                        }else {
-                                 if (!$savingsAccountsSearch) {
-                                    $this->view->noaccount1 = "This account number does not exist";
-                            } else {
-                                    $this->view->Submit = 'confirm';
-                            }
-                        }
-
                         } else {
-                             $this->view->Submit = 'confirm';
+                            $this->view->Submit = 'confirm';
                         }
                     }
                 }
@@ -982,13 +969,10 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                  $memberId= $this->_request->getParam('memberId'); 
                  $productId= $this->_request->getParam('productId'); 
                  $paymenttype = $this->_request->getParam('paymenttype1');
-
                  $modedetails= $this->_request->getParam('paymenttype_details1');
                  $description= $this->_request->getParam('transactiondescription1');
-                if($paymenttype != 1){
-                         $this->view->chequeno = $chequeno =  $this->_request->getParam('othertext'); 
-                        }
 
+                if($paymenttype=='5') {
                         $accountNumber= $accountid; 
                         $updateaccount = array('status_id' =>5);
                         $fixedSavings->updateaccountnumber($accountid,$updateaccount);
@@ -1005,12 +989,6 @@ class Fixedtransaction_IndexController extends Zend_Controller_Action
                          $interestedamount= $this->_request->getParam('interestamountto');
                          $feeamount= $this->_request->getParam('penalinterest');
 
-if($chequeno){
-$paymenttype_details = $chequeno;
-}else{
-$paymenttype_details = 0;
-}
-
                         $savingsTransactiondata1 = (array('transaction_id'=>'',
                                 'account_id' => $accountid,
                                 'glsubcode_id_from' => '',
@@ -1020,17 +998,17 @@ $paymenttype_details = 0;
                                 'amount_from_bank' => $transferedamount,
 
                                 'paymenttype_id'=>$paymenttype,
-                                'paymenttype_details'=>$paymenttype_details,
+                                'paymenttype_details'=>$modedetails,
                                 'transactiontype_id'=>2,
                                 'recordstatus_id'=>'3',
                                 'reffering_vouchernumber' => '',
                                 'transaction_description'=>$description,
                                 'balance' => '',
                                 'confirmation_flag' => 0,
-                                'created_by'=> $this->view->createdby,
+                                'created_by'=> 1,
                                 'created_date'=>date("Y-m-d")
                         ));
-                        $transaction_id1 = $fixedSavings->transactionInsert($savingsTransactiondata1);
+                        $transaction_id1=$fixedSavings->transactionInsert($savingsTransactiondata1);
                         $fixedsavingsTransaction1 = (array('transaction_id'=>$transaction_id1,
                                 'account_id' =>$accountid,
                                 'fixed_paymentpaid_date'=>date("Y-m-d"),
@@ -1041,27 +1019,26 @@ $paymenttype_details = 0;
                                 'recordstatus_id'=>'3',
                         ));
                         $insertfixedtransaction1=$fixedSavings->insertfixedsavingstransactionDetails($fixedsavingsTransaction1);
-                    
-// // // // /*
-// // // // //                         if($membertypeid=='3') {
-// // // // //                                 $noOfMemberinAccount=count($this->view->groupMembersDetails);
-// // // // //                                 $individualamountfinalized=$transferedamount/$noOfMemberinAccount;
-// // // // //                                 if($this->view->groupname) {
-// // // // //                                         foreach($this->view->groupMembersDetails as $eachMember) {
-// // // // //                                                 $data = array('groupmemberrecurringtransaction_id'=>'',
-// // // // //                                                         'groupmembertransaction_id'=>$transaction_id1,
-// // // // //                                                         'groupaccount_id' => $accountid,
-// // // // //                                                         'groupmemberaccount_id'=>$eachMember['groupmember_id'],
-// // // // //                                                         'groupmembertransaction_date'=>date("Y-m-d"),
-// // // // //                                                         'groupmembertransaction_type' => 2,
-// // // // //                                                         'groupmembertransaction_amount' => $individualamountfinalized,
-// // // // //                                                         'groupmembertransaction_interest'=>'',
-// // // // //                                                         'groupmembertransaction_by'=>$userId,
-// // // // //                                                 );
-// // // // //                                                 $insert=$fixedSavings->groupfixedInsert($data);
-// // // // //                                         }
-// // // // //                                 }
-// // // // //                         }*/
+// // // /*
+// // // //                         if($membertypeid=='3') {
+// // // //                                 $noOfMemberinAccount=count($this->view->groupMembersDetails);
+// // // //                                 $individualamountfinalized=$transferedamount/$noOfMemberinAccount;
+// // // //                                 if($this->view->groupname) {
+// // // //                                         foreach($this->view->groupMembersDetails as $eachMember) {
+// // // //                                                 $data = array('groupmemberrecurringtransaction_id'=>'',
+// // // //                                                         'groupmembertransaction_id'=>$transaction_id1,
+// // // //                                                         'groupaccount_id' => $accountid,
+// // // //                                                         'groupmemberaccount_id'=>$eachMember['groupmember_id'],
+// // // //                                                         'groupmembertransaction_date'=>date("Y-m-d"),
+// // // //                                                         'groupmembertransaction_type' => 2,
+// // // //                                                         'groupmembertransaction_amount' => $individualamountfinalized,
+// // // //                                                         'groupmembertransaction_interest'=>'',
+// // // //                                                         'groupmembertransaction_by'=>$userId,
+// // // //                                                 );
+// // // //                                                 $insert=$fixedSavings->groupfixedInsert($data);
+// // // //                                         }
+// // // //                                 }
+// // // //                         }*/
 
                     $transactions=new Fixedtransaction_Model_persnolSavings();
 
@@ -1073,7 +1050,7 @@ $paymenttype_details = 0;
                                                     'debit' => $capitalamount,
                                                     'record_status'=>'3'));
                     $banklibalityaccounts=$transactions->insertbanklibalityaccounts($banklibalitesaccountinsert);
-// 
+
                     if($paymenttype=='1') {
                         $selectbankcashaccounts = $transactions->selectbankcashassetsaccount($memberbranch_id);
                         foreach($selectbankcashaccounts as $selectbankcashaccount) {
@@ -1096,56 +1073,36 @@ $paymenttype_details = 0;
 
                             $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
-                                                    'glsubcode_id_to'=> $bankglsubcode,
+                                                    'glsubcode_id_to'=> '3',
                                                     'transaction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $capitalamount,
                                                     'record_status'=>'3'));
-                             $bankassetsaccounts=$transactions->insertbankassetsaccounts($bankassetsaccountinsert);
-                        
+                            $bankassetsaccounts=$transactions->insertbankassetsaccounts($bankassetsaccountinsert);
+                        }
 
 
 
                         if($currentdate<$maturedate) {
-                $glsubcodeincome = $transactions->selectincomeforoffice($memberbranch_id);
-                            foreach($glsubcodeincome as $glsubcodeincome) {
-                                $incomeglsubcode=$glsubcodeincome['id'];
-                            }
-if($glsubcodeincome){
-$Incomesubcode = $incomeglsubcode;
-}else
-{
-$Incomesubcode = 0;
-}
-
                             $bankincomeaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
-                                                    'glsubcode_id_to'=>$Incomesubcode,
+                                                    'glsubcode_id_to'=>'16',
                                                     'tranasction_id'=>$transaction_id1,
                                                     'credit'=>$feeamount,
                                                     'debit' => '',
                                                     'recordstatus_id'=>'3'));
-//                         $bankincomeaccounts=$transactions->insertbankincomeaccounts($bankincomeaccountinsert);
+                        $bankincomeaccounts=$transactions->insertbankincomeaccounts($bankincomeaccountinsert);
                         }
-                $glsubcodeexpense = $transactions->selectexpenditureforoffice($memberbranch_id);
-                            foreach($glsubcodeexpense as $glsubcodeexpense) {
-                                $expenseglsubcode=$glsubcodeexpense['id'];
-                            }
-if($glsubcodeexpense){
-$Expenseglsubcode = $expenseglsubcode;
-}else
-{
-$Expenseglsubcode = 0;
-}
+
                         $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
-                                                    'glsubcode_id_to'=>$Expenseglsubcode,
+                                                    'glsubcode_id_to'=>'20',
                                                     'tranasction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $interestedamount,
                                                     'recordstatus_id'=>'3'));
-// 
-//                         $bankexpenditureccounts=$transactions->insertbankexpenditureaccounts($bankexpenditureaccountinsert);
+
+                        $bankexpenditureccounts=$transactions->insertbankexpenditureaccounts($bankexpenditureaccountinsert);
 
                             $transfersavingsaccountid = $fixedSavings->transferaccountid($accountNumber);
                             foreach($transfersavingsaccountid as $transfersavingsaccountid1) {
@@ -1153,7 +1110,7 @@ $Expenseglsubcode = 0;
                                     $this->view->membertype_id=$transfersavingsaccountid1['membertype_id'];
                                     $glsubcodetransffered_id=$transfersavingsaccountid1['glsubcode_id'];
                             }
-// 
+
 
                             $savingsTransactiondata1 = (array('transaction_id'=>'',
                                     'account_id' => $transaferaccount_id,
@@ -1197,40 +1154,40 @@ $Expenseglsubcode = 0;
 
                                 ));
                                 $insertsavingstransaction1=$fixedSavings->insertpersnolsavingstransactionDetails($savingsTransaction1);
-// // // /*
-// // // //                                 if($this->view->membertype_id=='2') {
-// // // //                                         $groupNamesSavingsearchFetch = $fixedSavings->groupNamesSavingsearch($transaferaccount_id);
-// // // //                                         $this->view->groupNamesSavingearch = $groupNamesSavingsearchFetch;
-// // // //                                         foreach($groupNamesSavingsearchFetch as $groupNamesSavingsearchFetch1) {
-// // // //                                                 $this->view->groupname=$groupNamesSavingsearchFetch1['groupname'];
-// // // //                                                 $groupid=$this->view->group_id=$groupNamesSavingsearchFetch1['group_id'];
-// // // //                                                 $accountNumber=$groupNamesSavingsearchFetch1['account_number'];
-// // // //                                         }
-// // // // 
-// // // //                                         if($this->view->groupname) {
-// // // //                                                 $this->view->groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
-// // // //                                         }
-// // // // 
-// // // //                                         $noOfMemberinAccount=count($this->view->groupMembersDetails);
-// // // //                                         $individualamounts=$transferedamount/$noOfMemberinAccount;
-// // // // 
-// // // //                                         if($this->view->groupname) {
-// // // //                                                 foreach($this->view->groupMembersDetails as $eachMember) {
-// // // //                                                         $data = array('groupmembersavingtransaction_id'=>'',
-// // // //                                                                 'groupmembertransaction_id'=>$transaction_id1,
-// // // //                                                                 'groupaccount_id' => $transaferaccount_id,
-// // // //                                                                 'groupmemberaccount_id'=>$eachMember['groupmember_id'],
-// // // //                                                                 'groupmembertransaction_date'=>date("Y-m-d"),
-// // // //                                                                 'groupmembertransaction_type' =>1,
-// // // //                                                                 'groupmembertransaction_amount' => $individualamounts,
-// // // //                                                                 'groupmembertransaction_interest'=>'',
-// // // //                                                                 'groupmembertransaction_by'=>$userId,
-// // // //                                                         );
-// // // //                                                         $insert=$fixedSavings->groupsavingsinsert($data);
-// // // //                                                 }
-// // // //                                         }
-// // // //                                 }*/
-// 
+// // /*
+// // //                                 if($this->view->membertype_id=='2') {
+// // //                                         $groupNamesSavingsearchFetch = $fixedSavings->groupNamesSavingsearch($transaferaccount_id);
+// // //                                         $this->view->groupNamesSavingearch = $groupNamesSavingsearchFetch;
+// // //                                         foreach($groupNamesSavingsearchFetch as $groupNamesSavingsearchFetch1) {
+// // //                                                 $this->view->groupname=$groupNamesSavingsearchFetch1['groupname'];
+// // //                                                 $groupid=$this->view->group_id=$groupNamesSavingsearchFetch1['group_id'];
+// // //                                                 $accountNumber=$groupNamesSavingsearchFetch1['account_number'];
+// // //                                         }
+// // // 
+// // //                                         if($this->view->groupname) {
+// // //                                                 $this->view->groupMembersDetails=$fixedSavings->fetchGroupAccountMembers($accountNumber,$groupid);
+// // //                                         }
+// // // 
+// // //                                         $noOfMemberinAccount=count($this->view->groupMembersDetails);
+// // //                                         $individualamounts=$transferedamount/$noOfMemberinAccount;
+// // // 
+// // //                                         if($this->view->groupname) {
+// // //                                                 foreach($this->view->groupMembersDetails as $eachMember) {
+// // //                                                         $data = array('groupmembersavingtransaction_id'=>'',
+// // //                                                                 'groupmembertransaction_id'=>$transaction_id1,
+// // //                                                                 'groupaccount_id' => $transaferaccount_id,
+// // //                                                                 'groupmemberaccount_id'=>$eachMember['groupmember_id'],
+// // //                                                                 'groupmembertransaction_date'=>date("Y-m-d"),
+// // //                                                                 'groupmembertransaction_type' =>1,
+// // //                                                                 'groupmembertransaction_amount' => $individualamounts,
+// // //                                                                 'groupmembertransaction_interest'=>'',
+// // //                                                                 'groupmembertransaction_by'=>$userId,
+// // //                                                         );
+// // //                                                         $insert=$fixedSavings->groupsavingsinsert($data);
+// // //                                                 }
+// // //                                         }
+// // //                                 }*/
+
                         $transactions=new Fixedtransaction_Model_persnolSavings();
 
                         $banklibalitesaccountinsert = (array('office_id' => $memberbranch_id,
@@ -1240,7 +1197,7 @@ $Expenseglsubcode = 0;
                                                     'credit'=>$capitalamount,
                                                     'debit' => '',
                                                     'record_status'=>'3'));
-                $banklibalityaccounts=$transactions->insertbanklibalityaccounts($banklibalitesaccountinsert);
+                    $banklibalityaccounts=$transactions->insertbanklibalityaccounts($banklibalitesaccountinsert);
 
                     if($paymenttype=='1') {
                         $selectbankcashaccounts = $transactions->selectbankcashassetsaccount($memberbranch_id);
@@ -1263,7 +1220,7 @@ $Expenseglsubcode = 0;
                             }
 
                             $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_to'=>$bankglsubcode,
+                                                    'glsubcode_id_to'=>'',
                                                     'glsubcode_id_from'=>'',
                                                     'transaction_id'=>$transaction_id1,
                                                     'credit'=>$capitalamount,
@@ -1275,12 +1232,12 @@ $Expenseglsubcode = 0;
                                 $this->view->noaccount=$transferedamount."Rs Has Been Transfered From Account =".$accountid."To Account =".$transaferaccount_id ;
                         }
 
-//                         else {
-//                                 $updateaccount = array('status_id' => 5);
-//                                 $fixedSavings->updateaccountnumber($accountid,$updateaccount);
-// 
-//                                 $updatefixedaccount = array('recordstatus_id' =>5,'fixedaccountstatus_id'=>5);
-//                                 $fixedSavings->updatefixedaccountnumber($accountid,$updatefixedaccount);
+                        else {
+                                $updateaccount = array('status_id' => 5);
+                                $fixedSavings->updateaccountnumber($accountid,$updateaccount);
+
+                                $updatefixedaccount = array('recordstatus_id' =>5,'fixedaccountstatus_id'=>5);
+                                $fixedSavings->updatefixedaccountnumber($accountid,$updatefixedaccount);
 
 // // // //                                 if($membertypeid=='3') {
 // // // //                                         $updategroupaccount = array('groupmember_account_status' =>5);
@@ -1309,7 +1266,7 @@ $Expenseglsubcode = 0;
                                         'created_by'=>1,
                                         'created_date'=>date("Y-m-d")
                                 ));
-                                $transaction_id1 = $fixedSavings->transactionInsert($savingsTransactiondata1);
+                                $transaction_id1=$fixedSavings->transactionInsert($savingsTransactiondata1);
                                 $fixedsavingsTransaction1 = (array('transaction_id'=>$transaction_id1,
                                         'account_id' =>$accountid,
                                         'fixed_paymentpaid_date'=>date("Y-m-d"),
@@ -1359,7 +1316,7 @@ $Expenseglsubcode = 0;
                             }
 
                             $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_to'=>$bankcashglsubcode,
+                                                    'glsubcode_id_to'=>'20',
                                                     'transaction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $capitalamount,
@@ -1373,12 +1330,14 @@ $Expenseglsubcode = 0;
 
                             $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_to'=>$bankglsubcode,
-                                                    'transaction_id'=>$transaction_id1,
+                                                    'tranasction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $capitalamount,
                                                     'record_status'=>'3'));
                         $bankassetsaccounts=$transactions->insertbankassetsaccounts($bankassetsaccountinsert);
                         }
+
+
 
                         if($currentdate<$maturedate) {
                             $bankincomeaccountinsert = (array('office_id' => $memberbranch_id,
@@ -1398,10 +1357,10 @@ $Expenseglsubcode = 0;
                                                     'recordstatus_id'=>'3'));
 
                         $bankexpenditureccounts=$transactions->insertbankexpenditureaccounts($bankexpenditureaccountinsert);
-//                         $this->_redirect('fixedtransaction/index');
+                        $this->_redirect('fixedtransaction/index');
                         }
-}
-        
+                }
+        }
 
         function statusAction()
         {
