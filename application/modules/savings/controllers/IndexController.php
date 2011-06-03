@@ -29,6 +29,11 @@ class Savings_IndexController extends Zend_Controller_Action{
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
                 $dbobj = new Savings_Model_Savings();
 
                     $status = $dbobj->getStatus('Savings');

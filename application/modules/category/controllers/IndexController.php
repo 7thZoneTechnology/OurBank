@@ -24,10 +24,15 @@ class Category_IndexController extends Zend_Controller_Action
 	public function init() 
 	{
                 $this->view->pageTitle='Category';
-                $globalsession = new App_Model_Users();
+               $globalsession = new App_Model_Users();
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
 //        if (($this->view->globalvalue[0]['id'] == 0)) {
 //            $this->_redirect('index/logout');
 //        }
@@ -52,11 +57,11 @@ class Category_IndexController extends Zend_Controller_Action
 	{
        		$this->view->title = "Category";
 		$this->view->pageTitle = "Category";
-//		$storage = new Zend_Auth_Storage_Session();
-//		$data = $storage->read();
-//		if(!$data){
-//			$this->_redirect('index/login');
-//		}
+		$storage = new Zend_Auth_Storage_Session();
+		$data = $storage->read();
+		if(!$data){
+			$this->_redirect('index/login');
+		}
 
         //  when delete particular category we should check that particular category is a basic one or not
                 if($this->_helper->flashMessenger->getMessages()){

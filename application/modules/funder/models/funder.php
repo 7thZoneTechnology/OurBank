@@ -48,6 +48,7 @@ class Funder_Model_funder extends Zend_Db_Table
 			->where('a.code like "%" ? "%"',$post['code'])
 			->where('a.name like "%" ? "%"',$post['name'])
 			->order(array('a.id DESC'));
+	//die($select->__toString($select));
 	//return funder searched details	
 	return $this->fetchAll($select);
     }

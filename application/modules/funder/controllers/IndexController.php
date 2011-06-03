@@ -30,9 +30,15 @@ class Funder_IndexController extends Zend_Controller_Action
     {
 	//to change language
         $this->view->pageTitle = $this->view->translate("Funder");
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
+       $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //         $this->_redirect('index/logout');
 //         }
@@ -71,6 +77,13 @@ class Funder_IndexController extends Zend_Controller_Action
             {
 		//fetch the filtered values from funder model
                 $result = $funder->searchDetails($searchForm->getValues());
+		$countresult=count($result);
+		if($countresult==0){
+		 $this->view->errormsg=1;
+		}
+		else {
+		$this->view->errormsg=0;
+		}
                 $page = $this->_getParam('page',1);
                 $paginator = Zend_Paginator::factory($result);
 

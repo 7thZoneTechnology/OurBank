@@ -26,11 +26,15 @@ class Office_IndexController extends Zend_Controller_Action
    {
         $this->view->pageTitle=$this->view->translate('New Office');
 	//check session and redirect
-        $storage = new Zend_Auth_Storage_Session();
-	$data = $storage->read();
-	if(!$data){
-            $this->_redirect('index/login');
-	}
+       $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
         $sessionName = new Zend_Session_Namespace('ourbank');
         $this->view->createdby = $sessionName->primaryuserid;
     }
