@@ -25,9 +25,11 @@ class Groupm_IndexController extends Zend_Controller_Action
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
-//      if (($this->view->globalvalue[0]['id'] == 0)) {
-//              $this->_redirect('index/logout');
-//         }
+	$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
 		$this->view->adm = new App_Model_Adm(); // create instance for common model page of adm
     }
 

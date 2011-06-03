@@ -8,8 +8,17 @@ class Groupprofile_IndexController extends Zend_Controller_Action
         $this->view->accounts = new Groupprofile_Model_Groupprofile();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $this->view->createdby = $sessionName->primaryuserid;
+
+                $this->view->globalvalue = $this->view->cl->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+                        }
+
+
         $finduser = $this->view->accounts->finduser($this->view->createdby);
     }
     public function indexAction()

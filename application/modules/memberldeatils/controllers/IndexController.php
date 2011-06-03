@@ -9,6 +9,17 @@ class Memberldeatils_IndexController extends Zend_Controller_Action
         $this->view->loanModel = new Memberldeatils_Model_Memberldeatils();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
+                $this->view->globalvalue = $this->view->cl->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+
+
+	$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+                        }	
+	}
     }
 
     public function indexAction() 

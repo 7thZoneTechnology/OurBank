@@ -27,9 +27,17 @@ class Familyform_IndexController extends Zend_Controller_Action
         $this->view->pageTitle='Membership';
 
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
-		$this->view->username = $this->view->globalvalue[0]['username'];
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+
+
+	$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+                        }
+
 		$this->view->adm = new App_Model_Adm();   	
 	}
 
@@ -37,21 +45,23 @@ class Familyform_IndexController extends Zend_Controller_Action
 	{
 		$familyForm = new Familyform_Form_Familyform();
 		$this->view->form = $familyForm;
+		        $id=$this->_getParam('membercode');
+			$this->view->id=$id;
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
                 $formData = $this->_request->getPost();
                 if ($familyForm->isValid($formData)) {
 
-		$id = $this->_getParam('membercode');
-		
-// 		if($id=="" ) { echo "<font color='red'> record is invalid </font>";} else {
-		if($id=="") 		
-		{		
- 		$familydetails = new Familyform_Model_Familyform();
+                $familydetails = new Familyform_Model_Familyform(); //create instance for familyform model page
  		$result = $familydetails->getFamilydetails($id);
-		$this->view->familydetails = $result;
-        $this->view->family =$familydetails->getfamily($id);
-        $this->view->livingassets=$familydetails->getlivingassetsdetails($id);
-        $this->view->nonlivingassets=$familydetails->getnonliving();
+ 		       
+		
+		if($result)    // 		//if($id=="$result") 
+		{		
+ 		
+		$this->view->familydetails = $result;   //
+                $this->view->family =$familydetails->getfamily($id);
+                $this->view->livingassets=$familydetails->getlivingassetsdetails($id);
+                $this->view->nonlivingassets=$familydetails->getnonliving();
 		$this->view->agriculture=$familydetails ->getagriculturedetails($id);
 		$this->view->agritotal =$familydetails-> getagritotal($id);
 		$this->view->loanrequest =$familydetails-> Searchloanprocess($id);
