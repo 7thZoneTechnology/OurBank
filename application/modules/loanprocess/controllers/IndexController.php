@@ -3,24 +3,17 @@ class Loanprocess_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-         $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
- 
-                $storage = new Zend_Auth_Storage_Session();
-                $data = $storage->read();
-                if(!$data){
-                 $this->_redirect('index/login');
-                 }
-        
         $this->view->pageTitle = 'Loan request';
         $this->view->title = 'Accounting';
         $this->view->accounts = new Loanprocess_Model_Loanprocess();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $this->view->createdby = $sessionName->primaryuserid;
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+      //  $sessionName = new Zend_Session_Namespace('ourbank');
+       // $this->view->createdby = $sessionName->primaryuserid;
         $finduser = $this->view->accounts->finduser($this->view->createdby);
         if ($finduser) {
             $levelid=$finduser[0]['officetype_id'];
@@ -144,7 +137,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                         'expecting_inperiod' => intval($this->_request->getParam('period')),
                         'created_date'=>date('Y-m-d'),
                         'created_by'=>$this->view->createdby,
-                        'status'=>5);
+                        'status'=>1);
         $this->view->adm->addRecord('ourbank_loanprocess',$data);
         $this->_helper->flashMessenger->addMessage('Your loan request accepted');
         $this->_helper->redirector('index');

@@ -26,20 +26,6 @@ class Personalsavings_IndexController extends Zend_Controller_Action
       	$this->view->pageTitle = "Personal Savings";
         $this->view->title = "Reports";
         $this->view->type = "generalFields";
-<<<<<<< HEAD
-=======
-        $this->view->dc = new App_Model_dateConvertor();
-	$globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-	
-	$storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-            $this->_redirect('index/login');
-        }
->>>>>>> c5ebf2931715472acb03781dc99464e411a337d3
      }
 
      function indexAction()

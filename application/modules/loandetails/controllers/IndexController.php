@@ -24,7 +24,6 @@ class Loandetails_IndexController extends Zend_Controller_Action
         //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('Family loan details');
         $globalsession = new App_Model_Users();
-<<<<<<< HEAD
         $this->view->globalvalue = $globalsession->getSession();/*
         $this->view->createdby = $this->view->globalvalue[0]['id'];
         $this->view->username = $this->view->globalvalue[0]['username'];*/
@@ -33,18 +32,9 @@ class Loandetails_IndexController extends Zend_Controller_Action
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //             $this->_redirect('index/logout');
 //         }
-=======
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
-        $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-            $this->_redirect('index/login');
-        }
->>>>>>> c5ebf2931715472acb03781dc99464e411a337d3
         $this->view->adm = new App_Model_Adm();
         $this->view->familycommon = new Familycommonview_Model_familycommonview();
+
     }
 
     public function indexAction() 

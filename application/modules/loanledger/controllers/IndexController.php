@@ -9,7 +9,6 @@ class Loanledger_IndexController extends Zend_Controller_Action
         $this->view->loanModel = new Loanledger_Model_loandetails();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-<<<<<<< HEAD
         
          $globalsession = new App_Model_Users();
                 $this->view->globalvalue = $globalsession->getSession();// get session values
@@ -21,18 +20,6 @@ class Loanledger_IndexController extends Zend_Controller_Action
                 if(!$data){
                  $this->_redirect('index/login');
                  }
-=======
-		$globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-	
-	$storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-            $this->_redirect('index/login');
-        }
->>>>>>> c5ebf2931715472acb03781dc99464e411a337d3
     }
 
     public function indexAction() 

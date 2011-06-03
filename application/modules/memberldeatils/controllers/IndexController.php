@@ -20,7 +20,7 @@ class Memberldeatils_IndexController extends Zend_Controller_Action
            		 $this->_redirect('index/login');
                         }	
 	}
-    }
+    
 
     public function indexAction() 
     {
