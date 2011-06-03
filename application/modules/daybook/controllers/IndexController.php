@@ -30,9 +30,18 @@ class Daybook_IndexController extends Zend_Controller_Action
             $this->view->pageTitle=$this->view->translate("Day book report");
             $this->view->type = "financialReports";
             $this->view->dateconvert=new App_Model_dateConvertor();
-            		$this->view->adm = new App_Model_Adm();
+			$this->view->adm = new App_Model_Adm();
+	$globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+	
+	$storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
 
-            
     }
     //view action
     function indexAction() {

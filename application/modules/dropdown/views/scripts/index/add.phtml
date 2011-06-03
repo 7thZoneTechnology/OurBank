@@ -1,4 +1,4 @@
-    <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-latest.js"></script>
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-latest.js"></script>
 
 <script type="text/javascript">
 function getstate(state,path) { 
@@ -8,6 +8,17 @@ function getstate(state,path) {
 	}
 }
 </script>
+
+
+<script type="text/javascript">
+function getdistrict(district,path) { 
+	if(district) {
+	 	targeturl=path+"/dropdown/index/taluk?district="+district;
+		$.ajax({ url: targeturl, success: function(data){ $("#districtdiv").html(data) }});
+	}
+}
+</script>
+
 <script type="text/javascript">
 function gettaluk(taluk,path) { 
 	if(taluk) {
@@ -16,14 +27,38 @@ function gettaluk(taluk,path) {
 	}
 }
 </script>
+
 <script type="text/javascript">
-function getpanchayath(gillapanchayath,path) { 
+function gethobli(hobli,path) { 
+	if(hobli) {
+	 	targeturl=path+"/dropdown/index/gillapanchayath?hobli="+hobli;
+		$.ajax({ url: targeturl, success: function(data){ $("#hoblidiv").html(data) }});
+	}
+}
+</script>
+
+<script type="text/javascript">
+function getgillapanchayath(gillapanchayath,path) {
 	if(gillapanchayath) {
 	 	targeturl=path+"/dropdown/index/village?gillapanchayath="+gillapanchayath;
 		$.ajax({ url: targeturl, success: function(data){ $("#gillapanchayathdiv").html(data) }});
 	}
 } 
 </script>
+
+<script type="text/javascript">
+function getvillage(village,path) {
+	if(village) {
+	 	targeturl=path+"/dropdown/index/gillapanchayath?village="+village;
+		$.ajax({ url: targeturl, success: function(data){ $("#villagediv").html(data) }});
+	}
+} 
+</script>
+
+
+
+
+
 <form action="<?php echo $this->baseUrl();?>/dropdown/index/add/id/<?php echo $this->id; ?>/name/<?php  echo $this->tableName; ?>" method="POST">
  	<div id="container-1">
 		<div class="profile_tab">
@@ -57,7 +92,7 @@ function getpanchayath(gillapanchayath,path) {
 			</tr>
 			<tr>
 				<td>Taluk</td>
-                <TD colspan="2"><?php echo $this->form->taluk;?></TD>
+                <TD colspan="2" id="districtdiv"><?php echo $this->form->taluk;?></TD>
 			</tr>
 			<tr>
 				<?php }?>
@@ -71,7 +106,7 @@ function getpanchayath(gillapanchayath,path) {
 			</tr>
 			<tr>
 				<td>Taluk</td>
-                <TD colspan="2"><?php echo $this->form->taluk;?></TD>
+                <TD colspan="2" id="districtdiv"><?php echo $this->form->taluk;?></TD>
 			</tr><tr>
 				<td>Hobli</td>
                 <TD colspan="2"><div id="talukdiv"><?php echo $this->form->hobli;?></div></TD>
@@ -85,7 +120,7 @@ function getpanchayath(gillapanchayath,path) {
                 <TD colspan="2"><div id="statediv"><?php echo $this->form->district;?></div></TD></tr>
 			<tr>
 				<td>Taluk</td>
-                <TD colspan="2"><?php echo $this->form->taluk;?></TD>
+                <TD colspan="2" id="districtdiv"><?php echo $this->form->taluk;?></TD>
 			</tr>
 <tr>
 				<td>Hobli</td>
@@ -94,7 +129,7 @@ function getpanchayath(gillapanchayath,path) {
 
 <tr>
 				<td>Grama panchayath</td>
-                <TD colspan="2"><?php echo $this->form->gillapanchayath;?></div></TD>
+                <TD colspan="2" id="hoblidiv"><?php echo $this->form->gillapanchayath;?></div></TD>
 			</tr>
 			
 				<?php }?>
@@ -106,7 +141,7 @@ function getpanchayath(gillapanchayath,path) {
                 <TD colspan="2"><div id="statediv"><?php echo $this->form->district;?></div></TD></tr>
 			<tr>
 				<td>Taluk</td>
-                <TD colspan="2"><?php echo $this->form->taluk;?></TD>
+                <TD colspan="2" id="districtdiv"><?php echo $this->form->taluk;?></TD>
 			</tr>
 <tr>
 				<td>Hobli</td>
@@ -115,7 +150,7 @@ function getpanchayath(gillapanchayath,path) {
 
 <tr>
 				<td>Grama panchayath</td>
-                <TD colspan="2"><?php echo $this->form->gillapanchayath;?></TD>
+                <TD colspan="2" id="hoblidiv"><?php echo $this->form->gillapanchayath;?></TD>
 			</tr>
 			<tr>
 				<td>Village</td>
