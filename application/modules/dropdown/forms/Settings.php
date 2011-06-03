@@ -28,8 +28,12 @@ public function __construct($path){
            $bank = $formfield->field('Select','bank','','','','',true,'','','','','',0,0);
 
         	$state->setAttrib('onchange', 'getstate(this.value,"'.$path.'")');
+			$district->setAttrib('onchange', 'getdistrict(this.value,"'.$path.'")');
         	$taluk->setAttrib('onchange', 'gettaluk(this.value,"'.$path.'")');
-        	$gillapanchayath->setAttrib('onchange', 'getpanchayath(this.value,"'.$path.'")');
+        	$hobli->setAttrib('onchange', 'gethobli(this.value,"'.$path.'")');
+        	$gillapanchayath->setAttrib('onchange', 'getgillapanchayath(this.value,"'.$path.'")');
+			$village->setAttrib('onchange', 'getvillage(this.value,"'.$path.'")');
+
         	$bank->setAttrib('onchange', 'getbank(this.value,"'.$path.'")');
 
 

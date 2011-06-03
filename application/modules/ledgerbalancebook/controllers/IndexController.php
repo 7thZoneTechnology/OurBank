@@ -4,10 +4,20 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
     function init()
     { 
 	$this->view->pageTitle = "Ledger balancebook";
- $this->view->title = "Reports";
+	 $this->view->title = "Reports";
         $this->view->type = "generalFields";
         $this->view->adm = new App_Model_Adm();
 	$this->view->dateconvertor = new App_Model_dateConvertor();
+$globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+	
+	$storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
     }
 	
     function indexAction()
