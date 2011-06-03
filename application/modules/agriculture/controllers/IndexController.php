@@ -27,12 +27,14 @@ class Agriculture_IndexController extends Zend_Controller_Action
 //it is create session and implement ACL concept...
         $this->view->pageTitle=$this->view->translate('Agriculture');
        $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//             $this->_redirect('index/logout');
-//         }
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $this->view->adm = new App_Model_Adm();
     }
 

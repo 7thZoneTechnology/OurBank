@@ -25,10 +25,15 @@ class crop_IndexController extends Zend_Controller_Action{
     public function init() 
 	{
         $this->view->pageTitle=$this->view->translate('Membership');
-       $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $this->view->id=$subId=$this->_getParam('id');
         $this->view->subId=$subId=$this->_getParam('subId');
         $this->view->modId=$modId=$this->_getParam('modId');

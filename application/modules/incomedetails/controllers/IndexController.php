@@ -32,9 +32,11 @@ class Incomedetails_IndexController extends Zend_Controller_Action
         $sessionName = new Zend_Session_Namespace('ourbank');
         $this->view->createdby = $sessionName->primaryuserid;
         $this->view->username = $this->view->globalvalue[0]['username'];
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//             $this->_redirect('index/logout');
-//         }
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $this->view->adm = new App_Model_Adm();
         $this->view->familycommon = new Familycommonview_Model_familycommonview();
     }

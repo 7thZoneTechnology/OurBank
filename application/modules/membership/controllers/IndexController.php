@@ -25,10 +25,16 @@ class Membership_IndexController extends Zend_Controller_Action {
 
     public function init() {
         $this->view->pageTitle='Membership';
-	$sessionName = new Zend_Session_Namespace('ourbank');
-        $userid=$this->view->createdby = $sessionName->primaryuserid;
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+        $loginname=$globalsession->username($this->view->createdby);
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         foreach($loginname as $loginname) 
 	{
           $this->view->username=$loginname['username'];
