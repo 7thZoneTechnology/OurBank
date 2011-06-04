@@ -196,6 +196,8 @@ class Grouplaw_IndexController extends Zend_Controller_Action
 				$page->setFont($font, 9)
                     ->drawText(''.$member['fathername'].'',200,$y1);
 
+// 				$y1=$y1-10;
+//                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
 
 	}
 }
