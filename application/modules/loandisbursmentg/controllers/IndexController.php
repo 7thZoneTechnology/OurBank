@@ -5,7 +5,6 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
     	$this->view->title = "Loans";
         $this->view->pageTitle = "Loans disbursement";
 	$this->view->type='loans';
-<<<<<<< HEAD
 	$globalsession = new App_Model_Users();
         $this->view->globalvalue = $globalsession->getSession();// get session values
         $this->view->createdby = $this->view->globalvalue[0]['id'];
@@ -15,23 +14,10 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
         if(!$data){
             $this->_redirect('index/login');
         }
-=======
->>>>>>> c2b297ec8e2d968919cf910ee2d7a8b50b342452
         $this->view->loanModel = new Loandisbursmentg_Model_loan();
         $this->view->cl = new App_Model_Users ();
         $this->view->dateconvector = new App_Model_dateConvertor();
         $this->view->adm = new App_Model_Adm ();
-        
-         $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
- 
-                $storage = new Zend_Auth_Storage_Session();
-                $data = $storage->read();
-                if(!$data){
-                 $this->_redirect('index/login');
-                 }
 
     }
     public function indexAction() 
@@ -56,7 +42,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             }
                             $this->_redirect("/loandisbursmentg/index/disbursment/accNum/".base64_encode($accountnumber));
                         } else {
-                        $this->view->accounts = $this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
+                        $this->view->accounts = $search;
                         }
 		   }
 		}
@@ -68,13 +54,29 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
     {
         $this->view->pageTitle='Loan disbursement';
         $this->view->accNum = $accNum = base64_decode($this->_request->getParam('accNum'));
-        $this->view->details = $this->view->loanModel->searchaccounts($accNum);
+        $this->view->details = $details= $this->view->loanModel->searchaccounts($accNum);
+        $this->view->disbursedetails = $this->view->loanModel->getdisbursementdetails($accNum);
+        foreach($this->view->details as $details) {
+        $this->view->loanamount=$loanamount=$details->amount;
+        }
+        $this->view->disbursed=$disbursed=0;
+        if($this->view->disbursedetails){
+        foreach($this->view->disbursedetails as $disbursedbalance){
+        $this->view->disbursed=$disbursed+=$disbursedbalance['amount_disbursed'];
+        $firstdisbursedate[]=$disbursedbalance['loandisbursement_date'];
+        }
+        }
+        else{ $this->view->disbursed=$disbursed=0; }
+//         print_r($firstdisbursedate);
+        $this->view->balance=$balance=$loanamount-$disbursed;
         $this->view->fee = $this->view->loanModel->getFee($accNum);
-        $loanForm = $this->view->loan = new Loandisbursmentg_Form_loandisbursement();
+        $loanForm = $this->view->loan = new Loandisbursmentg_Form_loandisbursement($balance);
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $formData = $this->_request->getPost();
             if ($loanForm->isValid($formData)) {
                 $accNum = base64_decode($this->_request->getParam('accNum'));
+                $disbursedate=$this->view->dateconvector->phpmysqlformat($this->_request->getPost('date'));
+                $disburseamount=$this->_request->getPost('Amount');
                 //Make the loan acc active
                 $this->view->loanModel->active($accNum);
                 $search = $this->view->loanModel->searchaccounts($accNum);
@@ -98,7 +100,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                     $feeGl = $fee->feeGl;
                     //1 is flat 2 is Percentage
                     if ($feeType == 2) {
-                        $feeamount = $feeamount + (($amount * $feeValue)/100);
+                        $feeamount = $feeamount + (($disburseamount * $feeValue)/100);
                     } else if ($feeType == 1) {
                         $feeamount = $feeamount + $feeValue;
                     }
@@ -126,12 +128,13 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             'recordstatus_id'=>3);
                 $tranID = $this->view->adm->addRecord('ourbank_loan_disbursement',$input);
                 if ($intType == 2) {
+                    if($loanamount==$balance){
                     $emi =0;$roi=0;
-                    $cb=$amount;
+                    $cb=$disburseamount;
                     $date = $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date'));
                     //EMI ie., decling capital
                     $rpm = $interest/100/12;
-                    $emi = (($amount)*($rpm)*pow((1+$rpm),$installments))/(pow((1+$rpm),$installments)-1);
+                    $emi = (($disburseamount)*($rpm)*pow((1+$rpm),$installments))/(pow((1+$rpm),$installments)-1);
                     for ($i=0; $i<$installments; $i++) {
                         $date = $this->dateAction($date,30,0,0);
                         //$roi = rate of interest
@@ -150,24 +153,84 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                                         'created_by' => 1);
                     $this->view->adm->addRecord('ourbank_installmentdetails',$instl);
                     }
-                } else if ($intType == 1) {
-                    $cb=$amount;
+                    }
+                    else
+                    {
+                    $lastpaiddetails=$this->view->loanModel->findlastpaid($accNum);
+                    $remaininginstallment=$this->view->loanModel->remaininginstallmemnt($accNum);
+                    $newstart=$remaininginstallment[0]['installment_id'];
+
+                    if($lastpaiddetails){
+                    $oldpaid=$lastpaiddetails[0]['paidamount'];
+                    $oldbalance=$disbursed-$oldpaid;
+                    $remaindays=$this->view->dateconvector->dateDiff($disbursedate,$lastpaiddetails[0]['paid_date']);
+                    $oldinterest=($oldbalance*$remaindays*$interest)/36500;
+                    $totaloldamount=$oldbalance+$oldinterest;
+                    $newinstallment=$remaininginstallment[0]['countnumber'];
+                    }
+                    else
+                    {
+                    $withoutpaid=$this->view->loanModel->findwithoutpaid($accNum);
+                    $oldbalance=$this->view->disbursed;
+                    $remaindays=$this->view->dateconvector->dateDiff($disbursedate,$firstdisbursedate[0]);
+                    $oldinterest=($oldbalance*$remaindays*$interest)/36500;
+                    $totaloldamount=$oldbalance+$oldinterest;
+                    $newinstallment=$installments;
+                    }
+                    $newamount=$totaloldamount+$disburseamount;
+                    $emi =0;$roi=0;
+                    $cb=$newamount;
                     $date = $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date'));
-                    $installments = 1; // single installment 
-                    //PTR
-                    $si = ($amount*1*$interest)/(100*365); // interest per day
-                    $capital = $si+$amount;
-                    $status = 4;
-                    $instl = array('account_id' => $accId,
-                                        'installment_id' => 1,
+                    //EMI ie., decling capital
+                    $rpm = $interest/100/12;
+                    $emi = (($newamount)*($rpm)*pow((1+$rpm),$newinstallment))/(pow((1+$rpm),$newinstallment)-1);
+
+                    $updatevalue = array('installment_status'=>7);
+                    $this->view->loanModel->updateold($accId,$updatevalue);
+
+                    for ($i=$newstart-1; $i<$installments; $i++) {
+                        $date = $this->dateAction($date,30,0,0);
+                        //$roi = rate of interest
+                        $status = ($i == $newstart-1) ? 4: 3;
+                        $roi =$cb*$rpm;
+                        $cb = $cb - ($emi - $roi);
+                        //echo "<br>Date: ".$date." Roi: ".$roi." Emi: ".$emi." Balance: ".$cb."<br>";
+                        $instl = array('account_id' => $accId,
+                                        'installment_id' => $i+1,
                                         'installment_date' => $date,
-                                        'installment_amount' => $capital,
-                                        'installment_interest_amount'=> $si,
-                                        'installment_principal_amount' => $amount,
-                                        'reduced_prinicipal_balance'=> $capital,
+                                        'installment_amount' => $emi,
+                                        'installment_interest_amount'=> $roi,
+                                        'installment_principal_amount' => round(($emi - $roi),2),
+                                        'reduced_prinicipal_balance'=> round($cb,2),
                                         'installment_status' => $status,
                                         'created_by' => 1);
                     $this->view->adm->addRecord('ourbank_installmentdetails',$instl);
+                    }
+                    }
+                }
+
+                if($intType == 1){
+                    if($this->view->disbursedetails){
+                        $findmax=$this->view->loanModel->maxid($accNum);
+                        if($findmax){
+                        $maxid=$findmax[0]['maxid'];
+                        }
+                        else { $maxid=1; }
+                        $paiddetails=$this->view->loanModel->declainedpaid($accNum,$maxid);
+                        if($paiddetails){
+                            $reducedprincipal=$paiddetails[0]['reduced_prinicipal_balance'];
+                            $remaindays=$this->view->dateconvector->dateDiff($disbursedate,$paiddetails[0]['installment_date']);
+                            $oldinterest=($reducedprincipal*$remaindays*$interest)/36500;
+                            $totaloldamount=$reducedprincipal+$oldinterest;
+                            $newbalance=$totaloldamount+$disburseamount;
+                            $updatedata=array('reduced_prinicipal_balance'=>$newbalance,
+                                              'installment_amount'=>$newbalance+$paiddetails[0]['paid_amount'],
+                                              'installment_interest_amount'=>$oldinterest,
+                                              'installment_principal_amount'=>$newbalance-$oldinterest
+                                             );
+                            $this->view->loanModel->updateinstallment($paiddetails[0]['account_id'],$maxid,$updatedata);
+                        }
+                    }
 
                 }
                 $sglData = $this->view->loanModel->getSavingGl($sAccId);

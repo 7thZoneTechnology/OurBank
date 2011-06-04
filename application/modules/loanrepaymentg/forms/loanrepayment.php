@@ -24,9 +24,9 @@ class Loanrepaymentg_Form_loanrepayment extends Zend_Form {
     }
 
 
-    public function __construct($p,$int,$totalAmt,$accNum)
+    public function __construct($accNum)
     {
-        parent::__construct($p,$int,$totalAmt,$accNum);
+        parent::__construct($accNum);
 
             $date = new ZendX_JQuery_Form_Element_DatePicker('date');
             $date->setAttrib('class', '');
@@ -40,22 +40,27 @@ class Loanrepaymentg_Form_loanrepayment extends Zend_Form {
                    ->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
 
             $transactionMode = $formfield->field('Select','transactionMode','','','txt_put','',true,'','','','','',0,'');
-            $transactionMode->setAttrib('onchange','toggleField();');
+//             $transactionMode->setAttrib('onchange','toggleField();');
+            $transactionMode->setAttrib('class','paymenttype');
+        $transactionMode->setAttrib('id', 'paymenttype');
+
+            $othertext = $formfield->field('Text','othertext','','','txt_put','',false,'','','','','',0,'');
+
+
 
             $transactionModeDetails = $formfield->field('Textarea','paymenttype_details','','','txt_put','',false,'','','',1,20,'',0,'');
             $transactionModeDetails->setAttrib('style','display:none');
 
             $description = $formfield->field('Textarea','description','','','txt_put','',true,'','','',2,20,'',0,'');
-            $p = $formfield->field('Text','p','','','txt_put','','','','','','','',0,$p);
-            $p->setAttrib('disable','true');
-            $int = $formfield->field('Text','int','','','txt_put','','','','','','','',0,$int);
-            $int->setAttrib('disable','true');
-            $totalAmt = $formfield->field('Text','totalAmt','','','txt_put','','','','','','','',0,$totalAmt);
-            $totalAmt->setAttrib('disable','true');
+//             $p = $formfield->field('Text','p','','','txt_put','','','','','','','',0,$p);
+//             $p->setAttrib('disable','true');
+//             $int = $formfield->field('Text','int','','','txt_put','','','','','','','',0,$int);
+//             $int->setAttrib('disable','true');
+//             $totalAmt = $formfield->field('Text','totalAmt','','','txt_put','','','','','','','',0,$totalAmt);
+//             $totalAmt->setAttrib('disable','true');
             // hidden feilds
             $accNum = $formfield->field('Hidden','accNum','','','txt_put','',true,'','','','','',0,$accNum);
             $sms = new Zend_Form_Element_Checkbox('sms');
-
 
             $submit = new Zend_Form_Element_Submit('Submit');
             $submit->setAttrib('id', 'button');
@@ -63,7 +68,7 @@ class Loanrepaymentg_Form_loanrepayment extends Zend_Form {
             $back = new Zend_Form_Element_Submit('Back');
             $back->setAttrib('id', 'button2');
 
-            $this->addElements(array($date,$amount,$description,$transactionMode,$transactionModeDetails,
-								$submit,$accNum,$back,$sms,$p,$int,$totalAmt));
+            $this->addElements(array($date,$othertext,$amount,$description,$transactionMode,$transactionModeDetails,
+								$submit,$accNum,$back,$sms));
 		}
 	}

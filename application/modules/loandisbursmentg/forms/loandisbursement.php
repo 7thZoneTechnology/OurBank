@@ -4,10 +4,10 @@ class Loandisbursmentg_Form_loandisbursement extends Zend_Form
     public function init()
     {
     }
-    public function __construct()
+    public function __construct($loanamount)
     {
         Zend_Dojo::enableForm($this);
-        parent::__construct();
+        parent::__construct($loanamount);
 
         $date = new ZendX_JQuery_Form_Element_DatePicker('date');
         $date->setAttrib('class', 'txt_put');
@@ -16,9 +16,9 @@ class Loandisbursmentg_Form_loandisbursement extends Zend_Form
 
         $Amount = new Zend_Form_Element_Text('Amount');
         $Amount->setAttrib('class', 'textfield');
-        $graterthan=new Zend_Validate_GreaterThan(0);
+        $lessthan=new Zend_Validate_LessThan(array('max' => $loanamount+1,'inclusive' =>false));
         $Amount->setRequired(true)
-                ->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
+                ->addValidators(array(array('NotEmpty'),array('Float'),array($lessthan,true)));
 
         $description = new Zend_Form_Element_Textarea('description');
         $description->setAttrib('rows', '2');
