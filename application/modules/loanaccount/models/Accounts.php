@@ -36,9 +36,13 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 from  
                 ourbank_familymember a,
                 ourbank_office b,
-                ourbank_master_membertypes c
+                ourbank_master_membertypes c,
+                ourbank_group e,
+                ourbank_groupmembers d
                 where
+                a.id=d.member_id and
                 a.village_id= b.id and
+                d.group_id= e.id and
                 (a.name like '$code' '%'  or a.familycode like '$code' '%') AND
                 substr(a.familycode,5,1) = c.id
                 union
@@ -52,12 +56,14 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 from
                 ourbank_group a,
                 ourbank_office b,
-                ourbank_master_membertypes c
+                ourbank_master_membertypes c,
+                ourbank_groupmembers d
                 where
                 a.village_id= b.id and
+                d.group_id= a.id and
                 (a.name like '$code' '%'  or a.groupcode like '$code' '%') AND
                 substr(a.groupcode,5,1) = c.id";
-                  //   echo $sql;
+//         echo $sql;
         $result = $this->db->fetchAll($sql,array($code));
         return $result;
     }
@@ -121,7 +127,7 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
 	        D.status =5 AND
 		B.category_id = 2
 		UNION
-		select 
+		select
                 A.name as name,
                 A.id as id
                 from 
@@ -181,6 +187,7 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 B.product_id = C.id AND
                 C.category_id = 2
                 ";
+//         echo $sql;
         $result = $db->fetchAll($sql,array($code));
         return $result;
     }
@@ -243,7 +250,7 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 F.id = E.village_id AND
                 B.id = C.productsoffer_id 
                 ";
-        //echo $sql;
+//        echo $sql;
         $result = $db->fetchAll($sql,array($productId,$code));
         return $result;
     }
@@ -289,14 +296,13 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
     
     }
 
-    public function Updatestatus($memberId){
+    public function Updatestatus($memberId,$type){
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $data = array('status'=> 0);
-        $where='member_id='.$memberId;
+        $where='member_id='.$memberId.' and membertype='.$type;
         $this->db->update('ourbank_loanprocess',$data,$where);
-        return $result;
     }
-    
+
     public function savingAcc($code)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -327,5 +333,32 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 ";
         $result = $db->fetchAll($sql,array($code));
         return $result;
+    }
+
+    public function getmemberlist($memberId,$typeID)
+    {
+        if($typeID == 2 or $typeID == 3){
+            $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_group'),array('id'),array('id as groupid'))
+            ->join(array('b' => 'ourbank_groupmembers'),'a.id=b.group_id',array('b.member_id as id'))
+            ->join(array('c'=>'ourbank_loanprocess'),'c.member_id=b.member_id',array('c.member_id as memberid'))
+            ->where('c.membertype=?',$typeID)
+            ->where('c.status=5')
+            ->where('a.id=?',$memberId);
+        }
+        if($typeID ==1){
+            $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_familymember'),array('id'),array('id as groupid'))
+            ->join(array('b' => 'ourbank_groupmembers'),'a.id=b.member_id',array('b.member_id as id'))
+            ->join(array('c'=>'ourbank_loanprocess'),'c.member_id=b.member_id',array('c.member_id as memberid'))
+            ->where('c.membertype=?',$typeID)
+            ->where('c.status=5')
+            ->where('a.id=?',$memberId);
+        }
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray(); // return group member details
     }
 }
