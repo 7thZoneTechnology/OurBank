@@ -80,6 +80,19 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
+
+	public function declainedpaid($accNum) 
+	{
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('A' => 'ourbank_accounts'),array('id'),array('id'))
+			->join(array('B' => 'ourbank_loan_repayment'),'A.id = B.account_id')
+			->where('A.account_number = ?',$accNum);
+		//die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
+
 	public function paid($accNum) 
 	{
         $db = Zend_Db_Table::getDefaultAdapter();

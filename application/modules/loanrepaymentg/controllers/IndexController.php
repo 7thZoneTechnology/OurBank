@@ -28,6 +28,11 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
         $this->view->globalvalue = $globalsession->getSession();// get session values
         $this->view->createdby = $this->view->globalvalue[0]['id'];
         $this->view->username = $this->view->globalvalue[0]['username'];
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $this->view->loanModel = new Loanrepaymentg_Model_Repayment();
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
@@ -41,6 +46,10 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
         if($errormsg==1)
         {
             echo "<font color='red'>Invalid account number</font>"; 
+        }
+        if($errormsg==2)
+        {
+            echo "<font color='red'>Value is required and can't be empty</font>";
         }
     }
 
@@ -178,8 +187,11 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                 }
             }
         }
-        else {
-                $this->_redirect("/loanrepaymentg/index/index/msg/1");
+        else {  if(!$accNum)
+                { $errorno=2; }
+                else 
+                {   $errorno=1; }
+                $this->_redirect("/loanrepaymentg/index/index/msg/".$errorno);
         }
     } 
     }

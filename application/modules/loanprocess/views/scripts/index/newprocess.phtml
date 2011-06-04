@@ -1,4 +1,4 @@
-<?php if(!$this->result) { ?>
+<?php if(!$this->result or !$this->group) { ?>
 <fieldset>
 	<legend>Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/loanprocess/index/newprocess" method="POST">

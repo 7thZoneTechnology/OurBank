@@ -12,8 +12,11 @@ class Loanprocess_IndexController extends Zend_Controller_Action
         $this->view->globalvalue = $globalsession->getSession();// get session values
         $this->view->createdby = $this->view->globalvalue[0]['id'];
         $this->view->username = $this->view->globalvalue[0]['username'];
-      //  $sessionName = new Zend_Session_Namespace('ourbank');
-       // $this->view->createdby = $sessionName->primaryuserid;
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $finduser = $this->view->accounts->finduser($this->view->createdby);
         if ($finduser) {
             $levelid=$finduser[0]['officetype_id'];
@@ -87,7 +90,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                     $Activemembers = $this->view->accounts->searchActive($id,$Type);
 
                     if($Activemembers){
-                     echo "You have already requested loan";
+                     echo "<font color='red'>You have already requested loan </font>";
                     }
                     else{
 
@@ -118,7 +121,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                     }
                     }
                     else{
-                    echo "This member doesn't belongs to any group";
+                    echo "<font color='red'>This member doesn't belongs to any group </font>";
                     }
 		}
         }
@@ -137,7 +140,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                         'expecting_inperiod' => intval($this->_request->getParam('period')),
                         'created_date'=>date('Y-m-d'),
                         'created_by'=>$this->view->createdby,
-                        'status'=>5);
+                        'status'=>1);
         $this->view->adm->addRecord('ourbank_loanprocess',$data);
         $this->_helper->flashMessenger->addMessage('Your loan request accepted');
         $this->_helper->redirector('index');
@@ -200,17 +203,17 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                 }
                 if(!$this->view->result)
                 {
-                echo "Already done by".$this->view->levelname;
+                echo "<font color='red'>Already done by ".$this->view->levelname."</font>";
                 }
             }
             else
                {
-                    echo "No request for this member code or group code";
+                    echo "<font color='red'>No request for this member code or group code</font>";
                }
             }
             else
             {
-                echo "Enter valid member code or group code";
+                echo "<font color='red'>Enter valid member code or group code</font>";
             }
             }
         }

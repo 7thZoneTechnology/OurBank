@@ -9,6 +9,11 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
         $this->view->globalvalue = $globalsession->getSession();// get session values
         $this->view->createdby = $this->view->globalvalue[0]['id'];
         $this->view->username = $this->view->globalvalue[0]['username'];
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
         $this->view->loanModel = new Loandisbursmentg_Model_loan();
         $this->view->cl = new App_Model_Users ();
         $this->view->dateconvector = new App_Model_dateConvertor();
@@ -20,7 +25,6 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
 	$loansearch = new Loandisbursmentg_Form_Search();
 	$this->view->form = $loansearch;
 	$this->view->transactiontype='Loan transaction';
-
 
 	if ($this->_request->isPost() && $this->_request->getPost('Search')) {
     	    $formData = $this->_request->getPost();
@@ -322,7 +326,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             // Insertion into Assets ourbank_Assets fee Cr entry
             // Bank Liabality Cr entry
             $fee = array('office_id'=>$officeid,
-                        'glsubcode_id_to'=>$feeGl,
+                        //'glsubcode_id_to'=>$feeGl,
                         'transaction_id'=>$stranID,
                         'credit' => $feeamount,
                         'record_status'=>'3');

@@ -115,8 +115,7 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
 	$sql = "select 
 	        A.name as name,
 	        A.value as value,
-	        A.amountype_id as amountype_id,
-	        A.glsubcode_id as feeGl
+	        A.amountype_id as amountype_id
 	        from 
 	        ourbank_fee A,
 	        ourbank_accountfee B,
@@ -126,6 +125,7 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
 	        B.account_id = C.id AND
 	        B.fee_id = A.id
 	        ";
+	//echo $sql;
 	$result = $db->fetchAll($sql);
 	return $result;
     }
