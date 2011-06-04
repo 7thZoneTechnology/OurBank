@@ -5,9 +5,16 @@ class Dropdown_IndexController extends Zend_Controller_Action
     {
         $this->view->pageTitle='Drop Down Settings';
 		$this->view->adm = new App_Model_Adm();   	
-        $sessionName = new Zend_Session_Namespace('ourbank');
-
-	$this->view->createdby = $sessionName->primaryuserid;
+        $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+	
+		$storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
 
     }
   public function newtableAction() 
@@ -45,22 +52,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		foreach($mastertable as $mastertable) {
 				$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
 			}		
-// 			if ($this->_request->isPost() && $this->_request->getPost('Go')) {
-// 	    	if ($this->_request->isPost()) {
-// 				$formData = $this->_request->getPost();
-// 					if ($addform->isValid($formData)) {
-//   				$tablename=$this->_request->getParam('name');
-// 	       $this->view->tableName = $tablename;
-//  		$tabledata = new Dropdown_Model_Dropdown();
-//         $tabledatas = $tabledata->tabledata($tablename);
-// 
-//         $this->view->tabledata = $tabledatas;
-// 
-// 
-// 
-// 			}
-// 		}
-// 	}
+
 }
 public function nameAction()
 {
@@ -82,7 +74,6 @@ public function addAction()
 $dropdownForm = new Dropdown_Form_Settings($path);
         $this->view->form = $dropdownForm;
 $tName=$this->_request->getParam('name');
-       
 
  		$id=$this->_request->getParam('id');
 		$this->view->tableName =$tName;
@@ -406,6 +397,19 @@ public function deleteAction()
         $dropdownForm->district->addMultiOption($eacharraysent['id'],$eacharraysent['name']);
         }
 }
+
+    public function talukAction() {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+		$dropdownForm = new Dropdown_Form_Settings($path);
+        $this->view->form = $dropdownForm;
+     	$district=$this->_request->getParam('district');
+        $gettaluk = new Dropdown_Model_Dropdown();
+        $taluk=$gettaluk->taluk($district);
+ 		foreach($taluk as $eacharraysents) { 
+        $dropdownForm->taluk->addMultiOption($eacharraysents['id'],$eacharraysents['name']);
+        }
+}
 		public function hobliAction() {
         $path = $this->view->baseUrl();
         $this->_helper->layout()->disableLayout();
@@ -417,20 +421,29 @@ public function deleteAction()
  		foreach($hobli as $eacharraysent) {
         $dropdownForm->hobli->addMultiOption($eacharraysent['id'],$eacharraysent['name']);
         }}
+
+		public function gillapanchayathAction() {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+		$dropdownForm = new Dropdown_Form_Settings($path);
+        $this->view->form = $dropdownForm;
+     	$hobli=$this->_request->getParam('hobli');
+        $getgillapanchayath = new Dropdown_Model_Dropdown();
+        $gillapanchayath=$getgillapanchayath->gillapanchayath($hobli);
+ 		foreach($gillapanchayath as $eacharraysent) {
+        $dropdownForm->gillapanchayath->addMultiOption($eacharraysent['id'],$eacharraysent['name']);
+        }}
 		public function villageAction() {
         $path = $this->view->baseUrl();
         $this->_helper->layout()->disableLayout();
 		$dropdownForm = new Dropdown_Form_Settings($path);
         $this->view->form = $dropdownForm;
      	$gillapanchayath=$this->_request->getParam('gillapanchayath');
-        $getpanchayath = new Dropdown_Model_Dropdown();
-        $panchayath=$getpanchayath->panchayath($gillapanchayath);
- 		foreach($panchayath as $eacharraysent) {
+        $getvillage = new Dropdown_Model_Dropdown();
+        $village=$getvillage->village($gillapanchayath);
+ 		foreach($village as $eacharraysent) {
         $dropdownForm->village->addMultiOption($eacharraysent['id'],$eacharraysent['name']);
         }
-
-
-
-}
+	}
 
 }

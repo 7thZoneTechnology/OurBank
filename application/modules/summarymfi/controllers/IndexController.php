@@ -26,14 +26,17 @@ class Summarymfi_IndexController extends Zend_Controller_Action
 {
 	function init() { 
 		$this->view->pageTitle = "Summary of MFI";
-	$sessionName = new Zend_Session_Namespace('ourbank');
-	$this->view->type = "generalFields";
-	$userid=$this->view->createdby = $sessionName->primaryuserid;
-	$login=new App_Model_Users();
-	$loginname=$login->username($userid);
-	foreach($loginname as $loginname) {
-		$this->view->username=$loginname['username'];
-	}
+		$this->view->type = "generalFields";
+	$globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+	
+	$storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+            $this->_redirect('index/login');
+        }
 	$this->view->adm = new App_Model_Adm();
 
 	}

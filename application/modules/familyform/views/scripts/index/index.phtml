@@ -26,22 +26,20 @@ background-color : silver;
 
 <div class="profile_tab"> 
 <!--search form action !-->
- <fieldset> 
+<fieldset> 
     <legend>Membership</legend>	
-		<form action="<?php echo $this->baseUrl();?>/familyform" method="POST">
-	<table class="fieldsets">
-<!--	<table id="hor-minimalist-b" >-->
-					<tr>
-						<td><label class="mand">Member code:</td>
-						<td ><? echo $this->form->membercode;?></td>
-					</tr>
-				</table>
-				<input type="submit" name="Search" id="Submit" value="Search">			
-			</form>	
-	</fieldset>  	
-		<!--</label>	-->
-		<br></br>
-		<br></br>
+	<form action="<?php echo $this->baseUrl();?>/familyform" method="POST">
+	       <table class="fieldsets">
+			<tr>
+			<td><label class="mand">Member code:</td>
+			<td ><? echo $this->form->membercode;?></td>
+			</tr>
+		</table>
+		<input type="submit" name="Search" id="Submit" value="Search">			
+	</form>	
+</fieldset> 	
+		
+		
 </div>
 <div class="profile_tab"> 
 

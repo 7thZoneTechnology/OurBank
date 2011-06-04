@@ -21,28 +21,9 @@
        $("a#groupmem").click(function(event){
             $("tr.two").toggle();
       });
-        $('#paymenttype').change(function() {
-            var v = $(this).val();
-            if(v!=1){
-                if(v==5){
-                        $('#etransfer').show();
-                        $('#textbox').show();
-                        $('#cheque').hide();
-                }else{
-                        $('#cheque').show();
-                        $('#textbox').show();
-                        $('#etransfer').hide();
-                }
-            }
-            else{
-                        $('#etransfer').hide();
-                        $('#textbox').hide();
-                        $('#cheque').hide();
-
-            }
-         });
      });
 </script>
+
 <BODY></BODY> 
 <?php if(!$this->noaccount) {?> 
 <div>
@@ -145,32 +126,25 @@
             <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
                 <tr >
                     <td width="40%">Transaction mode</td>
-                    <td width="60%" colspan="2"><?php echo $this->form2->paymenttype;?><?php //echo $this->form2->paymenttype_details;?></td>
-                    
+                    <td width="60%"><?php echo $this->form2->paymenttype;?><?php echo $this->form2->paymenttype_details;?><h id="details" style="display:none">Voucher/cheque/draft </h> </td> 
                 </tr>
-                <tr>
-                    <td id="cheque" style="display:none">Voucher/cheque/draft</td>
-                    <td id="etransfer" style="display:none">Account number</td>
-                    <td id="textbox" style="display:none"><?php echo $this->form2->othertext;?></td> 
-                </tr>
-
                 <tr>
                     <td width="40%">Description</td>
-                    <td width="60%" colspan="2"><?php echo $this->form2->transactiondescription;?>
-                    </td>
-               </tr>
-               <tr style="display:none;"><TD colspan="2"><?php  
+                    <td width="60%"><?php echo $this->form2->transactiondescription; 
                             echo $this->form2->accountId;
                             echo $this->form2->productId; 
                             echo $this->form2->memberId; 
                             echo $this->form2->capitalamount;
                             echo $this->form2->interestamountto; 
                             echo $this->form2->penalinterest;
-                            echo $this->form2->maturedinterestamount;?></TD></tr>
+                            echo $this->form2->maturedinterestamount;?></td>
+                </tr>
             </table>
-            <table class="fieldsets">
+            <table>
                 <tr>
-                       <td><label for="fld1" class="mand"> Marked fields are mandatory</label></td>
+                    <td></td>
+                    <td ></td>
+                    <td><label for="fld1" class="mand"> Marked fields are mandatory</label></td>
                 </tr>
                 <TR>
                     <TD><?php echo $this->form2->Confirm;?></TD>
@@ -193,28 +167,23 @@
 
         <form name="form1" action="<?php echo $this->baseUrl();?>/fixedtransaction/index/transferfunds" method="POST" onsubmit='return validate(this)'>
             <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-               <tr >
+                <tr >
                     <td width="40%">Transaction mode</td>
-                    <td width="60%" colspan="2"><?php echo $this->form2->paymenttype;?><?php //echo $this->form2->paymenttype_details;?></td>
-                    
+                    <td width="60%"><?php echo $this->transactionModetype;?></td> 
                 </tr>
-                <tr>
-                    <td id="cheque" style="display:none">Voucher/cheque/draft</td>
-                    <td id="etransfer" style="display:none">Account number</td>
-                    <td id="textbox" style="display:none"><?php echo $this->form2->othertext;?></td> 
+                <?php if ($this->paymenttype!=1) { ?>
+                <tr >
+                    <td width="40%">Voucher/cheque/draft</td>
+                    <td width="60%"><?php echo $this->paymenttype_details;?></td> 
                 </tr>
+                <?php } ?>
                 <tr>
                     <td width="40%"><label for="fld1">Description</label></td>
-                    <td width="60%"><?php echo $this->form2->transactiondescription;?></td>
-                </tr>
-               <tr >
-                    <TD colspan="2"><?php  
-                    echo $this->form2->accountId;echo $this->form2->productId; echo $this->form2->memberId; echo $this->form2->capitalamount;echo $this->form2->interestamountto; echo $this->form2->penalinterest;
+                    <td width="60%"><label for="fld1"><?php echo $this->transactiondescription; echo $this->form2->accountId;echo $this->form2->productId; echo $this->form2->memberId; echo $this->form2->capitalamount;echo $this->form2->interestamountto; echo $this->form2->penalinterest;
                     echo $this->form2->paymenttype1;
                     echo $this->form2->paymenttype_details1;
                     echo $this->form2->transactiondescription1;
-                    echo $this->form2->maturedinterestamount;?>
-                    </TD>
+                    echo $this->form2->maturedinterestamount;?></label></td>
                 </tr>
             </table>
             <table>

@@ -25,10 +25,15 @@ class Fundings_IndexController extends Zend_Controller_Action
     public function init()
      {
         $this->view->pageTitle='Fundings';
-        $glourbankalsession = new App_Model_Users();
-        $this->view->glourbankalvalue = $glourbankalsession->getSession();
-		$this->view->createdby = $this->view->glourbankalvalue[0]['id'];
-		$this->view->username = $this->view->glourbankalvalue[0]['username'];
+        $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
 //         if (($this->view->glourbankalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
@@ -52,9 +57,17 @@ class Fundings_IndexController extends Zend_Controller_Action
                                 if($formData['field8']){
                                 $formData['field8']=$convertdate->phpmysqlformat($formData['field8']);}
 		    		$fundings = new Fundings_Model_Fundings();
-		    		$page = $this->_getParam('page',1);
-		    		$paginator = Zend_Paginator::factory($fundings->SearchFundings($formData));
 
+		    		$page = $this->_getParam('page',1);
+				$result=$fundings->SearchFundings($formData);
+				$countresult=count($result);
+				if($countresult==0){
+		 		$this->view->errormsg=1;
+				}
+				else {
+				$this->view->errormsg=0;
+				}
+		    		$paginator = Zend_Paginator::factory($result);
 				}
 	    	}
 		} else {

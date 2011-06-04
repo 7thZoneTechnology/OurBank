@@ -1,11 +1,25 @@
 <?php
 class Receipts_IndexController extends Zend_Controller_Action {
 
-	public function init() {
-		$this->view->pageTitle='Receipt and payment';
-		$this->view->title = "Transaction";
-        $this->view->adm = new App_Model_Adm();
-	$this->view->dateconvertor = new App_Model_dateConvertor();
+	public function init() 
+        {
+                    $this->view->pageTitle='Receipt and payment';
+                    $this->view->title = "Transaction";
+            $this->view->adm = new App_Model_Adm();
+            $this->view->dateconvertor = new App_Model_dateConvertor();
+    
+            $globalsession = new App_Model_Users();
+            $this->view->globalvalue = $globalsession->getSession();// get session values
+            $this->view->createdby = $this->view->globalvalue[0]['id'];
+            $this->view->username = $this->view->globalvalue[0]['username'];
+    
+            $storage = new Zend_Auth_Storage_Session();
+            $data = $storage->read();
+            if(!$data)
+            {
+                $this->_redirect('index/login');
+            }
+
 	}
 
 	public function indexAction() {

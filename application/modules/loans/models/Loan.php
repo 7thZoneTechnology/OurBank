@@ -159,11 +159,10 @@ class Loans_Model_Loan extends Zend_Db_Table {
                         ->join(array('a' => 'ourbank_productsoffer'),array('id'),array('id','a.name as productname','a.shortname as productshortname','a.description as productdescription','begindate','closedate','applicableto','fee_glsubcode_id','Interest_glsubcode_id','glsubcode_id'))
                         ->where('a.id = ?',$offerproduct_id)
                         ->join(array('b' => 'ourbank_productsloan'),'a.id = b.productsoffer_id') 
-                        ->join(array('c' => 'ourbank_master_membertypes'),'c.id = a.applicableto')
+                        ->join(array('c' => 'ourbank_master_ledgertypes'),'c.id = a.applicableto')
                         ->join(array('h' => 'ourbank_glsubcode'),'a.glsubcode_id = h.id')
                         ->join(array('j' => 'ourbank_master_interesttypes'),'b.interesttype_id = j.id')
                         ->join(array('f' => 'ourbank_product'),'f.id = a.product_id',array('f.id as productid','f.name as productname1'));
-// die($select->__toString());
             $result = $this->fetchAll($select);
             return $result->toArray();
         }
@@ -180,7 +179,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
             return $result->toArray();
         }
 
-        public function addProductDetails($post,$glsubcode) 
+        public function addProductDetails($post) 
         {
             $this->view->dateconvert = new App_Model_dateConvertor();
             $this->db = Zend_Db_Table::getDefaultAdapter();
@@ -192,14 +191,14 @@ class Loans_Model_Loan extends Zend_Db_Table {
                             'begindate'=>$this->view->dateconvert->phpmysqlformat($post['begindate']),
                             'closedate'=>$this->view->dateconvert->phpmysqlformat($post['closedate']),
                             'applicableto'=>$post['applicableto'],
-                            'glsubcode_id'=>$glsubcode,
+//                             'glsubcode_id'=>$post['glsubcode_id'],
                             'capital_glsubcode_id' => '');
 //                             'Interest_glsubcode_id'=>$post['interest_glsubcode_id'],
 //                             'fee_glsubcode_id'=>$post['fee_glsubcode_id']);
             $this->db->insert('ourbank_productsoffer',$data);
         }
 
-        public function editOffer($table,$post,$id,$glcodes) 
+        public function editOffer($table,$post,$id) 
         {
             $this->view->dateconvert = new App_Model_dateConvertor();
             $this->db = Zend_Db_Table::getDefaultAdapter();
@@ -211,7 +210,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
                             'begindate'=>$this->view->dateconvert->phpmysqlformat($post['begindate']),
                             'closedate'=>$this->view->dateconvert->phpmysqlformat($post['closedate']),
                             'applicableto'=>$post['applicableto'],
-                            'glsubcode_id'=>$glcodes,
+                            'glsubcode_id'=>$post['glsubcode_id'],
                             'capital_glsubcode_id' => '',
                             'Interest_glsubcode_id'=>$post['interest_glsubcode_id'],
                             'fee_glsubcode_id'=>$post['fee_glsubcode_id']);

@@ -45,13 +45,6 @@ public function getdetailss($tName,$id)
     }
 
 public function getdetails($tName,$id) {
-// 				$select = $this->select()
-//               ->setIntegrityCheck(false)
-// 						->from(array('a' => $tName),array('id','name as habit'))
-// 				->where('a.id = ?',$id);
-// 
-// 		$result = $this->fetchAll($select);
-//        return $result->toArray();
 
 			switch($tName) {
 
@@ -210,11 +203,13 @@ public function getdetails($tName,$id) {
        $result = $this->fetchAll($select);
        return $result->toArray();
     }
-public function hobli($taluk) {
+
+ public function gillapanchayath($hobli) {
+
  $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id','a.name'))
-			->where('a.taluk_id = ?',$taluk);
+			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id','a.name'))
+			->where('a.hobli_id = ?',$hobli);
 
 // die($select->__toString($select));
 
@@ -222,12 +217,40 @@ public function hobli($taluk) {
        $result = $this->fetchAll($select);
        return $result->toArray();
     }
-	public function panchayath($gillapanchayath) {
- 	$select = $this->select()
+ public function village($gillapanchayath) {
+
+ $select = $this->select()
              ->setIntegrityCheck(false)
 			->from(array('a' => 'ourbank_master_villagelist'),array('a.id','a.name'))
-			->where('a.gillapanchayath_id = ?',$gillapanchayath);
- //die($select->__toString($select));
+			->where('a.gp_id = ?',$gillapanchayath);
+
+// die($select->__toString($select));
+
+
+       $result = $this->fetchAll($select);
+       return $result->toArray();
+    }
+
+ public function taluk($district) {
+
+ $select = $this->select()
+             ->setIntegrityCheck(false)
+			->from(array('a' => 'ourbank_master_taluklist'),array('a.id','a.name'))
+			->where('a.district_id = ?',$district);
+
+//  die($select->__toString($select));
+
+
+       $result = $this->fetchAll($select);
+       return $result->toArray();
+    }
+public function hobli($taluk) {
+ $select = $this->select()
+             ->setIntegrityCheck(false)
+			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id','a.name'))
+			->where('a.taluk_id = ?',$taluk);
+
+// die($select->__toString($select));
 
 
        $result = $this->fetchAll($select);

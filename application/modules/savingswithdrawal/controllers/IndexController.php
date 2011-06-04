@@ -32,34 +32,68 @@ class Savingswithdrawal_IndexController extends Zend_Controller_Action
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
         $this->view->dc = new App_Model_dateConvertor();
-        $globalsession = new App_Model_Users();
+
+                $globalsession = new App_Model_Users();
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data)
+                {
+                    $this->_redirect('index/login');
+                }
 	}
 
-public function indexAction() 
+        public function indexAction()
 	{
 		$this->view->form = $searchform = new Savingswithdrawal_Form_Search();
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
+$dbobj = new Savingsdeposit_Model_Savingsdeposit();
 
                 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
                             $formdata = $this->_request->getPost();
                             $acc = $this->_request->getPost('accNum');
                             if($searchform->isValid($formdata)){
-                                $validaccno = $fixedSavings->savingsAccountsSearch($acc);
+                                $validaccno = $dbobj->savingsAccountsSearch($acc);
                                 $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
-                                if($tagAcc!=0){
-                                            $this->view->error = "Enter valid Account number";
-                                }else {
+//                                 if($tagAcc!=0){
+//                                             $this->view->error = "Enter valid Account number";
+//                                 }else {
                                         if ($validaccno) {
                                                 $this->_redirect("/savingswithdrawal/index/withdrawal/accNum/".base64_encode($acc));
                                         }else{
                                                 $this->view->error = "Account number does not exist";
                                         }
-                                }
+//                                 }
                             }
                 }
         }
+
+// public function indexAction() 
+// 	{
+// 		$this->view->form = $searchform = new Savingswithdrawal_Form_Search();
+//                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
+// 
+//                 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+//                             $formdata = $this->_request->getPost();
+//                             $acc = $this->_request->getPost('accNum');
+//                             if($searchform->isValid($formdata)){
+//                                 $validaccno = $fixedSavings->savingsAccountsSearch($acc);
+//                                 $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
+//                                 if($tagAcc!=0){
+//                                             $this->view->error = "Enter valid Account number";
+//                                 }else {
+//                                         if ($validaccno) {
+//                                                 $this->_redirect("/savingswithdrawal/index/withdrawal/accNum/".base64_encode($acc));
+//                                         }else{
+//                                                 $this->view->error = "Account number does not exist";
+//                                         }
+//                                 }
+//                             }
+//                 }
+//         }
 	public function withdrawalAction()
 	{
 		$accNum = $this->view->accNum = base64_decode($this->_request->getParam('accNum'));

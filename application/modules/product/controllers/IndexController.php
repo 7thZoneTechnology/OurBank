@@ -24,10 +24,15 @@ class Product_IndexController extends Zend_Controller_Action
 	public function init() 
 	{
             $this->view->pageTitle='Product';
-                $globalsession = new App_Model_Users();
+                 $globalsession = new App_Model_Users();
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }

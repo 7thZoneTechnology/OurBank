@@ -23,15 +23,17 @@ class Roles_IndexController extends Zend_Controller_Action{
         $this->view->pageTitle='Roles';
 
 
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $userid = $sessionName->primaryuserid;
+        $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+				$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+        			}
 
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
-        foreach($loginname as $loginname) {
-            $this->view->createdby=$loginname['id'];
-            $this->view->username=$loginname['username'];
-        }
+      
               
 	
         //  $login=new App_Model_Users();

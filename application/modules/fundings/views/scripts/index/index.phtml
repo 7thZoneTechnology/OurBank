@@ -55,7 +55,9 @@ $(document).ready(function() {
             </div>
     </fieldset> 
 </div> 
-<?php  if(count($this->paginator)!="0")  { 
+<!-- display error message if search got failed  -->
+<?php  if($this->errormsg==0) {
+  if(count($this->paginator)!="0")  { 
 
 // check search result is not empty and assign values
 if(count($this->paginator)!=0) { ?>
@@ -82,8 +84,10 @@ if(count($this->paginator)!=0) { ?>
     </tr>
 </table>
 <?php endif; ?>
-<?php } } else { echo "<font color='RED'>Records Not Found Try Again...</font>";
-} ?>
+<?php } } 
+} else { echo "<font color='RED'>Records Not Found Try Again...</font>";
+	}
+?>
 <br>
 
 

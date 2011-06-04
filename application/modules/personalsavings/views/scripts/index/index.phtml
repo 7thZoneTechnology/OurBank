@@ -17,10 +17,10 @@
 ############################################################################
 !-->
 <form action="<?php echo $this->baseUrl();?>/personalsavings/index/pdfgeneration" method="POST">   
-
-	<table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
-    <th colspan="8"><b>Personal Savings Members</b></th>
+<fieldset>
+    <legend>Personal Savings Members</legend>
         <div class="search">
+            <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
                 <TR>
                     <TH>Account Number</TH> 
                     <TH>Account Name</TH> 
@@ -30,26 +30,21 @@
                     <TH>Balance</TH>
                     <TH>Created By</TH> 
                 </TR>
-<?php $dateconvertor = new App_Model_dateConvertor(); ?>
-
-                 <?php foreach($this->savingslist as $savings){
-                    if($savings['BalanceAmt']){
-                ?>
+                 <?php foreach($this->savingslist as $savings){?>
                     <TR>
                         <TD><?php echo $savings['account_number']; ?></TD>   
                         <TD><?php echo $savings['offername']; ?></TD> 
                         <TD><?php echo $savings['membercode']; ?></TD> 
                         <TD><?php echo $savings['membername']; ?></TD> 
-                        <TD><?php echo $dateconvertor->normalformat($savings['accountcreated_date']); ?></TD> 
-                        <TD><?php echo $savings['BalanceAmt']; ?></TD> 
+                        <TD><?php echo $savings['created_date']; ?></TD> 
+                        <TD><?php echo $savings['balance']; ?></TD> 
                         <TD><?php echo $savings['loginname']; ?></TD>  
                     </TR>
-                <?php } } ?>
-
-			 </div>
+                <?php } ?>
             </table>
             <input type="submit" value="PDF" id="submit">
 	   <?php echo $this->Error;?>
-
+        </div>
+</fieldset>
 </form>
 

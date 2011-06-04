@@ -426,8 +426,8 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
                         ->setIntegrityCheck(false)  
                         ->join(array('a' => 'ourbank_accounts'),array('id'))
                         ->where('a.account_number = ?',$accountnumber)
-                        ->where('a.status_id = 1 or a.status_id = 3')
-                        ->join(array('b' => 'ourbank_familymember'),'a.member_id=b.id')
+                        ->where('a.accountstatus_id = 1 or a.accountstatus_id = 3')
+                        ->join(array('b' => 'ourbank_member'),'a.member_id=b.id')
                         ->join(array('c' => 'ourbank_productsoffer'),'a.product_id=c.id');
                 $result = $this->fetchAll($select);
                 return $result->toArray();
@@ -588,7 +588,7 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
         {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
                 $result = $this->db->insert('ourbank_Assets',$input);
-//                 return $result;
+                return $result;
         }
 
         public function insertbankincomeaccounts($input = array())
@@ -623,28 +623,14 @@ class Fixedtransaction_Model_persnolSavings extends Zend_Db_Table {
 
         public function selectbankassetsaccount($branchID) {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select * from  ourbank_glsubcode where substr(header,5)='$branchID' and glcode_id = (select id from ourbank_glcode where header like '%Bank%')";
-                $result = $this->db->fetchAll($sql,array());
-                return $result;
-        }
-
-        public function selectincomeforoffice($branchID) {
-                $this->db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select * from  ourbank_glsubcode where substr(header,13)='$branchID' and glcode_id = (select id from ourbank_glcode where header = '%Income%')";
-                $result = $this->db->fetchAll($sql,array());
-                return $result;
-        }
-
-  public function selectexpenditureforoffice($branchID) {
-                $this->db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select * from  ourbank_glsubcode where substr(header,15)='$branchID' and glcode_id = (select id from ourbank_glcode where header ='expenditure')";
+                $sql = "select * from   ourbank_glsubcode where substr(header,5)='$branchID' and glcode_id='3'";
                 $result = $this->db->fetchAll($sql,array());
                 return $result;
         }
 
         public function selectbankcashassetsaccount($branchID) {
                 $this->db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select * from   ourbank_glsubcode where substr(header,5)='$branchID' and  glcode_id=(select id from ourbank_glcode where header like '%Cash%')";;
+                $sql = "select * from   ourbank_glsubcode where substr(header,5)='$branchID' and glcode_id='4'";
                 $result = $this->db->fetchAll($sql,array());
                 return $result;
         }

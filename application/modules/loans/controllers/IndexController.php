@@ -3,6 +3,17 @@ class Loans_IndexController extends Zend_Controller_Action{
 
     public function init() 
     {
+         $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
+ 
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data){
+                 $this->_redirect('index/login');
+                 }
+        
         $this->view->pageTitle="Loans";
         $sessionName = new Zend_Session_Namespace('ourbank');
         $this->view->createdby = $sessionName->primaryuserid;
@@ -170,38 +181,7 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $this->view->freequency = "Maximum frequency must be greater than min frequency".-$minimumfrequency;
                     } else {
                         $productdetails = new Loans_Model_Loan();
-
-                    $headerCon = "A";
-                    $glsubcode = $loan->getGlCode('loan');
-                    $glcode = $loan->getGlCodeid('loan');
-                    $glcodeexist = $loan->getGlCodeexist('loan');
- 
-                    $glco=substr($glcodeexist, 1, 2);
-
-                    if($glsubcode){
-                        $first=substr($glsubcode, 0, 3);
-                        $existcode=substr($glsubcode, 3, 3);
-                        $existcode++;
-                        $last = str_pad(($existcode),3,0,STR_PAD_LEFT);
-                        $newglsubcode = $first.$last;                  
-                    }
-                    else{
-                        $glcodeId=$headerCon.$glco."001";
-                        $newglsubcode = $glcodeId;
-                    }
-
-                    $date=date("y/m/d H:i:s");
-                    $glsubcodeid = $this->view->adm->addRecord('ourbank_glsubcode',
-                                array('id' => '',
-                                        'glsubcode' => $newglsubcode,
-                                        'glcode_id' => $glcode,
-                                        'subledger_id' => $glcode,
-                                        'header' => $formData['offerproductname'],
-                                        'description' => $formData['offerproduct_description'],
-                                        'created_date' =>$date,
-                                        'created_by'=>$this->view->createdby));
-
-                        $result = $productdetails->addProductDetails($formData,$glsubcodeid);
+                        $result = $productdetails->addProductDetails($formData);
                         $offerproduct_id  = Zend_Db_Table::getDefaultAdapter()->lastInsertId('ourbank_productsoffer','id');
 
                         $productloandetails = new Loans_Model_Productsloan();
@@ -218,7 +198,34 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $memberCount = $this->_request->getParam('memberCount');
 
 
-               
+                    $headerCon = "A";
+                    $glsubcode = $loan->getGlCode('loan');
+                    $glcode = $loan->getGlCodeid('loan');
+                    $glcodeexist = $loan->getGlCodeexist('loan');
+                        
+                    $glco=substr($glcodeexist, 1, 2);
+
+                    if($glsubcode){
+                        $first=substr($glsubcode, 0, 3);
+                        $existcode=substr($glsubcode, 3, 3);
+                        $existcode++;
+                        $last = str_pad(($existcode),3,0,STR_PAD_LEFT);
+                        $newglsubcode = $first.$last;                  
+                    }
+                    else{
+                        $glcodeId=$headerCon.$glco."001";
+                        $newglsubcode = $glcodeId;
+                    }
+                    $date=date("y/m/d H:i:s");
+                    $glsubcodeid = $this->view->adm->addRecord('ourbank_glsubcode',
+                                array('id' => '',
+                                        'glsubcode' => $newglsubcode,
+                                        'glcode_id' => $glcode,
+                                        'subledger_id' => $glcode,
+                                        'header' => $formData['offerproductname'],
+                                        'description' => $formData['offerproduct_description'],
+                                        'created_date' =>$date,
+                                        'created_by'=>$this->view->createdby));
 
                         for ($i = 1;$i<=$memberCount; $i++)
                         {
@@ -267,10 +274,10 @@ class Loans_IndexController extends Zend_Controller_Action{
                 $loanForm->product_id->addMultiOption($product['id'],$product['name']);
         }
 
-// //         $glsubcode = $loan->fetchAllglsubcode('3');//ledgercode for assets
-// //         foreach($glsubcode as $glsubcode) {
-// //                 $loanForm->glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
-// //         }
+        $glsubcode = $loan->fetchAllglsubcode('3');//ledgercode for assets
+        foreach($glsubcode as $glsubcode) {
+                $loanForm->glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
+        }
 
         $glsubcode = $loan->fetchAllglsubcode('2');//ledger id for income 2
         foreach($glsubcode as $glsubcode) {
@@ -300,12 +307,12 @@ class Loans_IndexController extends Zend_Controller_Action{
             $this->view->form->minimumfrequency->setValue($loan['minimumfrequency']);
             $this->view->form->maximumfrequency->setValue($loan['maximumfrequency']);
             $this->view->form->penal_Interest->setValue($loan['penal_Interest']);
-// //             $this->view->form->fee_glsubcode_id->setValue($loan['fee_glsubcode_id']);
+            $this->view->form->fee_glsubcode_id->setValue($loan['fee_glsubcode_id']);
             $this->view->form->graceperiodnumber->setValue($loan['graceperiodnumber']);
 
-// // //             $this->view->form->glsubcode_id->setValue($loan['glsubcode_id']);
+            $this->view->form->glsubcode_id->setValue($loan['glsubcode_id']);
             $this->view->form->interesttype_id->setValue($loan['interesttype_id']);
-// // //             $this->view->form->interest_glsubcode_id->setValue($loan['Interest_glsubcode_id']);
+            $this->view->form->interest_glsubcode_id->setValue($loan['Interest_glsubcode_id']);
 
             $offerproduct_id = $loan['productsoffer_id'];
         }
@@ -419,11 +426,6 @@ class Loans_IndexController extends Zend_Controller_Action{
                                 $this->view->freequency = "Maximum freequency must be grate than min freequency".-$minimumfrequency;
                             } else {
 
-
-$adm = new App_Model_Adm();
-$glcodes = $adm->getsingleRecord('ourbank_productsoffer','glsubcode_id','id',$offerproduct_id);
-
-
                             //Insert old data to productsofferlog
                             $productoffer=$this->view->adm->editRecord('ourbank_productsoffer',$offerproduct_id);
                             $this->view->adm->addRecord('ourbank_productsoffer_log',$productoffer[0]);
@@ -433,7 +435,7 @@ $glcodes = $adm->getsingleRecord('ourbank_productsoffer','glsubcode_id','id',$of
                             $productsloan=$loan->fetchProductloan1('ourbank_productsloan',$offerproduct_id);
                             $this->view->adm->addRecord('ourbank_productsloan_log',$productsloan[0]);
                             //edit current table values
-                            $loan->editOffer('ourbank_productsoffer',$formData,$offerproduct_id,$glcodes);
+                            $loan->editOffer('ourbank_productsoffer',$formData,$offerproduct_id);
                             $productloan->editLoan('ourbank_productsloan',$formData,$offerproduct_id);
                             //fetch interest rates for offerproduct_id
                             $interestdetails=$loan->fetchProductloan('ourbank_interest_periods',$offerproduct_id);
