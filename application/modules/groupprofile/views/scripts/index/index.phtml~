@@ -38,10 +38,10 @@
                 <th width="20%"><?php echo $this->translate("Occupation"); ?></th>
             </tr>
 
-         <?php 
+         <?php $i = 0; 
 			$adm = new App_Model_Adm();
             foreach($this->group as $loandetails) { ?>
-            <tr><?php $i = 0; ?>
+            <tr>
                 <td><?php echo $i++;?></td>
                 <td><?php echo $loandetails->name; ?></td>
                 <td><?php echo $loandetails->age; ?></td>
