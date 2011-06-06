@@ -18,7 +18,7 @@ th
 <?php if(!$this->result) { ?>
 
 <?php } $dateconvert= new App_Model_dateConvertor();
-if($this->result) { $dateconvert= new App_Model_dateConvertor();
+if($this->result) { 
 foreach ($this->result as $result) {
 ?>
 <fieldset>
@@ -33,34 +33,9 @@ foreach ($this->result as $result) {
             </TR>
 
             <TR>
-                <TD valign="top" width="20px">2.</TD>
-                <TD><p align="justify">The vision of Ourbank is to stimulate local development by offering small and medium </p></TD>
-            </TR>
-
-            <TR>
-                <TD valign="top" width="20px">3.</TD>
-                <TD><p align="justify">The vision of Ourbank is to stimulate local development by offering small and medium </p></TD>
-            </TR>
-
-            <TR>
-                <TD valign="top" width="20px">4.</TD>
-                <TD><p align="justify">The vision of Ourbank is to stimulate local development by offering small and medium </p></TD>
-            </TR>
-
-            <TR>
-                <TD valign="top" width="20px">5.</TD>
-                <TD><p align="justify">The vision of Ourbank is to stimulate local development by offering small and medium </p></TD>
-            </TR>
-
-            <TR>
-                <TD valign="top" width="20px">6.</TD>
-                <TD><p align="justify">The vision of Ourbank is to stimulate local development by offering small and medium </p></TD>
-            </TR>
-
-            <TR>
                 <TD valign="top" width="20px">7.</TD>
                 <TD><p>The vision of Ourbank is to <u> <FONT color="RED"><?php echo $result['dayname']; ?></FONT></u> stimulate local development by <u> <FONT color="RED"><?php echo $result['place']; ?></FONT></u> offering small and medium <u> <FONT color="RED"><?php echo $result['time']; ?></FONT></u> sized micro financial institutions (MFIs) a true free and open source software solution, based on community-driven software development, named OurBank.
-            </p></TD>
+</p></TD>
             </TR>
 
             <TR>
@@ -74,12 +49,12 @@ foreach ($this->result as $result) {
             </TR>
 
             <TR>
-                <TD valign="top" width="40px">18.</TD>
+                <TD valign="top" width="40px">17.</TD>
                 <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['penalty_latecoming']; ?></FONT></u> ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
             </TR>
 
             <TR>
-                <TD valign="top" width="40px">19.</TD>
+                <TD valign="top" width="40px">18.</TD>
                 <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['penalty_notcoming']; ?></FONT></u> ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
             </TR>
 
@@ -93,7 +68,6 @@ foreach ($this->result as $result) {
         <table  width="100%" border="1">
         <tr>
             <th>Member name</th>
-            <th>UID</th>
             <th>Father name</th>
             <th>Nominee</th>
             <th>Nominee relationship</th>
@@ -102,8 +76,8 @@ foreach ($this->result as $result) {
         <?php foreach($this->groupmembers as $member) {?>
         <tr>
         <td><?php echo $member['membername']; ?></td>
-        <td><?php echo $member['uid']; ?></td>
-        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']); if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>
+        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']); 
+                if($fatherdetails) { echo $fatherdetails[0]['fathername']; } ?></td>
         <td></td>
         <td></td>
         <td></td>
@@ -112,14 +86,8 @@ foreach ($this->result as $result) {
         </table>
         </div>
 </fieldset>
-<form action="<?php echo $this->baseUrl();?>/grouplaw/index/pdfdisplay" method="POST"
-onClick="window.open('<?php echo $this->baseUrl(); ?>/grouplaw/index/reportdisplay/file/grouplaw.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
-<div align="right">
-<input type="submit" name="PDF" value="PDF">
-<input type="hidden" name="groupcode" value="<?php echo $this->code; ?>">
-</div> 
-</form>
 <?php } } ?>
+
 
 
 

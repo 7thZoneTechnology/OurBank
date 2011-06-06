@@ -39,8 +39,8 @@ class Grouplaw_Model_grouplaw extends Zend_Db_Table
     {
             $select= $this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_group'),array('a.id'),array('a.id'))
-                ->where('a.groupcode=?',$groupcode)
+                ->join(array('a'=>'ourbank_group'),array('a.id'))
+           ->where('a.groupcode=?',$groupcode)
                 ->join(array('b'=>'ourbank_groupmembers'),'b.group_id=a.id')
                 ->join(array('c'=>'ourbank_familymember'),'b.member_id=c.id',array('c.name as membername','c.family_id','c.uid'));
             $result=$this->fetchAll($select);

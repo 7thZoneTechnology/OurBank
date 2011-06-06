@@ -30,6 +30,14 @@ class Grouplaw_IndexController extends Zend_Controller_Action
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
+
+
+	$storage = new Zend_Auth_Storage_Session();
+        		$data = $storage->read();
+        		if(!$data){
+           		 $this->_redirect('index/login');
+                        }
+
     }
 
     public function indexAction() 
@@ -59,7 +67,7 @@ class Grouplaw_IndexController extends Zend_Controller_Action
                 }
                 else
                 {
-                    $this->view->error = "Record Not Found ..Try Again.. ";
+                    $this->view->error = "Record Not Found ... ";
                 }
             }
         }
@@ -108,10 +116,11 @@ class Grouplaw_IndexController extends Zend_Controller_Action
             $this->view->groupmembers= $this->view->loan->getgroupmembers($code);
 
             $dateconvert= new App_Model_dateConvertor();
+            
             foreach($this->view->result as $result) { 
 			
 
-                // write text to page
+            //    // write text to page
                 $page->setFont($font, 12)
                     ->drawText('Group bye law', 240, 720);
 				
@@ -129,11 +138,11 @@ class Grouplaw_IndexController extends Zend_Controller_Action
 
 			$y1=$y1-15;
 			$page->setFont($font, 9)
-                    ->drawText('The vision of Ourbank is to stimulate   '.$result['dayname'].'  The vision of Ourbank is to stimulate ',$x1,$y1);
+                    ->drawText('The vision of Ourbank is to stimulate   '.$result['dayname'].'The vision of Ourbank is to stimulate ',$x1,$y1);
 
 			$y1=$y1-15;
 			$page->setFont($font, 9)
-                    ->drawText('The vision of Ourbank is to    '.$result['place'].'    stimulate local development by offering small and medium ',$x1,$y1);
+                    ->drawText('The vision of Ourbank is to    '.$result['place'].'stimulate local development by offering small and medium ',$x1,$y1);
 
 			$y1=$y1-15;
 			$page->setFont($font, 9)
@@ -162,10 +171,10 @@ class Grouplaw_IndexController extends Zend_Controller_Action
 			$y1=$y1-15;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
 
-				$y1=$y1-20;
+				$y1=$y1-15;
                 $page->setFont($font, 9)
                     ->drawText('Member name',80,$y1);
-
+				
 				$page->setFont($font, 9)
                     ->drawText('UID',160,$y1);
 
@@ -182,20 +191,25 @@ class Grouplaw_IndexController extends Zend_Controller_Action
                     ->drawText('Signature',460,$y1);
 				$y1=$y1-10;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
-	
-		foreach($this->view->groupmembers as $member) {
+foreach($this->groupmembers as $member) {
 				$y1=$y1-15;
 				$page->setFont($font, 9)
                     ->drawText(''.$member['membername'].'',80,$y1);
 
-				
+				$y1=$y1-15;
 				$page->setFont($font, 9)
-                    ->drawText(''.$member['uid'].'',140,$y1);
+                    ->drawText(''.$member['uid'].'',160,$y1);
 
-			
+				$y1=$y1-15;
+				$page->setFont($font, 9)
+                    ->drawText(''.$member['family_id'].'',280,$y1);
+
+				$y1=$y1-15;
 				$page->setFont($font, 9)
                     ->drawText(''.$member['fathername'].'',200,$y1);
 
+				$y1=$y1-15;
+                $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
 
 	}
 }
