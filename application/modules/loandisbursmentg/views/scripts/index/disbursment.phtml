@@ -1,3 +1,81 @@
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/toggel.js"></script> 
+<script type="text/javascript">
+ $(document).ready(function(){
+
+//$(".tmode option[value='5']").remove();
+
+
+        $('.tmode').change(function() {
+            var v = $(this).val();
+            var id = $(this).attr('id');
+        if(id == 'transactionMode'){
+            if(v!=1){
+                if(v==5){ 
+			if($(this).val())
+			{  
+			memberid=$('.memberclass').val(); //alert(memberid);
+			membertypeid=$('.membertypeclass').val(); //alert(membertypeid);
+			path=$('.pathclass').val(); //alert(path);
+			targeturl=path+"/loandisbursmentg/index/getaccount?memberid="+memberid+"&membertype="+membertypeid; //alert(targeturl);
+			$.ajax({ url: targeturl, success: function(data){ $('#accountdiv').html(data) }});
+			}
+                        $('#etransfer').show();
+			$('#selectetrans').show();
+                        $('#textbox').hide();
+                        $('#cheque').hide();
+                }else{
+                        $('#cheque').show();
+                        $('#textbox').show();
+                        $('#etransfer').hide();
+			$('#selectetrans').hide();
+                }
+            }
+            else{
+                        $('#etransfer').hide();
+                        $('#textbox').hide();
+                        $('#cheque').hide();
+			$('#selectetrans').hide();
+
+
+            }
+        }   
+else
+{
+
+            if(v!=1){
+                if(v==5){
+			if($(this).val())
+			{  
+			memberid=$('.memberclass').val(); //alert(memberid);
+			membertypeid=$('.membertypeclass').val(); //alert(membertypeid);
+			path=$('.pathclass').val(); //alert(path);
+			targeturl=path+"/loandisbursmentg/index/getaccount?memberid="+memberid+"&membertype="+membertypeid; //alert(targeturl);
+			$.ajax({ url: targeturl, success: function(data){ $('#accountdiv').html(data) }});
+			}
+                        $('#etransfer1').show();
+			$('#selectetrans').show();
+                        $('#textbox1').hide();
+                        $('#cheque1').hide();
+                }else{
+                        $('#cheque1').show();
+                        $('#textbox1').show();
+                        $('#etransfer1').hide();
+			$('#selectetrans').hide();
+
+                }
+            }
+            else{
+                        $('#etransfer1').hide();
+                        $('#textbox1').hide();
+                        $('#cheque1').hide();
+			$('#selectetrans').hide();
+
+
+            }
+    }
+         });
+     });
+</script>
 <div style="float:left;width:350px"> 
     <?php foreach($this->details as $details) { ?>
         <table id="hor-minimalist-s">
@@ -19,7 +97,7 @@
                 <TD><?php echo $details->officename ?></TD>
             </TR>
             <TR>
-                <td>Code</td>
+                <td>Code</td>#uiddiv
                 <TD><?php echo $details->code ?></TD>
 
             </TR>
@@ -91,6 +169,16 @@
                     <TD><label for="fld1" class="mand">Amount R$</label></TD>
                     <TD><?php echo $this->loan->Amount;?></TD>
                 </TR>
+				<TR>
+                    <TD><label for="fld1" class="mand">Transaction mode</label></TD>
+                    <TD><?php echo $this->loan->transactionMode; echo $this->loan->memberid; echo $this->loan->membertypeid; echo $this->loan->pathhidden; ?></TD>
+                </TR>
+                <tr>
+                    <td id="cheque" style="display:none"><label for="fld1" class="mand">Voucher/cheque/draft</label></td>
+                    <td id="etransfer" style="display:none"><label for="fld1" class="mand">Account number</label></td>
+                    <td id="textbox" style="display:none"><?php echo $this->loan->othertext;?></td> 
+                    <td id="selectetrans" style="display:none"><div id="accountdiv"><?php echo $this->loan->etransfer; ?></div></td>
+                </tr>
 
                 <TR>
                     <TD><label for="fld1" class="mand">Description</label></TD>

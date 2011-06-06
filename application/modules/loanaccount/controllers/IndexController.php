@@ -63,10 +63,10 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 	foreach($interesttypes as $interesttypes) {
 		$loanForm->interesttype_id->addMultiOption($interesttypes->id,$interesttypes->description);
 	}
-	$acc = $this->view->accounts->savingAcc($code);
-	foreach($acc as $acc) {
-		$loanForm->savingAccount->addMultiOption($acc->id,$acc->account_number);
-	}
+// 	$acc = $this->view->accounts->savingAcc($code);
+// 	foreach($acc as $acc) {
+// 		$loanForm->savingAccount->addMultiOption($acc->id,$acc->account_number);
+// 	}
 	
 	$funder = $this->view->adm->viewRecord('ourbank_funder','id','ASC');
 	foreach($funder as $funder) {
@@ -126,7 +126,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                       'loan_installments' => $this->_request->getPost('installments'),
                                       'loan_interest' => $this->_request->getPost('interest'),
                                       'interesttype_id' => $this->_request->getPost('interesttype_id'),
-                                      'savingsaccount_id' => $this->_request->getPost('savingAccount'),
+                                   //   'savingsaccount_id' => $this->_request->getPost('savingAccount'),
                                       'tieup_flag' => 0,
                                       'created_by' => 1);
       		        $this->view->adm->addRecord('ourbank_loanaccounts',$input);

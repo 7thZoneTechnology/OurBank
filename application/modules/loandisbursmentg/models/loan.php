@@ -15,6 +15,8 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
                 A.uid as uid,
                 B.id as officeid,
                 D.account_number as number,
+		D.member_id as memberid,
+		D.membertype_id as membertypeid,
                 D.id as accId,
                 E.name as loanname,
                 E.glsubcode_id as gl,
@@ -27,7 +29,7 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
                 FROM
                 ourbank_familymember A,
                 ourbank_office B,
-                ourbank_accounts D,
+                ourbank_accounts D,		
                 ourbank_productsoffer E,
                 ourbank_loanaccounts F,
                 ourbank_interest_periods G
@@ -48,6 +50,8 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
                 B.id as officeid,
                 D.account_number as number,
                 D.id as accId,
+		D.member_id as memberid,
+		D.membertype_id as membertypeid,
                 E.name as loanname,
                 E.glsubcode_id as gl,
                 F.loan_amount as amount,
@@ -153,6 +157,51 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
         //die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
+    }
+
+    public function getsavingaccount($memberid,$membertype)
+	{
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_accounts'),array('a.id'))
+        ->where('a.member_id=?',$memberid)
+	->where('a.tag_account=0')
+	->where('a.account_number like "%" ? "%"','S')
+	->where('a.membertype_id=?',$membertype);
+        //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
+
+    public function getmemberdetails($memberid,$membertype)
+    {
+	if($membertype==1){
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('a.village_id'))
+	->where('a.id=?',$memberid);
+        //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	} 
+	if($membertype==2 or $membertype==3)
+	{
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_group'),array('a.id'),array('a.village_id'))
+	->where('a.id=?',$memberid);
+        //die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
+    }
+
+    public function accUpdate($accId,$input)
+    {
+    	$where[] = "id = '".$accId."'";
+	$db = $this->getAdapter();
+        $result = $db->update('ourbank_accounts',$input,$where);
+    
     }
 
     public function maxid($accNum)

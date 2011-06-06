@@ -53,11 +53,14 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
     public function disbursmentAction() 
     {
         $this->view->pageTitle='Loan disbursement';
+        $path = $this->view->baseUrl();
         $this->view->accNum = $accNum = base64_decode($this->_request->getParam('accNum'));
         $this->view->details = $details= $this->view->loanModel->searchaccounts($accNum);
         $this->view->disbursedetails = $this->view->loanModel->getdisbursementdetails($accNum);
         foreach($this->view->details as $details) {
-        $this->view->loanamount=$loanamount=$details->amount;
+        	$this->view->loanamount=$loanamount=$details->amount;
+		$memberid=$details->memberid;
+		$membertypeid=$details->membertypeid;
         }
         $this->view->disbursed=$disbursed=0;
         if($this->view->disbursedetails){
@@ -71,12 +74,28 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
         $this->view->balance=$balance=$loanamount-$disbursed;
         $this->view->fee = $this->view->loanModel->getFee($accNum);
         $loanForm = $this->view->loan = new Loandisbursmentg_Form_loandisbursement($balance);
+	$loanForm->memberid->setValue($memberid);
+	$loanForm->membertypeid->setValue($membertypeid);
+	$loanForm->pathhidden->setValue($path);
+	$mode = $this->view->adm->viewRecord("ourbank_master_paymenttypes","id","DESC");
+	foreach($mode as $mode) {
+            $loanForm->transactionMode->addMultiOption($mode['id'],$mode['name']);
+//             $form->transactionMode1->addMultiOption($mode['id'],$mode['name']);
+	}
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-            $formData = $this->_request->getPost();
-            if ($loanForm->isValid($formData)) {
+            $formData = $this->_request->getPost(); 
+
+              $testing[]=$formData['etransfer'];
+                print_r($testing);
+
+            if ($loanForm->isValid($formData)) { 
+
+                print_r($testing);
                 $accNum = base64_decode($this->_request->getParam('accNum'));
                 $disbursedate=$this->view->dateconvector->phpmysqlformat($this->_request->getPost('date'));
                 $disburseamount=$this->_request->getPost('Amount');
+                $transactiontype=$this->_request->getPost('transactionMode');
+                $eaccount=$this->_request->getPost('etransfer');
                 //Make the loan acc active
                 $this->view->loanModel->active($accNum);
                 $search = $this->view->loanModel->searchaccounts($accNum);
@@ -105,12 +124,21 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                         $feeamount = $feeamount + $feeValue;
                     }
                 }
+
+                if($transactiontype != 5 or $transactiontype != 1){
+                $paymentdetails=$this->_request->getPost('othertext');
+                }
+                else 
+                {
+                $paymentdetails="";
+                }
                 //Passing a transfer entry to transaction
                 $data = array('account_id' => $accId,
                             'glsubcode_id_to' => $gl,
                             'transaction_date' => $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
                             'amount_from_bank' => $this->_request->getPost('Amount'),
-                            'paymenttype_id'=> 5,
+                            'paymenttype_id'=> $transactiontype,
+                            'paymenttype_details'=>$paymentdetails,
                             'transactiontype_id' => 2,
                             'recordstatus_id'=> 3,
                             'transaction_description'=> $this->_request->getPost('description') ,
@@ -257,12 +285,19 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                         'debit' => $this->_request->getPost('Amount'),
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$glbankEntry);
+
+            if($transactiontype=='5') {
+
+
+                $eaccount=$this->_request->getPost('etransfer');
+
+                echo $eaccount;
             // An entry into transaction (saving transfer)
-            $input = array('account_id' => $sAccId,
+            $input = array('account_id' => $eaccount,
                                 'glsubcode_id_to' => $sgl,
                                 'transaction_date' => $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
                                 'amount_to_bank' => $this->_request->getPost('Amount'),
-                                'paymenttype_id' => 1,
+                                'paymenttype_id' => $transactiontype,
                                 'transactiontype_id' => 1,
                                 'recordstatus_id' => 3,
                                 'transaction_description'=> "Transfer from loan disbursemnet",
@@ -272,7 +307,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             $stranID = $this->view->adm->addRecord('ourbank_transaction',$input);
             // Insertion into saving transaction 
             $saving = array('transaction_id' => $stranID,
-                                'account_id' => $sAccId,
+                                'account_id' => $eaccount,
                                 'transaction_date' => $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
                                 'transactiontype_id' => 1,
                                 'glsubcode_id_to' => $sgl,
@@ -282,11 +317,11 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                                 'transaction_by' => 1);
             $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
             // An entry into transaction (fee deduction)
-            $input = array('account_id' => $sAccId,
+            $input = array('account_id' => $eaccount,
                                 'glsubcode_id_to' => $sgl,
                                 'transaction_date' => $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
                                 'amount_from_bank' => $feeamount,
-                                'paymenttype_id' => 1,
+                                'paymenttype_id' => $transactiontype,
                                 'transactiontype_id' => 2,
                                 'recordstatus_id' => 3,
                                 'transaction_description'=> "Fee deduction for loan",
@@ -296,7 +331,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             $stranID = $this->view->adm->addRecord('ourbank_transaction',$input);
             // Insertion into saving transaction 
             $saving = array('transaction_id' => $stranID,
-                                'account_id' => $sAccId,
+                                'account_id' => $eaccount,
                                 'transaction_date' => $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
                                 'transactiontype_id' => 2,
                                 'glsubcode_id_to' => $sgl,
@@ -305,6 +340,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                                 'transaction_description'=> "Fee deduction for loan",
                                 'transaction_by' => 1);
             $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
+
             $bankData = $this->view->loanModel->glBank($officeid);
             foreach ($bankData as $bankData) {
                 $bankGl = $bankData->id;
@@ -331,6 +367,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                         'credit' => $feeamount,
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$fee);
+            }
             $this->_redirect("/loandisbursmentg/index/message/amt/".base64_encode($this->_request->getPost('Amount'))."/accNum/".base64_encode($number));
             }
         }
@@ -349,5 +386,53 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
         date('i',$cd), date('s',$cd), date('m',$cd)+$mth,
         date('d',$cd)+$day, date('Y',$cd)+$yr));
         return $newdate;
+    }
+
+    public function getaccountAction() 
+    {
+       	$this->_helper->layout->disableLayout();
+        $loanForm = $this->view->loan = new Loandisbursmentg_Form_loandisbursement(0);
+ 	$memberid = $this->_request->getParam('memberid');
+ 	$membertype = $this->_request->getParam('membertype');
+	$savingaccount=$this->view->loanModel->getsavingaccount($memberid,$membertype);
+	if($savingaccount){
+	    foreach($savingaccount as $savingaccount) {
+            $loanForm->etransfer->addMultiOption($savingaccount['id'],$savingaccount['account_number']);
+	    }	
+	}
+	else
+	{
+            // Insertion into ourbank_account 
+            $data = array('account_number' => 1,
+                            'member_id' => $memberid,
+                            'product_id' => 1,
+                            'begin_date' => date('Y-m-d'),
+                            'membertype_id' => $membertype,
+                            'accountcreated_date'=> date('Y-m-d'),
+                            'created_by' => $this->view->createdby,
+                            'status_id'=>1);
+            $accId = $this->view->adm->addRecord('ourbank_accounts',$data);
+
+            $getmembersdetails=$this->view->loanModel->getmemberdetails($memberid,$membertype);
+            $officeid=$getmembersdetails[0]['village_id'];
+            // Account number formation 
+            // <-----------14 digit number ---------->
+            // <--3-->/<--2-->/<--2-->/<--1-->/<--6-->
+            // 00office_id/0membertype_id/0product_id/typeofacc [L/S/F/R]/00000account_id
+            $b=str_pad($officeid,3,"0",STR_PAD_LEFT); 
+            $t=str_pad($membertype,2,"0",STR_PAD_LEFT);
+            $p=str_pad(1,2,"0",STR_PAD_LEFT);
+            $i= "S";
+            $a=str_pad($accId,6,"0",STR_PAD_LEFT);
+            $account = array('account_number' =>$b.$t.$p.$i.$a);
+            $this->view->loanModel->accUpdate($accId,$account);
+            $savingaccount=$this->view->loanModel->getsavingaccount($memberid,$membertype);
+            foreach($savingaccount as $savingaccount) {
+            $loanForm->etransfer->addMultiOption($savingaccount['id'],$savingaccount['account_number']);
+	    	    }
+	}
+	
+	
+
     }
 }

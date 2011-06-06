@@ -37,7 +37,7 @@ class Loanaccount_Form_Loans extends Zend_Form
         $fee->setSeparator(" ");
         //$fee->removeDecorator('br');
         $fee->removeDecorator('label');
-        $savingAccount = $formfield->field('Select','savingAccount','','','txt_put','',true,'','','','','',0,0);
+//        $savingAccount = $formfield->field('Select','savingAccount','','','txt_put','',true,'','','','','',0,0);
         $fundings = $formfield->field('Select','fundings','','','txt_put','',true,'','','','','',0,0);
         $fundings->addMultiOption('','Select...');
         $fundings->addMultiOption('1','funders');
@@ -53,6 +53,6 @@ class Loanaccount_Form_Loans extends Zend_Form
 	$submit = $formfield->field('Submit','Submit','','','','',false,'','','','','',0,0);
 	$Yes = $formfield->field('Submit','Yes','','','','',false,'','','','','',0,0);
 	$back = $formfield->field('Submit','Back','','','','',false,'','','','','',0,0);
-        $this->addElements(array($submit,$amount,$installments,$interest,$interesttype,$fee,$savingAccount,$fundings,$funders,$code,$Id,$date,$back,$Yes));
+        $this->addElements(array($submit,$amount,$installments,$interest,$interesttype,$fee,$fundings,$funders,$code,$Id,$date,$back,$Yes));
     }
 }
