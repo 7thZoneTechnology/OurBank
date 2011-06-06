@@ -51,7 +51,7 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
     }
 
 	//credit
-    public function totalSavingsCredit($date,$branchid) 
+    public function totalSavingsCredit($date,$branch) 
     {
         $select = $this->select()
                        ->setIntegrityCheck(false)
@@ -62,15 +62,15 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
 /*                        ->where('A.transactiontype_id = 1 AND A.paymenttype_id <= 4')*/
                         ->where('A.transaction_date <= "'.$date.'"')
                         ->join(array('C'=>'ourbank_accounts'),'C.id = A.account_id')
-                        ->where('C.status_id =3 OR C.status_id =1' )
-                        ->join(array('f' =>'ourbank_familymember'),'C.member_id = f.id')
-                        ->where('f.village_id = "'.$branchid.'"');
+                        ->where('C.status_id =3 OR C.status_id =1')
+                        ->join(array('f' =>'ourbank_familymember'),'C.member_id = f.id',array('village_id'))
+                        ->where('f.village_id = "'.$branch.'"');
                        die($select->__toString($select));
         return $this->fetchAll($select);
     }
 
 	//debit 
-    public function totalSavingsDebit($date,$branchid) {
+    public function totalSavingsDebit($date,$branch) {
          $select = $this->select()
                        ->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_transaction'))
@@ -87,7 +87,27 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
         return $this->fetchAll($select);
 
     }
+public function totalSavingsCreditg($date,$group) 
+    {
+        $select = $this->select()
+                       ->setIntegrityCheck(false)
+                        
+                       ->join(array('a' => 'ourbank_group'),array('id'))
+						->where('a.id = ?',$group)
+ ->join(array('b' =>'ourbank_familymember'),'a.village_id = b.village_id')
+ ->join(array('c'=>'ourbank_accounts'),'b.id = c.member_id',array('c.id as accountid'))
+                        ->where('c.status_id =3 OR c.status_id =1' )
+->from(array('d' => 'ourbank_transaction'))
+                        ->where('c.id =d.account_id' )
+                        ->where('d.amount_from_bank >0');
+//                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
+//  						 ->where('d.paymenttype_id <= 4')
+//                         ->where('d.transaction_date <= "'.$date.'"');
 
+
+                       die($select->__toString($select));
+        return $this->fetchAll($select);
+    }
 	//opening balance
     public function openingBalance($date,$branchid) {
         $select = $this->select()
@@ -100,4 +120,22 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
 //die($select->__toString($select));
         return $this->fetchAll($select);
     }
+	public function subofficeFromUrl($hierarchy) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_office WHERE officetype_id = $hierarchy";
+        $result = $this->db->fetchAll($sql,array($hierarchy));
+        return $result;
+
+
+    	}
+public function subgroupFromUrl($branch) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_group WHERE village_id = $branch";
+        $result = $this->db->fetchAll($sql,array($branch));
+        return $result;
+
+
+    	}
 }
