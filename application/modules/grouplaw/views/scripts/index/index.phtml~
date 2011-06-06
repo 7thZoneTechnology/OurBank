@@ -1,5 +1,5 @@
 <script type="text/javascript">
-function page2(pagenumber) { alert(pagenumber);
+function page2(pagenumber) {
 }
 </script>
 
@@ -24,20 +24,16 @@ th
                         <div class="btnhouse">
                             <div class="ltbtns">
                                 <input type="Submit" name="Submit" value="Search"><br><br>
-                                <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
                             </div>
                         </div>
 	 </form>
 </fieldset>
+ <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
 </div>
 
-<?php } $dateconvert= new App_Model_dateConvertor();
-if($this->result) 
-{ 
-$count = 0;
-foreach ($this->result as $result) 
-{ 
-    if($count == 0){
+<?php } 
+if($this->result) { $dateconvert= new App_Model_dateConvertor();
+foreach ($this->result as $result) {
 ?>
 <fieldset>
 	<legend>Template</legend>
@@ -83,7 +79,7 @@ foreach ($this->result as $result)
 
             <TR>
                 <TD valign="top" width="20px">8.</TD>
-                <TD><p> dddddf fdas vsdr dddfdsf sfsfs dfk <u> <FONT color="RED"><?php echo $result['saving_perweek']; ?></FONT></u> kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
+                <TD><p> dddddf fdas vsdr dddfdsf sfsfs df;k; <u> <FONT color="RED"><?php echo $result['saving_perweek']; ?></FONT></u> kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf dddddf fdas vsdr dddfdsf sfsfs df;k; kladf iladf l ki fdfsa ; mlkjidfasfs sdfsfas dfsdfasf asdfsfdfdsf adfsdfdfdsafsadfafasf</p></TD>
             </TR>
 
             <TR>
@@ -137,4 +133,4 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/grouplaw/index/reportdispl
 <input type="hidden" name="groupcode" value="<?php echo $this->code; ?>">
 </div> 
 </form>
-<?php } $count = $count + 1; } }?>
+<?php } } ?>

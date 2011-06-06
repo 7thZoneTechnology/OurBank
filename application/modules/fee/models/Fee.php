@@ -93,4 +93,35 @@ public function fetchfee($id)
        $result = $this->fetchAll($select);
        return $result->toArray();
     }
+
+        public function findlastlevel()
+        {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT MAX(id) as lastid FROM `ourbank_glcode`";
+        $result = $this->db->fetchAll($sql,array());
+        return $result;
+
+        }
+
+     public function findmaxlevel()
+        {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT MAX(id) as lastid FROM `ourbank_glsubcode`";
+        $result = $this->db->fetchAll($sql,array());
+        return $result;
+
+        }
+
+  public function genarateGlsubCode1($ledgertype_id,$id)
+        {
+            $this->db = $this->getAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            return $this->db->fetchRow("SELECT MAX(glsubcode) as id
+                                            FROM  ourbank_glsubcode
+                                            where glcode_id = $id and subledger_id = ".$ledgertype_id);
+
+
+        }
 }

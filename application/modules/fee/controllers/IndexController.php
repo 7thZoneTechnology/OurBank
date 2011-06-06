@@ -40,6 +40,25 @@ class Fee_Indexcontroller extends Zend_Controller_Action
 //              $this->_redirect('index/logout');
 //         }
 		$this->view->adm = new App_Model_Adm();   	
+
+        $ledger = new Ledger_Model_Ledger();
+        $ledger1 = $ledger->fetchAllLedger1();
+        $flag = 0;
+        $date=date("y/m/d H:i:s");
+
+        foreach($ledger1 as $ledger2) { if((($ledger2->header) == 'Fee'))  $flag = 1; }
+        if($flag == 0) {
+            $glInsert = $ledger->insertGlcode(array('id' => '',
+                        'glcode' => 'I01000', 'ledgertype_id' => 1,
+                        'header' => 'Fee', 'description' => 'Fee in income',
+                        'created_date' =>$date, 'created_by'=>1));
+         
+        }
+
+
+
+
+
 	}
 	 public function getcategoryAction()
     {
@@ -116,7 +135,7 @@ public function viewAction()
 			$this->view->form=$form;
 
 			$appliesTo = new Feecommon_Model_Feecommon();
-
+$subOffice=new Fee_Model_Fee();
 			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($hierarchy_id as $hierarchy_id){
 				$form->hierarchy_id->addMultiOption($hierarchy_id['id'],$hierarchy_id['type']);
@@ -135,7 +154,7 @@ public function viewAction()
 			foreach($glcode as $glcode){
 				$form->feetype_id->addMultiOption($glcode['id'],$glcode['name']);
 			}
-
+ 
       
 
 // 			$this->view->categorydetails=$appliesTo->getcategory();
@@ -147,17 +166,75 @@ public function viewAction()
 				$formData = $this->_request->getPost();
 				if ($this->_request->isPost()) {
 					if ($form->isValid($formData)) {  
+$maxid=$subOffice->findlastlevel();
+        foreach($maxid as $maxid1) {
+         $lastid=$maxid1->lastid;}
+
+ for($j=1;$j<=1;$j++){
+             $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$lastid);
+
+      $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
+        $glcode = $fetchglcodedetails[0]['glcode'];
+      $header = $fetchglcodedetails[0]['header'];
+  $lastid;
+           $ledger = new Officedefault_Model_officedefault();
+           $genarateGlsub = $subOffice->genarateGlsubCode1($ledgertype_id,$lastid);
+        $glsubcode=$genarateGlsub->id;
+
+           if($glsubcode) {
+               $ini=substr($glsubcode,0,1);
+               $last=substr($glsubcode,1,5);
+               $last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glsubcode=$ini.$last;
+               $glsubcode;
+           } else {
+               $glcode1=$ledger->fetchGlcode($j);
+               $glcode=$glcode1->glcode;
+               $ini=substr($glcode,0,1);
+               $last=substr($glcode,1,5);
+               $last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glsubcode=$ini.$last;
+               $glsubcode;
+           }
+                $createdate=$this->_request->getParam('createddate');
+
+
+           $headername="Fee";
+           $gInsert = $ledger->insertGlsubcode(array('id' => '',
+                           'office_id'=>$formData['hierarchy_id'],
+                           'glsubcode' => $glsubcode,
+                           'glcode_id' => $lastid,
+                           'subledger_id' => $ledgertype_id,
+                           'header' =>$formData['name'],
+                           'description' => $formData['description'],
+                           'created_by'=>$this->view->createdby));
+           }
+
+
+
+$glsubcode_id=$subOffice->findmaxlevel();
+        foreach($glsubcode_id as $glsubcode_id) {
+         $glsubcode=$glsubcode_id->lastid;}
+
+
+
 
 										$formdata1=array('name'=>$formData['name'],
                                     					'description'=>$formData['description'],
                                     					'hierarchy_id'=>$formData['hierarchy_id'],
                                     					'feetype_id'=> $formData['feetype_id'],
-                                    					'category_id'=>$formData['category_id'],
+                                    					'glsubcode_id'=> $glsubcode,
 
+                                    					'category_id'=>$formData['category_id'],
                                     					'amountype_id'=>$formData['amountype_id'],
                                     					'created_by'=>$this->view->createdby,
 														'value'=>$formData['value']);						
 						$id = $this->view->adm->addRecord("ourbank_fee",$formdata1);
+
+
+
 			$this->_redirect("/fee");
    					}
 				}

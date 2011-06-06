@@ -8,15 +8,8 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $this->view->withdrawal = new Sbwithdrawal_Model_Sbwithdrawal();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-      
-                $this->view->globalvalue = $this->view->cl->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-                        }
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $this->view->createdby = $sessionName->primaryuserid;
         $this->view->dateconvertor = new App_Model_dateConvertor();
     }
     public function indexAction()

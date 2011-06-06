@@ -21,7 +21,7 @@ class Groupprofile_IndexController extends Zend_Controller_Action
                     $membercode = $this->_request->getParam('membercode');
                     if (substr($membercode,4,1) == 2 || substr($membercode,4,1) == 3) {
                         $this->view->group = $this->view->accounts->group($membercode);
-                        $this->view->groupDeatils = $this->view->accounts->groupDeatils($membercode);
+                        $this->view->groupDeatils = $this->view->accounts->groupDeatilss($membercode);
                         $addForm = new Loanprocess_Form_Loanprocess(count($this->view->group));
                         $this->view->form=$addForm;
                         $this->view->membercode = $membercode;
