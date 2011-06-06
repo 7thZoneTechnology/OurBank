@@ -35,8 +35,8 @@ foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
         <br>
 
         <tr><TD>Group name :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['name']."</font>"?></br>
-                Group Address :&nbsp;<?php echo "<font color=green>".$result['address1']."</font>"?></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['city']."</font>"?></br> &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<?php echo "<font color=green>".$result['state']."</font>"?><br><br>
-                Communication:Phone/Mobile :&nbsp;<?php foreach($this->loans as $loan) { echo "<font color=green>".$loan['mobile']."</font>"?></TD>
+                Group Address :&nbsp;<?php echo "<font color=green>".$result['address1']."</font>"?></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['city']."</font>"?></br> &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<?php echo "<font color=green>".$result['state']."</font>"?><br><br><?php foreach($this->loans as $loan)
+                Communication:Phone/Mobile :&nbsp;<?php echo "<font color=green>".$loan['mobile']."</font>"?></TD>
 
 
            <TD align="left" width=30%> Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php echo "<font color=green>".date('d-m-Y')."</font>"?></br>
