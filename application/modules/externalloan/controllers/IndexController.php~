@@ -202,7 +202,7 @@ class Externalloan_IndexController extends Zend_Controller_Action
             $pdfData = $pdf->render();
             $pdf->save('/var/www/'.$projname.'/reports/externalloan.pdf');
             $path = '/var/www/'.$projname.'/reports/externalloan.pdf';
-            chmod($path,0777);
+            chmod($path,777);
              }         
             }
           } } 
