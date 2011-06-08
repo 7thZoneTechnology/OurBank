@@ -25,21 +25,10 @@ class crop_IndexController extends Zend_Controller_Action{
     public function init() 
 	{
         $this->view->pageTitle=$this->view->translate('Membership');
-        $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
-        }
-
-
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
-        foreach($loginname as $loginname) {
-            $this->view->username=$loginname['username']; // get the user name
-        } 
+       $globalsession = new App_Model_Users();
+                $this->view->globalvalue = $globalsession->getSession();// get session values
+                $this->view->createdby = $this->view->globalvalue[0]['id'];
+                $this->view->username = $this->view->globalvalue[0]['username'];
         $this->view->id=$subId=$this->_getParam('id');
         $this->view->subId=$subId=$this->_getParam('subId');
         $this->view->modId=$modId=$this->_getParam('modId');
@@ -73,6 +62,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $revvillageid = $this->view->membername[0]['rev_village_id'];
         if ($revvillageid) {
             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
+            $this->view->revvillagename=$revvillagename[0]['name']; 
         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
@@ -85,7 +75,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $this->view->memberid=$member_id=$this->_getParam('id');
 
         $this->view->form=$form;
-        $this->view->submitform = new Crop_Form_Submit();
+        $this->view->submitform = new Bank_Form_Submit();
         //dynamically change the path name
         $addressmodel=new Address_Model_addressInformation();
         $module_name=$addressmodel->getmodule($this->view->subId);
@@ -174,7 +164,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         $form = new Crop_Form_Crop($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->form = $form;
         $this->view->id = $this->_getParam('id');
-        $this->view->submitform = new Crop_Form_Submit();
+        $this->view->submitform = new Bank_Form_Submit();
         //dynamically change the path name
         $addressmodel=new Address_Model_addressInformation();
         $module_name=$addressmodel->getmodule($this->view->subId);

@@ -30,31 +30,28 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $formfield = new App_Form_Field ();
         $vtype=array('Digits');
 
-        $familyid = $formfield->field('Text','familyid','ourbank_family','family_id','mand required digits','',true,'','','','','',0,0);
-		$familyid->addValidator('digits')
-		 		 ->addErrorMessage('Enter Numeric data');
+        $familyid = $formfield->field('Text','familyid','ourbank_family','family_id','mand','',true,'','','','','',0,0);
         $familyid->setAttrib('maxLength',5);
 
-		$familyid1 = $formfield->field('Text','familyid1','','','mand required digits','',true,'','','','','',0,0);
-		$familyid1->addValidator('digits')
-		 		  ->addErrorMessage('Enter Numeric data');
+		$familyid1 = $formfield->field('Text','familyid1','','','mand','',true,'','','','','',0,0);
         $familyid1->setAttrib('maxLength',5);
 
-        $sujeevana = $formfield->field('Text','sujeevana','','','mand required digits','',true,'','','','','',0,0);
-		$sujeevana->addValidator('digits')
-		 		  ->addErrorMessage('Enter Numeric data');
-		$sujeevana->setAttrib('maxLength',5);
+        $sujeevana = $formfield->field('Text','sujeevana','','','','',true,'','','','','',0,0);
+	$sujeevana->setAttrib('maxLength',5);
         $sujeevana->addValidator(new Zend_Validate_Alnum());
 
         $houseno=$formfield->field('Text','houseno','','','','',true,'','','','','',0,0);
         $houseno->setAttrib('maxLength',10);
         $minority=$formfield->field('Checkbox','minority','','','','',false,'','','','','',0,0);
 
-
+// 		$subcaste = $formfield->field('Select','subcaste','','','','',true,'','','','','',0,0);
+// 		$subcaste->setRegisterInArrayValidator(false);
 		$caste = $formfield->field('Select','caste','','','','',true,'','','','','',0,0);
+//         $caste->setAttrib('onchange', 'Getsubcaste(this.value,"'.$path.'")');
 
         $health = $formfield->field('MultiCheckbox','health','','','','',true,'','','','','',0,0);
         $health->setSeparator(" ");
+        //$health->setAttrib('onclick','setCheck(this.value)'); 
         $health->setAttrib('class','child'); 
         $ration = $formfield->field('Select','ration','','','','',false,'','','','','',0,0);
         $jobno = $formfield->field('Text','jobno','','','','',false,'','','','','',0,0);
@@ -73,8 +70,8 @@ class  Familydefault_Form_familydefault extends Zend_Form
 //         $village->setAttrib('onchange','getAreaDetails("'.$path.'",this.value)');
 
         $dateofbirth = $formfield->field('Text','memberdateofbirth','','','','',false,'','','','','',1,0);
-	    $mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
-		$mobile->setAttrib('maxLength', 11);
+	    $mobile = $formfield->field('Text','mobile','','','','',false,'','','','','',0,0);
+        $mobile->setAttrib('maxLength', 11);
 
         $this->addElements(array($familyid,$sujeevana,$houseno,$minority,$familyid1,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
 

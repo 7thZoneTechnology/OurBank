@@ -27,16 +27,21 @@ class Infrastructure_IndexController extends Zend_Controller_Action
 //it is create session and implement ACL concept...
 
         $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
-	$sessionName = new Zend_Session_Namespace('ourbank');
-        $this->view->createdby = $sessionName->primaryuserid;
-        $storage = new Zend_Auth_Storage_Session();
+       $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
-            $this->_redirect('index/login');
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
+
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        } 
         $this->view->adm = new App_Model_Adm();
     }
 
@@ -88,7 +93,7 @@ class Infrastructure_IndexController extends Zend_Controller_Action
 	$fuel1 = $this->_request->getParam('cookingfuel'); 
 
 
-       $this->view->createdby = $this->view->globalvalue[0]['id'];
+// /*       $this->view->createdby = $this->view->globalvalue[0]['id'];*/
         $this->view->memberid=$member_id=$this->_getParam('id');
             $formData = $this->_request->getPost();  
 
@@ -98,9 +103,7 @@ class Infrastructure_IndexController extends Zend_Controller_Action
 					'housetype_id'=>$house1,
                                           'ownership_id'=>$owner1,
                                             'fuel_id'=>$fuel1,
-                                            'created_date'=>date("y/m/d H:i:s"),
-                                           'created_by'=>$this->view->createdby
-                                            ));
+                                            'created_date'=>date("y/m/d H:i:s")));
                     }
              $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
         }
@@ -150,7 +153,7 @@ class Infrastructure_IndexController extends Zend_Controller_Action
 		$owner1 = $this->_request->getParam('ownership');
 		$fuel1 = $this->_request->getParam('cookingfuel'); 
 
-       		$this->view->createdby = $this->view->globalvalue[0]['id'];
+// //        		$this->view->createdby = $this->view->globalvalue[0]['id'];
       		$this->view->memberid=$member_id=$this->_getParam('id');
 
 		//insert main table details to log tables
@@ -167,9 +170,7 @@ class Infrastructure_IndexController extends Zend_Controller_Action
 					'housetype_id'=>$house1,
                                           'ownership_id'=>$owner1,
                                             'fuel_id'=>$fuel1,
-                                            'created_date'=>date("y/m/d H:i:s"),
-                                           'created_by'=>$this->view->createdby
-                                            ));
+                                            'created_date'=>date("y/m/d H:i:s")));
                     }
 	//redirecting page to family view
              $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
