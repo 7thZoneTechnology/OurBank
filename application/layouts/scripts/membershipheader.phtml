@@ -1,0 +1,50 @@
+<?php echo $this->render('header.phtml'); ?>
+    <div id="navigation">
+      <div id="mainmenu">
+   <ul>
+            <li ><a href="<?php  echo $this->baseUrl();?>/accounting"><span>Accounting</span></a></li>
+            <li><a href="<?php  echo $this->baseUrl();?>/transaction"><span>Transaction</span></a></li>
+            <li><a href="<?php  echo $this->baseUrl();?>/maintenance"><span>Maintenance</span></a></li>
+            <li><a href="<?php  echo $this->baseUrl();?>/meetingmain"><span>Meeting</span></a></li>
+            <li class = "selected"><a href="<?php  echo $this->baseUrl();?>/membership"><span>Membership</span></a></li>
+            <li ><a href="<?php  echo $this->baseUrl();?>/management"><span>Management</span></a></li>
+            <li><a href="<?php  echo $this->baseUrl();?>/dropdown"><span>Settings</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/reports"><span>Reports</span></a></li>
+                <li><a href="<?php  echo $this->baseUrl();?>/loanprocessing"><span>Loan process</span></a></li>
+
+    </ul>
+      </div>
+      <div id="submenu">
+            <ul>
+
+             <?php if($this->pageTitle == "Family Information") { ?>
+	     <li class="selected"><a href="<?php  echo $this->baseUrl();?>/family">Family</a></li>
+            <?php } else { ?>
+                <li><a href="<?php  echo $this->baseUrl();?>/family">Family</a></li>
+            <?php } ?>
+
+            <?php if($this->pageTitle == "Individual") { ?>
+	     <li class="selected"><a href="<?php  echo $this->baseUrl();?>/individual">Individual</a></li>
+            <?php } else { ?>
+                <li><a href="<?php  echo $this->baseUrl();?>/individual">Individual</a></li>
+            <?php } ?>
+
+	   <?php if($this->pageTitle == "Group") { ?>
+	     <li class="selected"><a href="<?php  echo $this->baseUrl();?>/groupm">Group</a></li>
+            <?php } else { ?>
+                <li><a href="<?php  echo $this->baseUrl();?>/groupm">Group</a></li>
+            <?php } ?>
+
+              <?php //if($this->pageTitle == "Koota") { ?>
+<!-- 	     <li class="selected"><a href="<?php  //echo $this->baseUrl();?>/koota">Koota</a></li> -->
+             <?php //} else { ?>
+<!--                 <li><a href="<?php  //echo $this->baseUrl();?>/koota">Koota</a></li> -->
+            <?php //} ?>
+
+
+
+            </ul>
+      </div>
+    </div>
+
+

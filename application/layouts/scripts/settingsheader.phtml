@@ -1,0 +1,54 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<head>
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
+
+</head> 
+
+
+
+<?php echo $this->render('header.phtml'); ?>
+
+
+    <div id="navigation">
+      <div id="mainmenu">
+         <ul>
+	<li><a href="<?php  echo $this->baseUrl();?>/accounting"><span>Accounting</span></a></li>
+	<li><a href="<?php  echo $this->baseUrl();?>/transaction"><span>Transaction</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/maintenance"><span>Maintenance</span></a></li>
+	<li><a href="<?php  echo $this->baseUrl();?>/meetingmain"><span>Meeting</span></a></li>
+        <li><a href="<?php  echo $this->baseUrl();?>/membership"><span>Membership</span></a></li>
+	<li><a href="<?php  echo $this->baseUrl();?>/management"><span>Management</span></a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/dropdown"><span>Settings</span></a></li>
+               <li><a href="<?php  echo $this->baseUrl();?>/reports"><span>Reports</span></a></li>
+                <li><a href="<?php  echo $this->baseUrl();?>/loanprocessing"><span>Loan process</span></a></li>
+
+        </ul>
+      </div>
+      <div id="submenu">
+            <ul>
+<!--                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/settings/">Languages</a></li>-->
+                <li><a href="<?php  echo $this->baseUrl();?>/dropdown">Dropdown</a></li>
+            </ul>
+      </div>
+    </div>
+
+

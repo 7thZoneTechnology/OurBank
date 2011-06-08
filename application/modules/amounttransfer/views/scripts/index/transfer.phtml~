@@ -1,0 +1,97 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php if ($this->savingDetails) { ?>
+
+<div style="float:left;width:380px">
+<fieldset>
+<legend>Savings Details</legend>
+<form action="<?php echo $this->baseUrl();?>/amounttransfer/index/transferto/account_id/<?php echo $this->account_id; ?>/balance/<?php echo $this->balance; ?>/product_id/<?php echo $this->product_id; ?>" method="POST">
+    <TABLE id="hor-minimalist-b">
+        <?php foreach($this->savingDetails as $savingDetails) {  ?>
+                <TR>
+                    <TD>Name</TD>
+                    <TD><?php echo $savingDetails['membername'];?></TD>
+
+                </TR>
+
+                <TR>
+                    <TD>Account Number</TD>
+                    <TD><?php echo $accno = $savingDetails['account_number'];?></TD>
+
+                </TR>
+                <TR>
+                    <TD>Balance</TD>
+                    <TD><?php echo $this->balance;?></TD>
+
+                </TR>
+                <TR>
+                    <TD><a href="<?php echo $this->baseUrl(); ?>/management/category">
+                                <input name="submit" type="submit" class="officebutton" value="Back"></a></TD>
+                    <TD></TD>
+
+              </TR>
+        <?php } ?>
+
+        </TABLE>
+<input type="hidden" name="member_id" value="<?php echo $accno;?>">
+    <TABLE id="hor-minimalist-b">
+        <?php foreach($this->savingDetails as $savingDetails) {  ?>
+                <TR>
+                    <TD>To Account Number</TD>
+                    <TD><input type="text" name="accountto" class="txt_put"></TD>
+
+                </TR>
+                <TR>
+                <TD>Amount</TD>
+                    <TD><input type="text" name="amount" class="txt_put"></TD>
+
+                </TR>
+                <TR>
+                    <TD></TD>
+                    <TD><input type="submit" name="Search" value="Transfer"></TD>
+
+                </TR>
+
+
+        <?php } ?>
+        </TABLE>
+</form>
+</div>
+</fieldset>
+
+<?php } else { ?>
+                <fieldset>
+                    <legend>Search</legend>
+                        <div class="cont-rgt-data">
+                            <form action="<?php echo $this->baseUrl();?>/amounttransfer/index/transfer/product_id/<?php echo $this->product_id ;?>" method="POST">
+                                <table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                                    <tr>
+                                        <td>From Account Number</td>
+                                        <td><?php echo $this->form->member_id;?></td>
+                                    </tr>
+                                    <tr>
+                                        <TD colspan = "2"><?php echo $this->form->Search;?></TD>
+                                    </tr>
+                                    <tr><TD><?php echo "<font color='red' size='1'>".$this->error."</font>";?></TD></tr>
+                                </table>
+                            </form>
+                        </div>
+                </fieldset>
+<?php } ?>
+
+
+
+

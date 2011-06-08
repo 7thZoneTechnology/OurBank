@@ -1,0 +1,38 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<div style="width:480px;float:left"> 
+
+	<table id="hor-minimalist-b" class="fieldsets">
+	<th colspan="4">Confirm Delete</th>
+			<div class="cont-rgt-data">
+				<form action="<?php echo $this->baseUrl();?>/dropdown/index/delete/id/<?php echo $this->id; ?>/name/<?php  echo $this->ff; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
+				
+					<TR>
+						<td></td>
+						<TD><label class="mand">Remarks</label><?php echo $this->form->remarks;?></TD>
+									
+					</tr>
+							<tr><TD><input type="submit" name="Delete" id="Submit" value="Delete"></TD>
+						<TD align="right"><a href="<?php echo $this->baseUrl();?>/dropdown/index/"> <input name="submit" type="submit"  value="Cancel" ></a></TD>
+					</TR>
+				</form>
+			</table>
+
+</div>

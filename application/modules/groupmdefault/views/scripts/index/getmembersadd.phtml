@@ -1,0 +1,69 @@
+
+
+<?php 
+$dbobj = new Groupmdefault_Model_groupdefault();
+if($this->members) { 
+ $val = 0;
+?>
+    <table  id="hor-minimalist-s" >
+        <tr>
+            <th bgcolor="Silver" align="center" width="40%"><b>Family breadwinner</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Family members</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>UID</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Group head</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Representatives</b></th>
+        </tr>
+        <?php 
+        $val = 0;
+
+        foreach($this->members as $members) {
+        if(!in_array($members['family_id'],$this->existmembers))
+        {
+            if($val >=1){
+                if($familyid !=$members['family_id']) {
+                $val = 0;
+                }
+            }
+        $breadwinner = $dbobj->getbreadwinner($members['family_id']);
+        foreach($breadwinner as $breadwinners){
+            $familyid = $breadwinners['family_id'];
+        }
+        ?>
+        <TR>
+
+            <?php 
+
+                if($familyid==$members['family_id']) {
+                $val++;
+               if($val == 1){
+                ?>
+                <td colspan="5">
+                    <input type="checkbox" name="member_id<?php echo $breadwinners['family_id'];?>" id="<?php echo $breadwinners['family_id'];?>" class="memberclass" onclick="membershow(this)" value="<?php echo $breadwinners["id"];?> "><? echo $breadwinners["name"];?>
+                </td>
+            <?php } 
+} 
+?> 
+        </tr>
+            <tr style="display: none" name="row_<?php echo $members['family_id'];?>">
+            <td></td>
+            <td width="20%">
+                <input type="checkbox" name="member_id[]" class="familymember" value="<?php echo $members['family_id'];?>_<?php echo $members["id"];?>" ><?php echo $members["name"];?>
+            </td>
+            <td width="30%"><?php echo $members["uid"];?>
+            </td>
+            <td width="25%" align="center">
+                <input type="radio" name="memberhead" class="familymember" value="<?php echo $members["id"];?>">
+            </td>
+            <td width="25%" align="center">
+                <input type="checkbox" name="representatives[]" id="<?php echo $members["id"];?>" class="chkvalid" value="<?php echo $members["id"];?>">
+            </td>
+            </tr>
+        <?php } 
+
+
+}
+?>
+    </table>
+<?php  } else {
+        echo "<font color='RED'>No Members in the branch you seleted</font>";
+ } ?>

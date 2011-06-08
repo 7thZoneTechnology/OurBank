@@ -1,0 +1,104 @@
+
+
+<div style="width:480px;float:left"> 
+
+<fieldset>
+	
+	<div class="cont-rgt-data">
+			<TABLE id="hor-minimalist-b">
+                        <tr><Th>Delete fee</Th><th></th><th></th><th></th><th></th></tr>
+                          	</tr>
+				<?php if(($this->feedetails)!=NULL) {?>
+
+					<?php foreach($this->feedetails as $member_view){?>
+					<tr>
+						<td>Fee Name:</td>
+						<td><?php echo $member_view['feename'];?></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Fee description:</td>
+						<td><?php echo $member_view['feedescription'];?></td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td>Fee type:</td>
+						<td><?php echo $member_view['feetype'];?></td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td>Category:</td>
+						<td><?php echo $member_view['categoryname'];?></td>
+						<td></td>
+					</tr>
+
+					<tr>				
+						<td>Office hierarchy:</td>
+						<td><?php echo $member_view['officename'];?></td>
+						<td></td>
+					</tr>
+					<tr>				
+						<td>Amount type:</td>
+						<td><?php echo $member_view['amounttype'];?></td>
+						<td></td>
+					</tr>
+					<tr>				
+						<td>Amount:</td>
+						<td><?php echo $member_view['value'];?></td>
+						<td></td>
+					</tr>
+				<?php } ?>
+				<?php } else { ?>
+					<?php foreach($this->fetchfee as $member_view){?>
+					<tr>
+						<td>Fee Name:</td>
+						<td><?php echo $member_view['name'];?></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Fee description:</td>
+						<td><?php echo $member_view['description'];?></td>
+						<td></td>
+					</tr>
+					<tr>	
+						<td>Fee type:</td>
+						<td><?php echo $member_view['feetype'];?></td>
+						<td></td>
+					</tr>
+					<tr>				
+						<td>Office hierarchy:</td>
+						<td><?php echo $member_view['officename'];?></td>
+						<td></td>
+					</tr>
+					<tr>				
+						<td>Amount type:</td>
+						<td><?php echo $member_view['amounttype'];?></td>
+						<td></td>
+					</tr>
+					<tr>				
+						<td>Amount:</td>
+						<td><?php echo $member_view['value'];?></td>
+						<td></td>
+					</tr>
+
+
+				<?php } ?>
+		
+				<?php } ?>
+			<div class="cont-rgt-data">
+			<form action="<?php echo $this->baseUrl();?>/fee/index/delete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
+				<table id="hor-minimalist-b" summary="Employee Pay Sheet">
+                                <tr><Th>Confirm Delete</th><th></th></tr>
+					<TR>
+						<TD  width="35%" align="right" ><label>Remarks<span class="reqMark">*</span></label></TD>
+						<TD  width="65%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
+					</TR>
+					<TR>
+										</table>
+							<input type="submit" name="Delete" id="Submit" value="Delete">			
+
+<TD><a href="<?php echo $this->baseUrl(); ?>/fee">
+					<input name="submit" type="submit" class="officebutton" value="cancel"></a></TD>				</form>
+			</form
+</fieldset>
+		</div>

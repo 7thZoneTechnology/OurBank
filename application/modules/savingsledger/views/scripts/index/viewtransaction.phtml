@@ -1,0 +1,125 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<?php if($this->accountDetails) { ?>
+	<div class="cont-rgt-data">
+            <TABLE id="hor-minimalist-b" >
+		<th colspan="4" >Account Details</th>
+            <?php foreach($this->accountDetails as $accountDetails) : ?>
+            <TR>
+                <TD >Name :</TD>
+                <TD ><?php echo $accountDetails["membername"];?></TD>
+                <TD >A/c name :</TD>
+                <TD ><?php echo $accountDetails["offername"];?></TD>
+
+            </TR>
+            <TR >
+                <TD >ID :</TD>
+                <TD ><?php echo $accountDetails["membercode"];?></TD>
+                <TD >A/c number :</TD>
+                <TD ><?php echo $accountDetails["account_number"];?></TD>
+            </TR>
+           
+            <TR >
+                <TD >Branch name :</TD>
+                <TD ><?php echo $accountDetails["office_name"];?></TD>
+                <TD>Balance :</TD>
+                <TD ><?php $accno=$accountDetails["account_number"];
+			$bal=new Savingsledger_Model_Savingsledger();
+			$balance=$bal->balance($accno);	
+			foreach($balance as $balance1){ echo $balance1['bal'];}
+		?></TD>
+            </TR>
+            <?php endforeach; ?>
+            </TABLE>
+    </div>
+<?php } ?>
+
+
+
+<br>
+<form action="<? echo $this->baseUrl();?>/reports/transactiondetails/viewtransaction/field1/<? echo $this->fromdate; ?>/field2/<? echo $this->todate; ?>/field4/<? echo $this->accno; ?>/pagetitle/<? echo $this->pagetitlevalue; ?>" method="POST">
+<TABLE id="hor-minimalist-b" >
+    <th colspan="8">Transaction Details</th>
+<h3 style="text-align:right"><font color="red">*</font> Amount in <font color="red">Rs</font></h3>
+	<div class="cont-rgt-data">
+                <tr class="tdbrownheading">
+                    <th>V.No</th>
+		    <th>Name</th>
+                    <?php if ($this->sample != 10) { ?>
+                    <th>Acc No</th>
+                    <?php } ?>
+                    <th>Tran Date</th>
+                    <th class="label">Credit</th>
+                    <th class="label">Debit</th>
+                    <th class="label">Balance</th>
+                    <th >Description</th>
+
+               </tr>
+              <?php $cr=0;$db=0;$bal=0; if (count($this->paginator)){ ?>
+        <?php foreach ($this->paginator as $transaction ){ ?>
+               <tr >
+		<td ><?php echo $transaction->Transactionid;?></td>
+		<td><?php echo $transaction->paymenttype;?></td>
+
+		<?php if ($this->sample != 10) { ?>
+                   <td ><?php echo $transaction->account_number;?></td>
+		<?php } ?>
+                   <td ><?php echo $transaction->transaction_date;?></td>
+                   <?php $transaction_type = $transaction->transactiontype_id; ?>
+		<?php if ($transaction_type == 1)  { ?>
+                   <td class="label"><?php echo $transaction->amount_to_bank; $cr+=$transaction->amount_to_bank;?></td>
+                   <td  class="label">----</td>
+		<?php } ?>
+		<?php if ($transaction_type == 2)  {?>
+                   <td  class="label">----</td></td>
+                   <td  class="label"><?php echo $transaction->amount_from_bank;$db+=$transaction->amount_from_bank;?></td>
+		<?php } ?>
+		<?php if ($transaction->balance) { ?>
+                  <td  class="label"><?php echo $transaction->balance; /*$bal+=$transaction->balance;*/?></td>
+		<?php } else { ?>
+                   <td  class="label">----</td>
+		<?php } ?>
+                   <td ><?php echo $transaction->description;?></td>
+
+                </tr>
+                <?php  }
+			} ?>
+		<tr>
+			<td></td><td></td><?if ($this->sample != 10) { ?><td></td><?php } ?><td><b>Total</b></td><td class="label"><b><? echo sprintf("%4.2f", $this->creditTotal); ?></b></td><td class="label"><b><? echo  sprintf("%4.2f", $this->debitTotal); ?></b></td><td class="label"><b><? /*echo sprintf("%4.2f", $bal); */?></b></td><td></td>
+   		 </tr>
+		<tr>
+			<td colspan="8" align="right"><div class="pagination">
+				<?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml'); ?>
+				</div>
+			</td>
+   		 </tr>
+		</div>
+                </TABLE><br>
+<p style="text-align:left; font-size:15px;"><? echo $this->resultshow; ?></p>
+    
+
+</form>
+
+<form action="<?php echo $this->baseUrl();?>/savingsledger/index/pdftransaction/fromdate/<?php echo $this->fromdate;?>/todate/<?php echo $this->todate;?>/accno/<?php echo $this->accno;?>/pagetitle/<? echo $this->pagetitlevalue;?>" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/savingsledger/index/reportdisplay/file/savingsledger.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+<input type="hidden" value="<?php echo $this->baseUrl();?>" name="baseurl">
+           <BR> <input type="submit" value="PDF" id="submit">
+</form>

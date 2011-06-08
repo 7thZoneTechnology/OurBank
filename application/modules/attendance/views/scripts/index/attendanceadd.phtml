@@ -1,0 +1,158 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+
+<head>
+<script>
+    var current =0;
+    function addPerson() {
+        current++;
+        var id = document.getElementById("id1").value;
+        $(".hor-minimalist-b1").append("<tr id=row"+id+"><td><select name = 'discussionlist[]'><?php foreach($this->discussionlist as $discussionlist){?><option value='<?php echo $discussionlist['id']?>'><?php echo $discussionlist['name']?></option><?php } ?></select> </td><td><a href='#' onClick='removeFormField(\"#row"+id+"\"); return false;'><img src='<? echo $this->baseUrl(); ?>/images/delete.gif'  border=0 width='16' height='16'></td><br></a></td></tr>");
+
+        document.myform.memberCount.value = id;
+        id1 = (id1 - 1) + 2;
+        document.getElementById("id1").value = id;
+    }
+    $(document).ready(function(){  $('#adddiscussion').click(addPerson)    });
+
+    function removeFormField(id1) { $(id1).remove();   }
+
+
+    var current1 =0;
+    function addPerson2() {
+        current1++;
+        var id = document.getElementById("id2").value;
+        $(".hor-minimalist-b2").append("<tr id=row"+id+"><td><select name = 'decisionlist[]'><?php foreach($this->decissionlist as $decissionlist){?><option value='<?php echo $decissionlist['id']?>'><?php echo $decissionlist['name']?></option><?php } ?></select> </td><td><a href='#' onClick='removeFormField(\"#row"+id+"\"); return false;'><img src='<? echo $this->baseUrl(); ?>/images/delete.gif'  border=0 width='16' height='16'></td><br></a></td></tr>");
+
+        document.myform.memberCount.value = id;
+        id2 = (id2 - 1) + 2;
+        document.getElementById("id2").value = id;
+    }
+    $(document).ready(function(){  $('#adddecision').click(addPerson2)    });
+
+    function removeFormField(id2) { $(id2).remove();   }
+
+</script>
+</head> 
+
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/attendance.js"></script>
+<div id = "searchDiv">
+
+    <form action="<?php echo $this->baseUrl();?>/attendance/index/attendanceadd/attendance_id/<?php echo $this->attendance_id;?>" method="POST">
+        <table id="hor-minimalist-b">
+
+            <TR >
+                <th colspan='4'><label for="fld1" class="mand"><?php echo $this->translate("Meeting Information"); ?></th>
+            </TR>
+
+            <TR >
+                <TD style="width:34%; vertical-align:top; !important;"><br><label for="fld1" class="mand"><?php echo $this->translate("Meeting name"); ?></TD>
+                <TD style="vertical-align:top; !important;"><?php echo $this->attendanceform->meeting_name;?></TD>
+                <td colspan="2"><div id="statediv1"></div></td>
+
+            </TR>
+
+            <TR >
+                <TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting date"); ?></TD>
+                <TD><?php echo $this->attendanceform->meeting_date;?></TD>
+                <TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting Time"); ?></TD>
+                <TD><?php echo $this->attendanceform->meeting_time;?></TD>
+            </TR>
+<!--            <TR >
+                <td>Weekday</td>
+                <td><?php echo $this->attendanceform->meeting_day;?></td>
+                <td></td>
+                <td></td>
+            </TR>-->
+
+
+
+           <tr><TD colspan="4">
+		<table id="hor-minimalist-b"> <TR >
+                <th style="border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Members"); ?></th>
+                <th style="border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Discussion List"); ?></th>
+                <th><?php echo $this->translate("Decision List"); ?></th>
+            </TR>
+
+            <TR>
+                <td style="width:34%; vertical-align:top; border-right: solid 1px #CBCBCB; !important;"><div id="statediv"></div></td>
+                <td style="width:33%; vertical-align:top; border-right: solid 1px #CBCBCB; !important;"><input type="hidden" id="id1" value="1">
+                     <input type="hidden" name="memberCount" id="memberCount" value=""  class="textfield" />
+                        <table id="hor-minimalist-b" style="width:200px; !important">
+                          <tr> <td>
+		                <select name = "discussionlist[]">
+		            	<?php foreach ($this->discussionlist as $discussionlist) { ?>
+		           	 <option value="<?php echo $discussionlist['id']?>"><?php echo $discussionlist['name']?></option>
+		            	<?php } ?>
+		        	</select>
+                                </td>
+				<td>&nbsp;</td> 
+				</td>
+			     <td></td>
+			   </tr>
+                         </table> 
+                            <table id="hor-minimalist-b" class="hor-minimalist-b1" style="width:200px; !important"></table>
+                            <br>
+                            <input type="button" id="adddiscussion" class="officebutton1" value="Add">
+		</td>
+		<td style="width:33%; vertical-align:top; !important;"><input type="hidden" id="id2" value="1">
+                     <input type="hidden" name="memberCount" id="memberCount" value=""  class="textfield" />
+                       <table id="hor-minimalist-b" style="width:200px; !important">
+                        <tr> 	<td>
+					<select name = "decisionlist[]">
+				    	<?php foreach ($this->decissionlist as $decisionlist) { ?>
+				   	 <option value="<?php echo $decisionlist['id']?>"><?php echo $decisionlist['name']?></option>
+				    	<?php } ?>
+					</select>
+                               	</td>
+				<td>&nbsp;</td> 
+				</td>
+			     <td></td>
+			   </tr>
+                         </table> 
+                            <table id="hor-minimalist-b" class="hor-minimalist-b2" style="width:200px; !important"></table>
+                            <br>
+                            <input type="button" id="adddecision" class="officebutton2" value="Add">
+		</td>
+
+         </TR></table>
+	   </TD></tr>
+
+            <TR>
+                <TD><?php echo $this->translate("Notes"); ?></TD>
+                <TD><?php echo $this->attendanceform->notes;?></TD>
+                <TD><?php echo $this->translate("Resolution"); ?></TD>
+                <TD><?php echo $this->attendanceform->resolution;?></TD>
+            </TR>
+
+        </table>
+
+        <div class="btnhouse">
+            <div class="ltbtns">
+                <input type="Submit" name="Submit" name="Submit" value="<?php echo $this->translate('Submit'); ?>">
+            </div>
+            <div class="rtbtns">
+                <a href="<?php echo $this->baseUrl();?>/attendanceindex"><input type="button" value="<?php echo $this->translate('Back'); ?>"></a>
+            </div>
+        </div>
+    </form>
+
+</div>
+

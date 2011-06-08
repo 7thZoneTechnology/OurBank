@@ -1,0 +1,47 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+
+<div id = "searchDiv">
+   <TABLE id="hor-minimalist-b">
+        <tr><Th colspan="6" width="100">Delete product</Th></tr>
+            <?php foreach($this->productdetails as $product) {  ?>
+            <TR>
+                <TD colspan="3" width="20">Product Name :</TD>
+                <TD colspan="3" width="80" align="left"><?php echo $product['name'];?></TD>
+            </tr>
+            <TR>
+                <TD colspan="3">Product Description :</TD>
+                <TD colspan="3"><?php echo $product['description'];?></TD>
+            </TR>
+        <?php } ?>
+        </TABLE>
+        <form action="<?php echo $this->baseUrl();?>/product/index/productdelete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
+        <table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
+                <TR>
+                      <TD  width="8" align="right" ></TD>
+		     <TD  width="45" align="left" ><font color="green"><b>*</b></font>Remarks</FONT><?php echo $this->deleteform->remarks;?></TD>
+                </TR>
+                 <TR>
+                        <TD><input type="submit" name="Delete" id="Submit" value="Delete"></td>			
+                        <td align="right"><a href="<?php echo $this->baseUrl();?>/product/index"><input name="submit" type="submit"  value="Cancel" ></a></TD>
+                </TR>
+        </table>
+        </form>
+</div>

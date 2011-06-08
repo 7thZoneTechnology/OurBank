@@ -1,0 +1,47 @@
+<?php 
+ if($this->members) {  
+ $count = count($this->members); 
+?>
+<table  id="hor-minimalist-b" style="border:no; !important;">
+ <? foreach($this->members as $members) { $memberaccid=$members['id']; } 
+                    //fetch group savings a/c no.
+                    $currentbalance=new Meetingbook_Model_Attend();
+                    $memberaccNum=$currentbalance->fetchaccNum($memberaccid);
+?>
+<tr><td>Group name:</td><td><? echo $members['groupname'];?></td>
+<td>Meeting:</td><td><?php echo $this->meetingweek;?></td>
+</td>
+</tr>
+
+<tr><td>Group head:</td><td><? echo $members['grouphead_name'];?></td>
+<td>Day:</td><td><? echo $members['day'];?></td>
+</tr>
+
+<tr><td>Number of members:</td><td><? echo $count;?></td>
+<td>Time:</td><td><?php echo $members['time'];?></td>
+</tr>
+
+<tr>
+<td>Savings Acc.No:</td><td>
+<?php  
+if($memberaccNum) {
+echo $memberaccNum[0]['account_number']; ?>
+<input type="hidden" name="groupaccID" value="<?php echo $memberaccNum[0]['id']; ?>"/>
+<?php } else {
+echo "<span style='color:red;'>Your Account is closed</span>";
+}
+?></td>
+<td>Place:</td><td><?php echo $members['place'];?></td>
+</tr>
+
+<tr>
+<td>Loan Officer:</td><td><?php 
+if($this->loanofficer) { echo $this->loanofficer; 
+} else { 
+echo "<span style='color:red;'>There is no loan accounts</span>";
+} ?></td>
+<td>Office:</td><td><?php echo $members['officename'];?>
+<input type="hidden" name="officeid" value="<?php echo $members['village_id'];?>"/> </td>
+</tr>
+</table>
+<?php } ?>

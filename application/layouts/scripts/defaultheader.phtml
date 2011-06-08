@@ -1,0 +1,27 @@
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#fromdate").datepicker({"dateFormat":"yy-mm-dd"});
+    $("#todate").datepicker({"dateFormat":"yy-mm-dd"});
+});
+</script>
+<div>
+<?php echo $this->render('header.phtml'); ?>
+</div>
+    <div id="navigation">
+      <div id="mainmenu">
+        <ul>
+               <li ><a href="<?php  echo $this->baseUrl();?>/accounting"><span>Accounting</span></a></li>
+	       <li><a href="<?php  echo $this->baseUrl();?>/transaction"><span>Transaction</span></a></li>
+               <li><a href="<?php  echo $this->baseUrl();?>/maintenance"><span>Maintenance</span></a></li>
+	       <li><a href="<?php  echo $this->baseUrl();?>/meetingmain"><span>Meeting</span></a></li>
+       	       <li><a href="<?php  echo $this->baseUrl();?>/membership"><span>Membership</span></a></li>
+               <li><a href="<?php  echo $this->baseUrl();?>/management"><span>Management</span></a></li>
+               <li><a href="<?php  echo $this->baseUrl();?>/dropdown"><span>Settings</span></a></li>
+               <li><a href="<?php  echo $this->baseUrl();?>/reports"><span>Reports</span></a></li>
+               <li><a href="<?php  echo $this->baseUrl();?>/loanprocessing"><span>Loan process</span></a></li>
+	</ul>
+      </div>
+    </div>
+
+
