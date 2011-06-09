@@ -1,6 +1,0 @@
-<script type="text/javascript">
-    $('.hiddenclass').change(function() {
-alert('hi prakash');
-    });
-</script>
-<input type="hidden" name=uid id="hiddenuid-<?php echo $this->hiddenid; ?>" class="hiddenclass" value="<?php echo $this->uidvalue; ?>">
