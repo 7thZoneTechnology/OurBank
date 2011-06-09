@@ -137,7 +137,6 @@ class Agriculture_IndexController extends Zend_Controller_Action
 
         if ($revvillageid) {
             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-            $this->view->revvillagename=$revvillagename[0]['name']; 
         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');

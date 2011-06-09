@@ -31,7 +31,7 @@
  
 $(document).ready(
   function() {
-  $("#pluginForm").validate();
+  $("#valueForm").validate();
   
 
   
@@ -55,8 +55,8 @@ $(document).ready(
                 //selectobj="Select";
                 $.each(selectobj,function() {
                    nameselect=$(this).attr('name');
-                    
-                  $('<option value="" selected="selected">Select</option>').appendTo(this);
+                    $(this).val("");
+                   //$('<option value="" selected="selected">Select</option>').appendTo(this);
 
                 
                  });
@@ -64,7 +64,7 @@ $(document).ready(
 
 
 
-        newRow.appendTo('.asset tbody');
+        newRow.appendTo('.agriculture tbody');
 
 //This is for removing option
 //       rowindex=$('tr',tableobj).length;
@@ -129,10 +129,11 @@ $(document).ready(
     $convertdate = new App_Model_dateConvertor();
     foreach($this->membername as $family_view){ ?>
 
-    <tr>
+   <tr>
         <td ><?php echo $this->translate("Family ID:"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
-        </tr>
+        <td ><?php //echo $this->translate("Caste:"); ?></td>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
@@ -141,7 +142,7 @@ $(document).ready(
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td><?php echo $this->translate("Street/Road/Lane:"); ?></td>
         <td ><?php echo $family_view['street']; ?></td>
         <td ><?php echo $this->translate("Health Insurance:"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
@@ -149,14 +150,14 @@ $(document).ready(
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Village:"); ?></td>
+        <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
         <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
-        <td ><?php echo $this->revvillagename; ?></td>
+        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
         <td ><?php echo $this->translate("Major source of income:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
@@ -177,8 +178,8 @@ $(document).ready(
 </table> 
 <br/>
 <div style="height:250px; width:750px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
-<form  id="pluginForm" action="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
-<table id="hor-minimalist-b" class="crop asset" <?php $records=sizeof($this->agriculture); $emt=0; $i =0;  ?>>
+<form  id="valueForm" action="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
+<table id="hor-minimalist-b" class="agriculture" <?php $records=sizeof($this->agriculture); $emt=0; $i =0;  ?>>
 <tr> 
     <th><?php echo $this->translate("Land holding"); ?></th>
     <th><?php echo $this->translate("Ownership type"); ?></th>
@@ -186,7 +187,7 @@ $(document).ready(
     <th><?php echo $this->translate("Acre"); ?></th>
     <th><?php echo $this->translate("Gunta"); ?></th>
     <th><?php echo $this->translate("Owner name"); ?></th>
-    <th><?php echo $this->translate("Survey no"); ?></th>
+    <th><?php echo $this->translate("Survey No"); ?></th>
     <th><?php echo $this->translate("Village"); ?></th>
     <th>Action</th>
 </tr>
@@ -201,7 +202,7 @@ $(document).ready(
                             <?php } ?>
                         </select>
             </td>  
-<td><select name = acquistion[] class="selectvalid required">
+			<td><select name = acquistion[] class="selectvalid required">
                     <option value="">Select</option>
 
                             <?php foreach ($this->acquistion as $acquistion) { ?>
@@ -232,6 +233,7 @@ $(document).ready(
             </td> 
             <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
         </tr>
+
  <?php } ?>
            
             <?php
@@ -239,8 +241,8 @@ $(document).ready(
                 <tr<?php if ($i==1) { ?> id="tmp" <?php } ?>>
 
               <td><select name = "tenant[]" class="required">
-               
-                    
+                                                  <option value="">select</option>
+
                     <?php foreach ($this->land_details as $assetdetails) {  ?>
                        
                            <option <?php if($assetdetails['id'] == $agri["land_id"] ) { echo 'selected="selected"';?>
@@ -248,7 +250,8 @@ $(document).ready(
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
   <td><select name = "acquistion[]" class="required">
-               
+                                   <option value="">select</option>
+
                     <?php foreach ($this->acquistion as $acquistion) {  ?>
                        <option <?php if($agri["acquistion_id"] == $acquistion['id'] ) { echo 'selected="selected"';?>
                            <?php } ?> value="<?php echo $acquistion['id']?>"><?php echo $acquistion['name']?>
@@ -261,10 +264,12 @@ $(document).ready(
 
 
           <td><select name = "ownername[]" class="required">
-               
+
                     <OPTION value="<?php echo $agri["landowner_name"]; ?>">
                     <?php echo $agri["ownername"]; ?>
                     </OPTION>
+                                   <option value="">select</option>
+
                     <?php foreach ($this->owner as $owner) {  ?>
                         <? if($agri["ownername"] != $owner["name"] ) {?>
                            <option value="<?php echo $owner['id']?>"><?php echo $owner['name']?></option>
@@ -273,10 +278,12 @@ $(document).ready(
 
             <td><INPUT type="text" name = "survey[]" size="5" class="noSpecialChars" maxlength="8" value = "<?php echo $agri["survey_no"];?>"></td>
   <td><select name = "villagename[]" class="required">
-               
+
                     <OPTION value="<?php echo $agri["villagename"]; ?>">
                     <?php echo $agri["village"]; ?>
                     </OPTION>
+                                   <option value="">select</option>
+
                     <?php foreach ($this->village as $village) {  ?>
                         <? if($agri["village"] != $village["village"] ) {?>
                            <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
@@ -288,9 +295,16 @@ $(document).ready(
         </tr>
         <?php } ?>
     </table> 
+<?php if( $records== $emt) { ?>
 
  <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"  >
     <input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+<?php } ?>
+<?php if( $records <> $emt) { ?>
+<input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"  >
+    <input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+<?php } ?>
+
     </form>
 </div>
 
