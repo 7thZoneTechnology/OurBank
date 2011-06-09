@@ -1,4 +1,0 @@
-<?
-	
-	echo $this->headname."--".$this->meetingForm->group_head_id;; 
-?>

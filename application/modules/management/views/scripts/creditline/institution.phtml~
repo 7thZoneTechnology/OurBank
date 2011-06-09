@@ -1,2 +1,0 @@
-<?php echo $this->form1->institutionamount;?><br/>
-<?php echo $this->form1->maxcreditlinelimit;?>
