@@ -1,0 +1,193 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+        <div class="cont-rgt-data">
+            <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
+                       <tr>
+                    <th>Member details</th>
+                    <th></th>
+                    </tr>
+                 <?php foreach($this->savings as $savings1){?>
+                    <TR>
+                        <td>Number of Branch Offices</td>
+                        <TD><?php echo $savings1['COUNT(name)']?></TD>   
+                   </tr>
+                  <?php } ?>
+                  <?php foreach($this->savings1 as $allmembers){?>
+                    <TR>
+                        <td>Number of Members</td>
+                        <TD><?php echo $allmembers['COUNT(id)']?></TD>   
+                   </tr>
+                  <?php } ?>
+
+                    <tr>
+                        <td>Number of Active Members</td>
+                        <td><?php echo $this->activemember; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Inactive Members</td>
+                        <TD><?php echo $this->inactivemember; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Groups</td>
+                        <TD><?php echo $this->group; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Group members</td>
+                        <TD><?php echo $this->groupmembers; ?></TD>   
+                   </tr>
+                    <tr>
+                    <th>Saving account details</th>
+                    <th></th>
+                    </tr>
+                    <tr>
+                        <td>Number of Saving accounts</td>
+                        <TD><?php echo $this->savingaccounts; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Total saving amount</td>
+                        <TD><?php echo $this->savingbalance; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Fixed accounts</td>
+                        <TD><?php echo $this->fixedaccounts; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Total fixed amount</td>
+                        <TD><?php echo $this->fixedbalance; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Recurring accounts</td>
+                        <td><?php echo $this->recurringaccounts; ?></td>
+                   </tr>
+
+                  <tr>
+                        <td>Number of Recurring balance</td>
+                        <td><?php echo $this->recurringbalance; ?></td>
+                   </tr>
+
+                    <tr>
+                    <th>Loan account details</th>
+                    <th></th>
+                    </tr>
+                    <tr>
+                        <td>Number of Loan accounts</td>
+                        <td><?php echo $this->loanaccounts; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Loan amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->loanamount) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Disbursed amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->disbursed) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Repayment amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->paidamount) ; ?></td>   
+                   </tr>
+
+                        <td>Total interest amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->interestamount) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Number of Active Loan accounts</td>
+                        <TD><?php echo $this->activeloanaccounts; ?></TD>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Active Loan amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activeloanamount) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Active Disbursed amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activedisbursed) ; ?></td>   
+                   </tr>
+
+                    <tr>
+                        <td>Total Active Repayment amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activepaidamount) ; ?></td>   
+                   </tr>
+
+                   </tr>
+
+                        <td>Total Active interest amount</td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->activeinterestamount) ; ?></td>
+                   </tr>
+
+                    <tr>
+                        <td>The Rate of Loan Repayment</font></td>
+                        <td>Rs <?php echo sprintf("%4.2f",$this->rateofrepay) ; ?> %</td>
+                    </tr>
+
+
+                    <?php foreach($this->sql as $loanDetails1){  ?>
+                        <TR>
+                            <td>The Amount of Loan Outstanding Details<font color ="red"></font></td>
+                            <TD>Rs<?php  echo $loanDetails1->test;?>/-</TD>
+                    </TR>
+                    <?php } ?>
+                   <?php foreach($this->sql2 as $rateofRepay){  ?>
+                        <TR>
+                           <td>The Rate of Loan Outstanding Details</font></td>
+                           <TD><?php echo $rateofRepay->paid;?>%</TD>
+                       </TR>
+                    <?php } ?>
+                   
+                    <?php foreach($this->funders as $Funders){?>
+                    <TR>
+                        <td>Total Number of Funders</td>
+                        <TD><?php echo $Funders['COUNT(DISTINCT(name))']?></TD>   
+                   </tr>
+                  <?php } ?>
+                  <?php foreach($this->fundings as $Fundings){?>
+                    <!--<TR>
+                        <td>Total Number of Fundings by Funders</td>
+                        <TD><?php echo $Fundings['COUNT(id)']?></TD>
+                   </tr>-->
+                   <?php } ?>
+                   <?php foreach($this->totalFundings as $totalfundings){?>
+                   <!-- <tr>
+                        <td>Amount of Fundings funded for <font color ="red">"<?php echo $totalfundings['COUNT(id)']?>"</font> are</td>
+                        <TD>Rs<?php echo $totalfundings['SUM(amount)']?>/-</TD>
+                   </tr>-->
+                  <?php } ?>
+                    
+                 
+              </table>
+	   <?php echo $this->Error;?>
+</form>
+<form action="<?php echo $this->baseUrl();?>/summarymfi/index/pdfgeneration" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/summarymfi/index/reportdisplay/file/summarymfi<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="PDF" id="submit">
+</form>
+        </div>

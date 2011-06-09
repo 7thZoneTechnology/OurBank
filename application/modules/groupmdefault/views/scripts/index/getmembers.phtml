@@ -1,0 +1,78 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<?php if($this->Allmem) { 
+$allmem = $this->Allmem;
+$exist = $this->Exist;
+$Existfamily = $this->Existfamily;
+$repmembers = array();
+$repmembers = $this->representative;
+
+// $breadwner[] = array();
+$dbobj = new Groupmdefault_Model_groupdefault();
+     $head = $this->grouphead;   ?>
+    <table  id="hor-minimalist-s" >
+	  <tr>
+            <th bgcolor="Silver" align="center" width="40%"><b>Family breadwinner</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Family members</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>UID</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Group head</b></th>
+            <th bgcolor="Silver" align="center" width="30%"><b>Representatives</b></th>
+
+        </tr>
+            <?php foreach($this->Allmembers as $members) { 
+
+                if(in_array($members['id'],$allmem)){
+            $familyid = $members['family_id'];
+
+            ?>
+            <?php if($members['breadwinner_id']==1) { 
+                $fami = $dbobj->getfamilyMembersforedit($familyid);
+            ?>
+                <tr>
+                <td colspan="5">
+                    <input type="checkbox" name="member_bread" <?php if(in_array($members["family_id"],$Existfamily)) {?> checked ="true" <?php } ?> value="<?php echo $members["id"];?>"><? echo $members["name"];?>
+                </td>
+                </tr>
+            <?php 
+                 foreach($fami as $familymem){ ?>
+                <tr>
+                <TD>
+                </TD>
+                <td>
+                    <input type="checkbox" name="member_id[]" <?php if(in_array($familymem["id"],$exist)) {?> checked ="true" <?php } ?> value="<?php echo $familymem['family_id'];?>_<?php echo $familymem["id"];?>"><? echo $familymem["name"];?>
+                </td>
+                <td width="30%"><?php echo $familymem["uid"];?>
+                </td>
+                 <td align="center">
+                    <input type="radio" name="memberhead" <?php if($familymem["id"]==$head) { ?> checked ="true" <?php } ?> value="<?php echo $familymem["id"];?>">
+                </td>
+              
+                <td align="center">
+                <input type="checkbox" name="representatives[]" <?php if(in_array($familymem["id"],$repmembers)) {?> checked ="true" <?php } ?> id="<?php echo $familymem["id"];?>" value="<?php echo $familymem["id"];?>">
+            </td>
+                </tr>
+
+                <? }
+        } } }  ?>
+            </table>
+	    <?php }    
+ else {
+        echo "<font color='RED'>No Members in the branch you seleted</font>";
+ } ?>

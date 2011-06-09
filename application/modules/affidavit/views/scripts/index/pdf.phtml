@@ -1,0 +1,93 @@
+<html>
+<head><TITLE><?php if(substr($this->groupcode,4,1) == 2) { ?> 
+            Self Helf Group member 
+            <?php }
+            else if(substr($this->groupcode,4,1) == 3) { ?>Joint Liability Group member 
+            <?php }?></TITLE>
+</head>
+<body>
+
+<div id="searchDiv">
+<?php foreach($this->memberdetails as $memberdetails) { ?>
+<fieldset>
+<table border="0" width="100%">
+    <TR>
+        <TD colspan="3"  align="center">
+            <b>
+            <?php if(substr($this->groupcode,4,1) == 2) { ?> 
+            Self Helf Group member 
+            <?php }
+            else if(substr($this->groupcode,4,1) == 3) { ?>Joint Liability Group member 
+            <?php }?></b><br>
+            </TD>
+    </TR>
+<TR>
+<TD colspan="3">To,<br><br>
+    The Branch manager,<br>
+    <?php echo $this->bankdetails[0]['bankname']; ?>,<br>
+    <?php echo $this->bankdetails[0]['branch']; ?> Branch. <br><br>
+    <p></TD>
+</TR>
+<TR>
+<TD colspan="3">
+<p align="justify">Respected sir,<br><br>
+<?php //echo $memberdetails['village_id']; 
+   $village=$this->Dbobj->fetchvillagedetails($memberdetails['village_id']);
+// echo '<pre>'; print_r($village);
+?>
+<?php echo $this->groupdetails[0]['group_name']; ?> Group <?php echo $village[0]['villagename'];?> Village <?php echo $village[0]['talukname'];?> Taluk <?php echo $village[0]['distname'];?> District. <?php echo $memberdetails['membername']; ?> <?php if($memberdetails['alias']) { echo '@ '.$memberdetails['alias']; } ?> <?php echo $memberdetails['age']; ?> Age. <br></p>
+</TD>
+</TR>
+<TR>
+<TD colspan="3">
+
+<p><b>
+            <?php if(substr($this->groupcode,4,1) == 2) { ?> 
+ <p align="justify">I hereby declare and confirm further that I have not committed any default in paying the lease amount to the lesser and have not committed any breach of the terms and conditions of the lease.Moreover,I declare further that there are no arrears of any lease amount.</p>
+
+            <p align="justify"> I have also not resorted to outside borrowing against security of the present crop which is the subject matter of the bank finance.The crop to be raised is free from the charge/encumbrances.</p><br><br>
+
+            <?php }
+            else if(substr($this->groupcode,4,1) == 3) { ?>
+Joint Liability Group member declaration 
+<?php }?></b><br></p><br><br>
+
+           
+</TD>
+</TR>
+<TR><TD colspan="2">date  : <?php echo $this->groupdetails[0]['group_created_date']; ?></TD>
+<TD align="center">yours obediently,</TD>
+</TR>
+<TR><TD>&nbsp;</TD><TD colspan="2"></TD></TR>
+<TR><TD colspan="2" >Place : <?php echo $this->groupdetails[0]['place']; ?> </TD>
+<TD></TD></TR>
+<TR><TD colspan="2"></TD><TD align="center"><b><?php echo $memberdetails['membername']; ?></b></TD></TR>
+<TR><TD colspan="2"></TD><TD align="center" colspan="2">Signature</TD></TR>
+<TR><TD>&nbsp;</TD><TD colspan="2"></TD></TR>
+<TR><TD>&nbsp;</TD><TD colspan="2"></TD></TR>
+<TR><TD>&nbsp;</TD><TD colspan="2"></TD></TR>
+<TR><TD colspan="2">Representative Seal & signature<br>&nbsp;</TD></TR>
+<TR><TD>Representative 1</TD><TD>Representative 2</TD><TD>Representative 3</TD></TR>
+<TR><TR>
+<?php 
+foreach($this->representative as $representative) {?>
+<TD><?php echo $representative['membername']; ?></TD>
+<?php } ?>
+</TR>
+</table>
+</fieldset>
+<?php } ?>
+<form action="<?php echo $this->baseUrl().'/affidavit/index/pdf/id/'.base64_encode($this->groupid).'/membercode/'.base64_encode($this->groupcode); ?>" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/affidavit/index/reportdisplay/file/membersdeclaration.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <div class="btnhouse">
+		<div class="ltbtns">
+			<TD > 
+                        <input type="submit" name="affidavit" value="PDF">
+                        </TD>
+		</div>
+            </div>
+</form>
+                            <a href="<?php echo $this->baseUrl();?>/affidavit">
+                            <input type="submit" name="back" value="Back"></a>
+</div>

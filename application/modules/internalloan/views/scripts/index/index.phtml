@@ -1,0 +1,81 @@
+<?php if(!$this->result) { ?>
+<div id="searchDiv">
+<fieldset>
+	<legend>Search member</legend>
+		<form action="<?php echo $this->baseUrl();?>/internalloan/index" method="POST">
+			<table class="fieldsets">
+                            <TR>
+                                <TD><label class="mand">Group code:</label></TD>
+                                <TD><? echo $this->form->membercode;?></TD>
+                            </TR>
+                        </table>
+                        <div class="btnhouse">
+                            <div class="ltbtns">
+                                <input type="Submit" name="Submit" value="Search"><br><br>
+                                <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
+                            </div>
+                        </div>
+	 </form>
+
+</fieldset>
+</div>
+
+<?php } $dateconvert= new App_Model_dateConvertor(); ?>
+<?php if($this->result) { $count = 0;
+foreach ($this->result as $result) {
+if ($count == 0) {
+?>
+<fieldset>
+	<legend>Template</legend>
+        <div align="center"><h3><b><u>Member loan application - sanction</u></b></h3></div>
+        <br>
+        <div align="left">
+            <p> Member name .....................................................</p>
+            <p> No: .............................................................</p>
+        </div>
+        <hr>
+        <br>
+        <div align="center"><h4><b>(a) Loan application</b></h4></div>
+        <div align="left">
+            <p align="right">Date: <?php echo date('d-m-Y');?></p>
+            <p> To,</p>
+            <p> Group representatives,</p>
+            <p><?php echo $result->groupname;?>&nbsp; Self help group</p>
+            <p>I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+               I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+               I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+            </p>
+        </div>
+        <div align="right">
+            <p>Member signature</p>
+        </div>
+        <hr>
+        <div align="center"><h4><b>(b) Loan sanctioned</b></h4></div>
+        <div align="left">
+        <br>
+            <p>I here by declare that asdfgf ;...................  hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+               I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+               I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+            </p>
+            <p>Representative-1</p>
+            <p>Representative-2</p>
+            <p>Representative-3</p>
+
+        </div>
+        <hr>
+                <div align="center"><h4><b>(c) Loan received receipt</b></h4></div>
+    <div align="left">
+        <br>
+            <p>I here by declare that asdfgf ;(...........................) hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+               I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+               I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
+            </p>
+            <p>Borrower signature</p>
+            <p>Insurer signature</p>
+            <p>Witness signature</p>
+    </div>
+</fieldset>
+<?php } $count = $count + 1; } } ?>
+
+
+

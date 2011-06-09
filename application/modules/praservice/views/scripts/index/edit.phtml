@@ -1,0 +1,145 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+ <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+   <tr>
+        <th><?php echo $this->translate("Family information"); ?></th>
+        <th></th>
+        <th></th>
+        <th></th>
+   </tr>
+    <?php 
+    $convertdate = new App_Model_dateConvertor();
+    foreach($this->membernames as $family_view){ ?>
+
+ <tr>
+        <td ><?php echo $this->translate("Family ID:"); ?></td>
+        <td ><?php echo $family_view['family_id']; ?></td>
+        <td ><?php //echo $this->translate("Caste:"); ?></td>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
+    <tr>
+        <td ><?php echo $this->translate("House No:"); ?></td>
+        <td ><?php echo $family_view['house_no']; ?></td>
+        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $family_view['ration']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $family_view['street']; ?></td>
+        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
+        }?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $family_view['villagename']; ?></td>
+        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $family_view['names']; ?></td>
+        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
+    </tr>
+    <tr>
+        <td ><?php echo $this->translate("Family type:"); ?></td>
+        <td ><?php echo $family_view['familytype']; ?></td>
+        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $family_view['caste']; ?></td>
+        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
+    </tr>
+   <?php } ?>
+</table> 
+<br/>
+
+<div style="height:300px; width=300px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
+<form action="<?php echo $this->baseUrl();?>/praservice/index/edit/id/<?php echo $this->memberid; ?>" method="POST">
+<?php
+        if($this->service_details){
+            $sevice = count($this->service_details);
+            $endloop = round($sevice/3);
+        }
+        $names = array();
+        $nameid = array();
+        foreach($this->membername as $name){
+        $nameid[] = $name['memberid'];
+        $names[] = $name['membername'];
+        }
+?>
+<?php for($j=0;$j<$this->membercount;$j++) { 
+?>
+<br>
+    <table id="hor-minimalist-b" border="1" width="100%">
+        <tr>
+            <td width="5%" ><?php echo $nameid[$j];?></td>
+            <td width="95%" align="left">
+            <?php  echo "<b>$names[$j] "."<b>"; ?>
+            </td>
+        </tr>
+    </table>
+	<table id="hor-minimalist-b" border="1">
+        <tr>
+        <?php  $i=1;  
+ 		foreach($this->service_details as $servicedetails){ 
+    		$a='service'.$servicedetails['id'];
+        	?>
+		
+	<td><?php  echo $i;  ?></td>
+	<td colspan="2">
+     <?php 
+            $pradetails='';
+            $selecteddetails = $this->praservice->get_service($nameid[$j]);
+            foreach($selecteddetails as $pradetails1){ $pradetails[]=$pradetails1['source_id']; }
+            //echo '<pre>';print_r($pradetails);
+            if($pradetails){
+        if(in_array($servicedetails['id'],$pradetails,true)){ ?>
+	<input type='checkbox' checked='true' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
+        <?php } else { ?>
+	<input type='checkbox' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
+        <?php } } else { ?>
+<input type='checkbox' value="<?php echo $nameid[$j].'-'.$servicedetails['id']; ?>" name="service[]">
+        <?php    }
+            echo $servicedetails['name']; ?></td>
+	<?php  if($i%5 == 0) { echo "</tr><tr>"; } $i++; } ?>
+
+		</tr> 
+</table>
+<?php } ?>
+<br>
+	<table>
+		<tr>
+		      <td><input type="submit" id="update" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
+			<td>
+			</td>
+			<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>">
+				<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>

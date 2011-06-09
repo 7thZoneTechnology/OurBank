@@ -1,0 +1,162 @@
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/toggel.js"></script> 
+<?php if (count($this->details)) { 
+$dbobj = new Psdetails_Model_Savingsdeposit();
+?>
+<div style="float:left;width:350px"> 
+    <?php foreach($this->details as $details) { ?>
+        <table id="hor-minimalist-s">
+            <TR>
+                <TH>Member details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td>Name </td>
+                <TD><?php echo $details->name; ?></TD>
+            </TR>
+
+            <TR>
+                <td>Branch</td>
+                <TD><?php echo $details->officename; ?></TD>
+            </TR>
+            <TR>
+                <td>Code</td>
+                <TD><?php echo $details->code; ?></TD>
+
+            </TR>
+            <TR>
+                <TH>Account details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td> Account number</td>
+                <td><?php echo $details->number; ?></TD>
+            </TR>
+            <TR>
+                <td>Product name</td>
+                <td><?php echo $details->offername; ?></TD>
+            </TR>
+            <TR>
+                <td>Created date</td>
+                <td><?php echo $details->createdDate; ?></TD>
+            </TR>
+            <TR>
+                <td>Balance</td>
+                <td><b><font color="green"><?php  if (!$this->transactions) {
+echo $this->balance;  } else  { echo $this->balanceamount; } ?></font></b></TD>
+            </TR>
+        </table> 
+    <?php } ?>
+</div>
+<?php } else { ?>
+    <fieldset>
+        <legend>Search account</legend>
+        <form action="<?php echo $this->baseUrl();?>/psdetails/index" method="POST">
+            <table class="fieldsets">
+                <tr>
+                    <td><label for="fld1" class="mand">Account number</label></td>
+                    <td><?php echo $this->form->accNum;?></td>
+                </tr>
+            </table>
+            <div class="btnhouse">
+                <div class="ltbtns">
+                    <?php echo $this->form->Search;?>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+<?php } ?>
+<?php if(count($this->group)) { ?>
+    <div style="float:right;width:350px"> 
+        <div class="container">
+	   <h2 class="trigger"><a href="#">Group Members</a></h2>
+            <div class="toggle_container">
+                <div class="block">
+                    <table id="hor-minimalist-s">
+                        <TR>
+                            <TH>Member code </TH>
+                            <TH>Member name</TH>
+                        </TR>
+                        <?php foreach ($this->group as $group) { ?>
+			  <TR>
+                            <td><?php echo $group->code; ?></td></td>
+                            <td><?php echo $group->name; ?></TD>
+                        </TR>
+                        <?php }?>
+		    </table>
+                </div>
+            </div>
+	</div>
+    </div>
+<?php } ?>
+<?php if (count($this->tran)) {?>
+</br>
+<table id="hor-minimalist-b">
+    <tr>
+        <th>V No.</td>
+        <th>Transaction date</td>
+        <th>Credit</td>
+        <th>Debit</td>
+        <th>Balance</td>
+        <th>Payment mode</td>
+        <th>Transacted by</td>  
+    </tr>
+    <?php foreach($this->tran as $transaction) : ?>
+    <tr>
+       <td><?php echo $transaction->id; ?></td>
+       <td><?php echo $transaction->date; ?></td>
+       <?php if ($transaction->cr) {?>
+       <td><?php echo $transaction->cr; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+       <?php if ($transaction->dt) { ?> 
+       <td><?php echo $transaction->dt; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+        <td>
+       <?php 
+            $acc = $this->acc;
+            $balance = $dbobj->getbalance($this->acc);
+            foreach($balance as $balan){
+            $Cbalance = $balan['Balance'];
+            }
+         echo $Cbalance;
+        ?></td>
+       <td><?php echo $transaction->mode; ?></td>
+       <td><?php echo $transaction->name; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<?php } ?>
+
+<?php if ($this->transactions) {?>
+</br>
+<table id="hor-minimalist-b">
+    <tr>
+        <th>V No.</td>
+        <th>Transaction date</td>
+        <th>Credit</td>
+        <th>Debit</td>
+        <th>Transacted by</td>  
+    </tr>
+    <?php foreach($this->transactions as $transaction) : ?>
+    <tr>
+       <td><?php echo $transaction['transaction_id']; ?></td>
+       <td><?php echo $transaction['transaction_date']; ?></td>
+       <?php if ($transaction['transaction_type'] == 1) {?>
+       <td><?php echo $transaction['transaction_amount']; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+       <?php if ($transaction['transaction_type'] == 2) { ?> 
+       <td><?php echo $transaction['transaction_amount']; ?></td>
+       <?php } else { ?>
+       <td>----</td>
+       <?php } ?>
+
+       <td><?php echo $transaction['createdby']; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<?php } ?>

@@ -1,0 +1,46 @@
+<fieldset>
+	<legend>Search member</legend>
+		<form action="<?php echo $this->baseUrl();?>/loanprocess/index" method="POST">
+			<table class="fieldsets">
+                            <TR>
+                                <th><label for="fld3">Member code / Group code</label></TD>
+                                <th><? echo $this->form->membercode;?></TD>
+                            </TR>
+                        </table>
+                        <div class="btnhouse">
+                            <div class="ltbtns">
+                                <?php echo $this->form->Submit;?>
+                            </div>
+                        </div>
+	       </form>
+</fieldset>
+<div>
+<?php if($this->result) { 
+$dbobj = new App_Model_dateConvertor();
+?>
+    <table id="hor-minimalist-b" border="1">
+	<tr>
+                <th>Code</th>
+        	<th>Group name / Individual name</th>
+                <th>UID</th>
+	        <th>Amount</th>
+                <th>Request date</th>
+                <th>Status</th>
+	</tr>
+
+	<?php foreach($this->result as $member) : ?>
+	<tr>
+                <td><a href="<?php echo $this->baseUrl()."/loanprocess/index/viewaction/id/".$member['code']; ?>"><?php  echo $member['code'];?></a></td>
+		<td><?php  echo $member['name'];?></td>
+		<td><?php if($member['uid']) { echo $member['uid']; }?></td>
+		<td align="right"><?php  echo $member['Amount'];?></td>
+		<td><?php  echo $dbobj->normalformat($member['requestdate']);?></td>
+                <td><?php  echo $member['status'];?></td>
+	</tr>
+	<?php endforeach; ?>
+	</table>
+<?php }?>
+</div>
+
+
+

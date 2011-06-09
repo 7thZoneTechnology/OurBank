@@ -1,0 +1,53 @@
+<form action="<?php echo $this->baseUrl();?>/office/index" method="POST">
+<div id="searchDiv">
+    <fieldset>
+	<!--to change language -->
+        <legend><?php echo $this->translate("Search"); ?></legend>
+            <div class="search" style="margin-left:20px;">
+                            <table width="100%">
+                                <tr>
+                                    <td class="label">	<?php echo $this->translate("Office type:"); ?></td>
+                                    <td ><? echo $this->form->office;?></td>
+                                    <td class="label"><?php echo $this->translate("Office Short Name:"); ?></td>
+                                    <td ><? echo $this->form->shortname;?></td>
+                                </tr>
+
+                                <tr>
+
+                                    <td class="label"><?php echo $this->translate("Office Name:"); ?></td>
+                                    <td ><? echo $this->form->officename;?></td>
+                                    <td class="label"></td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" align="left"><input type="submit" name="search" value="<?php echo $this->translate('Search'); ?>"></td>
+                                </tr>
+                        </table>	
+            </div>
+    </fieldset> 
+</div> 
+        <?php if (count($this->paginator) > 0): ?>
+<p align="right"><a href="<?php echo $this->baseUrl()?>/officedefault/index/treestructure">Office tree structure</a></p>
+<table id="hor-minimalist-b">
+    <tr>
+        <th><?php echo $this->translate('Office Name'); ?></th>
+        <th><?php echo $this->translate('Short Name'); ?></th>
+        <th><?php echo $this->translate('Office Type'); ?></th>
+<!--        <th>City</th>-->
+           </tr>
+
+        <?php foreach ($this->paginator as $office): ?>
+    <tr>
+    <td><a href="<?php echo $this->baseUrl()."/officecommonview/index/commonview/id/".$office['id']; ?>"><?php echo $this->escape($office['name']);?></a></td>
+    <td><?php echo $this->escape($office['short_name']);?></td>
+    <td><?php echo $this->escape($office['type']);?></td>
+<!--    <td><?php echo $this->escape($office['officecity']);?></div></td>-->
+                <?php endforeach; ?>
+                <?php endif; ?>
+    </tr>
+</table>
+<br>
+<div align="right" style="margin-top:10px;color:#CC6633;">
+<?php echo $this->paginationControl($this->paginator, 'Sliding', '/partials/my_pagination_control.phtml', array('s1' => $this->s1,'s2' => $this->s2,'s3' => $this->s3)); ?>
+</div>
+</form>

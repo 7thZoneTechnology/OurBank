@@ -1,0 +1,280 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+
+<?php if($this->familydetails) { ?>
+
+        <?php foreach ($this->familydetails as $familydetails): ?>
+	<table id="hor-minimalist-b" >
+		<tr>
+			<td>Family id</td>
+			<TD><?php echo $this->escape($familydetails['family_id']);?></TD>
+		</tr>
+		<tr>
+			<td>Name of the family owner</td>
+			<TD><?php echo $this->escape($familydetails['name']);?></TD>
+		</tr>
+		<tr>
+			<td>Husbands/Fathers name of the family own family member</td>
+			<TD></TD>
+		</tr>
+		<tr>
+			<td>Date of birth</td>
+			<TD></TD>
+		</tr>
+		<tr>
+			<td>Gender</td>
+			<TD><?php echo $this->escape($familydetails['sex']);?></TD>
+		</tr>
+		<tr>
+			<td>Address</td>
+			<TD><?php echo $this->escape($familydetails['street']);?>,<?php echo $this->escape($familydetails['villagename']);?></TD>
+		</tr>
+		<tr>
+			<td>Mobile number</td>
+			<TD><?php echo $this->escape($familydetails['mobile']);?></TD>
+		</tr>
+		<tr>
+			<td>Caste</td>
+			<TD><?php echo $this->escape($familydetails['castetype']);?></TD>
+		</tr>
+		<tr>
+			<td>Education</td>
+			<TD><?php echo $this->escape($familydetails['educationname']);?></TD>
+		</tr>
+		<tr>
+			<td>Familytype</td>
+			<TD><?php echo $this->escape($familydetails['familytype']);?></TD>
+		</tr>
+	</table>
+	<?php endforeach ; ?>
+	<br></br>
+	<br></br>
+	<?php if($this->family) { ?>
+	<h3>Details of the family members</h3>
+	<table id="hor-minimalist-b" >
+    	<tr class="tdbrownheading" id="bcolor">
+        	<td ><?php echo $this->translate("Name of Member"); ?></td>
+        	<td ><?php echo $this->translate("Relation to HOF"); ?></td>
+        	<td ><?php echo $this->translate("Gender"); ?></td>
+        	<td ><?php echo $this->translate("Age"); ?></td>
+        	<td ><?php echo $this->translate("Entitlements"); ?></td>
+        	<td ><?php echo $this->translate("Education Level"); ?></td>
+        	<td ><?php echo $this->translate("Occupation"); ?></td>
+        	<td ><?php echo $this->translate("Branch"); ?></td>
+        	<td ><?php echo $this->translate("Bank Account No"); ?></td>
+        	<td ><?php echo $this->translate("Mobile Phone No"); ?></td>
+    	</tr>
+    	<?php $convertdate = new App_Model_dateConvertor();
+     	foreach($this->family as $family){   ?>
+    	<tr>
+        	<td><?php echo $family['name']; ?></td>
+        	<td><?php echo $family['relationname']; ?></td>
+        	<td><?php echo $family['genername']; ?></td>
+        	<td><?php echo $family['age']; ?></td>
+        	<td><?php echo $family['entitlements']; ?></td>
+        	<td><?php echo $family['qualifyname']; ?></td>
+        	<td><?php echo $family['proffessionname']; ?></td>
+        	<td><?php echo $family['branchname']; ?></td>
+        	<td><?php echo $family['bank_ac']; ?></td>
+        	<td><?php echo $family['mobile_number']; ?></td>
+    	</tr>
+	</table>
+	
+	<br></br>
+    <?php } } ?>
+
+	<h3>NonLiving assets</h3>
+	<table id="hor-minimalist-b" >
+    	<tr class="tdbrownheading" id="bcolor">
+			 <td><?php echo $this->translate("Details of Tenant"); ?></td>
+			<td><?php echo $this->translate("Village"); ?></td>
+        <td align="right"><?php echo $this->translate("Survey No"); ?></td>
+        <td align="right"><?php echo $this->translate("Acre"); ?></td>
+        <td align="right"><?php echo $this->translate("Value"); ?></td>
+        </tr>
+        <?php $dateconvert= new App_Model_dateConvertor();
+		if ($this->agriculture){ ?>
+        <?php foreach ($this->agriculture as $agri ): ?>
+    		<tr>
+        <td><?php echo $agri['name']; ?></td>
+        <td><?php echo $agri['villagename']; ?></td>
+        <td align="right" width="20px"><?php echo $agri['survey_no']; ?></td>
+        <td align="right" width="100px"><?php echo $agri['acre']; ?></td>
+        <td align="right"><?php echo $agri['value']; ?></td>
+   			</tr>
+     	<?php endforeach; ?>
+<tr>
+   <?php foreach($this->agritotal as $total){   ?>
+ <td><?php echo $this->translate("Total"); ?></td>
+   <td></td>
+   <td></td>
+   <td></td>
+   <td align="right"><?php echo $total['total']; $totalfixed=$total['total'];?></th>
+<?php } ?></tr>
+	</table>
+	<?php } ?>
+				<br></br>
+	<h3>living assets</h3>
+	<table id="hor-minimalist-b" >
+    	<tr class="tdbrownheading" id="bcolor">
+			<td>Name</td>
+			<td align ="right">Numbers</td>
+			<td align ="right">Total value</td>
+        </tr>
+        <?php $dateconvert= new App_Model_dateConvertor();
+		if ($this->livingassets){ $totalNumber = 0
+; $totalValue = 0; ?>
+        <?php foreach ($this->livingassets as $liveassets): 
+
+ ?>
+    		<tr>
+        		<td><?php echo $liveassets['name'];?></td>
+				<td align="right"><?php echo sprintf("%4.2f",$liveassets['number']);$totalNumber+=$liveassets['number']; ?></td>
+      <td align="right"><?php echo sprintf("%4.2f",$liveassets['value']); $totalValue+=$liveassets['value'];?></td>
+
+   			</tr>
+     	<?php endforeach; ?>
+<tr>
+       <td><?php echo $this->translate("Total"); ?></td>
+ 
+       <td align="right"><?php echo sprintf("%4.2f",$totalNumber); ?>
+
+</td>
+       <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+   </tr>
+	</table>
+	<?php } ?>
+	<br></br>
+
+
+
+	<h3>Total assets</h3>
+	<table id="hor-minimalist-b" >
+    	<tr class="tdbrownheading" id="bcolor">
+			<td>Assets type</td>
+			<td></td>
+			<td></td>
+        </tr>
+        <?php $dateconvert= new App_Model_dateConvertor();foreach($this->agritotal as $total):   ?>
+
+		<tr>
+			<td>Nonliving assets</td> 
+   			<td></td>
+
+ 			<td align="right"><?php echo $total['total']; ?></td>
+		</tr>
+		<?php endforeach; ?>
+		<tr>
+       <?php $dateconvert= new App_Model_dateConvertor();
+		if ($this->livingassets){ $totalNumber = 0
+		; $totalValue = 0; ?>
+        <?php foreach ($this->livingassets as $liveassets): $totalValue+=$liveassets['value'];?>
+     	<?php endforeach; ?>
+			<td>Living assets</td>
+			<td></td>
+
+			<td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+		</tr>
+<tr>
+		<TD>Total</TD>
+		<td></td>
+
+<td align="right"><?php echo sprintf("%4.2f",$totalValue+$totalfixed) ?> </td>
+</tr>
+	</table>
+<? } ?>
+
+	<h3>Family total loan outstanding</h3>
+	<table id="hor-minimalist-b" >
+    	<tr class="tdbrownheading" id="bcolor">
+<td>Name</td>
+                <td>Branch</td>
+                <td>Code</td>
+                <td> Account code</td>
+                <Td>Loan Details</Td>
+                <td>Loan name</td>
+                <td>Loan amount R$</td>
+                <td>Interest rate %</td>
+
+        </tr>
+    <?php foreach($this->loan as $details) { ?>
+
+        <?php $dateconvert= new App_Model_dateConvertor();?>
+    		<tr>
+                <TD><?php echo $details->name ?></TD>
+                <TD><?php echo $details->officename ?></TD>
+                <TD><?php echo $details->code ?></TD>
+                <td><?php echo $details->number ?></TD>
+				<td></td>
+                <td><?php echo $details->loanname ?></TD>
+                <td><?php echo $details->amount ?></TD>
+                <TD><?php echo $details->interest ?></TD>
+   			</tr>
+			<?php } ?>
+
+	</table>
+				<br></br>
+<table id="hor-minimalist-b" >
+    	<tr class="tdbrownheading">
+		<h3>Family total Assets</h3>
+	
+        </tr>
+        <?php $dateconvert= new App_Model_dateConvertor();?>
+    		<tr>
+   			</tr>
+	</table>
+				
+				<br></br>
+		<h3>Total loan request</h3>
+	 <table id="hor-minimalist-b"  >
+<tr class="tdbrownheading" id="bcolor">
+                <td>Code</td>
+				<td>Name</td>
+                <td>Purpose</td>
+	        	<td>Amount</td>
+                <td>Request date</td>
+                <td>Status</td>
+	</tr>
+	<?php foreach($this->loanrequest as $member) : ?>
+	<tr>
+		<td><?php  echo $member['code'];?></td>
+		<td><?php  echo $member['name'];?></td>
+		<td><?php  echo $member['loanpurpose'];?></td>
+		<td><?php  echo $member['Amount'];?></td>
+		<td><?php  echo $member['requestdate'];?></td>
+		<td><?php  echo $member['loanstatus'];?></td>
+	</tr>
+	<?php endforeach; ?>
+	</table>
+</form>
+<form action="<?php echo $this->baseUrl();?>/familyform/index/pdfgeneration/membercode/<?php echo $this->membercode ?>" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/familyform/index/reportdisplay/file/familyform<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="PDF" id="submit">
+</form>
+	<?php } ?></div>
+
+<form action="<?php echo $this->baseUrl();?>/familyform/index/pdfgeneration" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/familyform/index/reportdisplay/file/familyform<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+
+           <BR> <input type="submit" value="PDF" id="submit">
+</form>
+
+
