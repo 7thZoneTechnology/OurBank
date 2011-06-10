@@ -70,10 +70,10 @@ class Savings_Model_Savings extends Zend_Db_Table {
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return get product short name
 	}
-        public function getAllOffer(){
+        public function getAllOffer($name){
                     $this->db = $this->getAdapter();
                     $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-                    $sql = 'select * from ourbank_productsoffer';
+                    $sql = 'select * from ourbank_productsoffer where name = "'.$name.'"';
                     $result = $this->db->fetchALL($sql,array());
                     return $result;
                 }
@@ -129,9 +129,11 @@ class Savings_Model_Savings extends Zend_Db_Table {
 		$result = $this->fetchAll($select);
 		return $result->toArray(); // return product details for that particular id 
 	}
-        public function insertinterestperiods($data) {
-                        $this->db = $this->getAdapter();
-                        $this->db->insert('ourbank_interest_periods',$data);
+        public function updateinterest($data,$ids) {
+
+                    $db = $this->getAdapter();
+                    $where = 'id = '.$ids;
+                    $db->update('ourbank_interest_periods',$data,$where);
                 }
  
 	public function viewinterest($offerproduct_id) { 
@@ -154,7 +156,7 @@ class Savings_Model_Savings extends Zend_Db_Table {
                     $result = $this->fetchAll($select);
                     return $result->toArray();// return interest details for particular offer id
                     }
-            public function updateRecordpoffer($offerproduct_id,$data,$shortname) {
+            public function updateRecordpoffer($offerproduct_id,$data,$shortname,$glcodes) {
                 $convertdate = new App_Model_dateConvertor();
 
                 if($data['closedate'] == "") {
@@ -175,7 +177,7 @@ class Savings_Model_Savings extends Zend_Db_Table {
                               'begindate' =>$convertdate->phpmysqlformat($data['begindate']),
                              'closedate' =>$CLOSEDDATE,
                             'applicableto' =>$data['applicableto'],
-                            'glsubcode_id' =>$data['glsubcode_id'],
+                            'glsubcode_id' =>$glcodes,
                             'fee_glsubcode_id'=>$feesubcode);
 		$where = 'id = '.$offerproduct_id;
 		$db->update('ourbank_productsoffer',$data,$where); // update product offer table
@@ -397,6 +399,12 @@ class Savings_Model_Savings extends Zend_Db_Table {
                                 'other_charges'=>'');
 		$this->db->insert('ourbank_product_fixedrecurring_log',$data); // insert fixed or recurring log values
 	}
+
+ public function insertinterestperiods($data) {
+                        $this->db = $this->getAdapter();
+                        $this->db->insert('ourbank_interest_periods',$data);
+                } 
+
         public function insertinterestperiodslog($data){
             $this->db = Zend_Db_Table::getDefaultAdapter();
             $this->db->insert('ourbank_interest_periods_log',$data); // insert interest log values

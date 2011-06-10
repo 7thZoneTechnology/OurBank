@@ -21,7 +21,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 {
     public function init() 
     {
-        $this->view->pageTitle='Drop Down Settings';
+        $this->view->pageTitle='Master Data List';
 		$this->view->adm = new App_Model_Adm();   	
 		$storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
@@ -70,7 +70,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $this->view->form=$addform;
 		$this->view->title = "Drop Down";
 		//echo $tableName;
-		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","id","DESC");
+		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","descriptions","ASC");
 		foreach($mastertable as $mastertable) {
 				$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
 			}		
@@ -153,7 +153,7 @@ $tName=$this->_request->getParam('name');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-									'gp_id'=>$id,
+									'panchayath_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -327,7 +327,7 @@ public function editAction()
 						foreach($namedetails as $holidaydetails) {
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->village->setValue($holidaydetails['village_id']);
-						$this->view->form->gillapanchayath->setValue($holidaydetails['gp_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -337,7 +337,7 @@ public function editAction()
 					case 'ourbank_master_villagelist': {
 						foreach($namedetails as $holidaydetails) {
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
-						$this->view->form->gillapanchayath->setValue($holidaydetails['gp_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -463,7 +463,7 @@ public function deleteAction()
         $getvillage = new Dropdown_Model_Dropdown();
         $village=$getvillage->village($gillapanchayath);
  		foreach($village as $eacharraysent) {
-        $dropdownForm->village->addMultiOption($eacharraysent['id'],$eacharraysent['name']);
+        $dropdownForm->village->addMultiOption($eacharraysent['village_id'],$eacharraysent['name']);
         }
 	}
 

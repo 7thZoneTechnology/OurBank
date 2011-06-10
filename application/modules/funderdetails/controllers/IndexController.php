@@ -28,18 +28,21 @@ class Funderdetails_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle=$this->view->translate("Funder");
-       $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
-//         if (($this->view->globalvalue[0]['id'] == 0)) {
-//         $this->_redirect('index/logout');
-//         }
+       $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        } 
         $this->view->adm = new App_Model_Adm();
         $this->view->funder = new Fundercommonview_Model_fundercommon ();
         $module=$this->view->funder->getmodule('Funder');
@@ -78,22 +81,84 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 		//poster data validation
             if($form->isValid($formData))
             {
-            $id = $this->view->adm->addRecord("ourbank_funder",$form->getValues());
-            $type = $this->_request->getParam('type');
-            $o=str_pad($type,3,"0",STR_PAD_LEFT);
-            $u=str_pad($id,5,"0",STR_PAD_LEFT);
-            $fundercode=$o.$u;
-		// get funder code
- 	    $this->view->adm->updateRecord("ourbank_funder",$id,array('code'=>$fundercode));
-            $this->_redirect('/fundercommonview/index/commonview/id/'.$id);
-            }
-        }
-        /*} else {
-        $this->_redirect('index/index');
-        }*/	
-    }
+  $funder = new Funderdetails_Model_funderdetails();
+        $funders=$funder->getfunder();
+       
 
-        //edit funder Action
+
+        $date=date("y/m/d H:i:s");
+
+if(!$funders) {
+        $ledger = new Ledger_Model_Ledger();
+  $glInsert = $ledger->insertGlcode(array('id' => '',
+                        'glcode' => 'L02000', 'ledgertype_id' => 4,
+                        'header' => $formData['name'], 'description' => $formData['name'],
+                        'created_date' =>$date, 'created_by'=>$this->view->createdby));
+ $glcode_id=$funder->findmaxlevel();
+
+			 foreach ($glcode_id as $glcode_id) {
+$lastid=$glcode_id->lastid;
+}
+
+ $this->view->adm->addRecord("ourbank_funder",array('id' => '',
+                                                'code' => 0,
+                                                'type' =>$formData['type'],
+												'name'=>$formData['name'],
+												'glcode_id'=>$lastid,
+												'status'=>$formData['status'],
+												'created_by'=>$this->view->createdby,
+												'created_date' =>$date));
+	$this->_redirect('/funder');
+
+				}else {
+ 				$glfunder=$funder->findmaxfunder();
+			 foreach ($glfunder as $glfunder) {
+				$lastfunderid=$glfunder->lastid;
+}
+
+$funder = new Funderdetails_Model_funderdetails();
+        $funderslast=$funder->getfunderlast($lastfunderid);
+			 foreach ($funderslast as $funderslast) {
+$glid=$funderslast['glcode_id'];
+
+}
+ $gllast=$funder->getglcode($glid);
+			 foreach ($gllast as $gllast) {
+$glcode1=$gllast['glcode'];
+}
+ $ini=substr($glcode1,0,1);
+             $last=substr($glcode1,1,5);
+          		$last+=1000;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glcode=$ini.$last;
+        $glcode;
+        $ledger = new Ledger_Model_Ledger();
+
+ $glInsert = $ledger->insertGlcode(array('id' => '',
+                        'glcode' => $glcode, 'ledgertype_id' => 4,
+                        'header' => $formData['name'], 'description' => $formData['name'],
+                        'created_date' =>$date, 'created_by'=>$this->view->createdby));
+$glcode_id=$funder->findmaxlevel();
+
+			 foreach ($glcode_id as $glcode_id) {
+$lastid=$glcode_id->lastid;
+}
+$this->view->adm->addRecord("ourbank_funder",array('id' => '',
+                                                'code' => 0,
+                                                'type' =>$formData['type'],
+												'name'=>$formData['name'],
+												'glcode_id'=>$lastid,
+												'status'=>$formData['status'],
+												'created_by'=>$this->view->createdby,
+												'created_date' =>$date));
+	$this->_redirect('/funder');
+}
+}
+
+            
+        }
+ }
+    
     public function editfunderAction()
     {
 	//Acl

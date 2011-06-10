@@ -103,7 +103,14 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                foreach($maxid as $maxid1) {
                $villagelastid=$maxid1->lastid;}
                if($villagelastid==$officeid)
-               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '',
+																			'village_id'=>$lastid,
+																				'name'=>$name,
+																	'panchayath_id'=>$this->_request->getParam('panchayath'),
+													'created_date' =>$createdate,
+											'created_by'=>$this->view->createdby));
+
+
                   $this->view->adm->addRecord("ourbank_master_village",array('id' => '',
                                                 'village_id'=>$lastid,
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -390,7 +397,12 @@ echo $typeid;
                foreach($maxid as $maxid1) {
                echo $villagelastid=$maxid1->lastid;}
                if($villagelastid==$typeid)
-               {  /*$villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));*/
+               {  $villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,
+																array('name'=>$name,
+																'village_id'=>$office_id,
+																	'panchayath_id'=>$this->_request->getParam('panchayath'),
+																'created_date' =>$createdate,
+															'created_by'=>$this->view->createdby));
 
                   $office->updatevillage($office_id,array(
                                                 'taluk_id' => $this->_request->getParam('taluque'),

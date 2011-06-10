@@ -93,7 +93,7 @@ class Savings_IndexController extends Zend_Controller_Action{
                                         'created_by'=>$this->view->createdby));
                 }
 
-                $productvalues = $dbobj->getAllOffer();
+                $productvalues = $dbobj->getAllOffer('Savings');
                 $procuctid = $dbobj->getProductid('ps');
 
                 $name = 'Savings';
@@ -117,7 +117,7 @@ class Savings_IndexController extends Zend_Controller_Action{
                     $this->view->adm->addRecord('ourbank_interest_periods',
                                 array('id' => '',
                                         'period_ofrange_monthfrom' => 1,
-                                        'period_ofrange_monthto' => 1,
+                                        'period_ofrange_monthto' => 2,
                                         'period_ofrange_description' => '1-1 Months',
                                         'offerproduct_id' => $offerid,
                                         'Interest' => 1,
@@ -205,20 +205,20 @@ class Savings_IndexController extends Zend_Controller_Action{
 			$savingsForm->applicableto->addMultiOption($applicableto['id'],$applicableto['type']);
 		}
 // 
-		$glsubcode = $savings->fetchAllglsubcode('Liabilities');
-                // load glsubcode ids
-                if($glsubcode){
-                    foreach($glsubcode as $glsubcode) {
-                            $savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
-                    }
-                }
+// // 		$glsubcode = $savings->fetchAllglsubcode('Liabilities');
+// //                 // load glsubcode ids
+// //                 if($glsubcode){
+// //                     foreach($glsubcode as $glsubcode) {
+// //                             $savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
+// //                     }
+// //                 }
        
-                $feeglcode = $savings->fetchAllglsubcode('Expenditure');
-         if($feeglcode){
-                    foreach($feeglcode as $feeglcodes) {
-                        $savingsForm->feeglcode->addMultiOption($feeglcodes->id,$feeglcodes->header);
-                    }
-                }
+// // //                 $feeglcode = $savings->fetchAllglsubcode('Expenditure');
+// // //          if($feeglcode){
+// // //                     foreach($feeglcode as $feeglcodes) {
+// // //                         $savingsForm->feeglcode->addMultiOption($feeglcodes->id,$feeglcodes->header);
+// // //                     }
+// // //                 }
             if ($this->_request->isPost() && $this->_request->getPost('Submit')) { 
                     $formData = $this->_request->getPost();
                 if ($this->_request->isPost()) {
@@ -322,22 +322,22 @@ class Savings_IndexController extends Zend_Controller_Action{
 		foreach($applicableto as $applicableto) {
 			$savingsForm->applicableto->addMultiOption($applicableto['id'],$applicableto['type']);
 		}
-		$glsubcode = $savings->fetchAllglsubcode('Liabilities');
-                // load glsubcode ids
-		foreach($glsubcode as $glsubcode) {
-			$savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
-		}
+// // 		$glsubcode = $savings->fetchAllglsubcode('Liabilities');
+// //                 // load glsubcode ids
+// // 		foreach($glsubcode as $glsubcode) {
+// // 			$savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
+// // 		}
 
 		$freequencyofdeposit = $savings->fetchAllTimeFrequencyType();
                 //  load frequency type
 		foreach($freequencyofdeposit as $freequency) {
                 $savingsForm->frequency_of_deposit->addMultiOption($freequency['id'],$freequency['name']);
 		}
-               $feeglcode = $savings->fetchAllglsubcode('Expenditure');
-                // load feeglcode
-               foreach($feeglcode as $feeglcodes) {
-                                        $savingsForm->feeglcode->addMultiOption($feeglcodes->id,$feeglcodes->header);
-                                }
+// // //                $feeglcode = $savings->fetchAllglsubcode('Expenditure');
+// // //                 // load feeglcode
+// // //                foreach($feeglcode as $feeglcodes) {
+// // //                                         $savingsForm->feeglcode->addMultiOption($feeglcodes->id,$feeglcodes->header);
+// // //                                 }
 
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 			$formData = $this->_request->getPost();
@@ -454,20 +454,20 @@ class Savings_IndexController extends Zend_Controller_Action{
 			$savingsForm->applicableto->addMultiOption($applicableto['id'],$applicableto['type']);
 		}
                 // load glsubcode ids
-		$glsubcode = $savings->fetchAllglsubcode('Liabilities');
-		foreach($glsubcode as $glsubcode) {
-			$savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
-		}
+// // // 		$glsubcode = $savings->fetchAllglsubcode('Liabilities');
+// // // 		foreach($glsubcode as $glsubcode) {
+// // // 			$savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
+// // // 		}
                 // load frequency of deposit values
 		$freequencyofdeposit = $savings->fetchAllTimeFrequencyType();
 		foreach($freequencyofdeposit as $freequency) {
 			$savingsForm->frequency_of_deposit->addMultiOption($freequency['id'],$freequency['name']);
 		}
-               $feeglcode =  $savings->fetchAllglsubcode('Expenditure');
-               // load feeglcode values
-                foreach($feeglcode as $feeglcodes) {
-                        $savingsForm->feeglcode->addMultiOption($feeglcodes->id,$feeglcodes->header);
-                }
+// // // //                $feeglcode =  $savings->fetchAllglsubcode('Expenditure');
+// // // //                // load feeglcode values
+// // // //                 foreach($feeglcode as $feeglcodes) {
+// // // //                         $savingsForm->feeglcode->addMultiOption($feeglcodes->id,$feeglcodes->header);
+// // // //                 }
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 			$formData = $this->_request->getPost();
 			if ($this->_request->isPost()) {
@@ -612,11 +612,11 @@ class Savings_IndexController extends Zend_Controller_Action{
             foreach($applicableto as $applicableto) {
                     $savingsForm->applicableto->addMultiOption($applicableto['id'],$applicableto['type']);
             }
-            // load glsubcode id values
-            $glsubcode = $offerproduct->fetchAllglsubcode('Liabilities');
-            foreach($glsubcode as $glsubcode) {
-                    $savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
-            }
+//             // load glsubcode id values
+//             $glsubcode = $offerproduct->fetchAllglsubcode('Liabilities');
+//             foreach($glsubcode as $glsubcode) {
+//                     $savingsForm->glsubcode_id->addMultiOption($glsubcode->id,$glsubcode->header." -[".$glsubcode->glsubcode."]");
+//             }
             // load frequency of deposit values
             $select = $offerproduct->fetchAllTimeFrequencyType();
             foreach($select as $timefrequencytype) {
@@ -635,7 +635,7 @@ class Savings_IndexController extends Zend_Controller_Action{
                 $cdate = $convertdate->phpnormalformat($saving['closedate']);
                 $this->view->form->closedate->setValue($cdate);
                 $this->view->form->applicableto->setValue($saving['applicableto']);
-                $this->view->form->glsubcode_id->setValue($saving['glsubcode_id']);
+//                 $this->view->form->glsubcode_id->setValue($saving['glsubcode_id']);
             } 
             if($this->view->shortname == 'ps') {
                 $this->view->form->minmumdeposit->setValue($saving['minmumdeposit']);
@@ -660,7 +660,10 @@ class Savings_IndexController extends Zend_Controller_Action{
         if ($this->_request->isPost() && $this->_request->getPost('Update')) { 
             $formData = $this->_request->getPost();
             $interestperiods = new Savings_Model_Savings();
-                if ($this->_request->isPost()) {
+                
+
+
+// // // //                 if ($this->_request->isPost()) {
                $productshortname = $this->_request->getParam('shortname'); 
                $offerproductid = $this->_request->getParam('offerproduct_id');
                $Count = $this->_request->getParam('count');
@@ -681,18 +684,34 @@ class Savings_IndexController extends Zend_Controller_Action{
                 $savingsForm->frequencyofinterestupdating->setRequired(false);
                 $savingsForm->minimumbalanceforinterest->setRequired(false);
             }
+               $existintid = array();
+
+               $interestForProduct = $this->view->adm->getRecord("ourbank_interest_periods",'offerproduct_id',$offerproductid); 
+               foreach($interestForProduct as $interestids){
+                $existintid[] = $interestids['id'];
+             }
+
+// // //    if ($savingsForm->isValid($this->_request->getPost())) {
+// 
+// // // // Zend_Debug::dump($formData);
                $previousdata = $this->view->adm->editRecord("ourbank_productsoffer",$offerproductid); // get products offer details
                $result=$offerproduct->addofferproduct1($previousdata[0],$offerproductid); // insert into products offer details to log table
-                $offerproduct->updateRecordpoffer($offerproductid,$formData,$this->view->shortname);
+                $glcodes = $this->view->adm->getsingleRecord('ourbank_productsoffer','glsubcode_id','id',$offerproductid);
+
+
+                $offerproduct->updateRecordpoffer($offerproductid,$formData,$this->view->shortname,$glcodes);
                 // //if the record is belongs to personal savings
             if($productshortname == 'ps') {
                 $previousdataps = $this->view->adm->getRecord("ourbank_productssaving",'productsoffer_id',$offerproductid); // get products saving details
                 $result = $offerproduct->addofferproductsavingslog($previousdataps[0],$offerproductid);//Insert Products saving details to log table
             $offerproduct->updateRecordps($offerproductid,$formData);
             
-            }else {
+            } 
+else {
             $previousdatafd = $this->view->adm->getRecord("ourbank_product_fixedrecurring",'productsoffer_id',$offerproductid); // get products saving details
-                $result = $offerproduct->fixedrecurringlog($previousdatafd[0],$offerproductid);//Insert Products saving details to log table
+                $result = $offerproduct->fixedrecurringlog($previousdatafd[0],$offerproductid);//Insert Products
+                // saving details to log table
+
             $offerproduct->updateRecordfd($offerproductid,$formData);
             }
             $interestrecord = $offerproduct->getRecord($offerproductid); //get interest details
@@ -704,27 +723,29 @@ class Savings_IndexController extends Zend_Controller_Action{
                                     'Interest' => $intrecord['Interest'],                                                'intereststatus_id'=>3));
                     $result = $offerproduct->addinterestlog('ourbank_interest_periods_log',$interestdata);
                 }
-            $offerproduct->deleteinterestRecord($offerproductid); //delete that particular record
-            // insert interest values
+// // //             insert interest values
             if($Count!=0)
             {
-                for ($i = 1;$i<=$Count; $i++) {
-                    $From = $this->_request->getParam('ifrom'.$i); 
-                    $To = $this->_request->getParam('iTo'.$i); 
-                    $Rate = $this->_request->getParam('iRate'.$i); 
-                    $month='months';
-                    $period_ofrange_description = $From.-$To.$month;
-                    if($From) {
-                    $interestperiod = $offerproduct->insertinterestperiods(array('id' =>'',
-                                                                            'period_ofrange_monthfrom' => $From,
-                                                                            'period_ofrange_monthto'=> $To,
-                                                                                'period_ofrange_description'=> $period_ofrange_description,
-                                                                                'offerproduct_id' => $offerproductid,
-                                                                                'Interest' => $Rate,
-                                                                                'intereststatus_id'=>3));
-                        }
+                    $i = 0;
+                    foreach($existintid as $existintids){
+                    $i++;
+                    if($i<=$Count) { 
+                        $From = $this->_request->getParam('ifrom'.$i); 
+                        $To = $this->_request->getParam('iTo'.$i); 
+                        $Rate = $this->_request->getParam('iRate'.$i); 
+                        $month='months';
+                        $period_ofrange_description = $From.-$To.$month;
+                        $interestvalue = array(
+                                            'period_ofrange_monthfrom' => $From,
+                                            'period_ofrange_monthto'=> $To,
+                                            'period_ofrange_description'=> $period_ofrange_description,
+                                            'offerproduct_id' => $offerproductid,
+                                            'Interest' => $Rate,
+                                            'intereststatus_id'=>3);
+                        $offerproduct->updateinterest($interestvalue,$existintids);
+                    }
                 }
-            }          
+            }
             if($memberCount!=0)
             {
             for ($i = 1;$i<=$memberCount; $i++) {
@@ -734,7 +755,7 @@ class Savings_IndexController extends Zend_Controller_Action{
                 $month='months';
                 $period_ofrange_description = $From.-$To.$month;
                 if($From) {
-                $interestperiod = $offerproduct->insertinterestperiods(array('id' =>'',
+                $interestperiod = $this->view->adm->addRecord('ourbank_interest_periods',array('id' =>'',
                                                                         'period_ofrange_monthfrom' => $From,
                                                                         'period_ofrange_monthto'=> $To,
                                                                             'period_ofrange_description'=> $period_ofrange_description,
@@ -745,8 +766,9 @@ class Savings_IndexController extends Zend_Controller_Action{
 
             }
           }
-    }       
             $this->_redirect('savings/index');
+
+    
     }
 }
 	public function savingsdeleteAction() {

@@ -42,11 +42,13 @@ class Fixedaccount_Form_Fixed extends Zend_Form
         $interest->setRequired(true);
 
 
+        $tAmount = $formfield->field('Text','tAmount','','','mand amount1 number','Category name',true,'','','','','',0,0);
 
-        $tAmount = new Zend_Form_Element_Text('tAmount');
-        $tAmount->setAttrib('class', 'amount1');
-        $tAmount->setAttrib('readonly', true);
-        $tAmount->setRequired(true);
+//         $tAmount = new Zend_Form_Element_Text('tAmount');
+//         $tAmount->setAttrib('class', 'amount1');
+//         $tAmount->setAttrib('class', 'number');
+//         $tAmount->setAttrib('readonly', true);
+//         $tAmount->setRequired(true);
         $valid  = new Zend_Validate_Between(array('min' => $minumumbal, 'max' => $maximumbal));
         $tAmount->addValidators(array(array($valid,true)));
 

@@ -22,10 +22,11 @@
 <?php
 class Recurringaccount_Form_Recurring extends Zend_Form 
 {
-   public function __construct($path) {
-    parent::__construct($path);
+   public function __construct($path,$minumumbal,$maximumbal) {
+    parent::__construct($path,$minumumbal);
         $date1 = new ZendX_JQuery_Form_Element_DatePicker('date1');
         $date1->setAttrib('class', 'txt_put');
+        $date1->setAttrib('autocomplete', 'off');
         $date1->setJQueryParam('dateFormat', 'yy-mm-dd');
         $date1->setRequired(true);
 
@@ -42,15 +43,15 @@ class Recurringaccount_Form_Recurring extends Zend_Form
         $tAmount = new Zend_Form_Element_Text('tAmount');
         $tAmount->setAttrib('class', 'txt_put');
         $tAmount->setAttrib('onchange', 'calculateMatureAmount()');
-		$tAmount->addValidator('digits')
-		 		 ->addErrorMessage('Enter Numeric data');
+		$valid  = new Zend_Validate_Between(array('min' => $minumumbal, 'max' => $maximumbal));
+        $tAmount->addValidators(array(array($valid,true)));
 
         $matureamount = new Zend_Form_Element_Text('matureamount');
         $matureamount->setAttrib('class', 'txt_put');
 
         $amount = new Zend_Form_Element_Text('amount');
         $amount->setAttrib('class', 'txt_put');
-//         $amount->setRequired(true);
+        $amount->setRequired(true);
         $amount->setAttrib('onchange', 'calculateTotalAmount(this.value),calculateMatureAmount()');
 
         $memberfirstname = new Zend_Form_Element_MultiCheckbox('memberfirstname');

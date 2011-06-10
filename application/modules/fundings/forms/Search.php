@@ -22,6 +22,7 @@
 <?php
 class Fundings_Form_Search extends ZendX_JQuery_Form {
     public function init() {
+	$formfield = new App_Form_Field ();
 
         $field1 = new Zend_Form_Element_Select('field1');
         $field1->addMultiOption('','Select');
@@ -35,8 +36,8 @@ class Fundings_Form_Search extends ZendX_JQuery_Form {
         $field3 = new Zend_Form_Element_Text('field3');
         $field3->setAttrib('size', '12');
 
-
-        $field4 = new Zend_Form_Element_Text('field4');
+         $field4 = $formfield->field('Text','$field4','','','mand digits','',false,'','','','','',0,0);
+       // $field4 = new Zend_Form_Element_Text('field4');
         $field4->setAttrib('size', '12');
 
 
@@ -48,6 +49,7 @@ class Fundings_Form_Search extends ZendX_JQuery_Form {
         
         $field7 = new ZendX_JQuery_Form_Element_DatePicker('field7');
         $field7->setAttrib('size', '12');
+        
         
         $field8 = new ZendX_JQuery_Form_Element_DatePicker('field8');
         $field8->setAttrib('size', '12');

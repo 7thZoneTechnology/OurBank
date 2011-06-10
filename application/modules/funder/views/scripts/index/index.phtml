@@ -62,7 +62,6 @@ if($this->errormsg==0) {
 ?>
 <table id="hor-minimalist-b">
     <tr>
-        <th><?php echo $this->translate("Funder code"); ?></th>
         <th><?php echo $this->translate("Funder name"); ?></th>
         <th><?php echo $this->translate("Funder type"); ?></th>
 
@@ -70,8 +69,7 @@ if($this->errormsg==0) {
     <?php foreach ($this->paginator as $funder): ?>
     <tr>
         <td><a href="<?php echo $this->baseUrl()."/fundercommonview/index/commonview/id/".$funder['id']; ?>">
-        <?php echo $this->escape($funder['code']); ?></a></td>
-        <td><?php echo $this->escape($funder['name']); ?></td>
+        <?php echo $this->escape($funder['name']); ?></a></td>
         <td><?php echo $this->escape($funder['fundertype']); ?></td>
 
     <?php endforeach; ?>

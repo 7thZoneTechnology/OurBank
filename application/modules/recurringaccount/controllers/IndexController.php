@@ -76,13 +76,25 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
     public function createaccountAction()
     {
         $path=$this->view->baseUrl();
-        $recurringForm = new Recurringaccount_Form_Recurring($path);
-        $this->view->fixedForm = $recurringForm;
+        
+
         $productId = base64_decode($this->_request->getParam('Id'));
         $memberId = base64_decode($this->_request->getParam('memberId'));
         $membercode = base64_decode($this->_request->getParam('code'));
+
+// offer details
+        $this->view->offerdetails = $this->view->accounts->getofferdetails($productId);
+
+
+        foreach($this->view->offerdetails as $account) {
+        $minimumbal = $account['minbalance'];
+        $maxbal = $account['maxbalance'];
+        }
+$recurringForm = new Recurringaccount_Form_Recurring($path,$minimumbal,$maxbal);
+        $this->view->fixedForm = $recurringForm;
+
         //EXTRACTING GROUP ID FROM MEMBER CODE
-        if(substr($membercode,4,1)=='2') {
+        if(substr($membercode,4,1)=='2' or substr($membercode,4,1)=='3') {
             $this->view->gp_members=$this->view->accounts->fetchmembers($memberId);
         }
 
@@ -167,7 +179,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
                     $tranID = $this->view->adm->addRecord('ourbank_recurring_payment',$rec_payment);
 
                     // Insertion into ourbank_paydetails
-                    
+
                     $date=$this->view->cl->phpmysqlformat($this->_request->getPost('date1'));
                     for($i=1; $i<=$periods; $i++) 
                     {
@@ -281,7 +293,6 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $value=explode('-',$id);
         $interestvalue = $this->view->accounts->getInterestvalue($value[0],$value[1]);
         foreach($interestvalue as $interestvalue1){
-/*            echo $interestvalue1['Interest'];*/
              $this->view->interest = $interestvalue1['Interest'];
         }
     }

@@ -114,10 +114,10 @@ class Category_IndexController extends Zend_Controller_Action
 				$formData = $this->_request->getPost();
 				if ($this->_request->isPost()) {
 					if ($categoryForm->isValid($formData)) {  
-echo "created by".$this->view->createdby;
-//adding the datas to the table
-// 					$id = $this->view->adm->addRecord("ourbank_category",$categoryForm->getValues());
-// 						$this->_redirect('/category/index/categoryview/id/'.$id);
+//                                         echo "created by".$this->view->createdby;
+// adding the datas to the table
+					$id = $this->view->adm->addRecord("ourbank_category",$categoryForm->getValues());
+						$this->_redirect('/category/index/categoryview/id/'.$id);
 				}
 			}
 		}

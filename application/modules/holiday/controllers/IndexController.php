@@ -108,7 +108,7 @@ $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC"
 //getting the values from search form   			
 $dateconvert= new App_Model_dateConvertor();
 
-														$formdata1=array('name'=>$formData['name'],
+									 $formdata1=array('name'=>$formData['name'],
                                     					'office_id'=>$formData['office_id'],
                                     					'holiday_from'=>$dateconvert->mysqlformat($formData['holiday_from']),
                                     					'holiday_upto'=>$dateconvert->mysqlformat($formData['holiday_upto']),

@@ -86,11 +86,11 @@
 		
 				<?php } ?>
 			<div class="cont-rgt-data">
-			<form action="<?php echo $this->baseUrl();?>/fee/index/delete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="signupForm" class="cmxform">
-				<table id="hor-minimalist-b" summary="Employee Pay Sheet">
+			<form action="<?php echo $this->baseUrl();?>/fee/index/delete/id/<?php echo $this->id; ?>" method="POST" name="joe" id="validation" class="cmxform">
+				<table id="hor-minimalist-b" summary="Employee Pay Sheet" class="fieldsets">
                                 <tr><Th>Confirm Delete</th><th></th></tr>
 					<TR>
-						<TD  width="35%" align="right" ><label>Remarks<span class="reqMark">*</span></label></TD>
+						<TD  width="35%" align="left" ><label class="mand">Remarks</label></TD>
 						<TD  width="65%"  align="left" ><?php echo $this->deleteform->remarks;?></TD>
 					</TR>
 					<TR>
