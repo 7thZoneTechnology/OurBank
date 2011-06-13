@@ -186,6 +186,7 @@ class Savings_IndexController extends Zend_Controller_Action{
 	}
  
 	public function persnolsavingsAction() {  
+
             // disable the layout to load new action page in common page
             $this->_helper->layout->disableLayout();
             $savingsForm = new Savings_Form_Savings();
@@ -220,13 +221,15 @@ class Savings_IndexController extends Zend_Controller_Action{
 // // //                     }
 // // //                 }
             if ($this->_request->isPost() && $this->_request->getPost('Submit')) { 
+
                     $formData = $this->_request->getPost();
-                if ($this->_request->isPost()) {
+
                     $savingsForm->closedate->setRequired(false);
                     $savingsForm->minimum_deposit_amount->setRequired(false);
                     $savingsForm->maximum_deposit_amount->setRequired(false);
                     $savingsForm->frequency_of_deposit->setRequired(false);
                     $savingsForm->penal_Interest->setRequired(false);
+
                     // get all given input values
                     $closeddate = $this->_request->getParam('closedate');
                     $productType = $this->_request->getParam('productType');
@@ -236,7 +239,6 @@ class Savings_IndexController extends Zend_Controller_Action{
                     $currentdate = $this->_request->getParam('currentdates');
                     $begindate = $this->_request->getParam('begindate');
                     $month='months';
-                    $period_ofrange_description1 = $interestfrom.-$interestto.$month;
                     $memberCount = $this->_request->getParam('memberCount');
 
                     $headerCon = "L";
@@ -277,33 +279,20 @@ class Savings_IndexController extends Zend_Controller_Action{
 
                 $result = $savings->addofferproductsavings($formData,$offerproductupdate_id);//Insert Products saving
                 // insert interest period values
-                $savings = $savings->insertinterestperiods(array('id' =>'',
-															'period_ofrange_monthfrom' => $interestfrom,
-															'period_ofrange_monthto'=> $interestto,
-															'period_ofrange_description'=> $period_ofrange_description1,
-															'offerproduct_id' => $offerproductupdate_id,
-															'Interest' => $interestrate,
-															'intereststatus_id'=>3));
-		$dbobj = new Savings_Model_Savings();
+$countinterest = count($interestfrom);
+for($i=0;$i<$countinterest;$i++){
+                $description = $interestfrom[$i].-$interestto[$i].$month;
+                 $interestarray = (array('id' =>'',
+                                                                                                                                                    'period_ofrange_monthfrom' => $interestfrom[$i],
+                                                                                                                                                    'period_ofrange_monthto'=> $interestto[$i],
+                                                                                                                                                    'period_ofrange_description'=> $description,
+                                                                                                                                                    'offerproduct_id' => $offerproductupdate_id,
+                                                                                                                                                    'Interest' => $interestrate[$i],
+                                                                                                                                                    'intereststatus_id'=>3));
+                $this->view->adm->addRecord('ourbank_interest_periods',$interestarray);
+                }
 
-					for ($i = 1;$i<=$memberCount; $i++) {
-						$From = $this->_request->getParam('memberName'.$i); 
-						$To = $this->_request->getParam('To'.$i); 
-						$Rate = $this->_request->getParam('Rate'.$i); 
-						$month='months';
-						$period_ofrange_description = $From.-$To.$month;
-						if($From) {
-                                                $dbobj->insertinterestperiods(array('id' =>'',
-																				'period_ofrange_monthfrom' => $From,
-																				'period_ofrange_monthto'=> $To,
-																				'period_ofrange_description'=> $period_ofrange_description,
-																				'offerproduct_id' => $offerproductupdate_id,
-																				'Interest' => $Rate,
-																				'intereststatus_id'=>3));
-						}
-					}
 					$this->_redirect('savings/index');
-				}
 			}
 		}
 
@@ -359,7 +348,6 @@ class Savings_IndexController extends Zend_Controller_Action{
 					$minimumamount = $this->_request->getParam('minimum_deposit_amount');
 					$maximumamount = $this->_request->getParam('maximum_deposit_amount');
 					$month='months';
-					$period_ofrange_description1 = $interestfrom.-$interestto.$month;
 					$memberCount = $this->_request->getParam('memberCount');
 
                     $headerCon = "L";
@@ -408,35 +396,24 @@ class Savings_IndexController extends Zend_Controller_Action{
 
                 // Insert fixed product details
                 $result = $savings->addofferproductfixedrecurring($formData,$offerproductupdate_id);
-                $interestperiod1 = $savings->insertinterestperiods(array('id' =>'',
-															'period_ofrange_monthfrom' => $interestfrom,
-															'period_ofrange_monthto'=> $interestto,
-															'period_ofrange_description'=> $period_ofrange_description1,
-															'offerproduct_id' => $offerproductupdate_id,
-															'Interest' => $interestrate,
-															'intereststatus_id'=>3));
-        // Insert interest periods values
-    for ($i = 1;$i<=$memberCount; $i++) {
-            $From = $this->_request->getParam('memberName'.$i); 
-            $To = $this->_request->getParam('To'.$i); 
-            $Rate = $this->_request->getParam('Rate'.$i); 
-            $month='months';
-            $period_ofrange_description = $From.-$To.$month;
-            if($From) {
-                    $interestperiod = $savings->insertinterestperiods(array('id' =>'',
-																'period_ofrange_monthfrom' => $From,
-																'period_ofrange_monthto'=> $To,
-																'period_ofrange_description'=> $period_ofrange_description,
-																'offerproduct_id' => $offerproductupdate_id,
-																'Interest' => $Rate,
-																'intereststatus_id'=>3));
-							}
-						}
-				}
-                                $this->_redirect('savings/index');
+                // insert interest period values
+$countinterest = count($interestfrom);
+for($i=0;$i<$countinterest;$i++){
+                $description = $interestfrom[$i].-$interestto[$i].$month;
+                 $interestarray = (array('id' =>'',
+                                                                                                                                                    'period_ofrange_monthfrom' => $interestfrom[$i],
+                                                                                                                                                    'period_ofrange_monthto'=> $interestto[$i],
+                                                                                                                                                    'period_ofrange_description'=> $description,
+                                                                                                                                                    'offerproduct_id' => $offerproductupdate_id,
+                                                                                                                                                    'Interest' => $interestrate[$i],
+                                                                                                                                                    'intereststatus_id'=>3));
+                $this->view->adm->addRecord('ourbank_interest_periods',$interestarray);
+                }
+                }
+            $this->_redirect('savings/index');
 
-			}
-		}
+            }
+        }
 
  }
 
@@ -487,7 +464,6 @@ class Savings_IndexController extends Zend_Controller_Action{
                                 $minimumamount = $this->_request->getParam('minimum_deposit_amount');
                                 $maximumamount = $this->_request->getParam('maximum_deposit_amount');
                                 $month='months';
-                                $period_ofrange_description1 = $interestfrom.-$interestto.$month;
                                 $memberCount = $this->_request->getParam('memberCount');
 
                     $headerCon = "L";
@@ -536,31 +512,19 @@ class Savings_IndexController extends Zend_Controller_Action{
 
                 // Insert fixed product values 
                $result = $savings->addofferproductfixedrecurring($formData,$offerproductupdate_id);
-                // Insert interest values
-                $interestperiod1 = $savings->insertinterestperiods(array('id' => '',
-															'period_ofrange_monthfrom' => $interestfrom,
-															'period_ofrange_monthto'=> $interestto,
-															'period_ofrange_description'=> $period_ofrange_description1,
-															'offerproduct_id' => $offerproductupdate_id,
-															'Interest' => $interestrate,
-															'intereststatus_id'=>3));
-
-    for ($i = 1;$i<=$memberCount; $i++) {
-            $From = $this->_request->getParam('memberName'.$i); 
-            $To = $this->_request->getParam('To'.$i); 
-            $Rate = $this->_request->getParam('Rate'.$i); 
-            $month='months';
-            $period_ofrange_description = $From.-$To.$month;
-            if($From) {
-                    $interestperiod = $savings->insertinterestperiods(array('id' =>'',
-																'period_ofrange_monthfrom' => $From,
-																'period_ofrange_monthto'=> $To,
-																'period_ofrange_description'=> $period_ofrange_description,
-																'offerproduct_id' => $offerproductupdate_id,
-																'Interest' => $Rate,
-																'intereststatus_id'=>3));
-							}
-						}
+                // insert interest period values
+$countinterest = count($interestfrom);
+for($i=0;$i<$countinterest;$i++){
+                $description = $interestfrom[$i].-$interestto[$i].$month;
+                 $interestarray = (array('id' =>'',
+                                                                                                                                                    'period_ofrange_monthfrom' => $interestfrom[$i],
+                                                                                                                                                    'period_ofrange_monthto'=> $interestto[$i],
+                                                                                                                                                    'period_ofrange_description'=> $description,
+                                                                                                                                                    'offerproduct_id' => $offerproductupdate_id,
+                                                                                                                                                    'Interest' => $interestrate[$i],
+                                                                                                                                                    'intereststatus_id'=>3));
+                $this->view->adm->addRecord('ourbank_interest_periods',$interestarray);
+                }
 					}
                                 $this->_redirect('savings/index');
 				}

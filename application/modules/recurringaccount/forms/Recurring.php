@@ -51,7 +51,7 @@ class Recurringaccount_Form_Recurring extends Zend_Form
 
         $amount = new Zend_Form_Element_Text('amount');
         $amount->setAttrib('class', 'txt_put');
-        $amount->setRequired(true);
+//         $amount->setRequired(true);
         $amount->setAttrib('onchange', 'calculateTotalAmount(this.value),calculateMatureAmount()');
 
         $memberfirstname = new Zend_Form_Element_MultiCheckbox('memberfirstname');
@@ -79,6 +79,7 @@ class Recurringaccount_Form_Recurring extends Zend_Form
         $memberTypeIdv = new Zend_Form_Element_Hidden('memberTypeIdv');
 
         $submit = new Zend_Form_Element_Submit('Submit');
+		$submit->setRequired(false);
 
         $Yes = new Zend_Form_Element_Submit('Yes');
 

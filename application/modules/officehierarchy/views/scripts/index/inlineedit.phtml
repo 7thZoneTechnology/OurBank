@@ -18,12 +18,11 @@
 !-->
 
 <td class="inlineedittd"><?php echo $this->hierarchyLevel.$this->translate(" Office Level"); ?></td>
-<td class="inlineedittd"> <?php echo $this->form1->hierarchyLevel;  ?>
-						  <?php echo $this->form1->officeType;  ?>
+<td class="inlineedittd"> <?php echo $this->form1->officeType;  ?>
+                          <?php echo $this->form1->hierarchyLevel;  ?>
                           <?php echo $this->form1->id;  ?></td> 
-<td class="inlineedittd"><span style="float:left; width:55px;"><?php echo $this->form1->officeCode;  ?></span><br>
+<td class="inlineedittd"><span style="float:left; width:55px;"><?php echo $this->form1->officeCode;  ?></span>
 <?echo $this->form1->Edit;?>
 <a style="float: left;" href="<?php echo $this->baseUrl();?>/officehierarchy">
 <input name="cancel" style="margin-left:2px;" type="button" class="officebutton" value="<?php echo $this->translate('cancel'); ?>"></a>
 </td>
-<td></td>

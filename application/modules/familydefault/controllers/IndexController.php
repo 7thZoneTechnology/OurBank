@@ -126,6 +126,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //         $addForm->rev_village->addMultiOption($village1['village_id'],$village1['name']);
 //         }
 		$groupname=$this->_request->getParam('familyid');
+                if(empty($groupname)){ $groupname= ''; }
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
 			$addForm->familyid1->setRequired(false);
@@ -139,8 +140,14 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //                 $messages = $validator->getMessages();	
 //                     $this->view->errorgroupname=$groupname.'This Family ID Already Existed';// if name exists display error message
 //             } else {
+
 			if($addForm->isValid($formData))
             {
+                    $sujeevana_no = $this->_request->getParam('sujeevana');
+                    $rev_vill = $this->_request->getParam('rev_village');
+                    $this->view->sujeevana_num = $check_sujeevana_no = $familymodel->checkSujeevanNo($sujeevana_no,$rev_vill);
+                    if(empty($check_sujeevana_no))
+                    {
         // add individual member
         $lastid = $this->view->adm->addRecord("ourbank_family",array(
                                         'id' => '',
@@ -190,6 +197,12 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //                 $this->view->adm->updateRecord("ourbank_accounts",$lastid1,array('account_number'=>$accountno));
 
                $this->_redirect('/familycommonview/index/commonview/id/'.$lastid);
+                }
+                else
+                {
+                    $this->view->error_msg = "Cannot have duplicate sujeevana number in the same revenue village";
+                   // $this->_redirect('/familydefault/index/addfamily');
+                }
             }
         }	
 	
@@ -306,7 +319,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
         {
             $formData = $this->_request->getPost();
 
-			$addForm->familyid->setRequired(false);
+			//$addForm->familyid->setRequired(false);
             if($addForm->isValid($formData))
             {
 

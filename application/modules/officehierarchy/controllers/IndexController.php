@@ -17,7 +17,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
+?>
 
+<?php
 /*
  *  create an office hierarchy controller for add, view search filtered values
  */
@@ -26,15 +28,8 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
     public function init() {
          $this->view->pageTitle=$this->view->translate('Office Hierarchy');
 	//session 
-        $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+         $sessionName = new Zend_Session_Namespace('ourbank');
+         $this->view->createdby = $sessionName->primaryuserid;
     }
 
 	//view office hierarchy
@@ -196,11 +191,11 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                                 $this->view->form1->$c->setValue($this->_request->getPost('id'.$noOfficeLevel));
                                 $this->view->form1->$d->setValue($officeLevel+1);
                             } else {
-                                    $messages = $officeCode.'  already existing';
+                                    $messages = $officeCode.'alreadyexisting';
                                     $this->_redirect("officehierarchy?Existed=".$messages);
                                 }
                         } else {
-                            $messages = $officeType.'  already existing';
+                            $messages = $officeType.'alreadyexisting';
                             $this->_redirect("officehierarchy?Existed=".$messages);
                           }
                     } else {
@@ -324,7 +319,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                                           $this->view->form1->Edit->setName('update');
                                           $this->view->form1->Edit->setLabel($this->view->ZendTranslate->_("update"));
                                           $this->view->form1->Edit->setAttrib('class', 'officesubmit');
-                                          $messages = $officeType.' (OR) '.$officeCode.'  already existing';
+                                          $messages = $officeType.' (OR) '.$officeCode.' '.'alreadyexisting';
                                           $this->_redirect("officehierarchy?Existed=".$messages);
                                         }
                                      }
@@ -333,7 +328,7 @@ class Officehierarchy_IndexController extends Zend_Controller_Action{
                             $this->view->form1->Edit->setLabel('update');
                             $this->view->form1->Edit->setAttrib('class', 'officesubmit');
 			    //existing message
-                            $messages = $officeType.' (OR) '.$officeCode.'  already existing';
+                            $messages = $officeType.' (OR) '.$officeCode.'alreadyexisting';
                             $this->_redirect("officehierarchy?Existed=".$messages);
                         }
                     } else {

@@ -24,7 +24,8 @@ class Ledger_Form_Ledger extends Zend_Form
     {
     }
 
-    public function __construct($path) {
+    public function __construct($path) 
+{
         parent::__construct($path);
         $formfield = new App_Form_Field ();
 
@@ -41,6 +42,13 @@ class Ledger_Form_Ledger extends Zend_Form
 
         $offerproduct = $formfield->field('Select','offerproduct','','','txt_put','','','','','','','','','');
 
+        $officelevel = $formfield->field('Select','officelevel','','','','','','','','','','',0,0);
+        $officelevel->setRegisterInArrayValidator(false);
+        $officelevel->setAttrib('onchange', 'getoffice("'.$path.'",this.value)');
+
+        $office = $formfield->field('Select','office','','','','','','','','','','',0,0);
+        $office->setRegisterInArrayValidator(false);
+
         $subheader = $formfield->field('Text','subheader','','','txt_put','','','','','','','','','');
 
 	$glsubaccountdescription = new Zend_Form_Element_Textarea
@@ -48,7 +56,7 @@ class Ledger_Form_Ledger extends Zend_Form
         $glsubaccountdescription->setAttrib('id', 'glsubaccountdescription');
 
         $submit = $formfield->field('Submit','Save','','','','holiday1','','','','','','','','');
-        $this->addElements( array ($submit,$accountHeader,$glcodeDescription,$subheader,$glsubaccountdescription,$product,$offerproduct));
+        $this->addElements( array ($submit,$accountHeader,$glcodeDescription,$subheader,$glsubaccountdescription,$product,$offerproduct,$officelevel,$office));
 
         $glcodeHiddenId = new Zend_Form_Element_Hidden('hidden_glcodeid');
         $glsubcodeHiddenId = new Zend_Form_Element_Hidden('hidden_glsubcodeid');

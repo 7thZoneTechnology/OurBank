@@ -16,12 +16,23 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<div>
-<div class="register">
+
+<script type="text/javascript" language="JavaScript">
+    function getoffice(path,officelevelid) 
+    {
+        if(officelevelid) {
+            targeturl=path+"/ledger/index/getoffice?office_id="+officelevelid; alert(targeturl);
+            $.ajax({ url: targeturl, success: function(data){ $("#office").html(data) }});
+        }
+    }
+</script>
+<fieldset>
+	<legend>Edit SubLedger</legend>
+	   <div class="register">
 	       <div class="profile_tab">
-     <TABLE id="hor-minimalist-b">
-        <tr><Th colspan="2">Edit SubLedger<a href="<?php echo $this->baseUrl();?>/ledger/index/deletesubledger/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="20" height="20"></a></Th></tr>
-	  
+<p align="right"><a href="<?php echo $this->baseUrl();?>/ledger/index/deletesubledger/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20"></a></p>
+                    <TABLE id="hor-minimalist-b">
+
                         <form action="<?php echo $this->baseUrl();?>/ledger/index/editsubledger" method="POST">
 			 <TR>
                             <TD class="txt_rgt">Ledger Code</TD>
@@ -32,6 +43,12 @@
                             <TD class="txt_rgt">subLedgerCode</TD>
                             <TD ><?php echo $this->glsubcode;?></TD>
                         </TR>
+
+                        <TR>
+                        <td class="txt_rgt">Office name<span class="reqMark"></span></td>
+                        <TD><?php echo $this->officename; ?></TD>
+                    </TR>
+
                         <TR>
                             <TD class="txt_rgt">Gl Sub Header</TD>
                             <TD><?php echo $this->form1->hidden_glsubcodeid;echo $this->form1->subheader;?></TD>
@@ -42,14 +59,16 @@
                             <TD ><?php echo $this->form1->glsubaccountdescription;?></TD>
 
                         </TR>
-			<TR>			
+			<TR>
+				
 				<TD class="txt_rgt"><?php echo $this->form1->Submit;?></TD>
-		               <td align="right"><a href=<?php echo $this->baseUrl(); ?>/ledger/index>
+		               <td><a href=<?php echo $this->baseUrl(); ?>/ledger/index>
                                  <input name="submit" type="submit" class="officebutton" value="Back"></a></td>
 			</TR>
-                        </form>
-                    </TABLE>
-	    <CENTER style="color:red"><?php echo $this->updateerror; ?></CENTER>
+                        </TABLE>
+			
+ 		    <CENTER style="color:red"><?php echo $this->updateerror; ?></CENTER>
+	           </form>
+	       </div>
 	  </div>
-    </div>
-</div>
+</fieldset>

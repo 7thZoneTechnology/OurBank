@@ -29,7 +29,7 @@ class Office_Model_office extends Zend_Db_Table_Abstract {
     public function SearchOffice($officeid,$shortname,$officename) {
         $select = $this->select()
                        ->setIntegrityCheck(false)  
-                       ->join(array('a' => 'ourbank_office'),array('a.id'))
+                       ->join(array('a' => 'ourbank_office'),array('a.id','a.parentoffice_id'))
                        ->join(array('b'=>'ourbank_officehierarchy'),'b.id=a.officetype_id',array('b.type'))
                        ->where('a.name like "%" ? "%"',$officename)
                        ->where('a.short_name like "%" ? "%"',$shortname)
@@ -55,6 +55,7 @@ class Office_Model_office extends Zend_Db_Table_Abstract {
                        ->join(array('a' => 'ourbank_office'),array('a.id'))
                        ->join(array('b'=>'ourbank_officehierarchy'),'b.id=a.officetype_id',array('b.type'))
                        ->order(array('a.id DESC'));
+//                        die($select->__toString($select));
        $result = $this->fetchAll($select);
 	//return office details
        return $result->toArray();

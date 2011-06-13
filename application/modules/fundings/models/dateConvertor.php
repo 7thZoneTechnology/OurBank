@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Fundings_Model_dateConvertor  {
 
     public function mysqlformat($nformat) {
