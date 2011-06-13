@@ -38,7 +38,7 @@ function gethobli(hobli,path) {
 </script>
 
 <script type="text/javascript">
-function getgillapanchayath(gillapanchayath,path) {
+function getgillapanchayath(gillapanchayath,path) { 
 	if(gillapanchayath) {
 	 	targeturl=path+"/dropdown/index/village?gillapanchayath="+gillapanchayath;
 		$.ajax({ url: targeturl, success: function(data){ $("#gillapanchayathdiv").html(data) }});
@@ -47,7 +47,7 @@ function getgillapanchayath(gillapanchayath,path) {
 </script>
 
 <script type="text/javascript">
-function getvillage(village,path) {
+function getvillage(village,path) { 
 	if(village) {
 	 	targeturl=path+"/dropdown/index/gillapanchayath?village="+village;
 		$.ajax({ url: targeturl, success: function(data){ $("#villagediv").html(data) }});
@@ -122,18 +122,16 @@ function getvillage(village,path) {
 				<td>Taluk</td>
                 <TD colspan="2" id="districtdiv"><?php echo $this->form->taluk;?></TD>
 			</tr>
-<tr>
+			<tr>
 				<td>Hobli</td>
                 <TD colspan="2"><div id="talukdiv"><?php echo $this->form->hobli;?></TD>
 			</tr>
-
-<tr>
+			<tr>
 				<td>Grama panchayath</td>
                 <TD colspan="2" id="hoblidiv"><?php echo $this->form->gillapanchayath;?></div></TD>
 			</tr>
-			
-				<?php }?>
-<?php if($this->tableName == 'ourbank_master_habitation') {?>
+			<?php }?>
+			<?php if($this->tableName == 'ourbank_master_habitation') {?>
 				<td>State</td>
                 <TD colspan="2"><?php echo $this->form->state;?></TD>
 			</tr>
@@ -143,12 +141,11 @@ function getvillage(village,path) {
 				<td>Taluk</td>
                 <TD colspan="2" id="districtdiv"><?php echo $this->form->taluk;?></TD>
 			</tr>
-<tr>
+			<tr>
 				<td>Hobli</td>
                 <TD colspan="2"><div id="talukdiv"><?php echo $this->form->hobli;?></TD>
 			</tr>
-
-<tr>
+			<tr>
 				<td>Grama panchayath</td>
                 <TD colspan="2" id="hoblidiv"><?php echo $this->form->gillapanchayath;?></TD>
 			</tr>
@@ -170,9 +167,11 @@ function getvillage(village,path) {
 
 			</tr>
 				<?php }?>
+<tr>
 				<TD> Add new <? echo substr($this->tableName,15); ?></TD>
                 <TD colspan="2"><?php echo $this->form->commonname;?></TD>
 			</TR>
+<tr><td>Regional name</td><TD colspan="2"><?php echo $this->form->name_regional;?></TD></tr>
 	<tr><TD><input type="submit" name="Save" id="Submit" value="Save"></TD><td></td>
 		<td align="right"><a href="<?php echo $this->baseUrl(); ?>/dropdown">
                                 	<input name="submit" type="submit" class="officebutton" value="Back"></a></td></tr>
