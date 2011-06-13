@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Savingswithdrawal_IndexController extends Zend_Controller_Action
 {
 	public function init() 
@@ -32,25 +29,27 @@ class Savingswithdrawal_IndexController extends Zend_Controller_Action
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
         $this->view->dc = new App_Model_dateConvertor();
+        $this->view->ms = new Msdetails_Model_msdetails();
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
 
-                $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
 
-                $storage = new Zend_Auth_Storage_Session();
-                $data = $storage->read();
-                if(!$data)
-                {
-                    $this->_redirect('index/login');
-                }
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+
+        $loginname=$this->view->cl->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        }
 	}
-
-        public function indexAction()
+public function indexAction() 
 	{
 		$this->view->form = $searchform = new Savingswithdrawal_Form_Search();
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
-$dbobj = new Savingsdeposit_Model_Savingsdeposit();
+                $dbobj = new Savingsdeposit_Model_Savingsdeposit();
 
                 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
                             $formdata = $this->_request->getPost();
@@ -58,15 +57,25 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
                             if($searchform->isValid($formdata)){
                                 $validaccno = $dbobj->savingsAccountsSearch($acc);
                                 $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
-//                                 if($tagAcc!=0){
-//                                             $this->view->error = "Enter valid Account number";
-//                                 }else {
+                                $mtype = $this->view->adm->getsingleRecord('ourbank_accounts','membertype_id','account_number',$acc);
+                                if($tagAcc!=0 && $mtype == 1){
+                                            $this->view->error = "Withdrawal not allowed use group account to withdrawal";
+                                }else {
                                         if ($validaccno) {
+                                            $Balance = $this->view->ms->getbalance($acc);
+                                            foreach($Balance as $balances){
+                                                $balance = $balances['Balance'];
+                                            }
+                                                if($balance > 0){
+
                                                 $this->_redirect("/savingswithdrawal/index/withdrawal/accNum/".base64_encode($acc));
-                                        }else{
+                                                 } else {
+                                                    $this->view->error = "Zero balance withdrawal not allowed.";
+                                                }
+                                        } else {
                                                 $this->view->error = "Account number does not exist";
                                         }
-//                                 }
+                                }
                             }
                 }
         }
@@ -108,6 +117,9 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
                 foreach($MinBalance as $MinBalan){
                     $minimumbalance = $MinBalan['minmumdeposit'];
                 }
+
+                $this->view->limitamount = $balance - $minimumbalance;
+
 		$this->view->details = $this->view->savingsModel->search($accNum);
 		$this->view->tran = $this->view->savingsModel->transaction($accNum);
 		$form = new Savingswithdrawal_Form_Withdrawal($this->view->accNum,$balance,$minimumbalance);
@@ -125,7 +137,7 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
 
             if ($this->_request->getParam('date1')) {
                 $form->transactionMode->setRequired(false);
-                $form->amount->setRequired(false);
+//                 $form->amount->setRequired(false);
                 $form->description->setRequired(false);
                 $form->date->setRequired(false);
                 $givendate = $this->_request->getParam('date1');
@@ -137,6 +149,10 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
                 if($transactionMode !=1){
                         $this->view->form->othertext->setRequired(false);
                         $chequeno =  $this->_request->getParam('othertext1'); 
+                    $paymenttype_details = $chequeno;
+
+                } else {
+                    $paymenttype_details = 0;
                 }
 
             } else {
@@ -152,28 +168,36 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
         if($transactionMode !=1){
                         $this->view->form->othertext1->setRequired(false);
                          $chequeno =  $this->_request->getParam('othertext'); 
+                    $paymenttype_details = $chequeno;
 
+                } else{
+                    $paymenttype_details = 0;
                 }
 
             }
 
-                if($chequeno){
-                    $paymenttype_details = $chequeno;
-                }else{
-                    $paymenttype_details = 0;
-                }
+               
             $flag = false;
             $formData = $this->_request->getPost();
                  if($givendate){
-                if ($this->view->dc->phpmysqlformat($givendate) < date('Y-m-d')) {
-                                    $this->view->maxdate= "Date of account should be current date" ;
+
+                $gdate = $this->view->dc->phpmysqlformat($givendate);
+                if ( $gdate != date('Y-m-d') ) {
+                                    $this->view->maxdate= "Date should be current date" ;
                 } 
                 else {
                if($form->isValid($formData)){
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
                     if($transactionMode=='5') {
-                                $validaccno = $fixedSavings->savingsAccountsSearch($chequeno);
+                                $savingsAccountsSearch = $fixedSavings->savingsAccountsSearch($chequeno);
+                                $validaccno = $fixedSavings->savingsAccountsSearchwithid($chequeno);
                             if (!$validaccno) {
+                                    $this->view->noaccount = "Enter valid saving account number";
+                                    $flag = true;
+
+                            }
+
+                            if (!$savingsAccountsSearch) {
                                     $form->othertext->setValue('');
                                     $form->othertext1->setValue('');
                                     $flag = true;

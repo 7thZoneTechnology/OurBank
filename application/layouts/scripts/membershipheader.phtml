@@ -1,46 +1,4 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-
-<head>
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/dp/jquery.datepick.css" />
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.1.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/dp/jquery.datepick.js"></script>
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/familymembers.js"></script>
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/familydefault.js"></script>
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/assets.js"></script>
-
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.selectboxes.pack.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#memberdateofbirth").datepick({dateFormat: 'dd/mm/yyyy'});
-    $("#Created_Date").datepick({dateFormat: 'dd/mm/yyyy'});
-});
-</script>
-</head> 
-
 <?php echo $this->render('header.phtml'); ?>
-
-
     <div id="navigation">
       <div id="mainmenu">
    <ul>

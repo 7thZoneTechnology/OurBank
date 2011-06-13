@@ -47,9 +47,8 @@ class Recurringtransaction_Form_recurringTransaction extends ZendX_JQuery_Form
         $recurringDate->setAttrib('id', 'recurringDate');
         $recurringDate->setAttrib('size', '8');   
         $recurringDate->setAttrib('class', '');
-        $recurringDate->setRequired(true)
-				->addValidators(array(array('Date', true)));
-
+        $recurringDate->setRequired(true);
+				
 
 		$amount = new Zend_Form_Element_Text('amount');
 		$amount->setRequired(true)

@@ -17,7 +17,7 @@
 ############################################################################
 !-->
 
-<form name="form1" action="<?php echo $this->baseUrl();?>/fundings/index/addfundings" method="POST">
+<form name="form1" action="<?php echo $this->baseUrl();?>/fundings/index/addfundings" method="POST" id="validation">
 <fieldset>
     <legend>Add fundings</legend> 
         <table class="fieldsets"> 
@@ -25,7 +25,9 @@
         </table>
         <div class="btnhouse">
 	   <div class="ltbtns">
-		<?php echo $this->submitform->Submit;?>
+            <input type="submit" value="Submit" name="Submit">		
+            
+            <?php //echo $this->submitform->Submit;?>
 	   </div>
 	   <div class="rtbtns">
 		<a href="<?php echo $this->baseUrl();?>/fundings"><input type = "button" name = "Back" value = "Back"></a>

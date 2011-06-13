@@ -213,7 +213,7 @@ else
     </fieldset>
 
 </div>
-
+<?php if(count($this->tran) > 0) { ?>
 <table id="hor-minimalist-b">
     <tr>
         <th>V No.</td>
@@ -241,7 +241,7 @@ else
        <td><?php echo $transaction->mode; ?></td>
        <td><?php echo $transaction->name; ?></td>
     </tr>
-    <?php endforeach; ?>
+    <?php endforeach;  ?>
 </table>
 <p align="right"><font color="green"><b>Current Balance :<?php echo $this->balance;?></b></font></p>
-
+<?php } ?>

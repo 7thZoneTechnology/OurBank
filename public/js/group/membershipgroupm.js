@@ -83,7 +83,7 @@ function getXMLHTTP() { //fuction to return the xml http object
                         }
 		else
 		{
-			alert('Chose any Branch...')
+			alert('Choose any Branch...')
 		}
             }
     }
@@ -100,6 +100,6 @@ selectedval=$(thisobj).attr('id');
             $('.familymember').attr('checked', false);
         }
 }
-
-
+$(document).ready(function() {
+    $('#addgroup').validate()  });
           

@@ -17,25 +17,27 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Fee_Indexcontroller extends Zend_Controller_Action
 {
 	public function init() 
 	{
 		$this->view->pageTitle='Fee';
 
-        $globalsession = new App_Model_Users();
-         $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+       $storage = new Zend_Auth_Storage_Session();
+       $data = $storage->read();
+       if(!$data){
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+       }
+
+       $sessionName = new Zend_Session_Namespace('ourbank');
+       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+       $login=new App_Model_Users();
+       $loginname=$login->username($userid);
+       foreach($loginname as $loginname) {
+           $this->view->username=$loginname['username']; // get the user name
+       }
+ 
 //         if (($this->view->globalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
@@ -54,10 +56,6 @@ class Fee_Indexcontroller extends Zend_Controller_Action
                         'created_date' =>$date, 'created_by'=>1));
          
         }
-
-
-
-
 
 	}
 	 public function getcategoryAction()
@@ -115,8 +113,8 @@ public function viewAction()
 // 		if (($checkaccess != NULL)) {
 			$id=$this->_request->getParam('id');
 		$this->view->id = $id;
-			$form = new Commonviewfee_Form_Feedetails();
-			$this->view->form=$form;
+			//$form = new Commonviewfee_Form_Feedetails();
+			//$this->view->form=$form;
 			$fee = new Fee_Model_Fee;
 			$this->view->feedetails=$fee->getFee($id);
 			$this->view->fetchfee=$fee->fetchfee($id);
@@ -134,7 +132,7 @@ public function viewAction()
 			$form = new Fee_Form_Fee();
 			$this->view->form=$form;
 
-			$appliesTo = new Feecommon_Model_Feecommon();
+			//$appliesTo = new Feecommon_Model_Feecommon();
 $subOffice=new Fee_Model_Fee();
 			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($hierarchy_id as $hierarchy_id){
@@ -158,7 +156,7 @@ $subOffice=new Fee_Model_Fee();
       
 
 // 			$this->view->categorydetails=$appliesTo->getcategory();
-			$this->view->memberdetails=$appliesTo->getmembertypes();
+			//$this->view->memberdetails=$appliesTo->getmembertypes();
 
 
 
@@ -253,7 +251,7 @@ $glsubcode_id=$subOffice->findmaxlevel();
 			$form = new Fee_Form_Fee();
 			$this->view->form=$form;
 
-			$appliesTo = new Feecommon_Model_Feecommon();
+			//$appliesTo = new Feecommon_Model_Feecommon();
 
 			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($hierarchy_id as $hierarchy_id){
@@ -336,7 +334,7 @@ if ($this->_request->isPost()) {
  		$this->view->id=$id;
 // 		$this->view->mod_id=$modId;
 // 		$this->view->sub_id=$subId;
-		$individualcommon=new Feecommon_Model_Feecommon;
+		//$individualcommon=new Feecommon_Model_Feecommon;
 		$fee = new Fee_Model_Fee;
 			$this->view->feedetails=$fee->getFee($id);
 			$this->view->fetchfee=$fee->fetchfee($id);

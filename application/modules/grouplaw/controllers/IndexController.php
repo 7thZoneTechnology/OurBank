@@ -26,17 +26,22 @@ class Grouplaw_IndexController extends Zend_Controller_Action
         $this->view->adm = new App_Model_Adm ();
         $this->view->datechange= new App_Model_dateConvertor();
         $this->view->loan = new Grouplaw_Model_grouplaw ();
-         $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
 
-
-	$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-                        }
+        /* Initialize action controller here */
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data)
+        {
+            $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+        $globalsession=new App_Model_Users();
+        $loginname=$globalsession->username($userid);
+        foreach($loginname as $loginname) 
+        {
+            $this->view->username=$loginname['username']; // get the user name
+        }
 
     }
 
@@ -96,8 +101,9 @@ class Grouplaw_IndexController extends Zend_Controller_Action
 		$image_name = "/var/www/".$projname."/public/images/logo.jpg";
 		$image = Zend_Pdf_Image::imageWithPath($image_name);
 		//$page->drawImage($image, 25, 770, 570, 820);
-	           $page->drawImage($image, 30, 770, 130, 820);
+	    $page->drawImage($image, 30, 770, 130, 820);
 		$page->setLineWidth(1)->drawLine(25, 25, 570, 25); //bottom horizontal
+// 		$page->setLineWidth(1)->drawLine(25, 640, 25, 500);
 		$page->setLineWidth(1)->drawLine(25, 25, 25, 820); //left vertical
 		$page->setLineWidth(1)->drawLine(570, 25, 570, 820); //right vertical
 		$page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizonta
@@ -142,7 +148,7 @@ class Grouplaw_IndexController extends Zend_Controller_Action
 
 			$y1=$y1-15;
 			$page->setFont($font, 9)
-                    ->drawText('The vision of Ourbank is to    '.$result['place'].'stimulate local development by offering small and medium ',$x1,$y1);
+                    ->drawText('The vision of Ourbank is to    '.$result['place'].'  stimulate local development by offering small and medium ',$x1,$y1);
 
 			$y1=$y1-15;
 			$page->setFont($font, 9)
@@ -173,7 +179,7 @@ class Grouplaw_IndexController extends Zend_Controller_Action
 
 				$y1=$y1-15;
                 $page->setFont($font, 9)
-                    ->drawText('Member name',80,$y1);
+                    ->drawText('Member name',72,$y1);
 				
 				$page->setFont($font, 9)
                     ->drawText('UID',160,$y1);
@@ -191,24 +197,19 @@ class Grouplaw_IndexController extends Zend_Controller_Action
                     ->drawText('Signature',460,$y1);
 				$y1=$y1-10;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
-foreach($this->groupmembers as $member) {
+foreach($this->view->groupmembers as $member) {
 				$y1=$y1-15;
 				$page->setFont($font, 9)
-                    ->drawText(''.$member['membername'].'',80,$y1);
+                    ->drawText(''.$member['membername'].'',72,$y1);
 
-				$y1=$y1-15;
+
 				$page->setFont($font, 9)
-                    ->drawText(''.$member['uid'].'',160,$y1);
+                    ->drawText(''.$member['uid'].'',140,$y1);
 
-				$y1=$y1-15;
 				$page->setFont($font, 9)
-                    ->drawText(''.$member['family_id'].'',280,$y1);
+                    ->drawText(''.$member['family_id'].'',200,$y1);
 
-				$y1=$y1-15;
-				$page->setFont($font, 9)
-                    ->drawText(''.$member['fathername'].'',200,$y1);
-
-				$y1=$y1-15;
+				$y1=$y1-10;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
 
 	}

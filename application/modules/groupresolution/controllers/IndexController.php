@@ -24,13 +24,25 @@ class Groupresolution_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-        $this->view->pageTitle='Membership';
+        $this->view->pageTitle='Group Resolution';
+	$this->view->adm = new App_Model_Adm();
 
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
-		$this->view->username = $this->view->globalvalue[0]['username'];
-		$this->view->adm = new App_Model_Adm();   	
+        /* Initialize action controller here */
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data)
+        {
+            $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+        $globalsession=new App_Model_Users();
+        $loginname=$globalsession->username($userid);
+        foreach($loginname as $loginname) 
+        {
+            $this->view->username=$loginname['username']; // get the user name
+        }
+
 	}
 
 	public function indexAction() 
@@ -83,7 +95,19 @@ $this->view->error = "Enter valid code";
 	}	
 	function viewtransactionAction() {
 	}
+	function reportdisplayAction() {
+		$this->_helper->layout->disableLayout();
+		$file1 = $this->_request->getParam('file');
+		
+		$app = $this->view->baseUrl();
+		$word=explode('/',$app);
+		$projname='';
+		for($i=0; $i<count($word); $i++) {
+			if($i>0 && $i<(count($word)-1)) { $projname.='/'.$word[$i]; }
+		}
 
+                $this->view->filename = $projname."/reports/".$file1;
+	}
 	function pdfgenerationAction() {
 		//$fetchMeetings=new Meetingreport_Model_Meetingreport();
 
@@ -109,31 +133,25 @@ $this->view->error = "Enter valid code";
 	$page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
 	$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
 	
-	$text = array("Group name:","Group head:","Date:","group code:","purpose:","Bank:","S.no","Member name","Survey no","Loan request amount","Signature","Address:");
+	$text = array("Group name:","","Date:","group code:","purpose:","Bank:","S.no","Member name","Survey no","Loan request amount","Signature","Address:");
 		
-	
-
-		
-
 	$page->drawText($text[0], 60, 725);
 	$page->drawText($text[1], 60, 675);
-	$page->drawText($text[2], 450, 725);
-	$page->drawText($text[3], 450, 710);
+	$page->drawText($text[2], 430, 725);
+	$page->drawText($text[3], 410, 710);
 	$page->drawText($text[4], 60, 660);
 	$page->drawText($text[5], 60, 645);
-	$page->drawText($text[6], 60, 625);
+	$page->drawText($text[6], 74, 625);
 	$page->drawText($text[7], 140, 625);
 	$page->drawText($text[8], 230, 625);
 	$page->drawText($text[9], 330, 625);
-	$page->drawText($text[10], 450, 625);
+	$page->drawText($text[10], 455, 625);
 	$page->drawText($text[11], 60, 710);
 
-	$page->setLineWidth(1)->drawLine(30, 640, 500, 640); //bottom horizontal
-	$page->setLineWidth(1)->drawLine(30, 620, 500, 620); //bottom horizontal
+	$page->setLineWidth(1)->drawLine(70, 640, 500, 640); //bottom horizontal
+	$page->setLineWidth(1)->drawLine(70, 620, 500, 620); //bottom horizontal
 
-	$y1 = 700;
-
-		$id = $this->_getParam('membercode');
+	$id = $this->_getParam('membercode');
 
 
 	  $groupcommon=new Groupresolution_Model_Groupresolution();
@@ -156,26 +174,27 @@ $this->view->error = "Enter valid code";
 	$page->drawText($memberdetail['address1'],120, 710);
 	$page->drawText($memberdetail['address2'],120, 700);
 	$page->drawText($memberdetail['address3'],120, 690);
-
-endforeach ;
+	endforeach ;
+	 $x1=140; $y1=610;
+	 $x2=230; $x3=330;
 	foreach($group_members as $membergroup) : 
 	$page->drawText($membergroup['purposename'],120, 660);
 	$page->drawText($membergroup['bank'],120, 645);
-	$page->drawText(date('d-m-Y'),510, 725);
-	$page->drawText($membergroup['groupcode'],510, 710);
-	$page->drawText($membergroup['membername'],140, 610);
-	$page->drawText($membergroup['survey_no'],230, 610);
-	$page->drawText($membergroup['request_amount'],330, 610);
-	$page->setLineWidth(1)->drawLine(30, 640, 30, 500);
-	$page->setLineWidth(1)->drawLine(30, 500, 500, 500); //bottom horizontal
+	$page->drawText(date('d-m-Y'),450, 725);
+	$page->drawText($membergroup['groupcode'],452, 710);
+	$page->drawText($membergroup['membername'],$x1, $y1);
+	$page->drawText($membergroup['survey_no'],$x2, $y1);
+	$page->drawText($membergroup['request_amount'],$x3, $y1);
+	
+	$page->setLineWidth(1)->drawLine(70, 640, 70, 500);
+	$page->setLineWidth(1)->drawLine(70, 500, 500, 500); //bottom horizontal
 	$page->setLineWidth(1)->drawLine(500, 640, 500, 500); //bottom horizontal
 	$page->setLineWidth(1)->drawLine(100, 640, 100, 500);
 	$page->setLineWidth(1)->drawLine(210, 640, 210, 500);
 	$page->setLineWidth(1)->drawLine(300, 640, 300, 500);
 	$page->setLineWidth(1)->drawLine(450, 640, 450, 500);
-
-
-endforeach ;
+	$y1=$y1-15;
+	endforeach ;
 
 		$pdfData = $pdf->render();
 		
@@ -183,21 +202,4 @@ endforeach ;
 		$path = '/var/www'.$projname.'/reports/groupresolution'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
 	}
-	
-	function reportdisplayAction() {
-		$this->_helper->layout->disableLayout();
-		$file1 = $this->_request->getParam('file');
-		
-		$app = $this->view->baseUrl();
-		$word=explode('/',$app);
-		$projname='';
-		for($i=0; $i<count($word); $i++) {
-			if($i>0 && $i<(count($word)-1)) { $projname.='/'.$word[$i]; }
-		}
-
-                $this->view->filename = $projname."/reports/".$file1;
-	}
-
-	
-	
 }

@@ -19,7 +19,6 @@
 
 <div>
     <div style="width:350px;float:left">
-<?php  $dateconvert= new App_Model_dateConvertor(); ?>
 
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet"> 
             <?php if ($this->groupname) { ?>
@@ -28,14 +27,12 @@
                 <TD width="20"><?php echo $this->groupname;?></TD>
             </TR>
             <? }?>
-            <?php if ($this->memberfirstname) {  ?>
+            <?php if ($this->memberfirstname) { ?>
             <TR class="tdbrown">
                 <TD width="20%">Name</TD>
                 <TD width="20"><?php echo $this->memberfirstname;?></TD>
             <? }?>
             <?php foreach($this->recurringAccountDetails as $productRecurringDetails) { ?>
-<h3>Transaction details</h3>
-
             <TR>
                 <td width="40%"><b class="star">Producttype:</b></td>
                 <TD width="60%"><?php echo $this->escape($productRecurringDetails['productname']);?></TD>
@@ -44,29 +41,13 @@
                 <td width="40%"><b class="star">Productname:</b></td>
                 <TD width="60%"><?php echo $this->escape($productRecurringDetails['offerproductname']);?></TD>
             </TR>
-
-<TR>
-                <td width="40%"><b class="star">Account number:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['account_number']);?></TD>
-            </TR>
-				<TR>
-                <td width="40%"><b class="star">Membercode:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['familycode']);?></TD>
-            </TR>
-
             <TR>
                 <td width="40%" ><b class="star">Begin date:</b></td>
-                <TD width="60%"><?php echo ($dateconvert->phpnormalformat($productRecurringDetails['begin_date']));?></TD>
-
+                <TD width="60%"><?php echo $this->escape($productRecurringDetails['begin_date']);?></TD>
             </TR>
             <TR>
                 <td width="40%" ><b class="star">Mature date:</b></td>
-                <TD width="60%"><?php echo ($dateconvert->phpnormalformat($productRecurringDetails['mature_date']));?>
-			</TD>
-            </TR>
-			<TR>
-                <td width="40%" ><b class="star">Rate of interest:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['fixed_interest']);?></TD>
+                <TD width="60%"><?php echo $this->escape($productRecurringDetails['mature_date']);?></TD>
             </TR>
             <TR>
                 <td width="40%"><b class="star">Amount:</b></td>
@@ -75,7 +56,7 @@
             <?php } ?>
             <tr>
                 <td width="40%"><B style="color:red">Capital amount:</b></td>
-                <TD width="60%"><B style="color:red"><?php echo $this->paidAmount;?></B></TD>
+                <TD width="60%"><B style="color:red"><?php echo $this->capitalAmount;?></B></TD>
             </TR>
             <TR>
                 <td width="50%"><B style="color:red">Gross interest:</b></td>
@@ -90,36 +71,12 @@
     </div>
 </div>
 
-<!--<DIV style="float:left;width:50%">
-<a href="#" id="open">Group members</a>
-<div class="box">
-<div id="content1">
-    <div class="cont-rgt-data">
-        <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-            <tr class="tdbrownheading">
-                <td width="30%">Name</td>
-                <td width="50%">Code</td>
-            </tr>
-            <tr class="tdbrown">
-                <TD width="30%"><?php //echo $arrayroles1['memberfirstname'];?></TD>
-                <TD width="50%"><?php //echo $arrayroles1['membercode'];?></TD>
-            </tr>
-        </table>
-    </div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</DIV>-->
 
 <div style="float:left;width:50%">
     <div class="cont-rgt-data">
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet" border="1">
-<h3>Actions</h3>
- <TR>
-                <td colspan="2"><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Deposit</a></TD>
-            </TR>
             <?php if($this->statuscheck1) {
                 if($this->depositcheck1) { ?>
-
             <TR>
                 <td colspan="2"><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Deposit</a></TD>
             </TR>

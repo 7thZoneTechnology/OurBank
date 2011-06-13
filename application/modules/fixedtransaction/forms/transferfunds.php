@@ -46,17 +46,20 @@ class Fixedtransaction_Form_transferfunds extends Zend_Form
         $description->setAttrib('cols','20');
         $description->setRequired(true);
 
-        $no = new Zend_Form_Element_Textarea('paymenttype_details');
-        $no->setAttrib('class', 'textfield');
-        $no->setAttrib('rows','1');
-        $no->setAttrib('cols','20');
-        $no->setAttrib('id', 'paymenttype_details');
-        $no->setAttrib('style','display:none;');
-        $no->setRequired(true);
+//         $no = new Zend_Form_Element_Textarea('paymenttype_details');
+//         $no->setAttrib('class', 'textfield');
+//         $no->setAttrib('rows','1');
+//         $no->setAttrib('cols','20');
+//         $no->setAttrib('id', 'paymenttype_details');
+//         $no->setAttrib('style','display:none;');
+//         $no->setRequired(true);
 
         $paymenttype1 = new Zend_Form_Element_Hidden('paymenttype1');
         $paymenttype_details1 = new Zend_Form_Element_Hidden('paymenttype_details1');
         $transactiondescription1 = new Zend_Form_Element_Hidden('transactiondescription1');
+
+	$othrtext = new Zend_Form_Element_Text('othertext');
+        $othrtext->setRequired(true);
 
 
         $Confirm = new Zend_Form_Element_Submit('Confirm');
@@ -67,6 +70,6 @@ class Fixedtransaction_Form_transferfunds extends Zend_Form
         $submit->setLabel('Submit');
         $submit->setAttrib('class', 'recurring');
 
-        $this->addElements( array($accountId1,$productId1,$memberId1,$maturedamount,$submit,$capitalamount,$interestamountto,$penalinterest,$paymenttype,$description,$no,$Confirm,$paymenttype1,$paymenttype_details1,$transactiondescription1));
+        $this->addElements( array($accountId1,$productId1,$memberId1,$maturedamount,$submit,$capitalamount,$interestamountto,$penalinterest,$paymenttype,$description,$Confirm,$paymenttype1,$paymenttype_details1,$transactiondescription1,$othrtext));
     }
 }

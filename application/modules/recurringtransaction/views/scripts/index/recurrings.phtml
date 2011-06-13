@@ -31,26 +31,15 @@
             <TR class="tdbrown">
                 <TD width="20%">Name</TD>
                 <TD width="20"><?php echo $this->memberfirstname;?></TD>
-
             <? } ?>
             <?php foreach($this->recurringAccountDetails as $productRecurringDetails) { ?>
-<h3>Transaction details</h3>
             <TR>
-                <td width="40%"><b class="star">Product type<b class="star">:</b></td>
+                <td width="40%"><b class="star">Producttype:</b></td>
                 <TD width="60%"><?php echo $this->escape($productRecurringDetails['productname']);?></TD>
             </TR>
- 
             <TR>
                 <td width="40%"><b class="star">Productname:</b></td>
                 <TD width="60%"><?php echo $this->escape($productRecurringDetails['offerproductname']);?></TD>
-            </TR>
-<TR>
-                <td width="40%"><b class="star">Account number:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['account_number']);?></TD>
-            </TR>
-<TR>
-                <td width="40%"><b class="star">Membercode:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['familycode']);?></TD>
             </TR>
             <TR>
                 <td width="40%" ><b class="star">beginDate:</b></td>
@@ -59,15 +48,6 @@
             <TR>
                 <td width="40%" ><b class="star">matureDate:</b></td>
                 <TD width="60%"><?php echo $this->escape($productRecurringDetails['mature_date']);?></TD>
-            </TR>
- <TR>
-                <td width="40%" ><b class="star">Number of installments:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['mature_date']);?></TD>
-            </TR>
-
- <TR>
-                <td width="40%" ><b class="star">Rate of interest:</b></td>
-                <TD width="60%"><?php echo $this->escape($productRecurringDetails['fixed_interest']);?></TD>
             </TR>
             <TR>
                 <td width="40%"><b class="star">amount:</b></td>
@@ -91,15 +71,9 @@
 </div>
 
 
-
 <div style="float:left;width:50%">
     <div class="cont-rgt-data">
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet" border="1">
-<h3>Actions</h3>
- <TR>
-                <td colspan="2"><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Deposit</a></TD>
-            </TR>
-
             <?php if($this->statuscheck1) {
                 if($this->depositcheck1) { ?>
             <TR>
@@ -119,9 +93,9 @@
         </table>
     </div>
 </div>
-
 <?php if($this->groupname) { ?>
-<div style="float:left;width:50%">
+
+    <div class="cont-rgt-data">
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
             <tr>
                 <td><a href="<?php echo $this->baseUrl(); ?>/recurringtransaction/index/recurrings/accountId/<?php echo base64_encode($this->accountid);?>/productId/<?php echo base64_encode($this->productid);?>/manualRepayment/no">Automatic Reccuring payment</a></td>

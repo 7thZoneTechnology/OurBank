@@ -19,3 +19,64 @@
 */
 ?>
 
+<?php
+class Funderdetails_Model_funderdetails extends Zend_Db_Table {
+	protected $_name = 'ourbank_holiday';
+//getting holiday details
+	public function getfunder() {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_funder'),array('a.id'));
+ 		//die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
+//getting office
+ public function findmaxlevel()
+        {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT MAX(id) as lastid FROM `ourbank_glcode`";
+        $result = $this->db->fetchAll($sql,array());
+        return $result;
+
+        }
+
+	 public function findmaxfunder()
+        {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT MAX(id) as lastid FROM `ourbank_funder`";
+        $result = $this->db->fetchAll($sql,array());
+        return $result;
+
+        }
+public function getfunderlast($lastfunderid) {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_funder'),array('a.id'))
+                ->where('a.id=?',$lastfunderid);
+
+
+
+ 		//die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
+public function getglcode($glid) {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_glcode'),array('a.id'))
+                ->where('a.id=?',$glid);
+
+
+
+ 		//die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
+
+}

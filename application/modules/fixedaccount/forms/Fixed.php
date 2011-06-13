@@ -22,26 +22,36 @@
 <?php
 class Fixedaccount_Form_Fixed extends Zend_Form 
 {
-   public function __construct($path) {
-    parent::__construct($path);
+   public function __construct($path,$minumumbal,$maximumbal) {
+    parent::__construct($path,$minumumbal);
+        $formfield = new App_Form_Field ();
+        // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
+
+
         $date = new ZendX_JQuery_Form_Element_DatePicker('date');
-        $date->setAttrib('class', 'txt_put');
         $date->setJQueryParam('dateFormat', 'dd/mm/yy');
+        $date->setAttrib('autocomplete','off');
         $date->setRequired(true); 
 
         $period = new Zend_Form_Element_Select('period');
         $period->addMultiOption('','Select...');
-        $period->setAttrib('class', 'txt_put');
         $period->setRequired(true);
-        $period->setAttrib('onchange', 'getInterests("'.$path.'",this.value)');
+        $period->setAttrib('onchange', 'getInterests(this.value)');
 
         $interest = new Zend_Form_Element_Text('interest');
-        $interest->setAttrib('class', 'txt_put');
-//         $interest->setAttrib('id', 'interestval');
-//         $interest->setAttrib('readonly', 'true');
+        $interest->setRequired(true);
 
-        $tAmount = new Zend_Form_Element_Text('tAmount');
-        $tAmount->setAttrib('class', 'amount1');
+
+        $tAmount = $formfield->field('Text','tAmount','','','mand amount1 number','Category name',true,'','','','','',0,0);
+
+//         $tAmount = new Zend_Form_Element_Text('tAmount');
+//         $tAmount->setAttrib('class', 'amount1');
+//         $tAmount->setAttrib('class', 'number');
+//         $tAmount->setAttrib('readonly', true);
+//         $tAmount->setRequired(true);
+        $valid  = new Zend_Validate_Between(array('min' => $minumumbal, 'max' => $maximumbal));
+        $tAmount->addValidators(array(array($valid,true)));
+
 //         $tAmount->setAttrib('onchange', 'calculateMatureAmount()');
 
         $matureamount = new Zend_Form_Element_Text('matureamount');

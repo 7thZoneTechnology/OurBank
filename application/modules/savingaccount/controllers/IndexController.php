@@ -17,7 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-
 class Savingaccount_IndexController extends Zend_Controller_Action 
 {
     public function init() 
@@ -27,6 +26,22 @@ class Savingaccount_IndexController extends Zend_Controller_Action
         $this->view->accounts = new Savingaccount_Model_Accounts();
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
+
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        }
     }
     public function indexAction() 
     {
@@ -35,9 +50,10 @@ class Savingaccount_IndexController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
 //             $this->view->errormsg="Record not found.. Try agin...";
             if ($accountsForm->isValid($formData)) {
-                $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
-            } else {
-                $this->view->errormsg="Record not found.. Try again...";
+                $this->view->result = $result = $this->view->accounts->search($this->_request->getParam('membercode'));
+                    if(!$result){
+                        $this->view->errormsg="Record not found.";
+                    }
             }
         }
     }

@@ -17,14 +17,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-
 /*
 To create the Ledger Details
 */
-
 class Ledger_IndexController extends Zend_Controller_Action 
 {
     public function init()
@@ -32,15 +27,19 @@ class Ledger_IndexController extends Zend_Controller_Action
         $this->view->pageTitle='Ledger';
         $this->view->mainModule='Management';
         $this->view->adm = new App_Model_Adm();
-       $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+      $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+       }
+       $sessionName = new Zend_Session_Namespace('ourbank');
+       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+       $login=new App_Model_Users();
+       $loginname=$login->username($userid);
+       foreach($loginname as $loginname) {
+           $this->view->username=$loginname['username']; // get the user name
+       }
         $date=date("y/m/d H:i:s");
 
         $ledger = new Ledger_Model_Ledger();

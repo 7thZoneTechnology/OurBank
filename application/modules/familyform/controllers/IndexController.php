@@ -17,64 +17,50 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Familyform_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
         $this->view->pageTitle='Membership';
+	$this->view->adm = new App_Model_Adm();
 
-        $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
+        /* Initialize action controller here */
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data)
+        {
+            $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+        $globalsession=new App_Model_Users();
+        $loginname=$globalsession->username($userid);
+        foreach($loginname as $loginname) 
+        {
+            $this->view->username=$loginname['username']; // get the user name
+        }
 
-
-	$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-                        }
-
-		$this->view->adm = new App_Model_Adm();   	
 	}
 
 	public function indexAction() 
 	{
 		$familyForm = new Familyform_Form_Familyform();
 		$this->view->form = $familyForm;
-		        $id=$this->_getParam('membercode');
-			$this->view->id=$id;
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-                $formData = $this->_request->getPost();
-                if ($familyForm->isValid($formData)) {
-
-                $familydetails = new Familyform_Model_Familyform(); //create instance for familyform model page
+		$id = $this->_getParam('membercode');
+ 		$familydetails = new Familyform_Model_Familyform();
  		$result = $familydetails->getFamilydetails($id);
- 		       
-		
-		if($result)    // 		//if($id=="$result") 
-		{		
- 		
-		$this->view->familydetails = $result;   //
-                $this->view->family =$familydetails->getfamily($id);
-                $this->view->livingassets=$familydetails->getlivingassetsdetails($id);
-                $this->view->nonlivingassets=$familydetails->getnonliving();
+		$this->view->familydetails = $result;
+        $this->view->family =$familydetails->getfamily($id);
+        $this->view->livingassets=$familydetails->getlivingassetsdetails($id);
+        $this->view->nonlivingassets=$familydetails->getnonliving();
 		$this->view->agriculture=$familydetails ->getagriculturedetails($id);
 		$this->view->agritotal =$familydetails-> getagritotal($id);
 		$this->view->loanrequest =$familydetails-> Searchloanprocess($id);
 		$this->view->loan =$familydetails-> searchaccounts($id);
 		$this->view->membercode = $id;
-	        } else {
-		 
-	        $this->view->error = "Enter valid code";
-	           }
- 
-}
-                }
 
+	}
 // 		} else {
 //             $this->_redirect('index/error');
 // 		}

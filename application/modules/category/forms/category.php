@@ -26,6 +26,7 @@
         $formfield = new App_Form_Field ();
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $categoryname = $formfield->field('Text','name','','','mand','Category name',true,'','','','','',1,0);
+
         $categorydescription = $formfield->field('Text','description','','','mand','Category description',true,'','','','','',1,0);
         // Hidden Feilds 
         $id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);

@@ -22,26 +22,28 @@ class Psdetails_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->title = "Savings";
-        $this->view->pageTitle = "Savings details";
+        $this->view->pageTitle = "Member saving details";
         $this->view->type='savings';
         $this->view->savingsModel = new Savingsdeposit_Model_Savingsdeposit ();
         $this->view->cl = new App_Model_dateConvertor ();
         $this->view->adm = new App_Model_Adm ();
         $this->view->psdetails = new Psdetails_Model_Savingsdeposit();
 
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
 
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
-        if(!$data)
-        {
-            $this->_redirect('index/login');
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+        $log = new App_Model_Users ();
+        $loginname=$log->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
         }
     }
-
     public function indexAction() 
     {
         $this->view->form = new Savingsdeposit_Form_Search();
@@ -51,10 +53,8 @@ class Psdetails_IndexController extends Zend_Controller_Action
                 $this->view->details = $this->view->savingsModel->search($this->_request->getParam('accNum'));
                 $accNum = $this->_request->getParam('accNum');
                 $this->view->acc = $accNum;
-                $Balance = $this->view->psdetails->getbalance($accNum);
-                foreach($Balance as $balances){
-                    $this->view->balance =  $balance = $balances['Balance'];
-                }
+
+              
 
               // check its default savings or not
               $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$accNum);
@@ -71,9 +71,15 @@ $Dbalance = $debitbal['Debit'];
 }
 $balance = $Cbalance - $Dbalance;
 $this->view->balanceamount = $balance;
-                    $this->view->group = $this->view->savingsModel->getMember($accNum);
+$this->view->group = $this->view->savingsModel->getMember($accNum);
 }else
 {
+
+  $Balance = $this->view->psdetails->getbalance($accNum);
+                foreach($Balance as $balances){
+                    $this->view->balance =  $balance = $balances['Balance'];
+                }
+
     $this->view->tran = $this->view->savingsModel->transaction($this->_request->getParam('accNum'));
 }
                 //if group members

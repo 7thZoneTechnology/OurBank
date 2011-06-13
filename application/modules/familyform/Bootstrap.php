@@ -17,24 +17,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Familyform_Bootstrap extends Zend_Application_Module_Bootstrap {
 
 
 function _initTranslation() {
-
-
-//        $translate = new Zend_Translate('Array',APPLICATION_PATH. '/languages/english.php', 'en_US');
-//        $translate->addTranslation( APPLICATION_PATH. '/languages/hindi.php','kn_IN');
-//        $translate->setLocale('kn_IN');
-// 
-// 
-//        Zend_Registry::set('Zend_Translate', $translate);
 	   }
-	   
-
-
-
 }

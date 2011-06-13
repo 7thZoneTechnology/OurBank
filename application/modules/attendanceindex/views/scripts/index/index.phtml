@@ -53,26 +53,27 @@ $(document).ready(function() {
     </fieldset> 
 </div> 
 
-<table id="hor-minimalist-b" summary="">
-	<tr class="tdbrownheading">
-            <th><?php echo $this->translate('Meeting name'); ?></th>
-            <th><?php echo $this->translate('Meeting Number'); ?></th>
-            <th><?php echo $this->translate('Meeting date'); ?></th>
-	</tr>
-            <?php if (count($this->paginator)): 
-            $convertdate = new App_Model_dateConvertor();?>
-            <?php foreach ($this->paginator as $attendance): ?>
-	<tr>
-            <td><a href="<?php echo $this->baseUrl();?>/attendancecommonview/index/index/attendance_id/<? echo $attendance['attid']; ?>/week/<? echo $attendance['week_no']; ?>"><?php echo $this->escape($attendance['name']);?></a></td>
-            <td><?php echo $this->escape($attendance['week_no']); ?></td>
-            <td><?php echo $this->escape($convertdate->phpnormalformat($attendance['meeting_date'])); ?></td>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
-            
-            <tr>
-                    <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                            '/partials/my_pagination_control.phtml'); ?></div></td>
+<?php if ((count($this->paginator)) != 0 ) : ?>
+    <table id="hor-minimalist-b" summary="">
+            <tr class="tdbrownheading">
+                <th><?php echo $this->translate('Meeting name'); ?></th>
+                <th><?php echo $this->translate('Meeting Number'); ?></th>
+                <th><?php echo $this->translate('Meeting date'); ?></th>
             </tr>
-	</tr>
-</table>
+                <?php if (count($this->paginator)): 
+                $convertdate = new App_Model_dateConvertor();?>
+                <?php foreach ($this->paginator as $attendance): ?>
+            <tr>
+                <td><a href="<?php echo $this->baseUrl();?>/attendancecommonview/index/index/attendance_id/<? echo $attendance['attid']; ?>/week/<? echo $attendance['week_no']; ?>"><?php echo $this->escape($attendance['name']);?></a></td>
+                <td><?php echo $this->escape($attendance['week_no']); ?></td>
+                <td><?php echo $this->escape($convertdate->phpnormalformat($attendance['meeting_date'])); ?></td>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
 
+                <tr>
+                        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+                                                '/partials/my_pagination_control.phtml'); ?></div></td>
+                </tr>
+            </tr>
+    </table>
+<?php endif; ?>

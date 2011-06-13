@@ -203,11 +203,10 @@ function getInterests(countryId,path) {
                     </TR>
                 </table><B style="color:red"><?echo $this->Perioderror;?></B>
             </form>
-        </div>
     </fieldset>
 	<?php } ?>
+        </div>
 </div>
-
     <?php if($this->Submit) { ?>
     <fieldset>
         <legend>accountRenewal</legend>
@@ -252,15 +251,17 @@ function getInterests(countryId,path) {
         </div>
     </fieldset>
 	<?php } ?>
-
 <?php } else { ?>
 <div id="loanRepayment" style="float:left;width:100%">
+    <fieldset>
         <legend></legend>
-            <table summary="Employee Pay Sheet">
+            <table id="hor-minimalist-b" summary="Employee Pay Sheet">
                 <TR class="tdbrown">
-                    <TD width="40%"><SPAN style="color:red">This account cannot be reneved since all the installments has not been paid</span></TD>
+                    <TD width="40%"><SPAN style="color:red">This account cannot be renewed since all the installments has not been paid</span></TD>
                 </TR>
             </table>
         </div>
+    </fieldset>
 <?php } ?>
 
+</fieldset>

@@ -17,13 +17,8 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
+ class Holiday_Form_Search extends Zend_Form {
 
-<?php class Holiday_Form_Search extends Zend_Form {
-
-
-		
-	
 
 	public function init() 
 	{
@@ -38,7 +33,9 @@
         	$holidayname = $formfield->field('Text','name','','','mand','Holiday name',false,'','','','','',0,0);
         	$office_id = $formfield->field('Select','office_id','','','mand','Office name',false,'','','','','',0,0);
 			$holidayfrom = $formfield->field('Text','holiday_from','','','mand','Holiday from',false,'','','','','',0,0);
+			 $holidayfrom->setAttrib('autocomplete','off'); 
 			$holidayto = $formfield->field('Text','holiday_upto','','','mand','Holiday upto',false,'','','','','',0,0);
+			 $holidayto->setAttrib('autocomplete','off'); 
 
 
         // Hidden Feilds 

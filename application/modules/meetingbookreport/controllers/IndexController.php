@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Meetingbookreport_IndexController extends Zend_Controller_Action
 {
     public function init() 
@@ -28,16 +25,21 @@ class Meetingbookreport_IndexController extends Zend_Controller_Action
         $this->view->title =  $this->view->translate('Reports');
         $this->view->type = $this->view->translate("financialReports");
 
-	$globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-
 	$storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-            $this->_redirect('index/login');
-        }
+       $data = $storage->read();
+       if(!$data){
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+       }
+
+       $sessionName = new Zend_Session_Namespace('ourbank');
+       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+       $login=new App_Model_Users();
+       $loginname=$login->username($userid);
+       foreach($loginname as $loginname) {
+           $this->view->username=$loginname['username']; // get the user name
+       }
+ 
         $this->view->adm = new App_Model_Adm();
         $this->view->dateconvert = new App_Model_dateConvertor();
 

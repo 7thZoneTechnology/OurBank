@@ -17,9 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
 
-<?php
 /*
  *  create an office hierarchy controller for add, view search filtered values
  */

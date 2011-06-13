@@ -53,10 +53,10 @@ public function __construct()
         $closedate = $formfield->field('Text','closedate','','','mand','closedate',true,'','','','','','','');
         $closedate->addValidator(new Zend_Validate_Date('DD-MM-YYYY'),true,
                                                 array('messages' =>array(Zend_Validate_Date::FALSEFORMAT => 'Enter the valid date')));	   					
-        $feeglcode = $formfield->field('Select','feeglcode','','','mand','feeglcode',true,'','','','','','','');
+//         $feeglcode = $formfield->field('Select','feeglcode','','','mand','feeglcode',true,'','','','','','','');
 
         $applicableto = $formfield->field('Select','applicableto','','','mand','applicableto',true,'','','','','','','');
-        $glsubcode = $formfield->field('Select','glsubcode_id','','','mand','glsubcode_id',true,'','','','','','','');
+//         $glsubcode = $formfield->field('Select','glsubcode_id','','','mand','glsubcode_id',true,'','','','','','','');
         $minmumdeposit = $formfield->field('Text','minmumdeposit','','','mand','minmumdeposit',true,'','','','','','','');
         
         $graterthan=new Zend_Validate_GreaterThan(0);
@@ -95,7 +95,7 @@ public function __construct()
         $submit = new Zend_Form_Element_Submit('Submit');
         $submit->setAttrib('class', 'savings');
         $submit->setAttrib('id', 'savings');
-        $this->addElements(array($productType,$offerproductname,$offerproductshortname,$offerproduct_description,$begindate,$closedate,$feeglcode,$applicableto,$minmumdeposit,$frequencyofdeposit,$Int_timefrequency_id,$frequencyofinterestupdating,$minimumbalanceforinterest,$minimum_deposit_amount,$maximum_deposit_amount,$frequency_of_deposit,$penal_Interest,$savingproducttype,$submit,$offerproduct_id,$productshortname,$currentdates,$glsubcode));
+        $this->addElements(array($productType,$offerproductname,$offerproductshortname,$offerproduct_description,$begindate,$closedate,$applicableto,$minmumdeposit,$frequencyofdeposit,$Int_timefrequency_id,$frequencyofinterestupdating,$minimumbalanceforinterest,$minimum_deposit_amount,$maximum_deposit_amount,$frequency_of_deposit,$penal_Interest,$savingproducttype,$submit,$offerproduct_id,$productshortname,$currentdates));
         }	
 }
 /** end of class */

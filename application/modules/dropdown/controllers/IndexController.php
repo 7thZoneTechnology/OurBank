@@ -1,22 +1,44 @@
 <?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
 class Dropdown_IndexController extends Zend_Controller_Action 
 {
     public function init() 
     {
-        $this->view->pageTitle='Drop Down Settings';
+        $this->view->pageTitle='Master Data List';
 		$this->view->adm = new App_Model_Adm();   	
-        $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-	
 		$storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
-            $this->_redirect('index/login');
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
 
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
     }
+}
   public function newtableAction() 
     {
 		$addform=new Dropdown_Form_Dropdown();
@@ -46,7 +68,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $this->view->form=$addform;
 		$this->view->title = "Drop Down";
 		//echo $tableName;
-		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","id","DESC");
+		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","descriptions","ASC");
 		foreach($mastertable as $mastertable) {
 				$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
 			}		
@@ -129,7 +151,7 @@ $tName=$this->_request->getParam('name');
  		$common=$this->_request->getParam('commonname');
 
 									$formdata1=array('id'=>'',
-									'gp_id'=>$id,
+									'panchayath_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -303,7 +325,7 @@ public function editAction()
 						foreach($namedetails as $holidaydetails) {
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->village->setValue($holidaydetails['village_id']);
-						$this->view->form->gillapanchayath->setValue($holidaydetails['gp_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -313,8 +335,7 @@ public function editAction()
 					case 'ourbank_master_villagelist': {
 						foreach($namedetails as $holidaydetails) {
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
-/*						$this->view->form->village->setValue($holidaydetails['village_id']);*/
-						$this->view->form->gillapanchayath->setValue($holidaydetails['gp_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -440,7 +461,7 @@ public function deleteAction()
         $getvillage = new Dropdown_Model_Dropdown();
         $village=$getvillage->village($gillapanchayath);
  		foreach($village as $eacharraysent) {
-        $dropdownForm->village->addMultiOption($eacharraysent['id'],$eacharraysent['name']);
+        $dropdownForm->village->addMultiOption($eacharraysent['village_id'],$eacharraysent['name']);
         }
 	}
 

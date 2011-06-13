@@ -22,12 +22,12 @@
 <?php
 class Recurringaccount_Form_Recurring extends Zend_Form 
 {
-   public function __construct($path) {
-    parent::__construct($path);
-        $date1 = new Zend_Form_Element_Text('date1');
+   public function __construct($path,$minumumbal,$maximumbal) {
+    parent::__construct($path,$minumumbal);
+        $date1 = new ZendX_JQuery_Form_Element_DatePicker('date1');
         $date1->setAttrib('class', 'txt_put');
-
-//         $date1->setJQueryParam('dateFormat', 'dd/mm/yy');
+        $date1->setAttrib('autocomplete', 'off');
+        $date1->setJQueryParam('dateFormat', 'yy-mm-dd');
         $date1->setRequired(true);
 
         $period = new Zend_Form_Element_Select('period');
@@ -41,15 +41,17 @@ class Recurringaccount_Form_Recurring extends Zend_Form
 //         $interest->setAttrib('readonly', 'true');
 
         $tAmount = new Zend_Form_Element_Text('tAmount');
-        $tAmount->setAttrib('class', 'amount1');
+        $tAmount->setAttrib('class', 'txt_put');
         $tAmount->setAttrib('onchange', 'calculateMatureAmount()');
+		$valid  = new Zend_Validate_Between(array('min' => $minumumbal, 'max' => $maximumbal));
+        $tAmount->addValidators(array(array($valid,true)));
 
         $matureamount = new Zend_Form_Element_Text('matureamount');
         $matureamount->setAttrib('class', 'txt_put');
 
         $amount = new Zend_Form_Element_Text('amount');
         $amount->setAttrib('class', 'txt_put');
-//         $amount->setRequired(true);
+        $amount->setRequired(true);
         $amount->setAttrib('onchange', 'calculateTotalAmount(this.value),calculateMatureAmount()');
 
         $memberfirstname = new Zend_Form_Element_MultiCheckbox('memberfirstname');

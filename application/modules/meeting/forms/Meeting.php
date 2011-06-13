@@ -33,10 +33,14 @@
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
 
         $meeting_name = $formfield->field('Text','meeting_name','','','mand','',true,'','','','','','','');
+        $meeting_name->addValidator('Alnum', true, array('allowWhiteSpace'=>true));
+
         $group_head = $formfield->field('Text','group_head','','','mand','','','','','','','','','');
         $group_head->setAttrib('readonly','readonly');
         $hiddenId=new Zend_Form_Element_Hidden('group_head_id');
         $meeting_place = $formfield->field('Text','meeting_place','','','mand','',true,'','','','','','','');
+        $meeting_place->addValidator('Alnum', true, array('allowWhiteSpace'=>true));
+
         $meeting_time = $formfield->field('Text','meeting_time','','','mand','',true,'','','','','','','');
 
         $institute_bank_id = new Zend_Form_Element_Select('institute_bank_id');

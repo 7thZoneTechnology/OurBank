@@ -17,22 +17,28 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Attendancecommonview_IndexController extends Zend_Controller_Action{
 
-	public function init() {
+	public function init() 
+        {
 		$this->view->pageTitle=$this->view->translate("Attendance");
 
-		$globalsession = new App_Model_Users();
-		$this->view->globalvalue = $globalsession->getSession();
-		$this->view->username = $this->view->globalvalue[0]['username'];
-		$this->view->createdby = $this->view->globalvalue[0]['id'];
-		
-// 		if (($this->view->globalvalue[0]['id'] == 0)) {
-// 			$this->_redirect('index/logout');
-// 		}
+                /* Initialize action controller here */
+                $storage = new Zend_Auth_Storage_Session();
+                $data = $storage->read();
+                if(!$data)
+                {
+                    $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+                }
+                $sessionName = new Zend_Session_Namespace('ourbank');
+                $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+                $globalsession=new App_Model_Users();
+                $loginname=$globalsession->username($userid);
+                foreach($loginname as $loginname) 
+                {
+                    $this->view->username=$loginname['username']; // get the user name
+                }
+
 		$this->view->adm = new App_Model_Adm();
 		$this->view->dateconvert = new App_Model_dateConvertor();
 	}

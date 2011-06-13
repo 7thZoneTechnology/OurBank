@@ -17,33 +17,33 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Msdetails_IndexController extends Zend_Controller_Action
 {
     public function init() 
     {
     	$this->view->title = "Savings";
-	$this->view->pageTitle = "Member savings details";
+	$this->view->pageTitle = "Group saving details";
 	$this->view->type='savings';
         $this->view->savingsModel = new Msdetails_Model_msdetails ();
-        //$this->view->cl = new App_Model_Users ();
+        $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
-
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
 
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
-        if(!$data)
-        {
-            $this->_redirect('index/login');
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+
+
+        $loginname=$this->view->cl->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
         }
     }
-
     public function indexAction() 
     {
 	$this->view->form = new Msdetails_Form_Search();
@@ -53,6 +53,8 @@ class Msdetails_IndexController extends Zend_Controller_Action
 	$accNum = $this->view->accNum = $this->_request->getParam('accNum');
 	$this->view->details = $this->view->savingsModel->search($this->_request->getParam('accNum'));
 	$this->view->tran = $this->view->savingsModel->transaction($this->_request->getParam('accNum'));
+// // // Zend_Debug::dump($this->view->tran);
+
         $Balance = $this->view->savingsModel->getbalance($accNum);
                 foreach($Balance as $balances){
                     $this->view->balance =  $balance = $balances['Balance'];

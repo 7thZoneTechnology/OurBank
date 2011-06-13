@@ -17,12 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Productcommonview_Bootstrap extends Zend_Application_Module_Bootstrap {
-
-
 function _initTranslation() {
 
 
@@ -33,8 +28,5 @@ function _initTranslation() {
 // 
 //        Zend_Registry::set('Zend_Translate', $translate);
 	   }
-	   
-
-
 
 }

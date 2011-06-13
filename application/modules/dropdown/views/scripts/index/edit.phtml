@@ -29,7 +29,7 @@ function gettaluk(taluk,path) {
 </script>
 
 <script type="text/javascript">
-function gethobli(hobli,path) { alert(hobli);
+function gethobli(hobli,path) { 
 	if(hobli) {
 	 	targeturl=path+"/dropdown/index/gillapanchayath?hobli="+hobli;
 		$.ajax({ url: targeturl, success: function(data){ $("#hoblidiv").html(data) }});
@@ -38,13 +38,25 @@ function gethobli(hobli,path) { alert(hobli);
 </script>
 
 <script type="text/javascript">
-function getpanchayath(gillapanchayath,path) { 
+function getgillapanchayath(gillapanchayath,path) {
 	if(gillapanchayath) {
 	 	targeturl=path+"/dropdown/index/village?gillapanchayath="+gillapanchayath;
 		$.ajax({ url: targeturl, success: function(data){ $("#gillapanchayathdiv").html(data) }});
 	}
 } 
 </script>
+
+<script type="text/javascript">
+function getvillage(village,path) {
+	if(village) {
+	 	targeturl=path+"/dropdown/index/gillapanchayath?village="+village;
+		$.ajax({ url: targeturl, success: function(data){ $("#villagediv").html(data) }});
+	}
+} 
+</script>
+
+
+
 <form action="<?php echo $this->baseUrl();?>/dropdown/index/edit/id/<?php echo $this->id; ?>/name/<?php  echo $this->ff; ?>" method="POST">
  	<div id="container-1">
 		<div class="profile_tab">

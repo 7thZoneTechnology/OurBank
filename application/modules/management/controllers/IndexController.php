@@ -17,16 +17,23 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Management_IndexController extends Zend_Controller_Action {
     public function init() {
         $this->view->pageTitle='Management';
+
+	$storage = new Zend_Auth_Storage_Session();
+	$data = $storage->read();
+	if(!$data){
+		$this->_redirect('index/login');
+	}
+
+
 	$sessionName = new Zend_Session_Namespace('ourbank');
         $userid=$this->view->createdby = $sessionName->primaryuserid;
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
+        $this->view->user = new App_Model_Users();
+        $login = new App_Model_Users();
+
+        $loginname=$this->view->user->username($userid);
         foreach($loginname as $loginname) 
 	{
           $this->view->username=$loginname['username'];

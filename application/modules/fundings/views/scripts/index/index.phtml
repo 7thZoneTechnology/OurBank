@@ -17,9 +17,9 @@
 ############################################################################
 !-->
 
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
- <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
+<!-- <script type="text/javascript" src="<?php  //echo $this->baseUrl();?>/js/datepicker.js"></script> -->
+<!-- <script type="text/javascript" src="<?php // echo $this->baseUrl();?>/js/datepicker1.js"></script> -->
+<!--  <link rel="stylesheet" type="text/css"  href="<?php  //echo $this->baseUrl();?>/js/themes/base/ui.all.css" /> -->
 
 
 <script type="text/javascript">
@@ -32,7 +32,7 @@ $(document).ready(function() {
     <fieldset>
         <legend>Search</legend>
             <div class="search" style="margin-left:20px;">
-                    <form action="<?php echo $this->baseUrl();?>/fundings/index" method="POST">
+                    <form action="<?php echo $this->baseUrl();?>/fundings/index" method="POST" id="validation">
                             <table width="100%" id = "fieldsets">
                                 <tr>
                                     <td class="label"><br>Fundings name:</td>
@@ -42,8 +42,8 @@ $(document).ready(function() {
                                 </tr>
 
                                 <tr>
-                                    <td class="label"><br>Fundings amount:</td>
-                                    <td ><? echo $this->form->field4; ?></td>
+                                    <td class="label"><br>Fundings amount:</td></br>
+                                    <td ><? echo $this->form->field4; ?></td></br>
                                     <td class="label"><br>Fundings period to:</td>
                                     <td ><? echo $this->form->field8; ?></td>
                                 </tr>

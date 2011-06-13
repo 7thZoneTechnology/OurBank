@@ -39,9 +39,9 @@
             </tr>
 
          <?php 
-			$adm = new App_Model_Adm();
+			$adm = new App_Model_Adm();$i = 1; 
             foreach($this->group as $loandetails) { ?>
-            <tr><?php $i = 0; ?>
+            <tr>
                 <td><?php echo $i++;?></td>
                 <td><?php echo $loandetails->name; ?></td>
                 <td><?php echo $loandetails->age; ?></td>
@@ -70,7 +70,8 @@
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <?php echo $this->form->Submit;?>
+                                <?php echo $this->form->Submit;?><br><br>
+                                <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
                             </div>
                         </div>
 	       </form>

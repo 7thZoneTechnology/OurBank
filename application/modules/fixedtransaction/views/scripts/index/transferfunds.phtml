@@ -21,9 +21,28 @@
        $("a#groupmem").click(function(event){
             $("tr.two").toggle();
       });
+        $('#paymenttype').change(function() {
+            var v = $(this).val();
+            if(v!=1){
+                if(v==5){
+                        $('#etransfer').show();
+                        $('#textbox').show();
+                        $('#cheque').hide();
+                }else{
+                        $('#cheque').show();
+                        $('#textbox').show();
+                        $('#etransfer').hide();
+                }
+            }
+            else{
+                        $('#etransfer').hide();
+                        $('#textbox').hide();
+                        $('#cheque').hide();
+
+            }
+         });
      });
 </script>
-
 <BODY></BODY> 
 <?php if(!$this->noaccount) {?> 
 <div>
@@ -54,12 +73,12 @@
                 <TD><?php echo $this->fixed_interest;?></TD>
             </TR>
             <TR>
-                <td><b class="star"><SPAN style="color:red">Matured interest:</SPAN></b></td>
-                <TD><SPAN style="color:red"><?php echo $this->interestamount;?></SPAN></TD>
+                <td><b class="star"><SPAN style="color:green">Matured interest:</SPAN></b></td>
+                <TD><SPAN style="color:green"><?php echo $this->interestamount;?></SPAN></TD>
             </TR>
             <TR>
-                <td><b class="star"><SPAN style="color:red">Total matured amount:</SPAN></b></td>
-                <TD><SPAN style="color:red"><?php echo $this->Totalamount;?></SPAN></TD>
+                <td><b><SPAN style="color:green">Total matured amount:</SPAN></b></td>
+                <TD><SPAN style="color:green"><?php echo $this->Totalamount;?></SPAN></TD>
             </TR>
         </table>
     </div>
@@ -96,22 +115,22 @@
     <div class="cont-rgt-data">
         <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet" >
             <TR>
-                <td><b class="star"><SPAN style="color:red">Capital amount:</SPAN></b></td>
-                <TD><SPAN style="color:red"><?php echo $this->fixed_amount;?></SPAN></TD>
+                <td><b class="star"><SPAN style="color:green">Capital amount:</SPAN></b></td>
+                <TD><SPAN style="color:green"><?php echo $this->fixed_amount;?></SPAN></TD>
             </TR>
             <TR>
-                <td><b class="star"><SPAN style="color:red">Interest amount:</SPAN></b></td>
-                <TD><SPAN style="color:red"><?php echo $this->interestamountfrombank;?></SPAN></TD>
+                <td><b class="star"><SPAN style="color:green">Interest amount:</SPAN></b></td>
+                <TD><SPAN style="color:green"><?php echo $this->interestamountfrombank;?></SPAN></TD>
             </TR>
             <?php if($this->currentdate < $this->mature_date) { ?>
             <TR>
-                <td><b class="star"><SPAN style="color:red">Penal interest amount:</SPAN></b></td>
-                <TD><SPAN style="color:red"><?php echo $this->prematureinterestamountfrombank;?></SPAN></TD>
+                <td><b class="star"><SPAN style="color:green">Penal interest amount:</SPAN></b></td>
+                <TD><SPAN style="color:green"><?php echo $this->prematureinterestamountfrombank;?></SPAN></TD>
             </TR>
             <?php } ?>
             <TR>
-                <td><b class="star"><SPAN style="color:red">Total amount:</SPAN></b></td>
-                <TD><SPAN style="color:red"><?php echo $this->maturedinterestamount;?></SPAN></TD>
+                <td><b class="star"><SPAN style="color:green">Total amount:</SPAN></b></td>
+                <TD><SPAN style="color:green"><?php echo $this->maturedinterestamount;?></SPAN></TD>
             </TR>
         </table>
     </div>
@@ -123,28 +142,34 @@
     <div style="width:50%;float:left">
 
         <form name="form1" action="<?php echo $this->baseUrl();?>/fixedtransaction/index/transferfunds" method="POST" onsubmit='return validate(this)'>
-            <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
+            <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet" class="fieldsets">
                 <tr >
-                    <td width="40%">Transaction mode</td>
-                    <td width="60%"><?php echo $this->form2->paymenttype;?><?php echo $this->form2->paymenttype_details;?><h id="details" style="display:none">Voucher/cheque/draft </h> </td> 
+                    <td width="40%"><label for="fld1" class="mand">Transaction mode </label></td>
+                    <td width="60%" colspan="2"><?php echo $this->form2->paymenttype;?><?php //echo $this->form2->paymenttype_details;?></td>
+                    
                 </tr>
                 <tr>
-                    <td width="40%">Description</td>
-                    <td width="60%"><?php echo $this->form2->transactiondescription; 
+                    <td id="cheque" style="display:none"><label for="fld1" class="mand">Voucher/cheque/draft</label></td>
+                    <td id="etransfer" style="display:none"><label for="fld1" class="mand">Account number</label></td>
+                    <td id="textbox" style="display:none"><?php echo $this->form2->othertext;?></td> 
+                </tr>
+                <tr>
+                    <td width="40%"><label for="fld1" class="mand">Description</label> </td>
+                    <td width="60%" colspan="2"><?php echo $this->form2->transactiondescription;?>
+                    </td>
+               </tr>
+               <tr style="display:none;"><TD colspan="2"><?php  
                             echo $this->form2->accountId;
                             echo $this->form2->productId; 
                             echo $this->form2->memberId; 
                             echo $this->form2->capitalamount;
                             echo $this->form2->interestamountto; 
                             echo $this->form2->penalinterest;
-                            echo $this->form2->maturedinterestamount;?></td>
-                </tr>
+                            echo $this->form2->maturedinterestamount;?></TD></tr>
             </table>
-            <table>
+            <table class="fieldsets">
                 <tr>
-                    <td></td>
-                    <td ></td>
-                    <td><label for="fld1" class="mand"> Marked fields are mandatory</label></td>
+                       <td><label for="fld1" class="mand"> Marked fields are mandatory</label></td>
                 </tr>
                 <TR>
                     <TD><?php echo $this->form2->Confirm;?></TD>
@@ -167,26 +192,31 @@
 
         <form name="form1" action="<?php echo $this->baseUrl();?>/fixedtransaction/index/transferfunds" method="POST" onsubmit='return validate(this)'>
             <table id="hor-minimalist-bjinu" summary="Employee Pay Sheet">
-                <tr >
+               <tr >
                     <td width="40%">Transaction mode</td>
-                    <td width="60%"><?php echo $this->transactionModetype;?></td> 
+                    <td width="60%" colspan="2"><?php echo $this->form2->paymenttype;?><?php //echo $this->form2->paymenttype_details;?></td>
+                    
                 </tr>
-                <?php if ($this->paymenttype!=1) { ?>
-                <tr >
-                    <td width="40%">Voucher/cheque/draft</td>
-                    <td width="60%"><?php echo $this->paymenttype_details;?></td> 
+                <tr>
+                    <td id="cheque" style="display:none">Voucher/cheque/draft</td>
+                    <td id="etransfer" style="display:none">Account number</td>
+                    <td id="textbox" style="display:none"><?php echo $this->form2->othertext;?></td> 
                 </tr>
-                <?php } ?>
                 <tr>
                     <td width="40%"><label for="fld1">Description</label></td>
-                    <td width="60%"><label for="fld1"><?php echo $this->transactiondescription; echo $this->form2->accountId;echo $this->form2->productId; echo $this->form2->memberId; echo $this->form2->capitalamount;echo $this->form2->interestamountto; echo $this->form2->penalinterest;
+                    <td width="60%"><?php echo $this->form2->transactiondescription;?></td>
+                </tr>
+               <tr >
+                    <TD colspan="2"><?php  
+                    echo $this->form2->accountId;echo $this->form2->productId; echo $this->form2->memberId; echo $this->form2->capitalamount;echo $this->form2->interestamountto; echo $this->form2->penalinterest;
                     echo $this->form2->paymenttype1;
                     echo $this->form2->paymenttype_details1;
                     echo $this->form2->transactiondescription1;
-                    echo $this->form2->maturedinterestamount;?></label></td>
+                    echo $this->form2->maturedinterestamount;?>
+                    </TD>
                 </tr>
             </table>
-            <table>
+            <table id="hor-minimalist-bjinu">
 
             <div class="btnhouse">
                 <div class="ltbtns">

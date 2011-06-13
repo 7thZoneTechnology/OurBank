@@ -1,6 +1,12 @@
-    <?php echo $this->jQuery(); ?>
-    <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
+<script>
+$(document).ready(function() {
+    $("#validation").validate()
+    $("#pluginFormlive").validate()
 
+    });
+</script>
+   <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
     <div id="ourbanklogo">
       <h1><a href="#" title="OurBank">OurBank</a></h1>
     </div>

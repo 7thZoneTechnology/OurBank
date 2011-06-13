@@ -25,28 +25,31 @@ background-color : silver;
 </style>
 
 <div class="profile_tab"> 
+<fieldset><?php if(!$this->familydetails) { ?>
+<legend>search</legend>
 <!--search form action !-->
-<fieldset> 
-    <legend>Membership</legend>	
-	<form action="<?php echo $this->baseUrl();?>/familyform" method="POST">
-	       <table class="fieldsets">
-			<tr>
-			<td><label class="mand">Member code:</td>
-			<td ><? echo $this->form->membercode;?></td>
-			</tr>
-		</table>
-		<input type="submit" name="Search" id="Submit" value="Search">			
-	</form>	
-</fieldset> 	
-		
-		
+			<form action="<?php echo $this->baseUrl();?>/familyform" method="POST">
+	<table class="fieldsets">
+					<tr>
+						<td><label class="mand">Member code:</td>
+						<td ><? echo $this->form->membercode;?></td>
+					</tr>
+				</table>
+				<input type="submit" name="Search" id="Submit" value="Search">			
+			</form>	
+</fieldset>
 </div>
 <div class="profile_tab"> 
 
-		<?php if($this->familydetails) { ?>
+		<?php } ?>
+
+<?php if($this->familydetails) {  $totalNumber = 0
+; $totalValue = 0; $totalfixed =0; ?>
+<?php $dateconvert= new App_Model_dateConvertor(); ?>
 
         <?php foreach ($this->familydetails as $familydetails): ?>
 	<table id="hor-minimalist-b" >
+		<th colspan="2">External loan application</th>
 		<tr>
 			<td>Family id</td>
 			<TD><?php echo $this->escape($familydetails['family_id']);?></TD>
@@ -61,7 +64,7 @@ background-color : silver;
 		</tr>
 		<tr>
 			<td>Date of birth</td>
-			<TD></TD>
+			<TD><?php echo $this->escape($dateconvert->normalformat($familydetails['dob']));?></TD>
 		</tr>
 		<tr>
 			<td>Gender</td>
@@ -99,7 +102,6 @@ background-color : silver;
         	<td ><?php echo $this->translate("Relation to HOF"); ?></td>
         	<td ><?php echo $this->translate("Gender"); ?></td>
         	<td ><?php echo $this->translate("Age"); ?></td>
-        	<td ><?php echo $this->translate("Entitlements"); ?></td>
         	<td ><?php echo $this->translate("Education Level"); ?></td>
         	<td ><?php echo $this->translate("Occupation"); ?></td>
         	<td ><?php echo $this->translate("Branch"); ?></td>
@@ -113,7 +115,6 @@ background-color : silver;
         	<td><?php echo $family['relationname']; ?></td>
         	<td><?php echo $family['genername']; ?></td>
         	<td><?php echo $family['age']; ?></td>
-        	<td><?php echo $family['entitlements']; ?></td>
         	<td><?php echo $family['qualifyname']; ?></td>
         	<td><?php echo $family['proffessionname']; ?></td>
         	<td><?php echo $family['branchname']; ?></td>
@@ -141,8 +142,8 @@ background-color : silver;
         <td><?php echo $agri['name']; ?></td>
         <td><?php echo $agri['villagename']; ?></td>
         <td align="right" width="20px"><?php echo $agri['survey_no']; ?></td>
-        <td align="right" width="100px"><?php echo $agri['acre']; ?></td>
-        <td align="right"><?php echo $agri['value']; ?></td>
+        <td align="right" width="100px"><?php echo $agri['acre'];?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$agri['acre']) ; $totalfixed+=$agri['acre'];?></td>
    			</tr>
      	<?php endforeach; ?>
 <tr>
@@ -151,7 +152,7 @@ background-color : silver;
    <td></td>
    <td></td>
    <td></td>
-   <td align="right"><?php echo $total['total']; $totalfixed=$total['total'];?></th>
+   <td align="right"><?php echo sprintf("%4.2f",$totalfixed);?></th>
 <?php } ?></tr>
 	</table>
 	<?php } ?>
@@ -164,8 +165,7 @@ background-color : silver;
 			<td align ="right">Total value</td>
         </tr>
         <?php $dateconvert= new App_Model_dateConvertor();
-		if ($this->livingassets){ $totalNumber = 0
-; $totalValue = 0; ?>
+		if ($this->livingassets){ ?>
         <?php foreach ($this->livingassets as $liveassets): 
 
  ?>
@@ -203,7 +203,7 @@ background-color : silver;
 			<td>Nonliving assets</td> 
    			<td></td>
 
- 			<td align="right"><?php echo $total['total']; ?></td>
+ 			<td align="right"><?php //echo $total['total']; ?> <?php echo sprintf("%4.2f",$totalfixed); ?></td>
 		</tr>
 		<?php endforeach; ?>
 		<tr>
@@ -294,9 +294,4 @@ onClick="window.open('<?php echo $this->baseUrl();?>/familyform/index/reportdisp
 
            <BR> <input type="submit" value="PDF" id="submit">
 </form>
-	<?php } ?>
-	
-	<b style="color:red"><?php echo $this->error;?></b>
-
-
-	</div>
+	<?php } ?></div>

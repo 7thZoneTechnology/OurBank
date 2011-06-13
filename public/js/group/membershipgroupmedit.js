@@ -56,7 +56,9 @@ function getMember(branch_id,path,group_id,grouptype) {
             req.open("GET", strURL, true);
             req.send(null);
         }
-
     }
+$(document).ready(function() {
+    $('#addgroups').validate();
 
+  });
 

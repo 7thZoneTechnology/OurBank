@@ -49,24 +49,26 @@
     </fieldset> 
 </div> 
 
-<table id="hor-minimalist-b" summary="">
-    <tr class="tdbrownheading">
-        <th>Meeting name</th>
-        <th>Group name</th>
-    </tr>
-    <?php if (count($this->paginator)): ?>
-    <?php foreach ($this->paginator as $meeting ): ?>
-    <tr>
-        <td><a href="<?php echo $this->baseUrl()."/meetingcommonview/index/index/meeting_id/".$meeting['id']; ?>"><?php echo $this->escape($meeting['name']);?></a></td>
-        <td><?php echo $this->escape($meeting['gname']); ?></td>
-    <?php endforeach; ?>
-    <?php endif; ?>
-    
-    <tr>
-        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                    '/partials/my_pagination_control.phtml'); ?></div></td>
-    </tr>
-    </tr>
-</table>
+<?php if ((count($this->paginator)) != 0 ) : ?>
+    <table id="hor-minimalist-b" summary="">
+        <tr class="tdbrownheading">
+            <th>Meeting name</th>
+            <th>Group name</th>
+        </tr>
+        <?php if (count($this->paginator)): ?>
+        <?php foreach ($this->paginator as $meeting ): ?>
+        <tr>
+            <td><a href="<?php echo $this->baseUrl()."/meetingcommonview/index/index/meeting_id/".$meeting['id']; ?>"><?php echo $this->escape($meeting['name']);?></a></td>
+            <td><?php echo $this->escape($meeting['gname']); ?></td>
+        <?php endforeach; ?>
+        <?php endif; ?>
+
+        <tr>
+            <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+                                        '/partials/my_pagination_control.phtml'); ?></div></td>
+        </tr>
+        </tr>
+    </table>
+<?php endif; ?>
 
 <?php /*echo $this->translate('Category Name');*/ ?>

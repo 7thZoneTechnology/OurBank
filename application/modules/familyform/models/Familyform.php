@@ -28,16 +28,18 @@ class Familyform_Model_Familyform extends Zend_Db_Table
 	{
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_familymember'),array('id'))
-        ->where('a.familycode=?',$id)
-                ->join(array('b'=>'ourbank_family'),'b.id=a.family_id',array('b.family_id as family'))
-                ->join(array('c'=>'ourbank_master_villagelist'),'c.id=b.village_id',array('c.name as villagename'))
+                ->join(array('a'=>'ourbank_familymember'),array('id','dob'))
+                ->where('a.familycode=?',$id)
+                ->join(array('b'=>'ourbank_family'),'b.id=a.family_id')
+                ->join(array('c'=>'ourbank_office'),'c.id=b.id',array('c.name as villagename'))
                 ->join(array('d'=>'ourbank_master_gender'),'d.id=a.gender_id',array('d.name as sex'))
                 ->join(array('e'=>'ourbank_master_castetype'),'e.id=b.caste_id',array('e.name as castetype'))
                 ->join(array('f'=>'ourbank_master_educationtype'),'f.id=a.eductaion_id',array('f.name as educationname'))
                 ->join(array('g'=>'ourbank_master_familytype'),'g.id=b.familytype_id',array('f.name as familytype'));
 
-		//die($select->__toString($select));
+
+				
+		// die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
    	}
@@ -48,18 +50,17 @@ class Familyform_Model_Familyform extends Zend_Db_Table
         ->setIntegrityCheck(false)
         ->join(array('a'=>'ourbank_familymember'),array('a.id'))
         ->where('a.familycode=?',$id)
-          ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
+         ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
          ->join(array('k'=>'ourbank_master_gender'),'a.gender_id=k.id',array('k.name as genername'))
-         ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))          ->join(array('l'=>'ourbank_memberprofession'),'l.profession_id = a.id',array('profession_id'))
-         
-         //->join(array('e'=>'ourbank_master_profession'),'l.profession_id = e.id',array('e.name as proffessionname'))
+         ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))
+        ->join(array('e'=>'ourbank_master_profession'),'a.promoter_id=e.id',array('e.name as proffessionname'))
          ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
          ->join(array('i'=>'ourbank_master_branch'),'a.branch_po=i.id',array('i.name as branchname'))
         ->join(array('j'=>'ourbank_master_bloodtype'),'a.blood_id=j.id',array('j.name as blood'))
          ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name as bankname'));
-        //die($select->__toString($select));
-         $result=$this->fetchAll($select);
-         return $result->toArray();
+//         die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
     }
     public function getliving()
     {
@@ -68,7 +69,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
         ->setIntegrityCheck(false)
         ->join(array('a'=>'ourbank_master_liveassets'),array('a.id'));
        
-       die($select->__toString($select));
+//        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }

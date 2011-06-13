@@ -43,11 +43,11 @@ class Savingswithdrawal_Form_Withdrawal extends Zend_Form
 
 
 
-		$amount = $formfield->field('Text','amount','','','txt_put','',true,'','','','','',0,'');
-                $lessthan=new Zend_Validate_LessThan($limitamount+.0001);
-                $amount->setRequired(true)
-                ->addValidators(array(array('NotEmpty'),array('Float'),array($lessthan,true)));
-                $amount->setAttrib('size', 10);
+// 		$amount = $formfield->field('Text','amount','','','txt_put maxvalue','',true,'','','','','',0,'');
+//                 $lessthan=new Zend_Validate_LessThan($limitamount);
+//                 $amount->setRequired(true)
+//                 ->addValidators(array(array('NotEmpty'),array('Float')));
+//                 $amount->setAttrib('size', 10);
 
 		$description = $formfield->field('Textarea','description','','','txt_put','',true,'','','',2,10,'',0,'');
 		$description1 = $formfield->field('Textarea','description1','','','txt_put','',true,'','','',2,10,'',0,'');
@@ -73,6 +73,6 @@ class Savingswithdrawal_Form_Withdrawal extends Zend_Form
                 $back = new Zend_Form_Element_Submit('Back');
 
 		$submit = new Zend_Form_Element_Submit('Submit');
-		$this->addElements( array($date,$amount,$transactionMode,$transactionMode1,$description,$description1,$submit,$accNum,$back,$sms,$othrtext,$othrtext1,$date1));
+		$this->addElements( array($date,$transactionMode,$transactionMode1,$description,$description1,$submit,$accNum,$back,$sms,$othrtext,$othrtext1,$date1));
 	}
 }

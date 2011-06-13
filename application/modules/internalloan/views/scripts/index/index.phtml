@@ -20,9 +20,10 @@
 </fieldset>
 </div>
 
-<?php } $dateconvert= new App_Model_dateConvertor();
-if($this->result) { 
+<?php } $dateconvert= new App_Model_dateConvertor(); ?>
+<?php if($this->result) { $count = 0;
 foreach ($this->result as $result) {
+if ($count == 0) {
 ?>
 <fieldset>
 	<legend>Template</legend>
@@ -74,7 +75,7 @@ foreach ($this->result as $result) {
             <p>Witness signature</p>
     </div>
 </fieldset>
-<?php } } ?>
+<?php } $count = $count + 1; } } ?>
 
 
 

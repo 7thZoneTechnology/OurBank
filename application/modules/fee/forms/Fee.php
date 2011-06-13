@@ -17,13 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php class Fee_Form_Fee extends Zend_Form {
-
-
-		
-	
+ class Fee_Form_Fee extends Zend_Form {
 
 	public function init() 
 	{
@@ -41,7 +35,7 @@
 		$glsubcode_id = $formfield->field('Select','glsubcode_id','','','mand','',false,'','','','','',0,0);
 
         $description = $formfield->field('Text','description','','','mand','Fee description',true,'','','','','',1,0);
-        $amount = $formfield->field('Text','value','','','mand','Fee amount',true,'','','','','',1,0);
+        $amount = $formfield->field('Text','value','','','mand digits','Fee amount',true,'','','','','',1,0);
 		$feetype_id = $formfield->field('Select','feetype_id','','','mand','',true,'','','','','',0,0);
         $feetype_id->setAttrib('onchange','displayRow(this.value)');
  		$createdBy = $formfield->field('Hidden','created_by','','','','',false,'','','','','',0,1);

@@ -1,6 +1,14 @@
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/toggel.js"></script> 
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/toggel.js"></script>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>  
 <script type="text/javascript">
+
+    
+
  $(document).ready(function(){
+
+$('#withdraw').validate()
+
+
         $('.tmode').change(function() {
             var v = $(this).val();
             var id = $(this).attr('id');
@@ -46,7 +54,48 @@ else
             }
     }
          });
-     });
+
+//             $('.maxvalue').change(function(){
+// 
+// enteredamount = $(this).val();
+// maxamount = $('.Maximumvalue').val();
+// 
+// alert('EnterAmt'+enteredamount);
+// alert('MaxAmt'+maxamount);
+// 
+//                 if(enteredamount > maxamount) {
+// alert('max');
+// } else {
+// 
+// alert('min');
+// }
+//      }); 
+//             $('.maxvalues').each(function(){
+
+//  	            $('.maxvalues').change(function(){
+// 
+// var maxvalue = $('.limit').val();
+// var enteredvalue = $('.amount1').val();
+// alert('Entered'+ $('.amount1').val());
+// alert('Max'+ $('.limit').val());
+//   if($('.amount1').val() > $('.limit').val()) {
+// //             if($(this).next('span').length == 0 ) {
+// //                     $(this).after('<span id="less" style="color: #FF0000"><br>Amount should be less than '+$('.limit').val()+'dfdfdf Rs</span>');
+// //                     return;
+// //             } else {
+// // //                     if($(this).next('span').length > 0 )
+// //                     $(this).next('span#less').remove();     
+// //               }
+// alert('greater');
+//             } 
+// //   if(enteredvalue < maxvalue ) {
+// 
+// // alert('lesser');
+// // }
+// //             }); 
+// });
+
+ });
 </script>
 
 <div style="float:left;width:350px"> 
@@ -120,17 +169,18 @@ else
     <?php } ?> 
     <fieldset>
         <legend> Saving withdrawal</legend>
-        <form name="form1" action="<?php echo $this->baseUrl();?>/savingswithdrawal/index/withdrawal" method="POST">
+        <form name="form1" id="withdraw" action="<?php echo $this->baseUrl();?>/savingswithdrawal/index/withdrawal" method="POST">
             <div id="sum" style="display:block">
             <table class="fieldsets">
                 <TR>
                     <TD><label for="fld1" class="mand">Date</label></TD>
                     <TD><?php echo $this->form->date; ?></TD>
                 </TR>
-
                 <TR>
                     <TD><label for="fld1" class="mand">Amount R$</label></TD>
-                    <TD><?php echo $this->form->amount;?></TD>
+                    <TD><input class = "amount" type = "text" name="amount" max="<?php echo $this->limitamount; ?>" size="12" class="txt_put" ></TD>
+
+<!--                     <TD><?php //echo $this->form->amount;?></TD> -->
                 </TR>
 				<TR>
                     <TD><label for="fld1" class="mand">Transaction mode</label></TD>
@@ -168,13 +218,13 @@ else
                 <?php foreach ($this->group as $group) { ?>
                 <TR>
                     <TD><label for="fld1"><?php echo $group->name; ?></label></TD>
-                    <TD><input type = "text" name="<?php echo $group->code; ?>" size="12" class="txt" onchange = "calculateSum(this.value)"></TD>
+                    <TD><input type = "text" name="<?php echo $group->code; ?>" size="12" class="txt maxvalues" onchange = "calculateSum(this.value)"></TD>
                 </TR>
 
                 <?php } ?>
                 <TR>
                     <TD><label for="fld1">Total amount</label></TD>
-                    <TD><input class = "amount1" type = "text" name="amount1" size="12" class="txt_put" readonly="true"></TD>
+                    <TD><input class = "amount1" type = "text" name="amount1" max="<?php echo $this->limitamount; ?>" size="12" class="txt_put" readonly="true"></TD>
                 </TR>
 		<TR>
                     <TD><label for="fld1" class="mand">Transaction mode</label></TD>

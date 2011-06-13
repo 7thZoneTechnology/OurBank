@@ -34,18 +34,19 @@ $(document).ready(function() {
                 e.preventDefault();
                 return;
             } else {
-                if($(this).next('span').length > 0 )
+                if($(this).next('span').length < 0 )
                     $(this).next('span').remove();
             }
         });
 //for madatory
         $(this).find(':text.numeric').each(function() {
             var regex = new RegExp(/^[1-9][0-9]*$/);
+        // var regex = new RegExp('[-+]?\b[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?\b'); // float and numeric
             if(!regex.test($(this).val()) && isValid) {
                 isValid = false;
                 if($(this).next('span').length == 0 ) {
-                   $(this).after('<span style="color: #FF0000">Numeric only.</span>');
-                }
+                   $(this).after('<span style="color: #FF0000">Numeric  only.</span>');
+                }r float
                 e.preventDefault();
                 return;
             } else {
@@ -56,9 +57,10 @@ $(document).ready(function() {
 //for non madatory
 $(this).find(':text.numeric1').each(function() {
           var regex = new RegExp(/^[1-9][0-9]*$/);
+            // var regex = new RegExp('[-+]?\b[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?\b');  //float and numeric
           if(!regex.test($(this).val()) && $(this).val() != "") {
               if($(this).next('span').length == 0 ) {
-                 $(this).after('<span style="color: #FF0000">Numeric only.</span>');
+                 $(this).after('<span style="color: #FF0000">Numeric  only.</span>');
               }
               e.preventDefault();
               return;
@@ -142,6 +144,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <div id="statediv"></div>
 	   </TD></tr>
 
+            <TR style="border-bottom: 4px solid #CBCBCB;">
+                  <th colspan='4' style="border-right: solid 1px #CBCBCB; !important;"><?php echo $this->translate("Discussions and Savings"); ?></th>
+            </TR>
+
             <tr>
                 <td style="vertical-align:top; !important;">Discussion</td>
                 <td style="width:40%; vertical-align:top; border-right: solid 1px #CBCBCB; !important;"><input type="hidden" id="id1" value="1">
@@ -149,6 +155,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                         <table id="hor-minimalist-b" style="width:200px; !important">
                           <tr> <td>
 		                <select name = "discussionlist[]">
+		            	<option value=" ">select</option> 
 		            	<?php foreach ($this->discussionlist as $discussionlist) { ?>
 		           	 <option value="<?php echo $discussionlist['id']?>"><?php echo $discussionlist['name']?></option>
 		            	<?php } ?>
@@ -162,7 +169,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                             <table id="hor-minimalist-b" class="hor-minimalist-b1" style="width:200px; !important"></table>
                             <br>
                             <input type="button" id="adddiscussion" class="officebutton1" value="Add">
-		</td>
+		  </td>
+
                 <td style="vertical-align:top; !important;">Decision</td>
 		<td style="width:40%; vertical-align:top; !important;">
                     <input type="hidden" id="id2" value="2">
@@ -170,8 +178,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                        <table id="hor-minimalist-b" style="width:200px; !important">
                         <tr> 	<td>
 					<select name = "decisionlist[]">
+				    	<option value=" ">select</option> 
 				    	<?php foreach ($this->decissionlist as $decisionlist) { ?>
 				   	 <option value="<?php echo $decisionlist['id']?>"><?php echo $decisionlist['name']?></option>
+				   	 
 				    	<?php } ?>
 					</select>
                                	</td>

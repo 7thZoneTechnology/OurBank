@@ -132,13 +132,13 @@ $(document).ready(function(){
 </br>
 </br>
 
-<?php if($this->details) { ?>
+<?php if(count($this->tran) > 0) { ?>
 <table id="hor-minimalist-b" border="1">
     <tr>
         <th>V No.</td>
         <th>Tran.date</td>
         <th>Account number</th>
-        <th>Group members</th>
+<!--         <th>Group members</th> -->
         <th>Credit</th>
         <th>Debit</td>
         <th>Transacted by</td>  
@@ -146,18 +146,23 @@ $(document).ready(function(){
     <?php foreach($this->tran as $transaction) : ?>
     <tr>
        <td align="center"><?php echo $transaction->id; ?></td>
+
        <td><?php echo $transaction->date; ?></td>
-       <td align="center"><?php echo $transaction->member_id; ?></td>
-       <td><?php echo $transaction->membername; ?></td>
+
+       <td align="center"><?php echo $transaction->number; ?></td>
+
+<!--        <td><?php //echo $transaction->membername; ?></td> -->
+
        <?php if($transaction->mode=='credit'){ ?>
-       <td align="right"><?php echo $transaction->transaction_amount; ?></td> 
+       <td align="right"><?php echo $transaction->amount_to_bank; ?></td> 
        <?php } else { ?>
        <td align="right">----</td><?php } ?>
 
        <?php if($transaction->mode=='debit'){ ?>
-       <td align="right"><?php echo $transaction->transaction_amount; ?></td> 
+       <td align="right"><?php echo $transaction->amount_from_bank; ?></td> 
        <?php } else { ?>
        <td align="right">----</td><?php } ?>
+
        <td align="center"><?php echo $transaction->name; ?></td>
     </tr>
     <?php endforeach; ?>

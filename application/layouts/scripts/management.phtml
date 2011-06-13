@@ -23,8 +23,27 @@
 <head>
 <title><?php echo $this->escape($this->title); ?></title>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/transactionPeriods.js"></script>
-<script src="<?php echo $this->baseUrl();?>/js/management/saving.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/jquery-1.2.3.pack.js">
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.1.js"></script>
+<script type='text/javascript' src="<?php echo $this->baseUrl();?>/js/management/saving.js"></script>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#beginingdate").datepicker({"dateFormat":"yy-mm-dd"});
+    $("#closingdate").datepicker({"dateFormat":"yy-mm-dd"});
+    $("#holiday_from").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#holiday_upto").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#repayment_date").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#begindate").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#closedate").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#begindate33").datepicker({"dateFormat":"yy-mm-dd"});
+    $("#date1").datepicker({});
+    $("#loanAccountdate").datepicker({"dateFormat":"yy-mm-dd"});
+    $("#dateofbirth").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#dateofjoin").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#fund_beginingdate").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#fund_closingdate").datepicker({"dateFormat":"dd/mm/yy"});
+  });
 </script>
 </head>
 
@@ -36,7 +55,7 @@
 <div id="leftnavig">
      <ul>
         <?php if($this->pageTitle == "Management") { ?>
-             <h4><a href="#">Managemant</a></h4>
+            <h4><a href="#">Managemant</a></h4>
             <li><a href="<?php  echo $this->baseUrl();?>/officehierarchy">Office hierarchy</a></li>
             <li><a href="<?php  echo $this->baseUrl();?>/office">Office</li>
             <li><a href="<?php  echo $this->baseUrl();?>/roles">Roles</a></li>
@@ -48,8 +67,8 @@
             <li><a href="<?php  echo $this->baseUrl();?>/category">Category</a></li>
             <li><a href="<?php  echo $this->baseUrl();?>/product">Product</a></li>
             <li><a href="<?php  echo $this->baseUrl();?>/fee">Fee</a></li>
-                        <li><a href="<?php  echo $this->baseUrl();?>/holiday">Holiday</a></li>
-                        <li><a href="<?php  echo $this->baseUrl();?>/user">User</a></li>
+            <li><a href="<?php  echo $this->baseUrl();?>/holiday">Holiday</a></li>
+            <li><a href="<?php  echo $this->baseUrl();?>/user">User</a></li>
         <?php } ?>
    </ul>
 

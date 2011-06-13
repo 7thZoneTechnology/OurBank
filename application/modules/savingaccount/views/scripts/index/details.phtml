@@ -62,12 +62,21 @@ if ($this->account) { ?>
     
        <TR>
            <th>Active savings account</td>
+           <th>Account type</th>
            <th>Products</th>
        </TR>
-        <?php foreach($this->account as $account)  { ?>
+       
 
+        <?php 
+
+        $adm = new App_Model_Adm();
+ foreach($this->account as $account)  { 
+        $tagacc = $adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$account->number);
+
+?>
        <TR>
            <TD><?php echo $account->number;?></TD>
+           <TD><?php if($tagacc == 0) { echo "Personal savings A/C"; } else { echo "Group A/C"; }  ?></TD>
            <TD><?php echo $account->name;?></TD>
        </TR>
       <?php  }?>

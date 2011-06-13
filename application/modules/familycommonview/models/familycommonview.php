@@ -36,7 +36,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
             ->join(array('i'=>'ourbank_master_sourceofincome'),'i.id =a.income_id',array('i.name as income'))
  			 ->where('a.id=?',$id)
 		    ->join(array('j'=>'ourbank_master_habitation'),'j.id =a.village_id',array('j.name as names'));
-//        die($select->__toString($select));
+// //        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }

@@ -16,64 +16,21 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<script type="text/javascript">
-
-function getXMLHTTP() {
-    var xmlhttp=false;	
-    try{
-        xmlhttp=new XMLHttpRequest();
-    }
-    catch(e) {		
-        try{			
-            xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        catch(e){
-            try{
-            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-            }
-            catch(e1){
-                    xmlhttp=false;
-            }
-        }
-    }
-    return xmlhttp;
-}
+<script language="javascript">
+ function getInterests(interest) {	
+            targeturl='<?php echo $this->baseUrl();?>/fixedaccount/index/getinterests?interest='+interest;
+            $.ajax({ url: targeturl, success: function(data){ $('#interestdiv').html(data) }});
+       }
 
 
-
-
-function getInterests(path,interest) {	
-    var strURL=path+"/fixedaccount/index/getinterests?interest="+interest;
-
-    var req = getXMLHTTP();
-        if (req) {
-            req.onreadystatechange = function() {
-            if (req.readyState == 4) {
-                if (req.status == 200) {
-                    document.getElementById('interestdiv').innerHTML=req.responseText;
-                } else {
-                    alert("There was a problem while using XMLHTTP:\n" + req.statusText);
-                  }
-            }
-        }
-        req.open("GET", strURL, true);
-        req.send(null);
-        }
-        var perioddescription=$('#perioddescription').val();
-        if(perioddescription!='') {
-            $('#errorspan').show();
-        } else {
-            $('#errorspan').hide();
-          }
-}
 
  $(document).ready(function(){
        $("a#groupmem").click(function(event){
             $("tr.two").toggle();
-      });
-     });
+      }); 
+    }); 
 
-$(document).ready(function(){
+ $(document).ready(function(){
 	        //iterate through each textboxes and add keyup
         //handler to trigger sum event
 	        $(".txt").each(function() {
@@ -81,8 +38,9 @@ $(document).ready(function(){
                 calculateSum();
 	            });
 	        });
-	    });
+	
 	    function calculateSum() {
+
 	        var sum = 0;
 	        //iterate through each textboxes and add the values
 	        $(".txt").each(function() {
@@ -94,6 +52,7 @@ $(document).ready(function(){
 	        //.toFixed() method will roundoff the final sum to 2 decimal places
 	        $(".amount1").val(sum.toFixed(2)); 
 	    }
+    });
 </script>
 
 <div style="float:left;width:380px"> 
@@ -109,34 +68,42 @@ if($a == 1) {
             </TR>
             <TR>
                 <TD>Member code:</td>
-                <TD><? echo $account->code; ?></TD>
+                <TD><? echo $account['code']; ?></TD>
             </TR>
             <TR>
                 <TD>Name:</td>
-                <TD><?php echo $account->name;?></TD>
+                <TD><?php echo $account['name'];?></TD>
             </TR>
             <TR>
                 <TD>Branch:</td>
-                <TD><?php echo $account->officename ;?></TD>
+                <TD><?php echo $account['officename'];?></TD>
             </TR>
             <TR>
-                <td>Group name</td><td><?php echo $account->groupname ;?></td>
+                <td>Group name</td><td><?php echo $account['groupname'];?></td>
             </TR>
+<?php  } 
+foreach($this->offerdetails as $offer) {
+?>
+
             <TR>
                 <TH>Product details</TH>
                 <TH></TH>
             </TR>
             <TR>
                 <TD>Product name:</td>
-                <TD><?php echo $account->productname;?></TD>
+                <TD><?php echo $offer['productname'];?></TD>
             </TR>
             <TR>
                 <TD>Min balance:</b></td>
-                <TD><?php echo $account->minbalance;?></TD>
+                <TD><?php echo $offer['minbalance'];?></TD>
+            </TR> 
+            <TR>
+                <TD>Max balance:</b></td>
+                <TD><?php echo $offer['maxbalance'];?></TD>
             </TR>
             <TR>
                 <TD>Penal interest</td>
-                <TD><?php echo $account->mininterest; ?></TD>
+                <TD><?php echo $offer['mininterest']; ?></TD>
             </TR>
             <TR>
                 <TH>Interest per annum</TH>
@@ -165,7 +132,7 @@ if($a == 1) {
 <fieldset>
     <br>
     <legend>New fixed account</legend>
-    <form name="fixedform" action="<?php echo $this->baseUrl();?>/fixedaccount/index/createaccount" method="POST">
+    <form name="fixedform" id="validation" action="<?php echo $this->baseUrl();?>/fixedaccount/index/createaccount" method="POST">
 <div class="one">
     <table class="fieldsets">
         <TR>
@@ -193,59 +160,17 @@ if($a == 1) {
             <TD><label for="fld1" class="mand">Fixed amount</label></TD>
             <TD class="amount1"><?php echo $this->fixedForm->tAmount;?></TD>
         </TR>
+
+         <TR>
+            <TD  colspan="2" style="display:none;" id="ertxt"><input type="text" class="Error" name="Error" id="Error"/></TD>
+        </TR>
         <TR>
             <TD><?php echo $this->fixedForm->Submit; ?></TD>
-            <Td><?php echo $this->fixedForm->Back; ?></td>
+            <td><a href="<?php echo $this->baseUrl();?>/fixedaccount/index"><?php echo $this->fixedForm->Back; ?></a></td>
         </Td>
         <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
     </table>
 </div>
-
-<!--<div style="display:none;" class="two"> 
-    <table class="fieldsets">
-        <TR>
-            <TD><label for="fld1" class="mand">Date of account</label></TD>
-            <TD><?php // echo $this->fixedForm->date1;?></TD>
-        </TR>
-            <?php //foreach ($this->gp_members as $group) { ?>
-                <TR>
-                    <TD><label for="fld1"><?php //echo $group['name']; ?></label></TD>
-                    <TD><input type = "text" name="<?php// echo $group['id']; ?>"  class="txt" onchange = "calculateSum(this.value)"></TD>
-                </TR>
-
-                <?php // } ?>
-        <TR>
-            <TD><label for="fld1" class="mand">Period</label></TD>
-            <TD><?php //echo $this->fixedForm->period;?></TD>
-        </TR>
-        <TR>
-            <TD><label for="fld1" class="mand">Interest</label></TD>
-            <TD><div id="interestdiv"><?php //echo $this->fixedForm->interest;?></div></TD>
-        </TR>
-        <TR>
-            <TD><label for="fld1" class="mand">Fixed amount</label></TD>
-            <TD><?php //echo $this->fixedForm->tAmount;?></TD>
-        </TR>
-        <TR>
-            <TD><?php //echo $this->fixedForm->Submit; ?></TD>
-            <Td><?php //echo $this->fixedForm->Back; ?></td>
-        </Td>
-        <?php //echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
-    </table>
-</div>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
 <?php echo $this->fixedForm->Id; ?> 
 <?php echo $this->fixedForm->memberId; ?> 
  <?php echo $this->fixedForm->code; ?> 

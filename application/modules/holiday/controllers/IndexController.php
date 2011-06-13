@@ -17,23 +17,26 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Holiday_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
 		$this->view->pageTitle='Holiday';
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();
-    $sessionName = new Zend_Session_Namespace('ourbank');
-	$this->view->createdby = $sessionName->primaryuserid;
+      $storage = new Zend_Auth_Storage_Session();
+       $data = $storage->read();
+       if(!$data){
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+       }
 
-//		$this->view->username = $this->view->globalvalue[0]['username'];
-//        if (($this->view->globalvalue[0]['id'] == 0)) {
-//             $this->_redirect('index/logout');
- //       }
+       $sessionName = new Zend_Session_Namespace('ourbank');
+       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+       $login=new App_Model_Users();
+       $loginname=$login->username($userid);
+       foreach($loginname as $loginname) {
+           $this->view->username=$loginname['username']; // get the user name
+       }
+ 
 		$this->view->adm = new App_Model_Adm();
 	}
 
@@ -105,7 +108,7 @@ $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC"
 //getting the values from search form   			
 $dateconvert= new App_Model_dateConvertor();
 
-														$formdata1=array('name'=>$formData['name'],
+									 $formdata1=array('name'=>$formData['name'],
                                     					'office_id'=>$formData['office_id'],
                                     					'holiday_from'=>$dateconvert->mysqlformat($formData['holiday_from']),
                                     					'holiday_upto'=>$dateconvert->mysqlformat($formData['holiday_upto']),

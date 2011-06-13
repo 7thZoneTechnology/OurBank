@@ -20,32 +20,7 @@
 <head>
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
-
-<script type="text/javascript">
-
-
-
-$(document).ready(function() {
-
-    $("#beginingdate").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#closingdate").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#holiday_from").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#holiday_upto").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#repayment_date").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#begindate").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#closedate").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#begindate33").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#date1").datepicker({});
-    $("#loanAccountdate").datepicker({"dateFormat":"yy-mm-dd"});
-    $("#dateofbirth").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#dateofjoin").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#fund_beginingdate").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#fund_closingdate").datepicker({"dateFormat":"dd/mm/yy"});
-});
-</script>
 </head> 
 
 <?php echo $this->render('header.phtml'); ?>

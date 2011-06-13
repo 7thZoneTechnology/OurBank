@@ -27,8 +27,7 @@ class Fixedaccount_Model_Accounts extends Zend_Db_Table {
     {
        $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        //a.village_id= b.id and
-        //a.village_id= b.id and
+      
 
         $sql="SELECT 
               DISTINCT a.id as id,
@@ -74,8 +73,7 @@ class Fixedaccount_Model_Accounts extends Zend_Db_Table {
     {
        $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
-        //
-        //a.village_id= b.id and
+   
 
         $sql="SELECT 
                     a.id as id,
@@ -202,67 +200,45 @@ class Fixedaccount_Model_Accounts extends Zend_Db_Table {
         return $result;
            }
 
-    public function details($productId,$membercode) 
+    public function detailsforgroup($membercode) 
     {
-      $db = Zend_Db_Table::getDefaultAdapter();
-        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $select = $this->select()
+            ->setIntegrityCheck(false)  
+            ->join(array('D' => 'ourbank_office'),array('id'),array('D.name as officename','D.id as officeid'))
+            ->join(array('C' => 'ourbank_group'),'D.id  = C.village_id',array('C.name as name','C.name as groupname','C.groupcode as code','substr(C.groupcode,5,1) as type'))
+            ->where('C.groupcode like "%" ? "%" ' ,$membercode);
+	$result = $this->fetchAll($select);
+        return $result->toArray();
+// // die($select->__toString($select));
+    } 
 
+ public function getofferdetails($productId) 
+    {
 
-
-        $sql = "SELECT 
-                    E.familycode as code,
-                    substr(E.familycode,5,1) as type,
-                    E.name as name,
-                    F.name as officename,
-                    F.id as officeid,
-                    B.name as productname,
-                    B.begindate as begindate,
-                    B.glsubcode_id as glsubID,
-                    C.minimum_deposit_amount as minbalance,
-                    C.penal_Interest as mininterest,
-                    d.name as groupname
-
-                    FROM 
-                    ourbank_productsoffer B,
-                    ourbank_product_fixedrecurring C,
-                    ourbank_familymember E,
-                    ourbank_office F,
-                    ourbank_group d,
-                    ourbank_groupmembers e
-                    WHERE
-                    (E.familycode like '$membercode' '%') AND 
-                    B.id = $productId AND
-                    B.id = C.productsoffer_id AND
-                    E.id= e.member_id and 
-                    e.group_id= d.id and 
-                    F.id = E.village_id
-                UNION
-                SELECT 
-                    E.groupcode as code,
-                    substr(E.groupcode,5,1) as type,
-                    E.name as name,
-                    E.name as groupname,
-                    F.name as officename,
-                    F.id as officeid,
-                    B.name as productname,
-                    B.begindate as begindate,
-                    B.glsubcode_id as glsubID,
-                    C.minimum_deposit_amount as minbalance,
-                    C.penal_Interest as mininterest
-                    FROM 
-                    ourbank_productsoffer B,
-                    ourbank_product_fixedrecurring C,
-                    ourbank_group E,
-                    ourbank_office F
-                    WHERE
-                    (E.groupcode like '$membercode' '%') AND 
-                    B.id = $productId AND
-                    B.id = C.productsoffer_id AND
-                    F.id = E.village_id";
-// echo $sql;
-        $result = $db->fetchAll($sql);
-        return $result;
+        $select = $this->select()
+            ->setIntegrityCheck(false)  
+            ->join(array('A' => 'ourbank_productsoffer'),array('id'),array('A.name as productname','A.begindate as begindate','A.glsubcode_id as glsubID'))
+            ->join(array('B' => 'ourbank_product_fixedrecurring'),'A.id = B.productsoffer_id',array('B.minimum_deposit_amount as minbalance','B.maximum_deposit_amount as maxbalance','B.penal_Interest as mininterest'))
+            ->where('A.id ='. $productId);
+	$result = $this->fetchAll($select);
+        return $result->toArray();
     }
+
+
+ public function detailsforindividual($membercode) 
+    {
+
+$select = $this->select()
+        ->setIntegrityCheck(false)  
+        ->join(array('D' => 'ourbank_office'),array('id'),array('D.name as officename','D.id as officeid'))
+        ->join(array('C' => 'ourbank_familymember'),'D.id  = C.village_id',array('C.name as name','C.familycode as code','substr(C.familycode,5,1) as type'))
+        ->join(array('F' => 'ourbank_groupmembers'),'F.member_id  = C.id',array('member_id'))
+        ->join(array('E' => 'ourbank_group'),'F.group_id   = E.id',array('E.name as groupname'))
+        ->where('C.familycode like "%" ? "%" ' ,$membercode);
+// die($select->__toString($select));
+$result = $this->fetchAll($select);
+        return $result->toArray();
+}
 
     public function getInterestRates($id)
     {
@@ -295,14 +271,14 @@ class Fixedaccount_Model_Accounts extends Zend_Db_Table {
     }
 
     public function interestperiods($productId) {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select  min(period_ofrange_monthfrom) as minperiod,
-                max(period_ofrange_monthto) as maxperiod 
-                from ourbank_interest_periods 
-                where offerproduct_id='$productId' 
-                AND intereststatus_id=3 ";
-        $result = $db->fetchAll($sql);
-        return $result;
+
+$select = $this->select()
+			->setIntegrityCheck(false)  
+			->from(array('a' => 'ourbank_interest_periods'),array('min(a.period_ofrange_monthfrom) as minperiod','max(a.period_ofrange_monthto) as maxperiod'))
+                        ->where('a.offerproduct_id='.$productId.' AND a.intereststatus_id=3');
+//         die($select->__toString($select));
+	$result = $this->fetchAll($select);
+        return $result->toArray();
     }
 
     public function getInterestvalue($productId,$interestId) {

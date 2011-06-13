@@ -320,7 +320,7 @@ $(document).ready(
           var regex = new RegExp(/^[a-zA-Z\ \']+$/);
           if(!regex.test($(this).val()) && $(this).val() != "") {
               if($(this).next('span').length == 0 ) {
-                 $(this).after('<span id="charid" style="color: #FF0000"><br>Alphanumeric not allowed</span>');
+                 $(this).after('<span id="charid" style="color: #FF0000"><br>Alphabets only allowed</span>');
               }
               e.preventDefault();
               return;
@@ -333,7 +333,7 @@ $(document).ready(
            var regex = new RegExp(/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/);
            if(!regex.test($(this).val()) && $(this).val() != "") {
                if($(this).next('span').length == 0 ) {
-                  $(this).after('<span style="color: #FF0000" id="numberspan">Alphanumeric not allowed</span>');
+                  $(this).after('<span style="color: #FF0000" id="numberspan">Numeric data only allowed</span>');
                }
                e.preventDefault();
                return;

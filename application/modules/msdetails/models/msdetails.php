@@ -54,35 +54,58 @@ class Msdetails_Model_msdetails extends Zend_Db_Table
         $result = $db->fetchAll($sql,array($acc));
         return $result;
     }
+//     public function transaction($acc) 
+//     {
+//         $db = Zend_Db_Table::getDefaultAdapter();
+//         $db->setFetchMode(Zend_Db::FETCH_OBJ);
+//         $sql = "SELECT 
+//                 A.transaction_id as id,
+//                 A.member_id,
+//                 B.account_number as number,
+//                 DATE_FORMAT(A.transaction_date, '%d/%m/%Y') as date,
+//                 A.transaction_amount
+//               
+//                 FROM 
+//                 ourbank_group_savingstransaction A,
+//                 ourbank_accounts B
+//               
+//                 WHERE
+//                 B.account_number  = '".$acc."' AND
+//                 A.account_id = B.id 
+// 
+//       
+//                 ";
+// 
+//         echo $sql;
+//         $result = $db->fetchAll($sql);
+//         return $result;
+//     }
     public function transaction($acc) 
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT 
                 A.transaction_id as id,
-                A.member_id,
-                C.name as membername,
                 B.account_number as number,
                 DATE_FORMAT(A.transaction_date, '%d/%m/%Y') as date,
-                A.transaction_amount,
+                A.amount_to_bank,
+                A.amount_from_bank,
                 D.name as mode,
                 E.name as name
                 FROM 
-                ourbank_group_savingstransaction A,
+                ourbank_savings_transaction A,
                 ourbank_accounts B,
                 ourbank_transactiontype D,
-                ourbank_user E,
-                ourbank_familymember C
+                ourbank_user E
                 WHERE
                 B.account_number  = '".$acc."' AND
                 A.account_id = B.id AND
-                A.transaction_type = D.id AND
-                A.member_id=C.id AND
-                A.transacted_by = E.id  
+                A.transactiontype_id = D.id AND
+                A.transaction_by = E.id  
                 ORDER BY A.transaction_id DESC
                 ";
 
-        //echo $sql;
+//         echo $sql;
         $result = $db->fetchAll($sql);
         return $result;
     }

@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Savingsdeposit_IndexController extends Zend_Controller_Action
 {
     public function init() 
@@ -28,22 +25,26 @@ class Savingsdeposit_IndexController extends Zend_Controller_Action
 	$this->view->pageTitle = "Savings deposit";
 	$this->view->type='savings';
         $this->view->savingsModel = new Savingsdeposit_Model_Savingsdeposit ();
+        $this->view->savingswithdraw = new Savingswithdrawal_Model_Withdrawal();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
         $this->view->dc = new App_Model_dateConvertor();
-        $this->view->savingswithdraw = new Savingswithdrawal_Model_Withdrawal ();
 
-                $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
+       $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
 
-                $storage = new Zend_Auth_Storage_Session();
-                $data = $storage->read();
-                if(!$data)
-                {
-                    $this->_redirect('index/login');
-                }
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+
+        $loginname=$this->view->cl->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        }
+
 
     }
 
@@ -57,16 +58,17 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
             $acc = $this->_request->getPost('accNum');
                 if($searchform->isValid($formdata)){
                     $validaccno = $dbobj->savingsAccountsSearch($acc);
-//                     $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
-//                                 if($tagAcc!=0){
-//                                             $this->view->error = "Enter valid Account number";
-//                                 }else {
+                    $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
+                    $mtype = $this->view->adm->getsingleRecord('ourbank_accounts','membertype_id','account_number',$acc);
+                                if($tagAcc!=0 && $mtype == 1){
+                                            $this->view->error = "Deposit not allowed use group account to deposit";
+                                }else {
                                     if ($validaccno){
                                         $this->_redirect("/savingsdeposit/index/deposit/accNum/".base64_encode($acc));
                                     }else{
                                             $this->view->error = "Enter valid saving account number";
                                     }
-//                                 }
+                                }
                 }   
         }
     }
@@ -129,6 +131,9 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
                     if($transactionMode !=1){
                             $this->view->form->othertext->setRequired(false);
                             $chequeno =  $this->_request->getParam('othertext1'); 
+                            $paymenttype_details = $chequeno;
+                        } else {
+                    $paymenttype_details = 0;
                     }
                 } 
                 else {
@@ -144,23 +149,22 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
                 }
                 if($transactionMode !=1){
                                 $this->view->form->othertext1->setRequired(false);
-                                 $chequeno =  $this->_request->getParam('othertext'); 
-        
-                        }
-            }
-  if($chequeno){
-                    $paymenttype_details = $chequeno;
-                }else{
+                                $chequeno =  $this->_request->getParam('othertext'); 
+                                $paymenttype_details = $chequeno;
+                        } else {
                     $paymenttype_details = 0;
                 }
+            }
+ 
             $flag = false;
             $formData = $this->_request->getPost();
             $description = $this->_request->getParam('description');
   if($givendate){
-
-                if ($this->view->dc->phpmysqlformat($givendate) < date('Y-m-d')) {
-                     $this->view->maxdate= "Date of account should be current date" ;
+ $gdate = $this->view->dc->phpmysqlformat($givendate);
+                if ( $gdate != date('Y-m-d') ) {
+                                     $this->view->maxdate= "Date should be current date" ;
                 } 
+                
                 else {
             if ($form->isValid($formData)) {
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();

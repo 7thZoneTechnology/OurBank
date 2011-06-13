@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 // create class for fixed account 
 class Fixedaccount_IndexController extends Zend_Controller_Action 
 {
@@ -30,33 +27,32 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
         $this->view->accounts = new Fixedaccount_Model_Accounts();
         $this->view->cl = new App_Model_dateConvertor();
         $this->view->adm = new App_Model_Adm();
-        
-         $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
- 
-                $storage = new Zend_Auth_Storage_Session();
+
+        $storage = new Zend_Auth_Storage_Session();
                 $data = $storage->read();
                 if(!$data){
-                 $this->_redirect('index/login');
-                 }
+                        $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+                }
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        }
     }
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Fixedaccount_Form_Accounts();
-// //         $page = $this->_getParam('page',1);
 // // get Individual list and group list in a single instance
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
             if ($accountsForm->isValid($formData)) {
                 $result = $this->view->accounts->search($this->_request->getParam('membercode'));
                 if($result) {
-// //                     $paginator = Zend_Paginator::factory($result);
                     $this->view->result =$result;
-// //                     $paginator->setItemCountPerPage($this->view->adm->paginator());
-// //                     $paginator->setCurrentPageNumber($page);
-// //                     $this->view->paginator = $paginator;    
                  } else {
                     $this->view->errormsg = "No records found";
                 }
@@ -80,21 +76,39 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
     public function createaccountAction()
     {
         $path=$this->view->baseUrl();
-        $fixedForm = new Fixedaccount_Form_Fixed($path);
-        $this->view->fixedForm = $fixedForm;
+      
+
+
         $productId = base64_decode($this->_request->getParam('Id'));
         $memberId = base64_decode($this->_request->getParam('memberId'));
         $membercode = base64_decode($this->_request->getParam('code'));
-        $fixedForm->Id->setValue(base64_encode($productId));
+
+// offer details
+        $this->view->offerdetails = $this->view->accounts->getofferdetails($productId);
+
+        foreach($this->view->offerdetails as $account) {
+        $minimumbal = $account['minbalance'];
+        $maxbal = $account['maxbalance'];
+        }
+// check whether the group belongs to SHG or JLG and get Group members 
+        if(substr($membercode,4,1)=='2' or substr($membercode,4,1)=='3') {
+        $this->view->account = $this->view->accounts->detailsforgroup($membercode);
+        }else {
+        $this->view->account = $this->view->accounts->detailsforindividual($membercode);
+        }  
+// // // Zend_Debug::dump($this->view->account);
+
+
+  $fixedForm = new Fixedaccount_Form_Fixed($path,$minimumbal,$maxbal);
+        $this->view->fixedForm = $fixedForm;
+
+
+ $fixedForm->Id->setValue(base64_encode($productId));
         $fixedForm->memberId->setValue(base64_encode($memberId));
         $fixedForm->code->setValue(base64_encode($membercode));
 
-        // check whether the group belongs to SHG or JLG and get Group members 
-        if(substr($membercode,4,1)=='2' or substr($membercode,4,1)=='3') {
-            $this->view->gp_members=$groupmembers = $this->view->accounts->fetchmembers($memberId);
-        }
-        // get interest period 
-        $interestperiods=$this->view->accounts->interestperiods($productId);
+   // get interest period 
+       $interestperiods=$this->view->accounts->interestperiods($productId);
         foreach($interestperiods  as $interestperiods){ 
                 $minimumperiod = $interestperiods['minperiod'];
                 $interestperiods1 = $interestperiods['maxperiod'];
@@ -103,39 +117,55 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
         for($i=$minimumperiod;$i<=$interestperiods1;$i++)  {
                 $fixedForm->period->addMultiOption($productId.'-'.$i,$i);
         }
-        $this->view->account = $this->view->accounts->details($productId,$membercode);
-        $this->view->interestRates = $this->view->accounts->getInterestRates($productId);
+
+       
+
+        // check whether the group belongs to SHG or JLG and get Group members 
+        if(substr($membercode,4,1)=='2' or substr($membercode,4,1)=='3') {
+            $this->view->gp_members=$groupmembers = $this->view->accounts->fetchmembers($memberId);
+        }
+             $this->view->interestRates = $this->view->accounts->getInterestRates($productId);
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
-                $formData = $this->_request->getPost();
-                if ($fixedForm->isValid($formData)) {
-                foreach ($this->view->account as $account) {
-                    $begindate = $account->begindate;
-                    $officeid = $account->officeid;
-                    $typeID = $account->type;
-                    $glsubID = $account->glsubID;
-                }
-            $type = 1;
-            foreach($groupmembers as $group){
-                            if ($this->_request->getParam($group['id'])) {
-            $type = 2;
-            }
-            } 
+        $formData = $this->_request->getPost();
 
-//                         Insertion into ourbank_account 
+        $id = $this->_request->getPost('period');
+
+        $value=explode('-',$id);
+        $interestid = $this->view->accounts->getInterestvalue($value[0],$value[1]);
+
+        foreach($interestid as $interestvalue1) {
+             $interestid = $interestvalue1->id;
+        }
+
+                if ($fixedForm->isValid($formData)) {
+                foreach ($this->view->offerdetails as $offer) {
+                    $begindate = $offer['begindate'];
+                    $glsubID = $offer['glsubID'];
+                } 
+
+                foreach ($this->view->account as $account) {
+                    $officeid = $account['officeid'];
+                    $typeID = $account['type'];
+                }
+
+            $membercode = base64_decode($this->_request->getParam('code'));
+            $type = substr($membercode,4,1);
+
+// //                         Insertion into ourbank_account 
                 $data = array('account_number' => 1,
                                 'member_id' => $memberId,
                                 'product_id' => $productId,
                                 'begin_date' => $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
                                 'membertype_id' => $type,
                                 'accountcreated_date'=> date('Y-m-d'),
-                                'created_by' => 1,
+                                'created_by' => $this->view->createdby,
                                 'status_id'=>1);
                 $accId = $this->view->adm->addRecord('ourbank_accounts',$data);
-//                         // Account number formation 
-//                         // <-----------14 digit number ---------->
-//                         // <--3-->/<--2-->/<---->/<--3-->/<--6-->
-//                         // 00office_id/0membertype_id/0product type/typeofacc [L/S/F/R]/00000account_id
+                        // Account number formation 
+                        // <-----------14 digit number ---------->
+                        // <--3-->/<--2-->/<---->/<--3-->/<--6-->
+                        // 00office_id/0membertype_id/0product type/typeofacc [L/S/F/R]/00000account_id
                 $b=str_pad($officeid,3,"0",STR_PAD_LEFT);
                 $t=str_pad($typeID,2,"0",STR_PAD_LEFT);
                 $pid=str_pad($productId,2,"0",STR_PAD_LEFT);
@@ -155,7 +185,7 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                                 'transaction_description'=> "Opening amount",
                                 'balance' => $this->_request->getPost('tAmount'),
                                 'confirmation_flag' => 0,
-                                'created_by' => 1);
+                                'created_by' => $this->view->createdby);
                 $tranID = $this->view->adm->addRecord('ourbank_transaction',$input);
 //                     Insertion into Fixed accounts
 
@@ -169,10 +199,10 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                                 'mature_date' => $maturedate,
                                 'fixed_amount' => $this->_request->getPost('tAmount'),
                                 'timefrequncy_id' => '',
-                                'fixed_interest' => $this->_request->getPost('interestid'),
+                                'fixed_interest' => $interestid,
                                 'premature_interest' => 1,
                                 'fixedaccountstatus_id'=> 1,
-                                'created_by' => 1,
+                                'created_by' => $this->view->createdby,
                                 'created_date' => date('Y-m-d'),
                                 'recordstatus_id' => 3);
                 $this->view->adm->addRecord('ourbank_fixedaccounts',$saving);
@@ -188,9 +218,8 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                 foreach ($glresult as $glresult) {
                     $cashglsubocde = $glresult->id;
                 }
-//                     Insertion into groupmemmbers_accounts 
+//                     Insertion into group members_accounts 
 
-// //                 if($_POST['members']){
                     $member_array = $groupmembers;
 
                     foreach($groupmembers as $member_array1) {
@@ -199,7 +228,7 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                                         'product_id' => $productId,
                                         'status' => 3,
                                         'created_date' => date('Y-m-d'),
-                                        'created_by' => 1);
+                                        'created_by' => $this->view->createdby);
                         $this->view->adm->addRecord('ourbank_group_acccounts',$gp_mem);
                     }
                         if($type ==1){
@@ -212,9 +241,9 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                                         'transaction_date' => date('Y-m-d'),
                                         'transaction_type' => 1,
                                         'transaction_amount' => $splitamt,
-                                        'transaction_interest' => $this->_request->getPost('interestid'),
+                                        'transaction_interest' => $interestid,
                                         'created_date' => date('Y-m-d'),
-                                        'transaction_by' => 1);
+                                        'transaction_by' => $this->view->createdby);
                             $this->view->adm->addRecord('ourbank_group_fixedtransaction',$gp_mem);
                             }
                         }else {
@@ -225,17 +254,13 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
                                         'transaction_date' => date('Y-m-d'),
                                         'transaction_type' => 1,
                                         'transaction_amount' => $this->_request->getParam($member_array1['id']),
-                                        'transaction_interest' => $this->_request->getPost('interestid'),
+                                        'transaction_interest' => $interestid,
                                         'created_date' => date('Y-m-d'),
-                                        'transaction_by' => 1);
+                                        'transaction_by' => $this->view->createdby);
                             $this->view->adm->addRecord('ourbank_group_fixedtransaction',$gp_mem);
                             }
 
                         }
-
-// //                 }
-
-
                    // // Insertion into Assets ourbank_Assets
                 $assets =  array('office_id' => $officeid,
                                 'glsubcode_id_from' => '',
@@ -263,6 +288,7 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
 
         $value=explode('-',$id);
         $interestvalue = $this->view->accounts->getInterestvalue($value[0],$value[1]);
+
         foreach($interestvalue as $interestvalue1) {
              $this->view->interest = $interestvalue1['Interest'];
              $this->view->interestid = $interestvalue1['id'];

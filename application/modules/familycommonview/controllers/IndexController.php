@@ -26,15 +26,21 @@ class Familycommonview_IndexController extends Zend_Controller_Action
     public function init() 
     {
   	$this->view->pageTitle='Family Information';
-        $globalsession = new App_Model_Users();
-        $this->view->globalvalue = $globalsession->getSession();// get session values
-        $this->view->createdby = $this->view->globalvalue[0]['id'];
-        $this->view->username = $this->view->globalvalue[0]['username'];
-        $storage = new Zend_Auth_Storage_Session();
+       $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
-            $this->_redirect('index/login');
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
+
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        } 
 	$this->view->adm = new App_Model_Adm();    
     }
 
@@ -54,7 +60,7 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         $this->view->memberid=$id;
         $familycommon=new Familycommonview_Model_familycommonview(); 
         $member_name=$familycommon->getfamily($id);
-        $revvillageid=$member_name[0]['rev_village_id'];
+// // //         $revvillageid=$member_name[0]['rev_village_id'];
 // // // //         if($revvillageid){
 // // // //         $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
 // // // //         $this->view->revvillagename=$revvillagename[0]['name']; 

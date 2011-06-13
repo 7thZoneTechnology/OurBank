@@ -83,8 +83,8 @@ class Externalloan_Model_Dec  extends Zend_Db_Table {
                 ->join(array('a' => 'ourbank_group'),array('id'),array('a.id as groupid','a.name as name','a.groupcode as code',''))
                 ->where('a.groupcode = '.$membercode)
                 ->join(array('b' => 'ourbank_accounts'),'a.id=b.member_id',array('b.account_number as loanaccount'))
-                ->join(array('c'=>'ourbank_loanaccounts'),'c.account_id=b.id',array('id'))
-				->join(array('j' => 'ourbank_contact'),'j.id=a.id',array('mobile'));
+                ->join(array('c'=>'ourbank_loanaccounts'),'c.account_id=b.id',array('id'));
+/*				->join(array('j' => 'ourbank_contact'),'j.id=a.id',array('mobile'));*/
 //                  die($select->__toString($select));
                 $result=$this->fetchAll($select);
                 return $result->toArray(); // return group member details

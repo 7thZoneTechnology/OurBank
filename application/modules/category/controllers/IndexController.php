@@ -17,25 +17,29 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-<?php
 class Category_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
                 $this->view->pageTitle='Category';
-               $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
-//        if (($this->view->globalvalue[0]['id'] == 0)) {
-//            $this->_redirect('index/logout');
-//        }
+
+      $storage = new Zend_Auth_Storage_Session();
+       $data = $storage->read();
+       if(!$data){
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+       }
+
+       $sessionName = new Zend_Session_Namespace('ourbank');
+       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+       $login=new App_Model_Users();
+       $loginname=$login->username($userid);
+       foreach($loginname as $loginname) {
+           $this->view->username=$loginname['username']; // get the user name
+       }
+ 
+
+      
 		$this->view->adm = new App_Model_Adm();   
                 $dbobj = new Category_Model_Category();
                 $categoryvalues = $dbobj->getAllCategory();
@@ -47,7 +51,7 @@ class Category_IndexController extends Zend_Controller_Action
                 for($i=0;$i<=1;$i++){
                     $dbobj->insertbaseCategory(array('id' => '',
                         'name' => $name[$i],'description' => $desc[$i],
-                        'created_by' =>$this->view->createdby,'created_date'=>date("Y-m-d")));
+                        'created_by' =>1,'created_date'=>date("Y-m-d")));
                 }
                 }
 
@@ -110,7 +114,8 @@ class Category_IndexController extends Zend_Controller_Action
 				$formData = $this->_request->getPost();
 				if ($this->_request->isPost()) {
 					if ($categoryForm->isValid($formData)) {  
-//adding the datas to the table
+//                                         echo "created by".$this->view->createdby;
+// adding the datas to the table
 					$id = $this->view->adm->addRecord("ourbank_category",$categoryForm->getValues());
 						$this->_redirect('/category/index/categoryview/id/'.$id);
 				}

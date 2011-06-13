@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Declaration_Bootstrap extends Zend_Application_Module_Bootstrap {
 
 

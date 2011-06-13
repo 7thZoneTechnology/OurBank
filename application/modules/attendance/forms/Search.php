@@ -25,6 +25,7 @@ class Attendance_Form_Search extends Zend_Form {
 	$formfield = new App_Form_Field();
 	$search_meeting_name_att = $formfield->field('Select','search_meeting_name_att','','','','','','','','','','','','');
 	$search_meeting_date = $formfield->field('Text','search_meeting_date','','','','','','','','','','','','');
+        $search_meeting_date->setAttrib('autocomplete','off');
         $this->addElements(array($search_meeting_name_att,$search_meeting_date));
     }
 }
