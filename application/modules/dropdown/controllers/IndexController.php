@@ -35,8 +35,6 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		$id = $this->view->adm->addRecord('ourbank_master_mastertables',$formdata1);
 		$this->_redirect('/dropdown');
 		}
-
-
 	}
 
 }
