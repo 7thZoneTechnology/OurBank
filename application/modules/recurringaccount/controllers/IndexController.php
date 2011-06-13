@@ -111,6 +111,8 @@ $recurringForm = new Recurringaccount_Form_Recurring($path,$minimumbal,$maxbal);
         $this->view->interestRates = $this->view->accounts->getInterestRates($productId);
         if ($this->_request->getPost('Submit')) 
         {
+
+
             $formData = $this->_request->getPost();
             if ($this->_request->isPost()) {
                 if ($recurringForm->isValid($formData)) {

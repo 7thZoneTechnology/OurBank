@@ -1102,7 +1102,7 @@ $Expenseglsubcode = 0;
                                     'transaction_description'=>$description,
                                     'balance' => '',
                                     'confirmation_flag' => 0,
-                                    'created_by'=>1,
+                                    'created_by'=>$this->view->createdby,
                                     'created_date'=>date("Y-m-d")
                             ));
                                 $transaction_id1=$fixedSavings->transactionInsert($savingsTransactiondata1);
@@ -1120,7 +1120,7 @@ $Expenseglsubcode = 0;
                                         'paymenttype_details'=>'',
                                         'transaction_description'=>$description,
                                         'transaction_interest'=>'',
-                                        'transaction_by'=>1,
+                                        'transaction_by'=>$this->view->createdby,
                                         'created_date'=>date("Y-m-d")
 
                                 ));
@@ -1129,7 +1129,7 @@ $Expenseglsubcode = 0;
                         $transactions=new Fixedtransaction_Model_persnolSavings();
 
                         $banklibalitesaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_to'=>0,
+                                                    'glsubcode_id_to'=>'',
                                                     'glsubcode_id_from' => '',
                                                     'transaction_id'=>$transaction_id1,
                                                     'credit'=>$capitalamount,
@@ -1144,11 +1144,16 @@ $Expenseglsubcode = 0;
                         foreach($selectbankcashaccounts as $selectbankcashaccount) {
                             $bankcashglsubcode=$selectbankcashaccount['id'];
                             }
-
+if($selectbankcashaccounts){
+$bankcashgl = $bankcashglsubcode;
+}else
+{
+$bankcashgl = '';
+}
 
 
                             $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_to'=>0,
+                                                    'glsubcode_id_to'=>$bankcashgl,
                                                     'glsubcode_id_from'=>'',
                                                     'transaction_id'=>$transaction_id1,
                                                     'credit'=>$capitalamount,
@@ -1162,9 +1167,14 @@ $Expenseglsubcode = 0;
                             foreach($selectbankaccounts as $selectbankaccount) {
                                 $bankglsubcode=$selectbankaccount['id'];
                             }
-
+                            if($selectbankaccounts){
+                                 $bankcashglc = $bankglsubcode;
+                            }else
+                            {
+                                $bankcashglc = '';
+                            }
                             $bankassetsaccountinsert = (array('office_id' => $memberbranch_id,
-                                                    'glsubcode_id_to'=>0,
+                                                    'glsubcode_id_to'=> $bankcashglc,
                                                     'glsubcode_id_from'=>'',
                                                     'transaction_id'=>$transaction_id1,
                                                     'credit'=>$capitalamount,

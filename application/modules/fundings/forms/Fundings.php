@@ -24,7 +24,7 @@ class Fundings_Form_Fundings extends ZendX_JQuery_Form
 	$formfield = new App_Form_Field ();
         $name = $formfield->field('Text','name','','','mand','Funding name',true,'','','','','',1,0);
         $funderId = $formfield->field('Select','funder_id','','','mand','Funder name',true,'','','','','',1,0);
-        $interest = $formfield->field('Text','interest','','','mand','Interest %',true,'','','','','',1,0);
+        $interest = $formfield->field('Text','interest','','',' ','Interest %',false,'','','','','',1,0);
         $currencyId = $formfield->field('Select','currency_id','','','mand','Funding currency',true,'','','','','',1,0);
         $amount = $formfield->field('Text','amount','','','mand digits','Funding amount Rs',true,'','','','','',1,0);
         
@@ -34,10 +34,10 @@ class Fundings_Form_Fundings extends ZendX_JQuery_Form
         $date->setJQueryParam("year", 'true');
         $date->setJQueryParam('changeMonth', 'true');
         $date->setJQueryParam('changeYear', 'true'); */       
-        $beginingDate = $formfield->field('Text','beginingdate','','','mand','Funding period from',true,'','','','','',1,0);
-         $beginingDate->setAttrib('autocomplete','off'); 
-        $closingDate = $formfield->field('Text','closingdate','','','mand','Funding period to',true,'','','','','',1,0);
-         $closingDate->setAttrib('autocomplete','off'); 
+        $beginingDate = $formfield->field('Text','beginingdate','','','','Funding period from',false,'','','','','',1,0);
+        $beginingDate->setAttrib('autocomplete','off'); 
+        $closingDate = $formfield->field('Text','closingdate','','','','Funding period to',false,'','','','','',1,0);
+        $closingDate->setAttrib('autocomplete','off'); 
  // Hidden Feilds 
 	$id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
 	$createdBy = $formfield->field('Hidden','created_by','','','','',false,'','','','','',0,1);

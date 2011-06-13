@@ -37,9 +37,6 @@ class Category_IndexController extends Zend_Controller_Action
        foreach($loginname as $loginname) {
            $this->view->username=$loginname['username']; // get the user name
        }
- 
-
-      
 		$this->view->adm = new App_Model_Adm();   
                 $dbobj = new Category_Model_Category();
                 $categoryvalues = $dbobj->getAllCategory();

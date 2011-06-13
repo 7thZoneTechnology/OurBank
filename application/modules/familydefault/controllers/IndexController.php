@@ -114,31 +114,29 @@ class Familydefault_IndexController extends Zend_Controller_Action
 
        	foreach($institution as $institution)
        	{
-          //$searchForm->bank_id->addMultiOption($institution['village_id'],$institution['villagename']);
 		$addForm->rev_village->addMultiOption($institution['village_id'],$institution['villagename']);
-//         $addForm->village->addMultiOption($institution['village_id'],$institution['villagename']);
        	}
- 
+        $habitationobj = new Familydefault_Model_familydefault();
 
-//         $village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
-//         foreach($village as $village1){
-//         $addForm->village->addMultiOption($village1['village_id'],$village1['name']);
-//         $addForm->rev_village->addMultiOption($village1['village_id'],$village1['name']);
-//         }
 		$groupname=$this->_request->getParam('familyid');
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
+			if($this->_request->getParam('rev_village')){
+				$village_id = $this->_request->getParam('rev_village');
+				$village = $this->_request->getParam('village');
+
+			$habitationval = $habitationobj->gethabitation($village_id);
+ 	        foreach($habitationval as $village) 
+            {
+	        $addForm->village->addMultiOption($village['id'],$village['villagename']);
+	        }
+
+				$addForm->village->setValue($village);
+			}
 			$addForm->familyid1->setRequired(false);
 
             $formData = $this->_request->getPost(); 
-            $healtharray=$this->_request->getParam('health'); /*print_r($healtharray); //echo count($healtharray);*/
-//             if($addForm->isValid($formData))
-//             {
-// 			 $validator = new Zend_Validate_Db_RecordExists('ourbank_family','family_id');
-//             if ($validator->isValid($groupname)) {
-//                 $messages = $validator->getMessages();	
-//                     $this->view->errorgroupname=$groupname.'This Family ID Already Existed';// if name exists display error message
-//             } else {
+            $healtharray=$this->_request->getParam('health');
 			if($addForm->isValid($formData))
             {
         // add individual member

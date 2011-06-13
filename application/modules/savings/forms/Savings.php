@@ -47,10 +47,12 @@ public function __construct()
         $offerproduct_description = $formfield->field('Textarea','offerproduct_description','','','mand','offerproduct_description',true,'','','',2,23,'','');
         
         $begindate = $formfield->field('Text','begindate','','','','begindate',false,'','','','','',0,'');
-                    
+        $begindate->setAttrib('class','d');
 
         
         $closedate = $formfield->field('Text','closedate','','','mand','closedate',true,'','','','','','','');
+        $closedate->setAttrib('class','d');
+
         $closedate->addValidator(new Zend_Validate_Date('DD-MM-YYYY'),true,
                                                 array('messages' =>array(Zend_Validate_Date::FALSEFORMAT => 'Enter the valid date')));	   					
 //         $feeglcode = $formfield->field('Select','feeglcode','','','mand','feeglcode',true,'','','','','','','');

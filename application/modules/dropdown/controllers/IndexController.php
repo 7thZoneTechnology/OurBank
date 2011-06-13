@@ -129,9 +129,9 @@ $tName=$this->_request->getParam('name');
 			if($tName == 'ourbank_master_districtlist') {
  		$id=$this->_request->getParam('state');
  		$common=$this->_request->getParam('commonname');
-
+$name_regional=$this->_request->getParam('name_regional');
 									$formdata1=array('id'=>'',
-									'state_id'=>$id,
+									'state_id'=>$id,'name_regional'=>$name_regional,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -139,8 +139,8 @@ $tName=$this->_request->getParam('name');
 	if($tName == 'ourbank_master_hoblilist') {
  		$id=$this->_request->getParam('taluk');
  		$common=$this->_request->getParam('commonname');
-
-									$formdata1=array('id'=>'',
+$name_regional=$this->_request->getParam('name_regional');
+									$formdata1=array('id'=>'','name_regional'=>$name_regional,
 									'taluk_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
@@ -151,9 +151,9 @@ $tName=$this->_request->getParam('name');
 		if($tName == 'ourbank_master_villagelist') {
  		$id=$this->_request->getParam('gillapanchayath');
  		$common=$this->_request->getParam('commonname');
-
+$name_regional=$this->_request->getParam('name_regional');
 									$formdata1=array('id'=>'',
-									'panchayath_id'=>$id,
+									'panchayath_id'=>$id,'name_regional'=>$name_regional,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -163,9 +163,9 @@ $tName=$this->_request->getParam('name');
 if($tName == 'ourbank_master_taluklist') {
  		$id=$this->_request->getParam('district');
  		$common=$this->_request->getParam('commonname');
-
+$name_regional=$this->_request->getParam('name_regional');
 									$formdata1=array('id'=>'',
-									'district_id'=>$id,
+									'district_id'=>$id,'name_regional'=>$name_regional,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -175,8 +175,9 @@ if($tName == 'ourbank_master_taluklist') {
 	if($tName == 'ourbank_master_gillapanchayath') {
  		$id=$this->_request->getParam('hobli');
  		$common=$this->_request->getParam('commonname');
+ 		$name_regional=$this->_request->getParam('name_regional');
 
-									$formdata1=array('id'=>'',
+									$formdata1=array('id'=>'','name_regional'=>$name_regional,
 									'hobli_id'=>$id,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
@@ -188,9 +189,10 @@ if($tName == 'ourbank_master_taluklist') {
 if($tName == 'ourbank_master_branch') {
  		$id=$this->_request->getParam('bank');
  		$common=$this->_request->getParam('commonname');
+ 		$name_regional=$this->_request->getParam('name_regional');
 
 									$formdata1=array('id'=>'',
-									'bank_id'=>$id,
+									'bank_id'=>$id,'name_regional'=>$name_regional,
 									'created_by'=>$this->view->createdby,
 									'name'=>$common);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
@@ -201,11 +203,13 @@ if($tName == 'ourbank_master_branch') {
 if($tName == 'ourbank_master_habitation') {
  		$village=$this->_request->getParam('village');
  		$common=$this->_request->getParam('commonname');
+ 		$name_regional=$this->_request->getParam('name_regional');
 
 									$formdata1=array('id'=>'',
-									'village_id'=>$village,
+									'village_id'=>$village,'name_regional'=>$name_regional,
 									'created_by'=>$this->view->createdby,
-									'name'=>$common);
+									'name'=>$common,
+									'name_regional'=>$name_regional);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
 
@@ -213,9 +217,9 @@ if($tName == 'ourbank_master_habitation') {
 if($tName == 'ourbank_master_mastertables') {
  		$description=$this->_request->getParam('description');
  		$commonname=$this->_request->getParam('commonname');
- 		
+ 		$name_regional=$this->_request->getParam('name_regional');
 									$formdata1=array('id'=>'',
-									'descriptions'=>$description,
+									'descriptions'=>$description,'name_regional'=>$name_regional,
 									'name'=>$commonname);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
 $settings = new Dropdown_Model_Dropdown;
@@ -226,8 +230,8 @@ $settings = new Dropdown_Model_Dropdown;
 
 }
  		$commonname=$this->_request->getParam('commonname');
-
-									$formdata1=array('id'=>'',
+$name_regional=$this->_request->getParam('name_regional');
+									$formdata1=array('id'=>'','name_regional'=>$name_regional,
 									'name'=>$commonname);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -237,6 +241,7 @@ $settings = new Dropdown_Model_Dropdown;
 	}
  public function commonviewAction() 
     {
+		$name_regional=$this->_request->getParam('name_regional');
 		$tName=$this->_request->getParam('name');
  		$id=$this->_request->getParam('id');
 		$settings = new Dropdown_Model_Dropdown;
@@ -248,6 +253,7 @@ public function editAction()
     {
   			$tName=$this->_request->getParam('name');
 			$this->view->tableName = $tName;
+		$name_regional=$this->_request->getParam('name_regional');
 
 			$id=$this->_request->getParam('id');
 		    $this->view->id = $id;
@@ -261,15 +267,16 @@ public function editAction()
  		if ($this->_request->isPost() && $this->_request->getPost('Update')) 
 			{
 	    		 $Name=$this->_request->getParam('commonname');
+				 $name_regional=$this->_request->getParam('name_regional');
 
    				$tName=$this->_request->getParam('name');
 				if ($Name=='') {
 						 echo "value cant be empty"; 
 				} else {
 							$id=$this->_request->getParam('id');
-
+							$name_regional=$this->_request->getParam('name_regional');
   							$Name=$this->_request->getParam('commonname');
- 							$formdata1=array('name'=>$Name);		
+ 							$formdata1=array('name'=>$Name,'name_regional'=>$name_regional);		
 //Zend_Debug::dump($dropdownForm->getValues());
   							$previousdata = $this->view->adm->editRecord($tName,$id);
 							$this->view->adm->updateRecord($tName,$id,$formdata1);
@@ -307,6 +314,7 @@ public function editAction()
 		foreach($bank as $bank){
 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
 			}
+		$name_regional=$this->_request->getParam('name_regional');
 
 			$id=$this->_request->getParam('id');
 			$tName=$this->_request->getParam('name');
@@ -316,6 +324,7 @@ public function editAction()
 				switch($tName){
 					case 'ourbank_master_gillapanchayath': {
 						foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
@@ -325,6 +334,7 @@ public function editAction()
 					}break;
 					case 'ourbank_master_habitation': {
 						foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->village->setValue($holidaydetails['village_id']);
 						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
@@ -336,6 +346,7 @@ public function editAction()
 					}break;
 					case 'ourbank_master_villagelist': {
 						foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
@@ -346,6 +357,7 @@ public function editAction()
 					}break;
 					case 'ourbank_master_hoblilist': {
 					foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -353,7 +365,9 @@ public function editAction()
 															}
 										}break;
 					case 'ourbank_master_taluklist': {
-					foreach($namedetails as $holidaydetails) {
+					foreach($namedetails as $holidaydetails){
+
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
 						$this->view->form->state->setValue($holidaydetails['state_id']);
@@ -361,24 +375,28 @@ public function editAction()
 										}break;
 					case 'ourbank_master_districtlist': {
 					foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->state->setValue($holidaydetails['state_id']);
 															}
 										}break;
 					case 'ourbank_master_branch': {
 					foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->bank->setValue($holidaydetails['accounttype_id']);
 															}
 										}break;
 					case 'ourbank_master_mastertables': {
 					foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->description->setValue($holidaydetails['descriptions']);
 															}
 										}break;
 									}
 					foreach($namedetails as $holidaydetails) {
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']); }
 				}
  }

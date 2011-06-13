@@ -29,12 +29,14 @@ class Savingswithdrawal_Form_Withdrawal extends Zend_Form
         $date->setAttrib('class', 'txt_put');
         $date->setJQueryParam('dateFormat', 'yy-mm-dd');
         $date->setRequired(true);
-	$date->setAttrib('size', 10);
+        $date->setAttrib('autocomplete','off');
+	$date->setAttrib('size', 12);
 	
 	$date1 = new ZendX_JQuery_Form_Element_DatePicker('date1');
         $date1->setAttrib('class', 'txt_put');
         $date1->setJQueryParam('dateFormat', 'yy-mm-dd');
         $date1->setRequired(true);
+        $date1->setAttrib('autocomplete','off');
 	$date1->setAttrib('size', 12);
 
 

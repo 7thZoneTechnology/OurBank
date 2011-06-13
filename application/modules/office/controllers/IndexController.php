@@ -26,15 +26,11 @@ class Office_IndexController extends Zend_Controller_Action
    {
         $this->view->pageTitle=$this->view->translate('New Office');
 	//check session and redirect
-       $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+        $storage = new Zend_Auth_Storage_Session();
+	$data = $storage->read();
+	if(!$data){
+            $this->_redirect('index/login');
+	}
         $sessionName = new Zend_Session_Namespace('ourbank');
         $this->view->createdby = $sessionName->primaryuserid;
     }
@@ -76,6 +72,7 @@ else if(($sub1 == 'Search') && (($this->_request->getParam('office') != '') || (
               $this->view->s3 = $officename = $this->_request->getParam('officename');
 		    //return filtered values to view
                     $result = $office->SearchOffice($officeid,$shortname,$officename);
+                    
 
 }
 

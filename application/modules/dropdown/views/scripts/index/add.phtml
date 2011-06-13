@@ -170,9 +170,11 @@ function getvillage(village,path) {
 
 			</tr>
 				<?php }?>
+<tr>
 				<TD> Add new <? echo substr($this->tableName,15); ?></TD>
                 <TD colspan="2"><?php echo $this->form->commonname;?></TD>
 			</TR>
+<tr><td>Regional name</td><TD colspan="2"><?php echo $this->form->name_regional;?></TD></tr>
 	<tr><TD><input type="submit" name="Save" id="Submit" value="Save"></TD><td></td>
 		<td align="right"><a href="<?php echo $this->baseUrl(); ?>/dropdown">
                                 	<input name="submit" type="submit" class="officebutton" value="Back"></a></td></tr>

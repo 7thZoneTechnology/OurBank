@@ -16,6 +16,8 @@ public function __construct($path){
 		
 	
         	$name = $formfield->field('Text','commonname','','','','',true,'','','','','',0,0);
+        	$regionalname = $formfield->field('Text','name_regional','','','','',true,'','','','','',0,0);
+
         	$description = $formfield->field('Text','description','','','','',true,'','','','','',0,0);
 
            $state = $formfield->field('Select','state','','','','',true,'','','','','',0,0);
@@ -44,6 +46,6 @@ public function __construct($path){
       
 
 					
-            $this->addElements(array($name,$state,$district,$taluk,$gillapanchayath,$description,$village,$habitation,$hobli,$bank));
+            $this->addElements(array($name,$regionalname,$state,$district,$taluk,$gillapanchayath,$description,$village,$habitation,$hobli,$bank));
     }
 }

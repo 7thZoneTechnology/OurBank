@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Fundings_IndexController extends Zend_Controller_Action 
 {
     public function init()
@@ -113,8 +110,9 @@ class Fundings_IndexController extends Zend_Controller_Action
 				if ($this->_request->isPost()) {
 					$formData = $this->_request->getPost();
 					if ($form->isValid($formData)) { 
+
 $fundings = new Fundings_Model_Fundings();
-        $fundin=$fundings->getfundings();
+$fundin=$fundings->getfundings();
 if(!$fundin) {
 
 

@@ -29,13 +29,13 @@
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    $("#begindate").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#closedate").datepicker({"dateFormat":"dd/mm/yy"});
     $("#beginingdate").datepicker({"dateFormat":"yy-mm-dd"});
     $("#closingdate").datepicker({"dateFormat":"yy-mm-dd"});
     $("#holiday_from").datepicker({"dateFormat":"dd/mm/yy"});
     $("#holiday_upto").datepicker({"dateFormat":"dd/mm/yy"});
     $("#repayment_date").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#begindate").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#closedate").datepicker({"dateFormat":"dd/mm/yy"});
     $("#begindate33").datepicker({"dateFormat":"yy-mm-dd"});
     $("#date1").datepicker({});
     $("#loanAccountdate").datepicker({"dateFormat":"yy-mm-dd"});

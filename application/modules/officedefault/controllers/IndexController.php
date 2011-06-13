@@ -29,15 +29,8 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 	//language translator
         $this->view->pageTitle=$this->view->translate('New Office');
 	//session
-      $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $this->view->createdby = $sessionName->primaryuserid;
         $this->view->adm = new App_Model_Adm();
         $individualcommon=new Familycommonview_Model_familycommonview();
         $module=$individualcommon->getmodule('Office');
@@ -103,14 +96,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                foreach($maxid as $maxid1) {
                $villagelastid=$maxid1->lastid;}
                if($villagelastid==$officeid)
-               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '',
-																			'village_id'=>$lastid,
-																				'name'=>$name,
-																	'panchayath_id'=>$this->_request->getParam('panchayath'),
-													'created_date' =>$createdate,
-											'created_by'=>$this->view->createdby));
-
-
+               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
                   $this->view->adm->addRecord("ourbank_master_village",array('id' => '',
                                                 'village_id'=>$lastid,
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -151,7 +137,6 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 	//create cash and bank glsubcode
            if($j==1){ $headername="Bank";} else {$headername="Cash";}
            $gInsert = $ledger->insertGlsubcode(array('id' => '',
-                           'office_id'=>$lastid,
                            'glsubcode' => $glsubcode,
                            'glcode_id' => $j,
                            'subledger_id' => $ledgertype_id,
@@ -223,7 +208,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         }
     }
-
+        
         public function gettalukAction()
         {
         $this->_helper->layout()->disableLayout();
@@ -358,7 +343,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
         }
 
-        $panchayath = $office->getpanchayathlist($address[0]['hobli_id']);
+        $panchayath = $office->getpanchayathlist($address[0]['taluk_id']);
         foreach($panchayath as $panchayath1){
         $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
         }
@@ -397,12 +382,7 @@ echo $typeid;
                foreach($maxid as $maxid1) {
                echo $villagelastid=$maxid1->lastid;}
                if($villagelastid==$typeid)
-               {  $villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,
-																array('name'=>$name,
-																'village_id'=>$office_id,
-																	'panchayath_id'=>$this->_request->getParam('panchayath'),
-																'created_date' =>$createdate,
-															'created_by'=>$this->view->createdby));
+               {  /*$villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));*/
 
                   $office->updatevillage($office_id,array(
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -446,8 +426,8 @@ echo $typeid;
                if(!$members && !$office_id)
                {
                 $this->view->adm->deletemember("ourbank_office",$id);
-                $this->view->adm->deleteSubmodule("ourbank_contact",$id,$this->view->sub_id);
-                $this->view->adm->deleteSubmodule("ourbank_address",$id,$this->view->sub_id);
+                $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
+                $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
                 $this->_redirect('/office');
                }
                else

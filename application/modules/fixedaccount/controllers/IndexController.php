@@ -78,10 +78,21 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
         $path=$this->view->baseUrl();
       
 
+//                 /*fetching member code*/
+                if ($this->_request->isPost()) {
+                        /*if the information is Posted*/
+                 $productId = base64_decode($this->_request->getPost('Id'));
+                 $memberId = base64_decode($this->_request->getPost('memberId'));
+                 $membercode = base64_decode($this->_request->getPost('code'));
+                } else {
+                        /*if the information is from url*/
+               $productId = base64_decode($this->_request->getParam('Id'));
+               $memberId = base64_decode($this->_request->getParam('memberId'));
+               $membercode = base64_decode($this->_request->getParam('code'));
+                }
 
-        $productId = base64_decode($this->_request->getParam('Id'));
-        $memberId = base64_decode($this->_request->getParam('memberId'));
-        $membercode = base64_decode($this->_request->getParam('code'));
+
+      
 
 // offer details
         $this->view->offerdetails = $this->view->accounts->getofferdetails($productId);
@@ -90,6 +101,12 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
         $minimumbal = $account['minbalance'];
         $maxbal = $account['maxbalance'];
         }
+
+
+        $fixedForm = new Fixedaccount_Form_Fixed($path,$minimumbal,$maxbal);
+        $this->view->fixedForm = $fixedForm;
+
+
 // check whether the group belongs to SHG or JLG and get Group members 
         if(substr($membercode,4,1)=='2' or substr($membercode,4,1)=='3') {
         $this->view->account = $this->view->accounts->detailsforgroup($membercode);
@@ -99,8 +116,7 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
 // // // Zend_Debug::dump($this->view->account);
 
 
-  $fixedForm = new Fixedaccount_Form_Fixed($path,$minimumbal,$maxbal);
-        $this->view->fixedForm = $fixedForm;
+
 
 
  $fixedForm->Id->setValue(base64_encode($productId));
@@ -129,16 +145,19 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
         {
         $formData = $this->_request->getPost();
 
-        $id = $this->_request->getPost('period');
 
+        if($this->_request->getPost('period')){
+        $id = $this->_request->getPost('period');
         $value=explode('-',$id);
         $interestid = $this->view->accounts->getInterestvalue($value[0],$value[1]);
 
         foreach($interestid as $interestvalue1) {
              $interestid = $interestvalue1->id;
         }
+    }
 
                 if ($fixedForm->isValid($formData)) {
+
                 foreach ($this->view->offerdetails as $offer) {
                     $begindate = $offer['begindate'];
                     $glsubID = $offer['glsubID'];

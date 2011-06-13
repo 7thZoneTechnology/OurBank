@@ -18,62 +18,70 @@
 ############################################################################
 */
 /**to select the value of sub office when there is any changes in office type*/					
-function getXMLHTTP() { //fuction to return the xml http object
-		var xmlhttp=false;	
-		try{
-			xmlhttp=new XMLHttpRequest();
-		}
-		catch(e)	{		
-			try{			
-				xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			catch(e){
-				try{
-				xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-				}
-				catch(e1){
-					xmlhttp=false;
-				}
-			}
-		}
-		 	
-		return xmlhttp;
-    }
+// function getXMLHTTP() { //fuction to return the xml http object
+// 		var xmlhttp=false;	
+// 		try{
+// 			xmlhttp=new XMLHttpRequest();
+// 		}
+// 		catch(e)	{		
+// 			try{			
+// 				xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
+// 			}
+// 			catch(e){
+// 				try{
+// 				xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+// 				}
+// 				catch(e1){
+// 					xmlhttp=false;
+// 				}
+// 			}
+// 		}
+// 		 	
+// 		return xmlhttp;
+//     }
 	
 /**end*/
-	function getSavingAccount(savingtypeId) {		
-		var strURL="savingtype?savingtypeId="+savingtypeId;
-		var req = getXMLHTTP();
-		if (req) {
-			req.onreadystatechange = function() {
-			if (req.readyState == 4) {
-				// only if "OK"
-				if (req.status == 200) {						
-					document.getElementById('savingdiv').innerHTML=req.responseText;						
-				} else {
-					alert("There was a problem while using XMLHTTP:\n" + req.statusText);
-				}
-			}				
-		}			
-		req.open("GET", strURL, true);
-		req.send(null);
-		if(savingtypeId != '') {
-			$('#lastdiv').show();
-			$('#lastdiv1').hide();
-		} else {
-			$('#lastdiv').hide();
-			$('#lastdiv1').show();
-		}
-		}
-		
-	} 
+// 	function getSavingAccount(savingtypeId) {		
+// 		var strURL="savingtype?savingtypeId="+savingtypeId;
+// 		var req = getXMLHTTP();
+// 		if (req) {
+// 			req.onreadystatechange = function() {
+// 			if (req.readyState == 4) {
+// 				// only if "OK"
+// 				if (req.status == 200) {						
+// 					document.getElementById('savingdiv').innerHTML=req.responseText;						
+// 				} else {
+// 					alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+// 				}
+// 			}				
+// 		}			
+// 		req.open("GET", strURL, true);
+// 		req.send(null);
+// 		if(savingtypeId != '') {
+// 			$('#lastdiv').show();
+// 			$('#lastdiv1').hide();
+// 		} else {
+// 			$('#lastdiv').hide();
+// 			$('#lastdiv1').show();
+// 		}
+// 		}
+// 		
+// 	} 
 
 
-$(document).ready(function() {
-$('input[name=sShortName]').autotab({ target: 'sShortName', maxlength: 2, format: 'alpha' });
-});
+// $(document).ready(function() {
+// 
+//   $('input#tmpAddRow').click(function(){
+// alert('add');
+//       var newRow = $('tr#tmp').clone(true).removeAttr('id');
+//       newRow.appendTo('.tmpadd');
+// });
+// });
 
+// $('input[name=sShortName]').autotab({ target: 'sShortName', maxlength: 2, format: 'alpha' });
+// });
 
+/*
 $(function() {
   	$('.error').hide();
   	$('.error1').hide();
@@ -359,9 +367,9 @@ $(".savings").click(function() {
 		return false;
 	}
 });
-});
+});*/
 
-
+/*
  var current =0;
     function membername() {
     var count = document.myform.memberCount.value;
@@ -386,5 +394,5 @@ function addFormField() {
 
 function removeFormField(id) {
 	$(id).remove();
-}
+}*/
 

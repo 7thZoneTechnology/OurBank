@@ -65,13 +65,13 @@ class Officecommonview_Model_officecommonview extends Zend_Db_Table
        {
          $select = $this->select()
                ->setIntegrityCheck(false)  
-               ->join(array('a' => 'ourbank_office'),array('a.id'),array('a.name','a.id as villageid'))
-                ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.id',array('b.id'))
+               ->join(array('a' => 'ourbank_master_villagelist'),array('a.id'),array('a.name','a.id as villageid'))
+               ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.village_id',array('b.id'))
                 ->join(array('c'=>'ourbank_master_taluklist'),'c.id=b.taluk_id',array('c.name as talukname'))
                 ->join(array('d'=>'ourbank_master_districtlist'),'d.id=b.district_id',array('d.name as districtname'))
                 ->join(array('e'=>'ourbank_master_hoblilist'),'e.id=b.hobli_id',array('e.name as hobliname'))
                 ->join(array('f'=>'ourbank_master_gillapanchayath'),'f.id=b.panchayath_id',array('f.name as panchayathname'))
-               ->where('a.id  = ?',$villageid);
+               ->where('a.village_id  = ?',$villageid);
          //die($select->__toString($select));
          $result = $this->fetchAll($select);
          return $result->toArray();

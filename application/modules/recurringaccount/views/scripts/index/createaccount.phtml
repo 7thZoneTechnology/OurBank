@@ -17,7 +17,7 @@
 ############################################################################
 !2-->
 
-<script type="text/javascript">
+ <script type="text/javascript">
 
 function getXMLHTTP() {
     var xmlhttp=false;	
@@ -43,8 +43,8 @@ function getXMLHTTP() {
 
 
 
-function getInterests(path,interest) {	
-    var strURL=path+"/fixedaccount/index/getinterests?interest="+interest;
+function getInterests(path,interest){
+    var strURL=path+"/recurringaccount/index/getinterests?interest="+interest;
 
     var req = getXMLHTTP();
         if (req) {
@@ -60,55 +60,8 @@ function getInterests(path,interest) {
         req.open("GET", strURL, true);
         req.send(null);
         }
-        var perioddescription=$('#perioddescription').val();
-        if(perioddescription!='') {
-            $('#errorspan').show();
-        } else {
-            $('#errorspan').hide();
-          }
+
 }
-
- $(document).ready(function(){
-       $("a#groupmem").click(function(event){
-            $("tr.two").toggle();
-      }); 
-//  $("#tAmount").each(function() {
-//  	            $(this).keyup(function(){
-//             min = $('#mindeposit').val();
-//             val = $(this).val();
-// alert('min'+min);
-// alert('val'+val);
-// //             if(val < min) {
-// // alert('Refer minimum balance amount');
-// // // // //             $('#ertxt').show();
-// // // // //             $('.Error').text = "Refer minimum balance";
-// //             }
-// 	            });
-// 	        });
-
-     });
-
-$(document).ready(function(){
-	        //iterate through each textboxes and add keyup
-        //handler to trigger sum event
-	        $(".txt").each(function() {
- 	            $(this).keyup(function(){
-                calculateSum();
-	            });
-	        });
-	    });
-	    function calculateSum() {
-	        var sum = 0;
-	        //iterate through each textboxes and add the values
-	        $(".txt").each(function() {
-	 	            //add only if the value is number
-            if(!isNaN(this.value) && this.value.length!=0) {
-	                sum += parseFloat(this.value);
-           }
-	        });
-	        //.toFixed() method will roundoff the final sum to 2 decimal places
-	        $(".amount1").val(sum.toFixed(2)); 
-	    }
 </script>
 
 <div style="float:left;width:380px"> 
@@ -186,7 +139,7 @@ foreach ($this->account as $account) {
             </TR>
 
             <TR>
-                <TD><label for="fld1" class="mand">Period</label></TD>
+                <TD><br><label for="fld1" class="mand">Period</label></TD>
                 <TD><?php echo $this->fixedForm->period;?></TD>
             </TR>
 
@@ -195,13 +148,13 @@ foreach ($this->account as $account) {
             <TD><div id="interestdiv"><?php echo $this->fixedForm->interest;?></div></TD>
         </TR>
             <TR>
-                <TD><label for="fld1" class="mand">Fixed amount</label></TD>
+                <TD><br><label for="fld1" class="mand">Fixed amount</label></TD>
                 <TD><?php echo $this->fixedForm->tAmount;?></TD>
             </TR>
-		<TR>
-            <TD  colspan="2" style="display:none;" id="ertxt"><input type="text" class="Error" name="Error" id="Error"/></TD>
-        </TR>
-        <input type="hidden" name="mindeposit" id="mindeposit" value="<?php echo $minumumbal;?>">
+<!-- 		<TR> -->
+<!--             <TD  colspan="2" style="display:none;" id="ertxt"><input type="text" class="Error" name="Error" id="Error"/></TD> -->
+<!--         </TR> -->
+<!--         <input type="hidden" name="mindeposit" id="mindeposit" value="<?php //echo $minumumbal;?>"> -->
 
             <?php if($this->gp_members) { ?>
             <TR>            <TD></td>
@@ -216,10 +169,9 @@ foreach ($this->account as $account) {
             </TR>
             <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
         </table>
-</div></div>
-</div>
+`
     <?php echo $this->fixedForm->Id; ?> 
 	<?php echo $this->fixedForm->memberId; ?> 
 	<?php echo $this->fixedForm->code; ?> 
-    </form>
+    </form></fieldset>
 </div>
