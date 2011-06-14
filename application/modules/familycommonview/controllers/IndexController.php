@@ -56,13 +56,20 @@ class Familycommonview_IndexController extends Zend_Controller_Action
 
         $id=$this->_request->getParam('id');
         $this->view->memberid=$id;
-        $familycommon=new Familycommonview_Model_familycommonview(); 
+        $familycommon=new Familycommonview_Model_familycommonview();
         $member_name=$familycommon->getfamily($id);
         $villageid=$member_name[0]['rev_village_id'];
+        $parentid=$member_name[0]['parentoffice_id'];
         $talukname=$familycommon->gettalukname($villageid);
         if($talukname)
         {
           $this->view->villagename=$talukname[0]['name'];
+        }
+
+        $kootaname=$familycommon->getkoota($parentid);
+        if($kootaname)
+        {
+          $this->view->kootaname=$kootaname[0]['name'];
         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');

@@ -22,24 +22,26 @@ class Familymembers_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle=$this->view->translate('Family information');
- $storage = new Zend_Auth_Storage_Session();
+
+	$globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();// get session values
+        $this->view->createdby = $this->view->globalvalue[0]['id'];
+        $this->view->username = $this->view->globalvalue[0]['username'];
+        $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
-                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+            $this->_redirect('index/login');
         }
-
-
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
-        foreach($loginname as $loginname) {
-            $this->view->username=$loginname['username']; // get the user name
-        } 
         //getting module name and change the side bar dynamically 
          $this->view->id=$subId=$this->_getParam('id');
+//         $this->view->subId=$subId=$this->_getParam('subId');
+//         $this->view->modId=$modId=$this->_getParam('modId');
          $addressmodel= $this->view->familycommon = new Familycommonview_Model_familycommonview();
+//         $module_name=$addressmodel->getmodule($subId);
+//         foreach($module_name as $module_view)
+//         {
+//             $address=$module_view['module_description'];
+//         }
         $this->view->pageTitle='Family Member Details';
         $this->view->adm = new App_Model_Adm();
         $this->view->dateconvertor = new App_Model_dateConvertor();
@@ -49,6 +51,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
     public function indexAction() 
     {
+
     }
 
     public function getbranchAction() { 
@@ -227,7 +230,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->membername = $this->view->familycommon->getfamily($this->_getParam('id'));
         $this->view->insurance=$this->view->familycommon->getinsurance($this->_getParam('id'));
         $subid = $this->view->subId = $this->_getParam('subId');
-        $this->view->submitform = new Familymembers_Form_Submit();
+//         $this->view->submitform = new Bank_Form_Submit();
 
         $familyobj = new Familymembers_Model_Familymembers();
 
@@ -255,8 +258,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->currentdate= date("d/m/Y");
 
         //update contact details
-        if ($this->_request->getPost('Update')) 
-        {
+        if ($this->_request->getPost('Update')) {
             $id=$this->_getParam('id');
             $family = $this->view->familydetails = $familyobj->getfamilydetails1($id); 
             $count = count($family);
@@ -296,132 +298,101 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
 
             $countname = count($mem_name);
-            $j=0; $k=0; $l=0; $flag=0;
-            for($i = 0; $i< $countname; $i++)
+            $j=0; $k=0; $l=0;
+            for($i = 0; $i< $countname; $i++) 
             {
-                for($m=0; $m<$countname;$m++)
-                {
-                    if($i != $m)
-                    {
-                    if($uid[$i] == $uid[$m])
-                    {
-                        $flag+=1;
-                    }
-                    }
+                if ($breadwinner[$j] == $i+1) {
+                    $bread = 1;
+                    $j++;
+                } else {
+                    $bread = 0;
                 }
-                echo $flag;
-                if($flag > 0)
-                {
-                   $this->_redirect('/familymembers/index/editfamily/id/'.$id.'/subId/'.$subid);
-                }
-                else
-                {
-                   $uiddetails=$this->view->modelfamily->checkuidmodel1($uid[$i],$mem_name[$i]);
-                   if (empty($uiddetails))
-                    {
-
-                                    if ($breadwinner[$j] == $i+1)
-                                    {
-                                        $bread = 1;
-                                        $j++;
-                                    } else {
-                                        $bread = 0;
-                                    }
-                                    if ($headID[$k] == $i+1) {
-                                        $head = 1;
-                                        $k++;
-                                    } else {
-                                        $head = 0;
-                                    }
-
-                    // Check whether the record is available or not 
-
-                                    $familymembers = array('family_id' => $family_id,
-                                                        'breadwinner_id' => $bread,
-                                                        'head_id' => $head,
-                                                        'village_id'=>$villageid,
-                    //                                  'familycode'=>$code.str_pad($i,2,"0",STR_PAD_LEFT),
-                                                        'name' => $mem_name[$i],
-                                                        'name_inregional' => $mem_relname[$i],
-                                                        'alias' => $alias_name[$i],
-                                                        'alias_inregional' => $alias_relname[$i],
-                                                        'uid'=>$uid[$i],
-                                                        'dob'=>$this->view->dateconvertor->mysqlformat($dob[$i]),
-                                                        'age' => $age[$i],
-                                                        'relationship_id' => $relation[$i],
-                                                        'gender_id' => $gender[$i],
-                                                        'maritalstatus_id' => $marital[$i],
-                                                        'eductaion_id' => $education[$i],
-                                                        'employment_status'=>$employment[$i],
-                                                        'promoter_id' => $promoterid[$i],
-                                                        'cbo_id' => $cboid[$i],
-                                                        'accouttype_id' => $acctypeid[$i],
-                                                        'bank' => $bank[$i],
-                                                        'branch_po' => $branch[$i],
-                                                        'bank_ac' => $banckAccount[$i],
-                                                        'blood_id'=>$blood[$i],
-                                                        'mobile_number' => $mobile[$i],
-                                                        'created_by'=>$this->view->createdby, 
-                                                        'created_date'=>date("y/m/d H:i:s")
-                                                    );
-                            if($recordid[$i]!="")
-                              {
-                                    $familyobj->update($recordid[$i],$familymembers);
-                                    $familyobj->deleterecord('ourbank_memberentitlememnt',$recordid[$i]);
-                                    $familyobj->deleterecord('ourbank_memberprofession',$recordid[$i]);
-
-                                        $inc = $i;
-                                        $inc++;
-                                        $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
-                                        $ecount=count($entitlement);
-                                        for($n=0; $n<$ecount; $n++){
-                                        $entitledetails=array('member_id'=>$recordid[$i],'entitlement_id'=>$entitlement[$n]);
-                                        $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
-                                        }
-                                        $profession=array();
-                                        $profession=$this->_getParam('profid-'.$inc.'-'); //print_r($profession);
-                                        $pcount=count($profession);
-                                        for($n=0; $n<$pcount; $n++){
-                                        $profdetails=array('member_id'=>$recordid[$i],'profession_id'=>$profession[$n]);
-                                        $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
-                                        }
-
-                                }
-                                    // check the i value with Exist members value to add new members 
-                                else
-                                {
-                                        $lastid=$this->view->adm->addRecord("ourbank_familymember",$familymembers);
-                                        $inc = $i;
-                                        $inc++;
-                                        $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
-                                        $ecount=count($entitlement);
-                                        for($n=0; $n<$ecount; $n++){
-                                        $entitledetails=array('member_id'=>$lastid,'entitlement_id'=>$entitlement[$n]);
-                                        $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
-                                        }
-                                        $profession=array();
-                                        $profession=$this->_getParam('profid-'.$inc.'-'); //print_r($profession);
-                                        $pcount=count($profession);
-                                        for($n=0; $n<$pcount; $n++){
-                                        $profdetails=array('member_id'=>$lastid,'profession_id'=>$profession[$n]);
-                                        $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
-                                        }
-
-                                         // create a member code
-                                        $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
-                                        $p = "01";
-                                        $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
-                                        $membercode=$o.$p.$u;
-                                        $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
-                                }
-                 }
-                else
-                {
-                     $this->_redirect('/familymembers/index/editfamily/id/'.$id.'/subId/'.$subid);
+                if ($headID[$k] == $i+1) {
+                    $head = 1;
+                    $k++;
+                } else {
+                    $head = 0;
                 }
 
-            }//end of if else loop for $flag
+// Check whether the record is available or not 
 
+                $familymembers = array('family_id' => $family_id,
+                                    'breadwinner_id' => $bread,
+                                    'head_id' => $head,
+                                    'village_id'=>$villageid,
+//                                  'familycode'=>$code.str_pad($i,2,"0",STR_PAD_LEFT),
+                                    'name' => $mem_name[$i],
+                                    'name_inregional' => $mem_relname[$i],
+                                    'alias' => $alias_name[$i],
+                                    'alias_inregional' => $alias_relname[$i],
+                                    'uid'=>$uid[$i],
+                                    'dob'=>$this->view->dateconvertor->mysqlformat($dob[$i]),
+                                    'age' => $age[$i],
+                                    'relationship_id' => $relation[$i],
+                                    'gender_id' => $gender[$i],
+                                    'maritalstatus_id' => $marital[$i],
+                                    'eductaion_id' => $education[$i],
+                                    'employment_status'=>$employment[$i],
+                                    'promoter_id' => $promoterid[$i],
+                                    'cbo_id' => $cboid[$i],
+                                    'accouttype_id' => $acctypeid[$i],
+                                    'bank' => $bank[$i],
+                                    'branch_po' => $branch[$i],
+                                    'bank_ac' => $banckAccount[$i],
+                                    'blood_id'=>$blood[$i],
+                                    'mobile_number' => $mobile[$i],
+                                    'created_by'=>$this->view->createdby, 
+                                    'created_date'=>date("y/m/d H:i:s")
+                                   );
+        if($recordid[$i]!=""){
+               $familyobj->update($recordid[$i],$familymembers);
+               $familyobj->deleterecord('ourbank_memberentitlememnt',$recordid[$i]);
+               $familyobj->deleterecord('ourbank_memberprofession',$recordid[$i]);
+
+                $inc = $i;
+                $inc++;
+                $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
+                $ecount=count($entitlement);
+                for($n=0; $n<$ecount; $n++){
+                $entitledetails=array('member_id'=>$recordid[$i],'entitlement_id'=>$entitlement[$n]);
+                $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
+                }
+                $profession=array();
+                $profession=$this->_getParam('profid-'.$inc.'-'); //print_r($profession);
+                $pcount=count($profession);
+                for($n=0; $n<$pcount; $n++){
+                $profdetails=array('member_id'=>$recordid[$i],'profession_id'=>$profession[$n]);
+                $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
+                }
+
+            }
+// check the i value with Exist members value to add new members 
+            else
+            {
+               $lastid=$this->view->adm->addRecord("ourbank_familymember",$familymembers);
+                $inc = $i;
+                $inc++;
+                $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
+                $ecount=count($entitlement);
+                for($n=0; $n<$ecount; $n++){
+                $entitledetails=array('member_id'=>$lastid,'entitlement_id'=>$entitlement[$n]);
+                $this->view->adm->addRecord("ourbank_memberentitlememnt",$entitledetails);
+                }
+                $profession=array();
+                $profession=$this->_getParam('profid-'.$inc.'-'); //print_r($profession);
+                $pcount=count($profession);
+                for($n=0; $n<$pcount; $n++){
+                $profdetails=array('member_id'=>$lastid,'profession_id'=>$profession[$n]);
+                $this->view->adm->addRecord("ourbank_memberprofession",$profdetails);
+                }
+
+ // create a member code
+                $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
+                $p = "01";
+                $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
+                $membercode=$o.$p.$u;
+                $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
+                }
            }
 
             $deletearray=array_diff($recordarray,$recordid);

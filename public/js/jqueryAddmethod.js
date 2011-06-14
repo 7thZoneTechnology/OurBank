@@ -15,12 +15,6 @@ $.validator.addMethod("EitherOr", function(value, element) {
       return   false;
   }, "Fill either acre or gunta" );
 
-
-
-
-
-
-     
 //for multi rows
 
 $.validator.prototype.elements= function() {

@@ -30,7 +30,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
             ->join(array('a'=>'ourbank_family'),array('a.id'))
             ->join(array('c'=>'ourbank_master_castetype'),'c.id=a.caste_id',array('c.name as caste'))
             ->join(array('d'=>'ourbank_master_familytype'),'d.id=a.familytype_id',array('d.name as familytype'))
-            ->join(array('f'=>'ourbank_office'),'f.id =a.rev_village_id',array('f.name as villagename'))
+            ->join(array('f'=>'ourbank_office'),'f.id =a.rev_village_id',array('f.name as villagename','f.parentoffice_id'))
 /*            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))*/
             ->join(array('g'=>'ourbank_master_rationcard'),'g.id =a.ration_id',array('g.name as ration'))
             ->join(array('i'=>'ourbank_master_sourceofincome'),'i.id =a.income_id',array('i.name as income'))
@@ -50,6 +50,18 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                 ->join(array('b'=>'ourbank_master_taluklist'),'b.id=a.taluk_id',array('b.name'))
                 ->where('a.village_id = ?',$villageid);
      //   die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function getkoota($parentid)
+    {
+
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_office'),array('a.id'),array('a.name'))
+                ->where('a.id = ?',$parentid);
+       // die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
