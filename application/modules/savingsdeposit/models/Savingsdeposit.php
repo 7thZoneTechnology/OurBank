@@ -168,12 +168,12 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
 	if ((substr($acc,4,1) == 2 || substr($acc,4,1) == 3) && $type == 2) {
 	    $group = $this->getMember($acc);
 	    $count = count($group);
-            foreach ($group as $group) {
+            foreach ($group as $groups) {
 
-                $Accid = $this->getAccountid($group->id);
+                $Accid = $this->getAccountid($groups->id);
 		$groupsaving = array('transaction_id' => $tranId,
                                     'account_id' => $Accid,
-				    'member_id' => $group->id,
+				    'member_id' => $groups->id,
 			 	    'transaction_date' => $cl->phpmysqlformat($date),
 			 	    'transaction_type' => 1,
 				    'transaction_amount' => $amount/$count,
@@ -218,7 +218,7 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
     public function getAccountid($memberid)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-	$sql = "select id from ourbank_accounts where member_id = $memberid and tag_account != 0";
+	$sql = "select id from ourbank_accounts where member_id = $memberid and tag_account != 0 and membertype_id = 1";
 	return $result = $db->fetchOne($sql);
     }
     public function getMember($accNum)

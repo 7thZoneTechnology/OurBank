@@ -17,6 +17,35 @@
 <?php if($this->tableName == 'ourbank_master_districtlist') {?>
 	<tr><td align="center">State :</td><TD colspan="2"><?php echo $details['sname'];?></TD></tr>
 				<?php }?>
+<<<<<<< HEAD
+
+<?php if($this->tableName == 'ourbank_master_taluklist') {?>
+	<tr><td align="center">State :</td><TD colspan="2"><?php echo $details['sname'];?></TD></tr>
+	<tr><td align="center">District :</td><TD colspan="2"><?php echo $details['dname'];?></TD></tr>
+				<?php }?>
+<?php if($this->tableName == 'ourbank_master_hoblilist') {?>
+	<tr><td align="center">State :</td><TD colspan="2"><?php echo $details['sname'];?></TD></tr>
+	<tr><td align="center">District :</td><TD colspan="2"><?php echo $details['dname'];?></TD></tr>
+	<tr><td align="center">Taluk :</td><TD colspan="2"><?php echo $details['tname'];?></TD></tr>
+				<?php }?>
+<?php if($this->tableName == 'ourbank_master_gillapanchayath') {?>
+	<tr><td align="center">State :</td><TD colspan="2"><?php echo $details['sname'];?></TD></tr>
+	<tr><td align="center">District :</td><TD colspan="2"><?php echo $details['dname'];?></TD></tr>
+	<tr><td align="center">Taluk :</td><TD colspan="2"><?php echo $details['tname'];?></TD></tr>
+	<tr><td align="center">Hobli :</td><TD colspan="2"><?php echo $details['hbname'];?></TD></tr>
+				<?php }?>
+<?php if($this->tableName == 'ourbank_master_branch') {?>
+	<tr><td align="center">Bank :</td><TD colspan="2"><?php echo $details['bankname'];?></TD></tr>
+				<?php }?>
+
+
+
+
+
+	<tr><td align="center"><? echo substr($this->tableName,15); ?> :</td><td><?php echo $details['habit'];?></td><TD></TD></tr>
+	<tr><td align="center">Regional name :</td><TD colspan="2"><?php echo $details['name_regional'];?></TD></tr>
+
+=======
 
 <?php if($this->tableName == 'ourbank_master_taluklist') {?>
 	<tr><td align="center">State :</td><TD colspan="2"><?php echo $details['sname'];?></TD></tr>
@@ -52,6 +81,7 @@
 
 =======
 >>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 	  <TR><td colspan="2"></td>
 			<td align="right"><a href="<?php echo $this->baseUrl(); ?>/dropdown"><input name="submit" type="submit" class="officebutton" value="Back"></a></td>
       </TR>

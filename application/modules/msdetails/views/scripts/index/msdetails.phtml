@@ -135,13 +135,13 @@ $(document).ready(function(){
 <?php if(count($this->tran) > 0) { ?>
 <table id="hor-minimalist-b" border="1">
     <tr>
-        <th>V No.</td>
-        <th>Tran.date</td>
-        <th>Account number</th>
+        <td align="center" class="centertd">V No.</td>
+        <th>Transaction date</td>
+<!--         <th>Account number</th> -->
 <!--         <th>Group members</th> -->
-        <th>Credit</th>
-        <th>Debit</td>
-        <th>Transacted by</td>  
+        <td align="right" class="centertd">Credit</td>
+        <td align="right" class="centertd">Debit</td>
+        <td align="center" class="centertd">Transacted by</td>  
     </tr>
     <?php foreach($this->tran as $transaction) : ?>
     <tr>
@@ -149,7 +149,7 @@ $(document).ready(function(){
 
        <td><?php echo $transaction->date; ?></td>
 
-       <td align="center"><?php echo $transaction->number; ?></td>
+<!--        <td align="center"><?php //echo $transaction->number; ?></td> -->
 
 <!--        <td><?php //echo $transaction->membername; ?></td> -->
 

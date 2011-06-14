@@ -73,7 +73,7 @@ echo $this->balance;  } else  { echo $this->balanceamount; } ?></font></b></TD>
                 <div class="block">
                     <table id="hor-minimalist-s">
                         <TR>
-                            <TH>Member code </TH>
+                            <TH>Member code </td>
                             <TH>Member name</TH>
                         </TR>
                         <?php foreach ($this->group as $group) { ?>
@@ -90,31 +90,31 @@ echo $this->balance;  } else  { echo $this->balanceamount; } ?></font></b></TD>
 <?php } ?>
 <?php if (count($this->tran)) {?>
 </br>
-<table id="hor-minimalist-b">
+<table id="hor-minimalist-b" border="1">
     <tr>
-        <th>V No.</td>
+        <td align="center" class="centertd">V No.</td>
         <th>Transaction date</td>
-        <th>Credit</td>
-        <th>Debit</td>
-        <th>Balance</td>
-        <th>Payment mode</td>
-        <th>Transacted by</td>  
+        <td align="right" class="centertd">Credit</td>
+        <td align="right" class="centertd">Debit</td>
+        <td align="right" class="centertd">Balance</td>
+        <th>Payment mode</th>
+        <td align="center" class="centertd">Transacted by</td>  
     </tr>
     <?php foreach($this->tran as $transaction) : ?>
     <tr>
-       <td><?php echo $transaction->id; ?></td>
+       <td align="center"><?php echo $transaction->id; ?></td>
        <td><?php echo $transaction->date; ?></td>
        <?php if ($transaction->cr) {?>
-       <td><?php echo $transaction->cr; ?></td>
+       <td align="right"><?php echo $transaction->cr; ?></td>
        <?php } else { ?>
-       <td>----</td>
+       <td align="right">----</td>
        <?php } ?>
        <?php if ($transaction->dt) { ?> 
-       <td><?php echo $transaction->dt; ?></td>
+       <td align="right"><?php echo $transaction->dt; ?></td>
        <?php } else { ?>
-       <td>----</td>
+       <td align="right">----</td>
        <?php } ?>
-        <td>
+        <td align="right">
        <?php 
             $acc = $this->acc;
             $balance = $dbobj->getbalance($this->acc);
@@ -132,30 +132,30 @@ echo $this->balance;  } else  { echo $this->balanceamount; } ?></font></b></TD>
 
 <?php if ($this->transactions) {?>
 </br>
-<table id="hor-minimalist-b">
+<table id="hor-minimalist-b" border="1">
     <tr>
-        <th>V No.</td>
+        <td align="center" class="centertd">V No.</td>
         <th>Transaction date</td>
-        <th>Credit</td>
-        <th>Debit</td>
-        <th>Transacted by</td>  
+        <td align="right" class="centertd">Credit</td>
+        <td align="right" class="centertd">Debit</td>
+        <td align="center" class="centertd">Transacted by</td>  
     </tr>
     <?php foreach($this->transactions as $transaction) : ?>
     <tr>
-       <td><?php echo $transaction['transaction_id']; ?></td>
+       <td align="center"><?php echo $transaction['transaction_id']; ?></td>
        <td><?php echo $transaction['transaction_date']; ?></td>
        <?php if ($transaction['transaction_type'] == 1) {?>
-       <td><?php echo $transaction['transaction_amount']; ?></td>
+       <td align="right"><?php echo $transaction['transaction_amount']; ?></td>
        <?php } else { ?>
-       <td>----</td>
+       <td align="right">----</td>
        <?php } ?>
        <?php if ($transaction['transaction_type'] == 2) { ?> 
-       <td><?php echo $transaction['transaction_amount']; ?></td>
+       <td align="right"><?php echo $transaction['transaction_amount']; ?></td>
        <?php } else { ?>
-       <td>----</td>
+       <td align="right">----</td>
        <?php } ?>
 
-       <td><?php echo $transaction['createdby']; ?></td>
+       <td align="center"><?php echo $transaction['createdby']; ?></td>
     </tr>
     <?php endforeach; ?>
 </table>

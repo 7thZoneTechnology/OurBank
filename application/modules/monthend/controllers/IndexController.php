@@ -40,7 +40,7 @@ class Monthend_IndexController extends Zend_Controller_Action
     }
     public function indexAction() 
     {
-        if ($this->_request->getPost('Procced')) {
+        if ($this->_request->getPost('Proceed')) {
             $transaction = new Monthend_Model_Transaction();
             $tran  = $transaction->transaction();
             //

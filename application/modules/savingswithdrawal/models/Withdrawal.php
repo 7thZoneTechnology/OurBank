@@ -112,7 +112,7 @@ class Savingswithdrawal_Model_Withdrawal extends Zend_Db_Table
     public function getAccountid($memberid)
             {
                 $db = Zend_Db_Table::getDefaultAdapter();
-                $sql = "select id from ourbank_accounts where member_id = $memberid and tag_account != 0";
+                $sql = "select id from ourbank_accounts where member_id = $memberid and tag_account != 0 and membertype_id = 1";
                 return $result = $db->fetchOne($sql);
             }
 

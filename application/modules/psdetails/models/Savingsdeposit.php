@@ -40,7 +40,8 @@ class Psdetails_Model_Savingsdeposit extends Zend_Db_Table
                 ->join(array('a' => 'ourbank_accounts'),array('id'),array('id'))
                 ->join(array('b' => 'ourbank_group_savingstransaction'),'a.id = b.account_id')
                 ->join(array('c' => 'ourbank_user'),'c.id = b.transacted_by',array('name as createdby'))
-                ->where('a.account_number = ?',$acc);
+                ->where('a.account_number = ?',$acc)
+                ->order('b.transaction_id desc');
         $result = $this->fetchAll($select);
         return $result->toArray(); // return get Transaction details
 // die($select->__toString($select));

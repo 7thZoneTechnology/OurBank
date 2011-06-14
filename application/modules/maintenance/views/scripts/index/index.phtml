@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+    <SCRIPT LANGUAGE="JavaScript">
+        $(document).ready(function(){
+            $('#checkall').click(function(){
+                if($(this).val() == 'Check All'){
+                    $('.checkbox').attr('checked',true);
+                    $('#checkall').val('UnCheck All');
+                } else {
+                    $('.checkbox').attr('checked',false);
+                    $('#checkall').val('Check All');
+                }
+            });
+        });
+    </script>
+    </head>
+    <body>
+        <form action="<?php echo $this->baseUrl();?>/maintenance/index/dayend" method="POST" name="myform">
+	   <table class='sortable' id = "hor-minimalist-b">
+		<thead>
+                    <tr>
+			<th>Tr No.</th>
+                        <th >A/c From</th>
+                        <td align="center" class="centertd">Transaction Date</td>
+                        <td align="right" class="centertd">Credit</td>
+                        <td align="right" class="centertd">Debit</td>
+                        <th>Transaction Mode</th>
+                        <th>Transacted By</th>  
+                        <th><input type="button" name="Check_All" value="Check All" class="NormalBtn" id="checkall"></th>
+		  </tr>
+		</thead>
+
+		<tbody>
+                    <?php  $i = 0; ?>
+                    <?php foreach($this->transaction  as $transaction) : ?>
+	            <tr>
+                        <?php $i++; ?>
+                        <td><?php echo $transaction->transaction_id;?></td>
+                        <td><?php echo $transaction->account_number;?> </td>
+                        <td align="center"><?php echo $transaction->transaction_date;?></td>
+                        <?php if($transaction->amount_to_bank == 0.00) { ?>
+                            <td align="right">----</td>
+                        <?php } else { ?>
+                            <td align="right"><?php echo $transaction->amount_to_bank;?></td>
+                        <?php } ?>
+                        <?php if($transaction->amount_from_bank == 0.00) { ?>
+                            <td align="right">----</td>
+                        <?php } else { ?>
+                            <td align="right"><?php echo $transaction->amount_from_bank;?></td>
+                        <?php } ?>
+                        <td align="center"><?php echo $transaction->name;?></td>
+                        <td align="center"><?php echo $transaction->login_name;?></td>
+                        <input type = "hidden" name = "totalVNo" value = "<?php echo $i;?>">
+                        <td align="center"><input type="checkbox" name="VoucherNo<?php echo $i?>" value="<?php echo $transaction->transaction_id;?>" class="checkbox"></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <tr>
+	           <td colspan="10"><input type = "submit" name = "DayEndProcess" id= "DayEndProcess" value = "Day End Process"></td>
+                </tr>
+		</tbody>
+	   </table>
+	</form>
+    </body>
+</html>

@@ -56,12 +56,10 @@ class Dropdown_IndexController extends Zend_Controller_Action
 						'descriptions'=>$description);
 		$id = $this->view->adm->addRecord('ourbank_master_mastertables',$formdata1);
 		$this->_redirect('/dropdown');
+			}
 		}
 
-
 	}
-
-}
     public function indexAction() 
     {
         $path =  $this->view->baseUrl();
@@ -105,6 +103,28 @@ $tName=$this->_request->getParam('name');
 		foreach($statename as $statename){
 				$dropdownForm->state->addMultiOption($statename['id'],$statename['name']);
 			}
+<<<<<<< HEAD
+// // 		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
+// // 		foreach($districtname as $districtname){
+// // 				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
+// // 			}
+// // 		$taluklist = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
+// // 		foreach($taluklist as $taluklist){
+// // 				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name']);
+// // 			}
+// // 		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
+// // 		foreach($gillapanchayath as $gillapanchayath){
+// // 				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
+// // 			}
+// // 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
+// // 		foreach($village as $village){
+// // 				$dropdownForm->village->addMultiOption($village['id'],$village['name']);
+// // 			}
+// // 		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
+// // 		foreach($bank as $bank){
+// // 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
+// // 			}
+=======
 // 		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
 // 		foreach($districtname as $districtname){
 // 				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
@@ -125,6 +145,7 @@ $tName=$this->_request->getParam('name');
 // 		foreach($bank as $bank){
 // 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
 // 			}
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 		if ($this->_request->isPost() && $this->_request->getPost('Save')) {
 			if($tName == 'ourbank_master_districtlist') {
  		$id=$this->_request->getParam('state');
@@ -308,17 +329,21 @@ public function editAction()
 			}
 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
 		foreach($village as $village){
-				$dropdownForm->village->addMultiOption($village['id'],$village['name']);
+				$dropdownForm->village->addMultiOption($village['village_id'],$village['name']);
 			}
 		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
 		foreach($bank as $bank){
 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
 			}
+<<<<<<< HEAD
+// // 		$name_regional=$this->_request->getParam('name_regional');
+=======
 		$name_regional=$this->_request->getParam('name_regional');
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 
 			$id=$this->_request->getParam('id');
 			$tName=$this->_request->getParam('name');
-			$this->view->ff = $tName; 
+			$this->view->ff = $tName;
 			 $namedetails = $settings->getdetails($tName,$id);
 
 				switch($tName){
