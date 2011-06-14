@@ -1,0 +1,6 @@
+<select name = "cbo[]" class="selectvalid">
+                     <option value=0>Select</option>
+                    <?php foreach ($this->cbonames as $cbo) { ?>
+                    <option value="<?php echo $cbo['id']?>"><?php echo $cbo['cboname']?></option>
+                    <?php } ?>
+</select>

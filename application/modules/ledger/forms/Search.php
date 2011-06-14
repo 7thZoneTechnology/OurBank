@@ -23,25 +23,14 @@
 class Ledger_Form_Search extends Zend_Dojo_Form {
     public function init() {
 
-        $field1 = new Zend_Form_Element_Select('field1');
-        $field1->addMultiOption('','Select');
-        $field1->setAttrib('class', 'txt_put');
+        $formfield = new App_Form_Field ();
 
-        $field2 = new Zend_Form_Element_Text('field2');
-        $field2->setAttrib('class', 'txt_put');
-
-        $field3 = new Zend_Form_Element_Text('field3');
-        $field3->setAttrib('class', 'txt_put');
-
-        $field4 = new Zend_Form_Element_Text('field4');
-        $field4->setAttrib('class', 'txt_put');
-
-        $field5 = new Zend_Form_Element_Select('field5');
-        $field5->addMultiOption('','Select');
-        $field5->setAttrib('class', 'txt_put');
-
-        $field6 = new Zend_Form_Element_Text('field6');
-        $field6->setAttrib('class', 'txt_put');
+        $field1 = $formfield->field('Select','field1','','','txt_put','',false,'','','','','','','');
+        $field2 = $formfield->field('text','field2','','','txt_put','',false,'','','','','','','');
+        $field3 = $formfield->field('text','field3','','','txt_put','',false,'','','','','','','');
+        $field4 = $formfield->field('text','field4','','','txt_put','',false,'','','','','','','');
+        $field5 = $formfield->field('Select','field5','','','txt_put','',false,'','','','','','','');
+        $field6 = $formfield->field('text','field6','','','txt_put','',false,'','','','','','','');
 
         $submit = new Zend_Form_Element_Submit('Search');
 

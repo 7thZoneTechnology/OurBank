@@ -25,7 +25,7 @@
                             <table width="100%">
                                 <tr>
                                     <td><?php echo $this->translate("Family code :"); ?></td><td ><? echo $this->form->code;?></td>
-                                    <td><?php echo $this->translate("Family ID :"); ?></td><td ><? echo $this->form->familyid;?></td>
+                                   <!-- <td><?php //echo $this->translate("Family ID :"); ?></td><td ><? //echo $this->form->familyid;?></td> -->
                                 </tr>
                                 <tr>
                                 <td><br><?php echo $this->translate("House number :"); ?></td><td><br><? echo $this->form->house;?></td>
@@ -50,7 +50,7 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
     <table id="hor-minimalist-b">
         <tr>
             <th><?php echo $this->translate("Family code"); ?></th>
-            <th><?php echo $this->translate("Family ID"); ?></th>
+            <!-- <th><?php //echo $this->translate("Family ID"); ?></th> -->
             <th><?php echo $this->translate("House number"); ?></td>
             <th><?php echo $this->translate("Village"); ?></td>
         </tr>
@@ -60,7 +60,7 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
             <td><a href="<?php echo $this->baseUrl()."/familycommonview/index/commonview/id/".$family['id']; ?>">
                         <?php echo $this->escape($family['code']); ?></a></td>
 
-            <td><?php echo $this->escape($family['family_id']);?></td>
+            <!--<td><?php //echo $this->escape($family['family_id']);?></td> -->
             <td><?php echo $this->escape($family['house_no']);?></td>
             <td><?php echo $this->escape($family['villagename']);?></td>
         <?php } ?>

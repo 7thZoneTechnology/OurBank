@@ -10,11 +10,11 @@
     $convertdate = new App_Model_dateConvertor();
     foreach($this->membername as $family_view){ ?>
 
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Family ID:"); ?></td>
-        <td class = "secondtd"><?php echo $family_view['family_id']; ?></td>
+<!--    <tr>
+        <td class="firsttd"><?php //echo $this->translate("Family ID:"); ?></td>
+        <td class = "secondtd"><?php //echo $family_view['family_id']; ?></td>
         <td class="thirdtd"></td>
-    </tr>
+    </tr>-->
     <tr>
         <td class="firsttd"><?php echo $this->translate("Sujeevana No:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['sujeevana']; ?></td>
@@ -37,12 +37,25 @@
         <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
         <td class="thirdtd"></td>
     </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Taluk"); ?></td>
+        <td class = "secondtd"><?php echo $this->villagename; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Koota"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+
     <tr>
         <td class="firsttd"><?php echo $this->translate("Colony/Habitation:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['names']; ?></td>
         <td class="thirdtd"></td>
     </tr>
-
 
         <tr>
         <td class="firsttd"><?php echo $this->translate("Family Type:"); ?></td>

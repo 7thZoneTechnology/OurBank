@@ -119,6 +119,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $habitationobj = new Familydefault_Model_familydefault();
 
 		$groupname=$this->_request->getParam('familyid');
+                if(empty($groupname)){ $groupname= ''; }
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) 
         {
 			if($this->_request->getParam('rev_village')){
@@ -136,9 +137,26 @@ class Familydefault_IndexController extends Zend_Controller_Action
 			$addForm->familyid1->setRequired(false);
 
             $formData = $this->_request->getPost(); 
+<<<<<<< HEAD
+=======
+            $healtharray=$this->_request->getParam('health'); /*print_r($healtharray); //echo count($healtharray);*/
+//             if($addForm->isValid($formData))
+//             {
+// 			 $validator = new Zend_Validate_Db_RecordExists('ourbank_family','family_id');
+//             if ($validator->isValid($groupname)) {
+//                 $messages = $validator->getMessages();	
+//                     $this->view->errorgroupname=$groupname.'This Family ID Already Existed';// if name exists display error message
+//             } else {
+
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
             $healtharray=$this->_request->getParam('health');
 			if($addForm->isValid($formData))
             {
+                    $sujeevana_no = $this->_request->getParam('sujeevana');
+                    $rev_vill = $this->_request->getParam('rev_village');
+                    $this->view->sujeevana_num = $check_sujeevana_no = $familymodel->checkSujeevanNo($sujeevana_no,$rev_vill);
+                    if(empty($check_sujeevana_no))
+                    {
         // add individual member
         $lastid = $this->view->adm->addRecord("ourbank_family",array(
                                         'id' => '',
@@ -188,6 +206,12 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //                 $this->view->adm->updateRecord("ourbank_accounts",$lastid1,array('account_number'=>$accountno));
 
                $this->_redirect('/familycommonview/index/commonview/id/'.$lastid);
+                }
+                else
+                {
+                    $this->view->error_msg = "Cannot have duplicate sujeevana number in the same revenue village";
+                   // $this->_redirect('/familydefault/index/addfamily');
+                }
             }
         }	
 	
@@ -304,7 +328,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
         {
             $formData = $this->_request->getPost();
 
-			$addForm->familyid->setRequired(false);
+			//$addForm->familyid->setRequired(false);
             if($addForm->isValid($formData))
             {
 

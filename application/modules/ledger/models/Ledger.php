@@ -40,6 +40,17 @@ class Ledger_Model_Ledger extends Zend_Db_Table
         return '1';
     }
 
+    public function getoffice($office_id)
+    {
+
+        $selectA = $this->select()
+                        ->setIntegrityCheck(false)  
+                        ->join(array('a' => 'ourbank_office'),array('a.id'))
+                        ->where('a.officetype_id=?',$office_id);
+        //die($select->__toString($select));	
+	return $this->fetchAll($selectA);
+    }
+
     public function fetchAllLedger()
     {
         $this->db = $this->getAdapter();
@@ -81,12 +92,13 @@ class Ledger_Model_Ledger extends Zend_Db_Table
         return $result;
     }
 
-    public function subledgerSearch($glsubcode,$subheader)
+    public function subledgerSearch($glsubcode,$subheader,$officeid)
     {
         $select = $this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a' => 'ourbank_glsubcode'),array('id'))
                     ->where('a.glsubcode like  ? "%"',$glsubcode)
+                    ->where('a.office_id like  ? "%"',$officeid)
                     ->where('a.header like  ? "%"',$subheader);
         $result = $this->fetchAll($select);
         return $result;
@@ -191,16 +203,26 @@ class Ledger_Model_Ledger extends Zend_Db_Table
 
     public function viewSubLedger($subledgerid)
     {
-        $this->db = $this->getAdapter();
-        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = 'SELECT * FROM  
-                ourbank_glcode A,
-                ourbank_user B,
-                ourbank_glsubcode C
-                    where (C.id=? && 
-                C.created_by = B.id &&
-                C.glcode_id = A.id)';
-        $result = $this->db->fetchAll($sql,array($subledgerid));
+        $select = $this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a' => 'ourbank_glcode'),array('id'))
+                    ->join(array('c' => 'ourbank_glsubcode'),'c.glcode_id = a.id')
+                    ->join(array('b' => 'ourbank_user'),'c.created_by = b.id')
+                    ->join(array('d' => 'ourbank_office'),'c.office_id = d.id',array('d.name as officename'))
+                    ->where('c.id like  ? "%"',$subledgerid);
+//         die($select->__toString($select));
+        $result = $this->fetchAll($select);
+        return $result;
+    }
+
+    public function getmainname($mainid)
+    {
+        $select = $this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a' => 'ourbank_glcode'),array('id'),array('a.header'))
+                    ->where('a.id = ?',$mainid);
+    //     die($select->__toString($select));
+        $result = $this->fetchAll($select);
         return $result;
     }
     public function genarateGlCode($ledgertype_id)

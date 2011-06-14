@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,20 +16,20 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-!-->
+*/
+class Familymembers_Form_Familymembers extends Zend_Form
+{
+            public function init() {
 
-<fieldset>
-<legend>Existing Sub Ledger</legend>
-        <table id = "hor-minimalist-b">
-                <tr >
-                        <td width="40%"><b class="star">Ledger Sub Code</b></td>
-                        <td width="160%" colspan = "8"><b class="star">Gl Sub Code Header</b></td>
-                </tr>
-                <?php foreach ($this->product as $product) { ?>
-                <tr class="tdbrown">
-                        <td width="40%"> <?php echo $product["glsubcode"];?></a></td>
-                        <td width="160%" colspan = "8"> <?php echo $product["subheader"];?></td>
-                </tr>
-                <? } ?>
-        </table>
-</fieldset>
+                // create instance for common form field
+                $formfield = new App_Form_Field ();
+                // send required parameters to get respective form fields ( first parameter is a input type)
+                
+                $profession = $formfield->field('MultiCheckbox','profession','','','profid','',false,'','','','','',0,0);
+
+                $this->addElements(array($profession));
+            }
+
+}
+
+

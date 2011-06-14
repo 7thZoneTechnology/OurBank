@@ -49,6 +49,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
     public function indexAction() 
     {
+
     }
 
     public function getbranchAction() { 
@@ -305,17 +306,19 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     {
                     if($uid[$i] == $uid[$m])
                     {
-                        $flag+=1;
+                        $flag+=1; echo "roshni1";
                     }
                     }
                 }
-                echo $flag;
                 if($flag > 0)
                 {
-                   $this->_redirect('/familymembers/index/editfamily/id/'.$id.'/subId/'.$subid);
+                    //$this->view->uiderror = "same values";
+                   // $this->_redirect('/familymembers/index/editfamily/id/'.$id.'/subId/'.$subid);
+                    echo "roshni2";
                 }
                 else
                 {
+                    echo $flag; echo "roshni6";
                    $uiddetails=$this->view->modelfamily->checkuidmodel1($uid[$i],$mem_name[$i]);
                    if (empty($uiddetails))
                     {
@@ -369,7 +372,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     $familyobj->update($recordid[$i],$familymembers);
                                     $familyobj->deleterecord('ourbank_memberentitlememnt',$recordid[$i]);
                                     $familyobj->deleterecord('ourbank_memberprofession',$recordid[$i]);
-
+    
                                         $inc = $i;
                                         $inc++;
                                         $entitlement=$this->_getParam('entitle-'.$inc.'-'); //print_r($entitlement);
@@ -417,7 +420,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
                  }
                 else
                 {
-                     $this->_redirect('/familymembers/index/editfamily/id/'.$id.'/subId/'.$subid);
+                   //$this->_redirect('/familymembers/index/editfamily/id/'.$id.'/subId/'.$subid);
+                    echo "roshni3";
                 }
 
             }//end of if else loop for $flag
@@ -428,7 +432,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
             foreach($deletearray as $deltearr){
             $familyobj->deleteFamily($deltearr);
             }
-          $this->_redirect('/familycommonview/index/commonview/id/'.$id);
+          //$this->_redirect('/familycommonview/index/commonview/id/'.$id);
+                echo "roshni5";
         }
     }
 

@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 ############################################################################
 #  This file is part of OurBank.
 ############################################################################
@@ -15,20 +16,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-!-->
-
-<fieldset>
-<legend>Existing Sub Ledger</legend>
-        <table id = "hor-minimalist-b">
-                <tr >
-                        <td width="40%"><b class="star">Ledger Sub Code</b></td>
-                        <td width="160%" colspan = "8"><b class="star">Gl Sub Code Header</b></td>
-                </tr>
-                <?php foreach ($this->product as $product) { ?>
-                <tr class="tdbrown">
-                        <td width="40%"> <?php echo $product["glsubcode"];?></a></td>
-                        <td width="160%" colspan = "8"> <?php echo $product["subheader"];?></td>
-                </tr>
-                <? } ?>
-        </table>
-</fieldset>
+*/
+class Familymembers_Bootstrap extends Zend_Application_Module_Bootstrap
+{
+}

@@ -4,20 +4,20 @@
 <fieldset>
             <table class="fieldsets" id="hor-minimalist-b" > 
 	<th colspan="2">Family Details</th>
-        <tr>
+        <!--<tr>
             <td><label class="mand">Family ID :</td>
-            <td><?php echo $this->form->familyid; ?></td>
-        </tr>
+            <td><?php //echo $this->form->familyid; ?></td>
+        </tr>-->
         <tr>
-            <td><label class="mand">Sujeevana No :</td>
+            <td> &nbsp;&nbsp;<label class="mand"> Sujeevana No :</td>
             <td><?php echo $this->form->sujeevana; ?></td>
         </tr>
         <tr>
-            <td><label class="mand">House No :</td>
+            <td> &nbsp;&nbsp; House No :</td>
             <td><?php echo $this->form->houseno; ?></td>
         </tr>
         <tr> 
-            <td>Street/Road/Lane :</td>
+            <td> &nbsp;&nbsp; Street/Road/Lane :</td>
             <td><?php echo $this->form->street; ?></td>
         </tr>
 		<tr>
@@ -37,7 +37,7 @@
             <td><?php echo $this->form->caste; ?></td>
         </tr>
 		 <tr>
-            <td>Minority :</td>
+            <td>&nbsp;&nbsp; Minority :</td>
             <td><?php echo $this->form->minority; ?></td>
         </tr>
         <!--<tr>
@@ -45,7 +45,7 @@
             <td class="subcaste"><?php echo $this->form->subcaste; ?></td>
         </tr>-->
         <tr>
-            <td>Ration Card :</td>
+            <td><label class="mand"> Ration Card :</td>
             <td><?php echo $this->form->ration; ?></td>
         </tr>
       <tr>
@@ -55,7 +55,7 @@
             </td>
         </tr>
         <tr>
-            <td>NREGS Job Card No :</td>
+            <td>&nbsp;&nbsp; NREGS Job Card No :</td>
             <td><?php echo $this->form->jobno; ?></td>
         </tr>
         <tr>
@@ -63,11 +63,11 @@
             <td><?php echo $this->form->income; ?></td>
         </tr>
         <tr>
-            <td>Phone Number :</td>
+            <td>&nbsp;&nbsp; Phone Number :</td>
             <td><?php echo $this->form->phone; ?></td>
         </tr>
         <tr>
-            <td>Mobile :</td>
+            <td><label class="mand"> Mobile :</td>
             <td><?php echo $this->form->mobile; ?></td>
         </tr>
     </table>
@@ -79,5 +79,13 @@
             <a href="<?php echo $this->baseUrl();?>/family"><input type="submit" name="back" id="back" value="<?php echo $this->translate("Back"); ?>"></a>
         </div>
     </div>
+
 </fieldset>
 </form>
+
+
+<?php if ($this->error_msg) { ?>
+
+           <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error_msg."</font>";?></TD></TR></table>
+           <!-- <?php// $this->error_msg = '' ?> -->
+<?php } ?>

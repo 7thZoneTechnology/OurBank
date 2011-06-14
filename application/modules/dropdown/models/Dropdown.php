@@ -130,8 +130,16 @@ public function getdetails($tName,$id) {
 				$select = $this->select()
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','state_id','a.name_regional'))
+<<<<<<< HEAD
 						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
 
+=======
+<<<<<<< HEAD
+=======
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+
+>>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 				->where('a.id = ?',$id);
 				
 				$result = $this->fetchAll($select);
@@ -200,7 +208,15 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
+<<<<<<< HEAD
 			->from(array('a' => 'ourbank_master_districtlist'),array('a.id as did','a.name as dname','a.name_regional'))
+=======
+<<<<<<< HEAD
+			->from(array('a' => 'ourbank_master_districtlist'),array('a.id','a.name','a.name_regional'))
+=======
+			->from(array('a' => 'ourbank_master_districtlist'),array('a.id as did','a.name as dname','a.name_regional'))
+>>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 			->where('a.state_id = ?',$state);
 
 // die($select->__toString($select));
@@ -214,7 +230,15 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
+<<<<<<< HEAD
 			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id as gpid','a.name as gpname','a.name_regional'))
+=======
+<<<<<<< HEAD
+			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id','a.name','a.name_regional'))
+=======
+			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id as gpid','a.name as gpname','a.name_regional'))
+>>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 			->where('a.hobli_id = ?',$hobli);
 
 // //  die($select->__toString($select));
@@ -227,7 +251,15 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
+<<<<<<< HEAD
 		->from(array('a' => 'ourbank_master_villagelist'),array('a.id as vid','a.name as vname','a.village_id','a.name_regional'))
+=======
+<<<<<<< HEAD
+			->from(array('a' => 'ourbank_master_villagelist'),array('a.id','a.name','a.village_id','a.name_regional'))
+=======
+		->from(array('a' => 'ourbank_master_villagelist'),array('a.id as vid','a.name as vname','a.village_id','a.name_regional'))
+>>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 			->where('a.panchayath_id = ?',$gillapanchayath);
 
 // // die($select->__toString($select));
@@ -241,7 +273,15 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
+<<<<<<< HEAD
 			->from(array('a' => 'ourbank_master_taluklist'),array('a.id as tid' ,'a.name as tname','a.name_regional'))
+=======
+<<<<<<< HEAD
+			->from(array('a' => 'ourbank_master_taluklist'),array('a.id','a.name','a.name_regional'))
+=======
+			->from(array('a' => 'ourbank_master_taluklist'),array('a.id as tid' ,'a.name as tname','a.name_regional'))
+>>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 			->where('a.district_id = ?',$district);
 
 //  die($select->__toString($select));
@@ -253,7 +293,15 @@ public function getdetails($tName,$id) {
 public function hobli($taluk) {
  $select = $this->select()
              ->setIntegrityCheck(false)
+<<<<<<< HEAD
 			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id as hbid','a.name as hbname','a.name_regional'))
+=======
+<<<<<<< HEAD
+			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id','a.name','a.name_regional'))
+=======
+			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id as hbid','a.name as hbname','a.name_regional'))
+>>>>>>> f652953e9032617de191142b3ee390e24e4bd193
+>>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 			->where('a.taluk_id = ?',$taluk);
 
 // die($select->__toString($select));

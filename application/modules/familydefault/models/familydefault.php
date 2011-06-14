@@ -169,5 +169,13 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
+
+        public function checkSujeevanNo($sujeevana_no,$rev_vill)
+        {
+                $db = $this->getAdapter();
+                $sql = "select sujeevana from ourbank_family where sujeevana='".$sujeevana_no."' and rev_village_id='".$rev_vill."'";
+                $result = $db->fetchAll($sql);
+                return $result;
+        }
     
 }
