@@ -31,8 +31,6 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         if(!$data){
                 $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
-
-
         $sessionName = new Zend_Session_Namespace('ourbank');
         $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
 
@@ -60,11 +58,12 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         $this->view->memberid=$id;
         $familycommon=new Familycommonview_Model_familycommonview(); 
         $member_name=$familycommon->getfamily($id);
-// // //         $revvillageid=$member_name[0]['rev_village_id'];
-// // // //         if($revvillageid){
-// // // //         $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-// // // //         $this->view->revvillagename=$revvillagename[0]['name']; 
-// // // // 		}
+        $villageid=$member_name[0]['rev_village_id'];
+        $talukname=$familycommon->gettalukname($villageid);
+        if($talukname)
+        {
+          $this->view->villagename=$talukname[0]['name'];
+        }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
         foreach($module as $module_id){ }

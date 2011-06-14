@@ -41,6 +41,19 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
         return $result->toArray();
     }
 
+    public function gettalukname($villageid)
+    {
+
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_village'),array('a.id'),array('a.id'))
+                ->join(array('b'=>'ourbank_master_taluklist'),'b.id=a.taluk_id',array('b.name'))
+                ->where('a.village_id = ?',$villageid);
+     //   die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
     //get module id and submodule id
     public function getmodule($modulename)
     {

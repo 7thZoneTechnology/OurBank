@@ -137,7 +137,6 @@ class Familydefault_IndexController extends Zend_Controller_Action
 			$addForm->familyid1->setRequired(false);
 
             $formData = $this->_request->getPost(); 
-<<<<<<< HEAD
             $healtharray=$this->_request->getParam('health'); /*print_r($healtharray); //echo count($healtharray);*/
 //             if($addForm->isValid($formData))
 //             {
@@ -147,9 +146,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //                     $this->view->errorgroupname=$groupname.'This Family ID Already Existed';// if name exists display error message
 //             } else {
 
-=======
             $healtharray=$this->_request->getParam('health');
->>>>>>> f652953e9032617de191142b3ee390e24e4bd193
 			if($addForm->isValid($formData))
             {
                     $sujeevana_no = $this->_request->getParam('sujeevana');
