@@ -77,9 +77,13 @@ class IndexController extends Zend_Controller_Action
                     $getresult= $userinfo->userinfo($username);
                     foreach($getresult as $getdata) {
                             $user_id = $getdata["id"];
+                            $username = $getdata["username"];
                     }
                     $sessionName = new Zend_Session_Namespace('ourbank');
                     $sessionName->__set('primaryuserid',$user_id);
+                    $sessionName->primaryuserid;
+                    $sessionName->__set('username',$username);
+                    $sessionName->username;
                     $globalsession = new App_Model_Users();
                     $this->view->globalvalue = $globalsession->getSession();
                     $sessionName->__set('language',$this->view->globalvalue[1]);

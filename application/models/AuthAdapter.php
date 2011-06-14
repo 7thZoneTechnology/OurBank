@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class App_Model_AuthAdapter implements Zend_Auth_Adapter_Interface
 {
 	protected $username;

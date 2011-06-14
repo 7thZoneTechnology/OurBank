@@ -54,13 +54,13 @@ public function getdetails($tName,$id) {
               			->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','panchayath_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_gillapanchayath'),array('id','name','hobli_id'))
+						->from(array('b' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
 				->where('b.id =a.panchayath_id')
- 						->from(array('c' =>'ourbank_master_hoblilist'),array('id','name','taluk_id'))
+ 						->from(array('c' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
 				->where('c.id =b.hobli_id')
- 						->from(array('d' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+ 						->from(array('d' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
 				->where('d.id =c.taluk_id')
-						->from(array('e' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+						->from(array('e' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
                 ->where('e.id =d.district_id');
 				
 				$result = $this->fetchAll($select);
@@ -73,13 +73,14 @@ public function getdetails($tName,$id) {
               			->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','hobli_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id','name','hobli_id'))
+						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
                 ->where('c.id =a.hobli_id')
-						->from(array('d' =>'ourbank_master_hoblilist'),array('id','name','taluk_id'))
+						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
                 ->where('d.id =c.hobli_id')
-						->from(array('e' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
                 ->where('e.id =d.taluk_id')
-						->from(array('f' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
                 ->where('f.id =e.district_id');
 				
 				$result = $this->fetchAll($select);
@@ -92,9 +93,10 @@ public function getdetails($tName,$id) {
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','taluk_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+						->from(array('b' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
                 ->where('b.id =a.taluk_id')
-						->from(array('c' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+						->from(array('c' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
                 ->where('c.id =b.district_id');
 				
 				$result = $this->fetchAll($select);
@@ -106,7 +108,8 @@ public function getdetails($tName,$id) {
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','district_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+						->from(array('b' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
                 ->where('b.id =a.district_id');
 				
 				$result = $this->fetchAll($select);
@@ -127,6 +130,8 @@ public function getdetails($tName,$id) {
 				$select = $this->select()
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','state_id','a.name_regional'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+
 				->where('a.id = ?',$id);
 				
 				$result = $this->fetchAll($select);
@@ -141,7 +146,7 @@ public function getdetails($tName,$id) {
 				->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','bank_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' => 'ourbank_master_bank'),array('id','accounttype_id'))
+						->from(array('b' => 'ourbank_master_bank'),array('id as bankid','name as bankname','accounttype_id'))
 				->where('b.id  =a.bank_id');
 /*die($select->__toString($select));*/
 				$result = $this->fetchAll($select);
@@ -154,17 +159,18 @@ public function getdetails($tName,$id) {
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','village_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_villagelist'),array('id','name','panchayath_id'))
+						->from(array('b' =>'ourbank_master_villagelist'),array('id as vid','name as vname','panchayath_id'))
                 ->where('b.village_id =a.village_id')
-						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id','name','hobli_id'))
+						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
                 ->where('c.id =b.panchayath_id')
-						->from(array('d' =>'ourbank_master_hoblilist'),array('id','name','taluk_id'))
+						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
                 ->where('d.id =c.hobli_id')
-						->from(array('e' =>'ourbank_master_taluklist'),array('id','name','district_id'))
+						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
                 ->where('e.id =d.taluk_id')
-						->from(array('f' =>'ourbank_master_districtlist'),array('id','name','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
                 ->where('f.id =e.district_id');
-				
+// // 				die($select->__toString($select));
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;
@@ -194,7 +200,7 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_districtlist'),array('a.id','a.name','a.name_regional'))
+			->from(array('a' => 'ourbank_master_districtlist'),array('a.id as did','a.name as dname','a.name_regional'))
 			->where('a.state_id = ?',$state);
 
 // die($select->__toString($select));
@@ -208,10 +214,10 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id','a.name','a.name_regional'))
+			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id as gpid','a.name as gpname','a.name_regional'))
 			->where('a.hobli_id = ?',$hobli);
 
-// die($select->__toString($select));
+// //  die($select->__toString($select));
 
 
        $result = $this->fetchAll($select);
@@ -221,10 +227,10 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_villagelist'),array('a.id','a.name','a.village_id','a.name_regional'))
+		->from(array('a' => 'ourbank_master_villagelist'),array('a.id as vid','a.name as vname','a.village_id','a.name_regional'))
 			->where('a.panchayath_id = ?',$gillapanchayath);
 
-// die($select->__toString($select));
+// // die($select->__toString($select));
 
 
        $result = $this->fetchAll($select);
@@ -235,7 +241,7 @@ public function getdetails($tName,$id) {
 
  $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_taluklist'),array('a.id','a.name','a.name_regional'))
+			->from(array('a' => 'ourbank_master_taluklist'),array('a.id as tid' ,'a.name as tname','a.name_regional'))
 			->where('a.district_id = ?',$district);
 
 //  die($select->__toString($select));
@@ -247,7 +253,7 @@ public function getdetails($tName,$id) {
 public function hobli($taluk) {
  $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id','a.name','a.name_regional'))
+			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id as hbid','a.name as hbname','a.name_regional'))
 			->where('a.taluk_id = ?',$taluk);
 
 // die($select->__toString($select));

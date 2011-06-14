@@ -20,22 +20,18 @@
 class Maintenance_IndexController extends Zend_Controller_Action {
 
     public function init() {
+
+
         $this->view->pageTitle='Maintenance';
-        $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
+
+        $users = new App_Model_Users();
+        $this->view->createdby = $users->checkSession();
+        if($this->view->createdby == 0){
                 $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
 
-
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
-
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
-        foreach($loginname as $loginname) {
-            $this->view->username=$loginname['username']; // get the user name
-        }
+        $this->view->adm = new App_Model_Adm();
+        $this->view->dayendobject = new Maintenance_Model_Dayend();
     }
 
     public function indexAction() {
@@ -45,7 +41,17 @@ class Maintenance_IndexController extends Zend_Controller_Action {
 		$this->_redirect('index/login');
 	}
        $this->view->title = "Maintenance";
+
+       $Transaction = $this->view->dayendobject->transactionByDate();
+       $this->view->transaction = $Transaction;
     }
+    public function dayendAction() {
+
+        $formdata = $this->_request->getPost();
+Zend_Debug::dump($formdata);
+    }
+
+
 
 }
 

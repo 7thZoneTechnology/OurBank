@@ -17,7 +17,7 @@ class Maintenance_Model_Dayend extends Zend_Db_Table
                 J.name as login_name
                 FROM
                 ourbank_accounts A,
-                ourbank_transactionB E,
+                ourbank_transaction E,
                 ourbank_master_paymenttypes G,
                 ourbank_transactiontype H,
                 ourbank_user J
