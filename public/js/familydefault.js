@@ -20,17 +20,25 @@
 /**to select the value of sub office when there is any changes in office type*/					
 
 
-    function Getsubcaste(casteid,path) {
-        if(casteid) {
-        targeturl=path+"/familydefault/index/getsubcaste?casteid="+casteid; 
-        $.ajax({ url: targeturl, success: function(data){ $(".subcaste").html(data) }});
-        }
-    }
     function gethabitationDetails(path,rev_villageid) {
     if(rev_villageid) { 
-            targeturl=path+"/familydefault/index/gethabitation?rev_village="+rev_villageid; 
+            targeturl=path+"/familydefault/index/gethabitation?rev_village="+rev_villageid;
             $.ajax({ url: targeturl, success: function(data){ $("#village").html(data) }});
     }
+    }
+
+    function getkoota(path,rev_villageid) {
+        if(rev_villageid) { 
+                targeturl=path+"/familydefault/index/kootaname?rev_village="+rev_villageid;
+                $.ajax({ url: targeturl, success: function(data){ $("#kootadiv").html(data) }});
+        }
+    }
+
+    function gettaluk(path,rev_villageid) {
+        if(rev_villageid) { 
+                targeturl=path+"/familydefault/index/talukname?rev_village="+rev_villageid;
+                $.ajax({ url: targeturl, success: function(data){ $("#talukdiv").html(data) }});
+        }
     }
 
     $(function(){

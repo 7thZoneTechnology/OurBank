@@ -170,6 +170,17 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
 		return $result->toArray();
 	}
 
+        public function getparentid($tablename,$rev_villageid)
+        { 
+		$select=$this->select()
+			->setIntegrityCheck(false)
+			->join(array('a'=>$tablename),array('id'))
+                        ->where('a.id =?',$rev_villageid);
+         //die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
+
         public function checkSujeevanNo($sujeevana_no,$rev_vill)
         {
                 $db = $this->getAdapter();

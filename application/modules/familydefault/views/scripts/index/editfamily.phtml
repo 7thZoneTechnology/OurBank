@@ -1,4 +1,3 @@
-
 <form action="<?php echo $this->baseUrl();?>/familydefault/index/editfamily/id/<?php echo $this->memberid; ?>" id="validation" method="POST">
 <fieldset>
         <table class="fieldsets" id="hor-minimalist-b">
@@ -19,10 +18,21 @@
             <td>&nbsp; &nbsp; Street/Road/Lane :</td>
             <td><?php echo $this->form->street; ?></td>
         </tr>
-		<tr>
+        <tr>
             <td><label class="mand">Revenue Village :</td>
             <td><?php echo $this->form->rev_village; ?></td>
         </tr>
+
+        <tr>
+            <td> &nbsp;&nbsp; Taluk:</td>
+            <td><div id="talukdiv"></div></td>
+        </tr>
+
+        <tr>
+            <td> &nbsp;&nbsp; Koota:</td>
+            <td><div id="kootadiv"></div></td>
+        </tr>
+
         <tr>
            <td><label class="mand">Colony/Habitation :</td>
             <td><div id="village"><?php echo $this->form->village; ?></div></td>

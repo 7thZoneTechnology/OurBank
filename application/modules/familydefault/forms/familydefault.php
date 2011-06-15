@@ -30,15 +30,15 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $formfield = new App_Form_Field ();
         $vtype=array('Digits');
 
-        $familyid = $formfield->field('Hidden','familyid','ourbank_family','family_id','mand required digits','',true,'','','','','',0,0);
-		$familyid->addValidator('digits')
-		 		 ->addErrorMessage('Enter Numeric data');
-        $familyid->setAttrib('maxLength',5);
-
-	$familyid1 = $formfield->field('Text','familyid1','','','mand required digits','',true,'','','','','',0,0);
-	    $familyid1->addValidator('digits')
-		 		  ->addErrorMessage('Enter Numeric data');
-            $familyid1->setAttrib('maxLength',5);
+//         $familyid = $formfield->field('Hidden','familyid','ourbank_family','family_id','mand required digits','',true,'','','','','',0,0);
+// 		$familyid->addValidator('digits')
+// 		 		 ->addErrorMessage('Enter Numeric data');
+//         $familyid->setAttrib('maxLength',5);
+// 
+// 	$familyid1 = $formfield->field('Text','familyid1','','','mand required digits','',true,'','','','','',0,0);
+// 	    $familyid1->addValidator('digits')
+// 		 		  ->addErrorMessage('Enter Numeric data');
+//             $familyid1->setAttrib('maxLength',5);
 
         $sujeevana = $formfield->field('Text','sujeevana','','','required digits','',true,'','','','','',0,0);
 		$sujeevana->addValidator('digits')
@@ -73,7 +73,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $phone = $formfield->field('Text','phone','','','digits','',false,'','','','','',0,0);
 		$phone->setAttrib('maxLength', 12);
 	$rev_village = $formfield->field('Select','rev_village','','','required','',true,'','','','','',0,0);
-	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value)');
+	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),getkoota("'.$path.'",this.value),gettaluk("'.$path.'",this.value)');
                $rev_village->setRequired(true)
                         ->setRegisterInArrayValidator(false)
                         ->addValidators(array(array('NotEmpty')));
@@ -89,7 +89,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
 	$mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
 		$mobile->setAttrib('maxLength', 11);
 
-        $this->addElements(array($sujeevana,$houseno,$minority,$familyid1,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
+        $this->addElements(array($sujeevana,$houseno,$minority,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
 
     }
 }

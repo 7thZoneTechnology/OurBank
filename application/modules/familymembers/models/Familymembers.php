@@ -63,14 +63,6 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
         return $result->toArray();
         }
 
-        public function checkuidmodel1($uid,$name){
-                $db = $this->getAdapter();
-                $sql = "select a.uid from ourbank_familymember a where a.uid='".$uid."' and a.name != '".$name."'";
-                echo $sql;
-                $result = $db->fetchAll($sql);
-                return $result;
-        }
-
         public function getprofession($id){
 	$select=$this->select()
                     ->setIntegrityCheck(false)
