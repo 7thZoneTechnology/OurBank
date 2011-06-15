@@ -48,7 +48,6 @@ class Maintenance_IndexController extends Zend_Controller_Action {
     public function dayendAction() {
 
         $formdata = $this->_request->getPost();
-Zend_Debug::dump($formdata);
     }
 
 

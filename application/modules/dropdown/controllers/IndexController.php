@@ -90,10 +90,10 @@ public function nameAction()
 
 public function addAction() 
     {
- $path = $this->view->baseUrl();
-$dropdownForm = new Dropdown_Form_Settings($path);
+ 		$path = $this->view->baseUrl();
+		$dropdownForm = new Dropdown_Form_Settings($path);
         $this->view->form = $dropdownForm;
-$tName=$this->_request->getParam('name');
+		$tName=$this->_request->getParam('name');
 
  		$id=$this->_request->getParam('id');
 		$this->view->tableName =$tName;
@@ -103,49 +103,7 @@ $tName=$this->_request->getParam('name');
 		foreach($statename as $statename){
 				$dropdownForm->state->addMultiOption($statename['id'],$statename['name']);
 			}
-<<<<<<< HEAD
-// // 		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
-// // 		foreach($districtname as $districtname){
-// // 				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
-// // 			}
-// // 		$taluklist = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
-// // 		foreach($taluklist as $taluklist){
-// // 				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name']);
-// // 			}
-// // 		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
-// // 		foreach($gillapanchayath as $gillapanchayath){
-// // 				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
-// // 			}
-// // 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
-// // 		foreach($village as $village){
-// // 				$dropdownForm->village->addMultiOption($village['id'],$village['name']);
-// // 			}
-// // 		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
-// // 		foreach($bank as $bank){
-// // 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
-// // 			}
-=======
-// 		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
-// 		foreach($districtname as $districtname){
-// 				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
-// 			}
-// 		$taluklist = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
-// 		foreach($taluklist as $taluklist){
-// 				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name']);
-// 			}
-// 		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
-// 		foreach($gillapanchayath as $gillapanchayath){
-// 				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
-// 			}
-// 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
-// 		foreach($village as $village){
-// 				$dropdownForm->village->addMultiOption($village['id'],$village['name']);
-// 			}
-// 		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
-// 		foreach($bank as $bank){
-// 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
-// 			}
->>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
+
 		if ($this->_request->isPost() && $this->_request->getPost('Save')) {
 			if($tName == 'ourbank_master_districtlist') {
  		$id=$this->_request->getParam('state');
@@ -252,7 +210,8 @@ $settings = new Dropdown_Model_Dropdown;
 }
  		$commonname=$this->_request->getParam('commonname');
 $name_regional=$this->_request->getParam('name_regional');
-									$formdata1=array('id'=>'','name_regional'=>$name_regional,
+									$formdata1=array('id'=>'',
+							'name_regional'=>$name_regional,
 									'name'=>$commonname);
 						$id = $this->view->adm->addRecord($tName,$formdata1);
  			$this->_redirect('/dropdown');
@@ -335,11 +294,7 @@ public function editAction()
 		foreach($bank as $bank){
 				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
 			}
-<<<<<<< HEAD
 // // 		$name_regional=$this->_request->getParam('name_regional');
-=======
-		$name_regional=$this->_request->getParam('name_regional');
->>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
 
 			$id=$this->_request->getParam('id');
 			$tName=$this->_request->getParam('name');
@@ -362,7 +317,7 @@ public function editAction()
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->village->setValue($holidaydetails['village_id']);
-						$this->view->form->gillapanchayath->setValue($holidaydetails['village_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -373,7 +328,7 @@ public function editAction()
 						foreach($namedetails as $holidaydetails) {
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 			            $this->view->form->commonname->setValue($holidaydetails['habit']);
-						$this->view->form->gillapanchayath->setValue($holidaydetails['village_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['panchayath_id']);
 						$this->view->form->hobli->setValue($holidaydetails['hobli_id']);
 						$this->view->form->taluk->setValue($holidaydetails['taluk_id']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
