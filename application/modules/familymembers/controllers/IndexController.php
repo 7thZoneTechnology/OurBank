@@ -82,7 +82,11 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->hiddenid = $this->_request->getParam('hiddenid');
 	$uiddetails=$this->view->modelfamily->checkuidmodel($uid);
 	if($uiddetails){ 
-        echo "<span style='color: #FF0000'>UID already exist</span>";
+        //echo "<span style='color: #FF0000'>UID already exist</span>";
+	$this->view->uidok=3;
+	}
+	else {
+	$this->view->uidok=1;
 	}
     }
 
@@ -157,6 +161,11 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 } else {
                     $head = 0;
                 }
+            $validator = new Zend_Validate_Db_RecordExists('ourbank_familymember','uid');
+            if ($validator->isValid($uid[$i])) {
+                $messages = $validator->getMessages();	
+                    $this->view->erroruid=$uid[$i].'Already Existed';// if name exists display error message
+            } else {
                 $o=str_pad($villageid,3,"0",STR_PAD_LEFT);
                 $u=str_pad($family_id,4,"0",STR_PAD_LEFT);
                 $code=$o.$u;
@@ -210,7 +219,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
                 $membercode=$o.$p.$u;
                $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
-            }
+            }}
           $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
         }
     }
@@ -296,7 +305,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $uid= $this->_getParam('uid');
             $employment=$this->_getParam('employ_status');
 
-
             $countname = count($mem_name);
             $j=0; $k=0; $l=0;
             for($i = 0; $i< $countname; $i++) 
@@ -344,6 +352,14 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'created_by'=>$this->view->createdby, 
                                     'created_date'=>date("y/m/d H:i:s")
                                    );
+
+            $validator = new Zend_Validate_Db_RecordExists('ourbank_familymember','uid');
+
+            if ($validator->isValid($uid[$i])) {
+                $messages = $validator->getMessages();	
+                    $this->view->errorgroupname=$uid[$i].'This Family ID Already Existed';// if name exists display error message
+            } else {
+
         if($recordid[$i]!=""){
                $familyobj->update($recordid[$i],$familymembers);
                $familyobj->deleterecord('ourbank_memberentitlememnt',$recordid[$i]);
@@ -366,7 +382,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 }
 
             }
-// check the i value with Exist members value to add new members 
+// check the i value with Exist members value to add new members
             else
             {
                $lastid=$this->view->adm->addRecord("ourbank_familymember",$familymembers);
@@ -394,7 +410,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
                 }
            }
-
+            }
             $deletearray=array_diff($recordarray,$recordid);
             foreach($deletearray as $deltearr){
             $familyobj->deleteFamily($deltearr);

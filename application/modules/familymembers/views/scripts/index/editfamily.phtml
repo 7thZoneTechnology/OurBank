@@ -125,7 +125,7 @@
                 <td><INPUT type="text" name = "alias_relname[]" size="15" value="<?php echo $familydetails['alias_inregional']; ?>" maxlength="20" class="noncharacters"></td>
 
                 <td><INPUT type="text" name = "uid[]" id="uid-<?php echo $i ?>" value="<?php echo $familydetails['uid']; ?>" maxlength="16" size="15" class="numeric uidvalid uidvaltext">
-		<div id="uiddiv-1" class="uidclass"></div>
+		<div id="uiddiv-<?php echo $i ?>" class="uidclass"><input type="hidden" id="hiddenid-<?php echo $i; ?>" name="uidhidden" value=2></div>
                 </td>
 
                 <?php if($familydetails['breadwinner_id']==1){ ?>

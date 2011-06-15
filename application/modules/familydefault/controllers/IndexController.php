@@ -137,8 +137,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
 // 			$addForm->familyid1->setRequired(false);
 
             $formData = $this->_request->getPost(); 
-<<<<<<< HEAD
-=======
+
             $healtharray=$this->_request->getParam('health'); /*print_r($healtharray); //echo count($healtharray);*/
 //             if($addForm->isValid($formData))
 //             {
@@ -148,7 +147,6 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //                     $this->view->errorgroupname=$groupname.'This Family ID Already Existed';// if name exists display error message
 //             } else {
 
->>>>>>> 1d0c026eb1c4725c5addbc3b75547c15fc9eb4bc
             $healtharray=$this->_request->getParam('health');
 			if($addForm->isValid($formData))
             {
@@ -190,20 +188,6 @@ class Familydefault_IndexController extends Zend_Controller_Action
                 $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
                 $code=$o.$u;
                 $this->view->adm->updateRecord("ourbank_family",$lastid,array('code'=>$code));
-// //create a saving account number 
-//                 $product=new Familydefault_Model_familydefault();
-//                 $saving=$product->productoffers("psi");
-//                 $lastid1 = $this->view->adm->addRecord("ourbank_accounts",array('id' => '',
-//                                 'member_id'=>$lastid,
-//                                 'product_id' => $saving,
-//                                 'accountcreated_date' => date("y/m/d H:i:s"), 
-//                                 'membertype_id'=>'1',
-//                                 'created_date' =>date("y/m/d H:i:s"),
-//                                 'created_by'=>$this->view->createdby,'status_id'=>'3'));
-//                 $u1=str_pad($lastid1,6,"0",STR_PAD_LEFT);
-//                 $p1="0".$saving;
-//                 $accountno=$o.$p.$p1."S".$u1;
-//                 $this->view->adm->updateRecord("ourbank_accounts",$lastid1,array('account_number'=>$accountno));
 
                $this->_redirect('/familycommonview/index/commonview/id/'.$lastid);
                 }

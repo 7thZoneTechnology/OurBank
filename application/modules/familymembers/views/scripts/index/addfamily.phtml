@@ -240,6 +240,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
         <input type="button" id="tmpAddRow" class="deletebutton" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
+
+<?php if ($this->erroruid) { ?>
+
+           <table><TR><TD><?php echo "<font color='red' size='2'>".$this->erroruid."</font>";?></TD></TR></table>
+           <!-- <?php// $this->error_msg = '' ?> -->
+<?php } ?>
 </div>
 </BODY>
 </html>

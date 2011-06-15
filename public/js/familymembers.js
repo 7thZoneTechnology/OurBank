@@ -95,7 +95,6 @@ $(document).ready(
            targeturl=path+"/familymembers/index/checkuid?uid="+uid+"&hiddenid="+id[1]; //alert(targeturl);
 	   $.ajax({ url: targeturl, success: function(data){ $('#uiddiv-'+id[1]).html(data) }});
         }
-// 	alert($('#hiddenuid-'+id[1]).val());
     }); 
 
     $(".profid1").click ( function() {
@@ -325,8 +324,9 @@ $(document).ready(
 	var id=$(this).attr("id").split("-");
         var uidvalue = $(this).val();
         habitfields = $("input[name='uid"+"[]']").serializeArray(); 
-        len = habitfields.length; 
-
+        len = habitfields.length;
+	var uiddatacheck=$("#hiddenid-"+id[1]).val();
+	//alert(uiddatacheck);
         for(i=0; i<=len; i++){
         if(i!=id[1]) {
         if($('#uid-'+i).val()!=uidvalue)
@@ -344,5 +344,19 @@ $(document).ready(
         }
         });
 
+        $(this).find(':text.uidvalid').each(function() {
+	var id=$(this).attr("id").split("-");
+	if($("#hiddenid-"+id[1]).val()==3 && $(this).next('span').length == 0)
+	{  
+	    $(this).after('<span id="uidmember1" style="color: #FF0000">UID already exist</span>');
+            e.preventDefault();
+            return false;
+	}
+        else
+	{
+	    $(this).next('span#uidmember1').remove();
+	}
+
+        });
     });
 });
