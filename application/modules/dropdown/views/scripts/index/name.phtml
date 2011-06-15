@@ -4,20 +4,18 @@
 	    <tr><td></td>
 			<td></td>
 			<td align="right"><b><h3>List of <?php echo substr($this->tableName,15);?></h3></b></td>
-
 		</tr>
-			<th>Sl.No</th>
-			<th>English</th>
-			<th>Kannada</th>
-			
+			<th width="6%">Sl.No</th>
+			<th width="40%">English</th>
+			<th width="60%">Kannada</th>
 	</TABLE>
 
-<DIV style="float: right; clear: right; height:240px; ; overflow-y: auto; overflow-x: hidden;">
-	<TABLE id="hor-minimalist-b" width="100%">
+<DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
 			<?php foreach ($this->tabledata as $datas ): ?>
-		<tr><td width="20%" ><?php echo $datas['id'];?></td>
+		<tr><td width="6%"><?php echo $datas['id'];?></td>
 			<td width="40%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['name']; ?></td>
-			<td width="40%"><?php echo $datas['name_regional']; ?></a></td>
+			<td width="60%"><?php echo $datas['name_regional']; ?></a></td>
 		</tr>
 		<?php endforeach; ?>
 	</TABLE>
