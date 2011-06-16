@@ -87,7 +87,7 @@ $(document).ready(
         }
     });
 
-    $(".uidvalid").change( function() {
+    $(".uidvalid").change( function() { //alert('HI prakash');
 	var id=$(this).attr("id").split("-"); 
         if($(this).val())
         {  uid=$(this).val();
@@ -326,6 +326,19 @@ $(document).ready(
         habitfields = $("input[name='uid"+"[]']").serializeArray(); 
         len = habitfields.length;
 	var uiddatacheck=$("#hiddenid-"+id[1]).val();
+
+	if($("#hiddenid-"+id[1]).val()==2)
+	{   if($(this).next('span').length == 0) {
+	    $(this).after('<span id="uidmember1" style="color: #FF0000">UID already exist</span>');
+	    }
+            e.preventDefault();
+	}
+        else
+	{
+	    if($(this).next('span').length > 0) {
+	    $(this).next('span#uidmember1').remove();
+	    }
+	}
 	//alert(uiddatacheck);
         for(i=0; i<=len; i++){
         if(i!=id[1]) {
@@ -344,19 +357,5 @@ $(document).ready(
         }
         });
 
-        $(this).find(':text.uidvalid').each(function() {
-	var id=$(this).attr("id").split("-");
-	if($("#hiddenid-"+id[1]).val()==3 && $(this).next('span').length == 0)
-	{  
-	    $(this).after('<span id="uidmember1" style="color: #FF0000">UID already exist</span>');
-            e.preventDefault();
-            return false;
-	}
-        else
-	{
-	    $(this).next('span#uidmember1').remove();
-	}
-
-        });
     });
 });

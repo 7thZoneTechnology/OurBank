@@ -83,7 +83,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
 	$uiddetails=$this->view->modelfamily->checkuidmodel($uid);
 	if($uiddetails){ 
         //echo "<span style='color: #FF0000'>UID already exist</span>";
-	$this->view->uidok=3;
+	$this->view->uidok=2;
 	}
 	else {
 	$this->view->uidok=1;
