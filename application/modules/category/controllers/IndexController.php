@@ -52,6 +52,11 @@ class Category_IndexController extends Zend_Controller_Action
                 }
                 }
 
+
+
+
+
+
 	}
 
 	public function indexAction() 
@@ -102,6 +107,7 @@ class Category_IndexController extends Zend_Controller_Action
 	}
 	public function categoryaddAction() 
 	{
+
 //calling the form		
 		$this->view->title = "Category";
 		$categoryForm = new Category_Form_category();
@@ -109,6 +115,8 @@ class Category_IndexController extends Zend_Controller_Action
 //submit action
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 				$formData = $this->_request->getPost();
+
+
 				if ($this->_request->isPost()) {
 					if ($categoryForm->isValid($formData)) {  
 //                                         echo "created by".$this->view->createdby;

@@ -45,8 +45,11 @@
       </div>
       <div id="submenu">
             <ul>
-<!--                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/settings/">Languages</a></li>-->
-                <li><a href="<?php  echo $this->baseUrl();?>/dropdown">Master Data</a></li>
+				<?php if($this->pageTitle == "Master Data") { ?>
+                <li class="selected"><a href="<?php  echo $this->baseUrl();?>/dropdown">Master Data</a></li>
+ 				<?php } else { ?>
+				<li><a href="<?php  echo $this->baseUrl();?>/dropdown">Master Data</a></li>
+				<?php } ?>
             </ul>
       </div>
     </div>

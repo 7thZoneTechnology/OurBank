@@ -23,6 +23,7 @@ class IndexController extends Zend_Controller_Action
     {
         $this->view->title = "Management";
 
+
     }
 
     public function indexAction() 
