@@ -32,6 +32,12 @@
         <td class="thirdtd"></td>
     </tr>
 
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("Koota"); ?></td>
+        <td class = "secondtd"><?php echo $this->kootaname; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
 	<tr>
         <td class="firsttd"><?php echo $this->translate("Revenue Village:"); ?></td>
         <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
@@ -45,11 +51,10 @@
     </tr>
 
     <tr>
-        <td class="firsttd"><?php echo $this->translate("Koota"); ?></td>
-        <td class = "secondtd"><?php echo $this->kootaname; ?></td>
+        <td class="firsttd"><?php echo $this->translate("Pincode"); ?></td>
+        <td class = "secondtd"><?php echo $this->pincode1; ?></td>
         <td class="thirdtd"></td>
     </tr>
-
 
     <tr>
         <td class="firsttd"><?php echo $this->translate("Colony/Habitation:"); ?></td>
@@ -148,6 +153,7 @@
         <th ><?php echo $this->translate("ಹೆಸರು"); ?></th>
         <th ><?php echo $this->translate("Alias"); ?></th>
         <th ><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+        <th ><?php echo $this->translate("Father"); ?></th>
         <th><?php echo $this->translate("UID"); ?></th>
         <th ><?php echo $this->translate("Breadwinner"); ?></th>
         <th ><?php echo $this->translate("Head"); ?></th>
@@ -178,6 +184,7 @@
         <td><?php echo $family['name_inregional']; ?></td>
         <td><?php echo $family['alias']; ?></td>
         <td><?php echo $family['alias_inregional']; ?></td>
+        <td><?php echo $family['father_name']; ?></td>
         <td><?php echo $family['uid']; ?></td>
         <td align="center"><?php if($family['breadwinner_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
         <td align="center"><?php if($family['head_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"><?php } else {echo "-";} ?></td>

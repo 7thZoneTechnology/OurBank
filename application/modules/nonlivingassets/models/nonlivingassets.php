@@ -41,4 +41,3 @@ class Nonlivingassets_Model_nonlivingassets  extends Zend_Db_Table {
     }
 }
 
-?>

@@ -80,9 +80,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th><?php echo $this->translate("ಹೆಸರು"); ?></th>
                 <th><?php echo $this->translate("Alias"); ?></th>
                 <th><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+                <th><?php echo $this->translate("Father"); ?></th>
                 <th><?php echo $this->translate("UID"); ?></th>
                 <th><?php echo $this->translate("Breadwinner"); ?></th>
-                <th><?php echo $this->translate("Head"); ?></th>
+                <th><?php echo $this->translate("Father"); ?></th>
                 <th><?php echo $this->translate("Date of Birth"); ?></th>
                 <th><?php echo $this->translate("Age"); ?></th>
                 <th><?php echo $this->translate("Relation to HOF"); ?></th>
@@ -112,6 +113,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><INPUT type="text" name = "mem_relname[]" maxlength="30" size="15" class="noncharacters"></td>
                 <td><INPUT type="text" name = "alias_name[]" maxlength="20" size="15" class="noncharacters"></td>
                 <td><INPUT type="text" name = "alias_relname[]" maxlength="20" size="15" class="noncharacters"></td>
+                <td><INPUT type="text" name = "father_name[]" class="required noncharacters" maxlength="30" size="15"></td>
                 <td><INPUT type="text" name = "uid[]" id="uid-1" maxlength="16" size="15" class="numeric uidvalid uidvaltext">
 		<div id="uiddiv-1" class="uidclass"></div>
                 </td>
@@ -235,6 +237,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><img class="delete-icon" id="image" value="1" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'>
             </tr>
            <input type="hidden" name="count[]" id="count" value="<?php echo $this->countvalue; ?>">
+           <input type="hidden" name="villageid" id="villageid" value="<?php echo $this->village1; ?>">
 
         </table>  
 

@@ -27,10 +27,10 @@
     }
     }
 
-    function getkoota(path,rev_villageid) {
-        if(rev_villageid) { 
-                targeturl=path+"/familydefault/index/kootaname?rev_village="+rev_villageid;
-                $.ajax({ url: targeturl, success: function(data){ $("#kootadiv").html(data) }});
+    function getrevvillage(path,kootaid) { 
+        if(kootaid) { 
+                targeturl=path+"/familydefault/index/revname?koota_id="+kootaid;
+                $.ajax({ url: targeturl, success: function(data){ $("#revdiv").html(data) }});
         }
     }
 
@@ -38,6 +38,13 @@
         if(rev_villageid) { 
                 targeturl=path+"/familydefault/index/talukname?rev_village="+rev_villageid;
                 $.ajax({ url: targeturl, success: function(data){ $("#talukdiv").html(data) }});
+        }
+    }
+
+    function getpincode(path,rev_villageid,modid) {
+        if(rev_villageid) { 
+                targeturl=path+"/familydefault/index/pincode?rev_village="+rev_villageid+"&mod_id="+modid;
+                $.ajax({ url: targeturl, success: function(data){ $("#pincodediv").html(data) }});
         }
     }
 
