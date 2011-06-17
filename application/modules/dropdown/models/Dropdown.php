@@ -125,6 +125,36 @@ public function getdetails($tName,$id) {
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;
+
+			case 'ourbank_master_cbopromoter':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id as cbid','name as habit','a.name_regional'))
+				->where('a.id = ?',$id)
+				
+					->from(array('b' =>'ourbank_office'),array('id as oid','name as oname','officetype_id'))
+					->where('b.id =a.koota_id');
+// // 				die($select->__toString($select));
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+
+
+			case 'ourbank_master_cbos':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id as cbosid','name as habit','a.name_regional'))
+				->where('a.id = ?',$id)
+				
+					->from(array('b' =>'ourbank_master_cbopromoter'),array('id as cbid','name as cbname'))
+					->where('b.id =a.cbopromoter_id');
+// // 				die($select->__toString($select));
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
+
 				case 'ourbank_master_districtlist':
 					{ 
 				$select = $this->select()
@@ -138,7 +168,17 @@ public function getdetails($tName,$id) {
        			return $result->toArray();
 				}break;
 
-
+				case 'ourbank_master_bank':
+					{ 
+				$select = $this->select()
+              ->setIntegrityCheck(false)
+						->from(array('a' => $tName),array('id','name as habit','a.name_regional'))
+				->where('a.id = ?',$id)
+						->from(array('b' =>'ourbank_master_accountype'),array('id as accid','name as accname'))
+				->where('b.id  =a.accounttype_id');
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+				}break;
 
 				case 'ourbank_master_branch':
 					{ 
@@ -205,10 +245,23 @@ public function getdetails($tName,$id) {
 
 // die($select->__toString($select));
 
-
        $result = $this->fetchAll($select);
        return $result->toArray();
     }
+
+ public function listkoota() {
+
+ $select = $this->select()
+              ->setIntegrityCheck(false)
+					->from(array('b' =>'ourbank_office'),array('id as oid','name as oname','officetype_id'))
+				->where('b.officetype_id = (select max(Hierarchy_level)-1 from ourbank_officehierarchy)');
+
+// 				die($select->__toString($select));
+
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+    }
+
 
  public function gillapanchayath($hobli) {
 
@@ -289,4 +342,3 @@ created_date datetime
     }
 
 }
-    

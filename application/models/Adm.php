@@ -17,12 +17,8 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 /*
 Class for common Add Delete and Modify 
-
 */
 class App_Model_Adm extends Zend_Db_Table 
 {

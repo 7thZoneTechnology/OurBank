@@ -37,9 +37,13 @@
 	<tr><td align="center">Bank :</td><TD colspan="2"><?php echo $details['bankname'];?></TD></tr>
 				<?php }?>
 
+<?php if($this->tableName == 'ourbank_master_cbopromoter') {?>
+	<tr><td align="center">Koota list :</td><TD colspan="2"><?php echo $details['oname'];?></TD></tr>
+				<?php }?>
 
-
-
+<?php if($this->tableName == 'ourbank_master_cbos') {?>
+	<tr><td align="center">CBO promoter :</td><TD colspan="2"><?php echo $details['cbname'];?></TD></tr>
+				<?php }?>
 
 	<tr><td align="center"><? echo substr($this->tableName,15); ?> :</td><td><?php echo $details['habit'];?></td><TD></TD></tr>
 	<tr><td align="center">Regional name :</td><TD colspan="2"><?php echo $details['name_regional'];?></TD></tr>
