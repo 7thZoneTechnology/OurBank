@@ -119,6 +119,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
          if ($this->_request->getPost('submit')) {
                     $family_id=$this->_getParam('id');
                     $mem_name=$this->_getParam('mem_name');
+                    $fathername=$this->_getParam('father_name');
                     $mem_relname=$this->_getParam('mem_relname');
                     $alias_name=$this->_getParam('alias_name');
                     $alias_relname=$this->_getParam('alias_relname');
@@ -169,7 +170,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'breadwinner_id' => $bread,
                                     'head_id' => $head,
                                     'village_id'=>$villageid,
-//                                  'familycode'=>$code.str_pad($i,2,"0",STR_PAD_LEFT),
+                                    'father_name'=>$fathername[$i],
                                     'name' => $mem_name[$i],
                                     'name_inregional' => $mem_relname[$i],
                                     'alias' => $alias_name[$i],
@@ -276,6 +277,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
             $family_id=$this->_getParam('id');
             $mem_name=$this->_getParam('mem_name');
+            $fathername=$this->_getParam('father_name');
             $mem_relname=$this->_getParam('mem_relname');
             $alias_name=$this->_getParam('alias_name');
             $alias_relname=$this->_getParam('alias_relname');
@@ -324,7 +326,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'breadwinner_id' => $bread,
                                     'head_id' => $head,
                                     'village_id'=>$villageid,
-//                                  'familycode'=>$code.str_pad($i,2,"0",STR_PAD_LEFT),
+                                    'father_name'=>$fathername[$i],
                                     'name' => $mem_name[$i],
                                     'name_inregional' => $mem_relname[$i],
                                     'alias' => $alias_name[$i],

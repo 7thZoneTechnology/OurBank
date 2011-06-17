@@ -45,20 +45,11 @@ class Familydefault_IndexController extends Zend_Controller_Action
 
         $model = new Familydefault_Model_familydefault();
         $officetype=$model->getofficehierarchy();
-        $lastlevelid=$officetype[0]['hierarchyid'];
-        $finduser = $model->finduser($this->view->createdby,$officetype);
-        if ($finduser) {
-            $this->view->officeid=$finduser[0]['officeid'];
-        }
-        else
-        {
-                echo $this->view->officeid="";
-        }
-
+        $this->view->lastlevelid=$officetype[0]['hierarchyid']-1;
         $this->view->adm = new App_Model_Adm();
         $this->view->commonmodel=$individualcommon=new Familycommonview_Model_familycommonview();
     //get the module id and submodule id
-        $module=$individualcommon->getmodule('Family');
+        $module=$individualcommon->getmodule('Office');
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
@@ -75,7 +66,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $path = $this->view->baseUrl();
         $this->view->title = $this->view->translate("Family Information");;
 //load form for individual
-        $addForm = new Familydefault_Form_familydefault($path);
+        $addForm = new Familydefault_Form_familydefault($path,$this->view->sub_id);
         $this->view->form=$addForm;
 
         $caste = $this->view->adm->viewRecord("ourbank_master_castetype","id","DESC");
@@ -104,17 +95,17 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $addForm->income->addMultiOption($sourceincome1['id'],$sourceincome1['name']);
         }
 
-		$familymodel = new Familydefault_Model_familydefault();
-		$hierarchy = $familymodel->getofficehierarchy();
-       	foreach($hierarchy as $hiearchyids){
-       	$hiearchyid = $hiearchyids['hierarchyid'];
-       	}
-		
-       	$institution = $familymodel->office($this->view->officeid);
+        $familymodel = new Familydefault_Model_familydefault();
+// 		$hierarchy = $familymodel->getofficehierarchy();
+//        	foreach($hierarchy as $hiearchyids){
+//        	$hiearchyid = $hiearchyids['hierarchyid'];
+//        	}
+//	
+       	$institution = $familymodel->office($this->view->lastlevelid);
 
        	foreach($institution as $institution)
        	{
-		$addForm->rev_village->addMultiOption($institution['village_id'],$institution['villagename']);
+		$addForm->koota->addMultiOption($institution['village_id'],$institution['villagename']);
        	}
         $habitationobj = new Familydefault_Model_familydefault();
 
@@ -169,7 +160,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'familytype_id' => $this->_request->getParam('familytype'), 
                                         'minority_id' => $this->_request->getParam('minority'), 
                                         'caste_id'=>$this->_request->getParam('caste'),
-//                                         'subcaste_id'=>$this->_request->getParam('subcaste'),
+                                        'Koota_id'=>$this->_request->getParam('koota'),
                                         'ration_id'=>$this->_request->getParam('ration'),                                        'nregs_jobno'=>$this->_request->getParam('jobno'),
                                         'income_id'=>$this->_request->getParam('income'),
                                         'created_date' =>date("y/m/d H:i:s"),
@@ -216,12 +207,12 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //load individual form
 		$familymodel = new Familydefault_Model_familydefault();
 
-        $addForm = new Familydefault_Form_familydefault($path);
+        $addForm = new Familydefault_Form_familydefault($path,$this->view->sub_id);
         $convertdate = new App_Model_dateConvertor();
         $this->view->form=$addForm;
 
 //load gender and office names in the drop down list box
-        $familydefaultmodule= new Familydefault_Model_familydefault();
+//         $familydefaultmodule= new Familydefault_Model_familydefault();
         $caste = $this->view->adm->viewRecord("ourbank_master_castetype","id","DESC");
         foreach($caste as $casteresult){
         $addForm->caste->addMultiOption($casteresult['id'],$casteresult['name']);
@@ -251,32 +242,38 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $addForm->income->addMultiOption($sourceincome1['id'],$sourceincome1['name']);
         }
 
-
-		$hierarchy = $familymodel->getofficehierarchy();
-       	foreach($hierarchy as $hiearchyids){
-       	$hiearchyid = $hiearchyids['hierarchyid'];
-       	}
-//        	$institution = $familymodel->office($hiearchyid);
-       	$institution = $familymodel->office($this->view->officeid);
+       	$institution = $familymodel->office($this->view->lastlevelid);
 
        	foreach($institution as $institution)
        	{
-        $addForm->rev_village->addMultiOption($institution['village_id'],$institution['villagename']);
+		$addForm->koota->addMultiOption($institution['village_id'],$institution['villagename']);
        	}
+
 
 //set the individual member value in the edit form
         $edit_member = $this->view->adm->editRecord("ourbank_family",$family_id);
+
+	$parentid=$familymodel->getparentid('ourbank_office',$edit_member[0]['Koota_id']);
+	foreach($parentid as $revvillage) 
+	{
+	$addForm->rev_village->addMultiOption($revvillage['id'],$revvillage['name']);
+	}
+
         $insurancedetails=$this->view->commonmodel->getinsurance($family_id);
         foreach($insurancedetails as $details){ $inarray[]=$details['insurance_id'];
         }
-          $this->view->form->health->setValue($inarray);
-
-		$villageid=$edit_member[0]['rev_village_id']; 
-		$habitation = $familydefaultmodule->gethabitation($villageid);
+        $this->view->form->health->setValue($inarray);
+        $villageid=$edit_member[0]['rev_village_id']; 
+        $habitation = $familymodel->gethabitation($villageid);
         foreach($habitation as $village){
         $addForm->village->addMultiOption($village['id'],$village['villagename']);
         }
-   
+
+	$pincode=$familymodel->getpincode($edit_member[0]['rev_village_id'],$this->view->sub_id);
+	if($pincode){
+	$this->view->pincode=$pincode[0]['zipcode'];
+	}
+
         foreach($edit_member as $editmembername)
         {
 	    $this->view->form->sujeevana->setValue($editmembername['sujeevana']);
@@ -284,6 +281,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
             $this->view->form->houseno->setValue($editmembername['house_no']);
             $this->view->form->street->setValue($editmembername['street']);
             $this->view->form->rev_village->setValue($editmembername['rev_village_id']);
+            $this->view->form->koota->setValue($editmembername['Koota_id']);
             $this->view->form->village->setValue($editmembername['village_id']);
             $this->view->form->phone->setValue($editmembername['phone']);
             $this->view->form->mobile->setValue($editmembername['mobile']);  
@@ -319,7 +317,8 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'village_id'=>$this->_request->getParam('village'),
                                         'rev_village_id'=>$this->_request->getParam('rev_village'),
                                         'mobile'=>$this->_request->getParam('mobile'),
-                                        'phone'=>$this->_request->getParam('phone'),
+                                        'phone'=>$this->_request->getParam('phone'),				
+					'Koota_id'=>$this->_request->getParam('koota'),
                                         'familytype_id' => $this->_request->getParam('familytype'), 
                                         'minority_id' => $this->_request->getParam('minority'), 
                                         'caste_id'=>$this->_request->getParam('caste'),
@@ -329,7 +328,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
                                         'created_date' =>date("y/m/d H:i:s"),
                                         'created_by'=>$this->view->createdby));
 
-            $familydefaultmodule->deleteinsurance($family_id);
+            $familymodel->deleteinsurance($family_id);
             foreach($healtharray as $health){
                 $this->view->adm->addRecord("ourbank_insurance",array(
                                         'id' => '',
@@ -382,21 +381,21 @@ class Familydefault_IndexController extends Zend_Controller_Action
         //             $this->_redirect('index/index');
         // 	}
     }
-    public function getcitiesAction()
-    {
-        $this->_helper->layout->disableLayout();
-        $path = $this->view->baseUrl();
-        $addForm = new Familydefault_Form_familydefault($path);
-        $villageID = $this->_getParam('villageID');
-        $villageObj = new Familydefault_Model_familydefault();
-        $otherIds = $villageObj->getIds($villageID);
-        if($otherIds) {
-            $taluk=$villageObj->editRecord("ourbank_master_taluklist",$otherIds[0]['taluk_id']);
-            $district=$villageObj->editRecord("ourbank_master_districtlist",$otherIds[0]['district_id']);
-            $cities = $this->view->cities = $taluk[0]['name']."@".$district[0]['name']."";
-            echo $cities;
-        }
-    }
+//     public function getcitiesAction()
+//     {
+//         $this->_helper->layout->disableLayout();
+//         $path = $this->view->baseUrl();
+//         $addForm = new Familydefault_Form_familydefault($path);
+//         $villageID = $this->_getParam('villageID');
+//         $villageObj = new Familydefault_Model_familydefault();
+//         $otherIds = $villageObj->getIds($villageID);
+//         if($otherIds) {
+//             $taluk=$villageObj->editRecord("ourbank_master_taluklist",$otherIds[0]['taluk_id']);
+//             $district=$villageObj->editRecord("ourbank_master_districtlist",$otherIds[0]['district_id']);
+//             $cities = $this->view->cities = $taluk[0]['name']."@".$district[0]['name']."";
+//             echo $cities;
+//         }
+//     }
 
 	public function gethabitationAction() {
          	$this->_helper->layout->disableLayout();
@@ -404,7 +403,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
 
 	        $rev_villageid = $this->_request->getParam('rev_village');
 
- 	        $searchForm = new Familydefault_Form_familydefault($path);
+ 	        $searchForm = new Familydefault_Form_familydefault($path,$this->view->sub_id);
             $this->view->form = $searchForm;
 
  	        $habitation= new Familydefault_Model_familydefault();
@@ -416,14 +415,18 @@ class Familydefault_IndexController extends Zend_Controller_Action
 	        }
 	}
 
-        public function kootanameAction()
+        public function revnameAction()
         {
          	$this->_helper->layout->disableLayout();
-	        $rev_villageid = $this->_request->getParam('rev_village');
+	        $kootaid = $this->_request->getParam('koota_id');
+                $path = $this->view->baseUrl();
  	        $habitation= new Familydefault_Model_familydefault();
-                $parentid=$habitation->getparentid('ourbank_office',$rev_villageid);
-                $kootaname=$habitation->getparentid('ourbank_office',$parentid[0]['parentoffice_id']);
-                echo $kootaname[0]['name'];
+ 	        $this->view->form=$searchForm = new Familydefault_Form_familydefault($path,$this->view->sub_id);
+                $parentid=$habitation->getparentid('ourbank_office',$kootaid);
+ 	        foreach($parentid as $revvillage) 
+                {
+	        $searchForm->rev_village->addMultiOption($revvillage['id'],$revvillage['name']);
+	        }
         }
 
         public function taluknameAction()
@@ -433,6 +436,18 @@ class Familydefault_IndexController extends Zend_Controller_Action
                 $familycommon=new Familycommonview_Model_familycommonview();
                 $talukname=$familycommon->gettalukname($rev_villageid);
                 echo $talukname[0]['name'];
+        }
+
+        public function pincodeAction()
+        {	
+                $this->_helper->layout->disableLayout();
+	        $rev_villageid = $this->_request->getParam('rev_village');
+	        $sub_id = $this->_request->getParam('mod_id');
+                $familycommon=new Familydefault_Model_familydefault();
+                $pincode=$familycommon->getpincode($rev_villageid,$sub_id);
+                if($pincode){
+                echo $pincode[0]['zipcode'];
+                }
         }
 }
 

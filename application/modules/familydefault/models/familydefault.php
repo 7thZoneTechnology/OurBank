@@ -34,11 +34,11 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
         return $result;
     }
 
-	public function office($hiearchyid) {
+	public function office($kootaid) {
            $select = $this->select()
                    ->setIntegrityCheck(false)
                    ->from(array('a' => 'ourbank_office'),array('name as villagename','id as village_id'))
-                   ->where('a.id =?',$hiearchyid);
+                   ->where('a.officetype_id =?',$kootaid);
 
            //die($select->__toString($select));
            return $this->fetchAll($select);
@@ -175,8 +175,20 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
 		$select=$this->select()
 			->setIntegrityCheck(false)
 			->join(array('a'=>$tablename),array('id'))
-                        ->where('a.id =?',$rev_villageid);
+                        ->where('a.parentoffice_id =?',$rev_villageid);
          //die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
+
+        public function getpincode($rev_villageid,$sub_id)
+        {
+		$select=$this->select()
+			->setIntegrityCheck(false)
+			->join(array('a'=>'ourbank_address'),array('id'))
+                        ->where('a.submodule_id  =?',$sub_id)
+                        ->where('a.id =?',$rev_villageid);
+                //die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
         }

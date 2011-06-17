@@ -89,6 +89,7 @@
                 <th><?php echo $this->translate("ಹೆಸರು"); ?></th>
                 <th><?php echo $this->translate("Alias"); ?></th>
                 <th><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+                <th><?php echo $this->translate("Father"); ?></th>
                 <th><?php echo $this->translate("UID"); ?></th>
                 <th><?php echo $this->translate("Breadwinner"); ?></th>
                 <th><?php echo $this->translate("Head"); ?></th>
@@ -123,7 +124,7 @@
                 <td><INPUT type="text" name = "mem_relname[]"  value="<?php echo $familydetails['name_inregional']; ?>" size="15" maxlength="30" class="noncharacters"></td>
                 <td><INPUT type="text" name = "alias_name[]" size="15" value="<?php echo $familydetails['alias']; ?>" maxlength="20" class="noncharacters"></td>
                 <td><INPUT type="text" name = "alias_relname[]" size="15" value="<?php echo $familydetails['alias_inregional']; ?>" maxlength="20" class="noncharacters"></td>
-
+               <td><INPUT type="text" name = "father_name[]" class="required noncharacters" maxlength="30" size="15" value="<?php echo $familydetails['father_name']; ?>"></td>
                 <td><INPUT type="text" name = "uid[]" id="uid-<?php echo $i ?>" value="<?php echo $familydetails['uid']; ?>" maxlength="16" size="15" class="numeric uidvalid uidvaltext">
 		<div id="uiddiv-<?php echo $i ?>" class="uidclass"><input type="hidden" id="hiddenid-<?php echo $i; ?>" name="uidhidden" value=1></div>
                 </td>

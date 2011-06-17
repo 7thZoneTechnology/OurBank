@@ -313,6 +313,19 @@ public function getchronicdisease($familyid){
 	return $result->toArray();
         }
 
+
+        public function getpincode($sub_id,$rev_villageid)
+        {
+		$select=$this->select()
+			->setIntegrityCheck(false)
+			->join(array('a'=>'ourbank_address'),array('id'))
+                        ->where('a.submodule_id  =?',$sub_id)
+                        ->where('a.id =?',$rev_villageid);
+                //die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
+
         public function getprofession($id){
 	$select=$this->select()
                     ->setIntegrityCheck(false)

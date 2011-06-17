@@ -22,23 +22,14 @@ class  Familydefault_Form_familydefault extends Zend_Form
     public function init() 
     {
     }
-    public function __construct($path) 
+    public function __construct($path,$subid) 
     {
         parent::__construct($path);
+        parent::__construct($subid);
         //create a indiviudal form element 
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
         $vtype=array('Digits');
-
-//         $familyid = $formfield->field('Hidden','familyid','ourbank_family','family_id','mand required digits','',true,'','','','','',0,0);
-// 		$familyid->addValidator('digits')
-// 		 		 ->addErrorMessage('Enter Numeric data');
-//         $familyid->setAttrib('maxLength',5);
-// 
-// 	$familyid1 = $formfield->field('Text','familyid1','','','mand required digits','',true,'','','','','',0,0);
-// 	    $familyid1->addValidator('digits')
-// 		 		  ->addErrorMessage('Enter Numeric data');
-//             $familyid1->setAttrib('maxLength',5);
 
         $sujeevana = $formfield->field('Text','sujeevana','','','required digits','',true,'','','','','',0,0);
 		$sujeevana->addValidator('digits')
@@ -72,11 +63,14 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $street = $formfield->field('Text','street','','','','',false,'','','','','',0,0);
         $phone = $formfield->field('Text','phone','','','digits','',false,'','','','','',0,0);
 		$phone->setAttrib('maxLength', 12);
+
+	$koota = $formfield->field('Select','koota','','','required','',true,'','','','','',0,0);
+	$koota->setAttrib('onchange','getrevvillage("'.$path.'",this.value)');
+// 	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),getkoota("'.$path.'",this.value),gettaluk("'.$path.'",this.value)');
+
 	$rev_village = $formfield->field('Select','rev_village','','','required','',true,'','','','','',0,0);
-	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),getkoota("'.$path.'",this.value),gettaluk("'.$path.'",this.value)');
-               $rev_village->setRequired(true)
-                        ->setRegisterInArrayValidator(false)
-                        ->addValidators(array(array('NotEmpty')));
+	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),gettaluk("'.$path.'",this.value),getpincode("'.$path.'",this.value,"'.$subid.'")');
+        $rev_village->setRegisterInArrayValidator(false);
 
         $village = $formfield->field('Select','village','','','required','',true,'','','','','',0,0);
                 $village->setRegisterInArrayValidator(false)
@@ -89,7 +83,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
 	$mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
 		$mobile->setAttrib('maxLength', 11);
 
-        $this->addElements(array($sujeevana,$houseno,$minority,$street,$village,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
+        $this->addElements(array($sujeevana,$houseno,$minority,$street,$village,$koota,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));
 
     }
 }

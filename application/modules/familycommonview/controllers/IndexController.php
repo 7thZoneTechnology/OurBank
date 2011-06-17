@@ -73,9 +73,16 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
-        foreach($module as $module_id){ }
-        $this->view->mod_id=$module_id['parent'];
-        $this->view->sub_id=$module_id['module_id'];
+        $this->view->mod_id=$module[0]['parent'];
+        $this->view->sub_id=$module[0]['module_id'];
+        $officemodule=$familycommon->getmodule('Office'); //print_r($officemodule);
+        $officesub_id=$officemodule[0]['module_id'];
+        $pincode1=$familycommon->getpincode($officesub_id,$villageid);
+        if($pincode1)
+        {
+          $this->view->pincode1=$pincode1[0]['zipcode'];
+        }
+
         $this->view->insurance=$familycommon->getinsurance($id);
 //         //geting family details, family details, health, economic, education details
         $this->view->membername=$member_name;
