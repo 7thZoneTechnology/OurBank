@@ -28,6 +28,9 @@ public function __construct($path){
            $village = $formfield->field('Select','village','','','','',true,'','','','','',0,0);
            $habitation = $formfield->field('Select','habitation','','','','',true,'','','','','',0,0);
            $bank = $formfield->field('Select','bank','','','','',true,'','','','','',0,0);
+		   $koota = $formfield->field('Select','koota','','','','',true,'','','','','',0,0);
+		   $cbp = $formfield->field('Select','cbp','','','','',true,'','','','','',0,0);
+		   $acctype = $formfield->field('Select','acctype','','','','',true,'','','','','',0,0);
 
         	$state->setAttrib('onchange', 'getstate(this.value,"'.$path.'")');
 			$district->setAttrib('onchange', 'getdistrict(this.value,"'.$path.'")');
@@ -37,7 +40,9 @@ public function __construct($path){
 			$village->setAttrib('onchange', 'getvillage(this.value,"'.$path.'")');
 
         	$bank->setAttrib('onchange', 'getbank(this.value,"'.$path.'")');
-
+			$koota->setAttrib('onchange', 'getkoota(this.value,"'.$path.'")');
+			$cbp->setAttrib('onchange', 'getcbp(this.value,"'.$path.'")');
+			$acctype->setAttrib('onchange', 'getacctype(this.value,"'.$path.'")');
 
 
         
@@ -46,6 +51,6 @@ public function __construct($path){
       
 
 					
-            $this->addElements(array($name,$regionalname,$state,$district,$taluk,$gillapanchayath,$description,$village,$habitation,$hobli,$bank));
+            $this->addElements(array($name,$koota,$acctype,$cbp,$regionalname,$state,$district,$taluk,$gillapanchayath,$description,$village,$habitation,$hobli,$bank));
     }
 }

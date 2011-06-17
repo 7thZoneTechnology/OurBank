@@ -17,7 +17,7 @@
 ############################################################################
 
 class Groupmdefault_Model_groupdefault extends Zend_Db_Table {
-   	protected $_name = 'ourbank_member'; // set ourbank_member is a parent table
+   	protected $_name = 'ourbank_group'; // set ourbank_member is a parent table
 
         public function getofficehierarchy()
         {

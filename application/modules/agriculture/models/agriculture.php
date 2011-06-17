@@ -94,9 +94,14 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
         {
         $select=$this->select()
             ->setIntegrityCheck(false)
-            ->join(array('a'=>'ourbank_master_villagelist'),array('a.id'));
-         //die ($select->__toString($select));
+            ->join(array('a'=>'ourbank_family'),array('a.id'))
+            ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.rev_village_id')
+            ->join(array('c'=>'ourbank_master_villagelist'),'c.panchayath_id=b.panchayath_id',array('name as villagenames'))
 
+
+/*            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))*/
+ 			 ->where('a.id=?',$id);
+    //  die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
         }

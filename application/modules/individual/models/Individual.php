@@ -19,7 +19,7 @@
 */
 class Individual_Model_individual  extends Zend_Db_Table 
 {
-    protected $_name = 'ourbank_member';
+    protected $_name = 'ourbank_family';
 
     public function getMemberdetails()
     {

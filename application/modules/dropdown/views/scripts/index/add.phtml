@@ -1,5 +1,4 @@
 <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-latest.js"></script>
-
 <script type="text/javascript">
 function getstate(state,path) { 
 	if(state) {
@@ -7,46 +6,56 @@ function getstate(state,path) {
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
-</script>
 
+function getacctype(acctype,path) { 
+	if(acctype) {
+	 	targeturl=path+"/dropdown/index/bank?acctype="+acctype;
+		$.ajax({ url: targeturl, success: function(data){ $("#acctypediv").html(data) }});
+	}
+}
 
-<script type="text/javascript">
+function getkoota(koota,path) { 
+	if(koota) {
+	 	targeturl=path+"/dropdown/index/promoter?koota="+koota;
+		$.ajax({ url: targeturl, success: function(data){ $("#kootadiv").html(data) }});
+	}
+}
+
+function getcbp(cbp,path) { 
+	if(cbp) {
+	 	targeturl=path+"/dropdown/index/promoter?cbp="+cbp;
+		$.ajax({ url: targeturl, success: function(data){ $("#cbpdiv").html(data) }});
+	}
+}
+
 function getdistrict(district,path) { 
 	if(district) {
 	 	targeturl=path+"/dropdown/index/taluk?district="+district;
 		$.ajax({ url: targeturl, success: function(data){ $("#districtdiv").html(data) }});
 	}
 }
-</script>
 
-<script type="text/javascript">
 function gettaluk(taluk,path) { 
 	if(taluk) {
 	 	targeturl=path+"/dropdown/index/hobli?taluk="+taluk;
 		$.ajax({ url: targeturl, success: function(data){ $("#talukdiv").html(data) }});
 	}
 }
-</script>
 
-<script type="text/javascript">
 function gethobli(hobli,path) { 
 	if(hobli) {
 	 	targeturl=path+"/dropdown/index/gillapanchayath?hobli="+hobli;
 		$.ajax({ url: targeturl, success: function(data){ $("#hoblidiv").html(data) }});
 	}
 }
-</script>
 
-<script type="text/javascript">
 function getgillapanchayath(gillapanchayath,path) { 
 	if(gillapanchayath) {
 	 	targeturl=path+"/dropdown/index/village?gillapanchayath="+gillapanchayath;
 		$.ajax({ url: targeturl, success: function(data){ $("#gillapanchayathdiv").html(data) }});
 	}
 } 
-</script>
 
-<script type="text/javascript">
 function getvillage(village,path) { 
 	if(village) {
 	 	targeturl=path+"/dropdown/index/gillapanchayath?village="+village;
@@ -142,6 +151,11 @@ function getvillage(village,path) {
                 <TD colspan="2"><div id="gillapanchayathdiv"><?php echo $this->form->village;?></div></TD></tr>
 				<?php }?>
 
+			<?php if($this->tableName == 'ourbank_master_bank') {?>
+			<tr><td>Account Type</td>
+                <TD colspan="2"><?php echo $this->form->acctype;?></TD></tr>
+				<?php }?>
+
 			<?php if($this->tableName == 'ourbank_master_branch') {?>
 			<tr><td>Bank</td>
                 <TD colspan="2"><?php echo $this->form->bank;?></TD></tr>
@@ -150,6 +164,16 @@ function getvillage(village,path) {
 			<?php if($this->tableName == 'ourbank_master_mastertables') {?>
 			<tr><td>Description</td>
                 <TD colspan="2"><?php echo $this->form->description;?></TD></tr>
+				<?php }?>
+
+			<?php if($this->tableName == 'ourbank_master_cbopromoter') {?>
+			<tr><td>Koota List</td>
+                <TD colspan="2"><div id="kootadiv"><?php echo $this->form->koota;?></div></TD></tr>
+				<?php }?>
+
+			<?php if($this->tableName == 'ourbank_master_cbos') {?>
+			<tr><td>CBO Promoter</td>
+                <TD colspan="2"><?php echo $this->form->cbp;?></div></TD></tr>
 				<?php }?>
 
 			<tr><TD> Add new <? echo substr($this->tableName,15); ?></TD>

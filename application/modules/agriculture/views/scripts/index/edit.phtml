@@ -227,7 +227,7 @@ $(document).ready(
 
 
                                 <?php foreach ($this->village as $village) { ?>
-                                <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
+                                <option value="<?php echo $village['id']?>"><?php echo $village['villagenames']?></option>
                                 <?php } ?>
                             </select>
             </td> 
@@ -284,7 +284,7 @@ $(document).ready(
 
                     <?php foreach ($this->village as $village)  {  ?>
                       <option  <? if($agri["villagename"] == $village["id"] ) { echo 'selected="selected"'; ?>
-                        <?php } ?>   value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
+                        <?php } ?>   value="<?php echo $village['id']?>"><?php echo $village['villagenames']?></option>
                     <?php }  ?></select></td>
             </td> 
            

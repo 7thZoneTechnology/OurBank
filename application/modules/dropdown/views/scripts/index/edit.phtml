@@ -139,6 +139,11 @@ function getvillage(village,path) {
                 <TD colspan="2"><div id="gillapanchayathdiv"><?php echo $this->form->village;?></div></TD></tr>
 				<?php }?>
 
+			<?php if($this->tableName == 'ourbank_master_bank') {?>
+			<tr><td>Account Type</td>
+                <TD colspan="2"><?php echo $this->form->acctype;?></TD></tr>
+				<?php }?>
+
 			<?php if($this->tableName == 'ourbank_master_branch') {?>
 			<tr><td>Bank</td>
                 <TD colspan="2"><?php echo $this->form->bank;?></TD></tr>
@@ -149,8 +154,18 @@ function getvillage(village,path) {
                 <TD colspan="2"><?php echo $this->form->description;?></TD></tr>
 				<?php }?>
 
-	
+		<?php if($this->tableName == 'ourbank_master_cbopromoter') {?>
+			<tr><td>Koota List</td>
+                <TD colspan="2"><div id="kootadiv"><?php echo $this->form->koota;?></div></TD></tr>
+				<?php }?>
 			<TR>
+
+			<?php if($this->tableName == 'ourbank_master_cbos') {?>
+			<tr><td>CBO Promoter</td>
+                <TD colspan="2"><?php echo $this->form->cbp;?></div></TD></tr>
+				<?php }?>
+
+
                     <TD><? echo substr($this->tableName,15); ?></TD>
                 	<TD ><?php echo $this->form->commonname;?></TD>
             </TR>
