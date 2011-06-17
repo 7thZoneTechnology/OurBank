@@ -239,6 +239,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->id = $this->_getParam('id');
         $this->view->membername=$kootadetails = $this->view->familycommon->getfamily($this->_getParam('id'));
         $kootaid= $kootadetails[0]['Koota_id'];
+        $this->view->village1=$kootadetails[0]['rev_village_id'];
         $this->view->insurance=$this->view->familycommon->getinsurance($this->_getParam('id'));
         $subid = $this->view->subId = $this->_getParam('subId');
 //         $this->view->submitform = new Bank_Form_Submit();
