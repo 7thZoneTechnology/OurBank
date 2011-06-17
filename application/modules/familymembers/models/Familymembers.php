@@ -117,12 +117,12 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
         return $result->toArray();
     }
 
-    public function getbank($type_id,$villageid)
+    public function getbank($type_id/*,$villageid*/)
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
                 ->join(array('a'=>'ourbank_master_bank'),array('a.id'),array('a.id','a.name as bankname'))
-                 ->where('a.village_id =?',$villageid)
+//                 ->where('a.village_id =?',$villageid)
                 ->where('a.accounttype_id =?',$type_id);
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
