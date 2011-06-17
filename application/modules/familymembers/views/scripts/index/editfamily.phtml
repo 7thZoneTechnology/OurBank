@@ -286,7 +286,7 @@
                       $familymodel=new Familymembers_Model_Familymembers();
                      $branchname=$familymodel->getbranch($familydetails["bank"]);
                      $cbos=$familymodel->getcbo($familydetails["promoter_id"]);
-                     $banknames=$familymodel->getbank($familydetails["accouttype_id"]);
+                     $banknames=$familymodel->getbank($familydetails["accouttype_id"],$this->village1);
                 ?>
 
                <td>
@@ -320,7 +320,7 @@
                     </div>
                 </td>
 
-                <td><select name = "accounttype[]" class="selectvalid findbank" id="accounttype-1">
+                <td><select name = "accounttype[]" class="selectvalid findbank" id="accounttype-<?php echo $i; ?>">
                     <option value=0>Select</option>
                     <?php foreach ($this->accounttype as $accounttype) {
                     if($accounttype['id']!= $familydetails["accouttype_id"]) {?>
@@ -335,7 +335,7 @@
                 </td>
 
                 <td>
-                <div id="bankdiv-1" class="bankclass">
+                <div id="bankdiv-<?php echo $i; ?>" class="bankclass">
                     <select name = "bank[]" class="selectvalid bankfilter" id="bank-<?php echo $i; ?>">
                         <option value=0>select</option>
                 <?php
@@ -392,7 +392,7 @@
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr>
 <?php } ?>
-
+           <input type="hidden" name="villageid" id="villageid" value="<?php echo $this->village1; ?>">
         </table>  
 
         <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="Update" name="Update" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
