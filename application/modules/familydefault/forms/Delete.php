@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
     class Familydefault_Form_Delete extends Zend_Form {
 
     public function init() 

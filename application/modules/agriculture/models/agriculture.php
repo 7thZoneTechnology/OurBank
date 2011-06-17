@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Agriculture_Model_agriculture  extends Zend_Db_Table {
     protected $_name = 'ourbank_member';
 

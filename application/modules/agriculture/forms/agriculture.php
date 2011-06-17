@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Agriculture_Form_agriculture extends Zend_Form {
     public function init()
     {} 

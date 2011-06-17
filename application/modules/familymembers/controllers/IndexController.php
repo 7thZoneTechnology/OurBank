@@ -71,9 +71,10 @@ class Familymembers_IndexController extends Zend_Controller_Action
     public function getbankAction() { 
 	$this->_helper->layout->disableLayout();
         $type_id = $this->_request->getParam('type_id');
-        $this->view->selectid = $this->_request->getParam('divid');
+        $this->view->selectid = $this->_request->getParam('divid'); 
+        $villageid = $this->_request->getParam('villageid'); 
         $familymodel=new Familymembers_Model_Familymembers();
-        $this->view->banknames=$familymodel->getbank($type_id);
+        $this->view->banknames=$familymodel->getbank($type_id,$villageid);
     }
 
     public function checkuidAction() { 
@@ -96,7 +97,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
         //load contact details form with two arguments ...
         $this->view->form = new Familymembers_Form_Familymembers();
         $this->view->memberid=$family_id=$this->_getParam('id');
-        $this->view->membername = $this->view->familycommon->getfamily($this->_getParam('id'));
+        $this->view->membername=$kootadetails = $this->view->familycommon->getfamily($this->_getParam('id'));
+        $kootaid= $kootadetails[0]['Koota_id'];
+        $this->view->village1=$kootadetails[0]['rev_village_id'];
         $this->view->insurance=$this->view->familycommon->getinsurance($this->_getParam('id'));
         $subid = $this->view->subId = $this->_getParam('subId');
 
@@ -107,7 +110,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","DESC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
         $this->view->branch = $this->view->adm->viewRecord("ourbank_master_branch","id","DESC");
-        $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+//         $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+        $this->view->cbopromoter=$this->view->modelfamily->getcbolist($kootaid);
         $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","DESC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
         $this->view->entitlements = $this->view->adm->viewRecord("ourbank_master_entitlements","id","ASC");
@@ -233,7 +237,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $form = new Crop_Form_Crop($this->_getParam('id'),$this->_getParam('subId'));
         $this->view->form = $form;
         $this->view->id = $this->_getParam('id');
-        $this->view->membername = $this->view->familycommon->getfamily($this->_getParam('id'));
+        $this->view->membername=$kootadetails = $this->view->familycommon->getfamily($this->_getParam('id'));
+        $kootaid= $kootadetails[0]['Koota_id'];
         $this->view->insurance=$this->view->familycommon->getinsurance($this->_getParam('id'));
         $subid = $this->view->subId = $this->_getParam('subId');
 //         $this->view->submitform = new Bank_Form_Submit();
@@ -248,7 +253,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","DESC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
         $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
-        $this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+        //$this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+        $this->view->promoter=$this->view->modelfamily->getcbolist($kootaid);
         $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","DESC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
         $this->view->entitlements = $this->view->adm->viewRecord("ourbank_master_entitlements","id","ASC");
@@ -408,5 +414,4 @@ class Familymembers_IndexController extends Zend_Controller_Action
           $this->_redirect('/familycommonview/index/commonview/id/'.$id);
         }
     }
-
 }

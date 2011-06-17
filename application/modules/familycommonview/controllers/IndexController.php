@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 //commonview for all individual micro modules
 class Familycommonview_IndexController extends Zend_Controller_Action
 {

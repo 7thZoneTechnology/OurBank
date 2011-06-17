@@ -249,7 +249,7 @@ $(document).ready(
         if($(this).val())
         {  type_id=$(this).val();
            path=$('#baseurl').val();
-           targeturl=path+"/familymembers/index/getbank?type_id="+type_id+"&divid="+id[1];
+           targeturl=path+"/familymembers/index/getbank?type_id="+type_id+"&divid="+id[1]+"&villageid="+$('#villageid').val();
 	   $.ajax({ url: targeturl, success: function(data){ $('#bankdiv-'+id[1]).html(data) }});
         }
     });
