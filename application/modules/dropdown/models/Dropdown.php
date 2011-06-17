@@ -172,10 +172,12 @@ public function getdetails($tName,$id) {
 					{ 
 				$select = $this->select()
               ->setIntegrityCheck(false)
-						->from(array('a' => $tName),array('id','name as habit','a.name_regional'))
+			->from(array('a' => $tName),array('id','name as habit','a.name_regional','a.village_id'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_accountype'),array('id as accid','name as accname'))
-				->where('b.id  =a.accounttype_id');
+			->join(array('b' =>'ourbank_master_accountype'),'b.id  =a.accounttype_id',array('id as accid','name as accname'))
+			->join(array('c' =>'ourbank_master_villagelist'),'c.village_id  =     a.village_id',array('id as vid','name as vname'))
+			->join(array('d' =>'ourbank_master_gillapanchayath'),'d.id =c.panchayath_id',array('id as gpid','name as gpname'));
+// die($select->__toString($select));
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;

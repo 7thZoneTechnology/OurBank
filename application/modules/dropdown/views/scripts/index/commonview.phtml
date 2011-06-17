@@ -33,6 +33,13 @@
 	<tr><td align="center">Taluk :</td><TD colspan="2"><?php echo $details['tname'];?></TD></tr>
 	<tr><td align="center">Hobli :</td><TD colspan="2"><?php echo $details['hbname'];?></TD></tr>
 				<?php }?>
+
+<?php if($this->tableName == 'ourbank_master_bank') {?>
+	<tr><td align="center">Grama panchyat:</td><TD colspan="2"><?php echo $details['gpname'];?></TD></tr>
+	<tr><td align="center">Village:</td><TD colspan="2"><?php echo $details['vname'];?></TD></tr>
+	<tr><td align="center">Account Type:</td><TD colspan="2"><?php echo $details['accname'];?></TD></tr>
+				<?php }?>
+
 <?php if($this->tableName == 'ourbank_master_branch') {?>
 	<tr><td align="center">Bank :</td><TD colspan="2"><?php echo $details['bankname'];?></TD></tr>
 				<?php }?>

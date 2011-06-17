@@ -102,6 +102,14 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		foreach($acctype as $acctypename){
 				$dropdownForm->acctype->addMultiOption($acctypename['id'],$acctypename['name']);
 			}
+		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
+		foreach($gillapanchayath as $gillapanchayath){
+				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
+			}
+// // 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
+// // 		foreach($village as $village){
+// // 				$dropdownForm->village->addMultiOption($village['village_id'],$village['name']);
+// // 			}
 		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
 		foreach($cbp as $cbpname){
 				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name']);
@@ -145,10 +153,12 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		}
 		if($tName == 'ourbank_master_bank') {
  		$id=$this->_request->getParam('acctype');
+ 		$id1=$this->_request->getParam('village');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
 									$formdata1=array('id'=>'',
 									'accounttype_id'=>$id,
+									'village_id'=>$id1,
 									'name_regional'=>$name_regional,
 									'name'=>$common);
 		$id = $this->view->adm->addRecord($tName,$formdata1);
@@ -391,11 +401,14 @@ class Dropdown_IndexController extends Zend_Controller_Action
 					}}break;
 
 					case 'ourbank_master_bank':
-					{foreach($namedetails as $holidaydetails) {
+					{ foreach($namedetails as $holidaydetails) {
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['accname']);
 						$this->view->form->acctype->setValue($holidaydetails['accid']);
+						$this->view->form->village->setValue($holidaydetails['vid']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['gpid']);
 					}}break;
+
 					case 'ourbank_master_cbopromoter':
 					{foreach($namedetails as $holidaydetails) {
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);

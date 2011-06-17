@@ -433,7 +433,10 @@ class Familydefault_IndexController extends Zend_Controller_Action
 	        $rev_villageid = $this->_request->getParam('rev_village');
                 $familycommon=new Familycommonview_Model_familycommonview();
                 $talukname=$familycommon->gettalukname($rev_villageid);
-                echo $talukname[0]['name'];
+
+                if($talukname){
+                    echo $talukname[0]['name'];
+                }
         }
 
         public function pincodeAction()
