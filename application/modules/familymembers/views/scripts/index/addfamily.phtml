@@ -128,7 +128,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "relation[]" class="selectvalid required">
                     <option value=0>Select</option>
                     <?php foreach ($this->relation as $relation) { ?>
-                    <option value="<?php echo $relation['id']?>"><?php echo $relation['name']?></option>
+                    <option value="<?php echo $relation['id']?>"><?php echo $relation['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -136,7 +136,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "gender[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->gender as $gender) { ?>
-                    <option value="<?php echo $gender['id']?>"><?php echo $gender['name']?></option>
+                    <option value="<?php echo $gender['id']?>"><?php echo $gender['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -144,7 +144,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "marital[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->marital as $marital) { ?>
-                    <option value="<?php echo $marital['id']?>"><?php echo $marital['name']?></option>
+                    <option value="<?php echo $marital['id']?>"><?php echo $marital['name_regional']?></option>
 
                     <?php } ?>
                 </select>
@@ -154,7 +154,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <div style="OVERFLOW-Y:scroll; WIDTH:200px; HEIGHT:50px">
 		<input type="checkbox" name="entitle-1-[]" value=0 class="entitleid1 entitlenone-1">None<br />
                 <?php foreach ($this->entitlements as $entitlements) { ?>
-                <input type="checkbox" name="entitle-1-[]" value="<?php echo $entitlements['id'];  ?>" class="entitleid entitlevalid-1"><?php echo $entitlements['name'];  ?><br />
+                <input type="checkbox" name="entitle-1-[]" value="<?php echo $entitlements['id'];  ?>" class="entitleid entitlevalid-1"><?php echo $entitlements['name_regional'];  ?><br />
 		<?php } ?>
                 <div>
                 </td>
@@ -162,7 +162,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "education[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->qualify as $qualify) { ?>
-                    <option value="<?php echo $qualify['id']?>"><?php echo $qualify['name']?></option>
+                    <option value="<?php echo $qualify['id']?>"><?php echo $qualify['name_regional']?></option>
 
                     <?php } ?>
                 </select>    
@@ -171,7 +171,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "employ_status[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->employment as $employment) { ?>
-                    <option value="<?php echo $employment['id']?>"><?php echo $employment['name']?></option>
+                    <option value="<?php echo $employment['id']?>"><?php echo $employment['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -181,7 +181,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <div style="OVERFLOW-Y:scroll; WIDTH:200px; HEIGHT:50px">
 		<input type="checkbox" name="profid-1-[]" value=0 class="profid1 profidnone-1">None<br />
                 <?php foreach ($this->proffession as $proffession) { ?>
-                <input type="checkbox" name="profid-1-[]" value="<?php echo $proffession['id'];  ?>" class="profid profidvalid-1"><?php echo $proffession['name'];  ?><br />
+                <input type="checkbox" name="profid-1-[]" value="<?php echo $proffession['id'];  ?>" class="profid profidvalid-1"><?php echo $proffession['name_regional'];  ?><br />
 		<?php } ?>
                 <div>
                 </td>
@@ -189,7 +189,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                <td><select name = "cbopromoter[]" class="selectvalid cbofilter" id="cbopromoter-1">
                     <option value=0>Select</option>
                     <?php foreach ($this->cbopromoter as $cbopromoter) { ?>
-                    <option value="<?php echo $cbopromoter['id']?>"><?php echo $cbopromoter['name']?></option>
+                    <option value="<?php echo $cbopromoter['id']?>"><?php echo $cbopromoter['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -204,7 +204,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "accounttype[]" class="selectvalid findbank" id="accounttype-1">
                     <option value=0>Select</option>
                     <?php foreach ($this->accounttype as $accounttype) { ?>
-                    <option value="<?php echo $accounttype['id']?>"><?php echo $accounttype['name']?></option>
+                    <option value="<?php echo $accounttype['id']?>"><?php echo $accounttype['name_regional']?></option>
                     <?php } ?>
                 </select>
                 <INPUT type="hidden" name = "baseurl[]" id="baseurl" value="<?php echo $this->baseurl?>"></td>
@@ -241,7 +241,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
         </table>  
 
-        <input type="button" id="tmpAddRow" class="deletebutton" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+<input type="button" id="tmpAddRow" class="deletebutton" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>">
+<a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 </div>
 </BODY>

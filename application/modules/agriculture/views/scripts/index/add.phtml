@@ -191,11 +191,10 @@ alert('sss');
 <table id="hor-minimalist-b" class="crop asset">
 <tr> 
     <th><?php echo $this->translate("Land holding"); ?></th>
-    <th><?php echo $this->translate("Acquistion type"); ?></th>
-
+    <th><?php echo $this->translate("Owner name"); ?></th>
     <th><?php echo $this->translate("Acre"); ?></th>
     <th><?php echo $this->translate("Gunta"); ?></th>
-    <th><?php echo $this->translate("Owner name"); ?></th>
+    <th><?php echo $this->translate("Ownership type"); ?></th>
     <th><?php echo $this->translate("Survey no"); ?></th>
     <th><?php echo $this->translate("Village"); ?></th>
     <th>Action</th>
@@ -203,22 +202,32 @@ alert('sss');
  <tr id='tmp'>
             <td><select name = tenant[] id="select1">
                             <?php foreach ($this->land_details as $land_details) { ?>
-                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name']?></option>
+                            <option value="<?php echo $land_details['id']?>"><?php echo $land_details['name_regional']?></option>
                             <?php } ?>
                         </select>
             </td>  
-			<td><INPUT type="text" name = "acre[]" size="5" maxlength="3" class="required numeric"></td>
-            <td><INPUT type="text" name = "gunta[]" size="5" maxlength="2" class="required numeric range"></td>
- 			<td><select name = ownername[]>
+
+			<td><select name = ownername[]>
 			<?php foreach ($this->owner as $owner) { ?>
 			<option value="<?php echo $owner['landowner_name']?>"><?php echo $owner['name']?></option>
 			<?php } ?>
-                            </select>
+                 </select>
             </td> 
+			<td><INPUT type="text" name = "acre[]" size="5" maxlength="3" class="required numeric"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" maxlength="2" class="required numeric range"></td>
+
+			<td><select name = acquistion[] class="selectvalid required">
+              	<option value="">Select</option>
+                <?php foreach ($this->acquistion as $acquistion) { ?>
+                <option value="<?php echo $acquistion['id']?>"><?php echo $acquistion['name_regional']?></option>
+                <?php } ?>
+                </select>
+            </td>
+
             <td><INPUT type="text" name = "survey[]" size="5" maxlength="5" class="required"></td>
 								<td><select name = villagename[]>
                                 <?php foreach ($this->village as $village) { ?>
-                                <option value="<?php echo $village['id']?>"><?php echo $village['name']?></option>
+                                <option value="<?php echo $village['id']?>"><?php echo $village['villagenames']?></option>
                                 <?php } ?>
                             </select>
             </td> 
@@ -226,7 +235,7 @@ alert('sss');
         </tr>
     </table>  
  <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">
-    <input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+    <input type="submit" class="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
     </div>
 </body>

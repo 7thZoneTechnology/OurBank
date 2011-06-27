@@ -92,7 +92,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
         <option>Select</option>
                     <?php foreach ($this->liveasset_details as $assetdetails) { ?>
                         <? if($editAsset["name"] != $assetdetails["name"] ) {?>
-                           <option value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['name']?></option>
+                           <option value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['name_regional']?></option>
                     <?php } } $dateconvert= new App_Model_dateConvertor();
 					?>
                 </select>    

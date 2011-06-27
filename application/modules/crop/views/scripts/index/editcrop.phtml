@@ -218,7 +218,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     </tr>
     <?php foreach($this->agriculture as $agri){   ?>
     <tr>
-        <td><?php echo $agri['name']; ?></td>
+        <td><?php echo $agri['name_regional']; ?></td>
         <td align="right"><?php echo $agri['acre']; ?></td>
         <td align="right"><?php echo $agri['gunta']; ?></td>
         <td><?php echo $agri['membername']; ?></td>
@@ -261,8 +261,6 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th ><?php echo $this->translate("Price per units"); ?></th>
                 <th ><?php echo $this->translate("Price realised"); ?></th>
                 <th ><?php echo $this->translate("Sold date"); ?></th>
-                <th ></th>
-
                 <th ><?php echo $this->translate("Action"); ?></th>
             </tr>
             <?php $i = 0; ?>
@@ -279,7 +277,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <?php foreach ($this->agriculture as $cropdetails) {  ?>
 
                            <option <?php if($cropdetails['land_id'] == $editCrop["land_id"] ) { echo 'selected="selected"';?>
-                           <?php } ?> value="<?php echo $cropdetails['land_id']?>"><?php echo $cropdetails['name']?></option>
+                         <?php } ?> value="<?php echo $cropdetails['land_id']?>"><?php echo $cropdetails['name_regional']?></option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
 
@@ -290,7 +288,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <?php foreach ($this->cropdetails as $cropdetails) {  ?>
 
                            <option <?php if($cropdetails['name'] == $editCrop["name"] ) { echo 'selected="selected"';?>
-                           <?php } ?> value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
+                           <?php } ?> value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name_regional']?></option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
 
@@ -301,7 +299,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <?php foreach ($this->seasondetails as $cropdetails) {  ?>
 
                            <option <?php if($cropdetails['name'] == $editCrop["season"] ) { echo 'selected="selected"';?>
-                           <?php } ?> value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
+                           <?php } ?> value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name_regional']?></option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
 
@@ -321,7 +319,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <?php foreach ($this->units as $unit) {  ?>
 
                            <option <?php if($unit['id'] == $editCrop["crop_id"] ) { echo 'selected="selected"';?>
-                           <?php } ?> value="<?php echo $unit['id']?>"><?php echo $unit['name']?></option>
+                           <?php } ?> value="<?php echo $unit['id']?>"><?php echo $unit['name_regional']?></option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
 
@@ -343,7 +341,9 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
         </table>  
 
 
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 <?php echo $this->errormsg; ?>
 </div>

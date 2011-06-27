@@ -145,7 +145,7 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
           $select = $this->select()
                   ->setIntegrityCheck(false)  
                   ->join(array('a' => 'ourbank_member'),array('a.id'))
-                  ->where('a.village_id =?',$id);
+                  ->where('a.office_id =?',$id);
           $result = $this->fetchAll($select);
           return $result->toArray();
         }

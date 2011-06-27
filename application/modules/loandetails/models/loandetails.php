@@ -39,8 +39,8 @@ class Loandetails_Model_loandetails  extends Zend_Db_Table {
                 ->setIntegrityCheck(false)
                 ->join(array('a'=>'ourbank_loandetails'),array('a.id'))
                 ->join(array('b'=>'ourbank_familymember'),'b.id=a.member_id',array('b.name as membername'))
-                ->join(array('c'=>'ourbank_master_loanpurpose'),'c.id=a.purpose_id',array('c.name as purposename'))
-                ->join(array('d'=>'ourbank_master_loansource'),'d.id=a.source_id',array('d.name as sourcename'));
+                ->join(array('c'=>'ourbank_master_loanpurpose'),'c.id=a.purpose_id',array('c.name_regional as purposename'))
+                ->join(array('d'=>'ourbank_master_loansource'),'d.id=a.source_id',array('d.name_regional as sourcename'));
          //die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();

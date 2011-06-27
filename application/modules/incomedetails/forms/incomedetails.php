@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Incomedetails_Form_Incomedetails extends Zend_Form {
     public function init()
     {} 

@@ -278,6 +278,57 @@
 <br>
 
 
+<!--show the Basic Infrastructure details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Basic Infrastructure"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if((($this->housingtype) || ($this->ownership) || ($this->fuel))!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php  if(($this->housingtype) || ($this->ownership) || ($this->fuel)){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+   <th ><?php echo $this->translate("Sl"); ?></th>
+   <th ><?php echo $this->translate("Access to Basic Infrastructure"); ?></th>
+   <th ><?php echo $this->translate("Types"); ?></th>
+</tr> 
+
+<tr>
+	<TD>1</TD>
+	<td>House</td>
+	<td>
+	<?php foreach($this->housingtype as $housetype){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $housetype['name']; ?></div><?php  } ?>
+	</td>
+</tr>
+
+<tr>
+	<TD>2</TD>
+	<td>House Ownership</td>
+	<td>
+	<?php foreach($this->ownership as $ownership){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $ownership['name']; ?></div><?php  } ?>
+	</td>
+</tr>
+<?php if($this->cookfuel){ ?>
+<tr>
+	<TD>3</TD>
+	<td>Primary cooking fuel</td>
+	<td>
+	<?php foreach($this->cookfuel as $fuel){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $fuel['name']; ?></div><?php  } ?>
+	</td>
+</tr>
+<?php } ?>
+</table>
+<?php } ?>
+<br>
+<!-- end infrastructure-->
 
 
 <!--show the Agriculture details and edit option !-->
@@ -305,12 +356,12 @@
     </tr>
     <?php foreach($this->agriculture as $agri){   ?>
     <tr>
-        <td><?php echo $agri['name']; ?></td>
+        <td><?php echo $agri['name_regional']; ?></td>
         <td align="right"><?php echo $agri['acre']; ?></td>
         <td align="right"><?php echo $agri['gunta']; ?></td>
         <td><?php echo $agri['membername']; ?></td>
         <td align="right"><?php echo $agri['survey_no']; ?></td>
-        <td><?php echo $agri['villagename']; ?></td>
+        <td><?php echo $agri['villagenames']; ?></td>
 
     </tr>
     <?php } ?>
@@ -372,7 +423,7 @@ $totalRealised = 0;
 </tr>
     <?php $dateconvert= new App_Model_dateConvertor(); foreach($this->crop as $crop){   ?>
     <tr>
-        <td ><?php echo $crop['name']; ?></td>
+        <td ><?php echo $crop['name_regional']; ?></td>
         <td align="right"><?php echo sprintf("%4.2f",$crop['acre']); $totalAcer = $totalAcer + $crop['acre']; ?></td>
         <td align="right"><?php echo sprintf("%4.2f",$crop['gunta']); $totalGunta = $totalGunta + $crop['gunta']; ?></td>
         <td align="right"><?php echo sprintf("%4.2f",$crop['unit']); $totalUnit = $totalUnit + $crop['unit']; ?></td>
@@ -397,98 +448,9 @@ $totalRealised = 0;
 </table>
 <?php } ?>
 <br/>
-<table id="hor-minimalist-b">
-  <tr>
-      <th class="firsttd"><?php echo $this->translate("Livestock"); ?></th>
-      <th class = "secondtd"></th>
-      <?php if(($this->livingassets)!=NULL) { ?>
-      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/editasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
-      <?php } else { ?>
-      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/addasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
-      <?php } ?>
-  </tr>
-</table>
-<?php if($this->livingassets){ 	$dateconvert= new App_Model_dateConvertor();
-$totalNumber = 0;
-$totalValue = 0;
-?>
-<table id="hor-minimalist-b" border="1">
-<tr bgcolor="Silver">
-  <td ><font color="#787878"><?php echo $this->translate("Asset"); ?></font></td>
-  <td align="right"><font color="#787878"><?php echo $this->translate("Number"); ?></font></td>
-  <td align="right"><font color="#787878"><?php echo $this->translate("Value"); ?></font></td>
-  <td align="right"><font color="#787878"><?php echo $this->translate("Date of value"); ?></font></td>
-</tr>
-  <?php foreach($this->livingassets as $livingassets){   ?>
-  <tr>
-      <td><?php echo $livingassets['name']; ?></td>
-      <td align="right"><?php echo $livingassets['number']; $totalNumber+=$livingassets['number']; ?></td>
-      <td align="right"><?php echo sprintf("%4.2f",$livingassets['value']); $totalValue+=$livingassets['value'];?></td>
-      	  <td align="right"><?php if($livingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($livingassets['date_of_value']); } else { echo "Null"; } ?>
-        </td>
-  </tr>
-  <?php } ?>
-   <tr>
-       <td><?php echo $this->translate("Total"); ?></td>
- 
-       <td align="right"><?php echo $totalNumber; ?></td>
-       <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
-   </tr>
-</table>
-<?php } ?>
-<br>
 
-<!--show the Basic Infrastructure details and edit option !-->
-<table id="hor-minimalist-b">
-   <tr>
-       <th class="firsttd"><?php echo $this->translate("Basic Infrastructure"); ?></th>
-       <th class = "secondtd"></th>
-       <?php if((($this->housingtype) || ($this->ownership) || ($this->fuel))!=NULL) { ?>
-       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
-       <?php } else { ?>
-       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
-       <?php } ?>
-   </tr>
-</table>
-<?php  if(($this->housingtype) || ($this->ownership) || ($this->fuel)){ ?>
-<table id="hor-minimalist-b" border="1">
-<tr>
-   <th ><?php echo $this->translate("Sl"); ?></th>
-   <th ><?php echo $this->translate("Access to Basic Infrastructure"); ?></th>
-   <th ><?php echo $this->translate("Types"); ?></th>
-</tr> 
 
-<tr>
-	<TD>1</TD>
-	<td>House</td>
-	<td>
-	<?php foreach($this->housingtype as $housetype){  ?>			
-	<div style="float:left;width:70px;"> <?php echo $housetype['name']; ?></div><?php  } ?>
-	</td>
-</tr>
 
-<tr>
-	<TD>2</TD>
-	<td>House Ownership</td>
-	<td>
-	<?php foreach($this->ownership as $ownership){  ?>			
-	<div style="float:left;width:70px;"> <?php echo $ownership['name']; ?></div><?php  } ?>
-	</td>
-</tr>
-<?php if($this->cookfuel){ ?>
-<tr>
-	<TD>3</TD>
-	<td>Primary cooking fuel</td>
-	<td>
-	<?php foreach($this->cookfuel as $fuel){  ?>			
-	<div style="float:left;width:70px;"> <?php echo $fuel['name']; ?></div><?php  } ?>
-	</td>
-</tr>
-<?php } ?>
-</table>
-<?php } ?>
-<br>
-<!-- end infrastructure-->
 <!--show the NonLiving assets details and edit option !-->
 <table id="hor-minimalist-b">
    <tr>
@@ -516,7 +478,7 @@ $totalValue = 0;
    <?php foreach($this->nonlivingassets as $nonlivingassets){  			$dateconvert= new App_Model_dateConvertor();
  ?>
      <tr>
-       <td><?php echo $nonlivingassets['name']; ?></td>
+       <td><?php echo $nonlivingassets['name_regional']; ?></td>
        <td align="right"><?php echo $nonlivingassets['number']; $totalNumber+=$nonlivingassets['number']; ?></td>
        <td align="right"><?php echo sprintf("%4.2f",$nonlivingassets['value']); $totalValue+=$nonlivingassets['value'];?></td>
       	 <td align="right"><?php if($nonlivingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($nonlivingassets['date_of_value']); } else { echo "Null"; } ?></td>
@@ -533,6 +495,50 @@ $totalValue = 0;
 <?php } ?><br>
 </br>
 <!--show the Living assets details and edit option !-->
+
+
+
+<table id="hor-minimalist-b">
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("Livestock"); ?></th>
+      <th class = "secondtd"></th>
+      <?php if(($this->livingassets)!=NULL) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/editasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/addasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
+</table>
+<?php if($this->livingassets){ 	$dateconvert= new App_Model_dateConvertor();
+$totalNumber = 0;
+$totalValue = 0;
+?>
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+  <td ><font color="#787878"><?php echo $this->translate("Asset"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("Number"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("Value"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("Date of value"); ?></font></td>
+</tr>
+  <?php foreach($this->livingassets as $livingassets){   ?>
+  <tr>
+      <td><?php echo $livingassets['name_regional']; ?></td>
+      <td align="right"><?php echo $livingassets['number']; $totalNumber+=$livingassets['number']; ?></td>
+      <td align="right"><?php echo sprintf("%4.2f",$livingassets['value']); $totalValue+=$livingassets['value'];?></td>
+      	  <td align="right"><?php if($livingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($livingassets['date_of_value']); } else { echo "Null"; } ?>
+        </td>
+  </tr>
+  <?php } ?>
+   <tr>
+       <td><?php echo $this->translate("Total"); ?></td>
+ 
+       <td align="right"><?php echo $totalNumber; ?></td>
+       <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+   </tr>
+</table>
+<?php } ?>
+<br>
+
 
 <!--show the Expense details and edit option !-->
 <table id="hor-minimalist-b">
@@ -588,8 +594,8 @@ $deposit = 0; ?>
     <tr> 
         <th ><?php echo $this->translate("Source"); ?></th>
         <th ><?php echo $this->translate("Famiy member"); ?></th>
-        <th ><?php echo $this->translate("Loan amount"); ?></th>
         <th ><?php echo $this->translate("Interest Per Annum %"); ?></th>
+        <th ><?php echo $this->translate("Loan amount"); ?></th>
         <th ><?php echo $this->translate("Outstanding amount"); ?></th>
         <th ><?php echo $this->translate("Purpose"); ?></th>
         <th ><?php echo $this->translate("Savings / deposit amount"); ?></th>
@@ -597,12 +603,12 @@ $deposit = 0; ?>
 
    <?php foreach($this->loandetails as $loandetails){   ?>
    <tr>
-       <td><?php echo $loandetails['name']; ?></td>
+       <td><?php echo $loandetails['name_regional']; ?></td>
        <td><?php echo $loandetails['membername']; ?></td>
+       <td align="right"><?php echo $loandetails['interest']; ?></td>
        <td align="right"><?php echo $loandetails['loanamount']; 
        $laonTotal = $laonTotal + $loandetails['loanamount'];
        ?></td>
-       <td align="right"><?php echo $loandetails['interest']; ?></td>
        <td align="right"><?php echo $loandetails['outstanding_amount'];
        $oustanding = $oustanding + $loandetails['outstanding_amount'];
        ?></td>

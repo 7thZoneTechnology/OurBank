@@ -46,7 +46,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
                         ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
                         ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name as landtypename'))
                         ->join(array('c'=>'ourbank_master_ownershiptype'),'c.id=a.acquistion_id',array('c.name as ownership'))
-                        ->join(array('d'=>'ourbank_master_villagelist'),'d.id=a.villagename',array('d.name as village'))
+                        ->join(array('d'=>'ourbank_master_villagelist'),'d.id=a.villagename',array('d.name_regional as village'))
                         ->join(array('e'=>'ourbank_familymember'),'e.id=a.landowner_name',array('e.name as ownername'))
                         ->where('a.family_id=?',$mebmerid);
 //         die ($select->__toString($select));
@@ -93,7 +93,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
             ->setIntegrityCheck(false)
             ->join(array('a'=>'ourbank_family'),array('a.id'))
             ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.rev_village_id')
-            ->join(array('c'=>'ourbank_master_villagelist'),'c.panchayath_id=b.panchayath_id',array('name as villagenames'))
+            ->join(array('c'=>'ourbank_master_villagelist'),'c.panchayath_id=b.panchayath_id',array('c.name_regional as villagenames'))
 
 
 /*            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))*/

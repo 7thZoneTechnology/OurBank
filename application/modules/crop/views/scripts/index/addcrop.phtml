@@ -221,12 +221,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     </tr>
     <?php foreach($this->agriculture as $agri){   ?>
     <tr>
-        <td><?php echo $agri['name']; ?></td>
+        <td><?php echo $agri['name_regional']; ?></td>
         <td align="right"><?php echo $agri['acre']; ?></td>
         <td align="right"><?php echo $agri['gunta']; ?></td>
         <td><?php echo $agri['membername']; ?></td>
         <td align="right"><?php echo $agri['survey_no']; ?></td>
-        <td><?php echo $agri['villagename']; ?></td>
+        <td><?php echo $agri['villagenames']; ?></td>
 
     </tr>
     <?php } ?>
@@ -271,7 +271,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="">Select</option>
 
                             <?php foreach ($this->agriculture as $land_details) {  ?>
-                            <option value="<?php echo $land_details['land_id']?>"><?php echo $land_details['name']?></option>
+                            <option value="<?php echo $land_details['land_id']?>"><?php echo $land_details['name_regional']?></option>
 
                             <?php }
  ?>
@@ -281,7 +281,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="">Select</option>
 
                     <?php foreach ($this->cropdetails as $cropdetails) { ?>
-                    <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
+                    <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name_regional']?></option>
 
                     <?php } ?>
 
@@ -294,7 +294,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="">Select</option>
 
                     <?php foreach ($this->seasondetails as $seasondetails) { ?>
-                    <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['name']?></option>
+                    <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['name_regional']?></option>
 
                     <?php } ?>
              </select> </td>
@@ -306,7 +306,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
                     <?php foreach ($this->units as $unit) { ?>
 
-                    <option value="<?php echo $unit['id']?>"><?php echo $unit['name']?></option>
+                    <option value="<?php echo $unit['id']?>"><?php echo $unit['name_regional']?></option>
 
                     <?php } ?>
 
@@ -321,8 +321,11 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr> 
         </table>
-      
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" class="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>">
+	<a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 <?php //echo $this->errormsg; ?>
 </div>

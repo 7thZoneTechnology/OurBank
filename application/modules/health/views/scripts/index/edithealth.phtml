@@ -184,13 +184,8 @@ foreach($this->membername as $name){
 
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-        <th  align="left" width="20%">
-        Sno.&nbsp;&nbsp;&nbsp;  Name <br>
-        Description
-        </th>
-        <th colspan="<?php echo $actlen; ?>" align="center" width="80%">
-        What
-        </th>
+        <th  align="left" width="5%"> Sno.</th><th width="20%">Name</th>
+        <th colspan="<?php echo $actlen; ?>" align="center" width="75%"> Description</th>
         </tr>
     </table>
 <?php 
@@ -202,19 +197,14 @@ $selectedChallenges = array();
 <br>
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-        <td width="5%" ><?php echo $nameid[$i];?></td>
-        <td width="95%" align="left" colspan="<?php echo $actlen-1; ?>">
-        <?php  echo "<b>$names[$i] "."'s<b>"; 
-        ?>
-        </td>
-        </tr>
-        <tr>
-         <?php 
+        <td width="5%"><?php echo $nameid[$i];?></td><td width="20%"><?php  echo "<b>$names[$i] "."'s<b>";?></td><td width="75%"></td>
 
-?>
+        </tr></table><table id="hor-minimalist-b" border="1" width="100%">
+        <tr>
+        <td width="5%"></td>
         <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
 
-<td colspan="2">
+<td colspan="2" width="75%">
 
 
 <input type="checkbox" name="none" class="none"  id="none-<?php echo $nameid[$i];?>" />None <br>
@@ -231,7 +221,7 @@ $selectedChallenges = array();
 
     </table>
 <table id="hor-minimalist-b" border="1" width="100%">
-<tr>
+<tr><td width="5%"></td>
     <td width="20%"><b>Habits</b>
     </td>
     <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
@@ -262,7 +252,7 @@ $selectedChallenges = array();
 
 ?>
 </tr>
-<tr>
+<tr><td width="5%"></td>
     <td width="20%"><b> Physical challenge</b>
     </td>
     <?php $p = 0; foreach($this->challengedetails as $challenge){ $p++; ?>

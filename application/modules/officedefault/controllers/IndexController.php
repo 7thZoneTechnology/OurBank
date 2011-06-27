@@ -96,7 +96,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                foreach($maxid as $maxid1) {
                $villagelastid=$maxid1->lastid;}
                if($villagelastid==$officeid)
-               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'panchayath_id' => $this->_request->getParam('panchayath'), 'created_date' =>$createdate,'created_by'=>$this->view->createdby));
                   $this->view->adm->addRecord("ourbank_master_village",array('id' => '',
                                                 'village_id'=>$lastid,
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -107,44 +107,44 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                } 
 
 	//insert glsubcode
-        for($j=1;$j<=2;$j++){
-             $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
-           $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
-           $glcode = $fetchglcodedetails[0]['glcode'];
-           $header = $fetchglcodedetails[0]['header'];
-
-           $ledger = new Officedefault_Model_officedefault();
-           $genarateGlsub = $ledger->genarateGlsubCode1($ledgertype_id,$j);
-           $glsubcode=$genarateGlsub->id;
-
-           if($glsubcode) {
-               $ini=substr($glsubcode,0,1);
-               $last=substr($glsubcode,1,5);
-               $last+=1;
-               $last = str_pad($last,5,0,STR_PAD_LEFT);
-               $glsubcode=$ini.$last;
-               $glsubcode;
-           } else {
-               $glcode1=$ledger->fetchGlcode($j);
-               $glcode=$glcode1->glcode;
-               $ini=substr($glcode,0,1);
-               $last=substr($glcode,1,5);
-               $last+=1;
-               $last = str_pad($last,5,0,STR_PAD_LEFT);
-               $glsubcode=$ini.$last;
-               $glsubcode;
-           }
-	//create cash and bank glsubcode
-           if($j==1){ $headername="Bank";} else {$headername="Cash";}
-           $gInsert = $ledger->insertGlsubcode(array('id' => '',
-                           'glsubcode' => $glsubcode,
-                           'glcode_id' => $j,
-                           'subledger_id' => $ledgertype_id,
-                           'header' => $headername.$lastid,
-                           'description' => $headername.$lastid,
-                           'created_date' =>$createdate,
-                           'created_by'=>$this->view->createdby));
-           }
+//         for($j=1;$j<=2;$j++){
+//              $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
+// /*           $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];*/
+//            $glcode = $fetchglcodedetails[0]['glcode'];
+//            $header = $fetchglcodedetails[0]['header'];
+// 
+//            $ledger = new Officedefault_Model_officedefault();
+//            $genarateGlsub = $ledger->genarateGlsubCode1($ledgertype_id,$j);
+//            $glsubcode=$genarateGlsub->id;
+// 
+//            if($glsubcode) {
+//                $ini=substr($glsubcode,0,1);
+//                $last=substr($glsubcode,1,5);
+//                $last+=1;
+//                $last = str_pad($last,5,0,STR_PAD_LEFT);
+//                $glsubcode=$ini.$last;
+//                $glsubcode;
+//            } else {
+//                $glcode1=$ledger->fetchGlcode($j);
+//                $glcode=$glcode1->glcode;
+//                $ini=substr($glcode,0,1);
+//                $last=substr($glcode,1,5);
+//                $last+=1;
+//                $last = str_pad($last,5,0,STR_PAD_LEFT);
+//                $glsubcode=$ini.$last;
+//                $glsubcode;
+//            }
+// 	create cash and bank glsubcode
+//            if($j==1){ $headername="Bank";} else {$headername="Cash";}
+//            $gInsert = $ledger->insertGlsubcode(array('id' => '',
+//                            'glsubcode' => $glsubcode,
+//                            'glcode_id' => $j,
+//                            'subledger_id' => $ledgertype_id,
+//                            'header' => $headername.$lastid,
+//                            'description' => $headername.$lastid,
+//                            'created_date' =>$createdate,
+//                            'created_by'=>$this->view->createdby));
+//            }
          $this->_redirect('/officecommonview/index/commonview/id/'.$lastid);
 		}
 		}
@@ -425,9 +425,9 @@ echo $typeid;
                $office_id=$office->findoffice($id);
                if(!$members && !$office_id)
                {
-                $this->view->adm->deletemember("ourbank_office",$id);
-                $this->view->adm->deleteSubmodule("contact",$id,$this->view->sub_id);
-                $this->view->adm->deleteSubmodule("address",$id,$this->view->sub_id);
+               $this->view->adm->deletemember("ourbank_office",$id);
+//                 $this->view->adm->deleteSubmodule("ourbank_contact",$id,$this->view->sub_id);
+//                 $this->view->adm->deleteSubmodule("ourbank_address",$id,$this->view->sub_id);
                 $this->_redirect('/office');
                }
                else

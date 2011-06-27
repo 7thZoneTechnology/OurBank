@@ -86,12 +86,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
             <?php } ?>
         <td><select name = "assettype[]" id="select1" class="select">
                     <OPTION value="<?php echo $editAsset["nonliveasset_id"]; ?>">
-                    <?php echo $editAsset["name"]; ?>
+                    <?php echo $editAsset["name_regional"]; ?>
                     </OPTION>
                     <option>Select</option>
                     <?php foreach ($this->nonliveasset_details as $assetdetails) { $dateconvert= new App_Model_dateConvertor();?>
                         <? if($editAsset["name"] != $assetdetails["name"] ) {?>
-                           <option value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['name']?></option>
+                           <option value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['name_regional']?></option>
                     <?php } } ?>
                 </select>  
                 </td>

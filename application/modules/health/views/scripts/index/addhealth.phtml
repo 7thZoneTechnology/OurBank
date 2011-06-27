@@ -167,13 +167,8 @@ foreach($this->membername as $name){
  ?>
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-            <th  align="left" width="20%">
-            Sno.&nbsp;&nbsp;&nbsp;  Name <br>
-            Description
-            </th>
-            <th colspan="<?php echo $actlen; ?>" align="center" width="80%">
-            What
-            </th>
+        <th  align="left" width="5%"> Sno.</th><th width="20%">Name</th>
+        <th colspan="<?php echo $actlen; ?>" align="center" width="75%"> Description</th>
         </tr>
     </table>
 
@@ -181,32 +176,24 @@ foreach($this->membername as $name){
 <br>
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-            <td width="5%" ><?php echo $nameid[$i];?></td>
-            <td width="95%" align="left">
-            <?php  echo "<b>$names[$i] "."'s<b>"; ?>
-            </td>
+            <td width="5%" ><?php echo $nameid[$i];?></td><td width="20%" align="left"><?php  echo "<b>$names[$i] "."'s<b>"; ?>
+            </td><td width="75%"></td>
         </tr>
-        <tr>
+        <tr><td width="5%"></td>
         <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
-        <td colspan="2">
-        <input type="checkbox" name="none" class="none" id="none-<?php echo $nameid[$i];?>" />None <br>
-        <?php 
-
-            $b='healthdisease'.$nameid[$i];
-            echo $this->form->$b;
-        ?>
+        <td colspan="2" width="75%"><input type="checkbox" name="none" class="none" id="none-<?php echo $nameid[$i];?>" />None <br>
+        <?php $b='healthdisease'.$nameid[$i];  echo $this->form->$b; ?>
         </TD>
         </tr>
     </table>
 <table id="hor-minimalist-b" border="1" width="100%">
 
 
-<tr>
-    <td width="20%">Habits</td>
-        <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
-<?php if($c == 1) { ?>
-
- <td colspan="2">
+<tr><td width="5%"></td>
+    <td width="20%"><b>Habits</b></td>
+   <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
+   <?php if($c == 1) { ?>
+   <td colspan="2">
          <input type="checkbox" name="nonehabit" class="nonehabit" id="nonehabit-<?php echo $nameid[$i];?>" />None <br>
  </td>
 
@@ -218,8 +205,8 @@ foreach($this->membername as $name){
     </td>
 <?php } ?>
 </tr>
-<tr>
-    <td width="20%">Physical challenge</td>
+<tr><td width="5%"></td>
+    <td width="20%"><b>Physical challenge</b></td>
     <?php $p = 0; foreach($this->challengedetails as $challenge){ $p++; ?>
   <?php if($p == 1) { ?>
 

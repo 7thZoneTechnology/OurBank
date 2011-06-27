@@ -22,22 +22,20 @@ class Dropdown_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle='Master Data List';
-		$this->view->adm = new App_Model_Adm();   	
+		$this->view->adm = new App_Model_Adm();
 		$storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
                 $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
-
         $sessionName = new Zend_Session_Namespace('ourbank');
         $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-
         $login=new App_Model_Users();
         $loginname=$login->username($userid);
         foreach($loginname as $loginname) {
-            $this->view->username=$loginname['username']; // get the user name
-    }
-}
+        $this->view->username=$loginname['username']; // get the user name
+   		 }
+	}
   public function newtableAction() 
     {
 		$addform=new Dropdown_Form_Dropdown();
@@ -57,7 +55,6 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		$this->_redirect('/dropdown');
 			}
 		}
-
 	}
     public function indexAction() 
     {
@@ -68,10 +65,9 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		//echo $tableName;
 		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","descriptions","ASC");
 		foreach($mastertable as $mastertable) {
-				$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
+			$addform->name->addMultiOption($mastertable['name'],$mastertable['name_regional']);
+		}
 	}
-
-}
 	public function nameAction()
 	{
         $app = $this->view->baseUrl();
@@ -82,8 +78,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $tabledatas = $tabledata->tabledata($tablename);
 // Zend_Debug::dump($tabledatas);
         $this->view->tabledata = $tabledatas;
-        }
-
+    }
 	public function addAction() 
     {
  		$path = $this->view->baseUrl();
@@ -106,10 +101,10 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		foreach($gillapanchayath as $gillapanchayath){
 				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
 			}
-// // 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
-// // 		foreach($village as $village){
-// // 				$dropdownForm->village->addMultiOption($village['village_id'],$village['name']);
-// // 			}
+		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
+		foreach($bank as $bankname){
+				$dropdownForm->bank->addMultiOption($bankname['id'],$bankname['name']);
+			}
 		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
 		foreach($cbp as $cbpname){
 				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name']);
@@ -118,137 +113,158 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		foreach($koota as $kootaname){
 				$dropdownForm->koota->addMultiOption($kootaname['oid'],$kootaname['oname']);
 			}
+
 		if ($this->_request->isPost() && $this->_request->getPost('Save')) {
 			if($tName == 'ourbank_master_districtlist') {
+
+
  		$id=$this->_request->getParam('state');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
 									'state_id'=>$id,'name_regional'=>$name_regional,
 									'name'=>$common);
 		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);}
 		}
 		if($tName == 'ourbank_master_cbopromoter') {
  		$id=$this->_request->getParam('koota');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
+
 									$formdata1=array('id'=>'',
 									'koota_id'=>$id,
 									'name_regional'=>$name_regional,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_cbos') {
  		$id=$this->_request->getParam('cbp');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
+
 									$formdata1=array('id'=>'',
 									'cbopromoter_id'=>$id,
 									'name_regional'=>$name_regional,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_bank') {
  		$id=$this->_request->getParam('acctype');
  		$id1=$this->_request->getParam('village');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional || !$id1) { echo "<font color='red'>Please Enter a value</font>";} else{
+
 									$formdata1=array('id'=>'',
 									'accounttype_id'=>$id,
 									'village_id'=>$id1,
 									'name_regional'=>$name_regional,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_hoblilist') {
  		$id=$this->_request->getParam('taluk');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
+
 									$formdata1=array('id'=>'','name_regional'=>$name_regional,
 									'taluk_id'=>$id,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_villagelist') {
  		$id=$this->_request->getParam('gillapanchayath');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
 									'panchayath_id'=>$id,'name_regional'=>$name_regional,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 				}
 		if($tName == 'ourbank_master_taluklist') {
  		$id=$this->_request->getParam('district');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
 									'district_id'=>$id,'name_regional'=>$name_regional,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_gillapanchayath') {
  		$id=$this->_request->getParam('hobli');
  		$common=$this->_request->getParam('commonname');
  		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'','name_regional'=>$name_regional,
 									'hobli_id'=>$id,
 									'name'=>$common);
-						$id = $this->view->adm->addRecord($tName,$formdata1);
- 			$this->_redirect('/dropdown');
+						$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 			$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_branch') {
  		$id=$this->_request->getParam('bank');
  		$common=$this->_request->getParam('commonname');
  		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
 									'bank_id'=>$id,'name_regional'=>$name_regional,
 									'created_by'=>$this->view->createdby,
 									'name'=>$common);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_habitation') {
- 		$village=$this->_request->getParam('village');
- 		$common=$this->_request->getParam('commonname');
+		$village=$this->_request->getParam('village');
+		$common=$this->_request->getParam('commonname');
  		$name_regional=$this->_request->getParam('name_regional');
+			if(!$common || !$village || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
-									'village_id'=>$village,'name_regional'=>$name_regional,
+									'village_id'=>$village,
 									'created_by'=>$this->view->createdby,
 									'name'=>$common,
 									'name_regional'=>$name_regional);
-		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+		$id = $this->view->adm->addRecord($tName,$formdata1);}
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 		}
 		if($tName == 'ourbank_master_mastertables') {
  		$description=$this->_request->getParam('description');
  		$commonname=$this->_request->getParam('commonname');
  		$name_regional=$this->_request->getParam('name_regional');
+			if(!$commonname || !$description || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
 									'descriptions'=>$description,'name_regional'=>$name_regional,
 									'name'=>$commonname);
 		$id = $this->view->adm->addRecord($tName,$formdata1);
 		$settings = new Dropdown_Model_Dropdown;
-		$table=$settings->Createtable($commonname);
-		$this->_redirect('/dropdown');
+		$table=$settings->Createtable($commonname);}
+		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 	}
+		if($tName == 'ourbank_master_habitation' or $tName == 'ourbank_master_branch' or $tName == 'ourbank_master_gillapanchayath' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_villagelist' or $tName == 'ourbank_master_hoblilist' or $tName == 'ourbank_master_bank' or $tName == 'ourbank_master_cbos' or $tName == 'ourbank_master_cbopromoter'){echo ""; }else{
  		$commonname=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
+			if(!$commonname || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
+
 									$formdata1=array('id'=>'',
 									'name_regional'=>$name_regional,
 									'name'=>$commonname);
 		$id = $this->view->adm->addRecord($tName,$formdata1);
- 		$this->_redirect('/dropdown');
+ 		$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
+		 } } }
 	}
-	}
- 	public function commonviewAction() 
+ 	public function commonviewAction()
     {
 		$name_regional=$this->_request->getParam('name_regional');
 		$tName=$this->_request->getParam('name');
@@ -286,7 +302,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 //Zend_Debug::dump($dropdownForm->getValues());
   							$previousdata = $this->view->adm->editRecord($tName,$id);
 							$this->view->adm->updateRecord($tName,$id,$formdata1);
-							$this->_redirect('/dropdown');
+							$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
 				}
 		} else {
  		$statename = $this->view->adm->viewRecord("ourbank_master_state","id","DESC");
@@ -378,7 +394,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 						$this->view->form->state->setValue($holidaydetails['state_id']);
 					}}break;
 	
-					case 'ourbank_master_taluklist': 
+					case 'ourbank_master_taluklist':
 					{foreach($namedetails as $holidaydetails){
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
@@ -386,7 +402,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 						$this->view->form->state->setValue($holidaydetails['state_id']);
 					}}break;
 
-					case 'ourbank_master_districtlist': 
+					case 'ourbank_master_districtlist':
 					{foreach($namedetails as $holidaydetails) {
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
@@ -434,7 +450,8 @@ class Dropdown_IndexController extends Zend_Controller_Action
 					foreach($namedetails as $holidaydetails) {
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']); }
-					}}
+					}
+			}
 
 	public function deleteAction() 
     {
@@ -455,7 +472,6 @@ class Dropdown_IndexController extends Zend_Controller_Action
        			$redirect = $this->view->adm->deleteRecord($tName,$id);
 				//update
             	$this->_redirect('/dropdown');
-
 			}
 		}
 	}
@@ -493,8 +509,8 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $hobli=$gethobli->hobli($taluk);
  		foreach($hobli as $eacharraysent) {
         $dropdownForm->hobli->addMultiOption($eacharraysent['hbid'],$eacharraysent['hbname']);
-        }}
-
+        	}
+		}
 		public function gillapanchayathAction() {
         $path = $this->view->baseUrl();
         $this->_helper->layout()->disableLayout();
@@ -518,5 +534,4 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $dropdownForm->village->addMultiOption($eacharraysent['village_id'],$eacharraysent['vname']);
         }
 	}
-
 }
