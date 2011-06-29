@@ -36,7 +36,6 @@ class User_Indexcontroller extends Zend_Controller_Action
        foreach($loginname as $loginname) {
            $this->view->username=$loginname['username']; // get the user name
        }
- 
     //         if (($this->view->globalvalue[0]['id'] == 0)) {
     //              $this->_redirect('index/logout');
     //         }
@@ -57,42 +56,30 @@ class User_Indexcontroller extends Zend_Controller_Action
         //listing designation
                 $designation = $this->view->adm->viewRecord("ourbank_master_designation","id","DESC");
         foreach($designation as $designation){
-                        $searchForm->designation->addMultiOption($designation['id'],$designation['name']);
+                        $searchForm->s2->addMultiOption($designation['id'],$designation['name']);
                 }
         //listing grants
         $grant = $this->view->adm->viewRecord("ourbank_grant","id","DESC");
         foreach($grant as $grant){
-            $searchForm->grant_id ->addMultiOption($grant['id'],$grant['name']);
+            $searchForm->s4 ->addMultiOption($grant['id'],$grant['name']);
         }
         //listing office
         $user = new User_Model_User();
         $bankname = $this->view->adm->viewRecord("ourbank_office","id","DESC");
         foreach($bankname as $bankname){
-            $searchForm->bank->addMultiOption($bankname['id'],$bankname['name']);
+            $searchForm->s3->addMultiOption($bankname['id'],$bankname['name']);
         }
-        //pagination
+if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+                        $result = $user->userSearch($postedvalues); // get savings details
+
         $page = $this->_getParam('page',1);
-        $paginator = Zend_Paginator::factory($result);
-        $paginator->setItemCountPerPage(5);
-        $paginator->setCurrentPageNumber($page);
-        $this->view->paginator = $paginator;
-        //search action
-        if ($this->_request->isPost() && $this->_request->getPost('Search')){
-            if ($this->_request->isPost()){
-                if ($searchForm->isValid($this->_request->getPost())){
-                    $result = $userdetail->userSearch($searchForm->getValues());
-                    $page = $this->_getParam('page',1);
-                    $paginator = Zend_Paginator::factory($result);
-                    $paginator->setItemCountPerPage(5);
-                    $paginator->setCurrentPageNumber($page);
-                    $this->view->paginator = $paginator;
-                } 
-                //error message
-                if (!$result) {
-                        echo "<font color='RED'>Records Not Found Try Again...</font>";
-                }
-            }
-        }
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+			   
 
     }
 

@@ -238,3 +238,12 @@ foreach($this->membername as $name){
 </table>
 <?php echo "<font color='red' size='3'>".$this->error."</font>";?>
 </form>
+me="subId" value="<?php echo $this->submoduleid; ?>">
+<input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
+
+<tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
+<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+</tr>
+</table>
+<?php echo "<font color='red' size='3'>".$this->error."</font>";?>
+</form>

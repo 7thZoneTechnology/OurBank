@@ -315,3 +315,25 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
     }
 }
 
+// Once account creation got over display the account id
+    public function messageAction() 
+    {
+        $this->view->pageTitle = 'Accounting';
+        $this->view->acNum = base64_decode($this->_request->getParam('acNum'));
+    }
+    // Using this method we can get interest periods
+    public function getinterestsAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $id = $this->_request->getParam('interest');
+
+        $value=explode('-',$id);
+        $interestvalue = $this->view->accounts->getInterestvalue($value[0],$value[1]);
+
+        foreach($interestvalue as $interestvalue1) {
+             $this->view->interest = $interestvalue1['Interest'];
+             $this->view->interestid = $interestvalue1['id'];
+        }
+    }
+}
+

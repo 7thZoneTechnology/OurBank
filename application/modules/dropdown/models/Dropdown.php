@@ -49,13 +49,13 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               			->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','panchayath_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
+						->from(array('b' =>'ourbank_master_gillapanchayath'),array('id as gpid','name_regional as gpname','hobli_id'))
 				->where('b.id =a.panchayath_id')
- 						->from(array('c' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
+ 						->from(array('c' =>'ourbank_master_hoblilist'),array('id as hbid','name_regional as hbname','taluk_id'))
 				->where('c.id =b.hobli_id')
- 						->from(array('d' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
+ 						->from(array('d' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
 				->where('d.id =c.taluk_id')
-						->from(array('e' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
+						->from(array('e' =>'ourbank_master_districtlist'),array('id as did','name_regional as dname','state_id'))
                 ->where('e.id =d.district_id');
 				
 				$result = $this->fetchAll($select);
@@ -67,14 +67,14 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               			->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','hobli_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
+						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name_regional as gpname','hobli_id'))
                 ->where('c.id =a.hobli_id')
-						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
+						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name_regional as hbname','taluk_id'))
                 ->where('d.id =c.hobli_id')
-						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
+						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
                 ->where('e.id =d.taluk_id')
-						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
-						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name_regional as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name_regional as sname'))
                 ->where('f.id =e.district_id');
 				$result = $this->fetchAll($select);
        			return $result->toArray();
@@ -84,10 +84,10 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','taluk_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
+						->from(array('b' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
                 ->where('b.id =a.taluk_id')
-						->from(array('c' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
-						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+						->from(array('c' =>'ourbank_master_districtlist'),array('id as did','name_regional as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name_regional as sname'))
                 ->where('c.id =b.district_id');
 				
 				$result = $this->fetchAll($select);
@@ -98,8 +98,8 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','district_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
-						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+						->from(array('b' =>'ourbank_master_districtlist'),array('id as did','name_regional as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name_regional as sname'))
                 ->where('b.id =a.district_id');
 				$result = $this->fetchAll($select);
        			return $result->toArray();
@@ -128,7 +128,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id as cbosid','name as habit','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_cbopromoter'),array('id as cbid','name as cbname'))
+						->from(array('b' =>'ourbank_master_cbopromoter'),array('id as cbid','name_regional as cbname'))
 					->where('b.id =a.cbopromoter_id');
 // // 				die($select->__toString($select));
 				$result = $this->fetchAll($select);
@@ -138,7 +138,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 				$select = $this->select()
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','state_id','a.name_regional'))
-						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name_regional as sname'))
 
 				->where('a.id = ?',$id);
 				
@@ -147,12 +147,12 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 				}break;
 			case 'ourbank_master_bank':{ 
 				$select = $this->select()
-              ->setIntegrityCheck(false)
-			->from(array('a' => $tName),array('id','name as habit','a.name_regional','a.village_id'))
+              		->setIntegrityCheck(false)
+					->from(array('a' => $tName),array('id','name as habit','a.name_regional','a.village_id'))
 				->where('a.id = ?',$id)
-			->join(array('b' =>'ourbank_master_accountype'),'b.id  =a.accounttype_id',array('id as accid','name as accname'))
-			->join(array('c' =>'ourbank_master_villagelist'),'c.village_id  =     a.village_id',array('id as vid','name as vname'))
-			->join(array('d' =>'ourbank_master_gillapanchayath'),'d.id =c.panchayath_id',array('id as gpid','name as gpname'));
+					->join(array('b' =>'ourbank_master_accountype'),'b.id  =a.accounttype_id',array('id as accid','name_regional as accname'))
+					->join(array('c' =>'ourbank_master_villagelist'),'c.village_id = a.village_id',array('village_id','name_regional as vname'))
+					->join(array('d' =>'ourbank_master_gillapanchayath'),'d.id =c.panchayath_id',array('id as gpid','name_regional as gpname'));
 // die($select->__toString($select));
 				$result = $this->fetchAll($select);
        			return $result->toArray();
@@ -162,7 +162,9 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 				->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','bank_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' => 'ourbank_master_bank'),array('id as bankid','name as bankname','accounttype_id'))
+						->from(array('b' => 'ourbank_master_bank'),array('id as bankid','name_regional as bankname','accounttype_id'))
+						->join(array('c' =>'ourbank_master_villagelist'),'c.village_id = a.village_id',array('village_id','name_regional as vname'))
+						->join(array('d' =>'ourbank_master_gillapanchayath'),'d.id =c.panchayath_id',array('id as gpid','name_regional as gpname'))
 				->where('b.id  =a.bank_id');
 /*die($select->__toString($select));*/
 				$result = $this->fetchAll($select);
@@ -173,16 +175,16 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               ->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','village_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('b' =>'ourbank_master_villagelist'),array('id as vid','name as vname','panchayath_id'))
+						->from(array('b' =>'ourbank_master_villagelist'),array('id as vid','name_regional as vname','panchayath_id'))
                 ->where('b.village_id =a.village_id')
-						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
+						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name_regional as gpname','hobli_id'))
                 ->where('c.id =b.panchayath_id')
-						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
+						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name_regional as hbname','taluk_id'))
                 ->where('d.id =c.hobli_id')
-						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
+						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
                 ->where('e.id =d.taluk_id')
-						->from(array('g' =>'ourbank_master_state'),array('id as sid','name as sname'))
-						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
+						->from(array('g' =>'ourbank_master_state'),array('id as sid','name_regional as sname'))
+						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name_regional as dname','state_id'))
                 ->where('f.id =e.district_id');
 // // 				die($select->__toString($select));
 				$result = $this->fetchAll($select);
@@ -207,7 +209,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 	 public function district($state) {
  	$select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_districtlist'),array('a.id as did','a.name as dname','a.name_regional'))
+			->from(array('a' => 'ourbank_master_districtlist'),array('a.id as did','a.name_regional as dname','a.name'))
 			->where('a.state_id = ?',$state);
        $result = $this->fetchAll($select);
        return $result->toArray();
@@ -223,7 +225,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 	 public function gillapanchayath($hobli) {
 	 $select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id as gpid','a.name as gpname','a.name_regional'))
+			->from(array('a' => 'ourbank_master_gillapanchayath'),array('a.id as gpid','a.name_regional as gpname','a.name'))
 			->where('a.hobli_id = ?',$hobli);
        $result = $this->fetchAll($select);
        return $result->toArray();
@@ -231,7 +233,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
  	public function village($gillapanchayath) {
  	$select = $this->select()
              ->setIntegrityCheck(false)
-		->from(array('a' => 'ourbank_master_villagelist'),array('a.id as vid','a.name as vname','a.village_id','a.name_regional'))
+		->from(array('a' => 'ourbank_master_villagelist'),array('a.id as vid','a.name_regional as vname','a.village_id','a.name'))
 			->where('a.panchayath_id = ?',$gillapanchayath);
        $result = $this->fetchAll($select);
        return $result->toArray();
@@ -239,7 +241,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 	public function taluk($district) {
  	$select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_taluklist'),array('a.id as tid' ,'a.name as tname','a.name_regional'))
+			->from(array('a' => 'ourbank_master_taluklist'),array('a.id as tid' ,'a.name_regional as tname','a.name'))
 			->where('a.district_id = ?',$district);
        $result = $this->fetchAll($select);
        return $result->toArray();
@@ -247,7 +249,7 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
  	public function hobli($taluk) {
  	$select = $this->select()
              ->setIntegrityCheck(false)
-			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id as hbid','a.name as hbname','a.name_regional'))
+			->from(array('a' => 'ourbank_master_hoblilist'),array('a.id as hbid','a.name_regional as hbname','a.name'))
 			->where('a.taluk_id = ?',$taluk);
        $result = $this->fetchAll($select);
        return $result->toArray();

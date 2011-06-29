@@ -314,3 +314,15 @@ foreach($membername as $memberna){
         }
 	
 }
+                   'created_date'=>date("y/m/d H:i:s")
+//                                                 ));
+//                     }
+//             }
+//         }
+
+             $this->_redirect('/familycommonview/index/commonview/id/'.$familyid);
+		}
+
+        }
+	
+}

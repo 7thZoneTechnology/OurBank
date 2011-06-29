@@ -416,3 +416,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
         }
     }
 }
+}
+          $this->_redirect('/familycommonview/index/commonview/id/'.$id);
+        }
+    }
+}

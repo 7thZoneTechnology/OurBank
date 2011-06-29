@@ -67,3 +67,16 @@ if($this->members) {
 <?php  } else {
         echo "<font color='RED'>No Members in the branch you seleted</font>";
  } ?>
+5%" align="center">
+                        <input type="checkbox" name="representatives[]" id="<?php echo $members["id"];?>" class="chkvalid required" value="<?php echo $members["id"];?>">
+                    </td>
+            </tr>
+        <?php } 
+
+
+}
+?>
+    </table>
+<?php  } else {
+        echo "<font color='RED'>No Members in the branch you seleted</font>";
+ } ?>

@@ -38,3 +38,7 @@ class Family_Form_Search extends Zend_Dojo_Form {
 
     }
 }
+s3,$s2,$submit));
+
+    }
+}

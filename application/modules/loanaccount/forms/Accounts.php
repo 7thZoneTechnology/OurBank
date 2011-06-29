@@ -11,4 +11,5 @@ class Loanaccount_Form_Accounts extends Zend_Form
 	$submit = $formfield->field('Submit','Submit','','','','',false,'','','','','',0,0);
         $this->addElements(array($membercode,$Type,$submit));
     }
+} }
 }

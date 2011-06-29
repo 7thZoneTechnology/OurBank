@@ -39,3 +39,17 @@ class Groupm_Model_Group extends Zend_Db_Table {
     }
 
  }
+])
+			->where('b.name like "%" ? "%"',$post['s2']);   
+ 	return $this->fetchAll($select);
+    }else{
+            $select = $this->select()
+			->setIntegrityCheck(false)  
+                        ->join(array('b' => 'ourbank_group'),array('id'),array('id as groupid','groupcode','name as  group_name'));			//die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
+	}
+
+ }

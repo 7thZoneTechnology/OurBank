@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#search_meeting_date").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#s2").datepicker({"dateFormat":"dd/mm/yy"});
 });
 </script>
 
@@ -37,9 +37,9 @@ $(document).ready(function() {
                     <table width="100%">
                         <tr>
                             <td class="label"><?php echo $this->translate("Meeting name"); ?></td>
-                            <td ><? echo $this->form->search_meeting_name_att;?></td>
+                            <td ><? echo $this->form->s1;?></td>
                             <td class="label"><?php echo $this->translate("Meeting date"); ?>:</td>
-                            <td ><? echo $this->form->search_meeting_date;?></td>
+                            <td ><? echo $this->form->s2;?></td>
                         </tr>
 
                     </table>
@@ -72,8 +72,10 @@ $(document).ready(function() {
 
                 <tr>
                         <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                                '/partials/my_pagination_control.phtml'); ?></div></td>
+                                                '/partials/my_pagination_control.phtml',$this->requestvalues); ?></div></td>
                 </tr>
             </tr>
     </table>
 <?php endif; ?>
+
+

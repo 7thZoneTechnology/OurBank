@@ -452,3 +452,38 @@ class Familydefault_IndexController extends Zend_Controller_Action
         }
 }
 
+;
+ 	        $habitation= new Familydefault_Model_familydefault();
+ 	        $this->view->form=$searchForm = new Familydefault_Form_familydefault($path,$this->view->sub_id);
+                $parentid=$habitation->getparentid('ourbank_office',$kootaid);
+ 	        foreach($parentid as $revvillage) 
+                {
+	        $searchForm->rev_village->addMultiOption($revvillage['id'],$revvillage['name']);
+	        }
+        }
+
+        public function taluknameAction()
+        {	
+                $this->_helper->layout->disableLayout();
+	        $rev_villageid = $this->_request->getParam('rev_village');
+                $familycommon=new Familycommonview_Model_familycommonview();
+                $talukname=$familycommon->gettalukname($rev_villageid);
+
+                if($talukname){
+                    echo $talukname[0]['name'];
+                }
+        }
+
+        public function pincodeAction()
+        {	
+                $this->_helper->layout->disableLayout();
+	        $rev_villageid = $this->_request->getParam('rev_village');
+	        $sub_id = $this->_request->getParam('mod_id');
+                $familycommon=new Familydefault_Model_familydefault();
+                $pincode=$familycommon->getpincode($rev_villageid,$sub_id);
+                if($pincode){
+                echo $pincode[0]['zipcode'];
+                }
+        }
+}
+

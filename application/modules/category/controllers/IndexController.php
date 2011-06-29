@@ -62,48 +62,25 @@ class Category_IndexController extends Zend_Controller_Action
 	public function indexAction() 
 	{
        		$this->view->title = "Category";
-		$this->view->pageTitle = "Category";
-		$storage = new Zend_Auth_Storage_Session();
-		$data = $storage->read();
-		if(!$data){
-			$this->_redirect('index/login');
-		}
+		$this->view->pageTitle = "Category Search";
 
-        //  when delete particular category we should check that particular category is a basic one or not
-                if($this->_helper->flashMessenger->getMessages()){
-                $messages = $this->_helper->flashMessenger->getMessages();
-                    foreach($messages as $error){
-                        echo "<script> alert('$error');</script>";
-                }
-                }
+ 		$searchForm = new Category_Form_Search();
+       $this->view->form = $searchForm;
 
-//calling the category model
-		$category = new Category_Model_Category();
-		$categorydetails=$category->getCategoryinformation();
-		$searchForm = new Category_Form_Search();
-		$this->view->form = $searchForm;
-                //pagination  -   for set of 5 at a time
-		$page = $this->_getParam('page',1);
-		//search action
-		if ($this->_request->isPost() && $this->_request->getPost('Search')){
-			if ($this->_request->isPost()){
-				if ($searchForm->isValid($this->_request->getPost())){
-					$result = $category->SearchCategory($searchForm->getValues());
-                //pagination for the search result
-                                        $paginator = Zend_Paginator::factory($result);
-				}
-			}
-                $this->view->search = true;
-		}
-                else {
-		$result = $category->getCategoryDetails();
-		$paginator = Zend_Paginator::factory($result);
-                // assign default values into paginator
-                $paginator = Zend_Paginator::factory($result);
-                }
-        $paginator->setItemCountPerPage($this->view->adm->paginator());
-        $paginator->setCurrentPageNumber($page);
-        $this->view->paginator = $paginator;
+	$category = new Category_Model_Category();
+	if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+   $result = $category->SearchCategory($postedvalues);
+		$this->view->category = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+
+
 	}
 	public function categoryaddAction() 
 	{

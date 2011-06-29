@@ -331,3 +331,19 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 </div>
 </BODY>
 </html>
+td><INPUT type="text" name = "price[]" id =  "price[]" size = 10 maxlength="6" min="1" class="numeric1 product number" ></td>
+                <td><INPUT type="text" name = "realised[]" id = "realised[]" size = 10 maxlength="6" readonly class="realised "></td>
+                <!--<td><INPUT type="text" name = "date[]"  class="date" readonly></td>-->
+                <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
+            </tr> 
+        </table>
+
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>">
+	<a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+    </form>
+<?php //echo $this->errormsg; ?>
+</div>
+</BODY>
+</html>

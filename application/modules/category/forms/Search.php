@@ -30,4 +30,6 @@
         	$id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
 		$this->addElements(array($categoryname,$categorydescription,$id));
     }
+});
+    }
 }

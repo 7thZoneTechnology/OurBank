@@ -47,4 +47,19 @@
 	</tr>
 	<?php endforeach; ?>
 	</table>
-<?php }?>
+<?php }?>foreach; ?>
+	
+        <?php }?>
+   <?php if ($this->paginator) { ?>
+
+	<div align="center" style="margin-top:10px;color:#CC6633;">
+       <tr>
+       <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+        </div></td></tr>
+
+        </table>
+  
+    <?php } ?>
+
+
+</table>

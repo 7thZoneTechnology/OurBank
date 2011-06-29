@@ -246,3 +246,21 @@ $sql="SELECT max(week_no)+1 as meetingno FROM ourbank_attendance WHERE meeting_i
 
 }
 }
+pter();
+            $db->delete("ourbank_discussion",array('attendance_id = '.$attendance_id));
+            return;
+}
+public function deletedecision($attendance_id)
+{
+            $db = $this->getAdapter();
+            $db->delete("ourbank_decision",array('attendance_id = '.$attendance_id));
+            return;
+}
+public function fetchmaxid($maxid){ 
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+$sql="SELECT max(week_no)+1 as meetingno FROM ourbank_attendance WHERE meeting_id=".$maxid;
+        $result = $this->db->fetchAll($sql); //echo $sql;
+        return $result;
+
+}
+}

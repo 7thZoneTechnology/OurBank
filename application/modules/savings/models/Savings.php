@@ -431,3 +431,16 @@ class Savings_Model_Savings extends Zend_Db_Table {
                         return $result; // return product id with name 
                     }
 }
+s->getAdapter();
+                        $sql ="select * from ourbank_accounts where product_id ='".$offerid."'";
+                        $result = $db->fetchAll($sql);
+                        return $result;
+                    }
+        public function getproductname($offerid)  
+                    {
+                        $db = $this->getAdapter();
+                        $sql ="select product_id,name from ourbank_productsoffer where product_id ='".$offerid."'";
+                        $result = $db->fetchAll($sql);
+                        return $result; // return product id with name 
+                    }
+}

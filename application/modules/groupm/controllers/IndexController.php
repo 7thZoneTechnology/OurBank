@@ -67,3 +67,21 @@ class Groupm_IndexController extends Zend_Controller_Action
 	    $paginator->setCurrentPageNumber($page);
      }
 }
+tCurrentPageNumber($page);
+// 				$this->view->paginator = $paginator;
+// 			$this->view->search = true;
+// 		} else {
+// 			$this->view->title = "Group member"; 
+// 			$storage = new Zend_Auth_Storage_Session();
+// 			$data = $storage->read();
+// 			if (!$data) {
+// 				$this->_redirect('index/login');
+//             }
+//             $page = $this->_getParam('page',1);
+//             $paginator = Zend_Paginator::factory($group->getGroupDetails()); // assign default values for pagination
+// 	    	$this->view->paginator = $paginator;
+// 		}
+// 	    $paginator->setItemCountPerPage($this->view->adm->paginator());
+// 	    $paginator->setCurrentPageNumber($page);
+//      }
+// }

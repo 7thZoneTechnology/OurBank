@@ -27,18 +27,18 @@
                                 Membername
                             </TD>
                             <td width="30%">
-                                <?php echo $this->form->membername;?>
+                                <?php echo $this->form->s1;?>
                             </td>
                             <TD width="20%">
                                 Village name
                             </TD>
                             <td width="30%">
-                                <?php echo $this->form->village;?>
+                                <?php echo $this->form->s2;?>
                             </td>
                         </tr>
 						<tr>
 						<TD width="20%">Regional name</TD>
-<td>                                <?php echo $this->form->name_inregional;?>
+<td>                                <?php echo $this->form->s3;?>
 </td>
 
 </tr>
@@ -74,14 +74,10 @@ if(count($this->paginator)!=0) { ?>
             <?php endforeach; ?>
             <?php endif; ?>
         </tr>
-        <tr>
-            <td colspan="8" align="right">
-                <div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                '/partials/my_pagination_control.phtml'); ?>
-                </div>
-            </td>
-        </tr>
+       
     </table>
 <?php } ?>
-
+<div align="center" style="margin-top:10px;color:#CC6633;">
+<?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+</div>
 

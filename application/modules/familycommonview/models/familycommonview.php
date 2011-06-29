@@ -424,3 +424,9 @@ public function getguntatotal($id)
 
 //end basic infrastructure
 }
+($select);
+      return $result->toArray();
+  }
+
+//end basic infrastructure
+}

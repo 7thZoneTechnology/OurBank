@@ -174,3 +174,46 @@ class Loanaccount_IndexController extends Zend_Controller_Action
     }
 }
 
+s->_request->getPost('interest'),
+                                      'interesttype_id' => $this->_request->getPost('interesttype_id'),
+                                   //   'savingsaccount_id' => $this->_request->getPost('savingAccount'),
+                                      'tieup_flag' => 0,
+                                      'created_by' => 1);
+      		        $this->view->adm->addRecord('ourbank_loanaccounts',$input);
+      		        //insertion of fee
+      		        $fee = $this->_request->getParam('fee');
+	                foreach ($fee as $fee) {
+                            $feeInput = array('account_id' => $accId,
+                                              'fee_id' => $fee);
+                            $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
+                        }
+                        $memberlist=$this->view->accounts->getmemberlist($memberId,$typeID);
+                        if($memberlist){
+                        foreach($memberlist as $memberid) 
+                        {
+                        $this->view->accounts->Updatestatus($memberid['memberid'],$typeID);
+                        }
+                        }
+		        $this->_redirect("/loanaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
+		    }
+		}
+        }
+    }
+    
+    public function interestAction() 
+    {
+	$this->_helper->layout()->disableLayout();
+	$interest = $this->view->accounts->getInterest($this->_request->getParam('productId'),$this->_request->getParam('interest'));
+	foreach ($interest as $interest) {
+    	    $this->view->id = $interest->id;
+	    $this->view->interest = $interest->interest;
+	}
+   }
+    
+    public function messageAction() 
+    {
+        $this->view->pageTitle = 'Accounting';
+	$this->view->acNum = base64_decode($this->_request->getParam('acNum'));
+    }
+}
+

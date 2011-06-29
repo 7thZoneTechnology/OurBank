@@ -152,3 +152,24 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
 }
 
 
+$this->getAdapter();
+        $db->delete('ourbank_familymember',array('id = '.$param));
+        return;
+    }
+
+    public function deleterecord($table,$param)  
+    {
+        $db = $this->getAdapter();
+        $db->delete($table,array('member_id = '.$param));
+        return;
+    }
+
+    public function update($member_id,$input = array()) {
+    $where[] = "id = '".$member_id."'";
+    $db = $this->getAdapter();
+    $result = $db->update('ourbank_familymember',$input,$where);
+    }
+
+}
+
+

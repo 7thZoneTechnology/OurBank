@@ -362,3 +362,10 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
         return $result->toArray(); // return group member details
     }
 }
+;
+        }
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray(); // return group member details
+    }
+}

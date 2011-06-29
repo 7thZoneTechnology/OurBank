@@ -46,6 +46,13 @@
 <p><a href="#" id="close">hide</a></p>
 </div>  
 <br/><br/>-->
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#s3").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#s4").datepicker({"dateFormat":"dd/mm/yy"});
+});
+</script>
 <div id="searchDiv">
     <fieldset>
         <legend>Search</legend>
@@ -55,15 +62,15 @@
                             <table width="100%">
                                 <tr>
                                                         <td class="label">Holiday name:</td>
-							<td ><? echo $this->form->name;?></td>
+							<td ><?php echo $this->form->s1;?></td>
 							<td class="label">Office name:</td>
-							<td ><? echo $this->form->office_id;?></td>
+							<td ><?php echo $this->form->s2;?></td>
                                 </tr>
                                 <tr>
                                                         <td class="label"><br>Holiday from:</td>
-							<td ><br><? echo $this->form->holiday_from;?></td>
+							<td ><?php echo $this->form->s3;?></td>
 							<td class="label"><br>Holiday upto:</td>
-							<td ><br><? echo $this->form->holiday_upto;?></td>
+							<td ><br><?php echo $this->form->s4;?></td>
                                 </tr>
                             </table><br>
                               <div class="ltbtns">
@@ -83,8 +90,7 @@
 
         </tr>
         <?php $dateconvert= new App_Model_dateConvertor();
-                if (count($this->paginator)){ ?>
-        <?php foreach ($this->paginator as $category ): ?>
+      foreach ($this->paginator as $category ): ?>
     <tr>
         <td><a href="<?php echo $this->baseUrl()."/holidaycommonview/index/holidayview/id/".$category['id']; ?>"><?php echo $this->escape($category['name']);?>
             </a>
@@ -99,13 +105,10 @@
             </td>
    </tr>
      <?php endforeach; ?>
-        <?php } else { 
-        echo "<font color=red>".$this->errormsg."</font>";
-    } ?>
-    <tr>
-        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',         '/partials/my_pagination_control.phtml'); ?></div>
-        </td>
-   </tr>
+   
 </table>
-
 <?php } ?>
+
+<div align="center" style="margin-top:10px;color:#CC6633;">
+<?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+</div>

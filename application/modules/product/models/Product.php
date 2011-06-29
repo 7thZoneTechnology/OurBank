@@ -94,3 +94,14 @@ class Product_Model_Product extends Zend_Db_Table {
         return $result;
         }
 }
+       $result = $this->db->fetchALL($sql,array());
+            return $result;
+        }
+        
+        public function getproductstatus($productid){
+        $db = $this->getAdapter();
+        $sql = "select * from ourbank_accounts where product_id in (select id from ourbank_productsoffer where product_id = $productid)";
+        $result = $db->fetchAll($sql);
+        return $result;
+        }
+}

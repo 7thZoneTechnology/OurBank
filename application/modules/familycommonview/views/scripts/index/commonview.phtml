@@ -823,3 +823,87 @@ foreach($this->getfamilymembers as $familymembers){ ?>
         <a href="<?php echo $this->baseUrl(); ?>/family"><input type="button" name="back" value="<?php echo $this->translate("Back"); ?>"></a>
     </div>
  </div>
+th="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/expense/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->expense){
+$totalValue = 0;
+?>
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+   <td align="left" width="5%"><font color="#787878"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></font></td>
+   <td width="80%"><font color="#787878"><?php echo $this->translate("ಖರ್ಚು"); ?></font></td>
+   <td align="right" width="15%"><font color="#787878"><?php echo $this->translate("ಮೊತ್ತ"); ?></font></td>
+</tr>
+   <?php foreach($this->expense as $expense){   ?>
+   <tr>
+    <td align="center" width="5%"><?php echo $expense['id']; ?></td><td width="80%"><?php echo $expense['name_regional']; ?></td>
+       <td align="right" width="15%"><?php echo sprintf("%4.2f",$expense['value']); $totalValue+=$expense['value']; ?></td>
+   </tr>
+   <?php } ?>
+    <tr><td></td>
+        <td ><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+    </tr>
+</table>
+<?php } ?>
+</table> 
+<br>
+
+
+
+<!--show the services details and edit option !-->
+<!--<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Service required by the family"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->servicedetails)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/services/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/services/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>-->
+<?php if($this->servicedetails){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+   <th ><?php echo $this->translate("Service details"); ?></th>
+   <th align="right"><?php echo $this->translate("To whom"); ?></th>
+   <th ><?php echo $this->translate("Own fund"); ?></th>
+   <th ><?php echo $this->translate("Recuired loan/help"); ?></th>
+</tr>
+   <?php foreach($this->servicedetails as $servicedetails){   ?>
+   <tr>
+       <td><?php echo $servicedetails['name']; ?></td>
+       <td><?php echo $servicedetails['to_whom']; ?></td>
+       <td><?php echo $servicedetails['own_land']; ?></td>
+       <td><?php echo $servicedetails['recuired_loan_help']; ?></td>
+   </tr>
+   <?php } ?>
+<!--<tr>
+<?php foreach($this->loandtotal as $total){   ?>
+
+   <td><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+   <td align="right"><?php echo $total['loantotal']; ?></td>
+   <td></td>
+   <td align="right"><?php echo $total['repaytotal']; ?></td>
+   <td align="right"><?php echo $total['duetotal']; ?></th>
+   <td align="right"><?php echo $total['outstandingtotal']; ?></th>
+<?php } ?>
+</tr>-->
+</table>
+<?php } ?>
+<!-- <br> -->
+
+<?php
+ } ?>
+
+
+ <div class="btnhouse">
+    <div class="rtbtns">
+        <a href="<?php echo $this->baseUrl(); ?>/family"><input type="button" name="back" value="<?php echo $this->translate("Back"); ?>"></a>
+    </div>
+ </div>

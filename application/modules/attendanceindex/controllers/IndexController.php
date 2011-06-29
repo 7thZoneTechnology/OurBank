@@ -85,3 +85,45 @@ class Attendanceindex_IndexController extends Zend_Controller_Action
     }
 }
 
+$this->view->paginator = $paginator;
+// //                 }
+// //             }
+// //         }
+// //     }
+// // }
+
+        if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $attendance->SearchAttendance($postedvalues);
+		$this->view->attendance = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+          if (!$result){
+                       echo "<font color='RED'>Records Not Found Try Again...</font>";
+                            }
+
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

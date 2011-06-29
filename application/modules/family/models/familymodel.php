@@ -80,3 +80,20 @@ class Family_Model_familymodel extends Zend_Db_Table
     }
 }
 
+$this->getAdapter();
+        $sql = "SELECT id FROM `ourbank_officehierarchy` where Hierarchy_level in (SELECT max(Hierarchy_level) FROM `ourbank_officehierarchy`)";
+        $result = $db->fetchAll($sql);
+        return $result;
+    }
+
+//get the office name and id with respective office type
+    public function getoffice($id){
+        $select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_office'),array('a.id'),array('a.id as office_id','a.name'))
+                    ->where('a.officetype_id=?',$id);
+                     return $this->fetchAll($select);
+
+    }
+}
+

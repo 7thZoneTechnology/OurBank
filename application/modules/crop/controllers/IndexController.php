@@ -94,7 +94,7 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
         }
         $path1= $this->view->path1=strtolower($path1);
 
-        $funder = $this->view->adm->viewRecord("ourbank_master_crop","id","DESC");
+        $funder = $this->view->adm->viewRecord("ourbank_master_crop","id","ASC");
 	foreach($funder as $funder) {
 	   $form->crop_id->addMultiOption($funder['id'],$funder['name']);
 	}

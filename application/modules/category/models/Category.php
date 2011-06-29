@@ -92,3 +92,11 @@ class Category_Model_Category extends Zend_Db_Table {
                 }
 
 }
+tegorystatus($categoryid){
+                $db = $this->getAdapter();
+                $sql = "select * from ourbank_accounts where product_id in (select id from ourbank_productsoffer where product_id in (select id from ourbank_product where category_id = $categoryid) )";
+                $result = $db->fetchAll($sql);
+                return $result;
+                }
+
+}

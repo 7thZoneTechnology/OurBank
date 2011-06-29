@@ -402,4 +402,37 @@
     </form>
 </div>
 
+</html>length="17"></td>
+
+
+                <td><INPUT type="text" name = "mobile[]" value="<?php echo $familydetails['mobile_number']?>" class="numeric" maxlength="10">
+                   <INPUT type="hidden" name = "recordid[]" value="<?php echo $familydetails['id']?>">
+                </td>
+
+                <td><select name = "blood[]" class="selectvalid required">
+                        <option value=0>select</option>
+                    <?php foreach ($this->blood as $blood) { 
+                      if($blood['id']!= $familydetails["blood_id"]) { ?>
+                    <option value="<?php echo $blood['id']?>"><?php echo $blood['name']?></option>
+                    <?php } else { ?> 
+                    <OPTION value="<?php echo $familydetails["blood_id"]; ?>" selected="">
+                    <?php echo $familydetails["blood"]; ?>
+                    </OPTION>
+                    <?php } } ?>
+                </select>
+                </td>
+
+                <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
+            </tr>
+<?php } ?>
+           <input type="hidden" name="villageid" id="villageid" value="<?php echo $this->village1; ?>">
+        </table>  
+
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" id="Update" name="Update" value="<?php echo $this->translate("Update"); ?>">
+<a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+    </form>
+</div>
+
 </html>

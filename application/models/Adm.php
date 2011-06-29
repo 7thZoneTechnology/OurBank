@@ -19,6 +19,7 @@
 */
 /*
 Class for common Add Delete and Modify 
+
 */
 class App_Model_Adm extends Zend_Db_Table 
 {
@@ -97,15 +98,24 @@ class App_Model_Adm extends Zend_Db_Table
                         ->where('b.module_description = ?',$submodule)
                         ->join(array('c' => $table),'c.submodule_id = b.module_id')
                         ->where('id = ?',$id);
-        // die($select->__toString($select));
+//         die($select->__toString($select));
         return $this->fetchAll($select);
     }
 
-    public function paginator()
+//       public function paginator($result,$page)
+//     {
+//         $paginator = Zend_Paginator::factory($result);
+//         $paginator->setItemCountPerPage(1);
+//         $paginator->setCurrentPageNumber($page);
+//         return $paginator;
+//     }
+
+      public function paginator()
     {
+
         return 5;
     }
-    
+
     // Action methods
     public function deleteAction($table,$redirect,$id)
     {
@@ -178,4 +188,99 @@ class App_Model_Adm extends Zend_Db_Table
         $sql = "delete from ".$table." where ".$param." = ". $value;
         $db->exec($sql);
     }
+
+
+    public function commonsearchquery($request,$cr) {
+
+	$postedvalue= array();
+	$postedvalues=$request;
+	$filterlastkey = array_pop($postedvalues);
+	$keyvalue = array_filter($postedvalues);
+
+	if($cr==2)
+	{
+		for($i=1;$i<=count($postedvalues);$i++)
+		{
+			$postedvalue['s'.$i] = base64_decode($postedvalues['s'.$i]);
+		}
+		return $postedvalue;
+	}
+	else 
+	{
+		return $postedvalues;
+	}
+    }
+
+    public function mainSearch($input,$fieldname,$table,$condition) {
+
+        $dateconvert = new App_Model_dateConvertor();
+        function checkingDate( $value )
+	{
+		return preg_match( '`^\d{1,2}/\d{1,2}/\d{4}$`', $value );
+	}
+
+		$keyvalue = array_filter($input);
+		$searchcounter = count($keyvalue);
+
+	if($searchcounter > 0) {
+
+        for($i=1; $i<=count($fieldname); $i++){
+               $inputA = $fieldname['input'.$i];
+               $inputB = $input['s'.$i];
+
+           $checkdate=checkingDate($inputB);
+            if($checkdate==1){
+            $inputB=$dateconvert->mysqlformat($inputB);
+                $where[]="a.".$inputA." like '%".$inputB."%'"; 
+            } else {
+                $where[]="a.".$inputA." like '%".$inputB."%'";
+            }
+         }
+
+        $condwhere = implode(" AND ",$where);
+        if($condition) $wherecond='AND ('.$condition.')'; else $wherecond='';
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $sql= "SELECT * FROM ".$table." as a WHERE ".$condwhere." $wherecond ORDER BY a.DateofEntry Desc";
+        $result = $this->db->fetchAll($sql);
+//         echo $sql;
+        return $result;	
+
+		} else {
+                        if($condition) {
+                        $select = $this->select()
+                            ->setIntegrityCheck(false)  
+                            ->join(array('a' => $table),array('id'))
+                            ->order(array('a.id DESC'))
+                            ->where($condition);
+                $result = $this->fetchAll($select);
+                                } else {
+                        $select = $this->select()
+                            ->setIntegrityCheck(false)  
+                            ->join(array('a' => $table),array('id'))
+                            ->order(array('a.id DESC'));
+                $result = $this->fetchAll($select);
+                                }
+       return $result->toArray();
+		}
+        }
+//pagination
+   public function commonsearch($result,$page){
+        $paginator = Zend_Paginator::factory($result);
+        $paginator->setItemCountPerPage(5);
+        $paginator->setCurrentPageNumber($page);
+	return $paginator;
+    }
+
+   public function encodedvalue($postedvalues) {
+       $input=array();
+       $keyvalue = array_filter($postedvalues);
+       $searchcounter = count($keyvalue);
+               for($i=1;$i<=count($postedvalues);$i++)
+               {
+                   $input['s'.$i] = base64_encode($postedvalues['s'.$i]);
+               }
+       return $input;
+    }
+
+
 }

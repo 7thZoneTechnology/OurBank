@@ -296,3 +296,14 @@ $selectedChallenges = array();
 </table>
 
 </form>
+</div>
+<table>
+<input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
+<input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
+
+<tr><td><input type="submit" id="submit" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
+<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
+</tr>
+</table>
+
+</form>

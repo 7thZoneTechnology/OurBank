@@ -91,23 +91,23 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $dropdown = new Dropdown_Model_Dropdown();
 		$statename = $this->view->adm->viewRecord("ourbank_master_state","id","DESC");
 		foreach($statename as $statename){
-				$dropdownForm->state->addMultiOption($statename['id'],$statename['name']);
+				$dropdownForm->state->addMultiOption($statename['id'],$statename['name_regional']);
 			}
 		$acctype = $this->view->adm->viewRecord("ourbank_master_accountype","id","DESC");
 		foreach($acctype as $acctypename){
-				$dropdownForm->acctype->addMultiOption($acctypename['id'],$acctypename['name']);
+				$dropdownForm->acctype->addMultiOption($acctypename['id'],$acctypename['name_regional']);
 			}
 		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
 		foreach($gillapanchayath as $gillapanchayath){
-				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
+				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name_regional']);
 			}
 		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
 		foreach($bank as $bankname){
-				$dropdownForm->bank->addMultiOption($bankname['id'],$bankname['name']);
+				$dropdownForm->bank->addMultiOption($bankname['id'],$bankname['name_regional']);
 			}
-		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","ASC");
 		foreach($cbp as $cbpname){
-				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name']);
+				$dropdownForm->cbp->addMultiOption($cbpname->id,$cbpname->id." -".$cbpname->name_regional."");
 			}
 		$koota = $dropdown->listkoota();
 		foreach($koota as $kootaname){
@@ -216,10 +216,12 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		}
 		if($tName == 'ourbank_master_branch') {
  		$id=$this->_request->getParam('bank');
+ 		$id1=$this->_request->getParam('village');
  		$common=$this->_request->getParam('commonname');
  		$name_regional=$this->_request->getParam('name_regional');
 			if(!$common || !$id || !$name_regional) { echo "<font color='red'>Please Enter a value</font>";} else{
 									$formdata1=array('id'=>'',
+									'village_id'=>$id1,
 									'bank_id'=>$id,'name_regional'=>$name_regional,
 									'created_by'=>$this->view->createdby,
 									'name'=>$common);
@@ -292,34 +294,52 @@ class Dropdown_IndexController extends Zend_Controller_Action
 	    		 $Name=$this->_request->getParam('commonname');
 				 $name_regional=$this->_request->getParam('name_regional');
    				$tName=$this->_request->getParam('name');
-			if ($Name=='') {
-						 echo "value cant be empty"; 
-						} else {
+
+if($tName == 'ourbank_master_taluklist'){
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$dist=$this->_request->getParam('district');
+							$formdata2=array('district_id'=>$dist,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+	}
+
+if($tName == 'ourbank_master_gillapanchayath'){
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$hobl=$this->_request->getParam('hobli');
+							$formdata2=array('hobli_id'=>$hobl,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+}
+ if($tName == 'ourbank_master_habitation' or $tName == 'ourbank_master_branch' or $tName == 'ourbank_master_gillapanchayath' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_villagelist' or $tName == 'ourbank_master_hoblilist' or $tName == 'ourbank_master_bank' or $tName == 'ourbank_master_cbos' or $tName == 'ourbank_master_cbopromoter'){echo ""; }else{
+
 							$id=$this->_request->getParam('id');
 							$name_regional=$this->_request->getParam('name_regional');
   							$Name=$this->_request->getParam('commonname');
  							$formdata1=array('name'=>$Name,'name_regional'=>$name_regional);		
-//Zend_Debug::dump($dropdownForm->getValues());
-  							$previousdata = $this->view->adm->editRecord($tName,$id);
+
+   							$previousdata = $this->view->adm->editRecord($tName,$id);
 							$this->view->adm->updateRecord($tName,$id,$formdata1);
+							}
 							$this->_redirect('/dropdown/index/commonview/id/'.$id.'/name/'.$this->view->tableName);
-				}
+				
 		} else {
  		$statename = $this->view->adm->viewRecord("ourbank_master_state","id","DESC");
 		foreach($statename as $statename){
-				$dropdownForm->state->addMultiOption($statename['id'],$statename['name']);
+				$dropdownForm->state->addMultiOption($statename['id'],$statename['name_regional']);
 			}
 		$acctype = $this->view->adm->viewRecord("ourbank_master_accountype","id","DESC");
 		foreach($acctype as $acctypename){
-				$dropdownForm->acctype->addMultiOption($acctypename['id'],$acctypename['name']);
+				$dropdownForm->acctype->addMultiOption($acctypename['id'],$acctypename['name_regional']);
 			}
 		$districtname = $this->view->adm->viewRecord("ourbank_master_districtlist","id","DESC");
 		foreach($districtname as $districtname){
-				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name']);
+				$dropdownForm->district->addMultiOption($districtname['id'],$districtname['name_regional']);
 			}
 		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
 		foreach($cbp as $cbpname){
-				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name']);
+				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name_regional']);
 			}
 		$koota = $settings->listkoota();
 		foreach($koota as $kootaname){
@@ -327,23 +347,23 @@ class Dropdown_IndexController extends Zend_Controller_Action
 			}
 		$taluklist = $this->view->adm->viewRecord("ourbank_master_taluklist","id","DESC");
 		foreach($taluklist as $taluklist){
-				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name']);
+				$dropdownForm->taluk->addMultiOption($taluklist['id'],$taluklist['name_regional']);
 			}
 		$hobli = $this->view->adm->viewRecord("ourbank_master_hoblilist","id","DESC");
 		foreach($hobli as $hobli){
-				$dropdownForm->hobli->addMultiOption($hobli['id'],$hobli['name']);
+				$dropdownForm->hobli->addMultiOption($hobli['id'],$hobli['name_regional']);
 			}
 		$gillapanchayath = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
 		foreach($gillapanchayath as $gillapanchayath){
-				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name']);
+				$dropdownForm->gillapanchayath->addMultiOption($gillapanchayath['id'],$gillapanchayath['name_regional']);
 			}
 		$village = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
 		foreach($village as $village){
-				$dropdownForm->village->addMultiOption($village['village_id'],$village['name']);
+				$dropdownForm->village->addMultiOption($village['village_id'],$village['name_regional']);
 			}
 		$bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
 		foreach($bank as $bank){
-				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name']);
+				$dropdownForm->bank->addMultiOption($bank['id'],$bank['name_regional']);
 			}
 
 			$id=$this->_request->getParam('id');
@@ -395,7 +415,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 					}}break;
 	
 					case 'ourbank_master_taluklist':
-					{foreach($namedetails as $holidaydetails){
+					{foreach($namedetails as $holidaydetails){ 
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['habit']);
 						$this->view->form->district->setValue($holidaydetails['district_id']);
@@ -421,7 +441,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 						$this->view->form->commonname->setValue($holidaydetails['accname']);
 						$this->view->form->acctype->setValue($holidaydetails['accid']);
-						$this->view->form->village->setValue($holidaydetails['vid']);
+						$this->view->form->village->setValue($holidaydetails['village_id']);
 						$this->view->form->gillapanchayath->setValue($holidaydetails['gpid']);
 					}}break;
 
@@ -434,10 +454,12 @@ class Dropdown_IndexController extends Zend_Controller_Action
 
 
 					case 'ourbank_master_branch': 
-					{foreach($namedetails as $holidaydetails) {
-			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
-						$this->view->form->commonname->setValue($holidaydetails['habit']);
+					{foreach($namedetails as $holidaydetails) { 
+						$this->view->form->village->setValue($holidaydetails['village_id']);
+						$this->view->form->gillapanchayath->setValue($holidaydetails['gpid']);
 						$this->view->form->bank->setValue($holidaydetails['accounttype_id']);
+						$this->view->form->commonname->setValue($holidaydetails['habit']);
+			            $this->view->form->name_regional->setValue($holidaydetails['name_regional']);
 					}}break;
 
 					case 'ourbank_master_mastertables': 

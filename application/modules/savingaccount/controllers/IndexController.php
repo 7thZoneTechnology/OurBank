@@ -186,3 +186,40 @@ class Savingaccount_IndexController extends Zend_Controller_Action
     }
 }
 
+                  foreach ($glresult as $glresult) {
+                                $cashglsubocde = $glresult->id;
+                        }
+                    }else {
+                                $cashglsubocde = 0 ;
+                    }
+                    // Insertion into Assets ourbank_Assets
+                    $assets =  array('office_id' => $officeid,
+                                         'glsubcode_id_from' => '',
+                                         'glsubcode_id_to' => $cashglsubocde,
+                                         'transaction_id' => $tranID,
+                                         'credit' => $this->_request->getPost('amount'),
+                                         'record_status' => 3);
+                    $this->view->adm->addRecord('ourbank_Assets',$assets);
+                    // Group Acc + Transaction entry
+                    if ($this->view->group) {
+                        $this->view->accounts->goupAcc($code,
+                                                    $productId,
+                                                    $accId,
+                                                    $this->_request->getPost('amount'),
+                                                    $tranID,
+                                                    $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
+                                                    count($this->view->group));
+
+                    }
+                $this->_redirect("/savingaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
+            }
+        }
+        }
+    }
+    public function messageAction() 
+    {
+        $this->view->pageTitle = 'Accounting';
+	$this->view->acNum = base64_decode($this->_request->getParam('acNum'));
+    }
+}
+

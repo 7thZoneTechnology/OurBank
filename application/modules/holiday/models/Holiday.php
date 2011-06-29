@@ -87,3 +87,37 @@ public function getOffice() {
 
 	
 }
+])
+									->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename') );
+ 		//die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		} else {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_holiday'),array('a.id','a.name','DATE(a.holiday_from)=".date("d-m-y")."'))
+									->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename') );
+ 	//	die($select->__toString($select));
+// 
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+}

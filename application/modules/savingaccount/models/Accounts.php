@@ -352,3 +352,10 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
         return true; 
     }
 }
+r_id' => $group->id,
+                          'transacted_by' => 1);
+        $db->insert('ourbank_group_savingstransaction',$trandata);
+        }
+        return true; 
+    }
+}

@@ -824,3 +824,19 @@ class Loanprocess_IndexController extends Zend_Controller_Action
     } 
 }
 
+    $page->setLineWidth(1)->drawLine($x1+25,$y1-5,$x1+25,$y3); //Table second left vertical
+// //         $page->setLineWidth(1)->drawLine($x5-5,$y1-5,$x5-5,$y3); //Table center vertical
+//         $page->setLineWidth(1)->drawLine($x3-35,$y1-5,$x3-35,$y3); //Table second center vertical
+//         $page->setLineWidth(1)->drawLine(550,$y1-5 ,550,$y3); //table rigth vertical
+// 
+//         $y1 = $y1-35;
+//         $page->drawText($secondtable[4], $x1+25, $y1);
+//         $page->drawText($secondtable[5], $x2-25, $y1);
+//         $page->drawText($secondtable[6], $x3-25, $y1);
+
+        $pdf->save('/var/www/'.$projname.'/reports/shgadvances.pdf');
+        $path = '/var/www/'.$projname.'/reports/shgadvances.pdf';
+        chmod($path,0777);
+    } 
+}
+

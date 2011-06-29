@@ -29,3 +29,4 @@ class Groupm_Form_Search extends Zend_Form {
 			$this->addElements(array($groupcode,$groupname));
 		}
 }
+}

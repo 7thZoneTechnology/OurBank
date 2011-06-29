@@ -324,3 +324,9 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
         return $result;
     }
 }
+name from ourbank_member 
+                where id in (select member_id from ourbank_groupmembers where id = $group_id)";
+        $result = $db->fetchAll($sql);
+        return $result;
+    }
+}

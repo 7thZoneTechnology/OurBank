@@ -410,3 +410,14 @@ public function finduser($userid)
         return $result;
     }
 }
+ D
+                WHERE
+                C.groupcode = $code AND
+               	C.id = B.group_id AND
+		B.member_id  = A.id AND
+		C.village_id = D.id
+                ";
+        $result = $db->fetchAll($sql);
+        return $result;
+    }
+}

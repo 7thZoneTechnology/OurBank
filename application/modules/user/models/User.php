@@ -127,4 +127,64 @@ public function getcontact($id)
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
+}erproduct_id)
+	           	->join(array('b' => 'ourbank_product'),'a.product_id = b.id',array('b.shortname'));
+		$result = $this->fetchAll($select);
+		return $result->toArray(); // return get product short name
+	}
+        public function getAllOffer($name){
+                    $this->db = $this->getAdapter();
+                    $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+                    $sql = 'select * from ourbank_productsoffer where name = "'.$name.'"';
+                    $result = $this->db->fetchALL($sql,array());
+                    return $result;
+                }
+// // //         public function insertbaseOffer($input)
+// // //                     {
+// // //                         $this->db = $this->getAdapter();
+// // //                         $this->db->insert('ourbank_productsoffer',$input);
+// // //                     }
+
+        public function genarateGlCode($header){
+                $db = $this->getAdapter();
+                        $sql = "select max(glsubcode) as glsubcode from ourbank_glsubcode where glcode_id =(select id from ourbank_glcode where header like '%".$header."%')";
+                $result = $db->fetchOne($sql);
+	       return $result; // //return liabilities values 
+    }
+
+
+
+//view personal details
+public function getpersonal($id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ob_personal_details'),array('id'))
+                ->where('id=?',$id);
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+       //die ($select->__toString($select));
+    }
+//view address details
+ public function getaddress($id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_address'),array('id'))
+                ->where('id=?',$id);
+     //  die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+//view contact details
+public function getcontact($id)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_contact'),array('id'))
+                ->where('id=?',$id);
+     //  die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
 }

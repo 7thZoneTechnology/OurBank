@@ -48,3 +48,19 @@ class Individual_Model_individual  extends Zend_Db_Table
 
 ?>
 
+=$this->fetchAll($select);
+            return $result->toArray();
+        }else{
+                $select = $this->select()
+			->setIntegrityCheck(false)  
+                        ->join(array('a'=>'ourbank_family'),array('a.id'))
+                        ->join(array('b'=>'ourbank_familymember'),'a.id = b.family_id');		
+                        //die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
+	}
+}
+
+

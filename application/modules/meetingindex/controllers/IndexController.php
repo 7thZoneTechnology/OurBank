@@ -86,3 +86,23 @@ class Meetingindex_IndexController extends Zend_Controller_Action
         }
     }
 }
+         $this->view->paginator = $paginator;
+// //                 }
+// //         }
+// //     }
+// // }
+  
+        if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $meeting->SearchMeeting($postedvalues);
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+         
+	}
+}	
+	

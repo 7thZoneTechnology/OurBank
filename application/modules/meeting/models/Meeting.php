@@ -101,3 +101,15 @@ class Meeting_Model_Meeting extends Zend_Db_Table
         return $this->fetchAll($select);
     }
 }
+
+    public function fetchHeadName($group_id)
+    {       
+        $select=$this->select()
+           ->setIntegrityCheck(false)
+           ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('a.id as head_id','a.name as headname'))
+           ->join(array('b'=>'ourbank_group'),'b.head=a.id')
+           ->where('b.id=?',$group_id);
+       // die($select->__toString($select));
+        return $this->fetchAll($select);
+    }
+}

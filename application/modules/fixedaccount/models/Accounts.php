@@ -298,3 +298,9 @@ $select = $this->select()
         return $result;
     }
 }
+k_familymember 
+                where id in (select member_id from ourbank_groupmembers where group_id = $group_id)";
+        $result = $db->fetchAll($sql);
+        return $result;
+    }
+}
