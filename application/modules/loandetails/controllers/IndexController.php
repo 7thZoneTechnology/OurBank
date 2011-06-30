@@ -63,7 +63,7 @@ class Loandetails_IndexController extends Zend_Controller_Action
         //set the value of member name and sex
         $this->view->familymember = $this->view->adm->getRecord("ourbank_familymember","family_id",$this->view->memberid);
 
-        $this->view->purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","DESC");
+        $this->view->purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","ASC");
        
         //insert the family health details 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
@@ -115,7 +115,7 @@ class Loandetails_IndexController extends Zend_Controller_Action
         //set the value of member name and sex
         $this->view->familymember = $this->view->adm->getRecord("ourbank_familymember","family_id",$this->view->memberid);
 
-        $this->view->purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","DESC");
+        $this->view->purpose = $this->view->adm->viewRecord("ourbank_master_loanpurpose","id","ASC");
         
         //set the value of health problem and other drop down box...
         $this->view->loandetails=$loandetails = $family_model->get_loandetails(); 

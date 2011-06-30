@@ -34,7 +34,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $sujeevana = $formfield->field('Text','sujeevana','','','required digits','',true,'','','','','',0,0);
 		$sujeevana->addValidator('digits')
 		 		  ->addErrorMessage('Enter Numeric data');
-		$sujeevana->setAttrib('maxLength',5);
+		$sujeevana->setAttrib('maxLength',14);
                 $sujeevana->addValidator(new Zend_Validate_Alnum());
 
         $houseno=$formfield->field('Text','houseno','','','','',false,'','','','','',0,0);

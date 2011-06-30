@@ -182,10 +182,10 @@ $(document).ready(
 <table id="hor-minimalist-b" class="agriculture" <?php $records=sizeof($this->agriculture); $emt=0; $i =0;  ?>>
 <tr> 
     <th><?php echo $this->translate("* ಭೂ ಮಾಲೀಕತ್ವ "); ?></th>
-    <th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ "); ?></th>
     <th><?php echo $this->translate("ಎಕರೆ"); ?></th>
     <th><?php echo $this->translate("ಗುಂಟೆ"); ?></th>
     <th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ  ವಿಧ"); ?></th>
+    <th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ "); ?></th>
     <th><?php echo $this->translate("ಸರ್ವೇ ನಂಬರ್"); ?></th>
     <th><?php echo $this->translate("* ಗ್ರಾಮ"); ?></th>
     <th>Action</th>
@@ -202,17 +202,6 @@ $(document).ready(
                         </select>
             </td>  
 
-
-<td><select name = ownername[] class="selectvalid required">
-                    <option value="">Select</option>
-
-			<?php foreach ($this->owner as $owner) { ?>
-
-			<option value="<?php echo $owner['landowner_name']?>"><?php echo $owner['name']?></option>
-			<?php } ?>
-             </select>
-            </td> 
-			
 			<td><INPUT type="text" name = "acre[]" size="5"  class="number EitherOr"  id="acre1" maxlength="3"></td>
             <td><INPUT type="text" name = "gunta[]" size="5" class="acre number"  min="0" max="39"></td>
  			
@@ -224,7 +213,15 @@ $(document).ready(
                 </select>
             </td>
 
+<td><select name = ownername[] class="selectvalid required">
+                    <option value="">Select</option>
 
+			<?php foreach ($this->owner as $owner) { ?>
+
+			<option value="<?php echo $owner['landowner_name']?>"><?php echo $owner['name']?></option>
+			<?php } ?>
+             </select>
+            </td> 
 
             <td><INPUT type="text" name = "survey[]" size="5" maxlength="8" class="noSpecialChars"></td>
 								<td><select name = villagename[] class="selectvalid required">
@@ -254,15 +251,7 @@ $(document).ready(
 					?></select></td>
  
 
-					<td><select name = "ownername[]" class="required">
-                                      <option value="">Select</option>
-
-                    <?php foreach ($this->owner as $owner) {  ?>
 					
-					<option <?php if($agri["landowner_name"]==$owner['landowner_name'] ) { echo 'selected="selected"';?>
-					<?php } ?> value="<?php echo $owner['id']?>"><?php  echo $owner['name']?></option>
-                    <?php  } $dateconvert= new App_Model_dateConvertor();
-					?></select></td>
 
 
 
@@ -280,9 +269,15 @@ $(document).ready(
 					</option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
-                  
+<td><select name = "ownername[]" class="required">
+                                      <option value="">Select</option>
 
-          			
+                    <?php foreach ($this->owner as $owner) {  ?>
+					
+					<option <?php if($agri["landowner_name"]==$owner['id'] ) { echo 'selected="selected"';?>
+					<?php } ?> value="<?php echo $owner['id']?>"><?php  echo $owner['name_regional']?></option>
+                    <?php  } $dateconvert= new App_Model_dateConvertor();
+					?></select></td>
 
             <td><INPUT type="text" name = "survey[]" size="5" class="noSpecialChars" maxlength="8" value = "<?php echo $agri["survey_no"];?>"></td>
 
