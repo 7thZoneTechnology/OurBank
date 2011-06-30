@@ -24,12 +24,12 @@
 		$vtype=array('Alpha','StringLength');
 		$formfield = new App_Form_Field ();
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-        	$categoryname = $formfield->field('Text','name','','','mand','',false,'','','','','',0,0);
-        	$categorydescription = $formfield->field('Text','description','','','mand','',false,'','','','','',0,0);
+        	$s1 = $formfield->field('Text','s1','','','mand','',false,'','','','','',0,0);
+        	$s2 = $formfield->field('Text','s2','','','mand','',false,'','','','','',0,0);
         // Hidden Feilds 
-        	$id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
-		$this->addElements(array($categoryname,$categorydescription,$id));
-    }
-});
+        $submit = new Zend_Form_Element_Submit('Search');
+        $submit->setAttrib('id', 'submitbutton');
+        $submit->removeDecorator('DtDdWrapper');
+		$this->addElements(array($s1,$s2,$submit));
     }
 }

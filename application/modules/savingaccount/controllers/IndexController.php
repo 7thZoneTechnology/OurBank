@@ -46,17 +46,64 @@ class Savingaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
-        if ($this->_request->getPost('Submit')) {
-            $formData = $this->_request->getPost();
-//             $this->view->errormsg="Record not found.. Try agin...";
-            if ($accountsForm->isValid($formData)) {
-                $this->view->result = $result = $this->view->accounts->search($this->_request->getParam('membercode'));
-                    if(!$result){
-                        $this->view->errormsg="Record not found.";
-                    }
-            }
-        }
-    }
+        
+        $savingaccount = new Savingaccount_Model_Accounts();
+// 
+	if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $savingaccount->search($postedvalues);
+         //Zend_Debug::dump($result);
+         
+		$this->view->savingaccount = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+          if (!$result){
+                       echo "<font color='RED'>Records Not Found Try Again...</font>";
+                            }
+
+	}
+        	
+
+//         if ($this->_request->getPost('Submit')) {
+//         			if ($this->_request->isPost()){ 
+// 
+//             $formData = $this->_request->getPost();
+// //             $this->view->errormsg="Record not found.. Try agin...";
+//             if ($accountsForm->isValid($formData)) {
+//             	$page = $this->_getParam('page',1);//me
+//                 $this->view->paginator = $result = $this->view->accounts->search($this->_request->getParam('membercode'));
+//                       $paginator = Zend_Paginator::factory($result);//me
+//                          $paginator->setItemCountPerPage($this->view->adm->paginator());
+//                              $paginator->setCurrentPageNumber($page);
+//                                   $this->view->paginator = $paginator;
+//                            if(!$result){
+//                         $this->view->errormsg="Record not found.";
+//                      }
+//             }
+//         }
+    //me
+    
+    //============ chages ..above code for pagination did
+    
+//     } else {
+// 		$saving = new Savingaccount_Model_Accounts();
+// 		$result = $saving->getDetails($code);
+// 		$paginator = Zend_Paginator::factory($result);
+//                 // assign default values into paginator
+//                 $paginator = Zend_Paginator::factory($result);
+
+//         $paginator->setItemCountPerPage($this->view->adm->paginator());
+//         $paginator->setCurrentPageNumber($page);
+//         $this->view->paginator = $paginator;
+        //}
+ //  } //me 
+    
+    
     public function detailsAction() 
     {
         $code= base64_decode($this->_request->getParam('code'));
@@ -150,43 +197,6 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                     $glresult = $this->view->accounts->getGlcode($officeid);
                     if($glresult){
                         foreach ($glresult as $glresult) {
-                                $cashglsubocde = $glresult->id;
-                        }
-                    }else {
-                                $cashglsubocde = 0 ;
-                    }
-                    // Insertion into Assets ourbank_Assets
-                    $assets =  array('office_id' => $officeid,
-                                         'glsubcode_id_from' => '',
-                                         'glsubcode_id_to' => $cashglsubocde,
-                                         'transaction_id' => $tranID,
-                                         'credit' => $this->_request->getPost('amount'),
-                                         'record_status' => 3);
-                    $this->view->adm->addRecord('ourbank_Assets',$assets);
-                    // Group Acc + Transaction entry
-                    if ($this->view->group) {
-                        $this->view->accounts->goupAcc($code,
-                                                    $productId,
-                                                    $accId,
-                                                    $this->_request->getPost('amount'),
-                                                    $tranID,
-                                                    $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
-                                                    count($this->view->group));
-
-                    }
-                $this->_redirect("/savingaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
-            }
-        }
-        }
-    }
-    public function messageAction() 
-    {
-        $this->view->pageTitle = 'Accounting';
-	$this->view->acNum = base64_decode($this->_request->getParam('acNum'));
-    }
-}
-
-                  foreach ($glresult as $glresult) {
                                 $cashglsubocde = $glresult->id;
                         }
                     }else {

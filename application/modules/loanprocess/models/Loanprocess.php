@@ -185,10 +185,16 @@ public function finduser($userid)
             return $result->toArray();
        }
  public function Searchloanprocess($code){
- $this->db = Zend_Db_Table::getDefaultAdapter();
-     
-            $sql = "
-                SELECT 
+        
+        	$keyvalue = array_filter($code);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
+
+$member_id=$code['s1'];
+        
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = "SELECT 
                 a.groupcode as code, 
                 a.name as name, 
                 '' as uid,
@@ -203,7 +209,7 @@ public function finduser($userid)
                 and b.member_id = c.member_id and  (c.membertype = 2 or c.membertype = 3 )
                 and d.id = c.status
                 and c.status!=0
-                and (a.groupcode like '%' '$code' '%') 
+                and (a.groupcode like '".$member_id."%') 
                 group by a.groupcode
                 union
                 SELECT 
@@ -222,11 +228,11 @@ public function finduser($userid)
                 and e.id=b.member_id
                 and d.id = c.status
                 and c.status!=0
-                and (e.familycode like '%' '$code' '%') 
-                ";
-             // echo $sql;
-            $result = $this->db->fetchAll($sql,array($code));
+                and (e.familycode like '".$member_id."%')";
+              //echo $sql;
+            $result = $this->db->fetchAll($sql,$member_id);
             return $result;
+            }else{ return 0;}
         }
 
     public function searchmemberdetails($groupid,$type){
@@ -400,17 +406,6 @@ public function finduser($userid)
 		ourbank_groupmembers B,
 		ourbank_group C,
 		ourbank_office D
-                WHERE
-                C.groupcode = $code AND
-               	C.id = B.group_id AND
-		B.member_id  = A.id AND
-		C.village_id = D.id
-                ";
-        $result = $db->fetchAll($sql);
-        return $result;
-    }
-}
- D
                 WHERE
                 C.groupcode = $code AND
                	C.id = B.group_id AND

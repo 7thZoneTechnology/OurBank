@@ -18,7 +18,7 @@
 !-->
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
-        <th><?php echo $this->translate("Family information"); ?></th>
+        <th><?php echo $this->translate("ಕಟುಂಬದ ವಿವರ"); ?></th>
         <th></th>
         <th></th>
         <th></th>
@@ -26,49 +26,49 @@
     <?php 
     $convertdate = new App_Model_dateConvertor();
     foreach($this->membername as $family_view){ ?>
-<tr>
-        <td ><?php echo $this->translate("Family ID:"); ?></td>
+<!--<tr>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ಕೋಡ :"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
         <td ><?php //echo $this->translate("Caste:"); ?></td>
-        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>-->
     <tr>
-        <td ><?php echo $this->translate("House No:"); ?></td>
+        <td ><?php echo $this->translate("ಮನೆ ಸಂಖ್ಯೆ:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $this->translate("ರೇಷನ್ ಕಾರ್ಡ್:"); ?></td>
         <td ><?php echo $family_view['ration']; ?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $this->translate("ಬೀದಿ /ರಸ್ತೆ:"); ?></td>
         <td ><?php echo $family_view['street']; ?></td>
-        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php echo $this->translate("ಆರೋಗ್ಯ ವಿಮೆ:"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $this->translate("ಗ್ರಾಮ:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $this->translate("ಉದ್ಯೋಗಖಾತ್ರಿ ಜಾಬ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $this->translate("ಕಂದಾಯ ಗ್ರಾಮ:"); ?></td>
         <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $this->translate("ಆದಾಯದ ಪ್ರಮುಖ ಮೂಲ:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
     <tr>
-        <td ><?php echo $this->translate("Family type:"); ?></td>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ವಿಧ :"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $this->translate("ದೂರವಾಣಿ:"); ?></td>
         <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $this->translate("ಜಾತಿ:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $this->translate("ಮೊಬೈಲ್ :"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
  <?php } ?>
@@ -77,8 +77,9 @@
 <form action="<?php echo $this->baseUrl();?>/incomedetails/index/add/id/<?php echo $this->memberid; ?>" method="POST" name="income_details">
 <table id="hor-minimalist-b">
 <tr> 
-    <th width="27%"><?php echo $this->translate("Source of Income"); ?></th>
-    <th width="12%"><?php echo $this->translate("Amount of Income"); ?></th>
+    <th width="27%"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+    <th width="27%"><?php echo $this->translate("ಆದಾಯದ ಮೂಲ"); ?></th>
+    <th width="12%"><?php echo $this->translate("ಮೊತ್ತ"); ?></th>
 </tr>
 <?php  
         foreach($this->income_details as $incomedetails){
@@ -87,19 +88,14 @@
     $c='source_id'.$incomedetails['id'];
 ?>
 <tr>
-    <td><?php echo $incomedetails['name']; ?></td>
+    <td><?php echo $incomedetails['id'] ?></td>
+    <td><?php echo $incomedetails['name_regional'] ?></td>
     <td><?php echo $this->form->$b; echo $this->form->$c;?></td>
 <input type="hidden" name="subid" value="<?php echo $this->submoduleid;?>">
 
 </tr> 
 <?php }?>
 <tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
-<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
-</tr>
-</table>
-<?php echo "<font color='red' size='3'>".$this->error."</font>";?>
-</form>
-tr><td><input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"></td>
 <td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
 </tr>
 </table>

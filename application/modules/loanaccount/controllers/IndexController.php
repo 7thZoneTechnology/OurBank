@@ -1,4 +1,22 @@
 <?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
 class Loanaccount_IndexController extends Zend_Controller_Action 
 {
     public function init() 
@@ -29,16 +47,35 @@ class Loanaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
-        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-	    $formData = $this->_request->getPost();
-	    if ($this->_request->isPost()) {
-		$formData = $this->_request->getPost();
-		if ($accountsForm->isValid($formData)) {
-		    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
-		}
-            }
-        }
-    }
+         $loanaccount = new Loanaccount_Model_Accounts();
+
+        if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $loanaccount->search($postedvalues);
+		$this->view->loanaccount = $result;
+//print_r($result);
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+          if (!$result){
+                       echo "<font color='RED'>Records Not Found Try Again...</font>";
+                            }
+
+	}
+
+// //         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+// // 	    $formData = $this->_request->getPost();
+// // 	    if ($this->_request->isPost()) {
+// // 		$formData = $this->_request->getPost();
+// // 		if ($accountsForm->isValid($formData)) {
+// // 		    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
+// // 		}
+// //             }
+// //         }
+// //     }
 
     public function detailsAction() 
     {
@@ -132,49 +169,6 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                       'loan_amount' => $this->_request->getPost('amount'),
                                       'loan_installments' => $this->_request->getPost('installments'),
                                       'loan_interest' => $this->_request->getPost('interest'),
-                                      'interesttype_id' => $this->_request->getPost('interesttype_id'),
-                                   //   'savingsaccount_id' => $this->_request->getPost('savingAccount'),
-                                      'tieup_flag' => 0,
-                                      'created_by' => 1);
-      		        $this->view->adm->addRecord('ourbank_loanaccounts',$input);
-      		        //insertion of fee
-      		        $fee = $this->_request->getParam('fee');
-	                foreach ($fee as $fee) {
-                            $feeInput = array('account_id' => $accId,
-                                              'fee_id' => $fee);
-                            $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
-                        }
-                        $memberlist=$this->view->accounts->getmemberlist($memberId,$typeID);
-                        if($memberlist){
-                        foreach($memberlist as $memberid) 
-                        {
-                        $this->view->accounts->Updatestatus($memberid['memberid'],$typeID);
-                        }
-                        }
-		        $this->_redirect("/loanaccount/index/message/acNum/".base64_encode($b.$t.$p.$i.$a));
-		    }
-		}
-        }
-    }
-    
-    public function interestAction() 
-    {
-	$this->_helper->layout()->disableLayout();
-	$interest = $this->view->accounts->getInterest($this->_request->getParam('productId'),$this->_request->getParam('interest'));
-	foreach ($interest as $interest) {
-    	    $this->view->id = $interest->id;
-	    $this->view->interest = $interest->interest;
-	}
-   }
-    
-    public function messageAction() 
-    {
-        $this->view->pageTitle = 'Accounting';
-	$this->view->acNum = base64_decode($this->_request->getParam('acNum'));
-    }
-}
-
-s->_request->getPost('interest'),
                                       'interesttype_id' => $this->_request->getPost('interesttype_id'),
                                    //   'savingsaccount_id' => $this->_request->getPost('savingAccount'),
                                       'tieup_flag' => 0,

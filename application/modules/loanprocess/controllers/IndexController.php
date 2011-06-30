@@ -1,4 +1,22 @@
 <?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
 class Loanprocess_IndexController extends Zend_Controller_Action 
 {
     public function init()
@@ -34,15 +52,33 @@ class Loanprocess_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
        $accountsForm = $this->view->form = new Loanprocess_Form_Search();
-       if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-	    $formData = $this->_request->getPost();
-		if ($accountsForm->isValid($formData)) {
-                    $membercode = $this->_request->getParam('membercode');
-                    $members = $this->view->accounts->Searchloanprocess($membercode);
-                    $this->view->result = $members;
-                }
-            }
-    }
+       $loanprocess = new Loanprocess_Model_Loanprocess();
+       
+       if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $loanprocess->Searchloanprocess($postedvalues);
+		$this->view->loanprocess = $result;
+//print_r($result);
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+//           if (!$result){
+//                        echo "<font color='RED'>Records Not Found Try Again...</font>";
+//                             }
+
+	}
+// //        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+// // 	    $formData = $this->_request->getPost();
+// // 		if ($accountsForm->isValid($formData)) {
+// //                     $membercode = $this->_request->getParam('membercode');
+// //                     $members = $this->view->accounts->Searchloanprocess($membercode);
+// //                     $this->view->result = $members;
+// //                 }
+// //             }
+// //     }
     public function addAction()
     {
         $membercode = $this->_request->getParam('membercode');
@@ -809,22 +845,6 @@ class Loanprocess_IndexController extends Zend_Controller_Action
 //   // Virtual table
 //         $page->setLineWidth(1)->drawLine(50,$y1-5,50,$y3); //Table left vertical
 //         $page->setLineWidth(1)->drawLine($x1+25,$y1-5,$x1+25,$y3); //Table second left vertical
-// //         $page->setLineWidth(1)->drawLine($x5-5,$y1-5,$x5-5,$y3); //Table center vertical
-//         $page->setLineWidth(1)->drawLine($x3-35,$y1-5,$x3-35,$y3); //Table second center vertical
-//         $page->setLineWidth(1)->drawLine(550,$y1-5 ,550,$y3); //table rigth vertical
-// 
-//         $y1 = $y1-35;
-//         $page->drawText($secondtable[4], $x1+25, $y1);
-//         $page->drawText($secondtable[5], $x2-25, $y1);
-//         $page->drawText($secondtable[6], $x3-25, $y1);
-
-        $pdf->save('/var/www/'.$projname.'/reports/shgadvances.pdf');
-        $path = '/var/www/'.$projname.'/reports/shgadvances.pdf';
-        chmod($path,0777);
-    } 
-}
-
-    $page->setLineWidth(1)->drawLine($x1+25,$y1-5,$x1+25,$y3); //Table second left vertical
 // //         $page->setLineWidth(1)->drawLine($x5-5,$y1-5,$x5-5,$y3); //Table center vertical
 //         $page->setLineWidth(1)->drawLine($x3-35,$y1-5,$x3-35,$y3); //Table second center vertical
 //         $page->setLineWidth(1)->drawLine(550,$y1-5 ,550,$y3); //table rigth vertical

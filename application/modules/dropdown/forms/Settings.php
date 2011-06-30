@@ -1,5 +1,4 @@
 <?php class Dropdown_Form_Settings extends Zend_Form {
-
 	public function init() {	}
 	public function __construct($path){
 		   $vtype=array('Alpha','StringLength');
@@ -33,6 +32,7 @@
 		   $acctype->setAttrib('onchange', 'getacctype(this.value,"'.$path.'")');
 		   $back->setAttrib('onchange', 'getnames(this.value,"'.$path.'")');
         // Hidden Feilds 
-           $this->addElements(array($name,$back,$koota,$acctype,$cbp,$regionalname,$state,$district,$taluk,$gillapanchayath,$description,$village,$habitation,$hobli,$bank));
+           $this->addElements(array($name,$back,$koota,$acctype,$cbp,$regionalname,$state,$district,$taluk,$gillapanchayath,
+									$description,$village,$habitation,$hobli,$bank));
     			}
 			}

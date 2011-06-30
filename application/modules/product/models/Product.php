@@ -66,35 +66,44 @@ class Product_Model_Product extends Zend_Db_Table {
         $result=$this->fetchAll($select);
         return $result->toArray();
 	}
-	public function SearchProduct($post = array()) {
+	
+
+
+public function SearchProduct($post) {
+
+		$keyvalue = array_filter($post);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_product'),array('id'))
-			->where('a.name like "%" ? "%"',$post['name'])
-			->where('a.description like "%" ? "%"',$post['description'])
-			->where('a.category_id like "%" ? "%"',$post['category_id'])
-			->where('a.shortname like "%" ? "%"',$post['shortname'])
-			->join(array('b'=>'ourbank_category'),'a.category_id = b.id',array('b.name as categoryname') );
+			->where('a.name like "%" ? "%"',$post['s1'])
+			->where('a.description like "%" ? "%"',$post['s2'])
+			->where('a.category_id like "%" ? "%"',$post['s3'])
+			->where('a.shortname like "%" ? "%"',$post['s4'])
+			->join(array('b'=>'ourbank_category'),'a.category_id = b.id',array('b.name as categoryname'));
+	$result = $this->fetchAll($select);
+		return $result->toArray();
+		} else {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_product'),array('id'))
+			->join(array('b'=>'ourbank_category'),'a.category_id = b.id',array('b.name as categoryname'));
+
+		//die($select->__toString($select));
 
 		$result = $this->fetchAll($select);
 		return $result->toArray();
+		}
 	}
+
+
+
         public function getAllProduct(){
             $this->db = $this->getAdapter();
             $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
             $sql = 'select * from ourbank_product';
             $result = $this->db->fetchALL($sql,array());
-            return $result;
-        }
-        
-        public function getproductstatus($productid){
-        $db = $this->getAdapter();
-        $sql = "select * from ourbank_accounts where product_id in (select id from ourbank_productsoffer where product_id = $productid)";
-        $result = $db->fetchAll($sql);
-        return $result;
-        }
-}
-       $result = $this->db->fetchALL($sql,array());
             return $result;
         }
         

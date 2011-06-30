@@ -4,7 +4,7 @@
 			<table class="fieldsets">
                             <TR>
                                 <th><label for="fld3">Member code / Group code</label></TD>
-                                <th><? echo $this->form->membercode;?></TD>
+                                <th><? echo $this->form->s1;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
@@ -15,9 +15,8 @@
 	       </form>
 </fieldset>
 <div>
-<?php if($this->result) { 
-$dbobj = new App_Model_dateConvertor();
-?>
+<?php if($this->paginator) { ?>
+
     <table id="hor-minimalist-b" border="1">
 	<tr>
                 <th>Code</th>
@@ -28,7 +27,7 @@ $dbobj = new App_Model_dateConvertor();
                 <th>Status</th>
 	</tr>
 
-	<?php foreach($this->result as $member) : ?>
+	<?php foreach($this->paginator as $member) : ?>
 	<tr>
                 <td><a href="<?php echo $this->baseUrl()."/loanprocess/index/viewaction/id/".$member['code']; ?>"><?php  echo $member['code'];?></a></td>
 		<td><?php  echo $member['name'];?></td>
@@ -38,19 +37,16 @@ $dbobj = new App_Model_dateConvertor();
                 <td><?php  echo $member['status'];?></td>
 	</tr>
 	<?php endforeach; ?>
-	</table>
-<?php }?>
-</div>
-
-
-
- if ($this->paginator) { ?>
+	
+        <?php }?>
+        
+       <?php if ($this->paginator) { ?>
 
 	<div align="center" style="margin-top:10px;color:#CC6633;">
        <tr>
        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
         </div></td></tr>
-
+      
         </table>
   
     <?php } ?>

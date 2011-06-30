@@ -15,13 +15,14 @@ if($this->members) {
         </tr>
         <?php 
         $val = 0;
-
+        $famcount = 0;
         foreach($this->members as $members) {
         if(!in_array($members['family_id'],$this->existmembers))
         {
             if($val >=1){
                 if($familyid !=$members['family_id']) {
                 $val = 0;
+                $famcount++;
                 }
             }
         $breadwinner = $dbobj->getbreadwinner($members['family_id']);
@@ -44,30 +45,21 @@ if($this->members) {
 } 
 ?> 
         </tr>
+            <?php $famcount; if($famcount == 0) { ?>
+            <tr name="row_<?php echo $members['family_id'];?>">
+            <?php } else { ?>
             <tr style="display: none" name="row_<?php echo $members['family_id'];?>">
-            <td></td>
-            <td width="20%">
-                <input type="checkbox" name="member_id[]" class="familymember" value="<?php echo $members['family_id'];?>_<?php echo $members["id"];?>" ><?php echo $members["name"];?>
-            </td>
-            <td width="30%"><?php echo $members["uid"];?>
-            </td>
-            <td width="25%" align="center">
-                <input type="radio" name="memberhead" class="familymember" value="<?php echo $members["id"];?>">
-            </td>
-            <td width="25%" align="center">
-                <input type="checkbox" name="representatives[]" id="<?php echo $members["id"];?>" class="chkvalid" value="<?php echo $members["id"];?>">
-            </td>
-            </tr>
-        <?php } 
-
-
-}
-?>
-    </table>
-<?php  } else {
-        echo "<font color='RED'>No Members in the branch you seleted</font>";
- } ?>
-5%" align="center">
+            <?php } ?>
+                    <td></td>
+                    <td width="20%">
+                        <input type="checkbox" name="member_id[]" class="familymember_<?php echo $members['family_id'];?>" value="<?php echo $members['family_id'];?>_<?php echo $members["id"];?>" ><?php echo $members["name"];?>
+                    </td>
+                    <td width="30%"><?php echo $members["uid"];?>
+                    </td>
+                    <td width="25%" align="center">
+                        <input type="radio" name="memberhead" class="familymember required" value="<?php echo $members["id"];?>">
+                    </td>
+                    <td width="25%" align="center">
                         <input type="checkbox" name="representatives[]" id="<?php echo $members["id"];?>" class="chkvalid required" value="<?php echo $members["id"];?>">
                     </td>
             </tr>

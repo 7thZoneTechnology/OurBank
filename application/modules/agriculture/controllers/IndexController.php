@@ -89,7 +89,7 @@ class Agriculture_IndexController extends Zend_Controller_Action
 //         }
 
 //set the value of health problem and other drop down box...
-        $owner = $this->view->adm->viewRecord("ourbank_master_ownershiptype","id","DESC");
+        $owner = $this->view->adm->viewRecord("ourbank_master_ownershiptype","id","ASC");
        $this->view->ownertype = $owner;
 //             foreach($owner as $owner1){ 
 //             $addForm->ownertype->addMultiOption($owner1['id'],$owner1['ownertype']);
@@ -157,7 +157,7 @@ class Agriculture_IndexController extends Zend_Controller_Action
 //load form with respective to number of family member
         $addForm = new Agriculture_Form_agriculture($number);
         $this->view->form=$addForm;
-        $owner = $this->view->adm->viewRecord("ourbank_master_ownershiptype","id","DESC");
+        $owner = $this->view->adm->viewRecord("ourbank_master_ownershiptype","id","ASC");
        $this->view->ownertype = $owner;
         $this->view->agriculture=$family_model->getagriculturedetails($member_id);
         

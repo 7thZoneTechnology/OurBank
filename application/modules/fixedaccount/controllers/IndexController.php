@@ -46,20 +46,42 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Fixedaccount_Form_Accounts();
+        
+          $fixedaccount = new Fixedaccount_Model_Accounts();
+// 
+	if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $fixedaccount->search($postedvalues);
+		$this->view->fixedaccount = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+          if (!$result){
+                       echo "<font color='RED'>Records Not Found Try Again...</font>";
+                            }
+
+	}
+        
+        
+        
 // // get Individual list and group list in a single instance
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-            $formData = $this->_request->getPost();
-            if ($accountsForm->isValid($formData)) {
-                $result = $this->view->accounts->search($this->_request->getParam('membercode'));
-                if($result) {
-                    $this->view->result =$result;
-                 } else {
-                    $this->view->errormsg = "No records found";
-                }
-            }
-        }
-       
-    }
+//         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+//             $formData = $this->_request->getPost();
+//             if ($accountsForm->isValid($formData)) {
+//                 $result = $this->view->accounts->search($this->_request->getParam('membercode'));
+//                 if($result) {
+//                     $this->view->result =$result;
+//                  } else {
+//                     $this->view->errormsg = "No records found";
+//                 }
+//             }
+//         }
+//        
+//     }
 
     // Display the complete details about savings 
     public function detailsAction() 
@@ -294,28 +316,6 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
     }
 
     // Once account creation got over display the account id
-    public function messageAction() 
-    {
-        $this->view->pageTitle = 'Accounting';
-        $this->view->acNum = base64_decode($this->_request->getParam('acNum'));
-    }
-    // Using this method we can get interest periods
-    public function getinterestsAction()
-    {
-        $this->_helper->layout->disableLayout();
-        $id = $this->_request->getParam('interest');
-
-        $value=explode('-',$id);
-        $interestvalue = $this->view->accounts->getInterestvalue($value[0],$value[1]);
-
-        foreach($interestvalue as $interestvalue1) {
-             $this->view->interest = $interestvalue1['Interest'];
-             $this->view->interestid = $interestvalue1['id'];
-        }
-    }
-}
-
-// Once account creation got over display the account id
     public function messageAction() 
     {
         $this->view->pageTitle = 'Accounting';

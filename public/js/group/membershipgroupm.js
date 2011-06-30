@@ -97,7 +97,7 @@ selectedval=$(thisobj).attr('id');
             $('tr[name=row_'+selectedval+']').show();
          } else {
             $('tr[name=row_'+selectedval+']').hide();
-            $('.familymember').attr('checked', false);
+            $('.familymember_'+selectedval).attr('checked', false);
         }
 }
 $(document).ready(function() {

@@ -160,7 +160,7 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
 	public function gethabitation($id) {
 		$select=$this->select()
 			->setIntegrityCheck(false)
-			->join(array('a'=>'ourbank_master_habitation'),array('id'),array('a.name as villagename','a.id'))
+			->join(array('a'=>'ourbank_master_habitation'),array('id'),array('a.name_regional as villagename','a.id'))
                         ->where('a.village_id =?',$id);
          //die($select->__toString($select));
 		$result = $this->fetchAll($select);
@@ -197,8 +197,5 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
                 $result = $db->fetchAll($sql);
                 return $result;
         }
-    
-}
-}
     
 }

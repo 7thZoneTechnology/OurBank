@@ -108,7 +108,7 @@ $(document).ready(function(){
 </script>-->
  <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
-        <th><?php echo $this->translate("Family information"); ?></th>
+        <th><?php echo $this->translate("ಕಟುಂಬದ ವಿವರ"); ?></th>
         <th></th>
         <th></th>
         <th></th>
@@ -116,49 +116,49 @@ $(document).ready(function(){
     <?php 
     foreach($this->membernames as $family_view){ ?>
 
-<tr>
-        <td ><?php echo $this->translate("Family ID:"); ?></td>
+<!--<tr>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ಕೋಡ :"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
         <td ><?php //echo $this->translate("Caste:"); ?></td>
-        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>-->
     <tr>
-        <td ><?php echo $this->translate("House No:"); ?></td>
+        <td ><?php echo $this->translate("ಮನೆ ಸಂಖ್ಯೆ:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $this->translate("ರೇಷನ್ ಕಾರ್ಡ್:"); ?></td>
         <td ><?php echo $family_view['ration']; ?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $this->translate("ಬೀದಿ /ರಸ್ತೆ:"); ?></td>
         <td ><?php echo $family_view['street']; ?></td>
-        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php echo $this->translate("ಆರೋಗ್ಯ ವಿಮೆ:"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $this->translate("ಕಂದಾಯ ಗ್ರಾಮ:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $this->translate("ಉದ್ಯೋಗಖಾತ್ರಿ ಜಾಬ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $this->translate(" ಗ್ರಾಮ:"); ?></td>
         <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $this->translate("ಆದಾಯದ ಪ್ರಮುಖ ಮೂಲ:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
     <tr>
-        <td ><?php echo $this->translate("Family type:"); ?></td>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ವಿಧ :"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $this->translate("ದೂರವಾಣಿ:"); ?></td>
         <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $this->translate("ಜಾತಿ:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $this->translate("ಮೊಬೈಲ್ :"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
    <?php } ?>
@@ -184,8 +184,8 @@ foreach($this->membername as $name){
 
     <table id="hor-minimalist-b" border="1" width="100%">
         <tr>
-        <th  align="left" width="5%"> Sno.</th><th width="20%">Name</th>
-        <th colspan="<?php echo $actlen; ?>" align="center" width="75%"> Description</th>
+        <th  align="left" width="5%"> ಕ್ರ.ಸಂ.</th><th width="20%">ಸದಸ್ಯರ ಹೆಸರು</th>
+        <th colspan="<?php echo $actlen; ?>" align="center" width="75%"> ವಿವರಗಳು</th>
         </tr>
     </table>
 <?php 
@@ -202,7 +202,7 @@ $selectedChallenges = array();
         </tr></table><table id="hor-minimalist-b" border="1" width="100%">
         <tr>
         <td width="5%"></td>
-        <TD width="20%">Healthcare availed in the last 6 months(Chronic diseases)</TD>
+        <TD width="20%">ಕಳೆದ 6 ತಿಂಗಳಲ್ಲಿ ಪಡೆದ ಔಷದೋಪಚಾರ( ಸದಾಕಾಲ ಇರುವ ಖಾಯಿಲೆಗಳು)</TD>
 
 <td colspan="2" width="75%">
 
@@ -222,7 +222,7 @@ $selectedChallenges = array();
     </table>
 <table id="hor-minimalist-b" border="1" width="100%">
 <tr><td width="5%"></td>
-    <td width="20%"><b>Habits</b>
+    <td width="20%"><b>ದುರಭ್ಯಾಸ</b>
     </td>
     <?php $c=0; foreach($this->habitdetails as $habits){ $c++; ?>
     <?php if($c == 1) { ?>
@@ -240,12 +240,12 @@ $selectedChallenges = array();
  if(in_array($habits['id'],$selectedHabits)) { ?>
     <td>
         <input type="checkbox" checked="true" name="habit-<?php echo $nameid[$i];?>[]" id="habit-<?php echo $nameid[$i];?>" class="habit-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-        <?php echo $habits['name']; ?> 
+        <?php echo $habits['name_regional']; ?> 
     </td>
 <?php  }  else { ?>
     <td>
         <input type="checkbox" name="habit-<?php echo $nameid[$i];?>[]" id="habit-<?php echo $nameid[$i];?>" class="habit-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$habits['id'];?>">
-        <?php echo $habits['name']; ?> 
+        <?php echo $habits['name_regional']; ?> 
     </td>
 <?php } 
 }
@@ -253,7 +253,7 @@ $selectedChallenges = array();
 ?>
 </tr>
 <tr><td width="5%"></td>
-    <td width="20%"><b> Physical challenge</b>
+    <td width="20%"><b> ಅಂಗವಿಕಲತೆ ಇದ್ದರೆ ಇತ್ಯಾದಿ</b>
     </td>
     <?php $p = 0; foreach($this->challengedetails as $challenge){ $p++; ?>
     <?php if($p == 1) { ?>
@@ -268,13 +268,13 @@ $selectedChallenges = array();
  if(in_array($challenge['id'],$selectedChallenges)) { ?>
     <td>
         <input type="checkbox" checked="true" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-        <?php  echo $challenge['name']; ?>
+        <?php  echo $challenge['name_regional']; ?>
     </td>
     <?php }  
         else { ?>
      <td>
         <input type="checkbox" name="challenge-<?php echo $nameid[$i];?>[]" id="challenge-<?php echo $nameid[$i];?>" class="challenge-<?php echo $nameid[$i];?>" value="<?php echo $nameid[$i].'_'.$challenge['id'];?>">
-        <?php  echo $challenge['name']; ?>
+        <?php  echo $challenge['name_regional']; ?>
     </td>
    <?php } 
     }  
@@ -285,17 +285,6 @@ $selectedChallenges = array();
 }
 
 ?>
-</div>
-<table>
-<input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">
-<input type="hidden" name="memId" value="<?php echo $this->memberid; ?>">
-
-<tr><td><input type="submit" id="submit" name="update" value="<?php echo $this->translate("Update"); ?>"></td>
-<td><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->memberid ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a></td>
-</tr>
-</table>
-
-</form>
 </div>
 <table>
 <input type="hidden" name="subId" value="<?php echo $this->submoduleid; ?>">

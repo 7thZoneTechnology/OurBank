@@ -62,14 +62,29 @@ class Category_Model_Category extends Zend_Db_Table {
         $result=$this->fetchAll($select);
         return $result->toArray();
 	}
-	public function SearchCategory($post = array()) {
+	public function SearchCategory($post) {
+
+		$keyvalue = array_filter($post);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_category'),array('id'))
-			->where('a.name like "%" ? "%"',$post['name'])
-			->where('a.description like "%" ? "%"',$post['description']);
+			->where('a.name like "%" ? "%"',$post['s1'])
+			->where('a.description like "%" ? "%"',$post['s2']);
+
+
 		$result = $this->fetchAll($select);
 		return $result->toArray();
+		} else {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_category'),array('a.id','a.categoryname','a.description','a.createddate'));
+// 			die($select->__toString($select));
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
 	}
         public function getAllCategory(){
                     $this->db = $this->getAdapter();
@@ -85,14 +100,6 @@ class Category_Model_Category extends Zend_Db_Table {
             } 
 
         public function getcategorystatus($categoryid){
-                $db = $this->getAdapter();
-                $sql = "select * from ourbank_accounts where product_id in (select id from ourbank_productsoffer where product_id in (select id from ourbank_product where category_id = $categoryid) )";
-                $result = $db->fetchAll($sql);
-                return $result;
-                }
-
-}
-tegorystatus($categoryid){
                 $db = $this->getAdapter();
                 $sql = "select * from ourbank_accounts where product_id in (select id from ourbank_productsoffer where product_id in (select id from ourbank_product where category_id = $categoryid) )";
                 $result = $db->fetchAll($sql);

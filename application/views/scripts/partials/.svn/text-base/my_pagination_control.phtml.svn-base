@@ -1,0 +1,40 @@
+<?php if ($this->pageCount){ ?>
+<div id="paginationControl">
+<!-- Previous page link -->
+Results <?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?> of <?php echo $this->totalItemCount; ?>
+
+<?php if (isset($this->previous)){ ?>
+<?php   if(($this->s1 != '') || ($this->s2 != '') || ($this->s3 != '') || ($this->s4 != '')) { ?>
+<a href="<?php echo $this->baseUrl();?>/admin/index/index?sub=<?php echo $this->sub; ?>&page=<?php echo $this->previous;?>&s1=<?php echo $this->s1;?>&s2=<?php echo $this->s2;?>&s3=<?php echo $this->s3;?>&s4=<?php echo $this->s4;?>"> &lt;Previous</a> |
+<?php   } else { ?>
+<a href="<?php echo $this->baseUrl();?>/admin/index/index?sub=<?php echo $this->sub; ?>&page=<?php echo $this->previous;?>">&lt; Previous</a> |
+<?php   } ?>
+<?php }else { ?>
+  <span class="disabled">&lt; Previous</span> |
+<?php } ?> 
+
+<!-- Numbered page links -->
+<?php foreach ($this->pagesInRange as $page){ ?>
+<?php if ($page != $this->current){ ?>
+    <?php   if(($this->s1 != '') || ($this->s2 != '') || ($this->s3 != '')|| ($this->s4 != '')) { ?>
+        <a href="<?php echo $this->baseUrl();?>/admin/index/index?sub=<?php echo $this->sub; ?>&page=<?php echo $page;?>&s1=<?php echo $this->s1;?>&s2=<?php echo $this->s2;?>&s3=<?php echo $this->s3;?>&s4=<?php echo $this->s4;?>"><?php echo $page; ?></a> |
+    <?php } else { ?>
+        <a href="<?php echo $this->baseUrl();?>/admin/index/index?sub=<?php echo $this->sub; ?>&page=<?php echo $page;?>"><?php echo $page; ?></a> |
+    <?php } ?>
+<?php } else { ?>
+<?php echo $page; ?> |
+<?php } ?>
+<?php } ?>
+
+<!-- Next page link -->
+<?php if (isset($this->next)) { ?>
+        <?php   if(($this->s1 != '') || ($this->s2 != '') || ($this->s3 != '')|| ($this->s4 != '')) { ?>
+            <a href="<?php echo $this->baseUrl();?>/admin/index/index?sub=<?php echo $this->sub; ?>&page=<?php echo $this->next;?>&s1=<?php echo $this->s1;?>&s2=<?php echo $this->s2;?>&s3=<?php echo $this->s3;?>&s4=<?php echo $this->s4;?>">Next &gt;</a>
+                <?php } else { ?>
+            <a href="<?php echo $this->baseUrl();?>/admin/index/index?sub=<?php echo $this->sub; ?>&page=<?php echo $this->next;?>">Next &gt;</a>
+        <?php } ?>
+<?php } else { ?>
+    <span class="disabled">Next &gt;</span>
+<?php } ?>
+</div>
+<?php } ?>

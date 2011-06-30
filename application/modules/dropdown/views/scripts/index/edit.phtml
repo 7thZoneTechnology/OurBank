@@ -45,7 +45,6 @@ function gettaluk(taluk,path) {
 function gethobli(hobli,path) { 
 	if(hobli) {
 	 	targeturl=path+"/dropdown/index/gillapanchayath?hobli="+hobli;
-		alert(targeturl);
 		$.ajax({ url: targeturl, success: function(data){ $("#hoblidiv").html(data) }});
 	}
 }

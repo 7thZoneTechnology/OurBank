@@ -24,7 +24,14 @@ class Meetingbook_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = $this->view->translate("Meeting book");
 
         /* Initialize action controller here */
-        $storage = new Zend_Auth_Storage_Session();
+
+        $users = new App_Model_Users();
+                $this->view->createdby = $users->checkSession();
+                if($this->view->createdby == 0){
+                        $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+                }
+
+    /*    $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data)
         {
@@ -37,7 +44,7 @@ class Meetingbook_IndexController extends Zend_Controller_Action
         foreach($loginname as $loginname) 
         {
             $this->view->username=$loginname['username']; // get the user name
-        }
+        } */
 
         $this->view->adm = new App_Model_Adm();
         $this->view->dateconvert = new App_Model_dateConvertor();
@@ -74,7 +81,7 @@ class Meetingbook_IndexController extends Zend_Controller_Action
         }
 
         $insertattendance=new Meetingbook_Model_Meetingbook();
-       $this->view->createdby = $this->view->globalvalue[0]['id'];
+       //$this->view->createdby = $this->view->globalvalue[0]['id'];
 
 	//listing discussion dropdown
         $this->view->discussionlist=$insertattendance->discussionlist();
@@ -131,7 +138,7 @@ class Meetingbook_IndexController extends Zend_Controller_Action
                                             'transaction_type' => 1,
                                             'transaction_amount' => $amount[$id],
                                             'member_id' => $group->id,
-                                            'transacted_by' => 1));
+                                            'transacted_by' => $this->view->createdby));
                         $id++;
                          }
                     }
@@ -188,21 +195,22 @@ $increment++;
                                                 'time'=> $formData['meeting_time'],
                                                 'resolution'=> $formData['resolution'],
                                             	'created_date'=>date("y/m/d H:i:s"),
-						'created_by' => $this->view->createdby
-                                            ));
+						'created_by' => $this->view->createdby));
 
 $loop=$formData['length'];
 //-------for absent fee and income  ---------
+$flag1=0;
 for($i=0; $i<$loop; $i++){
 if(array_search_values( 'absent_'.$i, $formData)){
 $absentees_id[]= array_search_values( 'absent_'.$i, $formData); 
-
+$flag1 = 1;
 }
 }
+if($flag1 ==1){
 for($i=0;$i<count($absentees_id);$i++){
  foreach ($absentees_id[$i] as $key => $value) {
 }
-
+}
 }
 $abs1=($i)*$formData['absentfee'];
                             if($abs1){
@@ -214,6 +222,7 @@ $abs1=($i)*$formData['absentfee'];
                                             'credit' => $abs1,
                                             'recordstatus_id'=>3));
                                     }
+if($flag1 ==1){
 for($i=0;$i<count($absentees_id);$i++){
  foreach ($absentees_id[$i] as $key => $value) {
                 if($key) {
@@ -227,18 +236,22 @@ for($i=0;$i<count($absentees_id);$i++){
             }
 
 }
+}
 
 //-------for late fee and income  ---------
+$flag2=0;
 for($j=0; $j<$loop; $j++){
 if(array_search_values( 'late_'.$j, $formData)){
 $latemember_id[]= array_search_values( 'late_'.$j, $formData); 
+$flag2=1;
 }
 }
+if($flag2 ==1) {
 for($j=0;$j<count($latemember_id);$j++){
  foreach ($latemember_id[$j] as $key => $value) {
 //echo $key."<br>";
 }
-
+}
 }
 $abs2=($j)*$formData['latefee'];
                     if($abs2){
@@ -250,7 +263,7 @@ $abs2=($j)*$formData['latefee'];
                                             'credit' => $abs2,
                                             'recordstatus_id'=>3));
                             }
-
+if ($flag2 == 1) {
 for($j=0;$j<count($latemember_id);$j++){
  foreach ($latemember_id[$j] as $key => $value) {
                 if($key) {
@@ -262,6 +275,7 @@ for($j=0;$j<count($latemember_id);$j++){
                                             ));
                         }
                 }
+}
 }
 
 		//insert discussion table

@@ -67,15 +67,16 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
               			->setIntegrityCheck(false)
 						->from(array('a' => $tName),array('id','name as habit','hobli_id','a.name_regional'))
 				->where('a.id = ?',$id)
-						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name_regional as gpname','hobli_id'))
-                ->where('c.id =a.hobli_id')
+// 						->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name_regional as gpname'))
+//                 ->where('c.id =a.hobli_id')
 						->from(array('d' =>'ourbank_master_hoblilist'),array('id as hbid','name_regional as hbname','taluk_id'))
-                ->where('d.id =c.hobli_id')
+                ->where('d.id =a.hobli_id')
 						->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
                 ->where('e.id =d.taluk_id')
 						->from(array('f' =>'ourbank_master_districtlist'),array('id as did','name_regional as dname','state_id'))
 						->from(array('g' =>'ourbank_master_state'),array('id as sid','name_regional as sname'))
                 ->where('f.id =e.district_id');
+// die($select->__toString($select));
 				$result = $this->fetchAll($select);
        			return $result->toArray();
 				}break;

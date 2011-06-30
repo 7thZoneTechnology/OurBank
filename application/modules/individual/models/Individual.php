@@ -30,25 +30,20 @@ class Individual_Model_individual  extends Zend_Db_Table
         return $result->toArray();
     }
 
-    public function searchDetails($post)
+   public function searchDetails($post)
         {
+            $keyvalue = array_filter($post);
+	    $searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
             $select=$this->select()
                             ->setIntegrityCheck(false)
                             ->join(array('a'=>'ourbank_family'),array('a.id'))
                             ->join(array('b'=>'ourbank_familymember'),'a.id = b.family_id')
-                            ->where('b.name like "%" ? "%"',$post['membername']) 
-                            ->where('a.village_id like "%" ? "%"',$post['village'])
-                            ->where('b.name_inregional like "%" ? "%"',$post['name_inregional']);
+                            ->where('b.name like "%" ? "%"',$post['s1']) 
+                            ->where('a.village_id like "%" ? "%"',$post['s2'])
+                            ->where('b.name_inregional like "%" ? "%"',$post['s3']);
 
                    $result=$this->fetchAll($select);
-            return $result->toArray();
-        }
-
-}
-
-?>
-
-=$this->fetchAll($select);
             return $result->toArray();
         }else{
                 $select = $this->select()

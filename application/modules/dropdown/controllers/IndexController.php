@@ -115,9 +115,8 @@ class Dropdown_IndexController extends Zend_Controller_Action
 			}
 
 		if ($this->_request->isPost() && $this->_request->getPost('Save')) {
-			if($tName == 'ourbank_master_districtlist') {
 
-
+		if($tName == 'ourbank_master_districtlist') {
  		$id=$this->_request->getParam('state');
  		$common=$this->_request->getParam('commonname');
 		$name_regional=$this->_request->getParam('name_regional');
@@ -295,24 +294,75 @@ class Dropdown_IndexController extends Zend_Controller_Action
 				 $name_regional=$this->_request->getParam('name_regional');
    				$tName=$this->_request->getParam('name');
 
-if($tName == 'ourbank_master_taluklist'){
+			if($tName == 'ourbank_master_taluklist'){
 							$id=$this->_request->getParam('id');
 							$name_regional=$this->_request->getParam('name_regional');
   							$Name=$this->_request->getParam('commonname');
 							$dist=$this->_request->getParam('district');
 							$formdata2=array('district_id'=>$dist,'name'=>$Name,'name_regional'=>$name_regional);
 							$this->view->adm->updateRecord($tName,$id,$formdata2);
-	}
-
-if($tName == 'ourbank_master_gillapanchayath'){
+													}
+			if($tName == 'ourbank_master_districtlist'){
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$state=$this->_request->getParam('state');
+							$formdata2=array('state_id'=>$state,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+														} 
+			if($tName == 'ourbank_master_gillapanchayath'){  
 							$id=$this->_request->getParam('id');
 							$name_regional=$this->_request->getParam('name_regional');
   							$Name=$this->_request->getParam('commonname');
 							$hobl=$this->_request->getParam('hobli');
 							$formdata2=array('hobli_id'=>$hobl,'name'=>$Name,'name_regional'=>$name_regional);
 							$this->view->adm->updateRecord($tName,$id,$formdata2);
-}
- if($tName == 'ourbank_master_habitation' or $tName == 'ourbank_master_branch' or $tName == 'ourbank_master_gillapanchayath' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_villagelist' or $tName == 'ourbank_master_hoblilist' or $tName == 'ourbank_master_bank' or $tName == 'ourbank_master_cbos' or $tName == 'ourbank_master_cbopromoter'){echo ""; }else{
+														} 
+			if($tName == 'ourbank_master_habitation'){  
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$vill=$this->_request->getParam('village');
+							$formdata2=array('village_id'=>$vill,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+													}
+ 			if($tName == 'ourbank_master_bank'){  
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$vill=$this->_request->getParam('village');
+							$acc=$this->_request->getParam('acctype');
+							$formdata2=array('village_id'=>$vill,'accounttype_id'=>$acc,'name'=>$Name,
+											 'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+												}
+			if($tName == 'ourbank_master_branch'){  
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$bank=$this->_request->getParam('bank');
+							$vill=$this->_request->getParam('village');
+							$formdata2=array('village_id'=>$vill,'bank_id'=>$bank,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+													} 
+			if($tName == 'ourbank_master_cbos'){  
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$cbo=$this->_request->getParam('cbp');
+							$formdata2=array('cbopromoter_id'=>$cbo,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+												} 
+			if($tName == 'ourbank_master_cbopromoter'){  
+							$id=$this->_request->getParam('id');
+							$name_regional=$this->_request->getParam('name_regional');
+  							$Name=$this->_request->getParam('commonname');
+							$koota=$this->_request->getParam('koota');
+							$formdata2=array('koota_id'=>$koota,'name'=>$Name,'name_regional'=>$name_regional);
+							$this->view->adm->updateRecord($tName,$id,$formdata2);
+														}
+
+ if($tName == 'ourbank_master_habitation' or $tName == 'ourbank_master_branch' or $tName == 'ourbank_master_gillapanchayath' or $tName == 'ourbank_master_taluklist' or $tName == 'ourbank_master_districtlist' or $tName == 'ourbank_master_villagelist' or $tName == 'ourbank_master_hoblilist' or $tName == 'ourbank_master_bank' or $tName == 'ourbank_master_cbos' or $tName == 'ourbank_master_cbopromoter'){echo ""; }else{
 
 							$id=$this->_request->getParam('id');
 							$name_regional=$this->_request->getParam('name_regional');
@@ -519,8 +569,8 @@ if($tName == 'ourbank_master_gillapanchayath'){
         $taluk=$gettaluk->taluk($district);
  		foreach($taluk as $eacharraysents) { 
         $dropdownForm->taluk->addMultiOption($eacharraysents['tid'],$eacharraysents['tname']);
-        }
-	}
+        	}
+		}
 		public function hobliAction() {
         $path = $this->view->baseUrl();
         $this->_helper->layout()->disableLayout();
