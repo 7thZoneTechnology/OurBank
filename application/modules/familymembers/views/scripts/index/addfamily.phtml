@@ -86,10 +86,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th><?php echo $this->translate("ಯು ಎಯೇ ಡೀ"); ?></th>
                 <th><?php echo $this->translate("ಪ್ರ್ಧಧಾನ ಸಂಪಾದಕ"); ?></th>
                 <th><?php echo $this->translate("ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥ"); ?></th>
-                <th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>
                 <th><?php echo $this->translate("* ಜನ್ಮ ದಿನಾಂಕ"); ?></th>
                 <th><?php echo $this->translate("ವಯಸ್ಸು"); ?></th>
                 <th><?php echo $this->translate("* ಸಂಬಂಧ"); ?></th>
+                <th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>
                 <th><?php echo $this->translate("* ವೈವಾಹಿಕ ಸ್ಥಿತಿ"); ?></th>
                 <th><?php echo $this->translate("ಪೆನ್ಷನ್"); ?></th>
                 <th><?php echo $this->translate("* ವಿಧ್ಯಾಬ್ಯಾಸ"); ?></th>
@@ -122,15 +122,6 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
                 <td align="center"><INPUT type="radio" name = "breadwinner[]" value="1" checked="true"></td>
                 <td><INPUT type="radio" name = "head[]" value="1" checked="true"></td>
-
-				<td><select name = "gender[]" class="selectvalid">
-                    <option value=0>Select</option>
-                    <?php foreach ($this->gender as $gender) { ?>
-                    <option value="<?php echo $gender['id']?>"><?php echo $gender['id']; echo ".  "; echo $gender['name_regional']?></option>
-                    <?php } ?>
-                </select>
-                </td>
-
                 <td><INPUT type="text" name = "dob[]" class="date required datechange" id="date-1">
                 <INPUT type="hidden" name = "baseurl[]" id="baseurl" value="<?php echo $this->baseurl?>"></td>
                 <INPUT type="hidden" name = "currentdate[]" id="currentdate" value="<?php echo $this->currentdate?>"></td>
@@ -144,7 +135,13 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </select>
                 </td>
 
-                
+                <td><select name = "gender[]" class="selectvalid">
+                    <option value=0>Select</option>
+                    <?php foreach ($this->gender as $gender) { ?>
+                    <option value="<?php echo $gender['id']?>"><?php echo $gender['id']; echo ".  "; echo $gender['name_regional']?></option>
+                    <?php } ?>
+                </select>
+                </td>
 
                 <td><select name = "marital[]" class="selectvalid">
                     <option value=0>Select</option>

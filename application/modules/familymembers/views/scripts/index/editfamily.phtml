@@ -95,10 +95,10 @@
                 <th><?php echo $this->translate("ಯು ಎಯೇ ಡೀ"); ?></th>
                 <th><?php echo $this->translate("ಪ್ರ್ಧಧಾನ ಸಂಪಾದಕ"); ?></th>
                 <th><?php echo $this->translate("ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥ"); ?></th>
-                <th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>
                 <th><?php echo $this->translate("* ಜನ್ಮ ದಿನಾಂಕ"); ?></th>
                 <th><?php echo $this->translate("ವಯಸ್ಸು"); ?></th>
                 <th><?php echo $this->translate("* ಸಂಬಂಧ"); ?></th>
+                <th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>
                 <th><?php echo $this->translate("* ವೈವಾಹಿಕ ಸ್ಥಿತಿ"); ?></th>
                 <th><?php echo $this->translate("ಪೆನ್ಷನ್"); ?></th>
                 <th><?php echo $this->translate("* ವಿಧ್ಯಾಬ್ಯಾಸ"); ?></th>
@@ -142,26 +142,6 @@
                 <?php } else { ?>
                 <td align="center"><INPUT type="radio" name = "head[]" value="<?php echo $i ?>"></td>
                 <?php } ?>
-
-
- 				<td><select name = "gender[]" class="selectvalid required">
-                <option value=0>select</option>
-                <?php 
-                foreach ($this->gender as $gender) 
-                {
-                    if($gender['id']!= $familydetails["gender_id"]) { ?>
-                        <option value="<?php echo $gender['id']?>"><?php echo $gender['id'];echo ".  "; echo $gender['name_regional']?></option>
-
-                <?php } else { ?>
-                        <OPTION value="<?php echo $familydetails["gender_id"]; ?>" selected="">
-                            <?php echo $gender['id'];echo ".  "; echo $familydetails["gendername"]; ?>
-                        </OPTION>
-                <?php } }     ?>
-                </select>
-                </td>
-
-
-
                 <td><INPUT type="text" name = "dob[]" class="date required datechange" id="date-<?php echo $i; ?>" value="<?php echo $convertdate->normalformat($familydetails['dob']); ?>"></td>
                 <INPUT type="hidden" name = "currentdate[]" id="currentdate" value="<?php echo $this->currentdate?>"></td>
                 <td><INPUT type="text" name = "age[]" size="3" maxlength="3" value="<?php echo $familydetails['age']?>" class="agechange" id="age-<?php echo $i; ?>"></td> 
@@ -180,6 +160,23 @@
                 <?php }
                     }     ?>
                     </select>
+                </td>
+
+
+                <td><select name = "gender[]" class="selectvalid required">
+                <option value=0>select</option>
+                <?php 
+                foreach ($this->gender as $gender) 
+                {
+                    if($gender['id']!= $familydetails["gender_id"]) { ?>
+                        <option value="<?php echo $gender['id']?>"><?php echo $gender['id'];echo ".  "; echo $gender['name_regional']?></option>
+
+                <?php } else { ?>
+                        <OPTION value="<?php echo $familydetails["gender_id"]; ?>" selected="">
+                            <?php echo $gender['id'];echo ".  "; echo $familydetails["gendername"]; ?>
+                        </OPTION>
+                <?php } }     ?>
+                </select>
                 </td>
 
                 <td><select name = "marital[]" class="selectvalid required">
