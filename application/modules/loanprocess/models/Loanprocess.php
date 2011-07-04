@@ -18,7 +18,7 @@ class Loanprocess_Model_Loanprocess extends Zend_Db_Table
                 ->join(array('b' => 'ourbank_groupmembers'),'b.member_id=a.id',array('b.id as groupid'))
                 ->where('a.familycode=?',$membercode);
             }
-            //die($select->__toString($select));
+           // die($select->__toString($select));
             $result=$this->fetchAll($select);
             return $result->toArray(); // return group member details
         }
@@ -195,7 +195,7 @@ $member_id=$code['s1'];
         $this->db = Zend_Db_Table::getDefaultAdapter();
          $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
             $sql = "SELECT 
-                a.groupcode as code, 
+                a.groupcode as code,
                 a.name as name, 
                 '' as uid,
                 sum(c.request_amount) as Amount,
@@ -229,7 +229,7 @@ $member_id=$code['s1'];
                 and d.id = c.status
                 and c.status!=0
                 and (e.familycode like '".$member_id."%')";
-              //echo $sql;
+            //  echo $sql;
             $result = $this->db->fetchAll($sql,$member_id);
             return $result;
             }else{ return 0;}

@@ -53,7 +53,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
     {
        $accountsForm = $this->view->form = new Loanprocess_Form_Search();
        $loanprocess = new Loanprocess_Model_Loanprocess();
-       
+
        if($_POST)
             $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
 	else
@@ -61,7 +61,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
 
          $result = $loanprocess->Searchloanprocess($postedvalues);
 		$this->view->loanprocess = $result;
-//print_r($result);
+//Zend_Debug::dump($result);
         $page = $this->_getParam('page',1);
         $this->view->paginator = $this->view->adm->commonsearch($result,$page);
         $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
@@ -114,7 +114,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 		$formData = $this->_request->getPost();
 		if ($accountsForm->isValid($formData)) {
-                    $membercode = $this->_request->getParam('membercode');
+                    $membercode = $this->_request->getParam('s1');
                     $available = 0;
                     $this->view->typeid=$Type = substr($membercode,4,1);
                     if (($Type==1) or ($Type==2) or ($Type==3)) {

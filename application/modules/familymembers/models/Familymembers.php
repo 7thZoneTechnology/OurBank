@@ -117,25 +117,13 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
         return $result->toArray();
     }
 
-    public function getbank($type_id,$gpid)
+    public function getbank($type_id,$villageid)
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
                 ->join(array('a'=>'ourbank_master_bank'),array('a.id'),array('a.id','a.name_regional as bankname'))
-                ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.village_id')
-                ->where('b.panchayath_id = ?',$gpid)
+                 ->where('a.village_id =?',$villageid)
                 ->where('a.accounttype_id =?',$type_id);
-//        die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-    }
-
-    public function getgpid($villageid)
-    {
-        $select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_master_village'),array('a.id'),array('a.panchayath_id'))
-                 ->where('a.village_id =?',$villageid);
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();

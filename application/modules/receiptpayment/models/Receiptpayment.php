@@ -67,8 +67,6 @@ class Receiptpayment_Model_Receiptpayment extends Zend_Db_Table
                         ->join(array('C'=>'ourbank_glcode'),'C.id = B.glcode_id')
                         ->where('C.id = 4');
 //die($select->__toString());
-
-
         return $this->fetchAll($select);
     }
 
@@ -89,7 +87,7 @@ and c.id = b.glsubcode_id_to
 and b.glsubcode_id_to = a.glsubcode_id_to
 and b.transaction_date >= '$fromDate' and  b.transaction_date <= '$toDate'
 and c.glcode_id = 4";
-        
+
         return $db->fetchAll($sql);
 
 

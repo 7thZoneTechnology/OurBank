@@ -21,13 +21,13 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
     protected $_name = 'ourbank_transaction';
 	public function incomedetails($date) {
             $select = $this->select()
-                    ->setIntegrityCheck(false)  
+                    ->setIntegrityCheck(false)
                     ->join(array('a' => 'ourbank_transaction'),array('transaction_id'),array('glsubcode_id_to','transaction_date'))
                     ->where('a.transaction_date <= "'.$date.'"')
-                    ->where('a.recordstatus_id =3 OR a.recordstatus_id=1')
-                    ->join(array('b'=>'ourbank_glsubcode'),'b.id=a.glsubcode_id_to',array('header'))
-                    ->join(array('c'=>'ourbank_Income'),'c.glsubcode_id_to=a.glsubcode_id_to',array('sum(credit) as credit'))
-                    ->where('c.recordstatus_id =3 OR c.recordstatus_id=1')
+                    ->where('a.recordstatus_id =3 OR a.recordstatus_id = 1')
+                    ->join(array('b'=>'ourbank_glsubcode'),'b.id = a.glsubcode_id_to',array('header'))
+                    ->join(array('c'=>'ourbank_Income'),'c.glsubcode_id_to = a.glsubcode_id_to',array('sum(credit) as credit'))
+                    ->where('c.recordstatus_id = 3 OR c.recordstatus_id = 1')
                     ->where('c.tranasction_id  = a.transaction_id')
                     ->group('b.header');
 //             die($select->__toString());
@@ -48,6 +48,6 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
 //         die($select->__toString());
         $result = $this->fetchAll($select);
         return $result->toArray();
-    }
+        }
 }
 

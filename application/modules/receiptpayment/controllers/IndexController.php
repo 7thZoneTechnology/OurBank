@@ -51,7 +51,6 @@ class Receiptpayment_IndexController extends Zend_Controller_Action
 	 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
 
-
 	$dateconvertor = new App_Model_dateConvertor();
 	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('field1'));
 	$toDate = $dateconvertor->mysqlformat($this->_request->getParam('field2'));

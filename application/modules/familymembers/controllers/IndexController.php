@@ -74,9 +74,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->selectid = $this->_request->getParam('divid'); 
         $villageid = $this->_request->getParam('villageid'); 
         $familymodel=new Familymembers_Model_Familymembers();
-        $gpdetails=$familymodel->getgpid($villageid);
-        $gpid=$gpdetails[0]['panchayath_id'];
-        $this->view->banknames=$familymodel->getbank($type_id,$gpid);
+        $this->view->banknames=$familymodel->getbank($type_id,$villageid);
     }
 
     public function checkuidAction() { 
@@ -105,16 +103,16 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->insurance=$this->view->familycommon->getinsurance($this->_getParam('id'));
         $subid = $this->view->subId = $this->_getParam('subId');
 
-        $this->view->relation = $this->view->adm->viewRecord("ourbank_master_realtionshiptype","id","ASC");
-        $this->view->qualify = $this->view->adm->viewRecord("ourbank_master_educationtype","id","ASC");
-       $this->view->gender = $this->view->adm->viewRecord("ourbank_master_gender","id","ASC");
-        $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
-        $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","ASC");
+        $this->view->relation = $this->view->adm->viewRecord("ourbank_master_realtionshiptype","id","DESC");
+        $this->view->qualify = $this->view->adm->viewRecord("ourbank_master_educationtype","id","DESC");
+        $this->view->gender = $this->view->adm->viewRecord("ourbank_master_gender","id","ASC");
+        $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
+        $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","DESC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
-        $this->view->branch = $this->view->adm->viewRecord("ourbank_master_branch","id","ASC");
+        $this->view->branch = $this->view->adm->viewRecord("ourbank_master_branch","id","DESC");
 //         $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
         $this->view->cbopromoter=$this->view->modelfamily->getcbolist($kootaid);
-        $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","ASC");
+        $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","DESC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
         $this->view->entitlements = $this->view->adm->viewRecord("ourbank_master_entitlements","id","ASC");
         $this->view->countvalue=count($this->view->entitlements);
@@ -126,9 +124,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $family_id=$this->_getParam('id');
                     $mem_name=$this->_getParam('mem_name');
                     $fathername=$this->_getParam('father_name');
-                    //$mem_relname=$this->_getParam('mem_relname');
+                    $mem_relname=$this->_getParam('mem_relname');
                     $alias_name=$this->_getParam('alias_name');
-                   // $alias_relname=$this->_getParam('alias_relname');
+                    $alias_relname=$this->_getParam('alias_relname');
                     $breadwinner=$this->_getParam('breadwinner');
                     $headID=$this->_getParam('head');
                     $uid= $this->_getParam('uid');
@@ -178,9 +176,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'village_id'=>$villageid,
                                     'father_name'=>$fathername[$i],
                                     'name' => $mem_name[$i],
-                                    //'name_inregional' => $mem_relname[$i],
+                                    'name_inregional' => $mem_relname[$i],
                                     'alias' => $alias_name[$i],
-                                    //'alias_inregional' => $alias_relname[$i],
+                                    'alias_inregional' => $alias_relname[$i],
                                     'uid'=>$uid[$i],
                                     'dob'=>$this->view->dateconvertor->mysqlformat($dob[$i]),
                                     'age' => $age[$i],
@@ -249,16 +247,16 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $familyobj = new Familymembers_Model_Familymembers();
 
 //         echo "<pre>";print_r($family);
-        $this->view->relation = $this->view->adm->viewRecord("ourbank_master_realtionshiptype","id","ASC");
-        $this->view->qualify = $this->view->adm->viewRecord("ourbank_master_educationtype","id","ASC");
+        $this->view->relation = $this->view->adm->viewRecord("ourbank_master_realtionshiptype","id","DESC");
+        $this->view->qualify = $this->view->adm->viewRecord("ourbank_master_educationtype","id","DESC");
         $this->view->gender = $this->view->adm->viewRecord("ourbank_master_gender","id","ASC");
-        $this->view->skill = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
-        $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","ASC");
+        $this->view->skill = $this->view->adm->viewRecord("ourbank_master_profession","id","DESC");
+        $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","DESC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
-        $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
+        $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","DESC");
         //$this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
         $this->view->promoter=$this->view->modelfamily->getcbolist($kootaid);
-        $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","ASC");
+        $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","DESC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
         $this->view->entitlements = $this->view->adm->viewRecord("ourbank_master_entitlements","id","ASC");
         $this->view->employment = $this->view->adm->viewRecord("ourbank_master_employmenttype","id","ASC");
@@ -337,9 +335,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'village_id'=>$villageid,
                                     'father_name'=>$fathername[$i],
                                     'name' => $mem_name[$i],
-                                    //'name_inregional' => $mem_relname[$i],
+                                    'name_inregional' => $mem_relname[$i],
                                     'alias' => $alias_name[$i],
-                                    //'alias_inregional' => $alias_relname[$i],
+                                    'alias_inregional' => $alias_relname[$i],
                                     'uid'=>$uid[$i],
                                     'dob'=>$this->view->dateconvertor->mysqlformat($dob[$i]),
                                     'age' => $age[$i],

@@ -1,55 +1,61 @@
+
 <fieldset>
 	<legend>Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/loanprocess/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <th><label for="fld3">Member code / Group code</label></TD>
+                               <th><label for="fld3">Member code / Group code</label></TD>
                                 <th><? echo $this->form->s1;?></TD>
-                            </TR>
+                                   </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <?php echo $this->form->Submit;?>
-                            </div>
-                        </div>
-	       </form>
+                                 <?php echo $this->form->Submit;?>
+                             </div>
+                         </div>
+	        </form>
 </fieldset>
-<div>
-<?php if($this->paginator) { ?>
 
-    <table id="hor-minimalist-b" border="1">
-	<tr>
-                <th>Code</th>
-        	<th>Group name / Individual name</th>
-                <th>UID</th>
-	        <th>Amount</th>
-                <th>Request date</th>
-                <th>Status</th>
-	</tr>
+<?php if($this->loanprocess) { 
+$dbobj= new App_Model_dateConvertor();
+?>
 
-	<?php foreach($this->paginator as $member) : ?>
-	<tr>
-                <td><a href="<?php echo $this->baseUrl()."/loanprocess/index/viewaction/id/".$member['code']; ?>"><?php  echo $member['code'];?></a></td>
-		<td><?php  echo $member['name'];?></td>
-		<td><?php if($member['uid']) { echo $member['uid']; }?></td>
-		<td align="right"><?php  echo $member['Amount'];?></td>
-		<td><?php  echo $dbobj->normalformat($member['requestdate']);?></td>
-                <td><?php  echo $member['status'];?></td>
-	</tr>
-	<?php endforeach; ?>
-	
-        <?php }?>
-        
-       <?php if ($this->paginator) { ?>
+            <table id="hor-minimalist-b" border="1">
+                <tr>
+                        <th>Code</th>
+                        <th>Group name / Individual name</th>
+                        <th>UID</th>
+                        <th>Amount</th>
+                        <th>Request date</th>
+                        <th>Status</th>
+                </tr>
 
-	<div align="center" style="margin-top:10px;color:#CC6633;">
-       <tr>
-       <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
-        </div></td></tr>
+                <?php foreach($this->loanprocess as $member) : ?>
+                <tr>
+                        <td><a href="<?php echo $this->baseUrl()."/loanprocess/index/viewaction/id/".$member->code; ?>"><?php  echo $member->code;?></a></td>
+                        <td><?php  echo $member->name;?></td>
+                        <td><?php if($member->uid) { echo $member->uid; }?></td>
+                        <td align="right"><?php echo $member->Amount;?></td>
+                        <td><?php echo $dbobj->normalformat($member->requestdate);?></td>
+                        <td><?php echo $member->status;?></td>
+                </tr>
+                <?php endforeach; ?>
+
+    <?php } else {
+        echo "<font color=red>".$this->errormsg."</font>";
+        } ?>
+
+       <?php if ($this->loanprocess) { ?>
+	       <div align="center" style="margin-top:10px;color:#CC6633;">
+                 <tr><td colspan="8" align="right">
+                     <div class="pagination">
+                        <?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+                    </div></td></tr>
       
-        </table>
+      <!--  </table>-->
   
     <?php } ?>
 
-
+<!--</div>-->
+	</table>
 

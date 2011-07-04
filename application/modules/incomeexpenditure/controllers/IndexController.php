@@ -42,7 +42,7 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
         }
     }
 
-    function indexAction() 
+    function indexAction()
     {
         $searchForm = new Incomeexpenditure_Form_Search();
         $this->view->form = $searchForm;
@@ -66,6 +66,7 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
             }
         }
     }
+
     function pdftransactionAction() 
     { 
         $fromdate = $this->_request->getParam('fdate');
@@ -124,7 +125,7 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
 
                 $page->drawText($criteria,500, 780); //Search criteria
                 $page->drawText($criteria,500, 780);
-        
+
                 $page->drawText($currency,500, 770); //Currency
                 $page->drawText($currency,500, 770); 
 
@@ -132,7 +133,7 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
                 $page->drawText($text[2],$x2, $my);
                 $page->drawText($text[3],$x3, $my);
                 $page->drawText($text[4],$x4, $my);
-                
+
                 $page->drawLine(30, 750, 570, 750);
                 $page->drawLine(30, 730, 570, 730);
 
@@ -140,7 +141,7 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
                     $page->drawText($income['header'],$x1, $y1);
                     $page->drawText( $income['credit'],$x2, $y1);
                     $totalincome +=$income['credit'];
-                
+
                     $y1 = $y1 - 15;
                 }
 
@@ -148,20 +149,20 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
                         $page->drawText($expe['header'],$x3, $y2);
                         $page->drawText( $expe['credit'],$x4, $y2);
                         $totalexpe +=$expe['credit'];
-                
+
                     $y2 = $y2 - 15;
                 }
 
 
                 $page->drawLine(30, $y1, 570, $y1);
                 $page->drawLine(30, $y1 -20, 570, $y1 -20);
-        
+
                 $page->drawText($text[5], $x1, $y1 -15);
                 $page->drawText(sprintf("%4.2f",$totalincome),$x2, $y1 -15);
 
                 $page->drawText($text[5], $x3, $y1 -15);
                 $page->drawText(sprintf("%4.2f",$totalexpe),$x4, $y1 -15);
-                
+
                 // Virtual table
                 $page->setLineWidth(1)->drawLine(30, $y1 - 20, 30, 750); //Table left vertical
                 $page->setLineWidth(1)->drawLine(300, $y1 - 20, 300, 750); //Table center vertical
@@ -174,7 +175,6 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
                 $path = '/var/www/'.$projname.'/reports/'.$account_number.'incomeexpenditure.pdf';
                 chmod($path,0777);
     }
-        
 
     function reportdisplayAction() {
         $this->_helper->layout->disableLayout();
