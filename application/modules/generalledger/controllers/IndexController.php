@@ -37,40 +37,32 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $searchForm = new Generalledger_Form_Search();
         $this->view->form = $searchForm;
 
-        
-      
-         
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
  
         $formData = $this->_request->getPost();
         if ($searchForm->isValid($formData)) {
-	$fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
-	$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
-	$glsubcode =$this->_request->getParam('glcode');
-            $this->view->datefrom = $fromDate;             
-            $this->view->dateto = $toDate;             
+		$fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
+        $this->view->datefrom = $fromDate;
 
-            $this->view->search = 10;             
-            $generalLedger = new Generalledger_Model_Generalledger();
-             
-             //Lia
-            $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$glsubcode);
+		$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
+        $this->view->dateto = $toDate;
 
-            $this->view->openingCash = $generalLedger->openingBalance($fromDate,$glsubcode);
-             
-//             // Assets
-            $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
-            $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
-            if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){
-                }
-        } else {
-            $this->view->search = 0;
-                                echo "<font color='red'><b> Record not found</b> </font>";
+		$glsubcode =$this->_request->getParam('glcode');
+        $this->view->search = 10;
+        $generalLedger = new Generalledger_Model_Generalledger();
+           //Lia
+        $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$glsubcode);
+        $this->view->openingCash = $generalLedger->openingBalance($fromDate,$glsubcode);
 
-        }
-			
-        }
-    }
+          // Assets
+        $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
+        $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
+        if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){               }
+        } else {   $this->view->search = 0;
+                   echo "<font color='red'><b> Record not found</b> </font>";
+		        }
+	        }
+    	}
     public function reportdisplayAction() 
     {
         $this->_helper->layout->disableLayout();
@@ -85,7 +77,28 @@ class Generalledger_IndexController extends Zend_Controller_Action
     { 
        $date1 = $this->_request->getParam('date1'); 
        $date2 = $this->_request->getParam('date2');
-      $glsubcode = $this->_request->getParam('ledger');
+       $glsubcode = $this->_request->getParam('ledger');
+
+
+		$generalLedger = new Generalledger_Model_Generalledger();
+             //Lia
+        $this->view->ledegerList = $generalLedger->generalLedger($date1,$date2,$glsubcode);
+        $openingCash = $generalLedger->openingBalance($date1,$glsubcode);
+		    // Assets
+        $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($date1,$date2,$glsubcode);
+        $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($date1,$glsubcode);
+        if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){        }
+		 else {     $this->view->search = 0;
+                   echo "<font color='red'><b> Record not found</b> </font>";
+		       }
+ 		if(count($openingCash)) {
+          foreach($openingCash as $openingCash) {
+        if ($openingCash["glsubcode_id"] == $ledegerList["glsubcode_id"]) {
+           $liabilityCash = $openingCash["openingCash"];
+             }
+           } 
+         } 
+
 
         $pdf = new Zend_Pdf();
         $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
@@ -105,31 +118,7 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
         //set the font
         $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
-    		$this->view->search = 10;             
-            $generalLedger = new Generalledger_Model_Generalledger();
-             
-             //Lia
-            $this->view->ledegerList = $generalLedger->generalLedger($date1,$date2,$glsubcode);
-           $openingCash = $generalLedger->openingBalance($date1,$glsubcode);
-print_r($openingCash);
-//             // Assets
-            $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($date1,$date2,$glsubcode);
-            $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($date1,$glsubcode);
-            if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){
-                
-        } else {
-            $this->view->search = 0;
-                                echo "<font color='red'><b> Record not found</b> </font>";
-
-        }
-  if(count($openingCash)) {
-            foreach($openingCash as $openingCash) {
-        if ($openingCash["glsubcode_id"] == $ledegerList["glsubcode_id"]) {
-           $liabilityCash = $openingCash["openingCash"];
-             }
-           } 
-           } 
-
+    	$this->view->search = 10;
         $text = array("Particular",
                      "debit",
                      "credit",
@@ -138,8 +127,6 @@ print_r($openingCash);
         $x1 = 200; 
         $x2 = 340; 
         $x3 = 480;
-
-       
 
         $page->drawLine(50, 740, 550, 740);
         $page->drawLine(50, 720, 550, 720);
@@ -153,12 +140,10 @@ print_r($openingCash);
 		}
 		$y1 = 725;
 
-			//$page->drawText(Opening balance,$x0, $y1);
 
+		$pdf->render();
         $pdf->save('/var/www/'.$projname.'/reports/GL.pdf');
 		$path = '/var/www/'.$projname.'/reports/GL.pdf';
-       // $pdf->save('/var/www/ourbank/reports/GL.pdf');
-       // $path = '/var/www/ourbank/reports/GL.pdf';
         chmod($path,0777);
 }
 }

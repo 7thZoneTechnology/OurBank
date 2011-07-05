@@ -30,19 +30,6 @@ class Cashscroll_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = $this->view->translate("Cash scroll");
         $this->view->title =  $this->view->translate('Reports');
         $this->view->type = $this->view->translate("financialReports");
-  $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
-        }
-
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
-        foreach($loginname as $loginname) {
-            $this->view->username=$loginname['username']; // get the user name
-        } 
 $this->view->adm = new App_Model_Adm();
     }
 	//view action
@@ -63,27 +50,33 @@ $this->view->adm = new App_Model_Adm();
 			}
        		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 //         if ($searchForm->isValid($formData)) {
-$dateconvert= new App_Model_dateConvertor();
+       $fromDate = $this->_request->getParam('datefrom');
+ 	$id=$this->_request->getParam('datefrom');
+ 	$branch=$this->_request->getParam('branch');
+ 	$group=$this->_request->getParam('group');
 
+/*
+        $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
+	$fromDate = $dateconvertor->mysqlformat($fromDate);
 
-       $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
-       $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
- 		$branch=$this->_request->getParam('branch');
- 		$group=$this->_request->getParam('group');
-
+            $title1 = $this->view->translate("Cash Scroll");
+            $this->view->pageTitle = $title1;
+            $formData = $this->_request->getPost();
+                $this->view->savings = 10;*/
                 $transaction = new Cashscroll_Model_Cashscroll();
 if ($group=="") {
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);
-           //     $officename=$transaction-> officename($branchid);
-                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch);
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$branch);
+                $officename=$transaction-> officename($branchid);
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$branch);
 }else {
-  $this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
-          //      $officename=$transaction-> officename($branchid);
-                $this->view->savingsDebit = $transaction->totalSavingsDebitg($fromDate,$toDate,$group);
+  $this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$branch);
+                $officename=$transaction-> officename($branchid);
+                $this->view->savingsDebit = $transaction->totalSavingsDebitg($fromDate,$branch);
 
                 // Opening Balance
-                $osc = $transaction->openingBalanceg($fromDate,$toDate,$group);
+                $osc = $transaction->openingBalance($fromDate,$branch);
                 foreach($osc as $osc1) {
                 $this->view->openingBalance = $osc1["openingBalance"];
                 }

@@ -43,7 +43,7 @@ $("#hide").show();
 });
 
 </script>
-<?php if($this->savingsDebit) { ?>
+<?php if($this->savings) { ?>
 <h1><b><?php echo "Branch: ".$this->officename; ?></b></h1>
 <h5 align="right"><?php echo $this->translate('As of'); ?> <?php echo "<font color='#039'>".$this->field1."</font>"; ?></h5> 
 <h5 style="text-align:right">* <?php echo $this->translate("Amount in"); ?>  <font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
@@ -168,21 +168,27 @@ $("#hide").show();
     </table>
 </div>
 
+<form action="<?php echo $this->baseUrl();?>/cashscroll/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/cashscroll/index/reportdisplay/file/cashscroll.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+            <input type="hidden" name="date" value="<?php echo $this->field1; ?>">
+            <input type="hidden" name="office" value="<?php echo $this->branchid; ?>">
+           <div class="btnhouse">
+		<div class="ltbtns">
+			<TD > <input type="submit" value="<?php echo $this->translate('PDF'); ?>" id="submit"></TD>
+		</div>
+            </div>
+</form>
 
 
 <?php } else {?>
 <div id="searchDiv">
     <fieldset>
         <legend><?php echo $this->translate("Search"); ?></legend>
- <form action="<?php echo $this->baseUrl();?>/daybook/index" method="POST">
              <table width="100%">
-               
-                
+                <form action="<?php echo $this->baseUrl();?>/cashscroll/index" method="POST">
                  <tr>
-                            <TD><?php echo $this->translate('From date'); ?></td>
+                            <TD><?php echo $this->translate('As of date'); ?></td>
                             <td><?php echo $this->form->datefrom;?></td>
- 							<TD><?php echo $this->translate('To date'); ?></td>
-                            <td><?php echo $this->form->dateto;?></td>
                    </tr>
   <tr>
 							<TD><?php echo $this->translate('Hierarchy'); ?></td>
@@ -197,12 +203,12 @@ $("#hide").show();
                             <td><div id="groupdiv"><?php echo $this->form->group;?></td>
 </tr>
 
-                       <td><input type="submit" name="Search" value="<?php echo $this->translate('Search');?>"> </td>
+                       <td><input type="submit" name="Search" value="<?php echo $this->translate('Search');?>"/> </td>
                        <td></td> 
                    </tr>
-                
+                </form>
             </table>
-       </form>
+       
 </fieldset>
 </div>
 

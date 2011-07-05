@@ -53,7 +53,7 @@ class Groupprofile_IndexController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if ($accountsForm->isValid($formData)) 
                     {
-                    $membercode = $this->_request->getParam('membercode');
+                    $membercode = $this->_request->getParam('s1');
                     if (substr($membercode,4,1) == 2 || substr($membercode,4,1) == 3) 
                         {
                             $this->view->group = $group = $this->view->accounts->group($membercode);

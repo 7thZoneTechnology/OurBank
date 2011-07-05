@@ -82,7 +82,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
     public function addAction()
     {
         $membercode = $this->_request->getParam('membercode');
-        echo $count = count($this->view->accounts->getMember($membercode));
+        $count = count($this->view->accounts->getMember($membercode));//echo
         //insert the family request
         //if ($this->_request->isPost()) 
         {
@@ -95,7 +95,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
 						'purpose'=>$this->_request->getParam('purpose_id'.$i),
 						'request_amount'=>$this->_request->getParam('amount'.$i),
 						'expecting_inperiod' => $this->_request->getParam('need'.$i),
-                				'status' => 1,
+                				'status' => 5,
 						'created_by'=>$this->view->createdby)); 
 		}
             }
@@ -181,7 +181,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                         'expecting_inperiod' => intval($this->_request->getParam('period')),
                         'created_date'=>date('Y-m-d'),
                         'created_by'=>$this->view->createdby,
-                        'status'=>1);
+                        'status'=>5);
         $this->view->adm->addRecord('ourbank_loanprocess',$data);
         $this->_helper->flashMessenger->addMessage('Your loan request accepted');
         $this->_helper->redirector('index');
@@ -206,7 +206,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $formData = $this->_request->getPost();
             if ($searchForm->isValid($formData)) {
-                $membercode = $this->view->id = $this->_request->getPost('membercode');
+                $membercode = $this->view->id = $this->_request->getPost('s1');
                 $this->view->memtype=$Type = substr($membercode,4,1);
                 if($Type==1 or $Type==2 or $Type==3){
                 $checkrequest=$this->view->accounts->checkrequest($membercode,$Type);

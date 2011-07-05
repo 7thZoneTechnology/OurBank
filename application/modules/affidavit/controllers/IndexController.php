@@ -56,8 +56,8 @@ class Affidavit_IndexController extends Zend_Controller_Action
                 $formData = $this->_request->getPost();
                     if ($searchForm->isValid($formData)) {
                             $this->view->withdrawalamount = $this->_request->getParam('amount');
-                            $this->view->membercode=$this->_request->getParam('membercode');
-                            $result = $this->view->Dbobj->getMember($this->_request->getParam('membercode'));
+                            $this->view->membercode=$this->_request->getParam('s1');
+                            $result = $this->view->Dbobj->getMember($this->_request->getParam('s1'));
                             $page = $this->_getParam('page',1);
                             $paginator = Zend_Paginator::factory($result); // assign searched values for pagination
                             $paginator->setItemCountPerPage($this->view->adm->paginator());

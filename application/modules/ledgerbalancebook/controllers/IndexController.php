@@ -140,10 +140,10 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 //                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;
 
                 $y1 = $y1 - 25;
-	}
+	
 	$page->drawText("TOTAL  ".$savingsDebit['assetsBalance'],$x4,$y1);
 // 	$page->drawText("$totalAmount",$x2,$y1);
-	
+	}
 	$pdf->render();
 	$pdf->save('/var/www/'.$projname.'/reports/ledgerbalancebook.pdf');
 	$path = '/var/www/'.$projname.'/reports/ledgerbalancebook.pdf';

@@ -17,8 +17,8 @@
 ############################################################################
 !-->
 
-<?php
-if($this->search == 0) { ?>   
+<?php if($this->search == 0) { ?>
+<div>
 <form action="<?php echo $this->baseUrl();?>/generalledger/index" method="POST">  
 
 <fieldset>
@@ -30,14 +30,16 @@ if($this->search == 0) { ?>
                 <td class="label">Close Date :</td>
                 <td align = "right"><?php  echo $this->form->dateto;?></td>
             </tr>
-           
+
             <tr>
                 <TD align="center"><br><input type="submit" name="Search" value="Search"></TD>
             </tr>
         </table>
 </fieldset>
 </form>
+</div>
 <?php } ?>
+
 <?php if (count($this->ledegerList)) { ?>
 	<h3 align="right">From <?php echo "<font color='#045'>".$this->datefrom."</font>"; ?> </h3>
 	<h3 align="right"> To <?php echo "<font color='#045'>".$this->dateto."</font>"; ?></h3> 
@@ -72,9 +74,10 @@ if($this->search == 0) { ?>
      <TR>
         <TD allign = "right"><?php echo $ledegerList["glsubcode"];?> - <?php echo $ledegerList["subheader"];?></TD>
         <?php if ($ledegerList["credit"]) { ?>
-        <TD allign = "right"></TD>
+		<TD></TD>
         <TD allign = "right"><?php echo $ledegerList["credit"];?></TD>
-        <TD align = "right"><?php echo sprintf("%4.2f",  $liabilityCash + $ledegerList["credit"]);?></TD>
+        <TD ><?php echo sprintf("%4.2f",  $liabilityCash + $ledegerList["credit"]);?></TD>
+
         <?php } ?>
 
      </tr>
@@ -83,7 +86,7 @@ if($this->search == 0) { ?>
         <?php if ($ledegerList["debit"]) { ?>
         <TD allign = "right"><?php echo $ledegerList["debit"];?></TD>
         <TD allign = "right"></TD>
-        <TD align = "right"><?php echo sprintf("%4.2f", $ledegerList["credit"] + $liabilityCash - $ledegerList["debit"]); ?></TD>
+        <TD ><?php echo sprintf("%4.2f", $ledegerList["credit"] + $liabilityCash - $ledegerList["debit"]); ?></TD>
         <?php } ?>
      </tr>
      <tr>
@@ -135,7 +138,7 @@ if($this->search == 0) { ?>
         <?php if ($ledegerListAssets["credit"]) { ?>
         <TD allign = "right"></TD>
         <TD allign = "right"><?php echo $ledegerListAssets["credit"];?></TD>
-        <TD align = "right"><?php echo sprintf("%4.2f",  $assetsCash + $ledegerListAssets["credit"]);?></TD>
+        <TD ><?php echo sprintf("%4.2f",  $assetsCash + $ledegerListAssets["credit"]);?></TD>
         <?php } ?>
 
      </tr>
@@ -144,7 +147,7 @@ if($this->search == 0) { ?>
         <?php if ($ledegerListAssets["debit"]) { ?>
         <TD allign = "right"><?php echo $ledegerListAssets["debit"];?></TD>
         <TD allign = "right"></TD>
-        <TD align = "right"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]); ?></TD>
+        <TD ><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]); ?></TD>
         <?php } ?>
      </tr>
      <tr>
@@ -153,12 +156,16 @@ if($this->search == 0) { ?>
             <TH allign = "right"></TH>
             <TH align = "right"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]);?></TH>
      </tr>
+ <form action="<?php echo $this->baseUrl();?>/reports/generalledger/pdfdisplay" method="POST"
+onClick="window.open('/generalledger/reportdisplay/file/GL.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+            <br><input type="submit" value="PDF" id="submit">
+     		<input type="hidden" name="date1" value="<?php echo $this->ledegerListAssets; ?>">
+			<input type="hidden" name="date2" value="<?php echo $this->openingCashAssets; ?>">
 
-       <?php } ?>
-    </TABLE>
+</form>
+    <?php } }?>
 
+ </TABLE>
 
-
- <?php } ?>
 
 </div>

@@ -40,6 +40,9 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                     if ($searchForm->isValid($formData)) {
                         $this->view->withdrawalamount = $this->_request->getParam('amount');
                             $result = $this->view->withdrawal->getMember($this->_request->getParam('membercode'));
+//Zend_Debug::dump($result);
+
+                            
                             $page = $this->_getParam('page',1);
                             $paginator = Zend_Paginator::factory($result); // assign searched values for pagination
                             $paginator->setItemCountPerPage($this->view->adm->paginator());

@@ -27,6 +27,7 @@ if(count($this->paginator)!=0) { ?>
             <th>Group code</th>
             <th>Group name</td>
         </tr>
+        
         <?php if (count($this->paginator)): ?>
         <?php foreach ($this->paginator as $individual): 
             $membertype = substr($individual['groupcode'],4,1);
@@ -34,7 +35,7 @@ if(count($this->paginator)!=0) { ?>
         <tr>
             <td><a href="<?php echo $this->baseUrl()."/sbwithdrawal/index/withdrawal/id/"?><?php echo base64_encode( $individual['groupid']); ?>/amt/<?php echo base64_encode($this->withdrawalamount);?>/type/<?php echo base64_encode($membertype);?>">
                         <?php echo $this->escape($individual['groupcode']); ?></a></td>
-        <td><?php echo $this->escape($individual['group_name']);?></td>
+                     <td><?php echo $this->escape($individual['group_name']);?></td>
             <?php endforeach; ?>
             <?php endif; ?>
         </tr>
@@ -46,4 +47,4 @@ if(count($this->paginator)!=0) { ?>
             </td>
         </tr>
     </table>
-<?php } 
+<?php } ?>

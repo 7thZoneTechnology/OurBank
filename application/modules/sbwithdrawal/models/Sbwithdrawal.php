@@ -12,7 +12,7 @@ $select=$this->select()
        ->join(array('d'=>'ourbank_familymember'),'d.id=b.member_id',array('d.name as memname'))
        ->joinLeft(array('c' => 'ourbank_loanprocess'),'b.member_id = c.member_id')
        ->where('c.membertype=2 or c.membertype=3');
-//        die($select->__toString($select));
+       //die($select->__toString($select));
        $result=$this->fetchAll($select);
        return $result->toArray(); // return group member details
 

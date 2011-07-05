@@ -182,7 +182,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
             }
 //create a member code
 
-                $o=str_pad($this->_request->getParam('village'),3,"0",STR_PAD_LEFT);
+                $o=str_pad($this->_request->getParam('rev_village'),3,"0",STR_PAD_LEFT);
                 $u=str_pad($lastid,6,"0",STR_PAD_LEFT);
                 $code=$o.$u;
                 $this->view->adm->updateRecord("ourbank_family",$lastid,array('code'=>$code));

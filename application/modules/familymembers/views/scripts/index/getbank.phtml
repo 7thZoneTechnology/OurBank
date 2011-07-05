@@ -12,7 +12,7 @@
 <select name = "bank[]" class="selectvalid bankfilter" id="<?php echo "bank-".$this->selectid; ?>">
                      <option value=0>Select</option>
                     <?php foreach ($this->banknames as $banknames) { ?>
-                    <option  value="<?php echo $banknames['id']?>"><?php echo $banknames['bankname']?></option>
+                    <option  value="<?php echo $banknames['bank_id']?>"><?php echo $banknames['bankname']?></option>
                     <?php } ?>
 </select>
 
