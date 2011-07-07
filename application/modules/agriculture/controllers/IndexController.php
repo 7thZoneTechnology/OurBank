@@ -66,7 +66,8 @@ class Agriculture_IndexController extends Zend_Controller_Action
             $this->view->mod_id=$module_id['parent'];
             $this->view->sub_id=$module_id['module_id'];
             $this->view->insurance=$familycommon->getinsurance($this->_getParam('id'));
-        $this->view->owner = $agriculture->owner($this->_getParam('id'));
+        //$this->view->owner = $agriculture->owner($this->_getParam('id'));
+         $this->view->owner = $agriculture->owner1();
         $this->view->village = $agriculture->village($this->_getParam('id'));
 
 
@@ -134,10 +135,10 @@ class Agriculture_IndexController extends Zend_Controller_Action
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
         $revvillageid = $this->view->membername[0]['rev_village_id'];
         $this->view->membername = $familycommon->getfamily($this->_getParam('id'));
-        $this->view->owner = $agriculture->owner($this->_getParam('id'));
+        //$this->view->owner = $agriculture->owner($this->_getParam('id'));
+          $this->view->owner = $agriculture->owner1();
         $this->view->village = $agriculture->village($this->_getParam('id'));
         $this->view->acquistion=$acquistion = $agriculture->ownershiptypes();
-
 
         if ($revvillageid) {
             $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
@@ -160,7 +161,6 @@ class Agriculture_IndexController extends Zend_Controller_Action
         $owner = $this->view->adm->viewRecord("ourbank_master_ownershiptype","id","ASC");
        $this->view->ownertype = $owner;
         $this->view->agriculture=$family_model->getagriculturedetails($member_id);
-        
 
             if ($this->_request->getPost('submit')) {
             $id=$this->_getParam('id');
@@ -188,10 +188,10 @@ class Agriculture_IndexController extends Zend_Controller_Action
                             'survey_no' => $survey_no[$i],
                             'gunta'=>$gunta[$i],
                             'acre'=>$acre[$i]);
-                $i++;
+               $i++;
                 $this->view->adm->addRecord("ourbank_agriculture",$agri);
             }
-            $this->_redirect('/familycommonview/index/commonview/id/'.$id);
+           $this->_redirect('/familycommonview/index/commonview/id/'.$id);
         }
 
 

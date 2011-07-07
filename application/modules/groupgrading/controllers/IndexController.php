@@ -855,7 +855,7 @@ class groupgrading_IndexController extends Zend_Controller_Action
 
         $pdf->save('/var/www'.$projectname.'reports/shgadvances.pdf');
         $path = '/var/www'.$projectname.'reports/shgadvances.pdf';
-        chmod($path,0777);
+        //chmod($path,0777);
     } 
 }
 

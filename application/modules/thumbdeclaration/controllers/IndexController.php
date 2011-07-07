@@ -138,6 +138,8 @@ class Thumbdeclaration_IndexController extends Zend_Controller_Action
 		$pdf->save('/var/www'.$projname.'/reports/thumbdeclaration'.date('Y-m-d').'.pdf');
 		$path = '/var/www'.$projname.'/reports/thumbdeclaration'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
+		
+		 $this->_redirect('/thumbdeclaration');
 	}
 	
 	function reportdisplayAction() {

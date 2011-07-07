@@ -47,7 +47,7 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
                         ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name as landtypename'))
                         ->join(array('c'=>'ourbank_master_ownershiptype'),'c.id=a.acquistion_id',array('c.name as ownership'))
                         ->join(array('d'=>'ourbank_master_villagelist'),'d.id=a.villagename',array('d.name_regional as village'))
-                        ->join(array('e'=>'ourbank_familymember'),'e.id=a.landowner_name',array('e.name as ownername'))
+                        //->join(array('e'=>'ourbank_familymember'),'e.id=a.landowner_name',array('e.name as ownername'))
                         ->where('a.family_id=?',$mebmerid);
 //         die ($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -83,23 +83,38 @@ class Agriculture_Model_agriculture  extends Zend_Db_Table {
             ->join(array('b'=>'ourbank_familymember'),'b.family_id=a.id',array('b.id as landowner_name','b.name'))
             ->where('a.id=?',$id);
          //die ($select->__toString($select));
-
         $result=$this->fetchAll($select);
         return $result->toArray();
         }
- public function village($id)
+
+ public function owner1()
         {
         $select=$this->select()
             ->setIntegrityCheck(false)
-            ->join(array('a'=>'ourbank_family'),array('a.id'))
-            ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.rev_village_id')
-            ->join(array('c'=>'ourbank_master_villagelist'),'c.panchayath_id=b.panchayath_id',array('c.name_regional as villagenames'))
-
-
-/*            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))*/
- 			 ->where('a.id=?',$id);
-    //  die($select->__toString($select));
+            ->from(array('a'=>'ourbank_master_landacquisition'));
+         //die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
+        }
+
+ public function village($id)
+        {
+//         $select=$this->select()
+//             ->setIntegrityCheck(false)
+//             ->join(array('a'=>'ourbank_family'),array('a.id'))
+//             ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.rev_village_id')
+//             ->join(array('c'=>'ourbank_master_villagelist'),'c.panchayath_id=b.panchayath_id',array('c.name_regional as villagenames'))
+// 
+// 
+// /*            ->join(array('e'=>'ourbank_master_subcaste'),'e.id =a.subcaste_id',array('e.name as subcaste'))*/
+//  			 ->where('a.id=?',$id);
+//     //  die($select->__toString($select));
+//         $result=$this->fetchAll($select);
+//         return $result->toArray();
+
+                $db = $this->getAdapter();
+                $sql = "select distinct c.name_regional as villagenames,a.id,c.id as vill_id from ourbank_family a,ourbank_master_village b, ourbank_master_villagelist c where b.village_id = a.rev_village_id and c.panchayath_id = b.panchayath_id and a.id = '".$id."'";
+                $result = $db->fetchAll($sql); // return the product id details for that group
+                return $result;
         }
 }

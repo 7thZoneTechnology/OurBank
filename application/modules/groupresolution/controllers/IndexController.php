@@ -182,7 +182,7 @@ $this->view->error = "Enter valid code";
 	$page->drawText($membergroup['bank'],120, 645);
 	$page->drawText(date('d-m-Y'),450, 725);
 	$page->drawText($membergroup['groupcode'],452, 710);
-	$page->drawText($membergroup['membername'],$x1, $y1);
+	//$page->drawText($membergroup['membername'],$x1, $y1);
 	$page->drawText($membergroup['survey_no'],$x2, $y1);
 	$page->drawText($membergroup['request_amount'],$x3, $y1);
 	
@@ -201,5 +201,7 @@ $this->view->error = "Enter valid code";
 		$pdf->save('/var/www'.$projname.'/reports/groupresolution'.date('Y-m-d').'.pdf');
 		$path = '/var/www'.$projname.'/reports/groupresolution'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
-	}
+	
+                /* $this->_redirect('/groupresolution/index');*/	}
+	
 }

@@ -34,9 +34,14 @@ foreach($this->memberdetails as $memberdetails) {  ?>
 <p align="justify">Respected sir,<br><br>
 <?php //echo $memberdetails['village_id']; 
    $village=$this->Dbobj->fetchvillagedetails($memberdetails['village_id']);
-// echo '<pre>'; print_r($village);
+//echo '<pre>'; print_r($village);
 ?>
-<?php echo $this->groupdetails[0]['group_name']; ?> Group <?php echo $village[0]['villagename'];?> Village <?php echo $village[0]['talukname'];?> Taluk <?php echo $village[0]['distname'];?> District. <?php echo $memberdetails['membername']; ?> <?php if($memberdetails['alias']) { echo '@ '.$memberdetails['alias']; } ?> <?php echo $memberdetails['age']; ?> Age. <br></p>
+<?php echo $this->groupdetails[0]['group_name']; ?> 
+Group <?php echo $village[0]['villagename'];?>
+ Village <?php echo $village[0]['talukname'];?> 
+ Taluk <?php echo $village[0]['distname'];?> 
+ District. <?php echo $memberdetails['membername']; ?> 
+ <?php if($memberdetails['alias']) { echo '@ '.$memberdetails['alias']; } ?> <?php echo $memberdetails['age']; ?> Age. <br></p>
 </TD>
 </TR>
 <TR>

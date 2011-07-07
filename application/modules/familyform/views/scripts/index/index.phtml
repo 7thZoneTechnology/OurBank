@@ -52,7 +52,7 @@ background-color : silver;
 		<th colspan="2">External loan application</th>
 		<tr>
 			<td>Family id</td>
-			<TD><?php echo $this->escape($familydetails['family_id']);?></TD>
+			<TD><?php echo $this->escape($familydetails['id']);?></TD>
 		</tr>
 		<tr>
 			<td>Name of the family owner</td>
@@ -60,7 +60,7 @@ background-color : silver;
 		</tr>
 		<tr>
 			<td>Husbands/Fathers name of the family own family member</td>
-			<TD></TD>
+			<TD><?php echo $this->escape($familydetails['father_name']);?></TD>
 		</tr>
 		<tr>
 			<td>Date of birth</td>
@@ -291,7 +291,7 @@ background-color : silver;
 </form>
 <form action="<?php echo $this->baseUrl();?>/familyform/index/pdfgeneration/membercode/<?php echo $this->membercode ?>" method="POST"
 onClick="window.open('<?php echo $this->baseUrl();?>/familyform/index/reportdisplay/file/familyform<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
-
+<input type="hidden" name="membercode" value="<?php echo $this->id;?>">
            <BR> <input type="submit" value="PDF" id="submit">
 </form>
 	<?php } ?></div>

@@ -84,7 +84,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
             if($groupaddress['address3'] == ""){ $add3 = "";} else { $add3 = $groupaddress['address3']; }
             if($groupaddress['village'] == ""){ $villge = "";} else { $villge = $groupaddress['village']; }
             if($groupaddress['city'] == ""){ $city = "";} else { $city = $groupaddress['city']; }
-            if($groupaddress['district'] == ""){ $district = "";} else { $add3 = $groupaddress['district']; }
+            if($groupaddress['district'] == ""){ $district = "";} else { $district = $groupaddress['district']; }
             if($groupaddress['state'] == ""){ $state = "";} else { $state = $groupaddress['state']; }
             if($groupaddress['zipcode'] == ""){ $zipcode = "";} else { $zipcode = $groupaddress['zipcode']; }
             if($add1 == "" && $add2 =="") {
@@ -111,10 +111,10 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                 $this->view->city = "";
             } if($city == "" && $district!="") {
                 $this->view->city = $district;
-            } if($city !="" && $district =="") {
-                $this->view->city = $city;
-            } if($city !="" && $district !="") {
-                $this->view->city = $city.",".$district;
+            } if($district ="" && $city =="") {
+                $this->view->district = "";
+            } if($district ="" && $city !="") {
+                $this->view->district = $district.",".$city;
             }
     
             if($state == "" && $zipcode =="") {
@@ -174,7 +174,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
             if($groupaddress['address3'] == ""){ $add3 = "";} else { $add3 = $groupaddress['address3']; }
             if($groupaddress['village'] == ""){ $villge = "";} else { $villge = $groupaddress['village']; }
             if($groupaddress['city'] == ""){ $city = "";} else { $city = $groupaddress['city']; }
-            if($groupaddress['district'] == ""){ $district = "";} else { $add3 = $groupaddress['district']; }
+            if($groupaddress['district'] == ""){ $district = "";} else { $district = $groupaddress['district']; }
             if($groupaddress['state'] == ""){ $state = "";} else { $state = $groupaddress['state']; }
             if($groupaddress['zipcode'] == ""){ $zipcode = "";} else { $zipcode = $groupaddress['zipcode']; }
             if($add1 == "" && $add2 =="") {
@@ -201,10 +201,10 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                 $this->view->city = "";
             } if($city == "" && $district!="") {
                 $this->view->city = $district;
-            } if($city !="" && $district =="") {
-                $this->view->city = $city;
-            } if($city !="" && $district !="") {
-                $this->view->city = $city.",".$district;
+            } if($district ="" && $city =="") {
+                $this->view->district = "";
+            } if($district ="" && $city !="") {
+                $this->view->district = $district.",".$city;
             }
     
             if($state == "" && $zipcode =="") {
@@ -263,24 +263,24 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $y1 = 725;
         $page->drawText($text[0], $x0, 760);
 
-//         $page->drawLine(50, 740, 550, 740);
-//         $page->drawLine(50, 720, 550, 720);
+//        // $page->drawLine(50, 740, 550, 740);
+//        // $page->drawLine(50, 720, 550, 720);
 
-        $page->drawText($text[1], $x1, $y1);
-        $page->drawText($groupname, $x1+50, $y1);
-        $page->drawText($groupname, $x1+50, $y1);
+       $page->drawText($text[1], $x1, $y1);
+       $page->drawText($groupname, $x1+50, $y1);
+       $page->drawText($groupname, $x1+50, $y1);
 
         $page->drawText($text[2], $x2, $y1);
         $page->drawText($this->view->dateconvertor->phpnormalformat($createddate), $x2 + 85, $y1);
         $page->drawText($this->view->dateconvertor->phpnormalformat($createddate), $x2 + 85, $y1);
-//         $page->drawLine(50, $y1-5, 550, $y1-5);
+         $page->drawLine(50, $y1-5, 550, $y1-5);
 
 
        $page->drawText($text[5], $x1, $y1-15);
-        $page->drawText($text[4], $x2, $y1-15);
-        $page->drawText($groupcode,$x2 + 85, $y1-15);
-        $page->drawText($groupcode,$x2 + 85, $y1-15);
-//         $page->drawLine(50, $y1-5, 550, $y1-5);
+       $page->drawText($text[4], $x2, $y1-15);
+       $page->drawText($groupcode,$x2 + 85, $y1-15);
+       $page->drawText($groupcode,$x2 + 85, $y1-15);
+         $page->drawLine(50, $y1-5, 550, $y1-5);
 
         if(!$addressline1){
         $page->drawText($this->view->addressline1, $x1, $y1-30);
@@ -301,15 +301,16 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
 
 
         // declaration message
-        $page->drawText($content, $x1, $y1-75);
+//         $page->drawText($content, $x1, $y1-75);
 
         // List representatives
         $i=1;
         $y1 = $y1-85;
 
         foreach($repmembers as $representatives){
-        $repname = $i++.") ".$representatives['membername'];
-        $page->drawText($repname, $x1, $y1);
+//         $repname = $i++.") ".$representatives['membername'];
+       // echo $repname;
+//         $page->drawText($repname, $x1, $y1);
         $y1 = $y1-10;
         }
         $y1 = $y1-25;
@@ -327,7 +328,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $j=1;
         foreach($groupmembers as $groupmem){
             $page->drawText($j++, $x1, $y1);
-            $page->drawText($groupmem['membername'], $x5, $y1);
+            //$page->drawText($groupmem['membername'], $x5, $y1);
             $page->drawLine(50, $y1-5, 550, $y1-5);
             $y1 = $y1 - 15;
         }
@@ -358,7 +359,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
 
         $pdf->save('/var/www/'.$projname.'/reports/sbwithdrawal.pdf');
         $path = '/var/www/'.$projname.'/reports/sbwithdrawal.pdf';
-        chmod($path,0777);
+        //chmod($path,0777);
     }
 }
 

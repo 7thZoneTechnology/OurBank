@@ -182,9 +182,10 @@ $(document).ready(
 <table id="hor-minimalist-b" class="agriculture" <?php $records=sizeof($this->agriculture); $emt=0; $i =0;  ?>>
 <tr> 
     <th><?php echo $this->translate("* ಭೂ ಮಾಲೀಕತ್ವ "); ?></th>
-    <th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ "); ?></th>
+    <!--<th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ "); ?></th>-->
     <th><?php echo $this->translate("ಎಕರೆ"); ?></th>
     <th><?php echo $this->translate("ಗುಂಟೆ"); ?></th>
+    <th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ "); ?></th>
     <th><?php echo $this->translate("* ಮಾಲೀಕತ್ವ  ವಿಧ"); ?></th>
     <th><?php echo $this->translate("ಸರ್ವೇ ನಂಬರ್"); ?></th>
     <th><?php echo $this->translate("* ಗ್ರಾಮ"); ?></th>
@@ -202,19 +203,21 @@ $(document).ready(
                         </select>
             </td>  
 
+			<td><INPUT type="text" name = "acre[]" size="5"  class="number EitherOr"  id="acre1" maxlength="3"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number"  min="0" max="39"></td>
 
-<td><select name = ownername[] class="selectvalid required">
+            <td><select name = ownername[] class="selectvalid required">
                     <option value="">Select</option>
 
 			<?php foreach ($this->owner as $owner) { ?>
 
-			<option value="<?php echo $owner['landowner_name']?>"><?php echo $owner['name']?></option>
+			<option value="<?php echo $owner['id']?>"><?php echo $owner['id']; echo ".  "; echo $owner['name_regional']?></option>
 			<?php } ?>
              </select>
             </td> 
 			
-			<td><INPUT type="text" name = "acre[]" size="5"  class="number EitherOr"  id="acre1" maxlength="3"></td>
-            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number"  min="0" max="39"></td>
+<!--			<td><INPUT type="text" name = "acre[]" size="5"  class="number EitherOr"  id="acre1" maxlength="3"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number"  min="0" max="39"></td>-->
  			
 			<td><select name = acquistion[] class="selectvalid required">
               	<option value="">Select</option>
@@ -230,44 +233,46 @@ $(document).ready(
 								<td><select name = villagename[] class="selectvalid required">
                     <option value="">Select</option>
 
-                                <?php foreach ($this->village as $village) { ?>
-                                <option value="<?php echo $village['id']?>"><?php echo $village['id']; echo".  "; echo $village['villagenames']?></option>
-                                <?php } ?>
+                                <?php foreach ($this->village as $village) {  if(!empty($village['villagenames'])) { ?>
+                                <option value="<?php echo $village['vill_id']?>"><?php echo $village['vill_id']; echo".  "; echo $village['villagenames']?></option>
+                                <?php  } } ?>
                             </select>
             </td> 
             <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
         </tr>
 
  <?php } ?>
-           
+
             <?php
-                foreach ($this->agriculture as $agri) { $i++; ?>
+                foreach ($this->agriculture as $agri) { $i++;?>
                 <tr<?php if ($i==1) { ?> id="tmp" <?php } ?>>
               <td><select name = "tenant[]" class="required">
                                                   <option value="">select</option>
 
-                    <?php foreach ($this->land_details as $assetdetails) {  ?>
+                    <?php foreach ($this->land_details as $assetdetails) { ?>
 
                            <option <?php if($assetdetails['id'] == $agri["land_id"] ) { echo 'selected="selected"';?>
                            <?php } ?> value="<?php echo $assetdetails['id']?>"><?php echo $assetdetails['id']; echo ".  "; echo $assetdetails['name_regional']?></option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
  
+                    <td><INPUT type="text" name = "acre[]" id="acre<?php echo $i; ?>" size="5"   class="number EitherOr" maxlength="3" value = "<?php echo $agri["acre"];?>"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number" maxlength="2" min="0" max="39" value="<?php echo $agri["gunta"]; ?>"></td>
 
 					<td><select name = "ownername[]" class="required">
                                       <option value="">Select</option>
 
                     <?php foreach ($this->owner as $owner) {  ?>
 					
-					<option <?php if($agri["landowner_name"]==$owner['landowner_name'] ) { echo 'selected="selected"';?>
-					<?php } ?> value="<?php echo $owner['id']?>"><?php  echo $owner['name']?></option>
+					<option <?php if($agri["landowner_name"]==$owner['id'] ) { echo 'selected="selected"';?>
+					<?php } ?> value="<?php echo $owner['id']?>"><?php echo $owner['id']; echo ".  "; echo $owner['name_regional']?></option>
                     <?php  } $dateconvert= new App_Model_dateConvertor();
 					?></select></td>
 
 
 
-                    <td><INPUT type="text" name = "acre[]" id="acre<?php echo $i; ?>" size="5"   class="number EitherOr" maxlength="3" value = "<?php echo $agri["acre"];?>"></td>
-            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number" maxlength="2" min="0" max="39" value="<?php echo $agri["gunta"]; ?>"></td>
+<!--                    <td><INPUT type="text" name = "acre[]" id="acre<?php echo $i; ?>" size="5"   class="number EitherOr" maxlength="3" value = "<?php echo $agri["acre"];?>"></td>
+            <td><INPUT type="text" name = "gunta[]" size="5" class="acre number" maxlength="2" min="0" max="39" value="<?php echo $agri["gunta"]; ?>"></td>-->
 
 
 
@@ -288,12 +293,12 @@ $(document).ready(
 
 			<td><select name = "villagename[]" class="required">
                 <option value="">Select</option>
-                <?php foreach ($this->village as $village)  {  ?>
-                <option  <? if($agri["villagename"] == $village["id"] ) { echo 'selected="selected"'; ?>
-                <?php } ?>   value="<?php echo $village['id']?>"><?php echo $village['villagenames']?></option>
-                <?php }  ?></select></td>
+                <?php foreach ($this->village as $village)  { if(!empty($village['villagenames'])) { ?>
+                <option  <? if($agri["villagename"] == $village['vill_id']) { echo 'selected="selected"'; ?>
+                <?php } ?>   value="<?php echo $village['vill_id']?>"><?php echo $village['vill_id']; echo ".  "; echo $village['villagenames'];?></option>
+                <?php } }  ?></select></td>
             </td> 
-           
+
             <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
         </tr>
         <?php } ?>

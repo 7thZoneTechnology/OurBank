@@ -131,7 +131,8 @@ if ($this->_request->getParam('field1')) {
             $OffName=$officename->officeNamefetch($this->_request->getParam('field1'));
             foreach($OffName as $OffName){} 
                 $this->view->officeName=$OffName['name'];
-            $page->drawText($this->view->translate("Branch Name : "),$x1,$y1);    $page->drawText($OffName['name'],$x2,$y1); $y1-=20;
+            $page->drawText($this->view->translate("Branch Name : "),$x1,$y1);  
+  $page->drawText($OffName['name'],$x2,$y1); $y1-=20;
 }
 
 //point to draw Side line
@@ -246,7 +247,7 @@ $page->drawLine($xy, $y1, $xy, $startlinepoint);//1st vertical line
             $totalamount=0;
             $sum=0;
             foreach($result as $result){
-
+					$y1=$y1+5;
                     $page->drawText($result['productname'],$x1,$y1);
                     $page->drawText($result['prodoffername'],$x2,$y1);
                     $page->drawText($result['countvalue'],$x3,$y1); 

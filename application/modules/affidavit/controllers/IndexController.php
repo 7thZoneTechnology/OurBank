@@ -158,6 +158,7 @@ if($y1>45){
         $page->drawText('Respected sir,',$x1, $y1=$y1-35);
         if($memberdetails['alias']) { $alias="@ ".$memberdetails['alias']; } else { $alias=''; }
 
+//echo $memberdetails['village_id'];
         $village=$this->view->Dbobj->fetchvillagedetails($memberdetails['village_id']);
 
         $subject=$memberdetails['membername']." ".$alias." ".$memberdetails['age']." Age ".$this->view->groupdetails[0]['group_name']." Group ".$village[0]['villagename']." Village ".$village[0]['talukname']." Taluk ".$village[0]['distname']." District.";
@@ -169,7 +170,7 @@ if($y1>45){
             if(substr($this->view->groupcode,4,1) == 2) {  
             $newtext = wordwrap($shgdeclaration, 30, "<br />");
             $pieces = explode("<br />", $newtext);
-                    $page->drawText($pieces,$x1, $y1);
+                    $page->drawText($pieces[0],$x1, $y1);
             }
             else if(substr($this->view->groupcode,4,1) == 3) { 
             $newtext = wordwrap($jlgdeclaration, 130, "<br />");

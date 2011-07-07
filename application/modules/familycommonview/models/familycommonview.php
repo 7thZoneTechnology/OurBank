@@ -97,8 +97,9 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
                         ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name_regional'))
-                        ->join(array('c'=>'ourbank_familymember'),'c.id =a.landowner_name',array('c.name as membername'))
+                       // ->join(array('c'=>'ourbank_familymember'),'c.id =a.landowner_name',array('c.name as membername'))
                         ->join(array('d'=>'ourbank_master_villagelist'),'d.id =a.villagename',array('d.name_regional as villagenames'))
+                        ->join(array('c'=>'ourbank_master_landacquisition'),'c.id =a.landowner_name',array('c.name_regional as membername'))
                         ->where('a.family_id=?',$familyid);
 //        die($select->__toString($select));
        $result=$this->fetchAll($select);

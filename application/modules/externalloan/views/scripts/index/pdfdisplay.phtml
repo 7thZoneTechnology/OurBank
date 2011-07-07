@@ -1,4 +1,4 @@
-<?php } if($this->groupresult){
+<?php  if($this->groupresult){
 $results = $this->groupresult;
 // echo '<pre>'; print_r($results);
 foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
@@ -9,10 +9,17 @@ foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
         <tr><td align="center" colspan="2"><b>( EXTERNAL LOAN REQUEST )</b></td></tr>
         <br>
 
-        <tr><TD>Group name :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['name']."</font>"?></br>
-                Group Address :&nbsp;<?php echo "<font color=green>".$result['address1']."</font>"?></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['city']."</font>"?></br> &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<?php echo "<font color=green>".$result['state']."</font>"?><br><br>
-                Communication:Phone/Mobile :&nbsp;<?php echo "<font color=green>".$result['mobile']."</font>"?></TD>
+        <tr><TD>Group name &nbsp;&nbsp;&nbsp;&nbsp;:
+                <?php echo "<font color=green>".$result['name']."</font>"?></br>
+                Group Address :&nbsp;<?php echo "<font color=green>".$result['address1']."</font>"?></br>
+                Address2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :<?php echo "<font color=green>".$result['address2']."</font>"?></br>
+                
+                
+                city&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php echo "<font color=green>".$result['city']."</font>"?></br> &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
 
+                <?php echo "<font color=green>".$result['state']."</font>"?><br><br>
+                Communication:Phone :&nbsp;<?php echo "<font color=green>".$result['telephone']."</font>"?><br><!--</TD>-->
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mobile :&nbsp;<?php echo "<font color=green>".$result['mobile']."</font>"?></td>
 
            <TD align="left" width=30%> Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php echo "<font color=green>".date('d-m-Y')."</font>"?></br>
                 Group code :<?php echo "<font color=green>".$result['groupcode']."</font>"?></br>

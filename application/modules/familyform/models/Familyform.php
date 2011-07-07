@@ -39,7 +39,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
 
 
 				
-		// die($select->__toString($select));
+// 		 die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
    	}
