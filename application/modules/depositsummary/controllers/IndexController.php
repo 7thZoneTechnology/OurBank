@@ -131,17 +131,16 @@ if ($this->_request->getParam('field1')) {
             $OffName=$officename->officeNamefetch($this->_request->getParam('field1'));
             foreach($OffName as $OffName){} 
                 $this->view->officeName=$OffName['name'];
-            $page->drawText($this->view->translate("Branch Name : "),$x1,$y1);  
-  $page->drawText($OffName['name'],$x2,$y1); $y1-=20;
+            $page->drawText($this->view->translate("Branch Name : "),$x1,$y1);    $page->drawText($OffName['name'],$x2,$y1); $y1-=20;
 }
 
 //point to draw Side line
 $startlinepoint=$y1;
 
-            $page->drawLine($xx, $y1, $xy, $y1); $y1-=15;
+            $page->drawLine($xx, $y1, $xy, $y1); $y1-=20;
             $page->drawText($text[1],$x1,$y1);                   $page->drawText($text[2],$x2,$y1); 
-            $page->drawText($text[3],$x3,$y1);                   $page->drawText($text[4],$x4,$y1); $y1-=10;
-            $page->drawLine($xx, $y1, $xy, $y1); $y1-=15;
+            $page->drawText($text[3],$x3,$y1);                   $page->drawText($text[4],$x4,$y1); $y1-=5;
+            $page->drawLine($xx, $y1, $xy, $y1); $y1-=20;
 
         $this->view->depositAmount = 0;
         $this->view->withdrawlAmount = 0;
@@ -166,12 +165,13 @@ $startlinepoint=$y1;
             $withdrawl=0;
             $totalamount=0;
             $sum=0;
+
             foreach($result as $result){
 
                     $page->drawText($result['productname'],$x1,$y1);
                     $page->drawText($result['prodoffername'],$x2,$y1);
                     $page->drawText($result['countvalue'],$x3,$y1); 
-
+$y1-=15;
                 $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
                 $this->view->accountBalanc = $accountBalanc;
                       foreach($accountBalanc as $accountBalanc){
@@ -247,7 +247,7 @@ $page->drawLine($xy, $y1, $xy, $startlinepoint);//1st vertical line
             $totalamount=0;
             $sum=0;
             foreach($result as $result){
-					$y1=$y1+5;
+
                     $page->drawText($result['productname'],$x1,$y1);
                     $page->drawText($result['prodoffername'],$x2,$y1);
                     $page->drawText($result['countvalue'],$x3,$y1); 
@@ -289,7 +289,7 @@ $page->drawLine($xy, $y1, $xy, $startlinepoint);//1st vertical line
                    $page->drawLine($xx, $y1, $xy, $y1);$y1=18;
                     $page->drawText("Total",$x3,$y1);
                      $pos=position(sprintf("%4.2f",$sum));
-                    $page->drawText(sprintf("%4.2f",$sum),$pos,$y1);$y1=10;
+                    $page->drawText(sprintf("%4.2f",$sum),$pos,$y1);$y1=15;
                     $page->drawLine($xx, $y1, $xy, $y1);
 
 $page->drawLine($xx, $y1, $xx, $startlinepoint);//1st vertical line
