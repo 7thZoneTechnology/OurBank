@@ -99,15 +99,13 @@
     </TABLE>
 </div>
 <?php } ?>
-<div style="float:left;width:800px">
 <?php if (count($this->ledegerListAssets)) { ?>
-	<h3 align="right">From <?php echo "<font color='#039'>".$this->field1."</font>"; ?> </h3>
-	<h3 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h3> 
+	<h3 align="right">From <?php echo "<font color='#039'>".$this->datefrom."</font>"; ?> </h3>
+	<h3 align="right"> To <?php echo "<font color='#039'>".$this->dateto."</font>"; ?></h3> 
 	<?php foreach($this->ledegerListAssets as $ledegerListAssets) { $type = $ledegerListAssets["subheader"]; }?>
 	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
-
 	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
-    <legend>Assets</legend>
+    <div style="float:left;width:800px">
     <TABLE id="hor-minimalist-b" width="80%">
      <tr>
         <TH allign = "right">Particular</TH>
@@ -130,7 +128,7 @@
 
 
      <?php } } } ?>
-                 <TD align = "right"><?php echo $assetsCash ;?></TD>
+                 <TD align = "left"><?php echo $assetsCash ;?></TD>
 
              </tr>
      <TR>
@@ -156,16 +154,13 @@
             <TH allign = "right"></TH>
             <TH align = "right"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]);?></TH>
      </tr>
- <form action="<?php echo $this->baseUrl();?>/reports/generalledger/pdfdisplay" method="POST"
+ <!--<form action="<?php //echo $this->baseUrl();?>/reports/generalledger/pdfdisplay" method="POST"
 onClick="window.open('/generalledger/reportdisplay/file/GL.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <br><input type="submit" value="PDF" id="submit">
-     		<input type="hidden" name="date1" value="<?php echo $this->ledegerListAssets; ?>">
-			<input type="hidden" name="date2" value="<?php echo $this->openingCashAssets; ?>">
+     		<input type="hidden" name="date1" value="<?php //echo $this->ledegerListAssets; ?>">
+			<input type="hidden" name="date2" value="<?php// echo $this->openingCashAssets; ?>">
 
-</form>
-    <?php } }?>
-
- </TABLE>
-
-
+</form>-->
+ 	</TABLE>
 </div>
+    <?php } }?>

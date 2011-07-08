@@ -70,7 +70,7 @@ class Depositsummary_IndexController extends Zend_Controller_Action
                     $this->view->office_id=$office_id;
                     $this->view->result = $savingsummary->fetchSavingsDetails($office_id); 
                     $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
-        
+
                     $this->view->accountBalanc = $accountBalanc;
                     if ((!$this->view->result) && (!$accountBalanc)) {
                         echo "<font color='RED' size = '3'>No Savings Account</font>";	

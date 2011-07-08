@@ -298,7 +298,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             }
             // Bank Asset Dt entry
             $bankEntry = array('office_id'=>$officeid,
-                        'glsubcode_id_to'=>$bankGl,
+                        'glsubcode_id_to'=>$gl,
                         'transaction_id'=>$tranID,
                         'debit' => $this->_request->getPost('Amount'),
                         'record_status'=>'3');

@@ -72,7 +72,7 @@ class Overduelist_Model_Overduelist extends Zend_Db_Table {
                     (e.id like '%' '$bank' '%') 
                     GROUP BY 
                     `a`.`account_id`";
-             //echo $sql;
+//             echo $sql;
             $result = $this->db->fetchAll($sql);
             return $result;
      }

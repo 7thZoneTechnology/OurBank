@@ -32,18 +32,17 @@ function Getofficer(id,path) {
                     <TABLE id="hor-minimalist-b">
 					<th colspan="4">Overdue List</th>
                     <tr>
-                        <td class="label">Branch:</td>
+                        <td >Branch:</td>
                         <td ><? echo $this->form->bank_id;?></td>
-                        <td class="label">Loan officer:</td>
+                        <td >Loan officer:</td>
                         <td id="loandiv"><? echo $this->form->loanofficer;?></td>
                     </tr>
-                    <tr>					
+                    <tr>
                             <td class="label">Date:</td>
-                            <td ><? echo $this->form->datefrom;?></td>
+                            <td ><? echo $this->form->datefrom;?></td><td colspan="2"></td>
                     </tr>
-                    </TABLE><br>
-                    <input type="submit" name="Search" id="Submit" value="Search">	
-	
+                	<tr><TD><input type="submit" name="Search" id="Submit" value="Search"></TD></tr>
+                    </TABLE>
 </form>
     </div>
 <?php }  ?>

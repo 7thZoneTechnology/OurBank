@@ -58,7 +58,7 @@
 <?php $dateconvertor = new App_Model_dateConvertor();?>
         <?php foreach ($this->paginator as $product ): ?>
     <tr>
-        <td><a href="<?php echo $this->baseUrl()."/category/index/categoryview/id/".$product['id']; ?>">
+        <td><a href="<?php echo $this->baseUrl()."/productcommonview/index/productview/id/".$product['id']; ?>">
                      <?php echo $this->escape($product['name']); ?></a></td>
     <td><?php echo $this->escape($product['categoryname']);?></td>
     <td><?php echo $this->escape($product['description']);?></td>

@@ -211,8 +211,9 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
         {
             $db = $this->getAdapter();
             $sql = 'SELECT (SUM(amount_to_bank)-SUM(amount_from_bank)) as bal FROM ourbank_transaction where account_id in(select account_id from ourbank_accounts where account_number="'.$account_number.'")';
+//   	echo $sql;
             $result = $db->fetchAll($sql);
-        return $result;
+       		return $result;
         }
 
         public function transactionMode()

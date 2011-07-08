@@ -26,7 +26,7 @@ background-color : silver;
 <?php if(!$this->groupname){ ?>
 <!--search form action !-->
 <fieldset>
-	<legend>Resolution to withdraw money</legend>
+	<legend>Resolution to withdraw money from the bank account </legend>
 		<form action="<?php echo $this->baseUrl();?>/groupresolution" method="POST">
 			<table class="fieldsets">
 					<tr>
@@ -45,11 +45,14 @@ background-color : silver;
   <?php if($this->groupname){ ?>
 	<?php foreach($this->groupname as $member) : ?>
 	<table width="100%" border="2" id="hor-minimalist-b">	
-	<th colspan="4">Group Resolution</th>
+	<th colspan="4"><?php echo "<font color=green>";?>Group Resolution</th>
 
-<tr><TD><b>Group name :</b></td><td><?php echo $member['groupname'];?></TD><td align="left"><b>Date :</b></td><td><?php echo date('d-m-Y');?></td></tr>
-<tr><TD><br><b>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b></td><td><?php  echo $member['address1'];?><br><?php  echo $member['address2'];?><br><?php  echo $member['address3'];?><br><?php  echo $member['city'];?><br><?php  echo $member['state'];?></td>
-<td align="left"><b>Group code :</b></td><td><?php  echo $member['groupcode'];?></td></tr>
+<tr><TD><b>Group name :</b><?php echo $member['groupname'];?></TD>
+<td align="left"><b>Date :</b><?php echo date('d-m-Y');?></td></tr>
+<tr><TD><br><b>Address:</b><?php  echo $member['address1'];?><?php  echo $member['address2'];?><?php  echo $member['address3'];?>
+<br><b>City&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['city'];?>
+<br><b>Sate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['state'];?></td>
+<td align="left"><b>Group code :</b><?php  echo $member['groupcode'];?></td></tr>
 
 
 

@@ -106,7 +106,7 @@ class User_Model_User extends Zend_Db_Table
                 ->join(array('e'=>'ourbank_grant'),'a.grant_id = e.id',array('name as grant'))
             ->join(array('f'=>'ourbank_master_department'),'a.department = f.id',array('name as department'));
 
-	//	die($select->__toString($select));
+// 	die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
 		}

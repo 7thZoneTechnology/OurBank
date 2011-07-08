@@ -41,6 +41,8 @@
                 <TD ><?php echo $accountDetails["office_name"];?></TD>
                 <TD>Balance :</TD>
                 <TD ><?php $accno=$accountDetails["account_number"];
+
+
 			$bal=new Savingsledger_Model_Savingsledger();
 			$balance=$bal->balance($accno);	
 			foreach($balance as $balance1){ echo $balance1['bal'];}
@@ -92,7 +94,7 @@
                    <td  class="label"><?php echo $transaction->amount_from_bank;$db+=$transaction->amount_from_bank;?></td>
 		<?php } ?>
 		<?php if ($transaction->balance) { ?>
-                  <td  class="label"><?php echo $transaction->balance; /*$bal+=$transaction->balance;*/?></td>
+                  <td  class="label"><?php echo $transaction->balance; $bal+=$transaction->balance;?></td>
 		<?php } else { ?>
                    <td  class="label">----</td>
 		<?php } ?>

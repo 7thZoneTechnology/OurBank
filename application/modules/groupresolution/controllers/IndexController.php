@@ -58,10 +58,10 @@ class Groupresolution_IndexController extends Zend_Controller_Action
 //             // create instance for groupcommon model page
             $groupcommon=new Groupresolution_Model_Groupresolution();
             $group_name=$groupcommon->getgroup($id); // get group details
-
-// // //            Zend_Debug::dump($group_name);
+            
+    //Zend_Debug::dump($group_name);
             if($group_name) {
- $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
+            $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
             $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
                 foreach($group_location as $location){
                         $this->view->latitude = $location['latitude'];
@@ -71,8 +71,11 @@ class Groupresolution_IndexController extends Zend_Controller_Action
             $this->view->groupname=$group_name;
             $this->view->getgroupaccount=$getgroupaccount;
     
-            $group_members=$groupcommon->getgroupmembers($id); // get group members
-            $this->view->groupmembers=$group_members;
+            $grou_members=$groupcommon->getgroupmembers($id); // get group members
+          // Zend_Debug::dump($grou_members);
+
+            $this->view->groupmembers=$grou_members;
+
             $dbobj= new Groupmdefault_Model_Groupdefault();
             $groupheaddetails = $dbobj->Getgrouphead($id); //Get group head
                 foreach($groupheaddetails as $grouphead){
@@ -112,6 +115,8 @@ $this->view->error = "Enter valid code";
 		//$fetchMeetings=new Meetingreport_Model_Meetingreport();
 
 		$pdf = new Zend_Pdf();
+		
+		// $encoding = 'UTF-8';
 		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
 // 		 $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4_LANDSCAPE);
 		$pdf->pages[] = $page;
@@ -158,7 +163,7 @@ $this->view->error = "Enter valid code";
         $group_name=$groupcommon->getgroup($id); // get group details
         $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
 
-
+  // Zend_Debug::dump();
         $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
         foreach($group_location as $location){
                 $this->view->latitude = $location['latitude'];

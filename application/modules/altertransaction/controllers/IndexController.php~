@@ -53,12 +53,12 @@ class Altertransaction_IndexController extends Zend_Controller_Action
                 $this->view->form->transactionType->setValue($tran['tranType']);
             }
 		
-	  
+	}  
 					$recordStatus = $this->view->tranModel->recordStatus($vNum);
                     $this->view->member3 = $recordStatus;
                     foreach($this->view->member3 as $recordStatus1) {
                             $this->view->result1 =$recordStatus1['recordstatus_id'];
-						}}
+						}
 		if(!$this->view->result)
 			{ echo "<font color=red>Record Not found..Try Again...</font>";}
     }

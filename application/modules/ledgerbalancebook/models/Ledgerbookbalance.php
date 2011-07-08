@@ -35,7 +35,7 @@ protected $_name = 'ourbank_transaction';
                     D.id as glsubcode_id,
                     D.header as subheader,
 		    D.glsubcode as glsubcode,
-                    (sum(A.credit)-sum(A.debit)) as assetsBalance
+                    (sum(A.debit)-sum(A.credit)) as assetsBalance
                     from 
 		    ourbank_Assets A,
 		    ourbank_glcode B,

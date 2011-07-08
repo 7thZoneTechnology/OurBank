@@ -38,7 +38,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 	<h5 align="right"><?php echo $this->translate('As of'); ?> <?php echo "<font color='#039'>".$this->field1."</font>"; ?></h5>
 
 	<h5 style="text-align:right">* <?php echo $this->translate('Amount in'); ?> <font color="red"><?php echo $this->translate('Rs'); ?></font></h5>
-<div style="float:left;width:375px"> 
+<div style="float:left;width:370px"> 
         <?php 
 		$i = 0;
 		$j = 0;
@@ -125,12 +125,13 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 			<?php } } ?>
 	</table>
   </div>
+<div style="float:left;width:370px">
+
 <?php
 
  } $k=0;$j=0; ?>
 
 <?php if($this->loanDedit) { ?>
-<div style="float:left;width:375px">
 <h5>Debit</h5>
 <table id="hor-minimalist-s">
 		<TR>
@@ -175,7 +176,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 					<td></td>
 					<td></td>
 				 <?php if ($totalDebit != "0") { ?>
-						<b align = "right"><b><?php echo sprintf("%4.2f", $totalDebit); ?></b></td>
+						<td align = "right"><b><?php echo sprintf("%4.2f", $totalDebit); ?></b></td>
 						<?php } else { ?>
 						<td align = "right"><b>----</b></td>
 						<?php } ?>

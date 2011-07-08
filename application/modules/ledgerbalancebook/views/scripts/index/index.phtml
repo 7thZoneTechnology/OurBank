@@ -41,7 +41,7 @@
             <TR>
                 <td><?php echo $savingsDebit["glsubcode"];?></td>
                 <td><?php echo $savingsDebit["subheader"];?></td>
-                <td align="right"><?php echo $savingsDebit["liabilitiesBalance"];?></td>
+                <td align="left"><?php echo $savingsDebit["liabilitiesBalance"];?></td>
                 <?php $totalcredit=$totalcredit+$savingsDebit["liabilitiesBalance"]; ?>
             </td>
             <?php }?>
@@ -51,7 +51,7 @@
             <tr>
                 <TD></TD>
                 <TD>TOTAL</TD>
-                <TD align="right"><?php echo sprintf("%4.2f", $totalcredit); ?></TD>
+                <TD align="left"><?php echo sprintf("%4.2f", $totalcredit); ?></TD>
             </tr>
  			<?php } else {?>
 				<tr>
@@ -75,7 +75,7 @@
             <tr>
                 <td><?php echo $savingsDebit["glsubcode"];?></td>
                 <td><?php echo $savingsDebit["subheader"];?></td>
-                <td align="right"><?php echo $savingsDebit["assetsBalance"];?></td>
+                <td align="left"><?php echo $savingsDebit["assetsBalance"];?></td>
                 <?php  $totaldebit=$totaldebit+$savingsDebit["assetsBalance"]; ?>
             </TR>
             <?php }?>
@@ -86,7 +86,7 @@
 			             <tr>
                 <TD></TD>
                 <TD>TOTAL</TD>
-                <TD align="right"><?php echo sprintf("%4.2f", $totaldebit); ?></TD>
+                <TD align="left"><?php echo sprintf("%4.2f", $totaldebit); ?></TD>
             </tr>
             <?php } else {?>
 				<tr>
