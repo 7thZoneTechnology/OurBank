@@ -43,6 +43,7 @@ class Receipts_IndexController extends Zend_Controller_Action {
 	}
 
 	public function indexAction() {
+
 		$storage = new Zend_Auth_Storage_Session();
 		$data = $storage->read();
 		if(!$data){
@@ -61,7 +62,8 @@ class Receipts_IndexController extends Zend_Controller_Action {
 
                 $glcode=$receipts->listOfglcode();
                 foreach($glcode as $glcodes) {
-                    $receiptsform->fromglcode->addMultiOption($glcodes['id'],$glcodes['header']);
+//                     $receiptsform->fromglcode->addMultiOption($glcodes['id'],$glcodes['header']);
+                    $receiptsform->fromglcode->addMultiOption($glcodes['id'],$glcodes['header']." -[".$glcodes['glcode']."]");
 
                     $receiptsform->toglcode->addMultiOption($glcodes['id'],$glcodes['header']." -[".$glcodes['glcode']."]");
                 }
@@ -73,17 +75,20 @@ class Receipts_IndexController extends Zend_Controller_Action {
 
 
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+
 			$formData = $this->_request->getPost();
 			if ($this->_request->isPost()) {
-				$paymenttype=$this->view->paymenttype=$this->_request->getParam('paymenttype');
+
+				$paymenttype=$this->view->paymenttype=$this->_request->getParam('paymenttype'); 
 				if( $paymenttype ==1 || $paymenttype ==""  ) {
 					$receiptsform->paymenttype_details->setRequired(false);
 				}
 				if ($receiptsform->isValid($formData)) {
-					$branchid = $this->_request->getParam('subOffice1');
-					$fromglcode = $this->_request->getParam('fromglcode');
+
+					$branchid = $this->_request->getParam('subOffice1'); 
+					$fromglcode = $this->_request->getParam('fromglcode'); 
 					$fromglsubcodeid = $this->_request->getParam('glsubcodeid');
-					$toglcode = $this->_request->getParam('toglcode');
+					$toglcode = $this->_request->getParam('toglcode'); 
 					$toglsubcodeid = $this->_request->getParam('toglsubcodeid');
 					$amount = $this->_request->getParam('amount');
 					$transactiondate = $this->_request->getParam('transactiondate');
@@ -91,25 +96,25 @@ class Receipts_IndexController extends Zend_Controller_Action {
 					$paymenttype_details = $this->_request->getParam('paymenttype_details');
 
                                         $receipts= new Receipts_Model_Receipts();
+                                        if ($fromglcode) {
+                                                    $fromledgercode=$receipts->listOfledgercode($fromglcode);
+                                                    foreach($fromledgercode as $fromledgercodes) {
+                                                            $fromledgertype=$fromledgercodes['name'];
+                                                    } }
 
-                                       $fromledgercode=$receipts->listOfledgercode($fromglcode);
-                                       foreach($fromledgercode as $fromledgercodes) {
-                                            $fromledgertype=$fromledgercodes['description'];
-                                       }
-
-
-                                        $toledgercode=$receipts->listOfledgercode($toglcode);
-                                        foreach($toledgercode as $toledgercodes) {
-                                            $toledgertype=$toledgercodes['description'];
-                                        }
+                                        if ($toglcode) {
+                                                    $toledgercode=$receipts->listOfledgercode($toglcode);
+                                                    foreach($toledgercode as $toledgercodes) {
+                                                        $toledgertype=$toledgercodes['name'];
+                                                    } }
 
 
                                         if($toglsubcodeid=="") {
                                             echo "select the to GL code again";
                                         }elseif($branchid=="") {
                                             echo "select the Office type again";
-                                        } elseif($fromglsubcodeid=="")  {
-                                            echo "select the from GL code again";
+                                       // } elseif($fromglsubcodeid=="")  {
+                                        //    echo "select the from GL code again";
                                         } else {
 
                         $sessionName = new Zend_Session_Namespace('ourbank');
@@ -124,8 +129,9 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                 $tablenamefrom="ourbank_Assets";
                             } elseif($fromledgertype=="Liabilities") {
                                 $tablenamefrom="ourbank_Liabilities";
-                            }
+                            } }
                         }
+
 
                         if($toledgertype=="Income") {
                             $tablenameto="ourbank_Income";
@@ -157,18 +163,18 @@ class Receipts_IndexController extends Zend_Controller_Action {
 			$transaction_id=$receipts->addtransactions($Transactiondata);
 
                         if($fromglcode) {
-                            $receipts->addfromaccounts($tablenamefrom,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+                             $receipts->addfromaccounts($tablenamefrom,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
                         }
-                        $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+                             $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
                                         }
                                 }
+$this->_redirect('transaction');
                         }
-			$this->_redirect('transaction');
+			//$this->_redirect('transaction');
 
 		}
 // 			$this->_redirect('transaction');
 
-	}
 
         function glsubcodeAction()
         {
@@ -196,5 +202,58 @@ class Receipts_IndexController extends Zend_Controller_Action {
         $this->view->branchs = $individual->getBranchEdit($office_id);
 
     }
+
+        public function getbalanceAction()
+        {
+            $this->_helper->layout->disableLayout();
+            $glsubcode=$this->_request->getParam('glsubcode');
+            $this->view->adm = new App_Model_Adm();
+            $receipts= new Receipts_Model_Receipts();
+            $toledgertype=''; $tablenameto='';
+            if ($glsubcode) {
+                $toledgercode=$receipts->listOfledgercode($glsubcode);
+                foreach($toledgercode as $toledgercodes) {
+                $toledgertype=$toledgercodes['name'];
+                            } }
+
+            if($toledgertype=="Income") {
+                            $tablenameto="ourbank_Income";
+                        } elseif($toledgertype=="Expenditure") {
+                            $tablenameto="ourbank_Expenditure";
+                        }elseif($toledgertype=="Assets") {
+                            $tablenameto="ourbank_Assets";
+                        } elseif($toledgertype=="Liabilities") {
+                            $tablenameto="ourbank_Liabilities";
+                        }
+
+            $this->view->balance2=$receipts->getbalanceto($glsubcode,$tablenameto);
+        }
+
+        public function balanceAction()
+        {
+            $this->_helper->layout->disableLayout();
+            $glsubcode=$this->_request->getParam('glsubcode');
+            $this->view->adm = new App_Model_Adm();
+            $receipts= new Receipts_Model_Receipts();
+            $fromledgertype=''; $tablenamefrom='';
+            if ($glsubcode) {
+                $fromledgercode=$receipts->listOfledgercode($glsubcode);
+                foreach($fromledgercode as $fromledgercodes) {
+                $fromledgertype=$fromledgercodes['name'];
+                            } }
+
+            if($fromledgertype=="Income") {
+                            $tablenamefrom="ourbank_Income";
+                        } elseif($fromledgertype=="Expenditure") {
+                            $tablenamefrom="ourbank_Expenditure";
+                        }elseif($fromledgertype=="Assets") {
+                            $tablenamefrom="ourbank_Assets";
+                        } elseif($fromledgertype=="Liabilities") {
+                            $tablenamefrom="ourbank_Liabilities";
+                        }
+
+            $this->view->balance1=$receipts->getbalancefrom($glsubcode,$tablenamefrom);
+        }
+
 }
 

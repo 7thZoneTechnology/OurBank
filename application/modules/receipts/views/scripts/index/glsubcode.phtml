@@ -1,3 +1,30 @@
+<script type="text/javascript">
+
+$(document).ready(function() {
+//    $("select[name=toglsubcodeid]").change(function() { alert('dfadsf');
+//       if($(this).val() == 'Others'){ $("#ShowHide").show();
+//        } else { $("#others").val(''); $("#ShowHide").hide(); }
+//    });
+path=$("#baseurl").val();
+$('#glsubcodeid').change(function(){
+getBalance()
+});
+
+
+function getBalance(){
+
+var strURL=path+"/receipts/index/balance";
+$.ajax({
+  url: strURL,
+  data:"glsubcode="+$("#glsubcodeid option:selected").val(),
+  success: function(result){
+   $("#balance1").val(result);
+  }
+});
+}
+});
+</script>
+
 <select name='glsubcodeid'  id="glsubcodeid" class="selectbutton">
 <option value=''>select...</option>
 <?php foreach($this->glsubcodeid as $glsubcodeid) { ?>

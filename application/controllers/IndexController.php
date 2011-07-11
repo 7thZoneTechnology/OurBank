@@ -22,7 +22,23 @@ class IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->title = "Management";
-
+		$date=date("y/m/d H:i:s");
+        $ledger = new Ledger_Model_Ledger();
+        $ledger1 = $ledger->fetchAllLedger1();
+        $flag = 0;
+        if($ledger1) { $flag = 1; }
+        $defaultledger = array('Bank','Cash','Loans','Savings','Interest','Fee');
+        $glcode= array('A01000', 'A02000','A03000','L01000','I01000','I02000');
+        $ledgertype= array(3,3,3,4,1,1);
+        $description=array('Bank','Cash','Loans','Savings','Interest','Fee');
+        if($flag == 0) {
+            for($i=0; $i<= count($defaultledger); $i++){
+            $glInsert = $ledger->insertGlcode(array(
+                        'glcode' => $glcode[$i], 'ledgertype_id' => $ledgertype[$i],
+                        'header' => $defaultledger[$i], 'description' => $description[$i],
+                        'created_date' =>$date));
+            }
+        }
 
     }
 

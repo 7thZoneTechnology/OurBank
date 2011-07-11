@@ -120,9 +120,9 @@ foreach ($this->result as $result)
         <?php foreach($this->groupmembers as $member) {?>
         <tr>
         <td><?php echo $member['membername']; ?></td>
-        <td><?php echo $member['uid']; ?></td>
-        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']);
-					 if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>
+        <td><?php echo $member['uid']; ?></td>      <td><?php echo $member['fathername']; ?></td>
+<!--        <td><?php //$fatherdetails=$this->loan->getfathername($member['family_id']);
+					// if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>-->
         <td></td>
         <td></td>
         <td></td>

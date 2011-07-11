@@ -36,6 +36,13 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = "General Ledger";
         $searchForm = new Generalledger_Form_Search();
         $this->view->form = $searchForm;
+$officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
+			foreach($officename as $officename){
+				$searchForm->ledger->addMultiOption($officename['id'],$officename['glsubcode'].$officename['header']);
+			}
+
+
+
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
  
@@ -47,7 +54,7 @@ class Generalledger_IndexController extends Zend_Controller_Action
 		$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
         $this->view->dateto = $toDate;
 
-		$glsubcode =$this->_request->getParam('glcode');
+		$glsubcode =$this->_request->getParam('ledger');
         $this->view->search = 10;
         $generalLedger = new Generalledger_Model_Generalledger();
            //Lia
@@ -57,7 +64,14 @@ class Generalledger_IndexController extends Zend_Controller_Action
           // Assets
         $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
         $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
-        if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){               }
+        if(!$glsubcode){      $generalLedger = new Generalledger_Model_Generalledger();
+           //Lia
+        $this->view->ledegerList = $generalLedger->generalLedgerempty($fromDate,$toDate);
+        $this->view->openingCash = $generalLedger->openingBalanceempty($fromDate);
+
+          // Assets
+        $this->view->ledegerListAssets = $generalLedger->generalLedgerAssetsempty($fromDate,$toDate);
+        $this->view->openingCashAssets = $generalLedger->openingBalanceAssetsempty($fromDate);          }
         } else {   $this->view->search = 0;
                    echo "<font color='red'><b> Record not found</b> </font>";
 		        }

@@ -23,7 +23,7 @@ protected $_name = 'ourbank_transaction';
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date <= '$date') 
 		    group by D.id";
-
+//echo $sql;
         $result=$db->fetchAll($sql);
         return $result;
 
@@ -35,7 +35,7 @@ protected $_name = 'ourbank_transaction';
                     D.id as glsubcode_id,
                     D.header as subheader,
 		    D.glsubcode as glsubcode,
-                    (sum(A.debit)-sum(A.credit)) as assetsBalance
+                    (sum(A.credit)-sum(A.debit)) as assetsBalance
                     from 
 		    ourbank_Assets A,
 		    ourbank_glcode B,

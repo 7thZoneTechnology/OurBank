@@ -65,11 +65,10 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		B.id = D.glcode_id AND
 		    B.ledgertype_id = 4 AND
 		    A.transaction_id = E.transaction_id AND
-
+  D.id = '$glsubcode' AND
 
 			E.transaction_date BETWEEN '$date1' AND '$date2')
 		    group by D.id";
-//echo $sql;
 
         $result=$db->fetchAll($sql);
         return $result;
@@ -93,6 +92,8 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    where (A.glsubcode_id_to = F.id AND 
 		    B.id = F.glcode_id AND
 		    B.ledgertype_id = 4 AND
+  F.id = '$glsubcode' AND
+
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date < '$date') 
 		    group by F.id";
@@ -121,6 +122,8 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    B.id = F.glcode_id AND
 		    B.ledgertype_id = 3 AND
 		    A.transaction_id = E.transaction_id AND
+  F.id = '$glsubcode' AND
+
                     E.transaction_date BETWEEN '$date1' AND '$date2') 
 		    group by F.id";
 //echo $sql;
@@ -146,6 +149,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    where (A.glsubcode_id_to = F.id AND
 		    B.id = F.glcode_id AND
 		    B.ledgertype_id = 3 AND
+  F.id = '$glsubcode' AND
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date < '$date') 
 		    group by F.id";
@@ -155,4 +159,140 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         return $result;
 
     }
+
+// **************************************8
+
+ public function generalLedgerempty($date1,$date2) 
+    {
+        $db = $this->getAdapter();
+        $sql = "select 
+                    D.id as glsubcode_id,
+					A.glsubcode_id_to,
+					D.glsubcode as glsubcode,
+					D.id,
+                    D.header as subheader,
+                    sum(A.credit) as credit,
+                    sum(A.debit) as debit
+                    from 
+		    		ourbank_Liabilities A,
+					ourbank_glcode B,
+		    		ourbank_glsubcode D,
+		    		ourbank_transaction E
+		    		where (
+  		  A.glsubcode_id_to = D.id AND 
+		B.id = D.glcode_id AND
+		    B.ledgertype_id = 4 AND
+		    A.transaction_id = E.transaction_id AND
+
+			E.transaction_date BETWEEN '$date1' AND '$date2')
+		    group by D.id";
+
+        $result=$db->fetchAll($sql);
+        return $result;
+
+
+    }
+    
+    public function openingBalanceempty($date) 
+    {
+        $db = $this->getAdapter();
+        $sql = "select 
+                    F.id as glsubcode_id,
+		    F.glsubcode as glsubcode,
+                    F.header as subheader,
+                    (sum(A.credit)-sum(A.debit)) as openingCash
+                    from 
+		    ourbank_Liabilities A,
+		    ourbank_glcode B,
+	            ourbank_transaction E,
+		    ourbank_glsubcode F
+		    where (A.glsubcode_id_to = F.id AND 
+		    B.id = F.glcode_id AND
+		    B.ledgertype_id = 4 AND
+
+		    A.transaction_id = E.transaction_id AND
+                    E.transaction_date < '$date') 
+		    group by F.id";
+//echo $sql;
+
+
+        $result=$db->fetchAll($sql);
+        return $result;
+
+    }
+    public function generalLedgerAssetsempty($date1,$date2) 
+    {
+        $db = $this->getAdapter();
+        $sql = "select 
+                    F.id as glsubcode_id,
+		    F.glsubcode as glsubcode,
+                    F.header as subheader,
+                    sum(A.credit) as credit,
+                    sum(A.debit) as debit
+                    from 
+		    ourbank_Assets A,
+		    ourbank_glcode B,
+		    ourbank_transaction E,
+		    ourbank_glsubcode F
+		    where (A.glsubcode_id_to = F.id AND 
+		    B.id = F.glcode_id AND
+		    B.ledgertype_id = 3 AND
+		    A.transaction_id = E.transaction_id AND
+
+                    E.transaction_date BETWEEN '$date1' AND '$date2') 
+		    group by F.id";
+//echo $sql;
+
+         $result=$db->fetchAll($sql);
+         return $result;
+
+    }
+    
+    public function openingBalanceAssetsempty($date) 
+    {
+        $db = $this->getAdapter();
+        $sql = "select 
+                    F.id as glsubcode_id,
+                    F.header as subheader,
+		    F.glsubcode as glsubcode,
+                    (sum(A.credit)-sum(A.debit)) as openingCash
+                    from 
+		    ourbank_Assets A,
+		    ourbank_glcode B,
+		    ourbank_transaction E,
+		    ourbank_glsubcode F
+		    where (A.glsubcode_id_to = F.id AND
+		    B.id = F.glcode_id AND
+		    B.ledgertype_id = 3 AND
+		    A.transaction_id = E.transaction_id AND
+                    E.transaction_date < '$date') 
+		    group by F.id";
+//echo $sql;
+
+        $result=$db->fetchAll($sql);
+        return $result;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

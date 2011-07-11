@@ -44,8 +44,8 @@ $("#hide").show();
 
 </script>
 <?php if($this->savingsDebit) { ?>
-<h1><b><?php echo "Branch: ".$this->officename; ?></b></h1>
-<h5 align="right"><?php echo $this->translate('As of'); ?> <?php echo "<font color='#039'>".$this->field1."</font>"; ?></h5> 
+<h1><b><?php echo "Village: ".$this->officename; ?></b></h1>
+<h5 align="right"><?php echo $this->translate('Date From'); ?> <?php echo "<font color='#039'>".$this->date1."</font>"; ?></h5> 
 <h5 style="text-align:right">* <?php echo $this->translate("Amount in"); ?>  <font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
 
 
@@ -177,19 +177,19 @@ $("#hide").show();
  <form action="<?php echo $this->baseUrl();?>/cashscroll/index" method="POST">
              <table width="100%">
                
-                 <tr>
-                            <TD><?php echo $this->translate('From date'); ?></td>
-                            <td><?php echo $this->form->datefrom;?></td>
- 							<TD><?php echo $this->translate('To date'); ?></td>
-                            <td><?php echo $this->form->dateto;?></td>
-                   </tr>
+                 
   <tr>
 							<TD><?php echo $this->translate('Hierarchy'); ?></td>
                             <TD id="show"><?php echo $this->form->hierarchy;?></td>
+ 							<TD><?php echo $this->translate('From date'); ?></td>
+                            <td><?php echo $this->form->datefrom;?></td>
 </tr><tr>
 
                             <TD><?php echo $this->translate('Branch'); ?></td>
                             <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+							<TD><?php echo $this->translate('To date'); ?></td>
+                            <td><?php echo $this->form->dateto;?></td>
+
 </tr>
 <tr id="hide">
 							<TD><?php echo $this->translate('Group'); ?></td>

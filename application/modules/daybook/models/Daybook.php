@@ -76,7 +76,6 @@ class Daybook_Model_Daybook extends Zend_Db_Table
                         ->from(array('A' => 'ourbank_transaction'))
                         ->where('A.amount_from_bank >0')
                         ->where('A.recordstatus_id = 3 OR A.recordstatus_id = 1')
- 						 ->where('A.paymenttype_id <= 4')
                         ->where('A.transaction_date <= "'.$fromDate.'" AND A.transaction_date >= "'.$toDate.'"')
                         ->join(array('C'=>'ourbank_accounts'),'C.id = A.account_id')
                         ->where('C.status_id =3 OR C.status_id =1' )
@@ -92,47 +91,44 @@ public function totalSavingsCreditg($fromDate,$toDate,$group)
                        	->setIntegrityCheck(false)
                        	->join(array('a' => 'ourbank_group'),array('id'))
 						->where('a.id = ?',$group)
-						->join(array('b' =>'ourbank_familymember'),'a.village_id = b.village_id')
-						->join(array('c'=>'ourbank_accounts'),'b.id = c.member_id',array('c.id as accountid','c.account_number'))
+// 						->join(array('b' =>'ourbank_familymember'),'a.village_id = b.village_id')
+ 						->join(array('c'=>'ourbank_accounts'),'a.id = c.member_id',array('c.id as accountid','c.account_number'))
                         ->where('c.status_id =3 OR c.status_id =1' )
 						->from(array('d' => 'ourbank_transaction'))
                         ->where('d.transaction_date >= "'.$fromDate.'" AND d.transaction_date <= "'.$toDate.'"')
-
                         ->where('c.id =d.account_id' )
                         ->where('d.amount_to_bank >0')
-  						->where('d.paymenttype_id <= 4')
-                        ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1');
-/*                       ->where('d.amount_from_bank > 0');*/
-//                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
-//  						 ->where('d.paymenttype_id <= 4')
-//                         ->where('d.transaction_date <= "'.$date.'"');
+// 
+//   ***********************************************************
+// 						->join(array('b' =>'ourbank_familymember'),'a.village_id = b.village_id')
+// 						->join(array('c'=>'ourbank_accounts'),'b.id = c.member_id',array('c.id as accountid','c.account_number'))
+//                         ->where('c.status_id =3 OR c.status_id =1' )
+// 						->from(array('d' => 'ourbank_transaction'))
+//                         ->where('d.transaction_date >= "'.$fromDate.'" AND d.transaction_date <= "'.$toDate.'"')
+//                         ->where('c.id =d.account_id' )
+//                         ->where('d.amount_to_bank >0')
+//   						->where('d.paymenttype_id <= 4')
+//                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1');
+;
 
 
-                      // die($select->__toString($select));
+                    // die($select->__toString($select));
         return $this->fetchAll($select);
     }
 public function totalSavingsDebitg($fromDate,$toDate,$group) 
     {
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                        
-                       ->join(array('a' => 'ourbank_group'),array('id'))
+                       	->setIntegrityCheck(false)
+                       	->join(array('a' => 'ourbank_group'),array('id'))
 						->where('a.id = ?',$group)
- 						->join(array('b' =>'ourbank_familymember'),'a.village_id = b.village_id')
- 						->join(array('c'=>'ourbank_accounts'),'b.id = c.member_id',array('c.id as accountid','c.account_number'))
+// 						->join(array('b' =>'ourbank_familymember'),'a.village_id = b.village_id')
+ 						->join(array('c'=>'ourbank_accounts'),'a.id = c.member_id',array('c.id as accountid','c.account_number'))
                         ->where('c.status_id =3 OR c.status_id =1' )
 						->from(array('d' => 'ourbank_transaction'))
-                        ->where('c.id =d.account_id' )
                         ->where('d.transaction_date >= "'.$fromDate.'" AND d.transaction_date <= "'.$toDate.'"')
-
-                        ->where('d.amount_from_bank >0')
-  						->where('d.paymenttype_id <= 4')
-
-                        ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1');
-                       // ->where('d.amount_from_bank > 0');
-//                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
-//  						 ->where('d.paymenttype_id <= 4')
-//                         ->where('d.transaction_date <= "'.$date.'"');
+                        ->where('c.id =d.account_id' )
+                        ->where('d.amount_from_bank >0');
+// 
                     //  die($select->__toString($select));
         return $this->fetchAll($select);
     }
@@ -160,7 +156,8 @@ public function openingBalanceg($fromDate,$toDate,$group) {
 						->where('a.id = ?',$group)
                         ->join(array('b'=>'ourbank_Assets'),'a.village_id = b.office_id',array('(SUM(b.credit) - SUM(b.debit) ) as openingBalance'))
                         ->join(array('c'=>'ourbank_transaction'),'c.transaction_id = b.transaction_id')
-                        ->where('c.transaction_date >= "'.$fromDate.'" AND c.transaction_date <= "'.$toDate.'"');
+                        ->where('c.transaction_date < "'.$fromDate.'"');
+                        //->where('c.transaction_date >= "'.$fromDate.'" AND c.transaction_date <= "'.$toDate.'"');
 
 //die($select->__toString($select));
         return $this->fetchAll($select);

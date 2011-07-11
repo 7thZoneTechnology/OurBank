@@ -10,8 +10,8 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
 	$fromglcode->addMultiOption('','Select'.'...');
         $fromglcode->setAttrib('class', 'selectbutton');
         $fromglcode->setRequired(true)
-                    ->addValidators(array(array('NotEmpty')));
-        $fromglcode->setAttrib('onchange', 'getglcode(this.value,"'.$path.'")');
+                  ->addValidators(array(array('NotEmpty')));
+        //$fromglcode->setAttrib('onchange', 'getglcode(this.value,"'.$path.'")');
 
         $fromglsubcode=new Zend_Form_Element_Select('fromglsubcode');
 	$fromglsubcode->addMultiOption('','Select'.'...');
@@ -22,12 +22,18 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $toglcode->setAttrib('class', 'selectbutton');
         $toglcode->setRequired(true)
                     ->addValidators(array(array('NotEmpty')));
-        $toglcode->setAttrib('onchange', 'gettoglcode(this.value,"'.$path.'")');
+        //$toglcode->setAttrib('onchange', 'gettoglcode(this.value,"'.$path.'")');
 
         $toglsubcode=new Zend_Form_Element_Select('toglsubcode');
 	$toglsubcode->addMultiOption('','Select'.'...');
         $toglsubcode->setAttrib('class', 'selectbutton');
+//         $toglsubcode->setAttrib('onchange', 'gettoglsubcode(this.value,"'.$path.'")');
 
+        $balance1 = new Zend_Form_Element_Text('balance1');
+        $balance1->setAttrib('readonly', 'true');
+
+        $balance2 = new Zend_Form_Element_Text('balance2');
+        $balance2->setAttrib('readonly', 'true');
 
         $amount=new Zend_Form_Element_Text('amount');
         $amount->setRequired(true)
@@ -35,7 +41,8 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $amount->setAttrib('class', 'txt_put');
 	$amount->setAttrib('onchange','getdateamount();');
 
-        $transactiondate=new ZendX_JQuery_Form_Element_DatePicker('transactiondate');
+        //$transactiondate=new ZendX_JQuery_Form_Element_DatePicker('transactiondate');
+        $transactiondate=new Zend_Form_Element_Text('transactiondate');
         $transactiondate->setRequired(true)
                     ->addValidators(array(array('NotEmpty')));
         $transactiondate->setAttrib('class', 'txt_put');
@@ -87,7 +94,7 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $submit = new Zend_Form_Element_Submit('Submit');
         $submit->setAttrib('class', 'officesubmit');
 
-        $this->addElements(array($fromglcode,$fromglsubcode,$toglcode,$toglsubcode,$amount,$transactiondate,$description,$submit,$officeType,$subOffice,$transactiondate1,$amount1,$paymenttype,$no));
+        $this->addElements(array($fromglcode,$fromglsubcode,$toglcode,$toglsubcode,$balance1,$balance2,$amount,$transactiondate,$description,$submit,$officeType,$subOffice,$transactiondate1,$amount1,$paymenttype,$no));
     }
 }
 

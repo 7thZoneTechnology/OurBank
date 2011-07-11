@@ -112,7 +112,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","ASC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
         $this->view->branch = $this->view->adm->viewRecord("ourbank_master_branch","id","ASC");
-//         $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+//          $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
         $this->view->cbopromoter=$this->view->modelfamily->getcbolist($kootaid);
         $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","ASC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
@@ -256,7 +256,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","ASC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
         $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
-        //$this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+        $this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
         $this->view->promoter=$this->view->modelfamily->getcbolist($kootaid);
         $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","ASC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");

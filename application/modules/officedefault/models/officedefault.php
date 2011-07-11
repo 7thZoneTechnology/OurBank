@@ -84,7 +84,9 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
         public function subofficeFromUrledit($officetype_id) {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT name,id FROM ourbank_office WHERE id = $officetype_id";
+        $sql = "SELECT name,id FROM ourbank_office WHERE officetype_id in (select officetype_id from ourbank_office
+                       where id=$officetype_id)";
+		//echo $sql;
         $result = $this->db->fetchAll($sql,array($officetype_id));
         return $result;
     	}

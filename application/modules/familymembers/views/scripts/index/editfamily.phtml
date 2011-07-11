@@ -312,7 +312,7 @@
                 ?>
 
                <td>
-                <select name = "cbopromoter[]" class="selectvalid cbofilter"  id="cbopromoter-1">
+                <select name = "cbopromoter[]" class="selectvalid cbofilter"  id="cbopromoter-<?php echo $i; ?>">
                         <option value=0>select</option>
                     <?php foreach ($this->promoter as $cbopromoter) { 
                                 if($cbopromoter['id']!= $familydetails["promoter_id"]) { ?>
@@ -326,8 +326,8 @@
                 </select>
                 </td>
 
-                <td><div id="cbodiv-1" class="cboclass">
-                        <select name = "cbo[]" class="selectvalid required">
+                <td><div id="cbodiv-<?php echo $i; ?>" class="cboclass">
+                        <select name = "cbo[]" class="selectvalid required" id="cbo-<?php echo $i; ?>">
                         <option value=0>Select</option>
                      <?php
                      foreach ($cbos as $cbos) {  

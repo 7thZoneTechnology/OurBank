@@ -200,7 +200,7 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                 {   $errorno=1; }
                 $this->_redirect("/loanrepaymentg/index/index/msg/".$errorno);
         }
-    } 
+    }
     }
     public function messageAction() 
     {

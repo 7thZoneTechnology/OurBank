@@ -500,7 +500,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $sql = "select id from ourbank_glsubcode where office_id=$officeId and glcode_id=2";
-       // echo $sql;
+        //echo $sql;
         return $db->fetchAll($sql);
     }
 

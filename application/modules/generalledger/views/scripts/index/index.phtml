@@ -30,7 +30,11 @@
                 <td class="label">Close Date :</td>
                 <td align = "right"><?php  echo $this->form->dateto;?></td>
             </tr>
+<tr><TD class="label">Ledger:</TD>
+                <td align = "right"><?php  echo $this->form->ledger;?></td>
 
+
+</tr>
             <tr>
                 <TD align="center"><br><input type="submit" name="Search" value="Search"></TD>
             </tr>
@@ -47,6 +51,8 @@
 	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
 	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
 	<div style="float:left;width:800px">
+    <legend>Liabilities</legend>
+
     <TABLE id="hor-minimalist-b" width="80%">
      <tr>
         <TH allign = "right">Particular</TH>
@@ -99,13 +105,10 @@
     </TABLE>
 </div>
 <?php } ?>
+<div style="float:left;width:800px">
 <?php if (count($this->ledegerListAssets)) { ?>
-	<h3 align="right">From <?php echo "<font color='#039'>".$this->datefrom."</font>"; ?> </h3>
-	<h3 align="right"> To <?php echo "<font color='#039'>".$this->dateto."</font>"; ?></h3> 
-	<?php foreach($this->ledegerListAssets as $ledegerListAssets) { $type = $ledegerListAssets["subheader"]; }?>
-	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
-	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
-    <div style="float:left;width:800px">
+	
+    <legend>Assets</legend>
     <TABLE id="hor-minimalist-b" width="80%">
      <tr>
         <TH allign = "right">Particular</TH>
@@ -119,7 +122,6 @@
        <tr>
             <TD allign = "right">Opening Balance</TD>
             <TD allign = "right"></TD>
-            <TD allign = "right"></TD>
           <?php   if (count($this->openingCashAssets)) { 
             foreach($this->openingCashAssets as $openingCashAssets) {
         if ($openingCashAssets["glsubcode_id"] == $ledegerListAssets["glsubcode_id"]) { 
@@ -128,7 +130,9 @@
 
 
      <?php } } } ?>
-                 <TD align = "left"><?php echo $assetsCash ;?></TD>
+            <TD allign = "right"></TD>
+
+                 <TD><?php echo $assetsCash ;?></TD>
 
              </tr>
      <TR>
@@ -154,13 +158,17 @@
             <TH allign = "right"></TH>
             <TH align = "right"><?php echo sprintf("%4.2f", $ledegerListAssets["credit"] + $assetsCash - $ledegerListAssets["debit"]);?></TH>
      </tr>
- <!--<form action="<?php //echo $this->baseUrl();?>/reports/generalledger/pdfdisplay" method="POST"
+ </TABLE>
+
+ <form action="<?php echo $this->baseUrl();?>/reports/generalledger/pdfdisplay" method="POST"
 onClick="window.open('/generalledger/reportdisplay/file/GL.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <br><input type="submit" value="PDF" id="submit">
-     		<input type="hidden" name="date1" value="<?php //echo $this->ledegerListAssets; ?>">
-			<input type="hidden" name="date2" value="<?php// echo $this->openingCashAssets; ?>">
+     		<input type="hidden" name="date1" value="<?php echo $this->ledegerListAssets; ?>">
+			<input type="hidden" name="date2" value="<?php echo $this->openingCashAssets; ?>">
 
-</form>-->
- 	</TABLE>
-</div>
+</form>
     <?php } }?>
+
+
+
+</div>

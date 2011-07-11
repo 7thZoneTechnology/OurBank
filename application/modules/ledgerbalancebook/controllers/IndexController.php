@@ -29,7 +29,9 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 	$formData = $this->_request->getPost();
 	if ($searchForm->isValid($formData)) {
         $fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
+	$this->view->s1 = $fromDate;
 
+$this->view->search = 0;
 // 	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
 
       	    $this->view->pageTitle = "Ledger balancebook";
@@ -96,7 +98,7 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 		"Assets","Amount");
 		
 	$x0 = 60; 
-	$x1 = 120; 
+	$x1 = 150; 
 	$x2 = 220; 
 	$x3 = 300;
 	$x4 = 380;
@@ -130,12 +132,11 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 	}
 	$page->drawText("TOTAL  ".$savingsCredit['liabilitiesBalance'],$x1,$y1);
 // 	$page->drawText("$totalAmount",$x2,$y1);
-	$x2 = 460;
+
 	$y1 = $y1 + 25;
 	foreach($datedet1 as $savingsDebit) {
 		$page->drawText(''.$savingsDebit['glsubcode'],$x3, $y1);
 		$page->drawText(''.$savingsDebit['subheader'],$x4, $y1);
-		$page->drawText(''.$savingsDebit['assetsBalance'],$x2, $y1);
 
 //                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
 //                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;

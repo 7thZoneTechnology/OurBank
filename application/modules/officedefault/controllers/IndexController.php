@@ -96,7 +96,8 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                foreach($maxid as $maxid1) {
                $villagelastid=$maxid1->lastid;}
                if($villagelastid==$officeid)
-               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'panchayath_id' => $this->_request->getParam('panchayath'), 'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,
+				'name_regional'=>$name,'panchayath_id' => $this->_request->getParam('panchayath'), 'created_date' =>$createdate,'created_by'=>$this->view->createdby));
                   $this->view->adm->addRecord("ourbank_master_village",array('id' => '',
                                                 'village_id'=>$lastid,
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -107,44 +108,45 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                } 
 
 	//insert glsubcode
-//         for($j=1;$j<=2;$j++){
-//              $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
-// /*           $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];*/
-//            $glcode = $fetchglcodedetails[0]['glcode'];
-//            $header = $fetchglcodedetails[0]['header'];
-// 
-//            $ledger = new Officedefault_Model_officedefault();
-//            $genarateGlsub = $ledger->genarateGlsubCode1($ledgertype_id,$j);
-//            $glsubcode=$genarateGlsub->id;
-// 
-//            if($glsubcode) {
-//                $ini=substr($glsubcode,0,1);
-//                $last=substr($glsubcode,1,5);
-//                $last+=1;
-//                $last = str_pad($last,5,0,STR_PAD_LEFT);
-//                $glsubcode=$ini.$last;
-//                $glsubcode;
-//            } else {
-//                $glcode1=$ledger->fetchGlcode($j);
-//                $glcode=$glcode1->glcode;
-//                $ini=substr($glcode,0,1);
-//                $last=substr($glcode,1,5);
-//                $last+=1;
-//                $last = str_pad($last,5,0,STR_PAD_LEFT);
-//                $glsubcode=$ini.$last;
-//                $glsubcode;
-//            }
-// 	create cash and bank glsubcode
-//            if($j==1){ $headername="Bank";} else {$headername="Cash";}
-//            $gInsert = $ledger->insertGlsubcode(array('id' => '',
-//                            'glsubcode' => $glsubcode,
-//                            'glcode_id' => $j,
-//                            'subledger_id' => $ledgertype_id,
-//                            'header' => $headername.$lastid,
-//                            'description' => $headername.$lastid,
-//                            'created_date' =>$createdate,
-//                            'created_by'=>$this->view->createdby));
-//            }
+        for($j=1;$j<=6;$j++){
+             $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
+           $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
+           $glcode = $fetchglcodedetails[0]['glcode'];
+           $header = $fetchglcodedetails[0]['header'];
+
+           $ledger = new Officedefault_Model_officedefault();
+           $genarateGlsub = $ledger->genarateGlsubCode1($ledgertype_id,$j);
+           $glsubcode=$genarateGlsub->id;
+
+           if($glsubcode) {
+               $ini=substr($glsubcode,0,1);
+               $last=substr($glsubcode,1,5);
+               $last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glsubcode=$ini.$last;
+               $glsubcode;
+           } else {
+               $glcode1=$ledger->fetchGlcode($j);
+               $glcode=$glcode1->glcode;
+               $ini=substr($glcode,0,1);
+               $last=substr($glcode,1,5);
+               $last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glsubcode=$ini.$last;
+               $glsubcode;
+           }
+
+           $headername=array('bank','cash','loans','savings','interest','fee');
+           $gInsert = $ledger->insertGlsubcode(array('id' => '',
+						   'office_id' => $lastid,
+                           'glsubcode' => $glsubcode,
+                           'glcode_id' => $j,
+                           'subledger_id' => $ledgertype_id,
+                           'header' => $headername[$j-1].$lastid,
+                           'description' => $headername[$j-1].$lastid,
+                           'created_date' =>$createdate,
+                           'created_by'=>$this->view->createdby));
+           }
          $this->_redirect('/officecommonview/index/commonview/id/'.$lastid);
 		}
 		}
@@ -312,7 +314,9 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 //           $officeForm->officetype_id->addMultiOption($officehierarchy->id,$officehierarchy->type);
 //         }
         $edit_office = $this->view->adm->editRecord("ourbank_office",$office_id); 
+
         $officetype_id=$edit_office[0]['parentoffice_id']; 
+
         $typeid=$edit_office[0]['officetype_id'];
         $office_typeid=$edit_office[0]['officetype_id'];
         $officetypename=$office->getofficetypename($office_typeid);
@@ -382,7 +386,7 @@ echo $typeid;
                foreach($maxid as $maxid1) {
                echo $villagelastid=$maxid1->lastid;}
                if($villagelastid==$typeid)
-               {  /*$villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));*/
+               {  $villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'name_regional'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
 
                   $office->updatevillage($office_id,array(
                                                 'taluk_id' => $this->_request->getParam('taluque'),

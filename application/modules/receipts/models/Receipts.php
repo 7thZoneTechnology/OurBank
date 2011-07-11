@@ -30,7 +30,7 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_glcode'),array('id'))
 			->where('a.id = ?',$glcode)
-			->join(array('b' => 'ourbank_ledgertypes'),'a.ledgertype_id=b.id');
+			->join(array('b' => 'ourbank_master_ledgertypes'),'a.ledgertype_id=b.id');
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
@@ -90,17 +90,26 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
 
 		$this->db = Zend_Db_Table::getDefaultAdapter();
 		$data = array('office_id'=> $bankIDfrom,
-				'glsubcode_id_to'=>$fromglsubcodeid,
+				'glsubcode_id_from'=>$fromglsubcodeid,
 				'transaction_id'=>$transaction_id,
 				'credit'=>'',
 				'debit'=>$amount,
-				'record_status'=>'3');
+				'record_status'=>'3'); echo '<pre>'; print_r($data);
 		return $this->db->insert($tablenamefrom,$data);
 	}
 
 
 	public function addtoaccounts($tablenameto,$bankIDto,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount) {
-
+                if ($tablenameto == 'ourbank_Income') {
+                        $this->db = Zend_Db_Table::getDefaultAdapter();
+                        $data = array('office_id'=> $bankIDto,
+                                        'glsubcode_id_to'=>$toglsubcodeid,
+                                        'tranasction_id'=>$transaction_id,
+                                        'credit'=>$amount,
+                                        'debit'=>'',
+                                        'recordstatus_id'=>'3');
+                        return $this->db->insert($tablenameto,$data);
+                } else {
 		$this->db = Zend_Db_Table::getDefaultAdapter();
 		$data = array('office_id'=> $bankIDto,
 				'glsubcode_id_to'=>$toglsubcodeid,
@@ -108,7 +117,7 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
 				'credit'=>$amount,
 				'debit'=>'',
 				'record_status'=>'3');
-		return $this->db->insert($tablenameto,$data);
+		return $this->db->insert($tablenameto,$data); }
 	}
 
 	public function paymenttype() {
@@ -118,12 +127,23 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
- public function getBranchEdit($office_id) {
-
-        $db = $this->getAdapter();
-        $sql = "select name, id from ourbank_office where parentoffice_id=$office_id";
-//      echo $sql;
-        return $db->fetchAll($sql);
-
-    }
+        public function getBranchEdit($office_id)
+        {
+                $db = $this->getAdapter();
+                $sql = "select name, id from ourbank_office where parentoffice_id=$office_id";
+        //      echo $sql;
+                return $db->fetchAll($sql);
+        }
+        public function getbalanceto($toglsubcode,$tablenameto)
+        {
+                $db = $this->getAdapter();
+               $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_to=".$toglsubcode;
+                return $db->fetchAll($sql);
+        }
+        public function getbalancefrom($fromglsubcode,$tablenamefrom)
+        {
+                $db = $this->getAdapter();
+               $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_from=".$fromglsubcode;
+                return $db->fetchAll($sql);
+        }
 }
