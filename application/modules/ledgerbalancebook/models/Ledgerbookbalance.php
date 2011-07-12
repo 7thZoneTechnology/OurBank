@@ -23,7 +23,7 @@ protected $_name = 'ourbank_transaction';
 		    A.transaction_id = E.transaction_id AND
                     E.transaction_date <= '$date') 
 		    group by D.id";
-//echo $sql;
+
         $result=$db->fetchAll($sql);
         return $result;
 

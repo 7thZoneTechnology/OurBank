@@ -179,7 +179,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             'transaction_description'=> $this->_request->getPost('description'),
                             'recordstatus_id'=>3);
                 $tranID = $this->view->adm->addRecord('ourbank_loan_disbursement',$input);
-                if ($intType == 2) {
+                if ($intType == 2 or $intType == 3) {
                     if($loanamount==$balance){
                     $emi =0;$roi=0;
                     $cb=$disburseamount;

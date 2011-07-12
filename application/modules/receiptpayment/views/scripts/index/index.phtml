@@ -125,28 +125,22 @@ onClick="window.open('/ourbank/public/receiptspayments/reportdisplay/file/Receip
             <input type="submit" value="PDF" id="submit">
 </form>
 <?php } else {?>
-
-<fieldset>
-    <legend> search </legend>
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b">
+			<th colspan="4">Search</th>
                 <form action="<?php echo $this->baseUrl();?>/receiptpayment" method="POST">
                     <TR>
-                            <TD >Date From</TD>
+                            <TD ><br>Date From</TD>
                             <TD ><?php echo $this->form->field1;?></TD>
-                            <TD >Date To</TD>
+                            <TD ><br>Date To</TD>
                             <TD ><?php echo $this->form->field2;?></TD>
                     </TR>
-                   
-
+				<TD><input type="submit" name="Search" id="Submit" value="Search"></TD></tr>
             </table>
 
-				<input type="submit" name="Search" id="Submit" value="Search">			
+							
                 </form>
 
         </div>
-</fieldset>
-
-
 <?php } ?>
 

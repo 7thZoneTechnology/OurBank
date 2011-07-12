@@ -20,18 +20,16 @@
 if((!$this->income) && (!$this->expenditure)){ ?>
 <form action="<?php echo $this->baseUrl();?>/incomeexpenditure/index" method="POST">
 <div id="searchDiv">
-    <fieldset>
-        <legend><?php echo $this->translate('Search'); ?></legend>
             <div class="search">
                 <TABLE id="hor-minimalist-b">
+				<th colspan="4">Search</th>
                    <tr>
-                            <TD><?php echo $this->translate('As of date'); ?></td>
+                            <TD><br><?php echo $this->translate('As of date :'); ?></td>
                             <td><?php echo $this->form->datefrom;?></td>
                             <td><input type="submit" name="Search" value="Search"/></td>
                    </tr>
         	</TABLE>
 	   </div>
- 	</fieldset> 
 </div>
 </form>
 <?php } ?>

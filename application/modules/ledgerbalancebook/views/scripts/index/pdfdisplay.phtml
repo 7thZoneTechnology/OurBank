@@ -65,20 +65,21 @@
             </TR>
             <?php }?>
 
-            <?php 	for($j=$i;$j<=$count;$j++){ 
+            		<?php 
+			for($j=$i;$j<=$count;$j++){ 
 			 if($j==$count){ ?>
-			<tr>
+			             <tr>
                 <TD></TD>
                 <TD>TOTAL</TD>
-                <TD><?php echo sprintf("%4.2f", $totaldebit); ?></TD>
+                <TD align="right"><?php echo sprintf("%4.2f", $totaldebit); ?></TD>
             </tr>
             <?php } else {?>
 				<tr>
-					<TD></TD>
-					<TD><?php echo "----";?></TD>
-					<TD><?php echo "----";?></TD>
+				        <TD></TD>
+					<td><?php echo "----";?></tr>
+					<td align = "right"><?php echo "----";?></td>
 				</tr>
-
+		
 			<?php } }  $i=0;$j=0; ?>
         </table>
 </div></tr></TR></table></fieldset>

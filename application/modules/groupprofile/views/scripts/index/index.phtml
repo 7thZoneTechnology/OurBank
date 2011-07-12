@@ -43,14 +43,14 @@
             foreach($this->group as $loandetails) { ?>
             <tr>
                 <td><?php echo $i++;?></td>
-                <td><?php echo $loandetails->name; ?></td>
-                <td><?php echo $loandetails->age; ?></td>
-                <td><?php echo $loandetails->education; ?></td>
-                <td><?php echo $loandetails->familycode; ?></td>
-                <td><?php echo $loandetails->caste; ?></td>
-                <td><?php echo $loandetails->land; ?></td>
-<?php $profession = $adm->getsingleRecord('ourbank_master_profession','name','id',$loandetails->profession); ?>
-                <td><?php echo $profession; ?></td>
+                <td><?php echo $loandetails['membername']; ?></td>
+                              <td><?php echo $loandetails['age']; ?></td>
+                              <td><?php echo $loandetails['education']; ?></td>
+                              <td><?php echo $loandetails['familycode']; ?></td>
+                              <td><?php echo $loandetails['caste']; ?></td>
+                              <td></td>
+
+                <td></td>
             </tr>
             <?php  } ?>
         </table>

@@ -412,7 +412,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         }
         return $roi;
     }
-    public function insertTran($data,$int)
+    public function insertTran($data,$int,$totalAmt)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $acc = $this->searchaccounts($data["accNum"]);
@@ -449,6 +449,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 'paid_amount' => $data["amount"],
                 'paid_principal' => $data["amount"] - $int,
                 'paid_interest' => $int,
+                'balanceamount' => $totalAmt-$data["amount"],
                 'installment_id' => $pram -1,
                 'recordstatus_id' => 3);
         $db->insert("ourbank_loan_repayment",$repayData);
@@ -632,5 +633,58 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
        // die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
+    }
+
+    public function getinstallmentid($accId)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('a.installment_id','a.paid_amount','a.installment_amount'))
+                                ->where('a.installment_status=4 or a.installment_status=8')
+                                ->where('a.account_id=?',$accId);
+       // die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findmaxpaidid($accId)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(a.transaction_id) as maxpaidid'))
+                                ->where("a.account_id = ?",$accId)
+                                ->group("a.account_id");
+       // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function declainedpaid1($accNum,$accId)
+    {
+        $maxid=$this->findmaxpaidid($accId);
+
+        if($maxid){
+           $trasid=$maxid[0]['maxpaidid'];
+        }
+        else{
+            $trasid="";
+        }
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+                                ->join(array('b'=>'ourbank_loan_repayment'),'a.id=b.account_id',array('b.id','b.paid_date','b.balanceamount'))
+                                ->where("b.transaction_id = ?",$trasid)
+                                ->where('a.account_number=?',$accNum);
+       // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function updateinstallment($installmentid,$accid,$paidamount,$balance,$status)
+    {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+                $data = array('installment_status'=> $status,'paid_amount'=>$paidamount,'balance'=>$balance); //print_r($data);
+                $where='installment_id='.$installmentid.' and account_id='.$accid; //echo $where;
+        $this->db->update('ourbank_installmentdetails',$data,$where);
     }
 }
