@@ -105,25 +105,22 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 // 	$totaldebit="0"; 
 // 	$GeneralList = new Reports_Model_Ledgerbookbalance();
 // 	$datedet = $GeneralList->generalLedger($fromDate);
-	/*print_r($datedet);*/$y1 = $y1 - 25;
+	/*print_r($datedet);*/
 	foreach($datedet as $savingsCredit) {
 		$page->drawText('As of  '.date('d-m-Y'),480, 760);
 
 		$page->drawText(''.$savingsCredit['glsubcode'],$x0, $y1);
 		$page->drawText(''.$savingsCredit['subheader'],$x1, $y1);
 		$page->drawText(''.$savingsCredit['liabilitiesBalance'],$x2, $y1);
-
-//                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
-//                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;
-
-	}
+		$y1 = $y1 - 25;
 	$page->drawText("TOTAL  ".$savingsCredit['liabilitiesBalance'],$x1,$y1);
 // 	$page->drawText("$totalAmount",$x2,$y1);
-
-	$y1 = $y1 + 25;
+}
+	$y1 = $y1 + 23;
 	foreach($datedet1 as $savingsDebit) {
 		$page->drawText(''.$savingsDebit['glsubcode'],$x3, $y1);
 		$page->drawText(''.$savingsDebit['subheader'],$x4, $y1);
+		$page->drawText(''.$savingsDebit['assetsBalance'],460, $y1);
 
 //                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
 //                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;

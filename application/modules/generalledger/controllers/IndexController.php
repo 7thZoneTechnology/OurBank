@@ -42,8 +42,6 @@ $officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
 			}
 
 
-
-
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
  
         $formData = $this->_request->getPost();
@@ -89,29 +87,40 @@ $officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
     }
     public function pdfdisplayAction() 
     { 
-       $date1 = $this->_request->getParam('date1'); 
-       $date2 = $this->_request->getParam('date2');
+	   $fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
+       $this->view->datefrom = $fromDate;
+
+	   $toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
+       $this->view->dateto = $toDate;
        $glsubcode = $this->_request->getParam('ledger');
 
 
 		$generalLedger = new Generalledger_Model_Generalledger();
              //Lia
-        $this->view->ledegerList = $generalLedger->generalLedger($date1,$date2,$glsubcode);
-        $openingCash = $generalLedger->openingBalance($date1,$glsubcode);
+        $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$glsubcode);
+        $openingCash = $generalLedger->openingBalance($fromDate,$glsubcode);
 		    // Assets
-        $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($date1,$date2,$glsubcode);
-        $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($date1,$glsubcode);
-        if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){        }
-		 else {     $this->view->search = 0;
-                   echo "<font color='red'><b> Record not found</b> </font>";
-		       }
- 		if(count($openingCash)) {
-          foreach($openingCash as $openingCash) {
-        if ($openingCash["glsubcode_id"] == $ledegerList["glsubcode_id"]) {
-           $liabilityCash = $openingCash["openingCash"];
-             }
-           } 
-         } 
+        $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
+        $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
+		if(!$glsubcode){      $generalLedger = new Generalledger_Model_Generalledger();
+           //Lia
+        $this->view->ledegerList = $generalLedger->generalLedgerempty($fromDate,$toDate);
+        $this->view->openingCash = $generalLedger->openingBalanceempty($fromDate);
+
+          // Assets
+        $this->view->ledegerListAssets = $generalLedger->generalLedgerAssetsempty($fromDate,$toDate);
+        $this->view->openingCashAssets = $generalLedger->openingBalanceAssetsempty($fromDate);          }
+//         if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){        }
+// 		 else {     $this->view->search = 0;
+//                    echo "<font color='red'><b> Record not found</b> </font>";
+// 		       }
+//  		if(count($openingCash)) {
+//           foreach($openingCash as $openingCash) {
+//         if ($openingCash["glsubcode_id"] == $ledegerList["glsubcode_id"]) {
+//            $liabilityCash = $openingCash["openingCash"];
+//              }
+//            } 
+//          } 
 
 
         $pdf = new Zend_Pdf();
@@ -131,17 +140,20 @@ $officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
         $page->setLineWidth(1)->drawLine(570, 25, 570, 820); //right vertical
         $page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
         //set the font
-        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
-    	$this->view->search = 10;
+            $font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
+//     	$this->view->search = 10;
+
+		 $page->setFont($font, 10)
+                    ->drawText('( Liabilities )', 70, 750);
         $text = array("Particular",
                      "debit",
                      "credit",
                      "balance","Opening balance");
-        $x0 = 60; 
+        $x0 = 60; 	$y1=700;
         $x1 = 200; 
         $x2 = 340; 
         $x3 = 480;
-
+		
         $page->drawLine(50, 740, 550, 740);
         $page->drawLine(50, 720, 550, 720);
         $page->drawText($text[0], $x0, 725);
@@ -150,10 +162,35 @@ $officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
         $page->drawText($text[3], $x3, 725);
 		$page->drawText($text[4], $x0, 700);
 		foreach($openingCash as $openingCash) {
-			$page->drawText($openingCash["openingCash"],$x3, 700);
-		}
-		$y1 = 725;
+			$page->drawText($openingCash["openingCash"],$x3, $y1);
+			$page->drawText(''.$openingCash['openingCash'],$x3, $y1);
 
+			$y1=$y1-15;
+			$page->drawText($openingCash["debit"],$x3, $y1);			
+		}
+		$y1=$y1-25;
+        $page->drawLine(50, $y1, 550, $y1);$y1=$y1-40;
+
+		$page->setFont($font, 10)
+        ->drawText('( Assets )', 70, $y1);$y1=$y1-10;
+        $text = array("Particular",
+                     "debit",
+                     "credit",
+                     "balance","Opening balance");
+
+        $page->drawLine(50, $y1, 550, $y1);$y1=$y1-20;
+        $page->drawLine(50, $y1, 550, $y1);$y1=$y1+5;
+        $page->drawText($text[0], $x0, $y1);
+        $page->drawText($text[1], $x1, $y1);
+        $page->drawText($text[2], $x2, $y1);
+        $page->drawText($text[3], $x3, $y1);$y1=$y1-25;
+		$page->drawText($text[4], $x0, $y1);
+			foreach($this->view->openingCashAssets as $openingCashassets) {
+			$page->drawText($openingCash["openingCash"],$x3, $y1);
+			$page->drawText(''.$openingCash['openingCash'],$x3, $y1);
+			$y1=$y1-15;
+			$page->drawText($openingCash["Closing Balance"],$x3, $y1);	
+		}$y1=$y1-25;        $page->drawLine(50, $y1, 550, $y1);
 
 		$pdf->render();
         $pdf->save('/var/www/'.$projname.'/reports/GL.pdf');

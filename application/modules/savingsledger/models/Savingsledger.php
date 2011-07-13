@@ -59,6 +59,7 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                         (C.product_id = D.id) AND
                         (C.member_id = A.id ) AND
                         (E.id = A.village_id)";
+// // echo $sql;
         $result = $db->fetchAll($sql);
         return $result;
     }
@@ -193,7 +194,7 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                     ->join(array('i' => 'ourbank_user'),'f.created_by = i.id')
 		    ->join(array('j' => $table),'a.member_id = j.id');
         }
-// die($select->__toString($select));
+//  die($select->__toString($select));
         return $this->fetchAll($select);
 
     }

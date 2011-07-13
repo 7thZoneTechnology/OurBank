@@ -61,11 +61,11 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    		ourbank_glsubcode D,
 		    		ourbank_transaction E
 		    		where (
-  		  A.glsubcode_id_to = D.id AND 
-		B.id = D.glcode_id AND
+  		    A.glsubcode_id_to = D.id AND 
+		    B.id = D.glcode_id AND
 		    B.ledgertype_id = 4 AND
 		    A.transaction_id = E.transaction_id AND
-  D.id = '$glsubcode' AND
+            D.id = '$glsubcode' AND
 
 			E.transaction_date BETWEEN '$date1' AND '$date2')
 		    group by D.id";

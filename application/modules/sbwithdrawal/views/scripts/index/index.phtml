@@ -25,7 +25,8 @@ if(count($this->paginator)!=0) { ?>
     <table id="hor-minimalist-b">
         <tr class="tdbrownheading">
             <th>Group code</th>
-            <th>Group name</td>
+            <th>Group name</th>
+            <th>Member name</th>
         </tr>
         
         <?php if (count($this->paginator)): ?>
@@ -34,8 +35,10 @@ if(count($this->paginator)!=0) { ?>
 ?>
         <tr>
             <td><a href="<?php echo $this->baseUrl()."/sbwithdrawal/index/withdrawal/id/"?><?php echo base64_encode( $individual['groupid']); ?>/amt/<?php echo base64_encode($this->withdrawalamount);?>/type/<?php echo base64_encode($membertype);?>">
-                        <?php echo $this->escape($individual['groupcode']); ?></a></td>
-                     <td><?php echo $this->escape($individual['group_name']);?></td>
+                        <?php echo $this->escape($individual['groupcode']); ?>
+                         <td><?php echo $this->escape($individual['group_name']);?></td>
+                         <td><?php echo $this->escape($individual['memname']);?></a></td>
+
             <?php endforeach; ?>
             <?php endif; ?>
         </tr>

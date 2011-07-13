@@ -57,6 +57,9 @@ class Groupprofile_IndexController extends Zend_Controller_Action
                     if (substr($membercode,4,1) == 2 || substr($membercode,4,1) == 3) 
                         {
                             $this->view->group = $group = $this->view->accounts->group($membercode);
+                                                         
+                            $this->view->landDetails = $this->view->accounts->landDetails($membercode);
+                            
                             $this->view->groupDeatils = $this->view->accounts->groupDeatils($membercode);
                                 $addForm = new Loanprocess_Form_Loanprocess(count($this->view->group));
                                 $this->view->form=$addForm;

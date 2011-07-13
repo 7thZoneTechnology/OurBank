@@ -5,7 +5,7 @@
                 <th></th>
             </tr>
             <?php  
-				foreach($this->groupDeatils as $details) { ?> 
+      foreach($this->groupDeatils as $details) { ?> 
             <tr> 
                 <td ><?php echo $this->translate("Group name"); ?></td>
                 <td><?php echo $details->groupname; ?></td>
@@ -35,12 +35,12 @@
                 <th width="14%"><?php echo $this->translate("Member code"); ?></th>
                 <th width="20%"><?php echo $this->translate("Caste"); ?></th>
                 <th width="20%"><?php echo $this->translate("land"); ?></th>
-                <th width="20%"><?php echo $this->translate("Occupation"); ?></th>
+               <?php //echo $this->translate("Occupation"); ?>
             </tr>
 
          <?php 
 			$adm = new App_Model_Adm();$i = 1; 
-            foreach($this->group as $loandetails) { ?>
+     foreach($this->group as $loandetails) { ?>
             <tr>
                 <td><?php echo $i++;?></td>
                 <td><?php echo $loandetails['membername']; ?></td>
@@ -48,11 +48,21 @@
                               <td><?php echo $loandetails['education']; ?></td>
                               <td><?php echo $loandetails['familycode']; ?></td>
                               <td><?php echo $loandetails['caste']; ?></td>
-                              <td></td>
-
-                <td></td>
-            </tr>
+                               <?php //echo $loandetails['profession'];?>
             <?php  } ?>
+        
+ <?php $i =1; foreach($this->landDetails as $landdetails) { ?>
+ 
+         <td><?php echo $landdetails['name'];?> </td>
+   </tr>   
+ 
+ 
+ 
+<?php } ?>
+    
+        
+   
+        
         </table>
     </form>
     </fieldset>
