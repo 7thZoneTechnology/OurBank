@@ -201,6 +201,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                                         'installment_interest_amount'=> $roi,
                                         'installment_principal_amount' => round(($emi - $roi),2),
                                         'reduced_prinicipal_balance'=> round($cb,2),
+					'balance'=>$emi,
                                         'installment_status' => $status,
                                         'created_by' => 1);
                     $this->view->adm->addRecord('ourbank_installmentdetails',$instl);

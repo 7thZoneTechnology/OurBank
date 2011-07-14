@@ -1,46 +1,5 @@
 <BODY ></BODY>  <!--onload="toggleField();"-->
 <script>
-function getXMLHTTP() { //fuction to return the xml http object
-		var xmlhttp=false;	
-		try{
-			xmlhttp=new XMLHttpRequest();
-		}
-		catch(e)	{		
-			try{			
-				xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			catch(e){
-				try{
-				xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-				}
-				catch(e1){
-					xmlhttp=false;
-				}
-			}
-		}
-		 	
-		return xmlhttp;
-    }
-
-    function getBranch(office_id,path) {		
-    var strURL = path +"/receipts/index/getbranch?id="+office_id;
-
-    var req = getXMLHTTP();
-    if (req) {
-        req.onreadystatechange = function() {
-        if (req.readyState == 4) {   // only if "OK"
-        if (req.status == 200) {	
-            document.getElementById('statediv').innerHTML=req.responseText;						
-        } else {
-               alert("There was a problem while using XMLHTTP:\n" + req.statusText);
-            }
-        }
-            }	
-        req.open("GET", strURL, true);
-        req.send(null);
-        }
-	}
-	
 $(document).ready(function() {
 
 path=$("#baseurl").val();
@@ -53,6 +12,62 @@ path=$("#baseurl").val();
         getglcode();
         });
 
+$('#officeType').change(function(){
+getBranch();
+});
+
+$('#amount').change(function(){
+getLatestBalanceFrom();
+});
+
+function getLatestBalanceFrom(){
+var strURL=path+"/receipts/index/latestbalancefrom";
+var amount=$("#amount").val();
+var balance1=$("#balance1").val();
+$.ajax({
+    url: strURL,
+    data : { amount: amount, balance1: balance1 },
+    //data : JSON.stringify({ amount: amount, balance1: balance1, balance2: balance2 }),
+    //data:"amount="+$("#amount").val(),"balance2="+$("#balance2").val(),
+    success: function(result){
+$('#amt1').html(result);
+}
+}); getLatestBalanceTo();}
+
+function getLatestBalanceTo(){
+var strURL=path+"/receipts/index/latestbalanceto";
+var amount=$("#amount").val();
+var balance2=$("#balance2").val();
+$.ajax({
+    url: strURL,
+    data : { amount: amount, balance2: balance2 },
+    //data : JSON.stringify({ amount: amount, balance1: balance1, balance2: balance2 }),
+    //data:"amount="+$("#amount").val(),"balance2="+$("#balance2").val(),
+    success: function(result){
+$('#amt2').html(result);
+}
+}); }
+
+/*function paymenttype(){
+var strURL=path+"/receipts/index/paymenttype";
+$.ajax({
+    url: strURL,
+    data:"id="+$("#fromglcode option:selected").val(),
+    success: function(result){
+$('#tect3').html(result);
+}
+}); }*/
+
+function getBranch(){
+var strURL=path+"/receipts/index/getbranch";
+$.ajax({
+    url: strURL,
+    data:"id="+$("#officeType option:selected").val(),
+    success: function(result){
+$('#statediv').html(result);
+    }
+}); }
+
 function getglcode(){
 var strURL=path+"/receipts/index/glsubcode";
 $.ajax({
@@ -61,8 +76,7 @@ $.ajax({
   success: function(result){
 $('#tect2').html(result);
   }
-});
- }
+}); }
 
 function getglsubcode(){
 
@@ -71,12 +85,11 @@ $.ajax({
   url: strURL,
   data:"glcode="+$("#toglcode option:selected").val(),
   success: function(result){
-
 $('#tect1').html(result);	
 
   }
-});
- }
+}); }
+
 });
 
 
@@ -110,74 +123,94 @@ $('.show').hide();
 </script> 
 
 <fieldset>
-	<legend>Receipt and payment</legend>
+	<legend>Receipt and payment<br/>
+<?php $receipts= new Receipts_Model_Receipts();
+                $mainBranch = $receipts->getHeadOffice($this->username); foreach($mainBranch as $mainBranch) { if($mainBranch) { ?>
+<p align="right" style="Bold"><?php echo $mainBranch['type']; ?> :
+<?php echo $mainBranch['name']; ?> <br/>
+<?php $officeid= $mainBranch['id']; }} $branch= $receipts->getBranch($officeid); foreach($branch as $branch) { if ($branch) {?>
+<?php echo $branch['type']; ?> :
+<?php echo $branch['name']; }}?></p></legend> 
+
 	<div class="cont-rgt-data">
 		<form action="<?php echo $this->baseUrl();?>/receipts" method="POST">
 <input type="hidden" value="<?php  echo $this->baseUrl();?>" id="baseurl"/>
 			<table id="hor-minimalist-b" summary="Employee Pay Sheet">
-                                <tr>
-                                    <td>Office Levels</td>
+
+<!--                                <tr>
+                                    <td>* Office Levels</td>
                                     <td><?php  echo $this->form->officeType;?></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Branch</td>
+                                    <td>* Branch</td>
                                     <td><div id="statediv"><?php  echo $this->form->subOffice;?><span class="reqMark"></span></div></td>
                                     <td></td>
                                     <td></td>
-                                </tr>
-				<tr>
-					<td>Date</td>
-					<td><?php echo $this->form->transactiondate;?></td>
-					<td></td>
-					<td><?php //echo $this->form->transactiondate1;?></td>
-				</tr>
-				<tr>
-					<td>Amount</td>
-					<td><?php echo $this->form->amount;?></td>
-					<td></td>
-					<td><?php //echo $this->form->amount1;?></td>
-				</tr>
+                                </tr>-->
+
 
 				<tr>
 					<td>From GL code</td>
 					<td><?php echo $this->form->fromglcode;?></td>
-					<td >To GL code</td>
+					<td >* To GL code</td>
 					<td ><?php echo $this->form->toglcode;?></td> 
 				</tr>
 
 				<tr>
 					<td>From GL subcode</td>
 					<td><div id="errorspan2" style="display:none" class="reqMark"><div id="statediv2"></div></div><div id="tect2"  class="reqMark"><?php echo $this->form->fromglsubcode;?></div></td>
-                                        <td >To GL subcode</td>
+                                        <td >* To GL subcode</td>
 					<td ><div id="errorspan1" style="display:none" class="reqMark"><div id="statediv1"></div></div><div id="tect1"  class="reqMark"><?php echo $this->form->toglsubcode;?></div></td> <td></td>
 				</tr>
 
                                 <tr>
-                                    <td>Balance:</td>
+                                    <td>Current Balance: </td>
                                     <td><div id="statediv3"><?php  echo $this->form->balance1;?></div></td>
-                                    <td>Balance:</td>
+                                    <td>Current Balance: </td>
                                     <td><div id="statediv3"><?php  echo $this->form->balance2;?></div></td>
                                 </tr>
 
 				<tr>
-					<td >Transaction mode</td>
-					<td ><?php echo $this->form->paymenttype;?></td> 
-					<td class="show" style="display:none"><?php echo $this->form->paymenttype_details;?>Voucher/cheque/draft</td>
-					<td></td> <td></td>
+					<td>* Transaction mode</td>
+					<td><div id="tect3"><?php echo $this->form->paymenttype;?></div></td>
+					<td>  Description</td>
+					<td><?php echo $this->form->description;?></td></tr>
+				<tr>	<td></td><td class="show" style="display:none"><?php echo $this->form->paymenttype_details;?>Voucher/cheque/draft</td>
+                                        <td></td><td></td><td></td><td></td>
 				</tr>
 
 				<tr>
-					<td>Description</td>
+					<td>* Amount</td>
+					<td><?php echo $this->form->amount;?></td>
+					<td>* Date</td>
+					<td><?php echo $this->form->transactiondate;?></td>
+				</tr>
+                                <tr>
+                                    <td>Latest Balance :</td>
+                                    <td> <div id="amt1"><?php  echo $this->form->latestbalancefrom;?></div></td>
+                                    <td>Latest Balance :</td>
+                                    <td><div id="amt2"><?php  echo $this->form->latestbalanceto;?></div></td>
+                                </tr>
+<!--                            <tr>
+					<td>Date</td>
+					<td><?php echo $this->form->transactiondate;?></td>
+					<td></td>
+					<td><?php //echo $this->form->transactiondate1;?></td>
+				</tr>-->
+
+<!--				<tr>
+					<td>* Description</td>
 					<td><?php echo $this->form->description;?></td>
 					<td></td>
 					<td></td>
-				</tr>
+				</tr>-->
 				<tr>
-					<TD colspan = "2"><?php echo $this->form->Submit;?></TD>
+					<TD colspan = "2"><?php echo $this->form->Submit;?></td>
                                     <td></td>
                                     <td></td>
+
                                     <td></td>
 				</tr>
 			</table>

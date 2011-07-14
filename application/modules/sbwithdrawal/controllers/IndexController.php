@@ -34,22 +34,23 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                 if (!$data) {
                         $this->_redirect('index/login');
                 }
+
+
+
        $searchForm = $this->view->form = new Sbwithdrawal_Form_Search();
  		if ($this->_request->isPost() && $this->_request->getPost('Submit')){
                 $formData = $this->_request->getPost();
-                    if ($searchForm->isValid($formData)) {
-                        $this->view->withdrawalamount = $this->_request->getParam('amount');
-                            $result = $this->view->withdrawal->getMember($this->_request->getParam('membercode'));
-//Zend_Debug::dump($result);
 
-                            
+                    if ($searchForm->isValid($formData)) {
+                       		$this->view->withdrawalamount = $this->_request->getParam('amount');
+                            $result = $this->view->withdrawal->getMember($this->_request->getParam('membercode'));
+
                             $page = $this->_getParam('page',1);
                             $paginator = Zend_Paginator::factory($result); // assign searched values for pagination
-                            $paginator->setItemCountPerPage($this->view->adm->paginator());
+        					$paginator->setItemCountPerPage(5);
+
                             $paginator->setCurrentPageNumber($page);
                             $this->view->paginator = $paginator;
-                            $paginator->setItemCountPerPage($this->view->adm->paginator());
-	                    $paginator->setCurrentPageNumber($page);
                             $this->view->search = true;
                     } 
             }

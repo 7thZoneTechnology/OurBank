@@ -116,11 +116,10 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 	foreach($funder as $funder) {
 		$loanForm->funders->addMultiOption($funder->id,$funder->name);
 	}
-	$this->view->feedetails = $this->view->adm->viewRecord('ourbank_fee','id','ASC');
-	$countvalue=count($this->view->feedetails);
-// 	foreach($fee as $fee) {
-// 		$loanForm->fee->addMultiOption($fee->id,$fee->name);
-// 	}
+	$fee = $this->view->adm->viewRecord('ourbank_fee','id','ASC');
+	foreach($fee as $fee) {
+		$loanForm->fee->addMultiOption($fee->id,$fee->name);
+	}
 	
         $this->view->loanForm = $loanForm;
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
@@ -151,7 +150,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                       'accountcreated_date'=> $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
                                       'created_by' => 1,
                                       'status_id'=>3);
-				$accId = $this->view->adm->addRecord('ourbank_accounts',$data);
+		        $accId = $this->view->adm->addRecord('ourbank_accounts',$data);
 		        // Account number formation 
 		        // <-----------14 digit number ---------->
 		        // <--3-->/<--2-->/<---->/<--3-->/<--6-->
@@ -184,17 +183,13 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                       'tieup_flag' => 0,
                                       'created_by' => 1);
       		        $this->view->adm->addRecord('ourbank_loanaccounts',$input);
-
-			for($j=1;$j<=$countvalue;$j++){
-			if($this->_request->getParam('fee-'.$j)){
+      		        //insertion of fee
+      		        $fee = $this->_request->getParam('fee');
+	                foreach ($fee as $fee) {
                             $feeInput = array('account_id' => $accId,
-                                              'fee_id' => $this->_request->getParam('fee-'.$j), 'feeamount'=>$this->_request->getParam('hidden-'.$j));
-			//print_r($feeInput);
-                           $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
-			}
-			}
-
-
+                                              'fee_id' => $fee);
+                            $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
+                        }
                         $memberlist=$this->view->accounts->getmemberlist($memberId,$typeID);
                         if($memberlist){
                         foreach($memberlist as $memberid) 
@@ -207,7 +202,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 		}
         }
     }
-    	
+    
     public function interestAction() 
     {
 	$this->_helper->layout()->disableLayout();
@@ -217,24 +212,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 	    $this->view->interest = $interest->interest;
 	}
    }
-
-    public function feeamountAction()
-    {
-	$this->_helper->layout()->disableLayout();
-        $feeid=$this->_request->getParam('feeid');
-        $loanamount=$this->_request->getParam('loanamount');
-        $this->view->hiddenid=$this->_request->getParam('hidden');
-        $feedetails=$this->view->accounts->getfee($feeid); //print_r($feedetails);
-        if($feedetails[0]['feetype_id']==1) {
-        $feeamount=$this->view->feeamount=$feedetails[0]['value'];
-        echo "<font color=green>(".$feedetails[0]['value'].")</font>";
-        }
-        else {
-        $feeamount=$this->view->feeamount=($feedetails[0]['value']/100)*$loanamount;
-        echo "<font color=green>(".$feeamount.")</font>";
-        }
-    }
-
+    
     public function messageAction() 
     {
         $this->view->pageTitle = 'Accounting';

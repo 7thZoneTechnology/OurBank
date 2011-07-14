@@ -1,16 +1,20 @@
 <?php  if(!$this->ledegerListAssets || !$this->ledegerList) { ?>   
-<form action="<?php echo $this->baseUrl();?>/ledgerbalancebook" method="POST">  
-<div style="margin-left:20px;">
+<form action="<?php echo $this->baseUrl();?>/ledgerbalancebook/index" method="POST">  
     <fieldset>
         <legend>Ledger details</legend>
-        <TABLE style="margin-left:20px;" class="fieldsets">
-			    <tr>
-                	<td><label class="mand">Begin Date :</td>
-                	<td><?php  echo $this->form->date1;?></td>
-       			</tr>
-			</table>
-	<div style="margin-left:20px;" class="ltbtns"><br><input type="submit" name="Search" value="Search"/></div>
-    </fieldset></div>
+        <TABLE width="100%">
+	    <tr>
+                <td class="label">Begin Date</td>
+                <td><?php  echo $this->form->date1;?></td>
+                <td class="label"></td>
+                             <TD colspan="4" align="left"><input type="submit" name="Search" value="Search"/>
+</td>
+            </tr>
+            <tr>
+                <td colspan="4" align="center"></td>
+            </tr>
+        </table>
+    </fieldset>
 </form>
 <?}?>
   
@@ -36,7 +40,7 @@
                 <TH >GL.LF no</TH>
                 <TH >Liabilities</TH>
                 <TH align="right">Amount</TH>
-            </div>
+            </TR>
             <?php foreach($this->ledegerList as $savingsDebit) { $i++; ?>
             <TR>
                 <td><?php echo $savingsDebit["glsubcode"];?></td>
@@ -77,7 +81,7 @@
                 <td><?php echo $savingsDebit["glsubcode"];?></td>
                 <td><?php echo $savingsDebit["subheader"];?></td>
                 <td align="right"><?php echo $savingsDebit["assetsBalance"];?></td>
-                <?php  $totaldebit=$totaldebit+$savingsDebit["assetsBalance"]; ?>
+                <?php $totaldebit=$totaldebit+$savingsDebit["assetsBalance"]; ?>
             </TR>
             <?php }?>
 
@@ -97,14 +101,14 @@
 				</tr>
 		
 			<?php } }  $i=0;$j=0; ?>
-        </table><br>
+        </table>
 </div></tr></TR></table></fieldset>
-<form action="<?php echo $this->baseUrl();?>/ledgerbalancebook/index/pdfdisplay" method="POST" onClick="window.open('<?php echo $this->baseUrl();?>/ledgerbalancebook/index/reportdisplay/file/ledgerbalancebook.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+<form action="<?php echo $this->baseUrl();?>/ledgerbalancebook/index/pdfdisplay" method="POST"
+onClick="window.open('/IDF/public/ledgerbalancebook/index/reportdisplay/file/ledgerbalance.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+			<input type="hidden" name="date1" value="<?php echo $this->date1;?>">
+			<input type="hidden" name="field2" value="<?php echo $this->field3;?>">
 
-           		<input type="submit" value="PDF" id="submit">
-				<input type="hidden" name="field1" value="<?php echo $this->ledegerList; ?>"/>
-                <input type="hidden" name="field1" value="<?php echo $this->ledegerListAssets; ?>"/>
-				<input type="hidden" name="date1" value="<?php echo $this->date1; ?>"/>
+			<input type="submit" value="PDF" id="submit">
 
 </form>
 <?php } ?>

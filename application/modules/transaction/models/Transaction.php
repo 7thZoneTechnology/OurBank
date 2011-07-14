@@ -11,7 +11,7 @@ class Transaction_Model_Transaction extends Zend_Db_Table
                 B.account_number as number,
                 DATE_FORMAT(A.transaction_date, '%d/%m/%Y') as date,
                 A.amount_to_bank as cr,
-                A.amount_from_bank as dt,
+                A.amount_from_bank as dt, A.transaction_description as details,
                 D.name as mode,
                 E.name as name
                 FROM 
@@ -27,20 +27,22 @@ class Transaction_Model_Transaction extends Zend_Db_Table
                 ORDER BY A.transaction_id DESC)
                 UNION (SELECT 
                 distinct A.transaction_id as id,
-                A.account_id as number,
+                F.glsubcode as number,
                 DATE_FORMAT(A.transaction_date, '%d/%m/%Y') as date,
                 A.amount_to_bank as cr,
-                A.amount_from_bank as dt,
+                A.amount_from_bank as dt, A.transaction_description as details,
                 D.name as mode,
                 E.name as name
                 FROM 
                 ourbank_transaction A,
                 ourbank_accounts B,
                 ourbank_master_paymenttypes D,
-                ourbank_user E
+                ourbank_user E,
+                ourbank_glsubcode F
                 WHERE
                 DATE(A.created_date) = '".date("Y-m-d")."' AND
                 A.paymenttype_id = D.id AND
+                A.glsubcode_id_to = F.id AND
                 A.account_id = 0 AND
                 A.created_by = E.id 
                 ORDER BY A.transaction_id DESC)

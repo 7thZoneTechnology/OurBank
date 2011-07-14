@@ -16,8 +16,11 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 	$this->view->form = $searchForm;
 	if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	$dateconvertor = new App_Model_dateConvertor();
+	$formData = $this->_request->getPost();
+	if ($searchForm->isValid($formData)) {
+        $fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
 
-	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
+// 	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
 
       	    $this->view->pageTitle = "Ledger balancebook";
 
@@ -26,7 +29,7 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
             $this->view->ledegerListAssets = $GeneralList->generalLedgerAssets($fromDate);
 	}
 			                $this->view->date1 = $this->_request->getParam('date1');
-
+	}
     }
 	
     public function reportdisplayAction() 
@@ -41,14 +44,20 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
     
     public function pdfdisplayAction() 
     { 
-	$fromDate = $this->_request->getParam('date1'); 
-		$dateconvertor = new App_Model_dateConvertor();
-	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('field1'));
-	$GeneralList = new Reports_Model_Ledgerbookbalance();
+	$GeneralList = new Ledgerbalancebook_Model_Ledgerbookbalance();
+	$dateconvertor = new App_Model_dateConvertor();
 
-	$datedet = $GeneralList->fetchledgerDetails($fromDate);
-	
-	$this->view->ledgedatlist = $datedet;
+	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
+            $this->view->ledegerList = $GeneralList->generalLedger($fromDate);
+            $this->view->ledegerListAssets = $GeneralList->generalLedgerAssets($fromDate);
+            $this->view->date1 = $this->_request->getParam('date1');
+
+			$datedet = $GeneralList->generalLedger($fromDate);
+			$this->view->ledgedatlist = $datedet;
+
+			$datedet1 = $GeneralList->generalLedgerAssets($fromDate);
+			$this->view->ledegerListAssets = $datedet1;
+
 		$pdf = new Zend_Pdf();
 		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
 		$pdf->pages[] = $page;
@@ -74,7 +83,7 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 		"Liabilities",
 		"Amount",
 		"GL.LF no",
-		"Liabilities","Amount");
+		"Assets","Amount");
 		
 	$x0 = 60; 
 	$x1 = 150; 
@@ -92,32 +101,42 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 	$page->drawText($text[4], $x4, 725);
 	$page->drawText($text[5], $x5, 725);
 	$y1 = 700;
-	$totalAmount="0"; 
-	$totaldebit="0"; 
-	$GeneralList = new Reports_Model_Ledgerbookbalance();
-	$datedet = $GeneralList->fetchledgerDetails($fromDate,$toDate);
+// 	$totalAmount="0"; 
+// 	$totaldebit="0"; 
+// 	$GeneralList = new Reports_Model_Ledgerbookbalance();
+// 	$datedet = $GeneralList->generalLedger($fromDate);
 	/*print_r($datedet);*/
 	foreach($datedet as $savingsCredit) {
-		$page->drawText($savingsCredit->glsubcode_id,$x0, $y1);
-		$page->drawText($savingsCredit->productname,$x1, $y1);
-		$page->drawText($savingsCredit->amount_to_bank,$x2, $y1);
-		$page->drawText($savingsCredit->glsubcode_id,$x3, $y1);
-		$page->drawText($savingsCredit->productname,$x4, $y1);
-		$page->drawText($savingsCredit->amount_from_bank,$x5, $y1);
-                $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
-                $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;
-                
+		$page->drawText('As of  '.date('d-m-Y'),480, 760);
+
+		$page->drawText(''.$savingsCredit['glsubcode'],$x0, $y1);
+		$page->drawText(''.$savingsCredit['subheader'],$x1, $y1);
+		$page->drawText(''.$savingsCredit['liabilitiesBalance'],$x2, $y1);
+
+//                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
+//                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;
+
                 $y1 = $y1 - 25;
 	}
-	$page->drawText("TOTAL",$x1,$y1);
-	$page->drawText("$totalAmount",$x2,$y1);
-	$page->drawText("TOTAL",$x4,$y1);
-	$page->drawText("$totaldebit",$x5,$y1);
+	$page->drawText("TOTAL  ".$savingsCredit['liabilitiesBalance'],$x1,$y1);
+// 	$page->drawText("$totalAmount",$x2,$y1);
+
+	$y1 = $y1 + 25;
+	foreach($datedet1 as $savingsDebit) {
+		$page->drawText(''.$savingsDebit['glsubcode'],$x3, $y1);
+		$page->drawText(''.$savingsDebit['subheader'],$x4, $y1);
+
+//                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
+//                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;
+
+                $y1 = $y1 - 25;
+	}
+	$page->drawText("TOTAL  ".$savingsDebit['assetsBalance'],$x4,$y1);
+// 	$page->drawText("$totalAmount",$x2,$y1);
+	
 	$pdf->render();
-	$pdf->save('/var/www/'.$projname.'/reports/ledgerbalance.pdf');
-	$path = '/var/www/'.$projname.'/reports/ledgerbalance.pdf';
-	// $pdf->save('/var/www/ourbank/reports/ledgerbalance.pdf');
-	// $path = '/var/www/ourbank/reports/ledgerbalance.pdf';
+	$pdf->save('/var/www/'.$projname.'/reports/ledgerbalancebook.pdf');
+	$path = '/var/www/'.$projname.'/reports/ledgerbalancebook.pdf';
 	chmod($path,0777);
     }
 }

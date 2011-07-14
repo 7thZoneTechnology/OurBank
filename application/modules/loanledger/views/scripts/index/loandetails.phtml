@@ -52,8 +52,9 @@
         <th>Payment mode</td>
         <th>Transacted by</td>  
     </tr>
+	<?php $total="0"; ?>
+
     <?php foreach($this->tran as $transaction) : ?>
-    <tr>
        <td><?php echo $transaction->id; ?></td>
        <td><?php echo $transaction->date; ?></td>
        <?php if ($transaction->cr) {?>
@@ -71,7 +72,10 @@
        <td><?php echo $transaction->name; ?></td>
     </tr>
 	   <?php endforeach; ?>
-<tr><TD colspan="4" align="center"><b>Total</b></TD></tr>
+
+       <?php  $total=$transaction->dt - $transaction->cr; ?>
+<tr><TD></TD><TD align="right"><b>Total</b></TD><TD align="right"><b><?php echo $total; ?></b></TD><TD></TD></tr>
+
 </table>
 <form action="<?php echo $this->baseUrl();?>/loanledger/index/pdfdisplay" <? echo $this->view->result;?> method="POST" onClick="window.open('<?php echo $this->baseUrl();?>/loanledger/index/reportdisplay/file/loanledger.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 

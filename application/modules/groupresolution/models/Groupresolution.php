@@ -22,15 +22,11 @@ class Groupresolution_Model_Groupresolution extends Zend_Db_Table {
 	public function getgroup($id){ 
 		$select=$this->select()
 			->setIntegrityCheck(false)
-			->join(array('a' => 'ourbank_group'),array('id'),array('id as groupid','village_id as officeid','name as groupname','group_created_date','groupcode', 'saving_perweek','penalty_latecoming','penalty_notcoming','rateinterest'))
-                ->where('a.groupcode=?',$id)
+			->join(array('a' => 'ourbank_group'),array('id'),array('id as groupid','village_id as officeid','name as groupname','group_created_date','groupcode','saving_perweek','penalty_latecoming','penalty_notcoming','rateinterest'))
+             ->where('a.groupcode=?',$id)
 			->join(array('b' => 'ourbank_office'),'b.id  = a.village_id',array('name as officename'))
-			->joinLeft(array('c' => 'ourbank_address'),'c.id  = a.id',array('address1','address2','address3','city','district','state','zipcode'))
-		        ->join(array('d' => 'ourbank_groupmembers'),'d.group_id  = a.id',array('member_id'))
-		        ->join(array('e' => 'ourbank_familymember'),'e.id = d.member_id ',array('name as membername'));
-		        
-		//		->join(array('e' => 'ourbank_accounts'),'e.member_id  = d.member_id',array('e.account_number','e.product_id'));
- 		//die($select->__toString($select));
+			->joinLeft(array('c' => 'ourbank_address'),'c.id  = a.id',array('address1','address2','address3','city','district','state','zipcode'));
+// //  		die($select->__toString($select));
 		$result=$this->fetchAll($select);
 		return $result->toArray();
         } 

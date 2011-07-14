@@ -83,7 +83,7 @@
 </div>
 <?php $convertdate = new App_Model_dateConvertor(); ?>
 <?php if($this->intesttype==2 or $this->intesttype==3){ ?>
-    <table id="hor-minimalist-b">
+    <table id="hor-minimalist-b" border="1">
         <tr>
             <th>Inst.</th>
             <th>Inst.principal</th>
@@ -91,7 +91,11 @@
             <th>Inst. amt</th>
             <th>Due date</th>
             <th>Status</th>
-            <th>Current due</th>
+<?php if($this->intesttype==3) { ?>
+            <th>Paid amount</th>
+
+            <th>Balance</th>
+<?php } ?>
         </tr>
         <?php 
             $total1 = 0;
@@ -99,39 +103,47 @@
             $total3 = 0;
             $total4 = 0;
             $total5 = 0;
+            $total6 = 0;
         ?>
         <?php foreach($this->instalments as $instalments) { ?>
         <tr>
             <td><?php echo $instalments['installment_id']; ?></td>
-            <td>R$. <?php echo $instalments['installment_principal_amount']; 
+            <td align="right">R$. <?php echo $instalments['installment_principal_amount']; 
                             $total1 = $total1 + $instalments['installment_principal_amount'];
                         ?></td>
-            <td>R$. <?php echo $instalments['installment_interest_amount'];
+            <td align="right">R$. <?php echo $instalments['installment_interest_amount'];
 
                             $total2 = $total2 + $instalments['installment_interest_amount'];
                         ?></td>
 
-            <td>R$. <?php echo $instalments['installment_amount'];
+            <td align="right">R$. <?php echo $instalments['installment_amount'];
                             $total4 = $total4 + $instalments['installment_amount'];
                              ?></td>
 
 
-            <td><?php echo $convertdate->phpnormalformat($instalments['installment_date']);  ?></td>
-            <td><?php echo $instalments['name'];  ?></td>
-
-            <td><?php echo $instalments['installment_amount']; 
-                $total5 = $total5 + $instalments['installment_amount'];
+            <td align="right"><?php echo $convertdate->phpnormalformat($instalments['installment_date']);  ?></td>
+            <td align="right"><?php echo $instalments['name'];  ?></td>
+	<?php if($this->intesttype==3) { ?>
+            <td align="right"><?php echo $instalments['paid_amount']; 
+                $total5 = $total5 + $instalments['paid_amount'];
                 ?></td>
+            <td align="right"><?php echo $instalments['balance']; 
+                $total6 = $total6 + $instalments['balance'];
+                ?></td>
+	<?php } ?>
         </tr>
         <?php } ?>
         <tr>
             <th><b>Total</b></th>
-            <th>R$ <?php echo sprintf("%4.2f", $total1); ?></th>
-            <th>R$ <?php echo sprintf("%4.2f", $total2); ?></th>
-            <th>R$ <?php echo sprintf("%4.2f", $total4); ?></th>
+            <th align="right">R$ <?php echo sprintf("%4.2f", $total1); ?></th>
+            <th align="right">R$ <?php echo sprintf("%4.2f", $total2); ?></th>
+            <th align="right">R$ <?php echo sprintf("%4.2f", $total4); ?></th>
             <th></th>
             <th></th>
-            <th>R$ <?php echo sprintf("%4.2f", $total5); ?></th>
+<?php if($this->intesttype==3) { ?>
+            <th align="right">R$ <?php echo sprintf("%4.2f", $total5); ?></th>
+            <th align="right">R$ <?php echo sprintf("%4.2f", $total6	); ?></th>
+<?php } ?>
         </tr>
     </table>
     <?php } else { ?>

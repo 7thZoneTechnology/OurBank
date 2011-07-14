@@ -119,7 +119,8 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
 	$sql = "select 
 	        A.name as name,
 	        A.value as value,
-	        A.amountype_id as amountype_id
+	        A.amountype_id as amountype_id,
+                B.feeamount
 	        from 
 	        ourbank_fee A,
 	        ourbank_accountfee B,

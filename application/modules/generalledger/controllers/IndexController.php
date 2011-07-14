@@ -36,7 +36,7 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = "General Ledger";
         $searchForm = new Generalledger_Form_Search();
         $this->view->form = $searchForm;
-$officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
+		$officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
 			foreach($officename as $officename){
 				$searchForm->ledger->addMultiOption($officename['id'],$officename['glsubcode'].$officename['header']);
 			}
@@ -52,11 +52,12 @@ $officename = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
 		$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
         $this->view->dateto = $toDate;
 
-		$glsubcode =$this->_request->getParam('ledger');
+	    $glsubcode =$this->_request->getParam('ledger');
         $this->view->search = 10;
         $generalLedger = new Generalledger_Model_Generalledger();
            //Lia
         $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$glsubcode);
+// //  echo '<pre>'; print_r($this->view->ledegerList);
         $this->view->openingCash = $generalLedger->openingBalance($fromDate,$glsubcode);
 
           // Assets

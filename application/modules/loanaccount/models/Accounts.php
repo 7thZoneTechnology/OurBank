@@ -380,6 +380,17 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
         return $result;
     }
 
+    public function getfee($feeid)
+    {
+            $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_fee'),array('id'),array('a.value','a.feetype_id'))
+            ->where('a.id=?',$feeid);
+            //die($select->__toString($select));
+            $result=$this->fetchAll($select);
+            return $result->toArray(); // return group member details
+    }
+
     public function getmemberlist($memberId,$typeID)
     {
         if($typeID == 2 or $typeID == 3){

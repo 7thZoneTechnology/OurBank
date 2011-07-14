@@ -50,15 +50,22 @@ class Receipts_IndexController extends Zend_Controller_Action {
 			$this->_redirect('index/login');
 		}
                 $path = $this->view->baseUrl();
-
+                $username = $this->view->username;
 		$receiptsform = new Receipts_Form_Receipts($path);
 		$this->view->form = $receiptsform;
                 $receipts= new Receipts_Model_Receipts();
 
-                $mainBranch = $receipts->getHeadOffice();
-                    foreach($mainBranch as $mainBranch) {
-                    $receiptsform->officeType->addMultiOption($mainBranch['id'],$mainBranch['name']);
-                }
+//                 $mainBranch = $receipts->getHeadOffice($username);
+//                     foreach($mainBranch as $mainBranch) {
+//                     $receiptsform->officeType->addMultiOption($mainBranch['id'],$mainBranch['name']);
+//                 }
+
+                $receipts= new Receipts_Model_Receipts();
+                $mainBranch = $receipts->getHeadOffice($this->view->username); 
+                foreach($mainBranch as $mainBranch) { if($mainBranch) { $officeid= $mainBranch['id']; }} 
+                $branch= $receipts->getBranch($officeid);
+                foreach($branch as $branch) { if ($branch) { $branchid=$branch['id']; }}
+
 
                 $glcode=$receipts->listOfglcode();
                 foreach($glcode as $glcodes) {
@@ -70,8 +77,9 @@ class Receipts_IndexController extends Zend_Controller_Action {
 
 		$select = $receipts->paymenttype();
 		foreach ($select as $paymenttype1){
-			$receiptsform->paymenttype->addMultiOption($paymenttype1['id'],$paymenttype1['description']);
+			$receiptsform->paymenttype->addMultiOption($paymenttype1['id'],$paymenttype1['id']." -[".$paymenttype1['description']."]");
 		}
+
 
 
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
@@ -83,9 +91,10 @@ class Receipts_IndexController extends Zend_Controller_Action {
 				if( $paymenttype ==1 || $paymenttype ==""  ) {
 					$receiptsform->paymenttype_details->setRequired(false);
 				}
-				if ($receiptsform->isValid($formData)) {
 
-					$branchid = $this->_request->getParam('subOffice1'); 
+				if ($receiptsform->isValid($formData)) {echo "1";
+
+					//$branchid = $this->_request->getParam('subOffice1'); 
 					$fromglcode = $this->_request->getParam('fromglcode'); 
 					$fromglsubcodeid = $this->_request->getParam('glsubcodeid');
 					$toglcode = $this->_request->getParam('toglcode'); 
@@ -107,14 +116,15 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                                     foreach($toledgercode as $toledgercodes) {
                                                         $toledgertype=$toledgercodes['name'];
                                                     } }
-
-
+$flag=0;
                                         if($toglsubcodeid=="") {
-                                            echo "select the to GL code again";
-                                        }elseif($branchid=="") {
-                                            echo "select the Office type again";
-                                       // } elseif($fromglsubcodeid=="")  {
-                                        //    echo "select the from GL code again";
+                                            echo "select the to GL code again"; $flag=1;
+                                        }
+                                            //elseif($branchid=="") {
+                                           // echo "select the Office type again"; $flag=1;
+                                       // }
+                                                 elseif($fromglsubcodeid=="")  {
+                                            echo "select the from GL code again"; $flag=1;
                                         } else {
 
                         $sessionName = new Zend_Session_Namespace('ourbank');
@@ -143,6 +153,9 @@ class Receipts_IndexController extends Zend_Controller_Action {
                             $tablenameto="ourbank_Liabilities";
                         }
 
+//if ($fromglsubcodeid == '') { $fromglsubcodeid = 0; }
+//if ($paymenttype == '') { $paymenttype = 5; }
+
 			$Transactiondata = (array('transaction_id'=>'',
 					'account_id' => '',
 					'glsubcode_id_from' => $fromglsubcodeid,
@@ -157,18 +170,21 @@ class Receipts_IndexController extends Zend_Controller_Action {
 					'transaction_description'=>$description,
 					'balance'=>'',
 					'confirmation_flag'=>'',
-					'created_by'=>$user_id,
+					//'created_by'=>$user_id,$this->view->createdby
+                                        'created_by'=>$this->view->createdby,
 					'created_date'=>date("Y-m-d")
-			));
+			)); //echo '<pre>'; print_r($Transactiondata); echo $fromglsubcodeid; echo $toglsubcodeid; echo $branchid;
 			$transaction_id=$receipts->addtransactions($Transactiondata);
 
                         if($fromglcode) {
-                             $receipts->addfromaccounts($tablenamefrom,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+                            $receipts->addfromaccounts($tablenamefrom,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
                         }
-                             $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+                            $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+if($flag==0){
+$this->_redirect('transaction');}
                                         }
                                 }
-$this->_redirect('transaction');
+
                         }
 			//$this->_redirect('transaction');
 
@@ -183,25 +199,27 @@ $this->_redirect('transaction');
 
                $receipts= new Receipts_Model_Receipts();
                $this->view->glsubcodeid=$receipts->listOfglsubcode($glcode);
+
 	}
 
         function getglsubcodeAction()
-        {
+            {
 	       $this->_helper->layout->disableLayout();
                $glcode=$this->_request->getParam('glcode');
 
                $receipts= new Receipts_Model_Receipts();
                $this->view->glsubcodeid=$receipts->listOfglsubcode($glcode);
-	}
- public function getbranchAction() 
-    {
-        $this->_helper->layout->disableLayout();
-        $office_id = $this->_request->getParam('id');
+	   }
 
-        $individual = new Receipts_Model_Receipts();
-        $this->view->branchs = $individual->getBranchEdit($office_id);
+        public function getbranchAction() 
+            {
+                $this->_helper->layout->disableLayout();
+                $office_id = $this->_request->getParam('id');
 
-    }
+                $individual = new Receipts_Model_Receipts();
+                $this->view->branchs = $individual->getBranchEdit($office_id);
+
+            }
 
         public function getbalanceAction()
         {
@@ -251,8 +269,37 @@ $this->_redirect('transaction');
                         } elseif($fromledgertype=="Liabilities") {
                             $tablenamefrom="ourbank_Liabilities";
                         }
+            if($glsubcode){
+            $this->view->balance1=$receipts->getbalancefrom($glsubcode,$tablenamefrom);} else {$this->view->balance1='';}
+        }
 
-            $this->view->balance1=$receipts->getbalancefrom($glsubcode,$tablenamefrom);
+        public function paymenttypeAction()
+        {
+              /*  $this->_helper->layout->disableLayout();
+                $id = $this->_request->getParam('id');
+                $individual = new Receipts_Model_Receipts();
+                if($id){
+                $id =5;
+                $this->view->paymenttype = $individual->paymenttype_id($id);
+                } else { $this->view->paymenttype = $individual->paymenttype();} */
+        }
+
+        public function latestbalancefromAction()
+        {
+            $this->_helper->layout->disableLayout();
+            $amt=$this->_request->getParam('amount');
+            $frombalance=$this->_request->getParam('balance1');
+            $fromlatestbalance = $frombalance - $amt;
+            $this->view->latestbalancefrom = $fromlatestbalance; 
+        }
+
+         public function latestbalancetoAction()
+        {
+            $this->_helper->layout->disableLayout();
+            $amt=$this->_request->getParam('amount');
+            $tobalance=$this->_request->getParam('balance2');
+            $tolatestbalance = $tobalance + $amt; 
+            $this->view->latestbalanceto = $tolatestbalance; 
         }
 
 }

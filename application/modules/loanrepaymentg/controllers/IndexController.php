@@ -213,13 +213,13 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                                 if(count($installment)>0) {
                                 $paidcount=count($installment);
                                 $paidamount=$emi*$paidcount;
-                                echo $particalamount=$totalamount-$paidamount;
+                                $particalamount=$totalamount-$paidamount;
                                 }
                                 else {
-                                echo $particalamount=$this->_request->getParam('amount');
+                                $particalamount=$this->_request->getParam('amount');
                                 }
-                                 echo $j=$lastid[0]['installment_id'];
-                                 echo $m=$j+$paidcount;
+                                $j=$lastid[0]['installment_id'];
+                                $m=$j+$paidcount;
                                 for($i=$j; $i<$m; $i++) {
                                 $this->view->loanModel->updateinstallment($i,$accId,$emi,'0.00','2');
                                 }
@@ -242,7 +242,7 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                         CASE 4:
                                 BREAK;
                     }
-                   // $array = $this->view->loanModel->insertTran($data,$int,$totalAmt);
+                    $array = $this->view->loanModel->insertTran($data,$int,$totalAmt);
                     //if group
                     if (substr($accNum,4,1) == 2)
                     {
@@ -262,7 +262,7 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                             }
                         }
                     }
-                  // $this->_redirect("/loanrepaymentg/index/message/amt/".base64_encode($this->_request->getPost('amount'))."/accNum/".base64_encode($this->_request->getPost('accNum')));
+                   $this->_redirect("/loanrepaymentg/index/message/amt/".base64_encode($this->_request->getPost('amount'))."/accNum/".base64_encode($this->_request->getPost('accNum')));
                 }
             }
         }

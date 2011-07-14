@@ -44,7 +44,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 // 	return $result->toArray();
 //     }
     
-    public function generalLedger($date1,$date2,$glsubcode) 
+    public function generalLedger($fromDate,$toDate,$glsubcode) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -63,20 +63,20 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    		where (
   		    A.glsubcode_id_to = D.id AND 
 		    B.id = D.glcode_id AND
-		    B.ledgertype_id = 4 AND
+		    B.ledgertype_id = 3 AND
 		    A.transaction_id = E.transaction_id AND
             D.id = '$glsubcode' AND
 
-			E.transaction_date BETWEEN '$date1' AND '$date2')
+			E.transaction_date BETWEEN '$fromDate' AND '$toDate')
 		    group by D.id";
-
+// echo $sql;
         $result=$db->fetchAll($sql);
         return $result;
 
 
     }
     
-    public function openingBalance($date,$glsubcode) 
+    public function openingBalance($fromDate,$glsubcode) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -95,7 +95,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
   F.id = '$glsubcode' AND
 
 		    A.transaction_id = E.transaction_id AND
-                    E.transaction_date < '$date') 
+                    E.transaction_date < '$fromDate') 
 		    group by F.id";
 //echo $sql;
 
@@ -104,7 +104,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         return $result;
 
     }
-    public function generalLedgerAssets($date1,$date2,$glsubcode) 
+    public function generalLedgerAssets($fromDate,$toDate,$glsubcode) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -124,16 +124,16 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    A.transaction_id = E.transaction_id AND
   F.id = '$glsubcode' AND
 
-                    E.transaction_date BETWEEN '$date1' AND '$date2') 
+                    E.transaction_date BETWEEN '$fromDate' AND '$toDate') 
 		    group by F.id";
-//echo $sql;
+// echo $sql;
 
          $result=$db->fetchAll($sql);
          return $result;
 
     }
     
-    public function openingBalanceAssets($date,$glsubcode) 
+    public function openingBalanceAssets($fromDate,$glsubcode) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -151,18 +151,18 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    B.ledgertype_id = 3 AND
   F.id = '$glsubcode' AND
 		    A.transaction_id = E.transaction_id AND
-                    E.transaction_date < '$date') 
+                    E.transaction_date < '$fromDate') 
 		    group by F.id";
-//echo $sql;
+// echo $sql;
 
         $result=$db->fetchAll($sql);
         return $result;
 
     }
 
-// **************************************8
 
- public function generalLedgerempty($date1,$date2) 
+
+ public function generalLedgerempty($fromDate,$toDate) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -173,18 +173,20 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
                     D.header as subheader,
                     sum(A.credit) as credit,
                     sum(A.debit) as debit
+
                     from 
 		    		ourbank_Liabilities A,
 					ourbank_glcode B,
 		    		ourbank_glsubcode D,
 		    		ourbank_transaction E
-		    		where (
-  		  A.glsubcode_id_to = D.id AND 
-		B.id = D.glcode_id AND
+
+    		where (
+  		 	A.glsubcode_id_to = D.id AND 
+			B.id = D.glcode_id AND
 		    B.ledgertype_id = 4 AND
 		    A.transaction_id = E.transaction_id AND
 
-			E.transaction_date BETWEEN '$date1' AND '$date2')
+			E.transaction_date BETWEEN '$fromDate' AND '$toDate')
 		    group by D.id";
 
         $result=$db->fetchAll($sql);
@@ -193,7 +195,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 
     }
     
-    public function openingBalanceempty($date) 
+    public function openingBalanceempty($fromDate) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -211,7 +213,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    B.ledgertype_id = 4 AND
 
 		    A.transaction_id = E.transaction_id AND
-                    E.transaction_date < '$date') 
+                    E.transaction_date < '$fromDate') 
 		    group by F.id";
 //echo $sql;
 
@@ -220,7 +222,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         return $result;
 
     }
-    public function generalLedgerAssetsempty($date1,$date2) 
+    public function generalLedgerAssetsempty($fromDate,$toDate) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -239,16 +241,16 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    B.ledgertype_id = 3 AND
 		    A.transaction_id = E.transaction_id AND
 
-                    E.transaction_date BETWEEN '$date1' AND '$date2') 
+                    E.transaction_date BETWEEN '$fromDate' AND '$toDate') 
 		    group by F.id";
-//echo $sql;
+
 
          $result=$db->fetchAll($sql);
          return $result;
 
     }
     
-    public function openingBalanceAssetsempty($date) 
+    public function openingBalanceAssetsempty($fromDate) 
     {
         $db = $this->getAdapter();
         $sql = "select 
@@ -265,7 +267,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    B.id = F.glcode_id AND
 		    B.ledgertype_id = 3 AND
 		    A.transaction_id = E.transaction_id AND
-                    E.transaction_date < '$date') 
+                    E.transaction_date < '$fromDate') 
 		    group by F.id";
 //echo $sql;
 
@@ -273,26 +275,4 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         return $result;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

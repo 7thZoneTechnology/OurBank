@@ -9,8 +9,6 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $fromglcode=new Zend_Form_Element_Select('fromglcode');
 	$fromglcode->addMultiOption('','Select'.'...');
         $fromglcode->setAttrib('class', 'selectbutton');
-        $fromglcode->setRequired(true)
-                  ->addValidators(array(array('NotEmpty')));
         //$fromglcode->setAttrib('onchange', 'getglcode(this.value,"'.$path.'")');
 
         $fromglsubcode=new Zend_Form_Element_Select('fromglsubcode');
@@ -20,8 +18,8 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $toglcode=new Zend_Form_Element_Select('toglcode');
 	$toglcode->addMultiOption('','Select'.'...');
         $toglcode->setAttrib('class', 'selectbutton');
-        $toglcode->setRequired(true)
-                    ->addValidators(array(array('NotEmpty')));
+//         $toglcode->setRequired(true)
+//                     ->addValidators(array(array('NotEmpty')));
         //$toglcode->setAttrib('onchange', 'gettoglcode(this.value,"'.$path.'")');
 
         $toglsubcode=new Zend_Form_Element_Select('toglsubcode');
@@ -45,6 +43,7 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $transactiondate=new Zend_Form_Element_Text('transactiondate');
         $transactiondate->setRequired(true)
                     ->addValidators(array(array('NotEmpty')));
+        $transactiondate->setAttrib('autocomplete','off');
         $transactiondate->setAttrib('class', 'txt_put');
 	$transactiondate->setAttrib('onchange','getdateamount();');
 
@@ -61,26 +60,26 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
  	$description->setAttrib('rows','1');
 	$description->setAttrib('cols','20');
 	$description->setAttrib('id', 'description');
-	$description->setRequired(true);
+// 	$description->setRequired(true);
 
 
-        $officeType=new Zend_Form_Element_Select('officeType');
+   /*     $officeType=new Zend_Form_Element_Select('officeType');
 	$officeType->addMultiOption('','Select'.'...');
         $officeType->setAttrib('class', 'selectbutton');
         $officeType->setRequired(true)
-                    ->addValidators(array(array('NotEmpty')));
-        $officeType->setAttrib('onchange', 'getBranch(this.value,"'.$path.'")');
+                    ->addValidators(array(array('NotEmpty'))); */
+       // $officeType->setAttrib('onchange', 'getBranch(this.value,"'.$path.'")');
 
-        $subOffice=new Zend_Form_Element_Select('subOffice');
+     /*   $subOffice=new Zend_Form_Element_Select('subOffice');
 	$subOffice->addMultiOption('','Select'.'...');
-        $subOffice->setAttrib('class', 'selectbutton');
+        $subOffice->setAttrib('class', 'selectbutton');*/
 
 	$paymenttype = new Zend_Form_Element_Select('paymenttype');
 	$paymenttype->addMultiOption('','select');
         $paymenttype->setAttrib('class', 'selectbutton');
 	$paymenttype->setAttrib('id', 'paymenttype');
 	$paymenttype->setAttrib('onchange','toggleField1();');
-	$paymenttype->setRequired(true);
+// 	$paymenttype->setRequired(true);
 
 
 	$no = new Zend_Form_Element_Textarea('paymenttype_details');
@@ -90,11 +89,16 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
 	$no->setAttrib('id', 'paymenttype_details');
 	$no->setRequired(true);
 
+       $latestbalancefrom = new Zend_Form_Element_Text('$latestbalancefrom');
+       $latestbalancefrom->setAttrib('readonly', 'true');
+
+       $latestbalanceto = new Zend_Form_Element_Text('$latestbalanceto');
+       $latestbalanceto->setAttrib('readonly', 'true');
 
         $submit = new Zend_Form_Element_Submit('Submit');
         $submit->setAttrib('class', 'officesubmit');
 
-        $this->addElements(array($fromglcode,$fromglsubcode,$toglcode,$toglsubcode,$balance1,$balance2,$amount,$transactiondate,$description,$submit,$officeType,$subOffice,$transactiondate1,$amount1,$paymenttype,$no));
+        $this->addElements(array($fromglcode,$fromglsubcode,$toglcode,$toglsubcode,$balance1,$balance2,$amount,$transactiondate,$description,$submit,$transactiondate1,$amount1,$paymenttype,$no,$latestbalancefrom,$latestbalanceto));
     }
 }
 

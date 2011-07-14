@@ -35,13 +35,16 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
 		return $result->toArray();
 	}
 
-        public function getHeadOffice() {
+        public function getHeadOffice($username) {
             $db = $this->getAdapter();
-            $sql = "select id, name, officetype_id from
-               ourbank_office where officetype_id = 
-               (select officetype_id from ourbank_officehierarchy where Hierarchy_level = (select max(Hierarchy_level) from ourbank_officehierarchy))";
-//echo $sql;
-
+//             $sql = "select id, name, officetype_id from
+//                ourbank_office where officetype_id = 
+//                (select officetype_id from ourbank_officehierarchy where Hierarchy_level = (select max(Hierarchy_level) from ourbank_officehierarchy))";
+                $sql = "select A.id,A.name,A.officetype_id,C.type from 
+                        ourbank_office A, ourbank_user B, ourbank_officehierarchy C
+                        where B.name='".$username."' AND 
+                        B.bank_id = A.id AND
+                        C.id = A.officetype_id";
             return $db->fetchAll($sql);
 
         }
@@ -127,6 +130,16 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
+
+	public function paymenttype_id($id) {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_paymenttypes'),array('id'))
+                        ->where('a.id = ?',$id);
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
+
         public function getBranchEdit($office_id)
         {
                 $db = $this->getAdapter();
@@ -134,6 +147,16 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
         //      echo $sql;
                 return $db->fetchAll($sql);
         }
+
+        public function getBranch($office_id)
+        {
+                $db = $this->getAdapter();
+                $sql = "select a.name, a.id,b.type from ourbank_office a, ourbank_officehierarchy b where a.parentoffice_id='".$office_id."' 
+                        and b.id = a.officetype_id";
+        //      echo $sql;
+                return $db->fetchAll($sql);
+        }
+
         public function getbalanceto($toglsubcode,$tablenameto)
         {
                 $db = $this->getAdapter();

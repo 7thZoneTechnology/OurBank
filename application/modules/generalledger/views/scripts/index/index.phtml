@@ -47,6 +47,8 @@
 <?php if (count($this->ledegerList)) { ?>
 	<h3 align="right">From <?php echo "<font color='#045'>".$this->datefrom."</font>"; ?> </h3>
 	<h3 align="right"> To <?php echo "<font color='#045'>".$this->dateto."</font>"; ?></h3> 
+	<?php foreach($this->ledegerList as $ledegerList) { $type = $ledegerList["subheader"]; }?>
+	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3>
 	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
 	<div style="float:left;width:800px">
     <legend>Liabilities</legend>
@@ -104,9 +106,15 @@
 </div>
 <?php } ?>
 
-<div style="float:left;width:800px">
+
 <?php if (count($this->ledegerListAssets)) { ?>
-	
+	<h3 align="right">From <?php echo "<font color='#039'>".$this->datefrom."</font>"; ?> </h3>
+	<h3 align="right"> To <?php echo "<font color='#039'>".$this->dateto."</font>"; ?></h3> 
+	<?php foreach($this->ledegerListAssets as $ledegerListAssets) { $type = $ledegerListAssets["subheader"]; }?>
+	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3>
+
+	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
+<div style="float:left;width:800px">
     <legend>Assets</legend>
     <TABLE id="hor-minimalist-b" width="80%">
      <tr>
@@ -170,6 +178,5 @@ onClick="window.open('<?php echo $this->baseUrl();?>/generalledger/index/reportd
 			<input type="hidden" name="dateto" value="<?php echo $this->dateto; ?>"/>
 
 
-</form>
+</form></div>
     <?php } }?>
-</div>
