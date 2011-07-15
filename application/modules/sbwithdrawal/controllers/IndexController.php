@@ -20,7 +20,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
          $this->view->cl=new App_Model_Users();
         $loginname= $this->view->cl->username($userid);
-        foreach($loginname as $loginname) 
+        foreach($loginname as $loginname)
         {
             $this->view->username=$loginname['username']; // get the user name
         }
@@ -52,20 +52,22 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                             $paginator->setCurrentPageNumber($page);
                             $this->view->paginator = $paginator;
                             $this->view->search = true;
-                    } 
+                    }
             }
     }
     public function withdrawalAction(){
-        $id =  base64_decode($this->_request->getParam('id'));
-        $amount = base64_decode($this->_request->getParam('amt'));
-        $membertype = base64_decode($this->_request->getParam('type'));
+        $groupcode =  $this->_request->getParam('membercode');
+        $amount = $this->_request->getParam('amount');
+/*        $membertype = $this->_request->getParam('type');*/
         $this->view->amount = $amount;
-        $this->view->id = $id;
-        $this->view->membertype = $membertype;
-        $address = $this->view->adm->getmodule("ourbank_address",$id,"Group");// get address for particular group
-        $groupWholedetails = $this->view->withdrawal->getgroupwholedetails($id,$membertype); // get group details
-        $this->view->groupmemberslist  = $this->view->withdrawal->getgroupmembers($id); // get groupmembers details
-        $this->view->repmemberslist  = $this->view->withdrawal->getrepmembers($id); // get groupmembers details
+        $this->view->groupcode = $groupcode;
+		$groupid = $this->view->adm->getsingleRecord('ourbank_group','id','groupcode',$groupcode);
+
+//         $this->view->membertype = $membertype;
+        $address = $this->view->adm->getmodule("ourbank_address",$groupid,"Group");// get address for particular group
+        $groupWholedetails = $this->view->withdrawal->getgroupwholedetails($groupcode,$groupid); // get group details
+        $this->view->groupmemberslist  = $this->view->withdrawal->getgroupmembers($groupid); // get groupmembers details
+        $this->view->repmemberslist  = $this->view->withdrawal->getrepmembers($groupid); // get groupmembers details
         foreach($groupWholedetails as $groupdetails){
             $this->view->groupname = $groupdetails['groupname'];
             $this->view->createdate = $groupdetails['group_created_date'];

@@ -9,7 +9,7 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $fromglcode=new Zend_Form_Element_Select('fromglcode');
 	$fromglcode->addMultiOption('','Select'.'...');
         $fromglcode->setAttrib('class', 'selectbutton');
-        //$fromglcode->setAttrib('onchange', 'getglcode(this.value,"'.$path.'")');
+//      $fromglcode->setAttrib('onchange', 'getglcode(this.value,"'.$path.'")');
 
         $fromglsubcode=new Zend_Form_Element_Select('fromglsubcode');
 	$fromglsubcode->addMultiOption('','Select'.'...');
@@ -18,14 +18,12 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
         $toglcode=new Zend_Form_Element_Select('toglcode');
 	$toglcode->addMultiOption('','Select'.'...');
         $toglcode->setAttrib('class', 'selectbutton');
-//         $toglcode->setRequired(true)
-//                     ->addValidators(array(array('NotEmpty')));
-        //$toglcode->setAttrib('onchange', 'gettoglcode(this.value,"'.$path.'")');
+//      $toglcode->setAttrib('onchange', 'gettoglcode(this.value,"'.$path.'")');
 
         $toglsubcode=new Zend_Form_Element_Select('toglsubcode');
 	$toglsubcode->addMultiOption('','Select'.'...');
         $toglsubcode->setAttrib('class', 'selectbutton');
-//         $toglsubcode->setAttrib('onchange', 'gettoglsubcode(this.value,"'.$path.'")');
+//      $toglsubcode->setAttrib('onchange', 'gettoglsubcode(this.value,"'.$path.'")');
 
         $balance1 = new Zend_Form_Element_Text('balance1');
         $balance1->setAttrib('readonly', 'true');
@@ -38,6 +36,7 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
                     ->addValidators(array(array('NotEmpty')));
         $amount->setAttrib('class', 'txt_put');
 	$amount->setAttrib('onchange','getdateamount();');
+        $amount->setAttrib('autocomplete','off');
 
         //$transactiondate=new ZendX_JQuery_Form_Element_DatePicker('transactiondate');
         $transactiondate=new Zend_Form_Element_Text('transactiondate');
@@ -60,27 +59,12 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
  	$description->setAttrib('rows','1');
 	$description->setAttrib('cols','20');
 	$description->setAttrib('id', 'description');
-// 	$description->setRequired(true);
-
-
-   /*     $officeType=new Zend_Form_Element_Select('officeType');
-	$officeType->addMultiOption('','Select'.'...');
-        $officeType->setAttrib('class', 'selectbutton');
-        $officeType->setRequired(true)
-                    ->addValidators(array(array('NotEmpty'))); */
-       // $officeType->setAttrib('onchange', 'getBranch(this.value,"'.$path.'")');
-
-     /*   $subOffice=new Zend_Form_Element_Select('subOffice');
-	$subOffice->addMultiOption('','Select'.'...');
-        $subOffice->setAttrib('class', 'selectbutton');*/
 
 	$paymenttype = new Zend_Form_Element_Select('paymenttype');
 	$paymenttype->addMultiOption('','select');
         $paymenttype->setAttrib('class', 'selectbutton');
 	$paymenttype->setAttrib('id', 'paymenttype');
 	$paymenttype->setAttrib('onchange','toggleField1();');
-// 	$paymenttype->setRequired(true);
-
 
 	$no = new Zend_Form_Element_Textarea('paymenttype_details');
 	$no->setAttrib('class', 'textfield');
@@ -89,11 +73,11 @@ class Receipts_Form_Receipts extends ZendX_JQuery_Form{
 	$no->setAttrib('id', 'paymenttype_details');
 	$no->setRequired(true);
 
-       $latestbalancefrom = new Zend_Form_Element_Text('$latestbalancefrom');
-       $latestbalancefrom->setAttrib('readonly', 'true');
+        $latestbalancefrom = new Zend_Form_Element_Text('latestbalancefrom');
+        $latestbalancefrom->setAttrib('readonly', 'true');
 
-       $latestbalanceto = new Zend_Form_Element_Text('$latestbalanceto');
-       $latestbalanceto->setAttrib('readonly', 'true');
+        $latestbalanceto = new Zend_Form_Element_Text('latestbalanceto');
+        $latestbalanceto->setAttrib('readonly', 'true');
 
         $submit = new Zend_Form_Element_Submit('Submit');
         $submit->setAttrib('class', 'officesubmit');

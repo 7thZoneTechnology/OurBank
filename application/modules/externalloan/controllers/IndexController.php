@@ -36,23 +36,17 @@ class Externalloan_IndexController extends Zend_Controller_Action
         //submit action
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
                 $formData = $this->_request->getPost();
-                if ($declarationform->isValid($formData)) 
-                {
+                if ($declarationform->isValid($formData)) {
 
-                    $module=$this->view->dbobj->getmodule('Group'); //print_r($module);
-                    $this->view->moduleid = $moduleid=$module[0]['module_id'];
-                    $this->view->dbobj->groupDeatils($memcode,$moduleid);
-                    $this->view->groupresult=$results = $this->view->dbobj->groupDeatils($memcode,$moduleid);
-                    if ($this->view->groupresult)
-                    {
-                        $this->view->groupmember=$membername =  $this->view->dbobj->getmember($memcode);
-                        $this->view->represent=$repname =  $this->view->dbobj->represent($memcode);
-                        $this->view->loans=$loans =  $this->view->dbobj->getgrouploans($memcode);
-                    }
-                    else
-                    {
-                        $this->view->error = "Record Not Found ... ";
-                    }
+        $module=$this->view->dbobj->getmodule('Group'); //print_r($module);
+        $this->view->moduleid = $moduleid=$module[0]['module_id'];
+        $this->view->dbobj->groupDeatils($memcode,$moduleid);
+        $this->view->groupresult=$results =  $this->view->dbobj->groupDeatils($memcode,$moduleid);
+
+//         echo '<pre>'; print_r($this->view->groupresult);
+        $this->view->groupmember=$membername =  $this->view->dbobj->getmember($memcode);
+        $this->view->represent=$repname =  $this->view->dbobj->represent($memcode);
+        $this->view->loans=$loans =  $this->view->dbobj->getgrouploans($memcode);
                 }
 
         }
@@ -108,14 +102,11 @@ class Externalloan_IndexController extends Zend_Controller_Action
 //             echo '<pre>'; print_r($this->view->groupresult);
             $dateconvert= new App_Model_dateConvertor();
             foreach($this->view->groupresult as $result) { 
-            
-          //  Zend_Debug::dump($this->view->groupresult);
-            
             foreach($this->view->represent as $name) {
             foreach($this->view->groupmember as $memberview){
                 // write text to page
                 $page->setFont($font, 10)
-                    ->drawText('( EXTERNAL LOAN REQUEST )', 237, 720);
+                ->drawText('( EXTERNAL LOAN REQUEST )', 237, 720);
 
                 $page->setFont($font, 9)
                     ->drawText('Group name :'.$result['name'].'',$x1, $y1);
@@ -133,21 +124,20 @@ class Externalloan_IndexController extends Zend_Controller_Action
                 $page->setFont($font, 9)
                     ->drawText(''.$result['city'].'',137, $y1);
 
-               $page->setFont($font, 9)
+                $page->setFont($font, 9)
                     ->drawText('Savings A/c :'.$result['account_number'].'',$x2, $y1);
 
 				$y1=$y1-15;
                 $page->setFont($font, 9)
                     ->drawText(''.$result['state'].'',137, $y1);
 
-            foreach($this->view->loans as $loan) {  
-                 $page->setFont($font, 9)
+            foreach($this->view->loans as $loan) {
+                $page->setFont($font, 9)
                     ->drawText('Loan A/c :'.$loan['loanaccount'].'',$x2, $y1);  
-                 }
-// // 				$y1=$y1-15;
-// //                 $page->setFont($font, 9)
-// //                     ->drawText('Communication:phone/mobile :'.$loan['mobile'].'',$x1, $y1);
-// //                  
+                }
+				$y1=$y1-15;
+                $page->setFont($font, 9)
+                    ->drawText('Communication:phone/mobile :'.$result['mobile'].'',$x1, $y1);
                  $y1=$y1-10;
                      $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
                  $y1=$y1-25;
@@ -161,9 +151,9 @@ class Externalloan_IndexController extends Zend_Controller_Action
 
                 $page->setFont($font, 9)
                     ->drawText('2. aujhhjuoer uiuhjn jhsfduio  uyhuasmuiohjos iuiowsmhns8u ujmnasusm sjuhm,asdfiu ',$x1,$y1);
-//                 $y1=$y1-15;
-//                 $page->setFont($font, 9)
-//                     ->drawText('1) '.$name['memnames'].'',150, $y1);
+                $y1=$y1-15;
+                $page->setFont($font, 9)
+                    ->drawText('1) '.$name['memnames'].'',150, $y1);
 
                 $y1=$y1-25;
                 $page->setFont($font, 9)
@@ -191,9 +181,9 @@ class Externalloan_IndexController extends Zend_Controller_Action
 				$y1=$y1-10;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
 
-// 				$y1=$y1-15;
-// 				$page->setFont($font, 9)
-//                     ->drawText(''.$memberview['memname'].'',150,$y1);
+				$y1=$y1-15;
+				$page->setFont($font, 9)
+                    ->drawText(''.$memberview['memname'].'',150,$y1);
 
 
 				$page->setFont($font, 9)
@@ -212,8 +202,8 @@ class Externalloan_IndexController extends Zend_Controller_Action
             $pdfData = $pdf->render();
             $pdf->save('/var/www/'.$projname.'/reports/externalloan.pdf');
             $path = '/var/www/'.$projname.'/reports/externalloan.pdf';
-            chmod($path,0777);
-            }         
-           }
+            chmod($path,777);
+             }         
+            }
           } } 
 }

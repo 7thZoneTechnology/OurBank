@@ -55,23 +55,16 @@ class Receipts_IndexController extends Zend_Controller_Action {
 		$this->view->form = $receiptsform;
                 $receipts= new Receipts_Model_Receipts();
 
-//                 $mainBranch = $receipts->getHeadOffice($username);
-//                     foreach($mainBranch as $mainBranch) {
-//                     $receiptsform->officeType->addMultiOption($mainBranch['id'],$mainBranch['name']);
-//                 }
-
                 $receipts= new Receipts_Model_Receipts();
-                $mainBranch = $receipts->getHeadOffice($this->view->username); 
-                foreach($mainBranch as $mainBranch) { if($mainBranch) { $officeid= $mainBranch['id']; }} 
+                $mainBranch = $receipts->getHeadOffice($this->view->username);                                    //checking the office wrt username
+                foreach($mainBranch as $mainBranch) { if($mainBranch) { $branchid= $mainBranch['id']; }} 
+               /* foreach($mainBranch as $mainBranch) { if($mainBranch) { $officeid= $mainBranch['id']; }} 
                 $branch= $receipts->getBranch($officeid);
-                foreach($branch as $branch) { if ($branch) { $branchid=$branch['id']; }}
-
+                foreach($branch as $branch) { if ($branch) { $branchid=$branch['id']; }}*/
 
                 $glcode=$receipts->listOfglcode();
                 foreach($glcode as $glcodes) {
-//                     $receiptsform->fromglcode->addMultiOption($glcodes['id'],$glcodes['header']);
                     $receiptsform->fromglcode->addMultiOption($glcodes['id'],$glcodes['header']." -[".$glcodes['glcode']."]");
-
                     $receiptsform->toglcode->addMultiOption($glcodes['id'],$glcodes['header']." -[".$glcodes['glcode']."]");
                 }
 
@@ -79,8 +72,6 @@ class Receipts_IndexController extends Zend_Controller_Action {
 		foreach ($select as $paymenttype1){
 			$receiptsform->paymenttype->addMultiOption($paymenttype1['id'],$paymenttype1['id']." -[".$paymenttype1['description']."]");
 		}
-
-
 
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 
@@ -92,9 +83,8 @@ class Receipts_IndexController extends Zend_Controller_Action {
 					$receiptsform->paymenttype_details->setRequired(false);
 				}
 
-				if ($receiptsform->isValid($formData)) {echo "1";
+				if ($receiptsform->isValid($formData)) {
 
-					//$branchid = $this->_request->getParam('subOffice1'); 
 					$fromglcode = $this->_request->getParam('fromglcode'); 
 					$fromglsubcodeid = $this->_request->getParam('glsubcodeid');
 					$toglcode = $this->_request->getParam('toglcode'); 
@@ -103,8 +93,13 @@ class Receipts_IndexController extends Zend_Controller_Action {
 					$transactiondate = $this->_request->getParam('transactiondate');
 					$description = $this->_request->getParam('description');
 					$paymenttype_details = $this->_request->getParam('paymenttype_details');
+                                        $balance1 = $this->_request->getParam('amount');
+                                        $balance2 = $this->_request->getParam('balance2');
+                                        $balance = $balance1 + $balance2; $balance = $balance.'.00';   //to display the latest ledger balance after amount is entered
 
-                                        $receipts= new Receipts_Model_Receipts();
+
+
+                                        $receipts= new Receipts_Model_Receipts();                                   //get the ledger codes
                                         if ($fromglcode) {
                                                     $fromledgercode=$receipts->listOfledgercode($fromglcode);
                                                     foreach($fromledgercode as $fromledgercodes) {
@@ -116,7 +111,7 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                                     foreach($toledgercode as $toledgercodes) {
                                                         $toledgertype=$toledgercodes['name'];
                                                     } }
-$flag=0;
+                                        $flag=0;
                                         if($toglsubcodeid=="") {
                                             echo "select the to GL code again"; $flag=1;
                                         }
@@ -130,7 +125,8 @@ $flag=0;
                         $sessionName = new Zend_Session_Namespace('ourbank');
                         $user_id = $sessionName->primaryuserid;
                         $receipts= new Receipts_Model_Receipts();
-                        if($fromglcode) {
+
+                        if($fromglcode) {                                                         //check the table related to from ledger type
                             if($fromledgertype=="Income") {
                                 $tablenamefrom="ourbank_Income";
                             } elseif($fromledgertype=="Expenditure") {
@@ -143,7 +139,7 @@ $flag=0;
                         }
 
 
-                        if($toledgertype=="Income") {
+                        if($toledgertype=="Income") {                                       //check the table related to ledger type
                             $tablenameto="ourbank_Income";
                         } elseif($toledgertype=="Expenditure") {
                             $tablenameto="ourbank_Expenditure";
@@ -152,9 +148,6 @@ $flag=0;
                         } elseif($toledgertype=="Liabilities") {
                             $tablenameto="ourbank_Liabilities";
                         }
-
-//if ($fromglsubcodeid == '') { $fromglsubcodeid = 0; }
-//if ($paymenttype == '') { $paymenttype = 5; }
 
 			$Transactiondata = (array('transaction_id'=>'',
 					'account_id' => '',
@@ -168,50 +161,52 @@ $flag=0;
 					'recordstatus_id'=>'3',
 					'reffering_vouchernumber'=>$paymenttype_details,
 					'transaction_description'=>$description,
-					'balance'=>'',
+					'balance'=>$balance,
 					'confirmation_flag'=>'',
-					//'created_by'=>$user_id,$this->view->createdby
                                         'created_by'=>$this->view->createdby,
 					'created_date'=>date("Y-m-d")
-			)); //echo '<pre>'; print_r($Transactiondata); echo $fromglsubcodeid; echo $toglsubcodeid; echo $branchid;
+			)); //echo '<pre>'; print_r($Transactiondata); echo $fromglsubcodeid; echo $toglsubcodeid; echo "/"; echo $tablenamefrom; echo $tablenameto;
 			$transaction_id=$receipts->addtransactions($Transactiondata);
 
                         if($fromglcode) {
-                            $receipts->addfromaccounts($tablenamefrom,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+                               $receipts->addfromaccounts($tablenamefrom,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
                         }
-                            $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
-if($flag==0){
-$this->_redirect('transaction');}
+                              /*  if ($tablenamefrom == $tablenameto)                 //to maintain only one record per transaction in one ledger type
+                                {
+                                            $data=(array('glsubcode_id_to'=>$toglsubcodeid,
+                                                          'credit' => $amount));
+                                            $receipts->updateRecord($tablenamefrom,$transaction_id,$data);
+                                } else {
+                                            $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);}*/
+                                $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+            if($flag==0){
+                $this->_redirect('transaction');
+            }
                                         }
                                 }
-
                         }
-			//$this->_redirect('transaction');
-
 		}
-// 			$this->_redirect('transaction');
 
-
-        function glsubcodeAction()
+        function glsubcodeAction()                      //to get the to glsubcode
         {
 	       $this->_helper->layout->disableLayout();
                $glcode=$this->_request->getParam('glcode');
-
+               $username=$this->view->username;
                $receipts= new Receipts_Model_Receipts();
-               $this->view->glsubcodeid=$receipts->listOfglsubcode($glcode);
+               $this->view->glsubcodeid=$receipts->listOfglsubcode($glcode,$username);
 
 	}
 
-        function getglsubcodeAction()
+        function getglsubcodeAction()                           //to get the from glsubcode
             {
 	       $this->_helper->layout->disableLayout();
                $glcode=$this->_request->getParam('glcode');
-
+               $username=$this->view->username;
                $receipts= new Receipts_Model_Receipts();
-               $this->view->glsubcodeid=$receipts->listOfglsubcode($glcode);
+               $this->view->glsubcodeid=$receipts->listOfglsubcode($glcode,$username);
 	   }
 
-        public function getbranchAction() 
+        public function getbranchAction()                   //to get the branch wrt office
             {
                 $this->_helper->layout->disableLayout();
                 $office_id = $this->_request->getParam('id');
@@ -221,7 +216,7 @@ $this->_redirect('transaction');}
 
             }
 
-        public function getbalanceAction()
+        public function getbalanceAction()                              //to get to glsubcode balance
         {
             $this->_helper->layout->disableLayout();
             $glsubcode=$this->_request->getParam('glsubcode');
@@ -229,7 +224,7 @@ $this->_redirect('transaction');}
             $receipts= new Receipts_Model_Receipts();
             $toledgertype=''; $tablenameto='';
             if ($glsubcode) {
-                $toledgercode=$receipts->listOfledgercode($glsubcode);
+                $toledgercode=$receipts->listOfsubledgercode($glsubcode);
                 foreach($toledgercode as $toledgercodes) {
                 $toledgertype=$toledgercodes['name'];
                             } }
@@ -244,10 +239,10 @@ $this->_redirect('transaction');}
                             $tablenameto="ourbank_Liabilities";
                         }
 
-            $this->view->balance2=$receipts->getbalanceto($glsubcode,$tablenameto);
+            $this->view->balance2=$receipts->getbalance($glsubcode,$tablenameto);
         }
 
-        public function balanceAction()
+        public function balanceAction()                                //to get from glsubcode balance
         {
             $this->_helper->layout->disableLayout();
             $glsubcode=$this->_request->getParam('glsubcode');
@@ -255,7 +250,7 @@ $this->_redirect('transaction');}
             $receipts= new Receipts_Model_Receipts();
             $fromledgertype=''; $tablenamefrom='';
             if ($glsubcode) {
-                $fromledgercode=$receipts->listOfledgercode($glsubcode);
+                $fromledgercode=$receipts->listOfsubledgercode($glsubcode);
                 foreach($fromledgercode as $fromledgercodes) {
                 $fromledgertype=$fromledgercodes['name'];
                             } }
@@ -270,21 +265,10 @@ $this->_redirect('transaction');}
                             $tablenamefrom="ourbank_Liabilities";
                         }
             if($glsubcode){
-            $this->view->balance1=$receipts->getbalancefrom($glsubcode,$tablenamefrom);} else {$this->view->balance1='';}
+            $this->view->balance1=$receipts->getbalance($glsubcode,$tablenamefrom); } else { $this->view->balance1=''; }
         }
 
-        public function paymenttypeAction()
-        {
-              /*  $this->_helper->layout->disableLayout();
-                $id = $this->_request->getParam('id');
-                $individual = new Receipts_Model_Receipts();
-                if($id){
-                $id =5;
-                $this->view->paymenttype = $individual->paymenttype_id($id);
-                } else { $this->view->paymenttype = $individual->paymenttype();} */
-        }
-
-        public function latestbalancefromAction()
+        public function latestbalancefromAction()                    //to get latest balance after amount deduction for fromsubledger
         {
             $this->_helper->layout->disableLayout();
             $amt=$this->_request->getParam('amount');
@@ -293,7 +277,7 @@ $this->_redirect('transaction');}
             $this->view->latestbalancefrom = $fromlatestbalance; 
         }
 
-         public function latestbalancetoAction()
+         public function latestbalancetoAction()                  //to get latest balance after amount addition for tosubledger
         {
             $this->_helper->layout->disableLayout();
             $amt=$this->_request->getParam('amount');

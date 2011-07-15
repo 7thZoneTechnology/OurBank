@@ -20,16 +20,15 @@ $select=$this->select()
     }
 
 // // get group whole details
-        public function getgroupwholedetails($id,$membertype)
+        public function getgroupwholedetails($groupcode,$groupid)
         {
         $select=$this->select()
             ->setIntegrityCheck(false)
             ->join(array('a' => 'ourbank_group'),array('id'),array('name as groupname','id as groupid','group_created_date','groupcode'))
-            ->where('a.id = '.$id)
+            ->where('a.groupcode = '.$groupcode)
             ->join(array('b' => 'ourbank_accounts'),'b.member_id = a.id',array('account_number as savingsaccountnumber'))
-            ->where('b.membertype_id = '.$membertype)
-            ->join(array('c' => 'ourbank_group_representatives'),'c.group_id ='.$id,array('representative_id'))
-            ->join(array('d' => 'ourbank_groupmembers'),'d.group_id ='.$id,array('member_id as groupmembers'))
+            ->join(array('c' => 'ourbank_group_representatives'),'c.group_id ='.$groupid,array('representative_id'))
+            ->join(array('d' => 'ourbank_groupmembers'),'d.group_id ='.$groupid,array('member_id as groupmembers'))
             ->where('d.groupmember_status  = 1 or d.groupmember_status  = 3')
             ->join(array('e' => 'ourbank_familymember'),'e.id = d.member_id',array('name as groupmembersname'))
             ->where('e.id = d.member_id or e.id = c.representative_id')

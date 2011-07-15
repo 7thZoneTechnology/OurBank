@@ -56,8 +56,8 @@ class Affidavit_IndexController extends Zend_Controller_Action
                 $formData = $this->_request->getPost();
                     if ($searchForm->isValid($formData)) {
                             $this->view->withdrawalamount = $this->_request->getParam('amount');
-                            $this->view->membercode=$this->_request->getParam('s1');
-                            $result = $this->view->Dbobj->getMember($this->_request->getParam('s1'));
+                            $this->view->membercode=$this->_request->getParam('membercode');
+                            $result = $this->view->Dbobj->getMember($this->_request->getParam('membercode'));
                             $page = $this->_getParam('page',1);
                             $paginator = Zend_Paginator::factory($result); // assign searched values for pagination
                             $paginator->setItemCountPerPage($this->view->adm->paginator());
@@ -158,7 +158,6 @@ if($y1>45){
         $page->drawText('Respected sir,',$x1, $y1=$y1-35);
         if($memberdetails['alias']) { $alias="@ ".$memberdetails['alias']; } else { $alias=''; }
 
-//echo $memberdetails['village_id'];
         $village=$this->view->Dbobj->fetchvillagedetails($memberdetails['village_id']);
 
         $subject=$memberdetails['membername']." ".$alias." ".$memberdetails['age']." Age ".$this->view->groupdetails[0]['group_name']." Group ".$village[0]['villagename']." Village ".$village[0]['talukname']." Taluk ".$village[0]['distname']." District.";
@@ -170,7 +169,7 @@ if($y1>45){
             if(substr($this->view->groupcode,4,1) == 2) {  
             $newtext = wordwrap($shgdeclaration, 30, "<br />");
             $pieces = explode("<br />", $newtext);
-                    $page->drawText($pieces[0],$x1, $y1);
+                    $page->drawText($pieces,$x1, $y1);
             }
             else if(substr($this->view->groupcode,4,1) == 3) { 
             $newtext = wordwrap($jlgdeclaration, 130, "<br />");
