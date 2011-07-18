@@ -454,55 +454,51 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 'recordstatus_id' => 3);
         $db->insert("ourbank_loan_repayment",$repayData);
         // Insertion into Assets ourbank_Assets Cash Cr entry
-        $glresult = $this->getGlcode($officeid);
-        foreach ($glresult as $glresult) {
-                $cashglsubocde = $glresult->id;
-        }
+        $glbank = $this->getGlcode($officeid,'cash'.$officeid);
         // Insertion into Assets ourbank_Assets cash Cr entry
         $assets =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $cashglsubocde,
+                         'glsubcode_id_from' => $glbank[0]['id'],
                          'glsubcode_id_to' => '',
                          'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
+                         'credit' => $data["amount"]-$interest,
                          'record_status' => 3);
        	$db->insert('ourbank_Assets',$assets);
         // Insertion into Assets ourbank_Assets productgl Cr entry
-		$glassets =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $gl,
-                         'glsubcode_id_to' => '',
-                         'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
-                         'record_status' => 3);
-       	$db->insert('ourbank_Assets',$glassets);
-        // Insertion into Assets ourbank_Liabilities productgl Cr entry
-// 		$glLia =  array('office_id' => $officeid,
-//                          'glsubcode_id_from' => $gl,
-//                          'glsubcode_id_to' => '',
-//                          'transaction_id' => $tranId,
-//                          'credit' => $data["amount"],
-//                          'record_status' => 3);
-//        	$db->insert('ourbank_Liabilities',$glLia);
 
-        // Insertion into Assets ourbank_Assets interest Cr entry
+        $glassets =  array('office_id' => $officeid,
+                    'glsubcode_id_from' => $gl,
+                    'glsubcode_id_to' => '',
+                    'transaction_id' => $tranId,
+                    'credit' => $data["amount"]-$interest,
+                    'record_status' => 3);
+        $db->insert('ourbank_Assets',$glassets);
+
+
+        // Insertion into Assets ourbank_Income interest Cr entry
+        $interestledger = $this->getGlcode($officeid,'interest'.$officeid);
         $interest =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $intGl,
+                         'glsubcode_id_from' => $interestledger[0]['id'],
                          'glsubcode_id_to' => '',
                          'transaction_id' => $tranId,
                          'credit' => $interest,
-                         'record_status' => 3);
-       	$db->insert('ourbank_Assets',$interest);
+                         'recordstatus_id' => 3);
+       	$db->insert('ourbank_Income',$interest);
        	//Retuns some variables
         return array('transaction_id' => $tranId,
                         'account_id' => $accId,
                         'paymentMode' => $data["paymentMode"],
                         'installment_id' => $accId);
 	}
-    public function getGlcode($officeId)
+    public function getGlcode($officeId,$headername)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select id from ourbank_glsubcode where office_id=$officeId and glcode_id=2";
-        //echo $sql;
-        return $db->fetchAll($sql);
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_glsubcode'),array('a.id'),array('a.id'))
+                ->where('a.header=?',$headername)
+                ->where('a.office_id=?',$officeId);
+//        die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
     }
 
     public function paid($accNum) 

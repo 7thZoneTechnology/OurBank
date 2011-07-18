@@ -1,0 +1,47 @@
+<div class="profile_tab"> 
+
+  <?php if($this->groupname){ ?>
+	<?php foreach($this->groupname as $member) : ?>
+	<table width="100%" border="2" id="hor-minimalist-b">	
+	<th colspan="4">Group Resolution</th>
+
+<tr><TD><b>Group name :</b></td><td><?php echo $member['groupname'];?></TD><td align="left"><b>Date :</b></td><td><?php echo date('d-m-Y');?></td></tr>
+<tr><TD><br><b>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b></td><td><?php  echo $member['address1'];?><br><?php  echo $member['address2'];?><br><?php  echo $member['address3'];?><br><?php  echo $member['city'];?><br><?php  echo $member['state'];?></td>
+<td align="left"><b>Group code :</b></td><td><?php  echo $member['groupcode'];?></td></tr>
+
+
+
+</table>
+<?php endforeach; ?>
+<br><br>
+	<table id="hor-minimalist-b">
+<tr>
+
+		<Th>S.no</Th>
+		<Th>Member name</Th>
+		<Th>Survey no</Th>
+		<Th>Loan request amount</Th>
+		<Th>Signature</Th>
+</tr>
+
+	<?php $i=1; foreach($this->groupmembers as $memberdetail) :?>
+
+<tr>
+	<td><?php  echo $i;$i++;?></td>
+	<td><?php  echo $memberdetail['membername'];?></td>
+	<td><?php  echo $memberdetail['survey_no'];?></td>
+	<td><?php  echo $memberdetail['request_amount'];?></td>
+	<td></td>
+
+</tr>
+<?php endforeach ; ?>
+
+
+</table>
+
+<form action="<?php echo $this->baseUrl();?>/groupresolution/index/pdfgeneration/membercode/<?php echo $this->groupid ?>" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/groupresolution/index/reportdisplay/file/groupresolution<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+      <BR> <input type="submit" value="PDF" id="submit">
+</form><?php 
+} ?>
+</div>

@@ -52,9 +52,9 @@ class Affidavit_IndexController extends Zend_Controller_Action
                         $this->_redirect('index/login');
                 }
                 $searchForm = $this->view->form = new Affidavit_Form_Search();
- 		if ($this->_request->isPost() && $this->_request->getPost('Submit')){
+ 				if ($this->_request->isPost() && $this->_request->getPost('Submit')){
                 $formData = $this->_request->getPost();
-                    if ($searchForm->isValid($formData)) {
+                if ($searchForm->isValid($formData)) {
                             $this->view->withdrawalamount = $this->_request->getParam('amount');
                             $this->view->membercode=$this->_request->getParam('membercode');
                             $result = $this->view->Dbobj->getMember($this->_request->getParam('membercode'));

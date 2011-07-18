@@ -44,8 +44,10 @@ $("#hide").show();
 
 </script>
 <?php if($this->savingsDebit) { ?>
-<h1><b><?php echo "Village: ".$this->officename; ?></b></h1>
+<h1><b><?php echo "Village: ".$this->name; ?></b></h1>
 <h5 align="right"><?php echo $this->translate('Date From'); ?> <?php echo "<font color='#039'>".$this->date1."</font>"; ?></h5> 
+<h5 align="right"><?php echo $this->translate('Date To'); ?> <?php echo "<font color='#039'>".$this->date2."</font>"; ?></h5> 
+
 <h5 style="text-align:right">* <?php echo $this->translate("Amount in"); ?>  <font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
 
 

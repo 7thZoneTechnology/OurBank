@@ -3,7 +3,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = 'SB withdrawal';
+        $this->view->pageTitle = 'Group resolution to withdraw from SB account';
         $this->view->title = 'Loan Process';
         $this->view->withdrawal = new Sbwithdrawal_Model_Sbwithdrawal();
         $this->view->adm = new App_Model_Adm ();

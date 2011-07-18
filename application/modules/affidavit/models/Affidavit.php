@@ -19,7 +19,7 @@ class Affidavit_Model_Affidavit extends Zend_Db_Table
                     where
                          A.groupcode like '%".$membercode ."%' and 
                          B.member_id = A.id and (B.membertype = 3 or B.membertype = 2)";
- echo $sql;
+// //  echo $sql;
             $result = $this->db->fetchAll($sql,array($membercode));
             return $result;
     }

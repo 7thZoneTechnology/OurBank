@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-class Groupresolution_Model_Groupresolution extends Zend_Db_Table {
+class Groupresolutionkoota_Model_Groupresolution extends Zend_Db_Table {
     protected $_name = 'ourbank_member'; // set ourbank_member table is a base table
 
         // get group details 
@@ -25,21 +25,41 @@ class Groupresolution_Model_Groupresolution extends Zend_Db_Table {
 			->join(array('a' => 'ourbank_group'),array('id'),array('id as groupid','village_id as officeid','name as groupname','group_created_date','groupcode','saving_perweek','penalty_latecoming','penalty_notcoming','rateinterest'))
              ->where('a.groupcode=?',$id)
 
-            ->join(array('f' => 'ourbank_master_bank'),'f.id=a.branch_id',array('name as bankname'))
-            ->join(array('g' => 'ourbank_master_branch'),'g.id=f.id',array('name as branchname'))
-
-			->join(array('d' => 'ourbank_groupmembers'),'d.group_id =a.id',array('d.id'))
-			->join(array('e' => 'ourbank_loanprocess'),'e.member_id= d.member_id',array('e.request_amount as amount'))
-
-            ->join(array('h' => 'ourbank_master_loanpurpose'),'h.id=e.purpose',array('name as purpose'))
-
-			->join(array('b' => 'ourbank_office'),'b.id  = a.village_id',array('name as officename'))
+// 			->join(array('b' => 'ourbank_office'),'b.id = a.village_id',array('name as kotta'))
+			
 			->joinLeft(array('c' => 'ourbank_address'),'c.id  = a.id',array('address1','address2','address3','city','district','state','zipcode'))
 			->group('a.groupcode');
 // //  		die($select->__toString($select));
 		$result=$this->fetchAll($select);
 		return $result->toArray();
         } 
+
+	 public function getparentid($id)
+	{
+		$select=$this->select()
+			->setIntegrityCheck(false)
+
+		->join(array('a' => 'ourbank_office'),array('a.parentoffice_id'))
+		->where('a.id=?',$id);
+
+// 		die($select->__toString($select));
+		$result=$this->fetchAll($select);
+		return $result->toArray();
+	}
+
+ public function represent($id)
+            {
+                $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a' => 'ourbank_group'),array('id'),array('a.id as groupid','a.name as name','a.groupcode as code',''))
+                ->where('a.groupcode = '.$id)
+                ->join(array('b' => 'ourbank_groupmembers'),'a.id=b.group_id',array('b.id as memid'))
+                ->join(array('s'=>'ourbank_group_representatives'),'s.representative_id=b.member_id',array('id'))
+                ->join(array('d'=>'ourbank_familymember'),'d.id=s.representative_id',array('d.name as memnames'));
+             //    die($select->__toString($select));
+                $result=$this->fetchAll($select);
+                return $result->toArray(); // return group member details
+	   }
 
 
 public function groupDeatils($memcode,$moduleid) 

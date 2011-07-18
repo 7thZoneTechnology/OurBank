@@ -27,7 +27,7 @@ background-color : silver;
 <!--search form action !-->
 <fieldset>
 	<legend>Group Resolution</legend>
-		<form action="<?php echo $this->baseUrl();?>/groupresolution" method="POST">
+		<form action="<?php echo $this->baseUrl();?>/groupresolutionkoota" method="POST">
 			<table class="fieldsets">
 					<tr>
 						<td ><label class="mand">Group code:</label></td>
@@ -41,7 +41,7 @@ background-color : silver;
 </div>
 
 <div class="profile_tab"> 
-  <?php if($this->groupname){ ?>
+  <?php $i=0; if($this->groupname){ $i++ ?>
 	<?php foreach($this->groupname as $member) : ?>
 	<table width="100%" border="2" id="hor-minimalist-b">	
 	<th colspan="4"><?php echo "<font color=green>";?>Group Resolution</th>
@@ -55,33 +55,32 @@ background-color : silver;
 </table>
 <?php endforeach; ?>
 <br><br>
-
-<tr><TD><b>Bank Name :</b><?php  echo $member['bankname'];?></TD><br><br>
-	<TD><b>Branch :</b><?php  echo $member['branchname'];?></TD><br><br>
-	<TD><b>Purpose :</b><?php  echo $member['purpose'];?></TD><br><br>
-	<TD><b>Group name :</b><?php  echo $member['groupname'];?></TD><br><br>
-	<TD><b>Loan Request Amount :</b><?php  echo $member['amount'];?></TD>
-
-
-</tr>
+        <p>1) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
+        <p>2) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
+        <p>3) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
+        <p>4) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
+<?php $i=0; foreach($this->represent as $name){ $i++ ?>
+<?php echo $i.")"; ?>&nbsp;<?php echo "<font color=green>".$name['memnames']."</font>"?><br><br>
+<?php } ?>
 <br><br>
+
 	<table id="hor-minimalist-b" border="2">
 <tr>
 		<Th>S.no</Th>
 		<Th>Member name</Th>
-		<Th>Survey no</Th>
-		<Th>Loan request amount</Th>
+<!--		<Th>Survey no</Th>
+		<Th>Loan request amount</Th>-->
 		<Th>Signature</Th>
 </tr>
 
 	<?php $i=1; foreach($this->groupmembers as $memberdetail) :?>
 
 <tr>
-	<td align="center"><?php  echo $i;$i++;?></td>
-	<td><?php  echo $memberdetail['membername'];?></td>
-	<td align="center" width="15%"><?php  echo $memberdetail['survey_no'];?></td>
-	<td width="20%"><?php  echo $memberdetail['request_amount'];?></td>
-	<td></td>
+	<td align="center" width="5%"><?php  echo $i;$i++;?></td>
+	<td width="25%"><?php  echo $memberdetail['membername'];?></td>
+<!--<td align="center" width="15%"><?php // echo $memberdetail['survey_no'];?></td>
+	<td width="20%"><?php  //echo $memberdetail['request_amount'];?></td>-->
+	<td width="20%"></td>
 
 </tr>
 <?php endforeach ; ?>
@@ -89,7 +88,7 @@ background-color : silver;
 
 </table>
 
-<form action="<?php echo $this->baseUrl();?>/groupresolution/index/pdfgeneration/membercode/<?php echo $this->groupid ?>" method="POST"
+<form action="<?php echo $this->baseUrl();?>/groupresolutionkoota/index/pdfgeneration/membercode/<?php echo $this->groupid ?>" method="POST"
 onClick="window.open('<?php echo $this->baseUrl();?>/groupresolution/index/reportdisplay/file/groupresolution<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
            <BR> <input type="submit" value="PDF" id="submit">

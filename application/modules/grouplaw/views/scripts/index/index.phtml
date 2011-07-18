@@ -109,20 +109,21 @@ foreach ($this->result as $result)
 
         <div align="left">
         <table  width="100%" border="1">
-        <tr>
+        <tr><th>S.No</th>
             <th>Member name</th>
             <th>UID</th>
             <th>Father name</th>
             <th>Nominee</th>
-            <th>Nominee relationship</th>
+            <th>Relationship</th>
             <th>Signature</th>
         </tr>
-        <?php foreach($this->groupmembers as $member) {?>
-        <tr>
-        <td><?php echo $member['membername']; ?></td>
-        <td><?php echo $member['uid']; ?></td>      <td><?php echo $member['fathername']; ?></td>
-<!--        <td><?php //$fatherdetails=$this->loan->getfathername($member['family_id']);
-					// if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>-->
+        <?php $i=0; foreach($this->groupmembers as $member) { $i++?>
+        <tr><td align="center" width="5%"><?php echo $i ?></td>
+        <td  width="20%"><?php echo $member['membername']; ?></td>
+        <td  width="20%"><?php echo $member['uid']; ?></td> 
+	    <td  width="20%"><?php echo $member['fathername']; ?></td>
+        <td  width="20%"><?php $fatherdetails=$this->loan->getfathername($member['family_id']);
+					 if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>
         <td></td>
         <td></td>
         <td></td>

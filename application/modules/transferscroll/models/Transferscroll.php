@@ -193,4 +193,18 @@ public function subgroupFromUrl($branch) {
 
 
     	}
+public function getOffice($id) {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
+						->where('a.village_id = ?',$id);
+
+//die($select->__toString($select));
+
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
+
+
 }

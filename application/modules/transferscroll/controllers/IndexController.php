@@ -43,6 +43,7 @@ class Transferscroll_IndexController extends Zend_Controller_Action
 //         $sample = new Reports_Form_Sample();
 //         $this->view->sample = $sample;
 
+                $transaction = new Transferscroll_Model_Transferscroll();
 
       $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
@@ -53,13 +54,18 @@ class Transferscroll_IndexController extends Zend_Controller_Action
 $dateconvert= new App_Model_dateConvertor();
 
 
-       $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
+        $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
+$this->view-> date1 =$fromDate;
+
        $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
+$this->view-> date2 =$toDate;
 
- 	$branch=$this->_request->getParam('branch');
- 	$group=$this->_request->getParam('group');
-
-                $transaction = new Transferscroll_Model_Transferscroll();
+ 		$branch=$this->_request->getParam('branch');
+ 		$group=$this->_request->getParam('group');
+			$officename=$transaction->getOffice($branch);
+foreach ($officename as $officename) {
+$this->view-> name =$officename['name'];
+}
 if ($group=="") {
                 //Saving Account Credit and Debit
                 $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);

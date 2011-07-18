@@ -31,29 +31,29 @@
                 <th width="10%"><?php echo $this->translate("Sl no"); ?></th>
                 <th width="20%"><?php echo $this->translate("Member name"); ?></th>
                 <th width="5%"><?php echo $this->translate("Age"); ?></th>
-                <th width="15%"><?php echo $this->translate("Education"); ?></th>
+                <th width="20%"><?php echo $this->translate("Education"); ?></th>
                 <th width="14%"><?php echo $this->translate("Member code"); ?></th>
-                <th width="20%"><?php echo $this->translate("Caste"); ?></th>
-                <th width="20%"><?php echo $this->translate("land"); ?></th>
-               <?php //echo $this->translate("Occupation"); ?>
-            </tr>
+                <th width="5%"><?php echo $this->translate("Caste"); ?></th>
+                <th width="15%"><?php echo $this->translate("Primary Occupation"); ?></th>
+                <th width="35%"><?php echo $this->translate("land"); ?></th>
+         </tr>
 
          <?php 
 			$adm = new App_Model_Adm();$i = 1; 
      foreach($this->group as $loandetails) { ?>
             <tr>
-                <td><?php echo $i++;?></td>
+                <td width="5%" align="center"><?php echo $i++;?></td>
                 <td><?php echo $loandetails['membername']; ?></td>
-                              <td><?php echo $loandetails['age']; ?></td>
-                              <td><?php echo $loandetails['education']; ?></td>
-                              <td><?php echo $loandetails['familycode']; ?></td>
-                              <td><?php echo $loandetails['caste']; ?></td>
-                               <?php //echo $loandetails['profession'];?>
+                              <td align="center"><?php echo $loandetails['age']; ?></td>
+                              <td align="center"><?php echo $loandetails['education']; ?></td>
+                              <td align="center"><?php echo $loandetails['familycode']; ?></td>
+                              <td align="center"><?php echo $loandetails['caste']; ?></td>
+                              <td align="center"><?php echo $loandetails['profession'];?></td>
             <?php  } ?>
         
  <?php $i =1; foreach($this->landDetails as $landdetails) { ?>
  
-         <td><?php echo $landdetails['name'];?> </td>
+         <td align="center"><?php echo $landdetails['name'];?> </td>
    </tr>   
  
  

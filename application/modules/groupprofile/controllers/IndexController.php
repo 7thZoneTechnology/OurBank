@@ -21,7 +21,7 @@ class Groupprofile_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = 'Group Profile';
+        $this->view->pageTitle = 'Group Social Economic';
         $this->view->title = 'Loan Process';
         $this->view->accounts = new Groupprofile_Model_Groupprofile();
 

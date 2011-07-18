@@ -30,10 +30,8 @@ class Groupprofile_Model_Groupprofile extends Zend_Db_Table
                 ->join(array('e'=>'ourbank_family'),'c.family_id =e.id',array('e.caste_id'))
                 ->join(array('f'=>'ourbank_master_castetype'),'e.caste_id =f.id',array('f.name as caste'))
 
-              
-                            
-              //  ->join(array('g'=>'ourbank_memberprofession'),'b.member_id =g.member_id',array('g.profession_id'))
-               // ->join(array('h'=>'ourbank_master_profession'),'g.profession_id =h.id',array('h.name as profession'))
+//                ->join(array('g'=>'ourbank_memberprofession'),'b.member_id =g.member_id',array('g.profession_id'))
+               ->join(array('h'=>'ourbank_master_profession'),'c.employment_status= h.id',array('h.name as profession'))
 
 //                 ->where('c.department_id=4')
 

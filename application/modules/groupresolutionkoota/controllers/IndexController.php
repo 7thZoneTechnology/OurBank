@@ -20,11 +20,11 @@
 ?>
 
 <?php
-class Groupresolution_IndexController extends Zend_Controller_Action
+class Groupresolutionkoota_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-        $this->view->pageTitle='Group resolution to open a bank account';
+        $this->view->pageTitle='Koota Membership Request';
 		$this->view->adm = new App_Model_Adm();
         /* Initialize action controller here */
         $storage = new Zend_Auth_Storage_Session();
@@ -55,9 +55,13 @@ class Groupresolution_IndexController extends Zend_Controller_Action
             $id = $this->_getParam('membercode');
             $this->view->groupid=$id;
 //             // create instance for groupcommon model page
-            $groupcommon=new Groupresolution_Model_Groupresolution();
+            $groupcommon=new Groupresolutionkoota_Model_Groupresolution();
             $group_name=$groupcommon->getgroup($id); // get group details
-            
+            $this->view->represent=$groupcommon->represent($id);
+
+// 			$parentid=$groupcommon->getparentid('ourbank_office',);
+
+
     //Zend_Debug::dump($group_name);
             if($group_name) {
             $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
@@ -69,7 +73,6 @@ class Groupresolution_IndexController extends Zend_Controller_Action
 
             $this->view->groupname=$group_name;
             $this->view->getgroupaccount=$getgroupaccount;
-    
             $grou_members=$groupcommon->getgroupmembers($id); // get group members
           // Zend_Debug::dump($grou_members);
 
