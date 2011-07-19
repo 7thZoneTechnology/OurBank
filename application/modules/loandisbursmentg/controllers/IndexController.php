@@ -199,33 +199,31 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                     $this->view->adm->addRecord('ourbank_installmentdetails',$instl);
                     }
                     }
+                }
 
-                } else if ($intType == 1) {
-                    if($loanamount==$balance){
-                    $cb=$disburseamount;
-                    $date = $this->view->dateconvector->phpmysqlformat($this->_request->getPost('date'));
-                    $strclosedate = strtotime(date("Y-m-d", strtotime($date)) . "+".$installments." month");
-                    $closedate=date('Y-m-d', $strclosedate);
-                    $installments = 1; // single installment 
-                    //PTR
-                    $si = ($disburseamount*1*$interest)/(100*365); // interest per day
-                    $capital = $si+$disburseamount;
-                    $status = 4;
-                    $instl = array('account_id' => $accId,
-                                        'installment_id' => 1,
-                                        'installment_date' => $closedate,
-                                        'installment_amount' => $capital,
-                                        'installment_interest_amount'=> $si,
-                                        'installment_principal_amount' => $disburseamount,
-                                        'reduced_prinicipal_balance'=> $capital,
-                                        'installment_status' => $status,
-                                        'created_by' => 1);
-                    $this->view->adm->addRecord('ourbank_installmentdetails',$instl);
+                if($intType == 1){
+                    if($this->view->disbursedetails){
+                        $findmax=$this->view->loanModel->maxid($accNum);
+                        if($findmax){
+                        $maxid=$findmax[0]['maxid'];
+                        }
+                        else { $maxid=1; }
+                        $paiddetails=$this->view->loanModel->declainedpaid($accNum,$maxid);
+                        if($paiddetails){
+                            $reducedprincipal=$paiddetails[0]['reduced_prinicipal_balance'];
+                            $remaindays=$this->view->dateconvector->dateDiff($disbursedate,$paiddetails[0]['installment_date']);
+                            $oldinterest=($reducedprincipal*$remaindays*$interest)/36500;
+                            $totaloldamount=$reducedprincipal+$oldinterest;
+                            $newbalance=$totaloldamount+$disburseamount;
+                            $updatedata=array('reduced_prinicipal_balance'=>$newbalance,
+                                              'installment_amount'=>$newbalance+$paiddetails[0]['paid_amount'],
+                                              'installment_interest_amount'=>$oldinterest,
+                                              'installment_principal_amount'=>$newbalance-$oldinterest
+                                             );
+                            $this->view->loanModel->updateinstallment($paiddetails[0]['account_id'],$maxid,$updatedata);
+                        }
                     }
-                    else
-                    {
-                        
-                    }
+
                 }
                 $sglData = $this->view->loanModel->getSavingGl($sAccId);
                 foreach($sglData as $sglData) 
@@ -325,7 +323,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                         'credit' => $feeamount,
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$fee);
-            $this->_redirect("/loandisbursmentg/index/message/amt/".base64_encode($this->_request->getPost('Amount'))."/accNum/".base64_encode($number));
+            //$this->_redirect("/loandisbursmentg/index/message/amt/".base64_encode($this->_request->getPost('Amount'))."/accNum/".base64_encode($number));
             }
         }
     }
