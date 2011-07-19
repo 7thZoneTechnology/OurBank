@@ -49,13 +49,13 @@ $select=$this->select()
 	return $this->fetchAll($select);
     } 
 // get Group members details
-    public function getrepmembers($id) {
+    public function getrepmembers($groupid) {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_group_representatives'),array('id'),array('representative_id as memberid'))
-                       ->where('a.group_id  = '.$id)
+                       ->where('a.group_id  = '.$groupid)
 			->join(array('b' => 'ourbank_familymember'),'a.representative_id = b.id',array('name as membername'));
-			
+// 			die($select->__toString($select));
 	return $this->fetchAll($select);
     }
 }

@@ -147,6 +147,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $banckAccount = $this->_getParam('bankAccount');
                     $mobile=$this->_getParam('mobile');
                     $employment=$this->_getParam('employ_status');
+                    $sign=$this->_getParam('can_sign');
+
                     $countname = count($mem_name);
 
                     $editfamily = $this->view->adm->editRecord("ourbank_family",$family_id);

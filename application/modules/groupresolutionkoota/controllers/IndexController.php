@@ -54,15 +54,14 @@ class Groupresolutionkoota_IndexController extends Zend_Controller_Action
 
             $id = $this->_getParam('membercode');
             $this->view->groupid=$id;
+
 //             // create instance for groupcommon model page
             $groupcommon=new Groupresolutionkoota_Model_Groupresolution();
             $group_name=$groupcommon->getgroup($id); // get group details
             $this->view->represent=$groupcommon->represent($id);
+            $this->view->parant=$groupcommon->office($id);
 
-// 			$parentid=$groupcommon->getparentid('ourbank_office',);
-
-
-    //Zend_Debug::dump($group_name);
+//Zend_Debug::dump($group_name);
             if($group_name) {
             $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
             $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude

@@ -38,7 +38,7 @@ class Groupprofile_Model_Groupprofile extends Zend_Db_Table
 
 
 ;
-    // die($select->__toString($select));
+// //     die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
 

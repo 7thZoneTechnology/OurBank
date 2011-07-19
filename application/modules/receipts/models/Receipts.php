@@ -174,12 +174,12 @@ class Receipts_Model_Receipts extends Zend_Db_Table {
                 return $db->fetchAll($sql);
         }
 
-        public function getbalanceto($toglsubcode,$tablenameto)
-        {
-                $db = $this->getAdapter();
-               $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_to=".$toglsubcode." or glsubcode_id_from=$toglsubcode";
-                return $db->fetchAll($sql);
-        }
+//         public function getbalanceto($toglsubcode,$tablenameto)
+//         {
+//                 $db = $this->getAdapter();
+//                $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_to=".$toglsubcode." or glsubcode_id_from=$toglsubcode";
+//                 return $db->fetchAll($sql);
+//         }
         public function getbalance($glsubcode,$tablename)
         {
                 $db = $this->getAdapter();

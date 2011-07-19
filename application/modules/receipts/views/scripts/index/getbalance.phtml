@@ -1,1 +1,1 @@
-<?php foreach($this->balance2 as $balance) {  if ($balance['balance']==''){ echo '0.00';} else {echo $balance['balance'];}} ?>
+<?php foreach($this->balance2 as $balance) { echo $balance['balance']= " " . str_replace('-', '', number_format ($balance['balance'], 2, ".", "")) . ""; ?>

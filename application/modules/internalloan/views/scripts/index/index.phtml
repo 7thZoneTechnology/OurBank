@@ -40,12 +40,12 @@ if ($count == 0) {
             <p align="right">Date: <?php echo date('d-m-Y');?></p>
             <p> To,</p>
             <p> Group representatives,</p>
-            <p><?php echo $result->groupname;?>&nbsp; Self help group</p>
+            <p><?php echo "<font color='green'>".$result->groupname."</font>";?>&nbsp; Self help group</p>
             <p>I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
                I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
                I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
             </p>
-        </div>
+        </div><br>
         <div align="right">
             <p>Member signature</p>
         </div>
@@ -57,10 +57,13 @@ if ($count == 0) {
                I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
                I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
             </p>
-            <p>Representative-1</p>
-            <p>Representative-2</p>
-            <p>Representative-3</p>
 
+ <?php   $repmembers = $this->repmemberslist; ?>
+				<p>
+                <?php  $i=1;foreach($repmembers as $representative) { ?>
+				<?php 	 echo $i++.") "; ?>
+				<?php echo "<font color='green'>".$representative['membername']."<br>","</font>"; } ?>
+                </p>
         </div>
         <hr>
                 <div align="center"><h4><b>(c) Loan received receipt</b></h4></div>
@@ -69,10 +72,9 @@ if ($count == 0) {
             <p>I here by declare that asdfgf ;(...........................) hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
                I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
                I here by declare that asdfgf ;lkjhgh asdff dsfksdh hdfjshdf hfjshf dhkfshdf dhdhf dhfsjdhf  jhjfsdhf jhfsdhf
-            </p>
-            <p>Borrower signature</p>
-            <p>Insurer signature</p>
-            <p>Witness signature</p>
+            </p><br><br>
+<P>Borrower signature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   Insurer signature &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Witness signature</P>
     </div>
 </fieldset>
 <?php } $count = $count + 1; } } ?>

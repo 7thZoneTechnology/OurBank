@@ -86,7 +86,6 @@ function getdateamount() {
     $('#amount1').val(amount);
 }
 
-
 function toggleField1() {
 var ptype = $('#paymenttype').val();
 if(ptype!=1){
@@ -111,15 +110,16 @@ $('.show').hide();
 	<legend>Receipt and payment<br/>
 <?php $receipts= new Receipts_Model_Receipts();
                 $mainBranch = $receipts->getHeadOffice($this->username); foreach($mainBranch as $mainBranch) { if($mainBranch) { ?>
-<p align="right" style="Bold"><?php echo $mainBranch['type']; ?> :
+<p align="right" style="Bold"><font color="Navy"><?php echo $mainBranch['type']; ?></font> :
 <?php echo $mainBranch['name']; ?> <br/>
 <?php $officeid= $mainBranch['id']; }} $branch= $receipts->getBranch($officeid); foreach($branch as $branch) { if ($branch) {?>
-<?php echo $branch['type']; ?> :
+<font color="Navy"><?php echo $branch['type']; ?></font> :
 <?php echo $branch['name']; }}?></p></legend> 
 
 	<div class="cont-rgt-data">
 		<form action="<?php echo $this->baseUrl();?>/receipts" method="POST">
 <input type="hidden" value="<?php  echo $this->baseUrl();?>" id="baseurl"/>
+<font color="Purple"><B>Ledger Details</B></font>
 			<table id="hor-minimalist-b" summary="Employee Pay Sheet">
 
 				<tr>
@@ -143,14 +143,22 @@ $('.show').hide();
                                     <td><div id="statediv3"><?php  echo $this->form->balance2;?></div></td>
                                 </tr>
 
+                        </table><br/><br/><br/>
+<font color="Purple"><B>Transaction Details</B></font>
+                        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
 				<tr>
 					<td>* Transaction mode</td>
 					<td><div id="tect3"><?php echo $this->form->paymenttype;?></div></td>
 					<td>  Description</td>
 					<td><?php echo $this->form->description;?></td></tr>
+
 				<tr>	<td></td><td class="show" style="display:none"><?php echo $this->form->paymenttype_details;?>Voucher/cheque/draft/E-Transfer</td>
                                         <td></td><td></td><td></td><td></td>
 				</tr>
+
+                        </table><br/><br/><br/>
+<font color="Purple"><B>Amount Details</B></font>
+                        <table id="hor-minimalist-b" summary="Employee Pay Sheet">
 
 				<tr>
 					<td>* Amount</td>
@@ -173,6 +181,10 @@ $('.show').hide();
                                     <td></td>
 				</tr>
 			</table>
+</div>
+
+
+
 		</form>
 	</h>
 </fieldset>

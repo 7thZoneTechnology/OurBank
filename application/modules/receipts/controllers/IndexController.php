@@ -96,6 +96,7 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                         $balance1 = $this->_request->getParam('amount');
                                         $balance2 = $this->_request->getParam('balance2');
                                         $balance = $balance1 + $balance2; $balance = $balance.'.00';   //to display the latest ledger balance after amount is entered
+                                        $bal = $this->_request->getParam('balance1');
 
 
 
@@ -113,13 +114,16 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                                     } }
                                         $flag=0;
                                         if($toglsubcodeid=="") {
-                                            echo "select the to GL code again"; $flag=1;
+                                             echo "<font color='red'><b> select the to GL code again</b> </font>";$flag=1;
+                                        }
+                                        elseif(($fromglcode==2) && ($bal<0)){
+                                            echo "<font color='red'><b> Cash ledger balance is 0. Debit transaction on it is not possible</b> </font>";$flag=1;
                                         }
                                             //elseif($branchid=="") {
                                            // echo "select the Office type again"; $flag=1;
                                        // }
                                                  elseif($fromglsubcodeid=="")  {
-                                            echo "select the from GL code again"; $flag=1;
+                                            echo "<font color='red'><b> select the from GL code again</b> </font>";$flag=1;
                                         } else {
 
                         $sessionName = new Zend_Session_Namespace('ourbank');
@@ -136,7 +140,7 @@ class Receipts_IndexController extends Zend_Controller_Action {
                             } elseif($fromledgertype=="Liabilities") {
                                 $tablenamefrom="ourbank_Liabilities";
                             } }
-                        }
+                       // }
 
 
                         if($toledgertype=="Income") {                                       //check the table related to ledger type
@@ -179,6 +183,7 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                 } else {
                                             $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);}*/
                                 $receipts->addtoaccounts($tablenameto,$branchid,$fromglsubcodeid,$toglsubcodeid,$transaction_id,$amount);
+}
             if($flag==0){
                 $this->_redirect('transaction');
             }

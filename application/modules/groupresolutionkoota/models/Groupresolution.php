@@ -34,19 +34,6 @@ class Groupresolutionkoota_Model_Groupresolution extends Zend_Db_Table {
 		return $result->toArray();
         } 
 
-	 public function getparentid($id)
-	{
-		$select=$this->select()
-			->setIntegrityCheck(false)
-
-		->join(array('a' => 'ourbank_office'),array('a.parentoffice_id'))
-		->where('a.id=?',$id);
-
-// 		die($select->__toString($select));
-		$result=$this->fetchAll($select);
-		return $result->toArray();
-	}
-
  public function represent($id)
             {
                 $select=$this->select()
@@ -60,7 +47,17 @@ class Groupresolutionkoota_Model_Groupresolution extends Zend_Db_Table {
                 $result=$this->fetchAll($select);
                 return $result->toArray(); // return group member details
 	   }
+public function office($id) {
+           $select = $this->select()
+                   ->setIntegrityCheck(false)
+                   ->from(array('a' => 'ourbank_office'),array('name as kootaname','id as village_id'))
 
+                   ->where('a.officetype_id =3');
+
+// //            die($select->__toString($select));
+           $result=$this->fetchAll($select);
+           return $this->fetchAll($select);
+       }
 
 public function groupDeatils($memcode,$moduleid) 
             {

@@ -24,7 +24,7 @@ class Transaction_Model_Transaction extends Zend_Db_Table
                 A.account_id = B.id AND
                 A.paymenttype_id = D.id AND
                 A.created_by = E.id 
-                ORDER BY A.transaction_id DESC)
+                ORDER BY A.transaction_id ASC)
                 UNION (SELECT 
                 distinct A.transaction_id as id,
                 F.glsubcode as number,
@@ -45,7 +45,7 @@ class Transaction_Model_Transaction extends Zend_Db_Table
                 A.glsubcode_id_to = F.id AND
                 A.account_id = 0 AND
                 A.created_by = E.id 
-                ORDER BY A.transaction_id DESC)
+                ORDER BY A.transaction_id ASC)
                 ";
         $result = $db->fetchAll($sql);
         return $result;

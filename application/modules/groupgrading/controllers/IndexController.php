@@ -326,24 +326,24 @@ class groupgrading_IndexController extends Zend_Controller_Action
 
         $groupcode = 0;
 
-        $groupid = base64_decode($this->_request->getParam('id'));
-        $this->view->groupid = $groupid;
-        $groupdetails = $this->view->accounts->getgroupName($groupid); //Fetch group and village name
+        $groupcode = $this->_request->getParam('membercode');
+        $this->view->groupid = $groupcode;
+        $groupdetails = $this->view->accounts->getgroupName($groupcode); //Fetch group and village name
         foreach($groupdetails as $group){
             $this->view->groupname = $group['groupname'];
             $this->view->villagename = $group['villagename'];
             $groupcode = $group['groupcode'];
         }
         $grouptype  = substr($groupcode,4,1);
-        $Attendancedetails = $this->view->accounts->getAttendance($groupid); //Fetch Absentees list
+        $Attendancedetails = $this->view->accounts->getAttendance($groupcode); //Fetch Absentees list
         foreach($Attendancedetails as $attendance){
             $absentees = $attendance['Absentees'];
         }
-        $Countmeetings = $this->view->accounts->Countmeetings($groupid); //Fetch number of meetings
+        $Countmeetings = $this->view->accounts->Countmeetings($groupcode); //Fetch number of meetings
         foreach($Countmeetings as $meetings){
             $numberofmeetings = $meetings['Numberofmeetings'];
         } 
-        $Countgroupmembers = $this->view->accounts->Countgroupmembers($groupid); //Fetch number of members in that group
+        $Countgroupmembers = $this->view->accounts->Countgroupmembers($groupcode); //Fetch number of members in that group
         foreach($Countgroupmembers as $groupcount){
             $totalmembers = $groupcount['Totalmembers'];
         }
@@ -411,24 +411,24 @@ class groupgrading_IndexController extends Zend_Controller_Action
 //         $grade = $this->_request->getParam('grade');
 //         $observe = $this->_request->getParam('observe');
 
-        $groupid = $this->_request->getParam('groupid');
-        $this->view->groupid = $groupid;
-        $groupdetails = $this->view->accounts->getgroupName($groupid); // Fetch group and village name
+        $groupcode = $this->_request->getParam('membercode');
+        $this->view->groupid = $groupcode;
+        $groupdetails = $this->view->accounts->getgroupName($groupcode); // Fetch group and village name
         foreach($groupdetails as $group){
             $this->view->groupname = $groupname = $group['groupname'];
             $this->view->villagename = $villagename = $group['villagename'];
             $groupcode = $group['groupcode'];
         }
         $grouptype  = substr($groupcode,4,1);
-        $Attendancedetails = $this->view->accounts->getAttendance($groupid); //Fetch Absentees list
+        $Attendancedetails = $this->view->accounts->getAttendance($groupcode); //Fetch Absentees list
         foreach($Attendancedetails as $attendance){
             $absentees = $attendance['Absentees'];
         }
-        $Countmeetings = $this->view->accounts->Countmeetings($groupid); //Fetch number of meetings
+        $Countmeetings = $this->view->accounts->Countmeetings($groupcode); //Fetch number of meetings
         foreach($Countmeetings as $meetings){
             $numberofmeetings = $meetings['Numberofmeetings'];
         } 
-        $Countgroupmembers = $this->view->accounts->Countgroupmembers($groupid); //Fetch number of members in that group
+        $Countgroupmembers = $this->view->accounts->Countgroupmembers($groupcode); //Fetch number of members in that group
         foreach($Countgroupmembers as $groupcount){
             $totalmembers = $groupcount['Totalmembers'];
         }

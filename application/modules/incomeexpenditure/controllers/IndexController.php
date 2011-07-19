@@ -59,7 +59,15 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
 
                 $this->view->fdate = $Date;
                 $this->view->income=$incomeexpenditure->incomedetails($Date); 
+// echo '<pre>'; print_r($this->view->income);
+                $this->view->incomeheader=$incomeexpenditure->incomedetails1($Date);
+// echo '<pre>'; print_r($this->view->incomeheader);
                 $this->view->expenditure=$incomeexpenditure->expendituredetails($Date);
+                $this->view->expenditureheader=$incomeexpenditure->expendituredetails1($Date);
+
+                $this->view->cashcredit= $incomeexpenditure->cashdetailscredit($Date);
+                $this->view->cashdebit= $incomeexpenditure->cashdetailsdebit($Date);
+
                 if((!$this->view->income) && (!$this->view->expenditure)) {
                     echo "<font color='red'><b> Record not found</b> </font>";
                 }
@@ -77,7 +85,9 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
         $this->view->asofdate = $asofDate;
         $incomeexpenditure = new Incomeexpenditure_Model_Incomeexpenditure();
         $this->view->income=$income=$incomeexpenditure->incomedetails($Date); 
+        $this->view->incomeheader=$income1=$incomeexpenditure->incomedetails1($Date);
         $this->view->expenditure=$expenditure=$incomeexpenditure->expendituredetails($Date);
+        $this->view->expenditureheader=$expenditure1=$incomeexpenditure->expendituredetails1($Date);
         $app = $this->view->baseUrl();
         $word=explode('/',$app);
         $projname='';
@@ -137,21 +147,23 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
                 $page->drawLine(30, 750, 570, 750);
                 $page->drawLine(30, 730, 570, 730);
 
+                foreach($income1 as $income1) {
+                    $page->drawText($income1['header'],$x1, $y1);
                 foreach($income as $income) {
-                    $page->drawText($income['header'],$x1, $y1);
                     $page->drawText( $income['credit'],$x2, $y1);
                     $totalincome +=$income['credit'];
 
                     $y1 = $y1 - 15;
-                }
+                } }
 
+                foreach($expenditure1 as $expe1) {
                 foreach($expenditure as $expe) {
-                        $page->drawText($expe['header'],$x3, $y2);
+                        $page->drawText($expe1['header'],$x3, $y2);
                         $page->drawText( $expe['credit'],$x4, $y2);
                         $totalexpe +=$expe['credit'];
 
                     $y2 = $y2 - 15;
-                }
+                } }
 
 
                 $page->drawLine(30, $y1, 570, $y1);

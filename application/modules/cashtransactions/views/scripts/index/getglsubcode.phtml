@@ -1,0 +1,27 @@
+<script type="text/javascript">
+
+$(document).ready(function() {
+path=$("#baseurl").val();
+$('#toglsubcodeid').change(function(){
+getBalance();
+});
+
+function getBalance(){
+    var strURL=path+"/cashtransactions/index/getbalance";
+    $.ajax({
+    url: strURL,
+    data:"glsubcode="+$("#toglsubcodeid option:selected").val(),
+    success: function(result){
+    $("#balance2").val(result);
+    }
+    });
+}
+});
+</script>
+
+<select name='toglsubcodeid'  id="toglsubcodeid" class="selectbutton">
+<option value=''>select...</option>
+<?php foreach($this->glsubcodeid as $glsubcodeid) { ?>
+<option value="<?php echo $glsubcodeid['id'];?>"><?php echo $glsubcodeid['header'];?> -[<?php echo $glsubcodeid['glsubcode'];?>]</option>
+<? } ?>
+</select>
