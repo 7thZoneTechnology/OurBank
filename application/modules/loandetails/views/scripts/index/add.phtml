@@ -78,9 +78,9 @@
         <table id="hor-minimalist-b">
             <tr> 
                 <th width="27%"><?php echo $this->translate("Source"); ?></th>
-                <th width="17%"><?php echo $this->translate("Famiy member"); ?></th>
-                <th width="17%"><?php echo $this->translate("Interest Per Annum %"); ?></th>
+                <th width="17%"><?php echo $this->translate("Family member"); ?></th>
                 <th width="27%"><?php echo $this->translate("Loan amount"); ?></th>
+                <th width="17%"><?php echo $this->translate("Interest Per Annum %"); ?></th>
                 <th width="37%"><?php echo $this->translate("Outstanding amount"); ?></th>
                 <th width="10%"><?php echo $this->translate("Purpose"); ?></th>
                 <th width="10%"><?php echo $this->translate("Savings / deposit amount"); ?></th>
@@ -98,9 +98,9 @@
             <tr>
                 <td><?php echo $loandetails['name']; ?></td>
                 <td><?php echo $this->form->$a; ?></td>
-                <td><?php echo $this->form->$j; ?></td>
                 <td><?php echo $this->form->$b; ?></td>
-                <td><?php echo $this->form->$f; ?></td>
+                <td><?php if($loandetails['name']!='Chit Funds') { echo $this->form->$j; } ?></td>
+                <td><?php echo $this->form->$f; ?><font color="red"><span id="error<?php echo $loandetails['id']; ?>"></span></font></td>
                 <td><?php echo $this->form->$c; ?></td>
                 <?php if ($i != 3) {?>
                 <td><?php echo $this->form->$h; ?></td>

@@ -36,8 +36,9 @@ class Loandetails_Form_loandetails extends Zend_Form {
 
         $source = $formfield->field('Text','source'.$i,'','','','','','','','','','',0,0);
         $source->setAttrib('readonly','');
-        $loanamount = $formfield->field('Text','loanamount'.$i,'','','','','','','','','','',0,0);
+        $loanamount = $formfield->field('Text','loanamount'.$i,'','','loan numbervalidation','','','','','','','',0,0);
         $loanamount->setAttrib('size',10);
+        $loanamount->setAttrib('id','loan-'.$i);
         $graterthan=new Zend_Validate_GreaterThan(0);
         $loanamount->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
         //$purpose = $formfield->field('Select','purpose'.$i,'','','','',true,'','','','','',0,0);
@@ -45,7 +46,7 @@ class Loandetails_Form_loandetails extends Zend_Form {
         $memberId->removeDecorator('DtDdWrapper'); 
         $memberId->removeDecorator('HtmlTag');
         $memberId->removeDecorator('label');
-        $interest = $formfield->field('Text','interest'.$i,'','','','','','','','','','',0,0);
+        $interest = $formfield->field('Text','interest'.$i,'','','numbervalidation','','','','','','','',0,0);
         $interest->setAttrib('size',5);
         $graterthan=new Zend_Validate_GreaterThan(0);
         $lessthan=new Zend_Validate_LessThan(100);
@@ -56,12 +57,13 @@ class Loandetails_Form_loandetails extends Zend_Form {
         $purpose->removeDecorator('label');
         $repayment = $formfield->field('Text','repayment'.$i,'','','','','','','','','','',0,0);
         $repayment->setAttrib('size',5);
-        $deposit = $formfield->field('Text','deposit'.$i,'','','','','','','','','','',0,0);
+        $deposit = $formfield->field('Text','deposit'.$i,'','','numbervalidation','','','','','','','',0,0);
         $deposit->setAttrib('size',5);
         $graterthan=new Zend_Validate_GreaterThan(0);
         $deposit->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
-        $outstanding = $formfield->field('Text','outstanding'.$i,'','','','','','','','','','',0,0);
+        $outstanding = $formfield->field('Text','outstanding'.$i,'','','outstanding numbervalidation','','','','','','','',0,0);
         $outstanding->setAttrib('size',10);
+        $outstanding->setAttrib('id','out-'.$i);
         $graterthan=new Zend_Validate_GreaterThan(0);
         $outstanding->addValidators(array(array('NotEmpty'),array('Float'),array($graterthan,true)));
         $source_id = $formfield->field('Hidden','source_id'.$i,'','','','','','','','','','',0,0);

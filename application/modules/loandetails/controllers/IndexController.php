@@ -164,35 +164,36 @@ class Loandetails_IndexController extends Zend_Controller_Action
             if($addForm->isValid($formData)){
 
             for($i=1;$i<=$number;$i++)
-            {
+            {   if ($this->_request->getParam('loanamount'.$i)) {
                 $loan_id=$this->_request->getParam('record_id'.$i);
-                if ($this->_request->getParam('record_id'.$i)) {
+                if ($this->_request->getParam('record_id'.$i)!="") {
                     $family_model->update($loan_id,array(
-                                           'family_id'=>$member_id,
-       					        'member_id'=>$this->_request->getParam('memberId'.$i),
-						'source_id'=>$this->_request->getParam('source_id'.$i),
-						'interest'=>$this->_request->getParam('interest'.$i),
-						'loanamount' => $this->_request->getParam('loanamount'.$i),
-						'purpose_id'=>$this->_request->getParam('purpose'.$i),
-						'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
-						'deposit' => $this->_request->getParam('deposit'.$i),
-						'created_by'=>$this->view->createdby));  
+                        'family_id'=>$member_id,
+                        'member_id'=>$this->_request->getParam('memberId'.$i),
+                        'source_id'=>$this->_request->getParam('source_id'.$i),
+                        'interest'=>$this->_request->getParam('interest'.$i),
+                        'loanamount' => $this->_request->getParam('loanamount'.$i),
+                        'purpose_id'=>$this->_request->getParam('purpose'.$i),
+                        'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
+                        'deposit' => $this->_request->getParam('deposit'.$i),
+                        'created_by'=>$this->view->createdby));  
+
+                }
+                else {
+                $this->view->adm->addRecord("ourbank_loandetails",array('id' => '',
+                        'family_id'=>$member_id,
+                        'member_id'=>$this->_request->getParam('memberId'.$i),
+                        'source_id'=>$this->_request->getParam('source_id'.$i),
+                        'interest'=>$this->_request->getParam('interest'.$i),
+                        'loanamount' => $this->_request->getParam('loanamount'.$i),
+                        'purpose_id'=>$this->_request->getParam('purpose'.$i),
+                        'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
+                        'deposit' => $this->_request->getParam('deposit'.$i),
+                        'created_by'=>$this->view->createdby));  
                 }
 	    }
-	    for($i=1; $i<=$number; $i++)
-            {
-                if (!$this->_request->getParam('record_id'.$i) && $this->_request->getParam('loanamount'.$i)) {
-		       $this->view->adm->addRecord("ourbank_loandetails",array('id' => '',
-					        'family_id'=>$member_id,
-						'source_id'=>$this->_request->getParam('source_id'.$i),
-						'interest_id'=>$this->_request->getParam('interest'.$i),
-						'loanamount' => $this->_request->getParam('loanamount'.$i),
-						'purpose_id'=>$this->_request->getParam('purpose'.$i),
-						'outstanding_amount' => $this->_request->getParam('outstanding'.$i),
-						'deposit' => $this->_request->getParam('deposit'.$i),
-						'created_by'=>$this->view->createdby));  
-		}
-	   }
+            }
+
            $this->_redirect('/familycommonview/index/commonview/id/'.$member_id);
 	} }
     }
