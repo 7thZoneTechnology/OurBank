@@ -57,7 +57,7 @@ class Groupm_IndexController extends Zend_Controller_Action
         $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
           if (!$result){
                        echo "<font color='RED'>Records Not Found Try Again...</font>";
-                            }
+                       }
 
 	}
 }	

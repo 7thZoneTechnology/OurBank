@@ -1,3 +1,6 @@
+<script src="<?php echo $this->baseUrl(); ?>/js/jquery.calendrical.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl(); ?>/css/calendrical.css" />
+
 <script language="javascript">
  function getBranch(bankid) { 
             targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
@@ -68,7 +71,7 @@ if($status == "OK"){
 
                 <TR>
                     <TD><?php echo $this->form->place;?></td>
-                    <TD><?php echo $this->form->times;?></TD>
+                    <TD><span class="display"><?php echo $this->form->times;?></span></TD>
                     <TD><?php echo $this->form->day;?></TD>
                 </TR>
                 <TR>

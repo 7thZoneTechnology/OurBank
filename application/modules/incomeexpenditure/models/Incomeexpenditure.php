@@ -112,7 +112,7 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
         public function cashdetailscredit($date) {
 
             $db = $this->getAdapter();
-            $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_from in
+            $sql = "select sum(credit) as balance from ourbank_Assets where glsubcode_id_from in
                         (select B.glsubcode_id_to from 
                         ourbank_transaction B, ourbank_glsubcode C , ourbank_Assets D
                         where B.transaction_date <='".$date."' and 
@@ -130,7 +130,7 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
         public function cashdetailsdebit($date) {
 
             $db = $this->getAdapter();
-            $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_from in
+            $sql = "select sum(debit) as balance from ourbank_Assets where glsubcode_id_from in
                         (select B.glsubcode_id_to from 
                         ourbank_transaction B, ourbank_glsubcode C , ourbank_Assets D
                         where B.transaction_date <='".$date."' and 

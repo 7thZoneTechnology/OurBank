@@ -1,1 +1,1 @@
-<?php foreach($this->balance2 as $balance) { echo $balance['balance']= " " . str_replace('-', '', number_format ($balance['balance'], 2, ".", "")) . ""; ?>
+<?php foreach($this->balance2 as $balance) { echo sprintf("%4.2f",$balance['balance']);} ?>

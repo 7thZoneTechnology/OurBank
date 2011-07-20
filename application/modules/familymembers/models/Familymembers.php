@@ -37,7 +37,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
             ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name_regional as promoter'))
             ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
             ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name_regional as accountype'));
-//        die($select->__toString($select));
+//         die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -68,7 +68,17 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                     ->setIntegrityCheck(false)
                     ->join(array('a'=>'ourbank_memberprofession'),array('a.id'),array('a.profession_id'))
                     ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name_regional as professionname'))
-                    ->where('a.member_id=?',$id);
+                     ->where('a.member_id=?',$id);
+         // die($select->__toString($select));
+	$result=$this->fetchAll($select);
+	return $result->toArray();
+        }
+
+        public function getsign($id){
+	$select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('a.sign'))
+                    ->join(array('c'=>'ourbank_master_sign'),'c.id=a.sign',array('c.name_regional as signname'));
          // die($select->__toString($select));
 	$result=$this->fetchAll($select);
 	return $result->toArray();

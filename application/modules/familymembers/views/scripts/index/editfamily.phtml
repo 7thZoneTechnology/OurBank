@@ -213,6 +213,7 @@
                 </select>
                 </td>
          <?php 
+			$signlist = array();
             $entitlelist = array();
             $proflist = array();
             $familyobj = new Familymembers_Model_Familymembers();
@@ -234,9 +235,7 @@
             	}}
 		else {
 		$entitlenone=0;
-		}
-
-          ?>
+		} ?>
                 <td>
                 <div style="OVERFLOW-Y:scroll; WIDTH:200px; HEIGHT:50px">
 		<?php if($entitlenone==0) { ?>
@@ -253,7 +252,6 @@
                 <?php } } ?>
                 <div>
                 </td>
-
 
                 <td><select name = "education[]" class="selectvalid required">
                         <option value=0>select</option>
@@ -411,7 +409,9 @@
                 </select>
                 </td>
 
-            <td><?php echo $this->form->sign; ?></td>
+<td><input type="checkbox" name="sign"></td>
+<!-- 				<td><?php //echo $this->form->sign; ?></td> -->
+
 
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr>

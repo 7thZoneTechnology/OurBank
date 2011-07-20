@@ -116,7 +116,7 @@ class Receipts_IndexController extends Zend_Controller_Action {
                                         if($toglsubcodeid=="") {
                                              echo "<font color='red'><b> select the to GL code again</b> </font>";$flag=1;
                                         }
-                                        elseif(($fromglcode==2) && ($bal<0)){
+                                        elseif(($fromglcode==2) && ($bal<=0)){
                                             echo "<font color='red'><b> Cash ledger balance is 0. Debit transaction on it is not possible</b> </font>";$flag=1;
                                         }
                                             //elseif($branchid=="") {

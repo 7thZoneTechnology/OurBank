@@ -40,7 +40,7 @@ $totalincome=0;$totalexpe=0;
 $countvalue1 =count($this->income);
 $countvalue2 =count($this->expenditure);
 $count = $countvalue1>$countvalue2?$countvalue1:$countvalue2; 
-if(($this->income) && ($this->incomeheader)){ ?>
+if(($this->income) && ($this->incomeheader)) { ?>
 	<h5 align="right"><?php echo $this->translate('As of'); ?> <font color='#039'><?php echo $this->asofdate;?></font></h5>
 	<h5 style="text-align:right">* <?php echo $this->translate('Amount in'); ?> <font color="red"><?php echo $this->translate('Rs'); ?></font></h5>
 <div style="float:left;width:370px">
@@ -126,15 +126,24 @@ if(($this->income) && ($this->incomeheader)){ ?>
 		</TABLE>
 </div>	
 
+<?php if ($totalincome > $totalexpe) {
+$profit = $totalincome - $totalexpe;
+$loss = 0;
+$tot = $totalexpe+$profit;
+} else {
+$profit =0;
+$loss = $totalexpe - $totalincome; 
+$tot = $totalincome-$loss; }  ?>
+
 <div style="float:left;width:370px">
         <TABLE id="hor-minimalist-s" summary="">
                 <tr>
                         <td align="left"><B><?php echo $this->translate('Loss');?></B></td>
-                        <td align="right"><?php $loss= $totalincome-$totalexpe; if ($loss<0) { echo $loss1 = " " . str_replace('-', '', number_format ($loss, 2, ".", ",")) . ""; } else { echo '----'; }?></td>
+                        <td align="right"><?php if($loss!=0) {echo $loss = " " . str_replace('-', '', number_format ($loss, 2, ".", ",")) . "";} else {echo "----";}?></td>
                 </tr>
                 <tr>
                         <td align="left"><B><?php echo $this->translate('Total');?></B></td>
-                        <td align="right"><?php $total= $totalincome-$totalexpe; if ($total>0) { echo sprintf("%4.2f",$total); } else { echo sprintf("%4.2f",$totalincome); }?></td>
+                        <td align="right"><?php  echo sprintf("%4.2f",$tot); ?></td>
                 </tr>
         </TABLE>
 </div>
@@ -142,11 +151,11 @@ if(($this->income) && ($this->incomeheader)){ ?>
         <TABLE id="hor-minimalist-s" summary="">
                 <tr>
                         <td align="left"><B><?php echo $this->translate('Profit');?></B></td>
-                        <td align="right"><?php $profit= ($totalincome-$totalexpe); if ($profit>0) { echo sprintf("%4.2f",$profit);} else { echo '----'; }?></td>
+                        <td align="right"><?php if($profit!=0) {echo $profit = " " . str_replace('-', '', number_format ($profit, 2, ".", ",")) . "";} else {echo "----";} ?></td>
                 </tr>
                 <tr>
                         <td align="left"><B><?php echo $this->translate('Total');?></B></td>
-                        <td align="right"><?php $total = $totalexpe+$profit; if ($total>=0) { echo sprintf("%4.2f",$total); } else { echo sprintf("%4.2f",$totalexpe); }?></td>
+                        <td align="right"><?php echo sprintf("%4.2f",$tot); ?></td>
                 </tr>
         </TABLE>
 
@@ -166,7 +175,7 @@ onClick="window.open('<?php echo $this->baseUrl();?>/incomeexpenditure/index/rep
 if(($this->income) && ($this->expenditure)){  ?>
 
 <?php 
-if($totalincome>$totalexpe){ 
+if($totalincome>$totalexpe){
 $result = $totalincome-$totalexpe;
 	 echo "<font color='green'><h5>".$this->translate('Excess of income')." <font color='red'>".$result."</font>"; ?>/-<?php echo " ".$this->translate('over expenditure')."</h5></font>"; 
 }

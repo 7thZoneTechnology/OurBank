@@ -119,10 +119,10 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->entitlements = $this->view->adm->viewRecord("ourbank_master_entitlements","id","ASC");
         $this->view->countvalue=count($this->view->entitlements);
         $this->view->employment = $this->view->adm->viewRecord("ourbank_master_employmenttype","id","ASC");
-
         $this->view->currentdate= date("d/m/Y");
 
          if ($this->_request->getPost('submit')) {
+		$formData = $this->_request->getPost();
                     $family_id=$this->_getParam('id');
                     $mem_name=$this->_getParam('mem_name');
                     $fathername=$this->_getParam('father_name');
@@ -147,10 +147,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $banckAccount = $this->_getParam('bankAccount');
                     $mobile=$this->_getParam('mobile');
                     $employment=$this->_getParam('employ_status');
-                    $sign=$this->_getParam('can_sign');
-
                     $countname = count($mem_name);
-
                     $editfamily = $this->view->adm->editRecord("ourbank_family",$family_id);
                     $villageid=$editfamily[0]['rev_village_id'];
 
@@ -198,6 +195,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'branch_po' => $branch[$i],
                                     'bank_ac' => $banckAccount[$i],
                                     'blood_id'=>$blood[$i],
+
+									'sign'=>$formData['sign'],
+
                                     'mobile_number' => $mobile[$i],
                                     'created_by'=>$this->view->createdby, 
                                     'created_date'=>date("y/m/d H:i:s")
@@ -276,6 +276,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
         //update contact details
         if ($this->_request->getPost('Update')) {
+		$formData = $this->_request->getPost();
+
             $id=$this->_getParam('id');
             $family = $this->view->familydetails = $familyobj->getfamilydetails1($id); 
             $count = count($family);
@@ -312,6 +314,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $blood=$this->_getParam('blood');
             $dob= $this->_getParam('dob');
             $uid= $this->_getParam('uid');
+            $sign= $this->_getParam('sign');
+
             $employment=$this->_getParam('employ_status');
 
             $countname = count($mem_name);
@@ -358,6 +362,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'bank_ac' => $banckAccount[$i],
                                     'blood_id'=>$blood[$i],
                                     'mobile_number' => $mobile[$i],
+
+									'sign'=>$formData['sign'],
+
                                     'created_by'=>$this->view->createdby, 
                                     'created_date'=>date("y/m/d H:i:s")
                                    );

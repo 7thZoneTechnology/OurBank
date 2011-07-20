@@ -43,6 +43,7 @@ if(count($this->paginator)!=0) { ?>
         <tr class="tdbrownheading">
             <th>Group code</th>
             <th>Group name</td>
+            <th>village name</th>
         </tr>
         <?php if (count($this->paginator)): ?>
         <?php foreach ($this->paginator as $individual): ?>
@@ -50,6 +51,7 @@ if(count($this->paginator)!=0) { ?>
             <td><a href="<?php echo $this->baseUrl()."/groupcommonview/index/commonview/id/"?><?php echo $individual['groupid']; ?>">
                         <?php echo $this->escape($individual['groupcode']); ?></a></td>
         <td><?php echo $this->escape($individual['group_name']);?></td>
+        <td><?php echo $this->escape($individual['name']);?></td>
             <?php endforeach; ?>
             <?php endif; ?>
         </tr>

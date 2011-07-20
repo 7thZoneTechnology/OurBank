@@ -18,7 +18,11 @@
 ############################################################################
 */
 ?>
-
+<script type="text/javascript">
+       $(function() {
+           $('#meeting_time').calendricalTime(); 
+       });
+</script>
 <?php
 /**  
 * class is used to create a form for SavingInstance details along with the validation

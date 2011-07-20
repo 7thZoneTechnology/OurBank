@@ -69,7 +69,7 @@ class Funderdetails_IndexController extends Zend_Controller_Action
         $form = new Funderdetails_Form_funderdetails($this->view->id);
         $this->view->form=$form;
 	//load funder type drop down
-        $fundertype = $this->view->adm->viewRecord("ourbank_master_fundertype","id","DESC");					
+        $fundertype = $this->view->adm->viewRecord("ourbank_master_fundertype","id","DESC");
         foreach($fundertype as $fundertype1) { 
                 $form->type->addMultiOption($fundertype1['id'],$fundertype1['name']);
         }
@@ -91,9 +91,12 @@ class Funderdetails_IndexController extends Zend_Controller_Action
 if(!$funders) {
         $ledger = new Ledger_Model_Ledger();
   $glInsert = $ledger->insertGlcode(array('id' => '',
-                        'glcode' => 'L02000', 'ledgertype_id' => 4,
-                        'header' => $formData['name'], 'description' => $formData['name'],
-                        'created_date' =>$date, 'created_by'=>$this->view->createdby));
+                        'glcode' => 'L02000',
+ 						'ledgertype_id' => 4,
+                        'header' => $formData['name'],
+ 						'description' => $formData['name'],
+                        'created_date' =>$date,
+						 'created_by'=>$this->view->createdby));
  $glcode_id=$funder->findmaxlevel();
 
 			 foreach ($glcode_id as $glcode_id) {
