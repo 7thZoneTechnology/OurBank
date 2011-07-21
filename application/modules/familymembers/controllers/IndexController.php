@@ -314,8 +314,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $blood=$this->_getParam('blood');
             $dob= $this->_getParam('dob');
             $uid= $this->_getParam('uid');
-            $sign= $this->_getParam('sign');
-
             $employment=$this->_getParam('employ_status');
 
             $countname = count($mem_name);

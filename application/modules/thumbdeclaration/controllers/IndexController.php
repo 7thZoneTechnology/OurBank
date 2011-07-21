@@ -44,9 +44,9 @@ class Thumbdeclaration_IndexController extends Zend_Controller_Action
         $this->view->groupresult=$results =  $this->view->dbobj->groupDeatils($memcode,$moduleid);
 
 //         echo '<pre>'; print_r($this->view->groupresult);
-        $this->view->groupmember=$membername =  $this->view->dbobj->getmember($memcode);
-        $this->view->represent=$repname =  $this->view->dbobj->represent($memcode);
-        $this->view->loans=$loans =  $this->view->dbobj->getgrouploans($memcode);
+//         $this->view->groupmember=$membername =  $this->view->dbobj->getmember($memcode);
+//         $this->view->represent=$repname =  $this->view->dbobj->represent($memcode);
+//         $this->view->loans=$loans =  $this->view->dbobj->getgrouploans($memcode);
                 }
 
         }

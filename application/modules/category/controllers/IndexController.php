@@ -57,7 +57,7 @@ class Category_IndexController extends Zend_Controller_Action
 	public function indexAction() 
 	{
        		$this->view->title = "Category";
-		$this->view->pageTitle = "Category Search";
+		$this->view->pageTitle = "Category";
 
  		$searchForm = new Category_Form_Search();
                 $this->view->form = $searchForm;
