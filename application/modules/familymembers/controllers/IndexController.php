@@ -147,20 +147,30 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $banckAccount = $this->_getParam('bankAccount');
                     $mobile=$this->_getParam('mobile');
                     $employment=$this->_getParam('employ_status');
+					$signv = $this->_getParam('sign'); echo '<pre>'; print_r($mem_name);
+
                     $countname = count($mem_name);
                     $editfamily = $this->view->adm->editRecord("ourbank_family",$family_id);
                     $villageid=$editfamily[0]['rev_village_id'];
 
-            $j=0; $k=0; $l=0;
+            $j=0; $k=0; $l=0; $s=0;
             for($i = 0; $i< $countname; $i++) 
             {
 
-                if ($breadwinner[$j] == $i+1) {
+                if ($breadwinner[$j] == $i+1 ) {
                     $bread = 1;
                     $j++;
                 } else {
                     $bread = 0;
+
+				if ($signv[$s] == $i+1 ) {
+                    $cansign = 1;
+                    $s++;
+                } else {
+                    $cansign = 0;
                 }
+
+
                 if ($headID[$k] == $i+1) {
                     $head = 1;
                     $k++;
@@ -196,7 +206,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'bank_ac' => $banckAccount[$i],
                                     'blood_id'=>$blood[$i],
 
-									'sign'=>$formData['sign'],
+									'sign'=>$cansign,
 
                                     'mobile_number' => $mobile[$i],
                                     'created_by'=>$this->view->createdby, 
@@ -225,11 +235,11 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 $membercode=$o.$p.$u;
                $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
             }
-          $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
+//           $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
         }
     }
 
-
+}
     //editing contact details
     public function editfamilyAction()
     {
@@ -282,6 +292,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $family = $this->view->familydetails = $familyobj->getfamilydetails1($id); 
             $count = count($family);
             $ExistMemberscount = $count;
+
             for ($j = 0 ; $j< $count; $j++) {
                 $this->view->adm->addRecord("ourbank_familymember_log",$family[$j]);
             }
@@ -315,9 +326,10 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $dob= $this->_getParam('dob');
             $uid= $this->_getParam('uid');
             $employment=$this->_getParam('employ_status');
+			$signv = $this->_getParam('sign');
 
             $countname = count($mem_name);
-            $j=0; $k=0; $l=0;
+            $j=0; $k=0; $l=0; $s=0;
             for($i = 0; $i< $countname; $i++) 
             {
                 if ($breadwinner[$j] == $i+1) {
@@ -326,6 +338,15 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 } else {
                     $bread = 0;
                 }
+
+				if ($signv[$s] == $i+1) {
+                    $cansign = 1;
+                    $s++;
+                } else {
+                    $cansign = 0;
+                }
+
+
                 if ($headID[$k] == $i+1) {
                     $head = 1;
                     $k++;
@@ -361,7 +382,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'blood_id'=>$blood[$i],
                                     'mobile_number' => $mobile[$i],
 
-									'sign'=>$formData['sign'],
+									'sign'=>$cansign,
 
                                     'created_by'=>$this->view->createdby, 
                                     'created_date'=>date("y/m/d H:i:s")
@@ -421,7 +442,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
             foreach($deletearray as $deltearr){
             $familyobj->deleteFamily($deltearr);
             }
-          $this->_redirect('/familycommonview/index/commonview/id/'.$id);
+//           $this->_redirect('/familycommonview/index/commonview/id/'.$id);
         }
     }
 }
