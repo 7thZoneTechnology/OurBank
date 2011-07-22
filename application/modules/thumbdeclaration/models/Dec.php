@@ -31,7 +31,7 @@ class Thumbdeclaration_Model_Dec  extends Zend_Db_Table {
                         ->where('c.sign = 0')
 
                         ->join(array('f' => 'ourbank_master_bank'),'f.id=a.branch_id',array('name as bankname'))
-                        ->join(array('g' => 'ourbank_master_branch'),'g.id=f.id',array('name as branchname'))
+                        ->join(array('g' => 'ourbank_master_branch'),'g.bank_id=f.id',array('name as branchname'))
                         ->group('a.groupcode');
 
 //                 die($select->__toString($select));
