@@ -112,17 +112,17 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","ASC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
         $this->view->branch = $this->view->adm->viewRecord("ourbank_master_branch","id","ASC");
-//          $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+//         $this->view->cbopromoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
         $this->view->cbopromoter=$this->view->modelfamily->getcbolist($kootaid);
         $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","ASC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
         $this->view->entitlements = $this->view->adm->viewRecord("ourbank_master_entitlements","id","ASC");
         $this->view->countvalue=count($this->view->entitlements);
         $this->view->employment = $this->view->adm->viewRecord("ourbank_master_employmenttype","id","ASC");
+
         $this->view->currentdate= date("d/m/Y");
 
          if ($this->_request->getPost('submit')) {
-		$formData = $this->_request->getPost();
                     $family_id=$this->_getParam('id');
                     $mem_name=$this->_getParam('mem_name');
                     $fathername=$this->_getParam('father_name');
@@ -143,25 +143,29 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $acctypeid=$this->_getParam('accounttype');
                     $bank=$this->_getParam('bank');
                     $branch=$this->_getParam('branch');
+
+					$signv = $this->_getParam('sign');
+
+
                     $blood=$this->_getParam('blood');
                     $banckAccount = $this->_getParam('bankAccount');
                     $mobile=$this->_getParam('mobile');
                     $employment=$this->_getParam('employ_status');
-					$signv = $this->_getParam('sign'); echo '<pre>'; print_r($mem_name);
-
                     $countname = count($mem_name);
+
                     $editfamily = $this->view->adm->editRecord("ourbank_family",$family_id);
                     $villageid=$editfamily[0]['rev_village_id'];
 
-            $j=0; $k=0; $l=0; $s=0;
+            $j=0; $k=0; $l=0;
             for($i = 0; $i< $countname; $i++) 
             {
 
-                if ($breadwinner[$j] == $i+1 ) {
+                if ($breadwinner[$j] == $i+1) {
                     $bread = 1;
                     $j++;
                 } else {
                     $bread = 0;
+                }
 
 				if ($signv[$s] == $i+1 ) {
                     $cansign = 1;
@@ -169,7 +173,6 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 } else {
                     $cansign = 0;
                 }
-
 
                 if ($headID[$k] == $i+1) {
                     $head = 1;
@@ -203,11 +206,10 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'accouttype_id' => $acctypeid[$i],
                                     'bank' => $bank[$i],
                                     'branch_po' => $branch[$i],
-                                    'bank_ac' => $banckAccount[$i],
-                                    'blood_id'=>$blood[$i],
-
 									'sign'=>$cansign,
 
+                                    'bank_ac' => $banckAccount[$i],
+                                    'blood_id'=>$blood[$i],
                                     'mobile_number' => $mobile[$i],
                                     'created_by'=>$this->view->createdby, 
                                     'created_date'=>date("y/m/d H:i:s")
@@ -235,11 +237,11 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 $membercode=$o.$p.$u;
                $this->view->adm->updateRecord("ourbank_familymember",$lastid,array('familycode'=>$membercode));
             }
-//           $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
+          $this->_redirect('/familycommonview/index/commonview/id/'.$family_id);
         }
     }
 
-}
+
     //editing contact details
     public function editfamilyAction()
     {
@@ -442,7 +444,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
             foreach($deletearray as $deltearr){
             $familyobj->deleteFamily($deltearr);
             }
-//           $this->_redirect('/familycommonview/index/commonview/id/'.$id);
+          $this->_redirect('/familycommonview/index/commonview/id/'.$id);
         }
     }
 }

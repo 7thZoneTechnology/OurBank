@@ -247,8 +247,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </select> 
                 </td>
 
-				<td><?php echo $this->form->sign;?></td>
-
+				<?php $i = 1; ?>
+                <?php if($this->familydetails['sign']==1){ $i++;?>
+                <td align="center"><INPUT type="checkbox" name = "sign[]" checked="true" value="1"></td>
+                <?php } else { ?>
+                <td align="center"><INPUT type="checkbox" name = "sign[]" value="<?php echo $i ?>"></td>
+                <?php } ?>
 
                 <td><img class="delete-icon" id="image" value="1" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'>
             </tr>
