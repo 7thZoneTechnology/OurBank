@@ -39,7 +39,7 @@ class Dcb_Model_Dcb extends Zend_Db_Table
                 ->where('e.installment_date <="'.$Date.'"')
                 ->join(array('f'=>'ourbank_group'),'f.id = d.member_id',array('f.id','f.village_id'))
                 ->join(array('g'=>'ourbank_office'),'g.id = f.village_id',array('g.name as office_name','g.id as officeid'));
-//         die($select->__toString($select));
+        //die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result;
       }
@@ -106,7 +106,7 @@ class Dcb_Model_Dcb extends Zend_Db_Table
 
         $select = $this->select()
                 ->union(array($select1, $select2));
-//          die($select->__toString($select));
+        //die($select->__toString($select));
         $result = $this->fetchAll($select);
         return $result;
     }

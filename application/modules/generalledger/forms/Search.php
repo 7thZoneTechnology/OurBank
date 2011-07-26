@@ -29,9 +29,8 @@ class Generalledger_Form_Search extends ZendX_JQuery_Form {
                 //$vtype=array('Alpha');
                 $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
                 $dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
-                $ledger = $formfield->field('Select','ledger','','','mand','Ledger',false,'','','','','',0,'');
 
 			
-			$this->addElements(array($datefrom,$dateto,$ledger));
+			$this->addElements(array($datefrom,$dateto));
 		}
 }

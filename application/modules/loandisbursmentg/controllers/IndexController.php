@@ -110,10 +110,11 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             $formData = $this->_request->getPost(); 
 
               $testing[]=$formData['etransfer'];
-//                print_r($testing);
+                print_r($testing);
 
             if ($loanForm->isValid($formData)) { 
-//               print_r($testing);
+
+                print_r($testing);
                 $accNum = base64_decode($this->_request->getParam('accNum'));
                 $disbursedate=$this->view->dateconvector->phpmysqlformat($this->_request->getPost('date'));
                 $disburseamount=$this->_request->getPost('Amount');
@@ -133,6 +134,19 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                     $number = $search->number;
                     $sAccId = $search->sAccId; 
                     $officeid = $search->officeid;
+                }
+                // calculation of fee
+                $feeamount = 0;
+                foreach ($this->view->fee as $fee) {
+                    $feeValue = $fee->value;
+                    $feeType = $fee->amountype_id;
+                    $feeGl = $fee->feeGl;
+                    //1 is flat 2 is Percentage
+                    if ($feeType == 2) {
+                        $feeamount = $feeamount + (($disburseamount * $feeValue)/100);
+                    } else if ($feeType == 1) {
+                        $feeamount = $feeamount + $feeValue;
+                    }
                 }
 
                 if($transactiontype != 5 or $transactiontype != 1){
@@ -155,41 +169,6 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             'confirmation_flag'=>0,
                             'created_by'=>1);
                 $tranID = $this->view->adm->addRecord('ourbank_transaction',$data);
-
-                // calculation of fee
-                $feeamount = 0;
-                foreach ($this->view->fee as $fee) {
-                    $feeValue = $fee->value;
-                    $feeType = $fee->amountype_id;
-                    $feeGl = $fee->feeGl;
-                    //1 is flat 2 is Percentage
-                    if ($feeType == 2) {
-                        $feeValue=(($disburseamount * $feeValue)/100);
-                        $feeamount = $feeamount + $feeValue;
-                    } else if ($feeType == 1) {
-                        $feeamount = $feeamount + $feeValue;
-                    }
-
-                    $fee = array('office_id'=>$officeid,
-                                'glsubcode_id_to'=>$fee->glsubcode_id,
-                                'transaction_id'=>$tranID,
-                                'credit' => $feeValue,
-                                'recordstatus_id'=>'3');
-                    $this->view->adm->addRecord('ourbank_Income',$fee);
-                }
-
-               $transactionamount = array('amount_from_bank' =>$disburseamount-$feeamount);
-               $this->view->loanModel->loanupdate($tranID,$transactionamount);
-
-                $feeData = $this->view->loanModel->glBank($officeid,'fee'.$officeid);
-                $fee = array('office_id'=>$officeid,
-                            'glsubcode_id_to'=>$feeData[0]['id'],
-                            'transaction_id'=>$tranID,
-                            'credit' => $feeamount,
-                            'recordstatus_id'=>'3');
-                $this->view->adm->addRecord('ourbank_Income',$fee);
-
-
                 //Passing an entry to loan disbursement table
                 $input = array('transaction_id' => $tranID,
                             'account_id' => $accId,
@@ -200,7 +179,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             'transaction_description'=> $this->_request->getPost('description'),
                             'recordstatus_id'=>3);
                 $tranID = $this->view->adm->addRecord('ourbank_loan_disbursement',$input);
-                if ($intType == 2 or $intType == 3) {
+                if ($intType == 2) {
                     if($loanamount==$balance){
                     $emi =0;$roi=0;
                     $cb=$disburseamount;
@@ -222,7 +201,6 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                                         'installment_interest_amount'=> $roi,
                                         'installment_principal_amount' => round(($emi - $roi),2),
                                         'reduced_prinicipal_balance'=> round($cb,2),
-					'balance'=>$emi,
                                         'installment_status' => $status,
                                         'created_by' => 1);
                     $this->view->adm->addRecord('ourbank_installmentdetails',$instl);
@@ -305,6 +283,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             $this->view->loanModel->updateinstallment($paiddetails[0]['account_id'],$maxid,$updatedata);
                         }
                     }
+
                 }
                 $sglData = $this->view->loanModel->getSavingGl($sAccId);
                 foreach($sglData as $sglData) 
@@ -313,24 +292,30 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                     $balance = $sglData->balance;
 
                 }
-            $bankData = $this->view->loanModel->glBank($officeid,'bank'.$officeid);
+            $bankData = $this->view->loanModel->glBank($officeid);
+            foreach ($bankData as $bankData) {
+                $bankGl = $bankData->id;
+            }
             // Bank Asset Dt entry
             $bankEntry = array('office_id'=>$officeid,
-                        'glsubcode_id_to'=>$bankData[0]['id'],
+                        'glsubcode_id_to'=>$bankGl,
                         'transaction_id'=>$tranID,
                         'debit' => $this->_request->getPost('Amount'),
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$bankEntry);
-            $loanData = $this->view->loanModel->glBank($officeid,'loans'.$officeid);
             $glbankEntry = array('office_id'=>$officeid,
-                        'glsubcode_id_to'=>$loanData[0]['id'],
+                        'glsubcode_id_to'=>$gl,
                         'transaction_id'=>$tranID,
-                        'debit' => $this->_request->getPost('Amount')-$feeamount,
+                        'debit' => $this->_request->getPost('Amount'),
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$glbankEntry);
 
             if($transactiontype=='5') {
+
+
                 $eaccount=$this->_request->getPost('etransfer');
+
+                echo $eaccount;
             // An entry into transaction (saving transfer)
             $input = array('account_id' => $eaccount,
                                 'glsubcode_id_to' => $sgl,
@@ -380,10 +365,13 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                                 'transaction_by' => 1);
             $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
 
-            $bankData = $this->view->loanModel->glBank($officeid,'savings'.$officeid);
+            $bankData = $this->view->loanModel->glBank($officeid);
+            foreach ($bankData as $bankData) {
+                $bankGl = $bankData->id;
+            }
             // Bank Liabality Cr entry
             $crEntry = array('office_id'=>$officeid,
-                        'glsubcode_id_to'=>$bankData[0]['id'],
+                        'glsubcode_id_to'=>$bankGl,
                         'transaction_id'=>$stranID,
                         'credit' => $this->_request->getPost('Amount'),
                         'record_status'=>'3');
@@ -397,6 +385,12 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             $this->view->adm->addRecord('ourbank_Liabilities',$glcrEntry);
             // Insertion into Assets ourbank_Assets fee Cr entry
             // Bank Liabality Cr entry
+            $fee = array('office_id'=>$officeid,
+                        //'glsubcode_id_to'=>$feeGl,
+                        'transaction_id'=>$stranID,
+                        'credit' => $feeamount,
+                        'record_status'=>'3');
+            $this->view->adm->addRecord('ourbank_Assets',$fee);
             }
             $this->_redirect("/loandisbursmentg/index/message/amt/".base64_encode($this->_request->getPost('Amount'))."/accNum/".base64_encode($number));
             }

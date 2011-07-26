@@ -153,11 +153,11 @@ class groupgrading_Model_Loanprocess extends Zend_Db_Table
         return $result->toArray(); // return group member details
     }
 
-    public function searchActive($code,$groupcode){
+    public function searchActive($code,$groupid){
             $this->db = Zend_Db_Table::getDefaultAdapter();
-            $sql = "select * from ourbank_loanprocess where member_id  = '$code' and membertype = '$groupcode' and status != 0";
+            $sql = "select * from ourbank_loanprocess where member_id  = '$code' and membertype = '$groupid' and status != 0";
 //             echo $sql;
-            $result = $this->db->fetchAll($sql,array($code,$groupcode));
+            $result = $this->db->fetchAll($sql,array($code,$groupid));
             return $result;
         }
 public function finduser($userid)
@@ -229,19 +229,19 @@ public function finduser($userid)
             return $result;
         }
 
-    public function searchmemberdetails($groupcode,$type){
+    public function searchmemberdetails($groupid,$type){
             if($type == 2 or $type == 3){
            $select=$this->select()
                 ->setIntegrityCheck(false)
                 ->join(array('a' => 'ourbank_group'),array('id'),array('groupcode as code','name'))
-                ->where('a.id = '.$groupcode)
+                ->where('a.id = '.$groupid)
                 ->join(array('b' => 'ourbank_office'),'b.id  = a.village_id',array('name as villagename'));
             } 
         if($type == 1){
            $select=$this->select()
                 ->setIntegrityCheck(false)
                 ->join(array('a' => 'ourbank_familymember'),array('id'),array('familycode as code','name','uid'))
-                ->where('a.id = '.$groupcode)
+                ->where('a.id = '.$groupid)
                 ->join(array('b' => 'ourbank_office'),'b.id  = a.village_id',array('name as villagename'));
             }
 //         die($select->__toString($select));
@@ -311,7 +311,7 @@ public function finduser($userid)
             return $result;
     }
 
-    public function getgroupName($groupcode){
+    public function getgroupName($groupid){
             $this->db = Zend_Db_Table::getDefaultAdapter();
                 $sql = "select 
                             a.name as groupname,
@@ -321,42 +321,42 @@ public function finduser($userid)
                             ourbank_group as a,
                             ourbank_office as b
                         where 
-                            a.groupcode = $groupcode and
+                            a.id = $groupid and
                             a.village_id = b.id";
                 $result = $this->db->fetchAll($sql);
             return $result;
     }
 
- public function getAttendance($groupcode){
+ public function getAttendance($groupid){
                     $select=$this->select()
                         ->setIntegrityCheck(false)
                         ->join(array('a' => 'ourbank_meeting'),array('id'),array('id as noofmeetings'))
-                        ->where('a.group_id  = '.$groupcode)
+                        ->where('a.group_id  = '.$groupid)
                         ->join(array('b' => 'ourbank_attendance'),'b.meeting_id = a.id',array('id as attendanceid'))
                         ->join(array('c' => 'ourbank_memberattendance'),'c.attendance_id  = b.id',array('count(member_id) as Absentees'));
 
             $result=$this->fetchAll($select);
             return $result->toArray();
     }
-    public function Countmeetings($groupcode){
+    public function Countmeetings($groupid){
                 $this->db = Zend_Db_Table::getDefaultAdapter();
                     $sql = "select 
                                 count(a.id) as Numberofmeetings
                             from 
                                 ourbank_meeting as a
                             where 
-                                a.group_id = $groupcode";
+                                a.group_id = $groupid";
                     $result = $this->db->fetchAll($sql);
                 return $result;
         } 
-    public function Countgroupmembers($groupcode){
+    public function Countgroupmembers($groupid){
                 $this->db = Zend_Db_Table::getDefaultAdapter();
                     $sql = "select 
                                 count(a.member_id) as Totalmembers
                             from 
                                 ourbank_groupmembers as a
                             where 
-                                a.group_id = $groupcode";
+                                a.group_id = $groupid";
                     $result = $this->db->fetchAll($sql);
                 return $result;
         }

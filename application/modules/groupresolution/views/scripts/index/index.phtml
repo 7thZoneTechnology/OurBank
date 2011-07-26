@@ -26,7 +26,7 @@ background-color : silver;
 <?php if(!$this->groupname){ ?>
 <!--search form action !-->
 <fieldset>
-	<legend>Group Resolution</legend>
+	<legend>Resolution to withdraw money</legend>
 		<form action="<?php echo $this->baseUrl();?>/groupresolution" method="POST">
 			<table class="fieldsets">
 					<tr>
@@ -41,32 +41,24 @@ background-color : silver;
 </div>
 
 <div class="profile_tab"> 
+
   <?php if($this->groupname){ ?>
 	<?php foreach($this->groupname as $member) : ?>
 	<table width="100%" border="2" id="hor-minimalist-b">	
-	<th colspan="4"><?php echo "<font color=green>";?>Group Resolution</th>
+	<th colspan="4">Group Resolution</th>
 
-<tr><TD><b>Group name :</b><?php echo $member['groupname'];?></TD>
-<td align="left"><b>Date :</b><?php echo date('d-m-Y');?></td></tr>
-<tr><TD><br><b>Address:</b><?php  echo $member['address1'];?><?php  echo $member['address2'];?><?php  echo $member['address3'];?>
-<br><b>City&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['city'];?>
-<br><b>Sate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['state'];?></td>
-<td align="left"><b>Group code :</b><?php  echo $member['groupcode'];?></td></tr>
+<tr><TD><b>Group name :</b></td><td><?php echo $member['groupname'];?></TD><td align="left"><b>Date :</b></td><td><?php echo date('d-m-Y');?></td></tr>
+<tr><TD><br><b>Address &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b></td><td><?php  echo $member['address1'];?><br><?php  echo $member['address2'];?><br><?php  echo $member['address3'];?><br><?php  echo $member['city'];?><br><?php  echo $member['state'];?></td>
+<td align="left"><b>Group code :</b></td><td><?php  echo $member['groupcode'];?></td></tr>
+
+
+
 </table>
 <?php endforeach; ?>
 <br><br>
-
-<tr><TD><b>Bank Name :</b><?php  echo $member['bankname'];?></TD><br><br>
-	<TD><b>Branch :</b><?php  echo $member['branchname'];?></TD><br><br>
-	<TD><b>Purpose :</b><?php  echo $member['purpose'];?></TD><br><br>
-	<TD><b>Group name :</b><?php  echo $member['groupname'];?></TD><br><br>
-	<TD><b>Loan Request Amount :</b><?php  echo $member['amount'];?></TD>
-
-
-</tr>
-<br><br>
-	<table id="hor-minimalist-b" border="2">
+	<table id="hor-minimalist-b">
 <tr>
+
 		<Th>S.no</Th>
 		<Th>Member name</Th>
 		<Th>Survey no</Th>
@@ -77,10 +69,10 @@ background-color : silver;
 	<?php $i=1; foreach($this->groupmembers as $memberdetail) :?>
 
 <tr>
-	<td align="center"><?php  echo $i;$i++;?></td>
+	<td><?php  echo $i;$i++;?></td>
 	<td><?php  echo $memberdetail['membername'];?></td>
-	<td align="center" width="15%"><?php  echo $memberdetail['survey_no'];?></td>
-	<td width="20%"><?php  echo $memberdetail['request_amount'];?></td>
+	<td><?php  echo $memberdetail['survey_no'];?></td>
+	<td><?php  echo $memberdetail['request_amount'];?></td>
 	<td></td>
 
 </tr>

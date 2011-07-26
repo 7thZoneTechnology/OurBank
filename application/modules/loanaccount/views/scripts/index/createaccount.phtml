@@ -1,33 +1,49 @@
 <script> 
-$(document).ready(
-  function() {
-
-    $('.getamount').click(function() {
-	var id=$(this).attr("name").split("-");
-        if($('#fee-'+id[1]).is(':checked')) {
-        if($(this).val())
-        {
-                     $('#feeamount-'+id[1]).show();
-          uid=$(this).val();
-           path=$('#baseurl').val();
-           targeturl=$('.pathid').val()+"/loanaccount/index/feeamount?feeid="+$(this).val()+"&loanamount="+$('.amountclass').val()+"&hidden="+id[1];
-	   $.ajax({ url: targeturl, success: function(data){ $('#feeamount-'+id[1]).html(data) }});
+function getXMLHTTP() {
+    var xmlhttp=false;	
+        try{
+            xmlhttp=new XMLHttpRequest();
         }
+        catch(e) {
+            try {	
+                xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch(e){
+                try {
+                    xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                catch(e1){
+                    xmlhttp=false;
+                }
+            }
+        }
+        return xmlhttp;
+    }
+function getInterests(interest,path,productId) {	
+    var strURL=path+"/loanaccount/index/interest?interest="+interest+"&productId="+productId;
 
+    var req = getXMLHTTP();
+        if (req) {
+            req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    document.getElementById('interestratediv').innerHTML=req.responseText;
+                } else {
+                    alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                  }
+            }
+        }
+        req.open("GET", strURL, true);
+        req.send(null);
+        }
+        var perioddescription=$('#perioddescription').val();
+        if(perioddescription!='') {
+            $('#errorspan').show();
         } else {
-            $('#feeamount-'+id[1]).hide(); 
-        }
-    });
+            $('#errorspan').hide();
+          }
+}
 
-    $(".getinterest").change( function() { 
-        if($(this).val())
-        {  uid=$(this).val();
-           path=$('#baseurl').val();
-           targeturl=$('.pathid').val()+"/loanaccount/index/interest?interest="+$(this).val()+"&productId="+$('.productid').val();
-	   $.ajax({ url: targeturl, success: function(data){ $('#interestratediv').html(data) }});
-        }
-    }); 
-});
 
 function displayRow(type) {
     var row = document.getElementById("funder");
@@ -110,7 +126,7 @@ foreach ($this->account as $account) {
                         <TD><?php echo $this->loanForm->date;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Loan amount</TD>
+                        <TD><label for="fld1" class="mand">Disbursement amount</TD>
                         <TD><?php echo $this->loanForm->amount;?></TD>
                     </TR>
                     <TR>
@@ -139,12 +155,7 @@ foreach ($this->account as $account) {
                     </TR>
                     <TR>
                         <TD><label for="fld1" class="mand">Fee</TD>
-                        <TD><?php $i=0; foreach($this->feedetails as $fee) { $i++ ?>
-                        <div>
-                        <div style="width:auto; float:left;"><input type="checkbox" name="fee-<?php echo $i; ?>" id="fee-<?php echo $i; ?>" class="txt_put getamount" value="<?php echo $fee['id']; ?>">
-                        <?php echo $fee['name']; ?>:&nbsp;</div><div style="width:auto; float:left;" id="feeamount-<?php echo $i ?>"></div></div><br>
-                        <?php } ?>
-                        </TD>
+                        <TD><?php echo $this->loanForm->fee;?></TD>
                     </TR>
                     <TR>
                         <TD><?php echo $this->loanForm->Submit; ?></TD>
@@ -152,6 +163,6 @@ foreach ($this->account as $account) {
                     </TR>
                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
                 </table>
-                <?php echo $this->loanForm->Id; echo $this->loanForm->code; echo $this->loanForm->path; echo $this->loanForm->productid; ?> <?php  ?> 
+                <?php echo $this->loanForm->Id; ?> <?php echo $this->loanForm->code; ?> 
             </form>
 </div>

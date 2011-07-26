@@ -104,7 +104,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <th><?php echo $this->translate("* ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"); ?></th>
                 <th><?php echo $this->translate("ದೂರವಾಣಿ"); ?></th>
                 <th><?php echo $this->translate("* ಬ್ಲಡ್ ಗ್ರೂಪ್"); ?></th>
-                <th><?php echo $this->translate("Can Sign"); ?></th><th></th>
+                <th></th>
             </tr>
             <?php 
             $uid = array();
@@ -246,14 +246,6 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <?php } ?>
                 </select> 
                 </td>
-
-				<?php $i = 1; ?>
-                <?php if($this->familydetails['sign']==1){ $i++;?>
-                <td align="center"><INPUT type="checkbox" name = "sign[]" checked="true" value="1"></td>
-                <?php } else { ?>
-                <td align="center"><INPUT type="checkbox" name = "sign[]" value="<?php echo $i ?>"></td>
-                <?php } ?>
-
                 <td><img class="delete-icon" id="image" value="1" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'>
             </tr>
            <input type="hidden" name="count[]" id="count" value="<?php echo $this->countvalue; ?>">

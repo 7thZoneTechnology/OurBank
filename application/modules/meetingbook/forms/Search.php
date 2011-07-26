@@ -23,9 +23,8 @@
 class Meetingbook_Form_Search extends Zend_Form {
     public function init() {
 	$formfield = new App_Form_Field();
-        $s1 = $formfield->field('Select','s1','','','','','','','','','','','','');//search_meeting_name_att
-	$s2 = $formfield->field('Text','s2','','','','','','','','','','','','');//search_meeting_date
-                $s2->setAttrib('autocomplete','off');
-        $this->addElements(array($s1,$s2));
+	$search_meeting_name_att = $formfield->field('Select','search_meeting_name_att','','','','','','','','','','','','');
+	$search_meeting_date = $formfield->field('Text','search_meeting_date','','','','','','','','','','','','');
+        $this->addElements(array($search_meeting_name_att,$search_meeting_date));
     }
 }

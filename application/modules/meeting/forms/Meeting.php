@@ -18,11 +18,7 @@
 ############################################################################
 */
 ?>
-<script type="text/javascript">
-       $(function() {
-           $('#meeting_time').calendricalTime(); 
-       });
-</script>
+
 <?php
     class Meeting_Form_Meeting extends Zend_Form 
     {

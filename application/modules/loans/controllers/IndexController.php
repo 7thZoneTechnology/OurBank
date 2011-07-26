@@ -190,9 +190,9 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $productdetails = new Loans_Model_Loan();
 
                     $headerCon = "A";
-                    $glsubcode = $loan->getGlCode('Loans');
-                    $glcode = $loan->getGlCodeid('Loans');
-                    $glcodeexist = $loan->getGlCodeexist('Loans');
+                    $glsubcode = $loan->getGlCode('loan');
+                    $glcode = $loan->getGlCodeid('loan');
+                    $glcodeexist = $loan->getGlCodeexist('loan');
  
                     $glco=substr($glcodeexist, 1, 2);
 

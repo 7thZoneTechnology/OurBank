@@ -51,7 +51,7 @@ class User_Model_User extends Zend_Db_Table
                 ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id')
                 ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'))
                 ->join(array('e'=>'ourbank_grant'),'a.grant_id = e.id',array('name as grant'))
-            ->join(array('f'=>'  '),'a.department = f.id',array('name as department'));
+            ->join(array('f'=>'ourbank_master_department'),'a.department = f.id',array('name as department'));
 
 		//die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -76,19 +76,13 @@ class User_Model_User extends Zend_Db_Table
 
 
     public function userSearch($post) {
-       
- 	$keyvalue = array_filter($post);
-		$searchcounter = count($keyvalue);
-	if($searchcounter > 0) {
-
-
-	 $select = $this->select()
+        $select = $this->select()
                 ->setIntegrityCheck(false)  
                 ->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
-                ->where('a.username like "%" ? "%"',$post['s1'])
-                ->where('b.id like "%" ? "%"',$post['s2'])
-                ->where('c.id like "%" ? "%"',$post['s3'])
-                ->where('e.id like "%" ? "%"',$post['s4'])
+                ->where('a.username like "%" ? "%"',$post['name'])
+                ->where('b.id like "%" ? "%"',$post['designation'])
+                ->where('c.id like "%" ? "%"',$post['bank'])
+                ->where('e.id like "%" ? "%"',$post['grant_id'])
                 ->join(array('b'=>'ourbank_master_designation'),'a.designation = b.id',array('name as desi_name'))
                 ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id')
                 ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'))
@@ -96,50 +90,6 @@ class User_Model_User extends Zend_Db_Table
                 //die($select->__toString());		
         $result = $this->fetchAll($select);
         return $result->toArray();
-		} else {
-		 $select = $this->select()
-                ->setIntegrityCheck(false)  
-                ->join(array('a'=>'ourbank_user'),array('a.id'),array('name as username','id as userid','password','c.id as bank_id','username as usename'))
-                ->join(array('b'=>'ourbank_master_designation'),'a.id = b.id',array('name as desi_name'))
-                ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id')
-                ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'))
-                ->join(array('e'=>'ourbank_grant'),'a.grant_id = e.id',array('name as grant'))
-            ->join(array('f'=>'ourbank_master_department'),'a.department = f.id',array('name as department'));
-
-// 	die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-		}
-
-	}
-
-	public function offerProductshortname($offerproduct_id) { 
-		$select = $this->select()
-			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_productsoffer'),array('id'))
-			->where('a.id = ?',$offerproduct_id)
-	           	->join(array('b' => 'ourbank_product'),'a.product_id = b.id',array('b.shortname'));
-		$result = $this->fetchAll($select);
-		return $result->toArray(); // return get product short name
-	}
-        public function getAllOffer($name){
-                    $this->db = $this->getAdapter();
-                    $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-                    $sql = 'select * from ourbank_productsoffer where name = "'.$name.'"';
-                    $result = $this->db->fetchALL($sql,array());
-                    return $result;
-                }
-// // //         public function insertbaseOffer($input)
-// // //                     {
-// // //                         $this->db = $this->getAdapter();
-// // //                         $this->db->insert('ourbank_productsoffer',$input);
-// // //                     }
-
-        public function genarateGlCode($header){
-                $db = $this->getAdapter();
-                        $sql = "select max(glsubcode) as glsubcode from ourbank_glsubcode where glcode_id =(select id from ourbank_glcode where header like '%".$header."%')";
-                $result = $db->fetchOne($sql);
-	       return $result; // //return liabilities values 
     }
 
 

@@ -21,7 +21,7 @@ class Overduelist_IndexController extends Zend_Controller_Action
 {
     function init() 
     { 
-   $this->view->pageTitle=$this->view->translate('Overdue List');
+        
 	$sessionName = new Zend_Session_Namespace('ourbank');
     $this->view->type = "generalFields";
 	$storage = new Zend_Auth_Storage_Session();

@@ -17,12 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-/*
- *  create an cashscroll controller for view and pdf
- */
+ /* create an cashscroll controller for view and pdf */
 class Cashscroll_IndexController extends Zend_Controller_Action
 {
     public function init() 
@@ -30,109 +25,70 @@ class Cashscroll_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = $this->view->translate("Cash scroll");
         $this->view->title =  $this->view->translate('Reports');
         $this->view->type = $this->view->translate("financialReports");
-  $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
-        }
+        $this->view->adm = new App_Model_Adm();
 
-        $sessionName = new Zend_Session_Namespace('ourbank');
-        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-        $login=new App_Model_Users();
-        $loginname=$login->username($userid);
-        foreach($loginname as $loginname) {
-            $this->view->username=$loginname['username']; // get the user name
-        } 
-$this->view->adm = new App_Model_Adm();
+        $storage = new Zend_Auth_Storage_Session();
+       $data = $storage->read();
+       if(!$data){
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+       }
+
+       $sessionName = new Zend_Session_Namespace('ourbank');
+       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+       $login=new App_Model_Users();
+       $loginname=$login->username($userid);
+       foreach($loginname as $loginname) {
+           $this->view->username=$loginname['username']; // get the user name
+       }
+ 
     }
 	//view action
     public function indexAction() 
     {
-
-        $path = $this->view->baseUrl();
-
-        $searchForm = new Cashscroll_Form_Search($path);
+        $searchForm = new Cashscroll_Form_Search();
         $this->view->form = $searchForm;
 //         $sample = new Reports_Form_Sample();
 //         $this->view->sample = $sample;
         $villageoffice = new Cashscroll_Model_Cashscroll();
 
-      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
-			foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
+        $office = $villageoffice->officedetials(); //echo '<pre>'; print_r($meeting);
+        foreach($office as $office1){ 
+            $searchForm->branch->addMultiOption($office1['id'],$office1['name']);
+        }
 
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+	$dateconvertor = new App_Model_dateConvertor();
+        $formData = $this->_request->getPost(); //print_r($formData);
+        if ($searchForm->isValid($formData)) {
+        $fromDate = $this->_request->getParam('datefrom');
+        $branchid = $this->_request->getParam('branch');
+        $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
+	$fromDate = $dateconvertor->mysqlformat($fromDate);
 
-
-       		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-//         if ($searchForm->isValid($formData)) {
-$dateconvert= new App_Model_dateConvertor();
-
-
-       $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
-$this->view-> date1 =$fromDate;
-
-       $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
-$this->view-> date2 =$toDate;
-
- 		$branch=$this->_request->getParam('branch');
- 		$group=$this->_request->getParam('group');
-			$officename=$villageoffice->getOffice($branch);
-foreach ($officename as $officename) {
-$this->view-> name =$officename['name'];
-}
+            $title1 = $this->view->translate("Cash Scroll");
+            $this->view->pageTitle = $title1;
+            $formData = $this->_request->getPost();
+                $this->view->savings = 10;
                 $transaction = new Cashscroll_Model_Cashscroll();
-if ($group=="") {
+
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);
-           //     $officename=$transaction-> officename($branchid);
-                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch);
-}else {
-  $this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
-          //      $officename=$transaction-> officename($branchid);
-                $this->view->savingsDebit = $transaction->totalSavingsDebitg($fromDate,$toDate,$group);
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$branchid);
+                $officename=$transaction-> officename($branchid);
+                $this->view->officename=$officename[0]['officename'];
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$branchid);
 
                 // Opening Balance
-                $osc = $transaction->openingBalanceg($fromDate,$toDate,$group);
+                $osc = $transaction->openingBalance($fromDate,$branchid);
                 foreach($osc as $osc1) {
                 $this->view->openingBalance = $osc1["openingBalance"];
                 }
                 if((!$this->view->savingsCredit) && (!$this->view->savingsDebit)){
                                 echo "<font color='red'><b> Record not found</b> </font>";
                 }
-            
+            }
          }
-    } }
-	//report display
-    public function sublevelAction() 
-    {
-        $path = $this->view->baseUrl();
-
-        $this->_helper->layout()->disableLayout();
-$searchForm = new Cashscroll_Form_Search($path);
-        $this->view->form = $searchForm;
-
-             $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
-        		$cashscroll = new Cashscroll_Model_Cashscroll();
-            $officelevel = $cashscroll->subofficeFromUrl($hierarchy);
-  foreach($officelevel as $officetype) { 
-        $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
-        }
-    }
-  public function groupAction() 
-    {
-        $path = $this->view->baseUrl();
-
-        $this->_helper->layout()->disableLayout();
-$searchForm = new Cashscroll_Form_Search($path);
-        $this->view->form = $searchForm;
-
-             $branch=$this->view->hierarchy = $this->_request->getParam('branch');
-        		$cashscroll = new Cashscroll_Model_Cashscroll();
-            $officelevel = $cashscroll->subgroupFromUrl($branch);
-  foreach($officelevel as $officetype) { 
-        $searchForm->group->addMultiOption($officetype->id,$officetype->name);
-        }
     }
 
 	//report display

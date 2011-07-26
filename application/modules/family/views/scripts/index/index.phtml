@@ -24,12 +24,12 @@
                     <form action="<?php echo $this->baseUrl();?>/family" method="POST">
                             <table width="100%">
                                 <tr>
-                                    <td><?php echo $this->translate("ಫ್ಯಾಮಿಲಿ ಕೋಡ್   :"); ?></td><td ><?php echo $this->form->s1;?></td>
+                                    <td><?php echo $this->translate("ಫ್ಯಾಮಿಲಿ ಕೋಡ್  :"); ?></td><td ><?php echo $this->form->code;?></td>
                                    <!-- <td><?php //echo $this->translate("Family ID :"); ?></td><td ><? //echo $this->form->familyid;?></td> -->
                                 </tr>
                                 <tr>
-                                <td><br><?php echo $this->translate("ಹೌಸೆ  ನಂಬರ್  :"); ?></td><td><br><?php echo $this->form->s2;?></td>
-                                <td><br><?php echo $this->translate("ಗ್ರಾಮದ   ಹೆಸರು  :"); ?></td><td><br><?php echo $this->form->s3;?></td>
+                                <td><br><?php echo $this->translate("ಹೌಸೆ  ನಂಬರ್  :"); ?></td><td><br><?php echo $this->form->house;?></td>
+                                <td><br><?php echo $this->translate("ಗ್ರಾಮದ   ಹೆಸರು  :"); ?></td><td><br><?php echo $this->form->office;?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" align="left"><? echo $this->form->Search;?></td>
@@ -49,10 +49,10 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
  if (count($this->paginator) !=0 ){ ?>
     <table id="hor-minimalist-b">
         <tr>
-            <th><?php echo $this->translate("Family code"); ?></th>
+            <th><?php echo $this->translate("ಫ್ಯಾಮಿಲಿ ಕೋಡ್"); ?></th>
             <!-- <th><?php //echo $this->translate("Family ID"); ?></th> -->
-            <th><?php echo $this->translate("House number"); ?></td>
-            <th><?php echo $this->translate("Village"); ?></td>
+            <th><?php echo $this->translate("ಹೌಸೆ  ನಂಬರ್ "); ?></td>
+            <th><?php echo $this->translate("ಗ್ರಾಮದ   ಹೆಸರು "); ?></td>
         </tr>
 
         <?php foreach ($this->paginator as $family){ ?>
@@ -79,11 +79,10 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
 
         </tr>-->
         <tr>
-          
+            <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+                                        '/partials/my_pagination_control.phtml'); ?></div></td>
         </tr>
 
     </table>  
 <?php } ?> 
- <div align="center" style="margin-top:10px;color:#CC6633;">
-<?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
-</div>
+

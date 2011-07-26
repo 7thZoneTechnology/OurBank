@@ -23,7 +23,7 @@
         <table class="fieldsets">
             <TR>
                 <TD><label class="mand">Member code / Name / Group Name :</label></TD>
-                <TD><?php echo $this->form->s1;?></TD>
+                <TD><?php echo $this->form->membercode;?></TD>
             </TR>
         </table>
         <div class="btnhouse">
@@ -35,8 +35,7 @@
 
 </fieldset>
 
-<?php //if($this->result) { ?>
-<?php if($this->paginator) { ?>
+<?php if($this->result) { ?>
     <table id="hor-minimalist-b" summary="Employee Pay Sheet">
         <tr>
             <Th>Member Code</Th>
@@ -45,7 +44,7 @@
             <Th>Type</Th>
             <th></th>
         </tr>
-        <?php foreach($this->paginator as $member) { ?>
+        <?php foreach($this->result as $member) { ?>
         <tr>
             <td><a href="<?php echo $this->baseUrl();?>/recurringaccount/index/details/Id/<?php echo base64_encode($member->id);?>/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
             <td><?php  echo $member->name;?></td>
@@ -69,16 +68,4 @@
         </table>
 <?php } else {
         echo "<font color=red>".$this->errormsg."</font>";
-    }?>
-     <?php if ($this->paginator) { ?>
-
-	<div align="center" style="margin-top:10px;color:#CC6633;">
-       <tr>
-       <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
-        </div></td></tr>
-
-        </table>
-  
-    <?php } ?>
-
-</div>
+    }

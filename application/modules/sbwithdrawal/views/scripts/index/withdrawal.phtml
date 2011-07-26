@@ -5,8 +5,8 @@
 <?php $dateconvertor = new App_Model_dateConvertor();?>
 <div id="searchDiv">
         <fieldset>
-                <legend>To Withdraw Amount </legend> 
-                <p align="center"><b>Declaration to withdraw amount from savings amount</b></p>
+                <legend>SB Withdrawal</legend> 
+                <p align="center"><b>Declaration to withdraw savings amount</b></p>
                 <table border="2" width="100%" id="hor-minimalist-b">
 
                     <TR>
@@ -36,7 +36,7 @@
                         <td valign="top"><b>group saving acc no</b></td>
                         <td valign="top"><?php echo $this->accno;?></td>
                     </tr> 
-                </table><br>
+                </table>
                 <p>
                 We are authorising and decided the below identified group representative to withdraw the amount <b>Rs <?php echo $this->amount;?> </b>from our Saving Bank account
                 <br>
@@ -55,9 +55,9 @@
                     </TR>   
                     <?php $i = 1; foreach($groupmembers as $groupmemb) { ?> 
                     <TR>
-                        <TD align="center" width="5%"><?php echo $i++;?></TD>
+                        <TD><?php echo $i++;?></TD>
                         <TD><?php echo $groupmemb['membername'];?></TD>
-                        <TD width="25%"></TD>
+                        <TD></TD>
                     </TR>
                     <?php } $i--;?>
                      <TR>
@@ -71,7 +71,7 @@
                     <TR>
                         <td align="center">Village facilitator</td>
                         <td align="center">Field officer</td>
-                        <td align="center">Block office</td>
+                        <td align="center">Block office, Signature</td>
                     </TR>   
                 </table>
     </fieldset>

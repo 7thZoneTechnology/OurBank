@@ -71,7 +71,7 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
 //get all type of living assets
         $asset_model=new Nonlivingassets_Model_nonlivingassets();
 //set the value of living assets drop down box...
-        $this->view->nonliveasset_details = $this->view->adm->viewRecord("ourbank_master_nonliveassets","id","DESC");
+        $this->view->nonliveasset_details = $this->view->adm->viewRecord("ourbank_master_nonliveassets","id","ASC");
 
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
             {
@@ -132,7 +132,7 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
          //dynamically change the path name
        
          //get all type of living assets
-        $this->view->nonliveasset_details = $this->view->adm->viewRecord("ourbank_master_nonliveassets","id","DESC");
+        $this->view->nonliveasset_details = $this->view->adm->viewRecord("ourbank_master_nonliveassets","id","ASC");
          //update contact details
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $id=$this->_getParam('id');

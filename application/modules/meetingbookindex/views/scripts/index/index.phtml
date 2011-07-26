@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#s2").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#search_meeting_date").datepicker({"dateFormat":"dd/mm/yy"});
 });
 </script>
 
@@ -37,11 +37,9 @@ $(document).ready(function() {
                     <table width="100%">
                         <tr>
                             <td class="label"><?php echo $this->translate("Meeting name"); ?></td>
-                            <!--<td ><? //echo $this->form->search_meeting_name_att;?></td>-->
-                             <td ><? echo $this->form->s1;?></td>
+                            <td ><? echo $this->form->search_meeting_name_att;?></td>
                             <td class="label"><?php echo $this->translate("Meeting date"); ?>:</td>
-                            <!--<td ><? //echo $this->form->search_meeting_date;?></td>-->
-                            <td ><? echo $this->form->s2;?></td>
+                            <td ><? echo $this->form->search_meeting_date;?></td>
                         </tr>
 
                     </table>
@@ -62,7 +60,7 @@ $(document).ready(function() {
                 <th><?php echo $this->translate('Meeting Number'); ?></th>
                 <th><?php echo $this->translate('Meeting date'); ?></th>
             </tr>
-                <?php if (count($this->paginator)) {
+                <?php if (count($this->paginator)): 
                 $convertdate = new App_Model_dateConvertor();?>
                 <?php foreach ($this->paginator as $attendance): ?>
             <tr>
@@ -70,16 +68,10 @@ $(document).ready(function() {
                 <td><?php echo $this->escape($attendance['week_no']); ?></td>
                 <td><?php echo $this->escape($convertdate->phpnormalformat($attendance['meeting_date'])); ?></td>
                         <?php endforeach; ?>
-                        <?php //endif; ?>
-
-                        <?php } else { ?>
-
-			<tr><td>No result found</td></tr>
-			<?php } ?>
-
-
+                        <?php endif; ?>
                 <tr>
-                        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?></div></td>
+                        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+                                                '/partials/my_pagination_control.phtml'); ?></div></td>
                 </tr>
             </tr>
     </table>

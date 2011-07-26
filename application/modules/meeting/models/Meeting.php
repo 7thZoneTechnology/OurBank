@@ -56,31 +56,20 @@ class Meeting_Model_Meeting extends Zend_Db_Table
 
     public function SearchMeeting($post) 
     {
-        $keyvalue = array_filter($post);
-		$searchcounter = count($keyvalue);
-	if($searchcounter > 0) {
         $select = $this->select()
                     ->setIntegrityCheck(false)  
                     ->join(array('a'=>'ourbank_meeting'),array('id'))
-                    ->where('a.name like "%" ? "%"',$post['s2'])
-                    ->where('a.place like "%" ? "%"',$post['s3'])
-                    ->where('a.day like "%" ? "%"',$post['s1'])
+                    ->where('a.name like "%" ? "%"',$post['search_meeting_name'])
+                    ->where('a.place like "%" ? "%"',$post['search_meeting_place'])
+                    ->where('a.day like "%" ? "%"',$post['search_weekdays'])
                     ->join(array('b'=>'ourbank_group'),'b.id = a.group_id',array('b.name as gname'))
-                    ->where('b.name like "%" ? "%"',$post['s4'])
+                    ->where('b.name like "%" ? "%"',$post['search_group_name'])
                     ->order(array('a.id desc'));
 //         die ($select->__toString($select));
-//echo $select ;
         $result = $this->fetchAll($select);
         return $result->toArray();
-    }else{
-             $select = $this->select()
-                    ->setIntegrityCheck(false)  
-                    ->join(array('a'=>'ourbank_meeting'),array('id'))
-                    ->join(array('b'=>'ourbank_group'),'b.id = a.group_id',array('b.name as gname'));
-            $result = $this->fetchAll($select);
-             return $result->toArray();
-            }
-       }     
+    }
+
 //get the office hierarchy id from the maximum hierarchy level
     public function getoffice_hierarchy() {
     $db = $this->getAdapter();

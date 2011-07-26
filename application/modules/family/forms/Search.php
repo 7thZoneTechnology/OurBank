@@ -27,14 +27,14 @@ class Family_Form_Search extends Zend_Dojo_Form {
         //create a object field
          //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
-        $s1 = $formfield->field('Text','s1','','','','Membercode','','','','','','',0,0);//$code,code
-        //$familyid = $formfield->field('Text','familyid','','','','Member name','','','','','','',0,0);//$familyid,familyid
-        $s3 = $formfield->field('Select','s3','','','','Bank name','','','','','','',0,0);//$office,office
-        $s2 = $formfield->field('Text','s2','','','','Gender','','','','','','',0,0);//$house,house
+        $code = $formfield->field('Text','code','','','','Membercode','','','','','','',0,0);
+        $familyid = $formfield->field('Text','familyid','','','','Member name','','','','','','',0,0);
+        $office = $formfield->field('Select','office','','','','Bank name','','','','','','',0,0);
+        $house = $formfield->field('Text','house','','','','Gender','','','','','','',0,0);
     
         $submit = new Zend_Form_Element_Submit('Search');
         //adding form elements
-        $this->addElements(array($s1,$s3,$s2,$submit));
+        $this->addElements(array($code,$familyid,$office,$house,$submit));
 
     }
 }

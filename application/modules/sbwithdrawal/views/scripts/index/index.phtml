@@ -1,6 +1,6 @@
 <fieldset>
 	<legend>Enter/Search member</legend>
-		<form action="<?php echo $this->baseUrl();?>/sbwithdrawal/index/withdrawal" method="POST">
+		<form action="<?php echo $this->baseUrl();?>/sbwithdrawal/index" method="POST">
 			<table class="fieldsets">
                             <TR>
                                 <th><label class="mand">Group code :</label></TD>
@@ -20,4 +20,30 @@
 </fieldset>
 <?php  if((count($this->paginator) ==0) && ($this->search == true))  {
 echo "<font color='RED'>Records Not Found Try Again...</font>";
-} ?>
+}
+if(count($this->paginator)!=0) { ?>
+    <table id="hor-minimalist-b">
+        <tr class="tdbrownheading">
+            <th>Group code</th>
+            <th>Group name</td>
+        </tr>
+        <?php if (count($this->paginator)): ?>
+        <?php foreach ($this->paginator as $individual): 
+            $membertype = substr($individual['groupcode'],4,1);
+?>
+        <tr>
+            <td><a href="<?php echo $this->baseUrl()."/sbwithdrawal/index/withdrawal/id/"?><?php echo base64_encode( $individual['groupid']); ?>/amt/<?php echo base64_encode($this->withdrawalamount);?>/type/<?php echo base64_encode($membertype);?>">
+                        <?php echo $this->escape($individual['groupcode']); ?></a></td>
+        <td><?php echo $this->escape($individual['group_name']);?></td>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </tr>
+        <tr>
+            <td colspan="8" align="right">
+                <div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
+                '/partials/my_pagination_control.phtml'); ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+<?php } 

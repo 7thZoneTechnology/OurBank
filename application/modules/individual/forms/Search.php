@@ -24,12 +24,12 @@ class Individual_Form_Search extends Zend_Form
         parent::__construct(); 
         $formfield = new App_Form_Field ();
 
-        $s1 = $formfield->field('Text','s1','','','','',false,'','','','','',0,0);//$membername,membername
-        $s1->setAttrib('size',12);
-        $s2 = $formfield->field('Select','s2','','','','',false,'','','','','',0,0);//$village,village
-        $s3 = $formfield->field('Text','s3','','','','',false,'','','','','',0,0);//$regional,name_inregional
-        $s3->setAttrib('size',12);
+        $membername = $formfield->field('Text','membername','','','','',false,'','','','','',0,0);
+        $membername->setAttrib('size',12);
+        $village = $formfield->field('Select','village','','','','',false,'','','','','',0,0);
+              $regional = $formfield->field('Text','name_inregional','','','','',false,'','','','','',0,0);
+        $regional->setAttrib('size',12);
 
-        $this->addElements(array($s1,$s2,$s3));
+        $this->addElements(array($membername,$village,$regional));
     }
 }

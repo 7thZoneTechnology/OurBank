@@ -46,42 +46,20 @@ class Fixedaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Fixedaccount_Form_Accounts();
-        
-          $fixedaccount = new Fixedaccount_Model_Accounts();
-// 
-	if($_POST)
-            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
-	else
-	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
-
-         $result = $fixedaccount->search($postedvalues);
-		$this->view->fixedaccount = $result;
-
-        $page = $this->_getParam('page',1);
-        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
-        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
-          if (!$result){
-                       echo "<font color='RED'>Records Not Found Try Again...</font>";
-                            }
-
-	}
-        
-        
-        
 // // get Individual list and group list in a single instance
-//         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-//             $formData = $this->_request->getPost();
-//             if ($accountsForm->isValid($formData)) {
-//                 $result = $this->view->accounts->search($this->_request->getParam('membercode'));
-//                 if($result) {
-//                     $this->view->result =$result;
-//                  } else {
-//                     $this->view->errormsg = "No records found";
-//                 }
-//             }
-//         }
-//        
-//     }
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+            $formData = $this->_request->getPost();
+            if ($accountsForm->isValid($formData)) {
+                $result = $this->view->accounts->search($this->_request->getParam('membercode'));
+                if($result) {
+                    $this->view->result =$result;
+                 } else {
+                    $this->view->errormsg = "No records found";
+                }
+            }
+        }
+       
+    }
 
     // Display the complete details about savings 
     public function detailsAction() 

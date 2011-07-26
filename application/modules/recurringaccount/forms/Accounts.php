@@ -26,10 +26,10 @@ class Recurringaccount_Form_Accounts extends Zend_Form
     {
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
         $formfield = new App_Form_Field ();
-        $s1 = $formfield->field('Text','s1','','','mand','',true,'','','','','',0,0);//$membercode,membercode
+        $membercode = $formfield->field('Text','membercode','','','mand','',true,'','','','','',0,0);
         //hidden feilds
 	$Type = $formfield->field('Hidden','Type','','','','',false,'','','','','',0,0);
 	$submit = $formfield->field('Submit','Search','','','','',false,'','','','','',0,0);
-        $this->addElements(array($s1,$Type,$submit));
+        $this->addElements(array($membercode,$Type,$submit));
     }
 }

@@ -5,7 +5,7 @@
                 <th></th>
             </tr>
             <?php  
-      foreach($this->groupDeatils as $details) { ?> 
+				foreach($this->groupDeatils as $details) { ?> 
             <tr> 
                 <td ><?php echo $this->translate("Group name"); ?></td>
                 <td><?php echo $details->groupname; ?></td>
@@ -31,38 +31,28 @@
                 <th width="10%"><?php echo $this->translate("Sl no"); ?></th>
                 <th width="20%"><?php echo $this->translate("Member name"); ?></th>
                 <th width="5%"><?php echo $this->translate("Age"); ?></th>
-                <th width="20%"><?php echo $this->translate("Education"); ?></th>
+                <th width="15%"><?php echo $this->translate("Education"); ?></th>
                 <th width="14%"><?php echo $this->translate("Member code"); ?></th>
-                <th width="5%"><?php echo $this->translate("Caste"); ?></th>
-                <th width="15%"><?php echo $this->translate("Primary Occupation"); ?></th>
-                <th width="35%"><?php echo $this->translate("land"); ?></th>
-         </tr>
+                <th width="20%"><?php echo $this->translate("Caste"); ?></th>
+                <th width="20%"><?php echo $this->translate("land"); ?></th>
+                <th width="20%"><?php echo $this->translate("Occupation"); ?></th>
+            </tr>
 
          <?php 
 			$adm = new App_Model_Adm();$i = 1; 
-     foreach($this->group as $loandetails) { ?>
+            foreach($this->group as $loandetails) { ?>
             <tr>
-                <td width="5%" align="center"><?php echo $i++;?></td>
-                <td><?php echo $loandetails['membername']; ?></td>
-                              <td align="center"><?php echo $loandetails['age']; ?></td>
-                              <td align="center"><?php echo $loandetails['education']; ?></td>
-                              <td align="center"><?php echo $loandetails['familycode']; ?></td>
-                              <td align="center"><?php echo $loandetails['caste']; ?></td>
-                              <td align="center"><?php echo $loandetails['profession'];?></td>
+                <td><?php echo $i++;?></td>
+                <td><?php echo $loandetails->name; ?></td>
+                <td><?php echo $loandetails->age; ?></td>
+                <td><?php echo $loandetails->education; ?></td>
+                <td><?php echo $loandetails->familycode; ?></td>
+                <td><?php echo $loandetails->caste; ?></td>
+                <td><?php echo $loandetails->land; ?></td>
+<?php $profession = $adm->getsingleRecord('ourbank_master_profession','name','id',$loandetails->profession); ?>
+                <td><?php echo $profession; ?></td>
+            </tr>
             <?php  } ?>
-        
- <?php $i =1; foreach($this->landDetails as $landdetails) { ?>
- 
-         <td align="center"><?php echo $landdetails['name'];?> </td>
-   </tr>   
- 
- 
- 
-<?php } ?>
-    
-        
-   
-        
         </table>
     </form>
     </fieldset>
@@ -75,7 +65,7 @@
 			<table class="fieldsets">
                             <TR>
                                 <th><label class="mand">Group code :</label></TD>
-                                <th><? echo $this->form->s1;?></TD>
+                                <th><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">

@@ -19,10 +19,6 @@
 
 
 <head>
-
-<script src="<?php echo $this->baseUrl(); ?>/js/jquery.calendrical.js"></script>
-<link rel="stylesheet" href="<?php echo $this->baseUrl(); ?>/css/calendrical.css" />
-
 <script>
     var current =0;
     function addPerson() {
@@ -77,7 +73,7 @@
                 <TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting date"); ?></TD>
                 <TD><?php echo $this->attendanceform->meeting_date;?></TD>
                 <TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting Time"); ?></TD>
-                <TD><span class="display"><?php echo $this->attendanceform->meeting_time;?></span></TD>
+                <TD><?php echo $this->attendanceform->meeting_time;?></TD>
             </TR>
 <!--            <TR >
                 <td>Weekday</td>

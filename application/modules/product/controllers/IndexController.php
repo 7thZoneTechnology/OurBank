@@ -51,28 +51,49 @@ class Product_IndexController extends Zend_Controller_Action
 	public function indexAction() 
 	{
 		$this->view->title = "Product";
-		$this->view->pageTitle = "Product";
-
- 		$searchForm = new Product_Form_Search();
-       $this->view->form = $searchForm;
-  $table='ourbank_product';
-      $fieldname=array('input1'=>'id', 'input2'=>'name','input3'=>'description','input4'=>'category_id','input4'=>'shortname');
-      $condition='';
-	$product = new Product_Model_Product();
-
-	if($_POST) {
-            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
-	}else{
-	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
- }
-
-   $result= $product->SearchProduct($postedvalues);
-        $this->view->product = $result;
-$page = $this->_getParam('page',1);
-        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
-        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+// 		$storage = new Zend_Auth_Storage_Session();
+// 		$data = $storage->read();
+// 		if(!$data){
+// 			$this->_redirect('index/login');
+// 		}
 
 
+                //  when delete particular product we should check that particular product is a basic one or not
+                if($this->_helper->flashMessenger->getMessages()){
+                        $messages = $this->_helper->flashMessenger->getMessages();
+                            foreach($messages as $error){
+                                echo "<script> alert('$error');</script>";
+                        }
+                }
+
+		$product = new Product_Model_Product();
+		$categorydetails=$product->getProductinformation();
+// 		$this->view->changelog=$category->getUpdatesinformation();
+		$searchForm = new Product_Form_Search();
+		$this->view->form = $searchForm;
+		$page = $this->_getParam('page',1);
+		$category_id = $product->getCategoryDetails();
+                $institution = $this->view->adm->viewRecord("ourbank_category","id","DESC");
+			foreach($institution as $institution) {
+				$searchForm->category_id->addMultiOption($institution['id'],$institution['name']);
+			}
+		if ($this->_request->isPost() && $this->_request->getPost('Search')){
+                    if ($this->_request->isPost()){
+                        if ($searchForm->isValid($this->_request->getPost())){
+                            $result = $product->SearchProduct($searchForm->getValues());
+                            $paginator = Zend_Paginator::factory($result);
+
+                        }
+                    }
+                $this->view->search = true;
+		}
+                else {
+                        $result = $product->getCategoryDetails();
+                        $paginator = Zend_Paginator::factory($result);
+                } 
+                $paginator->setItemCountPerPage($this->view->adm->paginator());
+                $paginator->setCurrentPageNumber($page);
+                $this->view->paginator = $paginator;          
 	}
 	public function productaddAction() 
 	{

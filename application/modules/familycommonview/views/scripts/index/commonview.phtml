@@ -173,9 +173,7 @@
         <th ><?php echo $this->translate("ಶಾಖೆ"); ?></th>
         <th ><?php echo $this->translate("ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"); ?></th>
         <th ><?php echo $this->translate("ದೂರವಾಣಿ"); ?></th>
-        <th ><?php echo $this->translate("can sign"); ?></th>
         <th ><?php echo $this->translate("ಬಲಡ ಗೃಪ"); ?></th>
-
 
     </tr>
     <?php $convertdate = new App_Model_dateConvertor(); $i=0;
@@ -216,9 +214,7 @@
         <td><?php echo $family['branchname']; ?></td>
         <td><?php echo $family['bank_ac']; ?></td>
         <td><?php echo $family['mobile_number']; ?></td>
-<td align="center"><?php if($family['sign']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
         <td><?php echo $family['blood']; ?></td>
-
     </tr>
 
     <?php } ?>

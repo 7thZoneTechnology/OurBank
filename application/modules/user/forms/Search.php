@@ -32,12 +32,13 @@
 		$formfield = new App_Form_Field ();
 
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-        	$username = $formfield->field('Text','s1','','','mand','',false,'','','','','',0,0);
-        	$designation = $formfield->field('Select','s2','','','mand','',false,'','','','','',0,0);
-        	$bankname = $formfield->field('Select','s3','','','mand','',false,'','','','','',0,0);
-        	$grant_id = $formfield->field('Select','s4','','','mand','',false,'','','','','',0,0);
+        	$username = $formfield->field('Text','name','','','mand','',false,'','','','','',0,0);
+        	$designation = $formfield->field('Select','designation','','','mand','',false,'','','','','',0,0);
+        	$bankname = $formfield->field('Select','bank','','','mand','',false,'','','','','',0,0);
+        	$grant_id = $formfield->field('Select','grant_id','','','mand','',false,'','','','','',0,0);
         // Hidden Feilds 
+        	$user_id = $formfield->field('Hidden','user_id','','','','',false,'','','','','',0,1);
 					
-		$this->addElements(array($username,$bankname,$designation,$grant_id));
+		$this->addElements(array($username,$bankname,$designation,$grant_id,$user_id));
     }
 }

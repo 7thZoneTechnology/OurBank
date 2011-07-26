@@ -97,7 +97,7 @@ else
                 <TD><?php echo $details->officename ?></TD>
             </TR>
             <TR>
-                <td>Code</td>
+                <td>Code</td>#uiddiv
                 <TD><?php echo $details->code ?></TD>
 
             </TR>
@@ -139,18 +139,14 @@ else
             <?php if (count($this->fee)) {?>
             <tr>
                 <TH>Fee</TH>
-                <TH>Amount</TH>
+                <TH></TH>
             </tr>  
-            <?php $feetotal=0; foreach($this->fee as $fee) { $feetotal+=$fee->feeamount; ?>
+            <?php foreach($this->fee as $fee) { ?>
              <tr>
-                <td><?php echo $fee->name; ?></td>
-                <td><?php echo $fee->feeamount; ?></td>
+                <td><?php echo $fee->name ?></td>
+                <td><?php echo $fee->value ?></td>
             </tr> 
-            <?php } ?>
-            <tr>
-                <td>Total</td>
-                <td><?php echo sprintf("%4.2f",$feetotal); ?></td>
-            </td> 
+            <?php } ?> 
             <?php }?>
         </table> 
     <?php } ?>

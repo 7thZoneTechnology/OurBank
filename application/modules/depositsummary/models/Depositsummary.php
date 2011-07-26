@@ -22,8 +22,10 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 {
     protected $_name = 'ourbank_productsoffer';
 
+
     public function fetchSavingsDetails($office_id)
     {
+
                 $select = $this->select()
                                 ->setIntegrityCheck(false)  
                                 ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
@@ -58,6 +60,7 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                 //die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
+               
     }
 
     public function SavingsDetails()
@@ -68,6 +71,7 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                                 ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
                                ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id')
                                ->where('C.status_id = 3 || C.status_id = 1')
+
                                ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','name as productname')
                                ->where('D.category_id = 1')
                                 ->group('B.name')
@@ -75,6 +79,8 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                   //die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
+              
+
     }
 
     public function accountBalance()
@@ -86,7 +92,10 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                         ->join(array('B'=>'ourbank_productsoffer'),'A.product_id = B.product_id')
                         ->join(array('F' =>'ourbank_transaction'),'A.id = F.account_id')
                         ->where('F.recordstatus_id = 3 || F.recordstatus_id = 1')
-                        ->join(array('J' =>'ourbank_product'),'B.product_id = J.id',array('name as productname'))
+                        ->join(array('J' =>'ourbank_product'),'B.product_id = J.id',array('name as productname'
+
+
+))
                         ->where('J.category_id = 1');
                 //die($select->__toString());
                 $result = $this->fetchAll($select);

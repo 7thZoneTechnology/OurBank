@@ -51,29 +51,38 @@
 			    <TD  align="right"><font color="black"><?php echo $this->translate('Total Savings Amount'); ?></font></TD>
                     </TR>
                     <?php foreach($this->result as $savingsdetails){  ?>
+                     
                     <TR>
-                       <TD><?php echo $savingsdetails['prodoffername'];?></TD>
-			    	   <TD  align="center"><?php echo $savingsdetails['countvalue'];?></TD>
-                       <?php  foreach($this->accountBalanc as $balance1){
+                                <TD><?php echo $savingsdetails['prodoffername'];?></TD>
+			    	<TD  align="center"><?php echo $savingsdetails['countvalue'];?></TD>
+
+                                <?php  foreach($this->accountBalanc as $balance1){
+                                            
                               if($savingsdetails["id"] == $balance1["offerprodid"]) {?>
 
-                       <?php if($balance1["transactiontype_id"] == 1) {
-	                              $this->depositAmount = $this->depositAmount + $balance1["amount_to_bank"];
-    	                          $this->deposit = $this->deposit + $balance1["amount_to_bank"];
-                           												}
+                                    <?php if($balance1["transactiontype_id"] == 1) {
+                                    
+                                    
+                                        $this->depositAmount = $this->depositAmount + $balance1["amount_to_bank"];
+                                        $this->deposit = $this->deposit + $balance1["amount_to_bank"];
 
-							if($balance1["transactiontype_id"] == 2) {
-        	                      $this->withdrawlAmount = $this->withdrawlAmount + $balance1["amount_from_bank"];
-                                  $this->withdrawl = $this->withdrawl + $balance1["amount_from_bank"];
-                          											}
-
-                                  $this->totalamount = $this->depositAmount - $this->withdrawlAmount;
-                                  $this->sum = $this->deposit - $this->withdrawl;
-                          } 
-                     } if($this->totalamount) { ?>
+                                        } if($balance1["transactiontype_id"] == 2) {
+                                    
+                                        $this->withdrawlAmount = $this->withdrawlAmount + $balance1["amount_from_bank"];
+                                        $this->withdrawl = $this->withdrawl + $balance1["amount_from_bank"];
+                                        }
+        
+                                        $this->totalamount = $this->depositAmount - $this->withdrawlAmount;
+                                        
+                                        $this->sum = $this->deposit - $this->withdrawl;
+        
+                                    } 
+                                    
+                                } if($this->totalamount) { ?>
+                                
 		                <td align="right"><?php echo sprintf("%4.2f", $this->totalamount);
                                                $this->totalamount =0; 
-                                               $this->withdrawlAmount =0;
+                                               $this->withdrawlAmount =0;  
                                                $this->depositAmount =0; ?></td>
                                 <? } else {?>
                                 <td></td>
@@ -87,6 +96,9 @@
                         <TH></TH>
 			<Th align="left"><b>Total :</b></Th>
 			<th align="right"><font color="#039"><b><?php  echo sprintf("%4.2f", $this->sum);?></b></font></TH>
+                        
+                        
+			
 		   </TR>
              </table>
         </div>

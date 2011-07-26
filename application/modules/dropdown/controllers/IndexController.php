@@ -389,7 +389,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 			}
 		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
 		foreach($cbp as $cbpname){
-				$dropdownForm->cbp->addMultiOption($cbpname->id,$cbpname->id." -".$cbpname->name_regional."");
+				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name_regional']);
 			}
 		$koota = $settings->listkoota();
 		foreach($koota as $kootaname){

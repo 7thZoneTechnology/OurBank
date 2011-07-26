@@ -101,10 +101,10 @@ class Personalsavings_IndexController extends Zend_Controller_Action
         $x2 = 140; 
         $x3 = 200;
         $x4 = 290;
-        $x5 = 400;
+        $x5 = 370;
         $x6 = 450;
-        $x7 = 530;
-		$x8 = 510;
+        $x7 = 510;
+
         $y1 = 730;
         $y2 = 750;
 // 
@@ -123,7 +123,7 @@ class Personalsavings_IndexController extends Zend_Controller_Action
         $page->drawText($text[3],$x4, $y2);
         $page->drawText($text[4],$x5, $y2);
         $page->drawText($text[5],$x6, $y2);
-        $page->drawText($text[6],$x8, $y2);
+        $page->drawText($text[6],$x7, $y2);
         $page->drawLine(50, 740, 550, 740);
     
         $pageNumber = 1;

@@ -23,10 +23,10 @@
 class Meeting_Form_Search extends Zend_Form {
     public function init() {
 		$formfield = new App_Form_Field();
-		$s1 = $formfield->field('Select','s1','','','','','','','','','','','','');//$search_weekdays,search_weekdays
-		$s2 = $formfield->field('Text','s2','','','','','','','','','','','','');//$search_meeting_name,search_meeting_name
-                $s3 = $formfield->field('Text','s3','','','','','','','','','','','','');//$search_meeting_place,search_meeting_place
-		$s4 = $formfield->field('Text','s4','','','','','','','','','','','','');//$search_group_name,search_group_name
-	        $this->addElements(array($s1,$s2,$s3,$s4));
+		$search_weekdays = $formfield->field('Select','search_weekdays','','','','','','','','','','','','');
+		$search_meeting_name = $formfield->field('Text','search_meeting_name','','','','','','','','','','','','');
+		$search_meeting_place = $formfield->field('Text','search_meeting_place','','','','','','','','','','','','');
+		$search_group_name = $formfield->field('Text','search_group_name','','','','','','','','','','','','');
+	        $this->addElements(array($search_weekdays,$search_meeting_name,$search_meeting_place,$search_group_name));
     }
 }

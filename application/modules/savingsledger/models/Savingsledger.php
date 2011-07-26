@@ -59,7 +59,6 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                         (C.product_id = D.id) AND
                         (C.member_id = A.id ) AND
                         (E.id = A.village_id)";
-// // echo $sql;
         $result = $db->fetchAll($sql);
         return $result;
     }
@@ -194,7 +193,7 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
                     ->join(array('i' => 'ourbank_user'),'f.created_by = i.id')
 		    ->join(array('j' => $table),'a.member_id = j.id');
         }
-//  die($select->__toString($select));
+// die($select->__toString($select));
         return $this->fetchAll($select);
 
     }
@@ -211,10 +210,9 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
 	public function balance($account_number)
         {
             $db = $this->getAdapter();
-            $sql = 'SELECT (SUM(amount_from_bank)-SUM(amount_to_bank)) as bal FROM ourbank_transaction where account_id in(select account_id from ourbank_accounts where account_number="'.$account_number.'")';
-//   	echo $sql;
+            $sql = 'SELECT (SUM(amount_to_bank)-SUM(amount_from_bank)) as bal FROM ourbank_transaction where account_id in(select account_id from ourbank_accounts where account_number="'.$account_number.'")';
             $result = $db->fetchAll($sql);
-       		return $result;
+        return $result;
         }
 
         public function transactionMode()

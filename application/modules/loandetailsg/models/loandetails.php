@@ -88,7 +88,6 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			->join(array('C' => 'ourbank_master_instalstatus'),'B.installment_status = C.id')
                         ->where('B.installment_status!=7')
 			->where('A.account_number = ?',$accNum);
-              //  die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}

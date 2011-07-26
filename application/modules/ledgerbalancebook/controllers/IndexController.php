@@ -87,21 +87,16 @@ $globalsession = new App_Model_Users();
 	$page->setLineWidth(1)->drawLine(25, 25, 25, 820); //left vertical
 	$page->setLineWidth(1)->drawLine(570, 25, 570, 820); //right vertical
 	$page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
-            $font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
-			 $page->setFont($font, 10)
-                    ->drawText('( LEDGER BALANCE BOOK )', 220, 770);
-			 $page->setFont($font, 8)
-                    ->drawText('( Liabilities )', 60, 745);
-			 $page->setFont($font, 8)
-                    ->drawText('( Assets )', 300, 745);
+	$page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
+	
 	$text = array("GL.LF no",
 		"Liabilities",
 		"Amount",
 		"GL.LF no",
 		"Assets","Amount");
 		
-	$x0 = 80; 
-	$x1 = 160; 
+	$x0 = 60; 
+	$x1 = 150; 
 	$x2 = 220; 
 	$x3 = 300;
 	$x4 = 380;
@@ -127,15 +122,19 @@ $globalsession = new App_Model_Users();
 		$page->drawText(''.$savingsCredit['glsubcode'],$x0, $y1);
 		$page->drawText(''.$savingsCredit['subheader'],$x1, $y1);
 		$page->drawText(''.$savingsCredit['liabilitiesBalance'],$x2, $y1);
-		$y1 = $y1 - 25;
+
+//                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
+//                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;
+
+                $y1 = $y1 - 25;
+	}
 	$page->drawText("TOTAL  ".$savingsCredit['liabilitiesBalance'],$x1,$y1);
 // 	$page->drawText("$totalAmount",$x2,$y1);
-}
-	$y1 = $y1 + 5;
+
+	$y1 = $y1 + 25;
 	foreach($datedet1 as $savingsDebit) {
 		$page->drawText(''.$savingsDebit['glsubcode'],$x3, $y1);
 		$page->drawText(''.$savingsDebit['subheader'],$x4, $y1);
-		$page->drawText(''.$savingsDebit['assetsBalance'],460, $y1);
 
 //                 $totalAmount=$totalAmount+$savingsCredit->amount_to_bank;
 //                 $totaldebit=$totaldebit+$savingsCredit->amount_from_bank;

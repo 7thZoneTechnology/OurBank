@@ -148,9 +148,8 @@ class Loanledger_IndexController extends Zend_Controller_Action
 
 	foreach($this->view->paid as $paid) {
 	$y1 = $y1-25;
-		$page->drawText('Paid',320, $y1);
+		$page->drawText('Paid'.$paid->paidAmt,320, $y1);
 		$page->drawText($paid->paidCount,390, $y1);
-		$page->drawText($paid->paidAmt,420, $y1);
 		
 	} foreach ($this->view->unpaid as $unpaid){
 	$y1 = $y1-20;

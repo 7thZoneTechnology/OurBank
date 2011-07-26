@@ -50,36 +50,21 @@ class Meetingbookindex_Model_Meetingbookindex extends Zend_Db_Table {
     }
     public function SearchAttendance($post) 
     {
-		$keyvalue = array_filter($post);
-		$searchcounter = count($keyvalue);
-
-	if($searchcounter > 0) 
-            {
-                $convertdate = new App_Model_dateConvertor();
-                if($post['s2']) {
-                    $search_meeting_date=$convertdate->phpmysqlformat($post['s2']);
-                }
-                else{
-                    $search_meeting_date=$post['s2'];
-                }
-                $select = $this->select()
-                        ->setIntegrityCheck(false)  
-                        ->join(array('a' => 'ourbank_attendance'),array('id'),array('a.id as attid','a.meeting_date', 'a.week_no','a.transaction_id'))
-                        ->where('a.meeting_id like "%" ? "%"',$post['s1'])
-                        ->where('a.meeting_date like "%" ? "%"',$search_meeting_date)
-                        ->group('a.id')
-                        ->join(array('b' => 'ourbank_group'),'a.meeting_id = b.id');
-                $result = $this->fetchAll($select);
-                return $result->toArray();
-            }else {
-                 $select = $this->select()
+        $convertdate = new App_Model_dateConvertor();
+        if($post['search_meeting_date']) { 
+            $search_meeting_date=$convertdate->phpmysqlformat($post['search_meeting_date']);
+        }
+        else{
+            $search_meeting_date=$post['search_meeting_date'];
+        }
+        $select = $this->select()
                 ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ourbank_attendance'),array('id'),array('a.id as attid','a.meeting_date','a.week_no','a.transaction_id'))
+                ->join(array('a' => 'ourbank_attendance'),array('id'),array('a.id as attid','a.meeting_date', 'a.week_no'))
+                ->where('a.meeting_id like "%" ? "%"',$post['search_meeting_name_att'])
+                ->where('a.meeting_date like "%" ? "%"',$search_meeting_date)
                 ->group('a.id')
                 ->join(array('b' => 'ourbank_group'),'a.meeting_id = b.id');
-                $result = $this->fetchAll($select);
-                return $result->toArray();
-            }
-
+        $result = $this->fetchAll($select);
+        return $result->toArray();
     }
 }

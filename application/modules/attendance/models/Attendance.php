@@ -88,46 +88,31 @@ class Attendance_Model_Attendance extends Zend_Db_Table
 
     public function SearchAttendance($post) 
     {
-        $keyvalue = array_filter($post);
-		$searchcounter = count($keyvalue);
-	if($searchcounter > 0) 
-	{
-             $convertdate = new App_Model_dateConvertor();
-             if($post['s2']) { 
-                    $search_meeting_date=$convertdate->phpmysqlformat($post['s2']);
-                }
-                else{
-                    $search_meeting_date=$post['s2'];
-                }
+        $convertdate = new App_Model_dateConvertor();
+        if($post['search_meeting_date']) { 
+            $search_meeting_date=$convertdate->phpmysqlformat($post['search_meeting_date']);
+        }
+        else{
+            $search_meeting_date=$post['search_meeting_date'];
+        }
         $select = $this->select()
                 ->setIntegrityCheck(false)  
                 ->join(array('a' => 'ourbank_attendance'),array('a.id'), array('a.id as attid','a.meeting_date','week_no'))
-                ->where('a.meeting_id like "%" ? "%"',$post['s1'])
+                ->where('a.meeting_id like "%" ? "%"',$post['search_meeting_name_att'])
                 ->where('a.meeting_date like "%" ? "%"',$search_meeting_date)
                 ->group('a.id')
                 ->join(array('b' => 'ourbank_meeting'),'a.meeting_id = b.id');
 		//die($select->__toString($select));
-             
-             $result = $this->fetchAll($select);
-             return $result->toArray();
-    }else{
-        
-        $select = $this->select()
-                ->setIntegrityCheck(false)  
-                ->join(array('a' => 'ourbank_attendance'),array('a.id'), array('a.id as attid','a.meeting_date','week_no'))
-                ->join(array('b' => 'ourbank_meeting'),'a.meeting_id = b.id');
-              $result = $this->fetchAll($select);
-              return $result->toArray();
-           }
-        }      
-
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+    }
 
 //     public function fetchMeetingIDforComparision() 
 //     {
 //         $select = $this->select()
 //             ->setIntegrityCheck(false)
 //             ->from('ourbank_attendance');
-//             //->group('meeting_id');>join(array('b' => 'ourbank_meeting'),'a.meeting_id = b.id');
+//             //->group('meeting_id');
 //         $result = $this->fetchAll($select);
 //         return $result->toArray();
 //     }

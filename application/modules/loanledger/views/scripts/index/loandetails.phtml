@@ -2,48 +2,86 @@
 <?php if (count($this->details)) { ?>
  <div style="float:left;width:350px"> 
     <?php foreach($this->details as $details) { ?>
-        <table id="hor-minimalist-b" border="2">
+        <table id="hor-minimalist-s">
             <TR>
-                <TH colspan="2">Member details</TH>
-                <TH colspan="2">Loan Details</TH>
+                <TH>Member details</TH>
+                <TH></TH>
             </TR>
             <TR>
                 <td>Name </td>
                 <TD><?php echo $details->name ?></TD>
-                <td>Loan name</b></td>
-                <td><?php echo $details->loanname ?></TD>
             </TR>
+
             <TR>
                 <td>Branch</td>
                 <TD><?php echo $details->officename ?></TD>
-                <td>Loan amount R$</b></td>
-                <td><font color="green"><?php echo $details->amount ?></font></TD>
             </TR>
             <TR>
                 <td>Code</td>
                 <TD><?php echo $details->code ?></TD>
-                <td>Interest rate %</td>
-                <TD><?php echo $details->interest ?></TD>
+
             </TR>
             <TR>
                 <td> Account code</td>
                 <td><?php echo $details->number ?></TD>
-				<td>Installments</td>
+            </TR>
+            <TR>
+                <TH>Loan Details</TH>
+                <TH></TH>
+            </TR>
+            <TR>
+                <td>Loan name</b></td>
+                <td><?php echo $details->loanname ?></TD>
+            </TR>
+            <TR>
+                <td>Loan amount R$</b></td>
+                <td><?php echo $details->amount ?></TD>
+            </TR>
+
+            <TR>
+                <td>Interest rate %</td>
+                <TD><?php echo $details->interest ?></TD>
+            </TR>
+
+            <TR>
+            <td>Installments</td>
                 <TD><?php echo $details->installments ?></TD>
             </TR>
-			<TR>
-				<TD></TD><TD></TD>
+            <TR>
                 <td>Sanctioned date</b></td>
                 <td><?php echo $details->sanctioned ?></TD>
-			</TR>
+            </TR>
+
         </table> 
     <?php } ?>
     <br/>
 </div>
-
+<div style="float:right;width:350px"> 
+        <table id="hor-minimalist-s" border="1">
+            <TR>
+                <TH colspan="9">Installment status</TH>
+                <TH>No.</TD>
+                <TH colspan="9">Amount</TH>
+            </TR>
+            <TR>
+                <TD colspan="9">Paid</TD>
+				<?php foreach ($this->paid as $paid) { ?>
+                <TD><?php echo $paid->paidCount ; ?></TD>
+                <TD colspan="9"><?php echo $paid->paidAmt ; ?></TD>
+				<?php } ?>
+            </TR>
+            <TR>
+                <TD colspan="9">Due</TD>
+				<?php foreach ($this->unpaid as $unpaid) { ?>
+                <TD><?php echo $unpaid->unpaidCount ; ?></TD>
+                <TD colspan="9"><?php echo $unpaid->unpaidAmt ; ?></TD>
+				<?php } ?>
+            </TR>
+		</table>
+</div>
 <?php $convertdate = new App_Model_dateConvertor(); ?>
+
 <table id="hor-minimalist-b">
-	<tr><th colspan="6">Transaction Details</th></tr>
     <tr>
         <th>V No.</td>
         <th>Transaction date</td>
@@ -52,9 +90,8 @@
         <th>Payment mode</td>
         <th>Transacted by</td>  
     </tr>
-	<?php $total="0"; ?>
-
     <?php foreach($this->tran as $transaction) : ?>
+    <tr>
        <td><?php echo $transaction->id; ?></td>
        <td><?php echo $transaction->date; ?></td>
        <?php if ($transaction->cr) {?>
@@ -71,11 +108,7 @@
        <td><?php echo $transaction->mode; ?></td>
        <td><?php echo $transaction->name; ?></td>
     </tr>
-	   <?php endforeach; ?>
-
-       <?php  $total=$transaction->dt - $transaction->cr; ?>
-<tr><TD></TD><TD align="right"><b>Total</b></TD><TD align="right"><b><?php echo $total; ?></b></TD><TD></TD></tr>
-
+    <?php endforeach; ?>
 </table>
 <form action="<?php echo $this->baseUrl();?>/loanledger/index/pdfdisplay" <? echo $this->view->result;?> method="POST" onClick="window.open('<?php echo $this->baseUrl();?>/loanledger/index/reportdisplay/file/loanledger.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
@@ -83,6 +116,6 @@
                 <input type="hidden" name="accNum" value="<?php echo $this->accNum; ?>"/>
 
 </form>
-    <?php } else { ?>
+    <?php } /*else { ?>
     <font color="red"><b>Invalid Number</b></font>
-<?php } ?>
+<?php } ?>*/

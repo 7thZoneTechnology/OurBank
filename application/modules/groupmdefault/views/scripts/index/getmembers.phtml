@@ -63,7 +63,7 @@ $dbobj = new Groupmdefault_Model_groupdefault();
                  <td align="center">
                     <input type="radio" name="memberhead" <?php if($familymem["id"]==$head) { ?> checked ="true" <?php } ?> value="<?php echo $familymem["id"];?>">
                 </td>
-
+              
                 <td align="center">
                 <input type="checkbox" name="representatives[]" <?php if(in_array($familymem["id"],$repmembers)) {?> checked ="true" <?php } ?> id="<?php echo $familymem["id"];?>" value="<?php echo $familymem["id"];?>">
             </td>

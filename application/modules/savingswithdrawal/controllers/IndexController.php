@@ -180,10 +180,10 @@ public function indexAction()
                  if($givendate){
 
                 $gdate = $this->view->dc->phpmysqlformat($givendate);
-                if ( $gdate != date('Y-m-d') ) {
+              /*  if ( $gdate != date('Y-m-d') ) {
                                     $this->view->maxdate= "Date should be current date" ;
                 } 
-                else {
+                else { */                  //date validation
                if($form->isValid($formData)){
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
                     if($transactionMode=='5') {
@@ -244,7 +244,7 @@ public function indexAction()
                 $this->_redirect("/savingswithdrawal/index/message/amt/".base64_encode($amount)."/accNum/".base64_encode($this->view->accNum));
                 }
             }
-    }
+   // }                       //date validation
     }
         }
     }

@@ -57,28 +57,15 @@ class Dcb_IndexController extends Zend_Controller_Action
                 {
                     $this->view->hidedate=$fromDate = $this->_request->getParam('datefrom');
                     $this->view->accountno=$account1 = $this->_request->getParam('account');
-                    if($account1) {
-					  	$this->view->hideacc=$account=$account1;
-                      	$Type = substr($account,4,1);
-                    } else { 
-						$this->view->hideacc=$account=''; $Type=0; 
-							}
-
+                    if($account1)
+                    { $this->view->hideacc=$account=$account1;
+                      $Type = substr($account,4,1);
+                    } else { $this->view->hideacc=$account=''; $Type=0; }
                     $this->view->village=$village1 = $this->_request->getParam('village'); 
-                    if($village1){ 
-						$this->view->hidevillage=$village=$village1;
-					 } else {
-						 $this->view->hidevillage=$village='';
-							 } 
-
+                    if($village1){ $this->view->hidevillage=$village=$village1; } else { $this->view->hidevillage=$village=''; } 
                     $this->view->group=$group1 = $this->_request->getParam('group'); 
-                    if($group1){ 
-						$this->view->hidegroup=$group=$group1;
-					 } else {
-						$this->view->hidegroup=$group=''; 
-							}
+                    if($group1){ $this->view->hidegroup=$group=$group1; } else { $this->view->hidegroup=$group=''; }
                     $hierarchy = $Loandemand->getofficehierarchy();
-
                     foreach($hierarchy as $hiearchyids){
                     $hiearchyid = $hiearchyids['hierarchyid'];
                     }

@@ -18,7 +18,7 @@ class Loanprocess_Model_Loanprocess extends Zend_Db_Table
                 ->join(array('b' => 'ourbank_groupmembers'),'b.member_id=a.id',array('b.id as groupid'))
                 ->where('a.familycode=?',$membercode);
             }
-           // die($select->__toString($select));
+            //die($select->__toString($select));
             $result=$this->fetchAll($select);
             return $result->toArray(); // return group member details
         }
@@ -185,17 +185,11 @@ public function finduser($userid)
             return $result->toArray();
        }
  public function Searchloanprocess($code){
-        
-        	$keyvalue = array_filter($code);
-		$searchcounter = count($keyvalue);
-	if($searchcounter > 0) {
-
-$member_id=$code['s1'];
-        
-        $this->db = Zend_Db_Table::getDefaultAdapter();
-         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-            $sql = "SELECT 
-                a.groupcode as code,
+ $this->db = Zend_Db_Table::getDefaultAdapter();
+     
+            $sql = "
+                SELECT 
+                a.groupcode as code, 
                 a.name as name, 
                 '' as uid,
                 sum(c.request_amount) as Amount,
@@ -209,7 +203,7 @@ $member_id=$code['s1'];
                 and b.member_id = c.member_id and  (c.membertype = 2 or c.membertype = 3 )
                 and d.id = c.status
                 and c.status!=0
-                and (a.groupcode like '".$member_id."%') 
+                and (a.groupcode like '%' '$code' '%') 
                 group by a.groupcode
                 union
                 SELECT 
@@ -228,11 +222,11 @@ $member_id=$code['s1'];
                 and e.id=b.member_id
                 and d.id = c.status
                 and c.status!=0
-                and (e.familycode like '".$member_id."%')";
-            //  echo $sql;
-            $result = $this->db->fetchAll($sql,$member_id);
+                and (e.familycode like '%' '$code' '%') 
+                ";
+             // echo $sql;
+            $result = $this->db->fetchAll($sql,array($code));
             return $result;
-            }else{ return 0;}
         }
 
     public function searchmemberdetails($groupid,$type){

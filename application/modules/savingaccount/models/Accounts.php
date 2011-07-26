@@ -44,12 +44,6 @@ class Savingaccount_Model_Accounts extends Zend_Db_Table {
 	
     public function search($code) 
     {
-        
-		$keyvalue = array_filter($code);
-		$searchcounter = count($keyvalue);
-	if($searchcounter) {
-
-$member_id=$code['s1'];
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
  $sql="SELECT 
@@ -68,7 +62,7 @@ $member_id=$code['s1'];
               where
               a.village_id= b.id and
               a.id = d.member_id and
-              (a.name like '".$member_id."%'  or a.familycode like '".$member_id."%') AND   
+              (a.name like '%' '$code' '%'  or a.familycode like '%' '$code' '%') AND
               substr(a.familycode,5,1) = c.id  
               union
               SELECT
@@ -85,51 +79,10 @@ $member_id=$code['s1'];
               ourbank_master_membertypes c
               where
               a.village_id= b.id and
-              (a.name like '".$member_id."%'  or a.groupcode like '".$member_id."%') AND
+              (a.name like '%' '$code' '%'  or a.groupcode like '%' '$code' '%') AND
               substr(a.groupcode,5,1) = c.id";
-
-        $result = $this->db->fetchAll($sql,$member_id);
-         return $result;
-        } else {
-        $this->db = Zend_Db_Table::getDefaultAdapter();
-        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-
-     $sql="SELECT 
-              DISTINCT a.id as id,
-              a.familycode as code,
-              a.name as name,
-              b.id as officeid,
-              b.name as officename,
-              substr(a.familycode,5,1) as type,
-	      c.type as membertype
-              from
-              ourbank_familymember a,
-              ourbank_office b,
-              ourbank_master_membertypes c,
-              ourbank_groupmembers d
-              where
-              a.village_id= b.id and
-              a.id = d.member_id AND
-              substr(a.familycode,5,1) = c.id  
-              union
-              SELECT
-	      DISTINCT a.id as id,
-              a.groupcode as code,
-              a.name as name,
-              b.id as officeid,
-              b.name as officename,
-	      substr(a.groupcode,5,1) as type,
-              c.type as membertype
-              from
-              ourbank_group a,
-              ourbank_office b,
-              ourbank_master_membertypes c
-              where
-              a.village_id= b.id and
-              substr(a.groupcode,5,1) = c.id";
- 
-        $result = $this->db->fetchAll($sql);
-          return $result;}
+        $result = $this->db->fetchAll($sql,array($code));
+        return $result;
     }
     
     public function getDetails($code) 

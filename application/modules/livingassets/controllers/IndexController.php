@@ -70,7 +70,7 @@ class Livingassets_IndexController extends Zend_Controller_Action
         //load form for living assets
         $this->view->submoduleid = $this->_getParam('subId');
         //get all type of living assets
-        $this->view->liveasset_details = $this->view->adm->viewRecord("ourbank_master_liveassets","id","DESC");
+        $this->view->liveasset_details = $this->view->adm->viewRecord("ourbank_master_liveassets","id","ASC");
         if ($this->_request->isPost() && $this->_request->getPost('submit')) 
             {
             $dateconvert= new App_Model_dateConvertor();
@@ -132,7 +132,7 @@ class Livingassets_IndexController extends Zend_Controller_Action
          //dynamically change the path name
        
          //get all type of living assets
-        $this->view->liveasset_details = $this->view->adm->viewRecord("ourbank_master_liveassets","id","DESC");
+        $this->view->liveasset_details = $this->view->adm->viewRecord("ourbank_master_liveassets","id","ASC");
          //update contact details
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $id=$this->_getParam('id');

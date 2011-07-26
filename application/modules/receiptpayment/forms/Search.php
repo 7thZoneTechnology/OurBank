@@ -23,10 +23,8 @@ class Receiptpayment_Form_Search extends ZendX_JQuery_Form
     {
         $date1 = new ZendX_JQuery_Form_Element_DatePicker('field1');
         $date1->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
-              $date1->setAttrib('autocomplete','off');
         $date2 = new ZendX_JQuery_Form_Element_DatePicker('field2');
         $date2->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
-               $date2->setAttrib('autocomplete','off');
         $this->addElements(array($date1,$date2));
    }
 }

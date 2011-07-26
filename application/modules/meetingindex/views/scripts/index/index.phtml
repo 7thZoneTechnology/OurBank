@@ -26,16 +26,16 @@
                     <table width="100%">
                         <tr>
                             <td class="label">Meeting day:</td>
-                            <td ><?php echo $this->form->s1;?></td>
+                            <td ><? echo $this->form->search_weekdays;?></td>
                             <td class="label">Meeting name:</td>
-                            <td ><?php echo $this->form->s2;?></td>
+                            <td ><? echo $this->form->search_meeting_name;?></td>
                         </tr>
 
                         <tr>
                             <td class="label">Meeting place:</td>
-                            <td ><?php echo $this->form->s3;?></td>
+                            <td ><? echo $this->form->search_meeting_place;?></td>
                             <td class="label">Group name:</td>
-                            <td ><?php echo $this->form->s4;?></td>
+                            <td ><? echo $this->form->search_group_name;?></td>
                         </tr>
 
                     </table>
@@ -65,7 +65,7 @@
 
         <tr>
             <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                        '/partials/my_pagination_control.phtml',$this->requestvalues); ?></div></td>
+                                        '/partials/my_pagination_control.phtml'); ?></div></td>
         </tr>
         </tr>
     </table>

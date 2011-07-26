@@ -1,22 +1,4 @@
 <?php
-/*
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-*/
 class Loanaccount_IndexController extends Zend_Controller_Action 
 {
     public function init() 
@@ -47,35 +29,16 @@ class Loanaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
-         $loanaccount = new Loanaccount_Model_Accounts();
-
-        if($_POST)
-            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
-	else
-	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
-
-         $result = $loanaccount->search($postedvalues);
-		$this->view->loanaccount = $result;
-//print_r($result);
-        $page = $this->_getParam('page',1);
-        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
-        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
-          if (!$result){
-                       echo "<font color='RED'>Records Not Found Try Again...</font>";
-                            }
-
-	}
-
-// //         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-// // 	    $formData = $this->_request->getPost();
-// // 	    if ($this->_request->isPost()) {
-// // 		$formData = $this->_request->getPost();
-// // 		if ($accountsForm->isValid($formData)) {
-// // 		    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
-// // 		}
-// //             }
-// //         }
-// //     }
+        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+	    $formData = $this->_request->getPost();
+	    if ($this->_request->isPost()) {
+		$formData = $this->_request->getPost();
+		if ($accountsForm->isValid($formData)) {
+		    $this->view->result = $this->view->accounts->search($this->_request->getParam('membercode'));
+		}
+            }
+        }
+    }
 
     public function detailsAction() 
     {
@@ -116,11 +79,10 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 	foreach($funder as $funder) {
 		$loanForm->funders->addMultiOption($funder->id,$funder->name);
 	}
-	$this->view->feedetails = $this->view->adm->viewRecord('ourbank_fee','id','ASC');
-	$countvalue=count($this->view->feedetails);
-// 	foreach($fee as $fee) {
-// 		$loanForm->fee->addMultiOption($fee->id,$fee->name);
-// 	}
+	$fee = $this->view->adm->viewRecord('ourbank_fee','id','ASC');
+	foreach($fee as $fee) {
+		$loanForm->fee->addMultiOption($fee->id,$fee->name);
+	}
 	
         $this->view->loanForm = $loanForm;
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
@@ -151,7 +113,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                       'accountcreated_date'=> $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
                                       'created_by' => 1,
                                       'status_id'=>3);
-				$accId = $this->view->adm->addRecord('ourbank_accounts',$data);
+		        $accId = $this->view->adm->addRecord('ourbank_accounts',$data);
 		        // Account number formation 
 		        // <-----------14 digit number ---------->
 		        // <--3-->/<--2-->/<---->/<--3-->/<--6-->
@@ -164,17 +126,8 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                         $account = array('account_number' =>$b.$t.$p.$i.$a);
                         $this->view->accounts->accUpdate($accId,$account);
 		        //Insertion into loan account
-                        if($this->_request->getPost('fundings')==0)
-                        {
-                            $funderid=$this->_request->getPost('fundings');
-                        }
-                        else
-                        {
-                            $funderid=$this->_request->getPost('funders');
-                        }
-
 		        $input = array('account_id' => $accId,
-                                      'funder_id' => $funderid,
+                                      'funder_id' => $this->_request->getPost('fundings'),
                                       'loansanctioned_date' => $this->view->cl->phpmysqlformat($this->_request->getPost('date')),
                                       'loan_amount' => $this->_request->getPost('amount'),
                                       'loan_installments' => $this->_request->getPost('installments'),
@@ -184,17 +137,13 @@ class Loanaccount_IndexController extends Zend_Controller_Action
                                       'tieup_flag' => 0,
                                       'created_by' => 1);
       		        $this->view->adm->addRecord('ourbank_loanaccounts',$input);
-
-			for($j=1;$j<=$countvalue;$j++){
-			if($this->_request->getParam('fee-'.$j)){
+      		        //insertion of fee
+      		        $fee = $this->_request->getParam('fee');
+	                foreach ($fee as $fee) {
                             $feeInput = array('account_id' => $accId,
-                                              'fee_id' => $this->_request->getParam('fee-'.$j), 'feeamount'=>$this->_request->getParam('hidden-'.$j));
-			//print_r($feeInput);
-                           $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
-			}
-			}
-
-
+                                              'fee_id' => $fee);
+                            $this->view->adm->addRecord('ourbank_accountfee',$feeInput);
+                        }
                         $memberlist=$this->view->accounts->getmemberlist($memberId,$typeID);
                         if($memberlist){
                         foreach($memberlist as $memberid) 
@@ -207,7 +156,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 		}
         }
     }
-    	
+    
     public function interestAction() 
     {
 	$this->_helper->layout()->disableLayout();
@@ -217,24 +166,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 	    $this->view->interest = $interest->interest;
 	}
    }
-
-    public function feeamountAction()
-    {
-	$this->_helper->layout()->disableLayout();
-        $feeid=$this->_request->getParam('feeid');
-        $loanamount=$this->_request->getParam('loanamount');
-        $this->view->hiddenid=$this->_request->getParam('hidden');
-        $feedetails=$this->view->accounts->getfee($feeid); //print_r($feedetails);
-        if($feedetails[0]['feetype_id']==1) {
-        $feeamount=$this->view->feeamount=$feedetails[0]['value'];
-        echo "<font color=green>(".$feedetails[0]['value'].")</font>";
-        }
-        else {
-        $feeamount=$this->view->feeamount=($feedetails[0]['value']/100)*$loanamount;
-        echo "<font color=green>(".$feeamount.")</font>";
-        }
-    }
-
+    
     public function messageAction() 
     {
         $this->view->pageTitle = 'Accounting';

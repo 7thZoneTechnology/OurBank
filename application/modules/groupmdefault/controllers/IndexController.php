@@ -392,7 +392,7 @@ if($day){
 //             // generate group code
             $groupcode=str_pad($office_id,3,"0",STR_PAD_LEFT)."0".$grouptypeid.str_pad($groupid,6,"0",STR_PAD_LEFT);
 //             // update rest of group values
-            $this->view->adm->updateRecord("ourbank_group",$groupid,array('village_id' =>$office_id,'head'=>$group_head,'groupcode' =>$groupcode,'group_created_date'=>$date,'created_by' =>$this->view->createdby,'created_date' =>$createddate ));/* Group created date -> Including timestamp , Created date should contain date only*/
+            $this->view->adm->updateRecord("ourbank_group",$groupid,array('village_id' =>$office_id,'head'=>$group_head,'groupcode' =>$groupcode,'group_created_date'=>$createddate,'created_by' =>$this->view->createdby,'created_date' =>$date ));/* Group created date -> Including timestamp , Created date should contain date only*/
 
                 foreach($memid as $Memid)
                  {
@@ -695,9 +695,9 @@ unset($sessionName->Created_Date);
                                                                         'time' => $times,
                                                                         'days' => $day,
                                                                         'head'=>$group_head,
-                                                                        'group_created_date'=>$date,
+                                                                        'group_created_date'=>$createddate,
                                                                         'created_by' =>$this->view->createdby,
-                                                                        'created_date' =>$createddate)); // update group details
+                                                                        'created_date' =>$date)); // update group details
 
                 $groupmemberdetails = $this->view->adm->getRecord('ourbank_groupmembers','group_id',$group_id); // get groupmembers details for particular id
                 foreach($groupmemberdetails as $groupmemberDetails){

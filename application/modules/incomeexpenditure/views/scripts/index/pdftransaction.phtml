@@ -42,7 +42,7 @@ $totalincome=0;$totalexpe=0;
 $countvalue1 =count($this->income);
 $countvalue2 =count($this->expenditure);
 $count = $countvalue1>$countvalue2?$countvalue1:$countvalue2; 
-if(($this->income) && ($this->incomeheader)){ ?>
+if($this->income){ ?>
 	<h5 align="right"><?php echo $this->translate('As of'); ?> <font color='#039'><?php echo $this->asofdate;?></font></h5>
 	<h5 style="text-align:right">* <?php echo $this->translate('Amount in'); ?> <font color="red"><?php echo $this->translate('Rs'); ?></font></h5>
 <div style="float:left;width:370px">
@@ -52,17 +52,13 @@ if(($this->income) && ($this->incomeheader)){ ?>
 	            <td><font color="black"><?php echo $this->translate('Income'); ?></font></td>
 	            <td align="right"><font color="black"><?php echo $this->translate('Amount'); ?></font></td>
                 </tr>
-<tr>
-                <?php foreach($this->incomeheader as $income) { $i++; ?>
-<!--		<tr>-->
-                    <td><?php echo $income['header']; ?></td>
-                <?php } ?>
+		<tr>
                 <?php foreach($this->income as $income) { $i++; ?>
+		<tr>
+                    <td><?php echo $income['header']; ?></td>
 		    <td align="right"><?php echo $income['credit']; $totalincome +=$income['credit']?></td>
-                <?php } ?>
-                </tr> 
- 		<!--<?php //} ?>-->
-		<?php $i = $i - 1 ; ?>
+                </tr>
+		<?php } ?>
 		
 		<?php 
 			for($j=$i;$j<=$count;$j++){ 
@@ -82,8 +78,7 @@ if(($this->income) && ($this->incomeheader)){ ?>
 	
  </div>
  <?php $i=0;$j=0; ?>
-<?php } ?>
-<?php if(($this->expenditure) && ($this->expenditureheader)){ ?>	 
+	 
 <div style="float:right;width:370px">
 <h5>Debit</h5>
 	<TABLE id="hor-minimalist-s" summary="">
@@ -92,14 +87,13 @@ if(($this->income) && ($this->incomeheader)){ ?>
 	            <td align="right"><font color="black"><?php echo $this->translate('Amount'); ?></font></td>
                 </tr>
 		<tr>
-                <?php foreach($this->expenditureheader as $expe1) { $i++; ?>
-                    <td><?php echo $expe1['header']; ?></td>
-                <?php } ?>
                 <?php foreach($this->expenditure as $expe) { $i++; ?>
+		<tr >
+                    <td><?php echo $expe['header']; ?></td>
 		    <td align="right"><?php echo $expe['credit']; $totalexpe +=$expe['credit']?></td>
-		<?php }  ?>
                 </tr>
-		<?php $i = $i - 1 ; ?>
+		<?php }  ?>
+		
 		<?php
 			for($j=$i;$j<=$count;$j++){ 
 			 if($j==$count){ ?>

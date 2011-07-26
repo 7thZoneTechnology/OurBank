@@ -21,148 +21,103 @@
 
 <div style="float:left;width:380px">
 <fieldset>
-    <legend><?php echo $this->translate('Credit List'); ?></legend>
-            <?php 
-              $i = 0;
-              $j = 0;
-              $amountCredit = "0";
-              $amountDebit = "0";
-            ?>
+    <legend><?php echo $this->translate('Receipt List'); ?></legend>
     <table id="hor-minimalist-b">
         <TR>
-            <TH ><?php echo $this->translate('Sl No.'); ?></TH>
-            <TH ><?php echo $this->translate('Credit'); ?></TH>
+            <TH ><?php echo $this->translate('V No.'); ?></TH>
+            <TH ><?php echo $this->translate('Receipt'); ?></TH>
             <TH class = "label"><?php echo $this->translate('Amount'); ?></TH>
         </TR>
-        <?php foreach($this->savingsCredit as $savingsCredit) { 
-                $i++; ?>
+        <?php foreach($this->savingsCredit as $savingsCredit) { ?>
         <TR>
-            <TD ><?php echo $i; ?></TD>
-            <TD ><?php echo $savingsCredit->offerproductname; ?></TD>
-            <TD align = "right"><?php echo $savingsCredit->transaction_amount;
-            $amountCredit = $amountCredit + $savingsCredit->transaction_amount; ?></TD>
+            <TD ><?php echo $savingsCredit->transaction_id ?></TD>
+            <TD ><?php echo $savingsCredit->account_number ?></TD>
+            <TD align = "right"><?php echo $amountCredit = $savingsCredit->transaction_amount?></TD>
         </TR>
         <?php } ?>
 
-        <?php foreach($this->fixedCredit as $fixedCredit) { 
-              $i++; ?>
+        <?php foreach($this->fixedCredit as $fixedCredit) { ?>
         <TR>
-            <TD ><?php echo $i; ?></TD>
-            <TD ><?php echo $fixedCredit->offerproductname; ?></TD>
+            <TD ><?php echo $fixedCredit->transaction_id ?></TD>
+            <TD ><?php echo $fixedCredit->account_number ?></TD>
             <TD align = "right" ><?php echo $fixedCredit->transaction_amount;
             $amountCredit = $amountCredit + $fixedCredit->transaction_amount; ?></TD>
         </TR>
         <?php } ?>
-        <?php foreach($this->recurringCredit as $recurringCredit) { 
-              $i++; ?>
+        <?php foreach($this->recurringCredit as $recurringCredit) { ?>
         <TR>
-             <TD ><?php echo $i; ?></TD>
-             <TD ><?php echo $recurringCredit->offerproductname; ?></TD>
+             <TD ><?php echo $recurringCredit->transaction_id ?></TD>
+             <TD ><?php echo $recurringCredit->account_number ?></TD>
              <TD align = "right" ><?php echo $recurringCredit->transaction_amount;
              $amountCredit = $amountCredit + $recurringCredit->transaction_amount; ?></TD>
         </TR>
         <?php } ?>
-        <?php foreach($this->laonCredit as $laonCredit) { 
-              $i++; ?>
+        <?php foreach($this->laonCredit as $laonCredit) { ?>
         <TR>
-            <TD ><?php echo $i; ?></TD>
-            <TD ><?php echo $laonCredit->offerproductname; ?></TD>
+            <TD ><?php echo $laonCredit->transaction_id ?></TD>
+            <TD ><?php echo $laonCredit->account_number ?></TD>
             <TD align = "right" ><?php echo $laonCredit->transaction_amount;
             $amountCredit = $amountCredit + $laonCredit->transaction_amount; ?></TD>
         </TR>
         <?php } ?>
         <TR>
-            <TD ><B><?php echo $this->translate('Total'); ?></B></TD>
-            <TD></TD>
-            <TD align = "right"><?php echo sprintf("%4.2f", $amountCredit);?></TD>
-            </TD>
-        </TR>
-        <TR>
-            <TD ><B><?php echo $this->translate('Opening Balance'); ?></B></TD>
-            <TD></TD>
-            <TD align = "right"><?php $total =0;
-             $total = sprintf("%4.2f", $this->openingBalance)?></TD>
-            </TD>
-        </TR>
-        <TR>
-             <TD ><b><?php echo $this->translate('Total'); ?></b></TD></TD>
-             <TD></TD>
-             <?php if($amountCredit+$total != "0") { ?>
-             <TD align = "right" ><B><?php echo sprintf("%4.2f", $amountCredit+$total); ?></TD></TD>
-             <?php } else { ?>
-             <TD align = "right" ><B>----</B></TD>
-             <?php } ?>
+            <td><b><?php echo $this->translate('Total'); ?></b></td>
+            <td></td>
+            <td align="right"><b><?php echo sprintf("%4.2f", $amountCredit); ?></b></td>
         </TR>
     </table>
-
+<form action="<?php echo $this->baseUrl();?>/reports/transferscroll/pdftransaction" method="POST"
+onClick="window.open('/ourbank/public/reports/transferscroll/reportdisplay/file/transferscroll.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+            <input type="submit" value="<?php echo $this->translate('PDF'); ?>" id="submit">
+</form>
 </fieldset>
 </div>
 <div style="float:left;width:380px">
 <fieldset>
-    <legend><?php echo $this->translate('Debit List'); ?></legend>
+    <legend><?php echo $this->translate('Payments List'); ?></legend>
     <table id="hor-minimalist-b">
         <TR>
-            <TH ><?php echo $this->translate('Sl No.'); ?></TH>
-            <TH ><?php echo $this->translate('Debit'); ?></TH>
+            <TH ><?php echo $this->translate('V No.'); ?></TH>
+            <TH ><?php echo $this->translate('Payments'); ?></TH>
             <TH class = "label"><?php echo $this->translate('Amount'); ?></TH>
         </TR>
-        <?php foreach($this->savingsDebit as $savingsDebit) {
-        $j++; ?>
+        <?php foreach($this->savingsDebit as $savingsDebit) { ?>
         <TR>
-            <TD ><?php echo $j; ?></TD>
-            <TD ><?php echo $savingsDebit->offerproductname; ?></TD>
-            <TD align = "right" ><?php echo $savingsDebit->transaction_amount; 
-            $amountDebit = $amountDebit + $savingsDebit->transaction_amount;?></TD>
+            <TD ><?php echo $savingsDebit->transaction_id ?></TD>
+            <TD ><?php echo $savingsDebit->account_number ?></TD>
+            <TD align = "right" ><?php echo $amountDebit = $savingsDebit->transaction_amount?></TD>
         </TR>
         <?php } ?>
 
-        <?php  foreach($this->fixedDebit as $fixedDebit) {
-        $j++; ?>
+        <?php  foreach($this->fixedDebit as $fixedDebit) { ?>
         <TR>
-            <TD ><?php echo $j; ?></TD>
-            <TD ><?php echo $fixedDebit->offerproductname; ?></TD>
+            <TD ><?php echo $fixedDebit->transaction_id ?></TD>
+            <TD ><?php echo $fixedDebit->account_number ?></TD>
             <TD align = "right" ><?php echo $fixedDebit->transaction_amount; 
             $amountDebit = $amountDebit + $fixedDebit->transaction_amount; ?></TD>
         </TR>
         <?php } ?>
-         <?php foreach($this->recurringDebit as $recurringDebit) { 
-        $j++; ?>
+         <?php foreach($this->recurringDebit as $recurringDebit) { ?>
         <TR>
-            <TD ><?php echo $j; ?></TD>
-            <TD ><?php echo $recurringDebit->offerproductname; ?></TD>
+            <TD ><?php echo $recurringDebit->transaction_id ?></TD>
+            <TD ><?php echo $recurringDebit->account_number ?></TD>
             <TD align = "right" ><?php echo $recurringDebit->transaction_amount;
             $amountDebit = $amountDebit + $recurringDebit->transaction_amount; ?></TD>
                             
         </TR>
         <?php } ?>
-         <?php  foreach($this->loanDebit as $loanDebit) { 
-        $j++; ?>
+         <?php  foreach($this->loanDebit as $loanDebit) { ?>
          <TR>
-            <TD ><?php echo $j; ?></TD>
-            <TD ><?php echo $loanDebit->offerproductname; ?></TD>
+            <TD ><?php echo $loanDebit->transaction_id ?></TD>
+            <TD ><?php echo $loanDebit->account_number ?></TD>
             <TD align = "right"><?php echo $loanDebit->transaction_amount;
             $amountDebit = $amountDebit + $loanDebit->transaction_amount; ?></TD>
          </TR>
          <?php } ?>
         <TR>
-            <TD ><B><?php echo $this->translate('Total'); ?></B></TD>
-            <TD></TD>
-            <TD align = "right"><?php echo sprintf("%4.2f",$amountDebit);?></TD>
-        </TR>
-        <TR>
-            <TD ><B><?php echo $this->translate('Closing Balance'); ?></B></TD>
-            <TD></TD>
-            <TD align = "right"><?php $closingtotal =0; 
-            echo $closingtotal = ($amountCredit+$total) - $amountDebit ?></TD>
-        </TR>
-        <TR>
-             <TD ><b><?php echo $this->translate('Total'); ?></b></TD>
-             <TD></TD>
-             <?php if($amountDebit+$closingtotal != "0") { ?>
-             <TD align = "right" ><B><?php echo sprintf("%4.2f", $amountDebit+$closingtotal); ?></B></TD>
-             <?php } else { ?>
-             <TD align = "right" ><B>----</B></TD>
-             <?php } ?>
+            <td><b><?php echo $this->translate('Total'); ?></b></td>
+            <td></td>
+            <td align="right"><b><?php echo sprintf("%4.2f", $amountDebit); ?></b></td>
         </TR>
     </table>
 </div>
@@ -173,7 +128,7 @@
     <legend> <?php echo $this->translate('Search'); ?></legend>
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b">
-                <form action="<?php echo $this->baseUrl();?>/reports/cashscroll" method="POST">
+                <form action="<?php echo $this->baseUrl();?>/reports/transferscroll/index" method="POST">
                     <TR>
                             <TD ><?php echo $this->translate('Date From'); ?></TD>
                             <TD ><?php echo $this->form->field1;?></TD>

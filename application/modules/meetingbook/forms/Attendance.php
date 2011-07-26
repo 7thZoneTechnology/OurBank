@@ -18,11 +18,7 @@
 ############################################################################
 */
 ?>
-<script type="text/javascript">
-       $(function() {
-           $('#meeting_time').calendricalTime(); 
-       });
-</script>
+
 <?php
 /**  
 * class is used to create a form for SavingInstance details along with the validation
@@ -42,9 +38,7 @@ class Meetingbook_Form_Attendance extends Zend_Form
         $meeting_name->setAttrib('onchange', 'getMembers1(this.value,"'.$path.'",10), getMeeting(this.value,"'.$path.'",10)');
         $meeting_name->setRequired(true);
         $meeting_date = $formfield->field('Text','meeting_date','','','mand','Meeting date',true,'','','','','','','');
-        $meeting_date->setAttrib('autocomplete','off');
         $meeting_time = $formfield->field('Text','meeting_time','','','mand','Meeting time',true,'','','','','','','');
-        $meeting_time->setAttrib('autocomplete','off');
         $notes = new Zend_Form_Element_Textarea('notes',array('rows' =>3 ,'cols'=>35));
         $resolution = new Zend_Form_Element_Textarea('resolution',array('rows' =>3 ,'cols'=>35));
         $submit = $formfield->field('Submit','Submit','','','','Submit','','','','','','','','');

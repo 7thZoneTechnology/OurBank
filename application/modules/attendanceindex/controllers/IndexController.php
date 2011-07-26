@@ -53,70 +53,35 @@ class Attendanceindex_IndexController extends Zend_Controller_Action
         $this->view->form = $searchForm;
 
         $meeting = new Meeting_Model_Meeting();
-        $result1 = $meeting->fetchAllmeetingdetails();
+        $result = $meeting->fetchAllmeetingdetails();
 
-        foreach($result1 as $result1) {
-            $searchForm->s1->addMultiOption($result1['id'],$result1['name']);
+        foreach($result as $result) {
+            $searchForm->search_meeting_name_att->addMultiOption($result['id'],$result['name']);
         }
 
         $attendance = new Attendance_Model_Attendance();
-       // $result = $attendance->fetchAllattendancedetailsview();
-
-// //         $page = $this->_getParam('page',1);
-// //         $paginator = Zend_Paginator::factory($result);
-// //         $paginator->setItemCountPerPage(5);
-// //         $paginator->setCurrentPageNumber($page);
-// //         $this->view->paginator = $paginator;
-// // 
-// //         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-// //             $formData = $this->_request->getPost();
-// //             if ($this->_request->isPost()) {
-// //                 $formData = $this->_request->getPost();
-// //                 if ($searchForm->isValid($formData)) {
-// //                     $result = $attendance->SearchAttendance($formData);
-// //                     $page = $this->_getParam('page',1);
-// //                     $paginator = Zend_Paginator::factory($result);
-// //                     $paginator->setItemCountPerPage(5);
-// //                     $paginator->setCurrentPageNumber($page); //print_r($paginator);
-// //                     $this->view->paginator = $paginator;
-// //                 }
-// //             }
-// //         }
-// //     }
-// // }
-
-        if($_POST)
-            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
-	else
-	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
-
-         $result = $attendance->SearchAttendance($postedvalues);
-		$this->view->attendance = $result;
+        $result = $attendance->fetchAllattendancedetailsview();
 
         $page = $this->_getParam('page',1);
-        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
-        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
-          if (!$result){
-                       echo "<font color='RED'>Records Not Found Try Again...</font>";
-                            }
+        $paginator = Zend_Paginator::factory($result);
+        $paginator->setItemCountPerPage(5);
+        $paginator->setCurrentPageNumber($page);
+        $this->view->paginator = $paginator;
 
-	}
-
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+            $formData = $this->_request->getPost();
+            if ($this->_request->isPost()) {
+                $formData = $this->_request->getPost();
+                if ($searchForm->isValid($formData)) {
+                    $result = $attendance->SearchAttendance($formData);
+                    $page = $this->_getParam('page',1);
+                    $paginator = Zend_Paginator::factory($result);
+                    $paginator->setItemCountPerPage(5);
+                    $paginator->setCurrentPageNumber($page); //print_r($paginator);
+                    $this->view->paginator = $paginator;
+                }
+            }
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
