@@ -88,6 +88,7 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			->join(array('C' => 'ourbank_master_instalstatus'),'B.installment_status = C.id')
                         ->where('B.installment_status!=7')
 			->where('A.account_number = ?',$accNum);
+              //  die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
@@ -98,6 +99,8 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			->setIntegrityCheck(false)  
 			->join(array('A' => 'ourbank_accounts'),array('id'),array('id'))
 			->join(array('B' => 'ourbank_loan_repayment'),'A.id = B.account_id')
+			->join(array('C' => 'ourbank_transaction'),'C.transaction_id = B.transaction_id',array('C.transaction_id'))
+			->join(array('D' => 'ourbank_master_paymenttypes'),'D.id = C.paymenttype_id',array('D.name as paymentmode'))
 			->where('A.account_number = ?',$accNum);
 		//die($select->__toString($select));
 		$result = $this->fetchAll($select);

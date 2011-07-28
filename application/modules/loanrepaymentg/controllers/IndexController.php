@@ -92,7 +92,7 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
         {
             foreach ($this->view->details as $details) 
             {
-                $intType = $details->interesttype; // Intereset type
+                $this->view->interesttype=$intType = $details->interesttype; // Intereset type
             }
             if (substr($accNum,4,1) == 2) 
             {
@@ -137,7 +137,38 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                         $this->view->loan = $loan;
                         $loan->amount->setValue($totalAmt);
                         BREAK;
-                CASE 3:$loan = new Loanrepaymentg_Form_loanrepayment();
+
+                CASE 3:
+                        $paiddetails=$this->view->loanModel->declainedpaid1($accNum,$accId);
+                        if($paiddetails)
+                        {
+                            $interestdate=$paiddetails[0]['paid_date'];
+                            $this->view->p=$p=$paiddetails[0]['balanceamount'];
+                        }
+                        else
+                        {
+                            $disburseddetails=$this->view->loanModel->declaineddisbursed($accNum);
+                            $interestdate=$disburseddetails[0]['loandisbursement_date'];
+                            $this->view->p=$p=$disburseddetails[0]['amount'];
+                        }
+
+//                         $dateDiff = $this->view->loanModel->dateDiff($interestdate,date("Y-m-d"));
+//                         $this->view->int= $int = round(($p*$dateDiff*$interest)/(100*365),2);
+//                         $this->view->totalamount=$totalAmt = round($int+$p,2);
+                        $int="";
+                        $this->view->totalamount=$totalAmt = round($p,2);
+                        $loan = new Loanrepaymentg_Form_loanrepayment($accNum); 
+                        $this->view->loan = $loan;
+                        $mode = $this->view->adm->viewRecord("ourbank_master_paymenttypes","id","DESC"); 
+                        foreach($mode as $mode) 
+                        {
+                            $loan->transactionMode->addMultiOption($mode['id'],$mode['name']);
+                        }
+                        $loan->amount->setValue($p);
+                        $loan->totalamount->setValue($totalAmt);
+                        BREAK;
+
+                CASE 4:$loan = new Loanrepaymentg_Form_loanrepayment();
                         $this->view->loan = $loan;
                         BREAK;
             }
@@ -167,10 +198,53 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                         CASE 2:
                                 $int = $this->view->loanModel->emi($data);
                                 BREAK;
+
                         CASE 3:
+                                $lastid=$this->view->loanModel->getinstallmentid($accId); 
+                                $emi=$lastid[0]['installment_amount'];
+                                if($lastid) {
+                                $installmentamount = $this->_request->getParam('amount')+$lastid[0]['paid_amount'];
+                                $totalamount=$installmentamount;
+                                }
+                                if($installmentamount>=$emi) {
+                                while($installmentamount>=$emi)
+                                {
+                                    $installmentamount-=$emi;
+                                    $installment[]=$installmentamount;
+                                }
+                                if(count($installment)>0) {
+                                $paidcount=count($installment);
+                                $paidamount=$emi*$paidcount;
+                                $particalamount=$totalamount-$paidamount;
+                                }
+                                else {
+                                $particalamount=$this->_request->getParam('amount');
+                                }
+                                $j=$lastid[0]['installment_id'];
+                                $m=$j+$paidcount;
+                                for($i=$j; $i<$m; $i++) {
+                                $this->view->loanModel->updateinstallment($i,$accId,$emi,'0.00','2');
+                                }
+                                if($particalamount != 0) {
+                                $balance=$emi-$particalamount;
+                                $this->view->loanModel->updateinstallment($m,$accId,$particalamount,$balance,'8');
+                                }
+                                else 
+                                {
+                                $balance=$emi-$particalamount;
+                                $this->view->loanModel->updateinstallment($m,$accId,$particalamount,$balance,'4');
+                                }
+                                }
+                                else { 
+                                $balance=$emi-$installmentamount;
+                                $this->view->loanModel->updateinstallment($lastid[0]['installment_id'],$accId,$installmentamount,$balance,'8');
+                                }
+                                BREAK;
+
+                        CASE 4:
                                 BREAK;
                     }
-                    $array = $this->view->loanModel->insertTran($data,$int);
+                    $array = $this->view->loanModel->insertTran($data,$int,$totalAmt,$intType);
                     //if group
                     if (substr($accNum,4,1) == 2)
                     {
@@ -200,7 +274,7 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                 {   $errorno=1; }
                 $this->_redirect("/loanrepaymentg/index/index/msg/".$errorno);
         }
-    } 
+    }
     }
     public function messageAction() 
     {

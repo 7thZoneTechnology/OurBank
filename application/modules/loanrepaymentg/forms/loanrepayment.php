@@ -59,6 +59,7 @@ class Loanrepaymentg_Form_loanrepayment extends Zend_Form {
 //             $totalAmt = $formfield->field('Text','totalAmt','','','txt_put','','','','','','','',0,$totalAmt);
 //             $totalAmt->setAttrib('disable','true');
             // hidden feilds
+            $totalamount = $formfield->field('Hidden','totalamount','','','total','',false,'','','','','',0,$accNum);
             $accNum = $formfield->field('Hidden','accNum','','','txt_put','',true,'','','','','',0,$accNum);
             $sms = new Zend_Form_Element_Checkbox('sms');
 
@@ -69,6 +70,6 @@ class Loanrepaymentg_Form_loanrepayment extends Zend_Form {
             $back->setAttrib('id', 'button2');
 
             $this->addElements(array($date,$othertext,$amount,$description,$transactionMode,$transactionModeDetails,
-								$submit,$accNum,$back,$sms));
+								$submit,$accNum,$totalamount,$back,$sms));
 		}
 	}

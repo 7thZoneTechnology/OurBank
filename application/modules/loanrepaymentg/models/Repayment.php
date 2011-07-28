@@ -412,7 +412,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         }
         return $roi;
     }
-    public function insertTran($data,$int)
+    public function insertTran($data,$int,$totalAmt,$intType)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $acc = $this->searchaccounts($data["accNum"]);
@@ -449,59 +449,66 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 'paid_amount' => $data["amount"],
                 'paid_principal' => $data["amount"] - $int,
                 'paid_interest' => $int,
+                'balanceamount' => $totalAmt-$data["amount"],
                 'installment_id' => $pram -1,
                 'recordstatus_id' => 3);
         $db->insert("ourbank_loan_repayment",$repayData);
         // Insertion into Assets ourbank_Assets Cash Cr entry
-        $glresult = $this->getGlcode($officeid);
-        foreach ($glresult as $glresult) {
-                $cashglsubocde = $glresult->id;
-        }
+        $glbank = $this->getGlcode($officeid,'cash'.$officeid);
         // Insertion into Assets ourbank_Assets cash Cr entry
+
+        if($intType != 3) {
+            $assetamount=$data["amount"]-$interest;
+        }
+        else
+        {
+            $assetamount=$data["amount"];
+        }
+
         $assets =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $cashglsubocde,
+                         'glsubcode_id_from' => $glbank[0]['id'],
                          'glsubcode_id_to' => '',
                          'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
+                         'credit' => $assetamount,
                          'record_status' => 3);
        	$db->insert('ourbank_Assets',$assets);
         // Insertion into Assets ourbank_Assets productgl Cr entry
-		$glassets =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $gl,
-                         'glsubcode_id_to' => '',
-                         'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
-                         'record_status' => 3);
-       	$db->insert('ourbank_Assets',$glassets);
-        // Insertion into Assets ourbank_Liabilities productgl Cr entry
-// 		$glLia =  array('office_id' => $officeid,
-//                          'glsubcode_id_from' => $gl,
-//                          'glsubcode_id_to' => '',
-//                          'transaction_id' => $tranId,
-//                          'credit' => $data["amount"],
-//                          'record_status' => 3);
-//        	$db->insert('ourbank_Liabilities',$glLia);
 
-        // Insertion into Assets ourbank_Assets interest Cr entry
+        $glassets =  array('office_id' => $officeid,
+                    'glsubcode_id_from' => $gl,
+                    'glsubcode_id_to' => '',
+                    'transaction_id' => $tranId,
+                    'credit' => $assetamount,
+                    'record_status' => 3);
+        $db->insert('ourbank_Assets',$glassets);
+
+        if($intType != 3) {
+        // Insertion into Assets ourbank_Income interest Cr entry
+        $interestledger = $this->getGlcode($officeid,'interest'.$officeid);
         $interest =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $intGl,
+                         'glsubcode_id_from' => $interestledger[0]['id'],
                          'glsubcode_id_to' => '',
                          'transaction_id' => $tranId,
                          'credit' => $interest,
-                         'record_status' => 3);
-       	$db->insert('ourbank_Assets',$interest);
+                         'recordstatus_id' => 3);
+       	$db->insert('ourbank_Income',$interest);
+        }
        	//Retuns some variables
         return array('transaction_id' => $tranId,
                         'account_id' => $accId,
                         'paymentMode' => $data["paymentMode"],
                         'installment_id' => $accId);
 	}
-    public function getGlcode($officeId)
+    public function getGlcode($officeId,$headername)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select id from ourbank_glsubcode where office_id=$officeId and glcode_id=2";
-       // echo $sql;
-        return $db->fetchAll($sql);
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_glsubcode'),array('a.id'),array('a.id'))
+                ->where('a.header=?',$headername)
+                ->where('a.office_id=?',$officeId);
+//        die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
     }
 
     public function paid($accNum) 
@@ -632,5 +639,58 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
        // die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
+    }
+
+    public function getinstallmentid($accId)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('a.installment_id','a.paid_amount','a.installment_amount'))
+                                ->where('a.installment_status=4 or a.installment_status=8')
+                                ->where('a.account_id=?',$accId);
+       // die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findmaxpaidid($accId)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(a.transaction_id) as maxpaidid'))
+                                ->where("a.account_id = ?",$accId)
+                                ->group("a.account_id");
+       // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function declainedpaid1($accNum,$accId)
+    {
+        $maxid=$this->findmaxpaidid($accId);
+
+        if($maxid){
+           $trasid=$maxid[0]['maxpaidid'];
+        }
+        else{
+            $trasid="";
+        }
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+                                ->join(array('b'=>'ourbank_loan_repayment'),'a.id=b.account_id',array('b.id','b.paid_date','b.balanceamount'))
+                                ->where("b.transaction_id = ?",$trasid)
+                                ->where('a.account_number=?',$accNum);
+       // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function updateinstallment($installmentid,$accid,$paidamount,$balance,$status)
+    {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+                $data = array('installment_status'=> $status,'paid_amount'=>$paidamount,'balance'=>$balance); //print_r($data);
+                $where='installment_id='.$installmentid.' and account_id='.$accid; //echo $where;
+        $this->db->update('ourbank_installmentdetails',$data,$where);
     }
 }
