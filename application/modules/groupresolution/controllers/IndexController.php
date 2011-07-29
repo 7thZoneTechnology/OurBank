@@ -24,9 +24,8 @@ class Groupresolution_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-        $this->view->pageTitle='Group Resolution';
-	$this->view->adm = new App_Model_Adm();
-
+        $this->view->pageTitle='Group resolution to open a bank account';
+		$this->view->adm = new App_Model_Adm();
         /* Initialize action controller here */
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
@@ -58,10 +57,10 @@ class Groupresolution_IndexController extends Zend_Controller_Action
 //             // create instance for groupcommon model page
             $groupcommon=new Groupresolution_Model_Groupresolution();
             $group_name=$groupcommon->getgroup($id); // get group details
-
-// // //            Zend_Debug::dump($group_name);
+            
+    //Zend_Debug::dump($group_name);
             if($group_name) {
- $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
+            $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
             $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
                 foreach($group_location as $location){
                         $this->view->latitude = $location['latitude'];
@@ -71,8 +70,11 @@ class Groupresolution_IndexController extends Zend_Controller_Action
             $this->view->groupname=$group_name;
             $this->view->getgroupaccount=$getgroupaccount;
     
-            $group_members=$groupcommon->getgroupmembers($id); // get group members
-            $this->view->groupmembers=$group_members;
+            $grou_members=$groupcommon->getgroupmembers($id); // get group members
+          // Zend_Debug::dump($grou_members);
+
+            $this->view->groupmembers=$grou_members;
+
             $dbobj= new Groupmdefault_Model_Groupdefault();
             $groupheaddetails = $dbobj->Getgrouphead($id); //Get group head
                 foreach($groupheaddetails as $grouphead){
@@ -112,6 +114,8 @@ $this->view->error = "Enter valid code";
 		//$fetchMeetings=new Meetingreport_Model_Meetingreport();
 
 		$pdf = new Zend_Pdf();
+		
+		// $encoding = 'UTF-8';
 		$page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
 // 		 $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4_LANDSCAPE);
 		$pdf->pages[] = $page;
@@ -158,7 +162,7 @@ $this->view->error = "Enter valid code";
         $group_name=$groupcommon->getgroup($id); // get group details
         $getgroupaccount=$groupcommon->getgroupaccount($id); // get group details
 
-
+  // Zend_Debug::dump();
         $group_location=$groupcommon->getlocation($id); // get group Location details - Latitude and longitude
         foreach($group_location as $location){
                 $this->view->latitude = $location['latitude'];
@@ -182,7 +186,7 @@ $this->view->error = "Enter valid code";
 	$page->drawText($membergroup['bank'],120, 645);
 	$page->drawText(date('d-m-Y'),450, 725);
 	$page->drawText($membergroup['groupcode'],452, 710);
-	$page->drawText($membergroup['membername'],$x1, $y1);
+	//$page->drawText($membergroup['membername'],$x1, $y1);
 	$page->drawText($membergroup['survey_no'],$x2, $y1);
 	$page->drawText($membergroup['request_amount'],$x3, $y1);
 	
@@ -201,5 +205,7 @@ $this->view->error = "Enter valid code";
 		$pdf->save('/var/www'.$projname.'/reports/groupresolution'.date('Y-m-d').'.pdf');
 		$path = '/var/www'.$projname.'/reports/groupresolution'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
-	}
+	
+                /* $this->_redirect('/groupresolution/index');*/	}
+	
 }

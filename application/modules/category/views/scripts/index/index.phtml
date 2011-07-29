@@ -24,24 +24,21 @@
                 <table width="100%">
                         <tr>
                             <td class="label">Name:</td>
-                                <td ><?php echo $this->form->name;?></td>
+                                <td ><?php echo $this->form->s1;?></td>
                                 <td class="label">Description:</td>
-                                <td ><?php echo $this->form->description;?></td>
+                                <td ><?php echo $this->form->s2;?></td>
                         </tr>
                 </table><br>
                 <div class="btnhouse">
                     <div class="ltbtns">
-                        <input type = "Submit" name = "Search" id="Search" value = "Search"/>
+<div > <span><?php echo $this->form->Search; ?></span></div>
                     </div>
                 </div>	
             </form>	
         </div>
 </fieldset> 
 </div>  
-<?php  if((count($this->paginator) ==0) && ($this->search == true))  { ?>
-<font color='RED'><?php echo $this->translate('Record not found try again'); ?>.</font>
-<?php } ?>
-<?php if (count($this->paginator)): ?>
+
 <table id="hor-minimalist-b">
     <tr>
         <th>Category Name</th>
@@ -50,7 +47,7 @@
        
     </tr>
 <?php $dateconvertor = new App_Model_dateConvertor();?>
-        <?php foreach ($this->paginator as $category ): ?>
+        <?php foreach ($this->paginator as $category): ?>
     <tr>
         <td><a href="<?php echo $this->baseUrl()."/category/index/categoryview/id/".$category['id']; ?>">
                      <?php echo $this->escape($category['name']); ?></a></td>
@@ -58,10 +55,9 @@
     <td><?php echo $dateconvertor->normalformat($this->escape($category['created_date']));?></td>
     
                 <?php endforeach; ?>
-                <?php endif; ?>
     </tr>
-    <tr>
-        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                    '/partials/my_pagination_control.phtml'); ?></div></td>
-    </tr>
+   
 </table>
+<div align="center" style="margin-top:10px;color:#CC6633;">
+<?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+</div>

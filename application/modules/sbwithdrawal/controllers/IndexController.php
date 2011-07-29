@@ -3,7 +3,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = 'SB withdrawal';
+        $this->view->pageTitle = 'Group resolution to withdraw from SB account';
         $this->view->title = 'Loan Process';
         $this->view->withdrawal = new Sbwithdrawal_Model_Sbwithdrawal();
         $this->view->adm = new App_Model_Adm ();
@@ -20,7 +20,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
          $this->view->cl=new App_Model_Users();
         $loginname= $this->view->cl->username($userid);
-        foreach($loginname as $loginname) 
+        foreach($loginname as $loginname)
         {
             $this->view->username=$loginname['username']; // get the user name
         }
@@ -34,34 +34,40 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                 if (!$data) {
                         $this->_redirect('index/login');
                 }
+
+
+
        $searchForm = $this->view->form = new Sbwithdrawal_Form_Search();
  		if ($this->_request->isPost() && $this->_request->getPost('Submit')){
                 $formData = $this->_request->getPost();
+
                     if ($searchForm->isValid($formData)) {
-                        $this->view->withdrawalamount = $this->_request->getParam('amount');
+                       		$this->view->withdrawalamount = $this->_request->getParam('amount');
                             $result = $this->view->withdrawal->getMember($this->_request->getParam('membercode'));
+
                             $page = $this->_getParam('page',1);
                             $paginator = Zend_Paginator::factory($result); // assign searched values for pagination
-                            $paginator->setItemCountPerPage($this->view->adm->paginator());
+        					$paginator->setItemCountPerPage(5);
+
                             $paginator->setCurrentPageNumber($page);
                             $this->view->paginator = $paginator;
-                            $paginator->setItemCountPerPage($this->view->adm->paginator());
-	                    $paginator->setCurrentPageNumber($page);
                             $this->view->search = true;
-                    } 
+                    }
             }
     }
     public function withdrawalAction(){
-        $id =  base64_decode($this->_request->getParam('id'));
-        $amount = base64_decode($this->_request->getParam('amt'));
-        $membertype = base64_decode($this->_request->getParam('type'));
+        $groupcode =  $this->_request->getParam('membercode');
+        $amount = $this->_request->getParam('amount');
+/*        $membertype = $this->_request->getParam('type');*/
         $this->view->amount = $amount;
-        $this->view->id = $id;
-        $this->view->membertype = $membertype;
-        $address = $this->view->adm->getmodule("ourbank_address",$id,"Group");// get address for particular group
-        $groupWholedetails = $this->view->withdrawal->getgroupwholedetails($id,$membertype); // get group details
-        $this->view->groupmemberslist  = $this->view->withdrawal->getgroupmembers($id); // get groupmembers details
-        $this->view->repmemberslist  = $this->view->withdrawal->getrepmembers($id); // get groupmembers details
+        $this->view->groupcode = $groupcode;
+		$groupid = $this->view->adm->getsingleRecord('ourbank_group','id','groupcode',$groupcode);
+
+//         $this->view->membertype = $membertype;
+        $address = $this->view->adm->getmodule("ourbank_address",$groupid,"Group");// get address for particular group
+        $groupWholedetails = $this->view->withdrawal->getgroupwholedetails($groupcode,$groupid); // get group details
+        $this->view->groupmemberslist  = $this->view->withdrawal->getgroupmembers($groupid); // get groupmembers details
+        $this->view->repmemberslist  = $this->view->withdrawal->getrepmembers($groupid); // get groupmembers details
         foreach($groupWholedetails as $groupdetails){
             $this->view->groupname = $groupdetails['groupname'];
             $this->view->createdate = $groupdetails['group_created_date'];
@@ -81,7 +87,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
             if($groupaddress['address3'] == ""){ $add3 = "";} else { $add3 = $groupaddress['address3']; }
             if($groupaddress['village'] == ""){ $villge = "";} else { $villge = $groupaddress['village']; }
             if($groupaddress['city'] == ""){ $city = "";} else { $city = $groupaddress['city']; }
-            if($groupaddress['district'] == ""){ $district = "";} else { $add3 = $groupaddress['district']; }
+            if($groupaddress['district'] == ""){ $district = "";} else { $district = $groupaddress['district']; }
             if($groupaddress['state'] == ""){ $state = "";} else { $state = $groupaddress['state']; }
             if($groupaddress['zipcode'] == ""){ $zipcode = "";} else { $zipcode = $groupaddress['zipcode']; }
             if($add1 == "" && $add2 =="") {
@@ -108,10 +114,10 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                 $this->view->city = "";
             } if($city == "" && $district!="") {
                 $this->view->city = $district;
-            } if($city !="" && $district =="") {
-                $this->view->city = $city;
-            } if($city !="" && $district !="") {
-                $this->view->city = $city.",".$district;
+            } if($district ="" && $city =="") {
+                $this->view->district = "";
+            } if($district ="" && $city !="") {
+                $this->view->district = $district.",".$city;
             }
     
             if($state == "" && $zipcode =="") {
@@ -171,7 +177,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
             if($groupaddress['address3'] == ""){ $add3 = "";} else { $add3 = $groupaddress['address3']; }
             if($groupaddress['village'] == ""){ $villge = "";} else { $villge = $groupaddress['village']; }
             if($groupaddress['city'] == ""){ $city = "";} else { $city = $groupaddress['city']; }
-            if($groupaddress['district'] == ""){ $district = "";} else { $add3 = $groupaddress['district']; }
+            if($groupaddress['district'] == ""){ $district = "";} else { $district = $groupaddress['district']; }
             if($groupaddress['state'] == ""){ $state = "";} else { $state = $groupaddress['state']; }
             if($groupaddress['zipcode'] == ""){ $zipcode = "";} else { $zipcode = $groupaddress['zipcode']; }
             if($add1 == "" && $add2 =="") {
@@ -198,10 +204,10 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
                 $this->view->city = "";
             } if($city == "" && $district!="") {
                 $this->view->city = $district;
-            } if($city !="" && $district =="") {
-                $this->view->city = $city;
-            } if($city !="" && $district !="") {
-                $this->view->city = $city.",".$district;
+            } if($district ="" && $city =="") {
+                $this->view->district = "";
+            } if($district ="" && $city !="") {
+                $this->view->district = $district.",".$city;
             }
     
             if($state == "" && $zipcode =="") {
@@ -260,24 +266,24 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $y1 = 725;
         $page->drawText($text[0], $x0, 760);
 
-//         $page->drawLine(50, 740, 550, 740);
-//         $page->drawLine(50, 720, 550, 720);
+//        // $page->drawLine(50, 740, 550, 740);
+//        // $page->drawLine(50, 720, 550, 720);
 
-        $page->drawText($text[1], $x1, $y1);
-        $page->drawText($groupname, $x1+50, $y1);
-        $page->drawText($groupname, $x1+50, $y1);
+       $page->drawText($text[1], $x1, $y1);
+       $page->drawText($groupname, $x1+50, $y1);
+       $page->drawText($groupname, $x1+50, $y1);
 
         $page->drawText($text[2], $x2, $y1);
         $page->drawText($this->view->dateconvertor->phpnormalformat($createddate), $x2 + 85, $y1);
         $page->drawText($this->view->dateconvertor->phpnormalformat($createddate), $x2 + 85, $y1);
-//         $page->drawLine(50, $y1-5, 550, $y1-5);
+         $page->drawLine(50, $y1-5, 550, $y1-5);
 
 
        $page->drawText($text[5], $x1, $y1-15);
-        $page->drawText($text[4], $x2, $y1-15);
-        $page->drawText($groupcode,$x2 + 85, $y1-15);
-        $page->drawText($groupcode,$x2 + 85, $y1-15);
-//         $page->drawLine(50, $y1-5, 550, $y1-5);
+       $page->drawText($text[4], $x2, $y1-15);
+       $page->drawText($groupcode,$x2 + 85, $y1-15);
+       $page->drawText($groupcode,$x2 + 85, $y1-15);
+         $page->drawLine(50, $y1-5, 550, $y1-5);
 
         if(!$addressline1){
         $page->drawText($this->view->addressline1, $x1, $y1-30);
@@ -298,15 +304,16 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
 
 
         // declaration message
-        $page->drawText($content, $x1, $y1-75);
+//         $page->drawText($content, $x1, $y1-75);
 
         // List representatives
         $i=1;
         $y1 = $y1-85;
 
         foreach($repmembers as $representatives){
-        $repname = $i++.") ".$representatives['membername'];
-        $page->drawText($repname, $x1, $y1);
+//         $repname = $i++.") ".$representatives['membername'];
+       // echo $repname;
+//         $page->drawText($repname, $x1, $y1);
         $y1 = $y1-10;
         }
         $y1 = $y1-25;
@@ -324,7 +331,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
         $j=1;
         foreach($groupmembers as $groupmem){
             $page->drawText($j++, $x1, $y1);
-            $page->drawText($groupmem['membername'], $x5, $y1);
+            //$page->drawText($groupmem['membername'], $x5, $y1);
             $page->drawLine(50, $y1-5, 550, $y1-5);
             $y1 = $y1 - 15;
         }
@@ -355,7 +362,7 @@ class Sbwithdrawal_IndexController extends Zend_Controller_Action
 
         $pdf->save('/var/www/'.$projname.'/reports/sbwithdrawal.pdf');
         $path = '/var/www/'.$projname.'/reports/sbwithdrawal.pdf';
-        chmod($path,0777);
+        //chmod($path,0777);
     }
 }
 

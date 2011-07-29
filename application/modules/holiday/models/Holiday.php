@@ -71,19 +71,49 @@ public function getOffice() {
 
 	
 
-	public function SearchHoliday($post = array()) {
-		$select = $this->select()
+
+public function SearchHoliday($post) {
+$dateconvert= new App_Model_dateConvertor();
+		$keyvalue = array_filter($post);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
+			$select = $this->select()
 			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_holiday'),array('id'))
-			->where('a.office_id like "%" ? "%"',$post['office_id'])
-			->where('a.name like "%" ? "%"',$post['name'])
-			->where('a.holiday_from like "%" ? "%"',$post['holiday_from'])
-			->where('a.holiday_upto like "%" ? "%"',$post['holiday_upto'])
+			->join(array('a' => 'ourbank_holiday'),array('id','DATE(a.holiday_from)=".date("y-m-d")."','DATE(a.holiday_from)=".date("y-m-d")."'))
+			->where('a.office_id like "%" ? "%"',$post['s2'])
+			->where('a.name like "%" ? "%"',$post['s1'])
+			->where('a.holiday_from like "%" ? "%"',$post['s3'])
+			->where('a.holiday_upto like "%" ? "%"',$post['s4'])
 									->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename') );
+ 		//die($select->__toString($select));
 
 		$result = $this->fetchAll($select);
 		return $result->toArray();
+		} else {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_holiday'),array('a.id','a.name','DATE(a.holiday_from)=".date("d-m-y")."'))
+									->join(array('b'=>'ourbank_officehierarchy'),'a.office_id = b.id',array('b.type as officename') );
+ 	//	die($select->__toString($select));
+// 
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 }

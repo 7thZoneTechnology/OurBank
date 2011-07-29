@@ -113,7 +113,7 @@
                 <th><?php echo $this->translate("* ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"); ?></th>
                 <th><?php echo $this->translate("ದೂರವಾಣಿ"); ?></th>
                 <th><?php echo $this->translate("* ಬ್ಲಡ್ ಗ್ರೂಪ್"); ?></th>
-                <th></th>
+                <th><?php echo $this->translate("Can Sign"); ?></th><th></th>
 
             </tr>
             <?php $i = 0; ?>
@@ -213,6 +213,7 @@
                 </select>
                 </td>
          <?php 
+			$signlist = array();
             $entitlelist = array();
             $proflist = array();
             $familyobj = new Familymembers_Model_Familymembers();
@@ -234,9 +235,7 @@
             	}}
 		else {
 		$entitlenone=0;
-		}
-
-          ?>
+		} ?>
                 <td>
                 <div style="OVERFLOW-Y:scroll; WIDTH:200px; HEIGHT:50px">
 		<?php if($entitlenone==0) { ?>
@@ -253,7 +252,6 @@
                 <?php } } ?>
                 <div>
                 </td>
-
 
                 <td><select name = "education[]" class="selectvalid required">
                         <option value=0>select</option>
@@ -312,7 +310,7 @@
                 ?>
 
                <td>
-                <select name = "cbopromoter[]" class="selectvalid cbofilter"  id="cbopromoter-1">
+                <select name = "cbopromoter[]" class="selectvalid cbofilter"  id="cbopromoter-<?php echo $i; ?>">
                         <option value=0>select</option>
                     <?php foreach ($this->promoter as $cbopromoter) { 
                                 if($cbopromoter['id']!= $familydetails["promoter_id"]) { ?>
@@ -326,8 +324,8 @@
                 </select>
                 </td>
 
-                <td><div id="cbodiv-1" class="cboclass">
-                        <select name = "cbo[]" class="selectvalid required">
+                <td><div id="cbodiv-<?php echo $i; ?>" class="cboclass">
+                        <select name = "cbo[]" class="selectvalid required" id="cbo-<?php echo $i; ?>">
                         <option value=0>Select</option>
                      <?php
                      foreach ($cbos as $cbos) {  
@@ -400,7 +398,7 @@
 
                 <td><select name = "blood[]" class="selectvalid required">
                         <option value=0>select</option>
-                    <?php foreach ($this->blood as $blood) { 
+                    <?php echo '<pre>'; print_r($this->blood); foreach ($this->blood as $blood) { 
                       if($blood['id']!= $familydetails["blood_id"]) { ?>
                     <option value="<?php echo $blood['id']?>"><?php echo $blood['name']?></option>
                     <?php } else { ?> 
@@ -410,6 +408,12 @@
                     <?php } } ?>
                 </select>
                 </td>
+
+                <?php if($familydetails['sign']==1){ ?>
+                <td align="center"><INPUT type="checkbox" name = "sign[]" checked="true" value="<?php echo $i ?>"></td>
+                <?php } else { ?>
+                <td align="center"><INPUT type="checkbox" name = "sign[]" value="<?php echo $i ?>"></td>
+                <?php } ?>
 
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr>

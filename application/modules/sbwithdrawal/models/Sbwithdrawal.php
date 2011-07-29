@@ -12,7 +12,7 @@ $select=$this->select()
        ->join(array('d'=>'ourbank_familymember'),'d.id=b.member_id',array('d.name as memname'))
        ->joinLeft(array('c' => 'ourbank_loanprocess'),'b.member_id = c.member_id')
        ->where('c.membertype=2 or c.membertype=3');
-//        die($select->__toString($select));
+// //   die($select->__toString($select));
        $result=$this->fetchAll($select);
        return $result->toArray(); // return group member details
 
@@ -20,16 +20,15 @@ $select=$this->select()
     }
 
 // // get group whole details
-        public function getgroupwholedetails($id,$membertype)
+        public function getgroupwholedetails($groupcode,$groupid)
         {
         $select=$this->select()
             ->setIntegrityCheck(false)
             ->join(array('a' => 'ourbank_group'),array('id'),array('name as groupname','id as groupid','group_created_date','groupcode'))
-            ->where('a.id = '.$id)
+            ->where('a.groupcode = '.$groupcode)
             ->join(array('b' => 'ourbank_accounts'),'b.member_id = a.id',array('account_number as savingsaccountnumber'))
-            ->where('b.membertype_id = '.$membertype)
-            ->join(array('c' => 'ourbank_group_representatives'),'c.group_id ='.$id,array('representative_id'))
-            ->join(array('d' => 'ourbank_groupmembers'),'d.group_id ='.$id,array('member_id as groupmembers'))
+            ->join(array('c' => 'ourbank_group_representatives'),'c.group_id ='.$groupid,array('representative_id'))
+            ->join(array('d' => 'ourbank_groupmembers'),'d.group_id ='.$groupid,array('member_id as groupmembers'))
             ->where('d.groupmember_status  = 1 or d.groupmember_status  = 3')
             ->join(array('e' => 'ourbank_familymember'),'e.id = d.member_id',array('name as groupmembersname'))
             ->where('e.id = d.member_id or e.id = c.representative_id')
@@ -50,13 +49,13 @@ $select=$this->select()
 	return $this->fetchAll($select);
     } 
 // get Group members details
-    public function getrepmembers($id) {
+    public function getrepmembers($groupid) {
 	$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_group_representatives'),array('id'),array('representative_id as memberid'))
-                       ->where('a.group_id  = '.$id)
+                       ->where('a.group_id  = '.$groupid)
 			->join(array('b' => 'ourbank_familymember'),'a.representative_id = b.id',array('name as membername'));
-			
+// 			die($select->__toString($select));
 	return $this->fetchAll($select);
     }
 }

@@ -55,13 +55,13 @@ class Meetingbookindex_IndexController extends Zend_Controller_Action
 
         $meetingbookindex = new Meetingbookindex_Model_Meetingbookindex();
         $result = $meetingbookindex->fetchAllmeetingdetails();
-
         foreach($result as $result) {
-            $searchForm->search_meeting_name_att->addMultiOption($result['id'],$result['name']);
+            //$searchForm->search_meeting_name_att->addMultiOption($result['id'],$result['name']);
+            $searchForm->s1->addMultiOption($result['id'],$result['name']);
         }
-
+$this->view->adm = new App_Model_Adm();
 //         $attendance = new Meetingbook_Model_Meetingbook();
-        $result = $meetingbookindex->fetchAllattendancedetailsview();
+     /*   $result = $meetingbookindex->fetchAllattendancedetailsview();
 
         $page = $this->_getParam('page',1);
         $paginator = Zend_Paginator::factory($result);
@@ -82,7 +82,19 @@ class Meetingbookindex_IndexController extends Zend_Controller_Action
                     $this->view->paginator = $paginator;
                 }
             }
-        }
+        } */
+        if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $meetingbookindex->SearchAttendance($postedvalues);
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+
+
     }
 }
 

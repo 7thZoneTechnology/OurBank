@@ -33,7 +33,7 @@ class Savingsdeposit_Form_Deposit extends Zend_Form
         $date1->setAttrib('class', 'txt_put');
         $date1->setJQueryParam('dateFormat', 'yy-mm-dd');
         $date1->setRequired(true);
-	$date1->setAttrib('size', 12);
+		$date1->setAttrib('size', 12);
 		//$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
 		$formfield = new App_Form_Field ();
 		$amount = $formfield->field('Text','amount','','','txt_put','',true,'','','','','',0,'');

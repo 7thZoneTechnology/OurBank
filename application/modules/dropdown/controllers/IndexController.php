@@ -79,6 +79,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 // Zend_Debug::dump($tabledatas);
         $this->view->tabledata = $tabledatas;
     }
+
 	public function addAction() 
     {
  		$path = $this->view->baseUrl();
@@ -389,7 +390,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 			}
 		$cbp = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
 		foreach($cbp as $cbpname){
-				$dropdownForm->cbp->addMultiOption($cbpname['id'],$cbpname['name_regional']);
+				$dropdownForm->cbp->addMultiOption($cbpname->id,$cbpname->id." -".$cbpname->name_regional."");
 			}
 		$koota = $settings->listkoota();
 		foreach($koota as $kootaname){
@@ -550,9 +551,11 @@ class Dropdown_IndexController extends Zend_Controller_Action
     public function districtAction() {
         $path = $this->view->baseUrl();
         $this->_helper->layout()->disableLayout();
+
 		$dropdownForm = new Dropdown_Form_Settings($path);
         $this->view->form = $dropdownForm;
      	$state=$this->_request->getParam('state');
+
         $getdistrict = new Dropdown_Model_Dropdown();
         $district=$getdistrict->district($state);
  		foreach($district as $eacharraysent) {

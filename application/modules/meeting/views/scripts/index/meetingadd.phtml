@@ -18,6 +18,9 @@
 !-->
 
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/meeting.js"></script>
+<script src="<?php echo $this->baseUrl(); ?>/js/jquery.calendrical.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl(); ?>/css/calendrical.css" />
+
 <div id = "searchDiv">
 <fieldset>
 <legend>Add meeting</legend>
@@ -47,7 +50,7 @@
             </TR>
             <TR >
                 <TD ><label for="fld1" class="mand">Meeting time</TD>
-                <TD ><?php echo $this->meetingForm->meeting_time;?></TD>
+                <TD ><span class="display"><?php echo $this->meetingForm->meeting_time;?></span></TD>
             </TR>
             <TR >
                 <TD ><label for="fld1" class="mand">Meeting day</TD>

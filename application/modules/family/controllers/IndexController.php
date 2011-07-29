@@ -48,42 +48,37 @@ class Family_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
 
+       
         $this->view->title = $this->view->translate("Family");
 //load searching form...
         $searchForm = new Family_Form_Search();
         $this->view->form = $searchForm;
 //create a object for individual model...
         $individual = new Family_Model_familymodel();
-        $result = $individual->getMemberDetails($this->view->createdby);
+       // $result = $individual->getMemberDetails($this->view->createdby);
         $max_id=$individual->getoffice_hierarchy();
         $maxlevel=$max_id[0]['id'];
         $officename=$individual->getoffice($maxlevel);
 //load office names and gender names into the drop down list box...
-//         $officename = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");
-        foreach($officename as $officename1){
-        $searchForm->office->addMultiOption($officename1['office_id'],$officename1['name']);
+        $officename = $this->view->adm->viewRecord("ourbank_master_villagelist","id","DESC");  
+        foreach($officename as $officename1){ 
+        $searchForm->s3->addMultiOption($officename1['village_id'],$officename1['name']);
         }
+          if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
 
-//paginator 
+         $result = $individual->searchDetails($this->view->createdby,$postedvalues);  
+		$this->view->family = $result; //print_r($result);
+
         $page = $this->_getParam('page',1);
-        $paginator = Zend_Paginator::factory($result);
-//search member details
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) 
-        {
-        $formData = $this->_request->getPost();
-                if ($searchForm->isValid($formData)) 
-                {
-                $result = $individual->searchDetails($this->view->createdby,$searchForm->getValues());
-                $page = $this->_getParam('page',1);
-                $paginator = Zend_Paginator::factory($result);
-                $this->view->paginator = $paginator;
-		        $this->view->search = true;
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+        if (!$result){
+                       echo "<font color='RED'>Records Not Found Try Again...</font>";
+                            }
 
-                } 
-        }
-        $paginator->setItemCountPerPage($this->view->adm->paginator());
-        $paginator->setCurrentPageNumber($page);
-        $this->view->paginator = $paginator;
     }
 }
 

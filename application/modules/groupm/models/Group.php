@@ -29,13 +29,29 @@ class Groupm_Model_Group extends Zend_Db_Table {
 	return $this->fetchAll($select);
     }
     // get search group details  
-    public function searchDetails($post) { 
+    public function searchDetails($post) 
+    {   
+        	$keyvalue = array_filter($post);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) 
+	{
 	$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('b' => 'ourbank_group'),array('id'),array('id as groupid','groupcode','name as  group_name'))
-			->where('b.groupcode like "%" ? "%"',$post['groupcode'])
-			->where('b.name like "%" ? "%"',$post['groupname']);   
+                        ->join(array('c' => 'ourbank_office'),'b.village_id=c.id',array('name'))
+                        ->where('c.name like "%" ? "%"',$post['s3'])
+			->where('b.groupcode like "%" ? "%"',$post['s1'])
+			->where('b.name like "%" ? "%"',$post['s2']);
  	return $this->fetchAll($select);
-    }
+    }else{
+            $select = $this->select()
+			->setIntegrityCheck(false)  
+                        ->join(array('b' => 'ourbank_group'),array('id'),array('id as groupid','groupcode','name as  group_name'))
+                        ->join(array('c' => 'ourbank_office'),'b.village_id=c.id',array('name'));			
+ //die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
+	}
 
  }

@@ -35,13 +35,13 @@
 
 		
 	
-        	$feename = $formfield->field('Text','name','','','mand','',false,'','','','','',0,0);
-        	$value = $formfield->field('Text','value','','','mand','',false,'','','','','',0,0);
+        	$s1 = $formfield->field('Text','s1','','','mand','',false,'','','','','',0,0);
+        	$s2 = $formfield->field('Text','s2','','','mand','',false,'','','','','',0,0);
         	
 
         // Hidden Feilds 
     
 					
-		$this->addElements(array($feename,$value));
+		$this->addElements(array($s1,$s2));
     }
 }

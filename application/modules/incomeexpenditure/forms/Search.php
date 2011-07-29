@@ -24,6 +24,7 @@ class Incomeexpenditure_Form_Search extends ZendX_JQuery_Form
     {
         $datefrom = new ZendX_JQuery_Form_Element_DatePicker('datefrom');
         $datefrom->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
+        $datefrom->setAttrib('autocomplete','off');
         $this->addElements(array($datefrom));
     }
 }

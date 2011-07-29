@@ -97,11 +97,11 @@
 				</tr>
 		
 			<?php } }  $i=0;$j=0; ?>
-        </table>
+        </table><br>
 </div></tr></TR></table></fieldset>
 <form action="<?php echo $this->baseUrl();?>/ledgerbalancebook/index/pdfdisplay" method="POST" onClick="window.open('<?php echo $this->baseUrl();?>/ledgerbalancebook/index/reportdisplay/file/ledgerbalancebook.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
-           <br><input type="submit" value="PDF" id="submit">
+           		<input type="submit" value="PDF" id="submit">
 				<input type="hidden" name="field1" value="<?php echo $this->ledegerList; ?>"/>
                 <input type="hidden" name="field1" value="<?php echo $this->ledegerListAssets; ?>"/>
 				<input type="hidden" name="date1" value="<?php echo $this->date1; ?>"/>

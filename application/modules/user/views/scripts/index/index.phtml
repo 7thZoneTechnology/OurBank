@@ -28,15 +28,15 @@
                     <table width="100%">
                         <tr>
                             <td class="label">Username:</td>
-                            <td ><? echo $this->form->name;?></td>
+                            <td ><? echo $this->form->s1;?></td>
                             <td class="label">Designation:</td>
-                            <td ><? echo $this->form->designation;?></td>
+                            <td ><? echo $this->form->s2;?></td>
                         </tr>
                         <tr>					
                             <td class="label">Office name:</td>
-                            <td ><? echo $this->form->bank;?></td>
+                            <td ><? echo $this->form->s3;?></td>
                             <td class="label">Granted:</td>
-                            <td ><? echo $this->form->grant_id;?></td>
+                            <td ><? echo $this->form->s4;?></td>
                         </tr>
                     </table>
                     <!-- search button  !-->
@@ -69,9 +69,9 @@
     </tr>
 		<?php endforeach; ?>
 		<?php endif; ?>
-    <tr>
-        <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding',
-                                        '/partials/my_pagination_control.phtml'); ?></div></td>
-    </tr>
+   
 </table>
 <?php } ?>
+<div align="center" style="margin-top:10px;color:#CC6633;">
+<?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+</div>

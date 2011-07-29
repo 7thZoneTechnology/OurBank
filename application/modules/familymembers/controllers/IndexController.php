@@ -143,6 +143,10 @@ class Familymembers_IndexController extends Zend_Controller_Action
                     $acctypeid=$this->_getParam('accounttype');
                     $bank=$this->_getParam('bank');
                     $branch=$this->_getParam('branch');
+
+					$signv = $this->_getParam('sign');
+
+
                     $blood=$this->_getParam('blood');
                     $banckAccount = $this->_getParam('bankAccount');
                     $mobile=$this->_getParam('mobile');
@@ -162,6 +166,14 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 } else {
                     $bread = 0;
                 }
+
+				if ($signv[$s] == $i+1 ) {
+                    $cansign = 1;
+                    $s++;
+                } else {
+                    $cansign = 0;
+                }
+
                 if ($headID[$k] == $i+1) {
                     $head = 1;
                     $k++;
@@ -194,6 +206,8 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'accouttype_id' => $acctypeid[$i],
                                     'bank' => $bank[$i],
                                     'branch_po' => $branch[$i],
+									'sign'=>$cansign,
+
                                     'bank_ac' => $banckAccount[$i],
                                     'blood_id'=>$blood[$i],
                                     'mobile_number' => $mobile[$i],
@@ -256,7 +270,7 @@ class Familymembers_IndexController extends Zend_Controller_Action
         $this->view->marital = $this->view->adm->viewRecord("ourbank_master_maritalstatus","id","ASC");
         $this->view->proffession = $this->view->adm->viewRecord("ourbank_master_profession","id","ASC");
         $this->view->bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
-        //$this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
+        $this->view->promoter = $this->view->adm->viewRecord("ourbank_master_cbopromoter","id","DESC");
         $this->view->promoter=$this->view->modelfamily->getcbolist($kootaid);
         $this->view->accounttype = $this->view->adm->viewRecord("ourbank_master_accountype","id","ASC");
         $this->view->blood = $this->view->adm->viewRecord("ourbank_master_bloodtype","id","ASC");
@@ -274,10 +288,13 @@ class Familymembers_IndexController extends Zend_Controller_Action
 
         //update contact details
         if ($this->_request->getPost('Update')) {
+		$formData = $this->_request->getPost();
+
             $id=$this->_getParam('id');
             $family = $this->view->familydetails = $familyobj->getfamilydetails1($id); 
             $count = count($family);
             $ExistMemberscount = $count;
+
             for ($j = 0 ; $j< $count; $j++) {
                 $this->view->adm->addRecord("ourbank_familymember_log",$family[$j]);
             }
@@ -311,9 +328,10 @@ class Familymembers_IndexController extends Zend_Controller_Action
             $dob= $this->_getParam('dob');
             $uid= $this->_getParam('uid');
             $employment=$this->_getParam('employ_status');
+			$signv = $this->_getParam('sign');
 
             $countname = count($mem_name);
-            $j=0; $k=0; $l=0;
+            $j=0; $k=0; $l=0; $s=0;
             for($i = 0; $i< $countname; $i++) 
             {
                 if ($breadwinner[$j] == $i+1) {
@@ -322,6 +340,15 @@ class Familymembers_IndexController extends Zend_Controller_Action
                 } else {
                     $bread = 0;
                 }
+
+				if ($signv[$s] == $i+1) {
+                    $cansign = 1;
+                    $s++;
+                } else {
+                    $cansign = 0;
+                }
+
+
                 if ($headID[$k] == $i+1) {
                     $head = 1;
                     $k++;
@@ -356,6 +383,9 @@ class Familymembers_IndexController extends Zend_Controller_Action
                                     'bank_ac' => $banckAccount[$i],
                                     'blood_id'=>$blood[$i],
                                     'mobile_number' => $mobile[$i],
+
+									'sign'=>$cansign,
+
                                     'created_by'=>$this->view->createdby, 
                                     'created_date'=>date("y/m/d H:i:s")
                                    );

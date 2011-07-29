@@ -21,7 +21,7 @@ class Groupprofile_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle = 'Group Profile';
+        $this->view->pageTitle = 'Group Social Economic';
         $this->view->title = 'Loan Process';
         $this->view->accounts = new Groupprofile_Model_Groupprofile();
 
@@ -53,10 +53,13 @@ class Groupprofile_IndexController extends Zend_Controller_Action
             $formData = $this->_request->getPost();
             if ($accountsForm->isValid($formData)) 
                     {
-                    $membercode = $this->_request->getParam('membercode');
+                    $membercode = $this->_request->getParam('s1');
                     if (substr($membercode,4,1) == 2 || substr($membercode,4,1) == 3) 
                         {
                             $this->view->group = $group = $this->view->accounts->group($membercode);
+
+                            $this->view->landDetails = $this->view->accounts->landDetails($membercode);
+
                             $this->view->groupDeatils = $this->view->accounts->groupDeatils($membercode);
                                 $addForm = new Loanprocess_Form_Loanprocess(count($this->view->group));
                                 $this->view->form=$addForm;

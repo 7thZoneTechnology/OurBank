@@ -15,6 +15,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
+?>
+<script type="text/javascript">
+       $(function() {
+           $('#times').calendricalTime(); 
+       });
+</script>
+<?php
 
     class  Groupmdefault_Form_groupdefault extends Zend_Form {
             public function init() {
@@ -59,6 +66,7 @@
 
                  $time = $formfield->field('Text','times','','','mand required','Time',true,'','','','','',1,'');
                  $time->setAttrib('maxlength',10);
+                $time->setAttrib('autocomplete','off');
 
                  $day = $formfield->field('Select','day','','','mand required','Day',true,'','','','','',1,'');
                     

@@ -33,31 +33,48 @@ class Savings_Model_Savings extends Zend_Db_Table {
   		// return available offerdetails
 	}
 
-	public function SearchofferProduct($post = array()) {
-                $dateconvertor = new App_Model_dateConvertor();
-                if($post['fromdate']){
-                    $begindate = $dateconvertor->phpmysqlformat($post['fromdate']);
+	public function SearchofferProduct($post) {
+               
+
+ 	$keyvalue = array_filter($post);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
+
+ $dateconvertor = new App_Model_dateConvertor();
+                if($post['s3']){
+                    $begindate = $dateconvertor->phpmysqlformat($post['s3']);
                 } else {
-                    $begindate = $post['fromdate'];
+                    $begindate = $post['s3'];
                 }
             
-                if($post['todate']){
-                    $closedate = $dateconvertor->phpmysqlformat($post['todate']);
+                if($post['s4']){
+                    $closedate = $dateconvertor->phpmysqlformat($post['s4']);
                 } else {
-                    $closedate = $post['todate'];
+                    $closedate = $post['s4'];
                 }
 
- 		$select = $this->select()
+	$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('b' => 'ourbank_productsoffer'),array('id'),array('id as productid','name as productname','begindate','closedate','shortname as shortnames'))
                 ->join(array('a' => 'ourbank_master_membertypes'),'b.applicableto = a.id',array('type'))
-			->where('b.name like "%" ? "%"',$post['prodname'])
-			->where('b.shortname like "%" ? "%"',$post['shname'])
+			->where('b.name like "%" ? "%"',$post['s1'])
+			->where('b.shortname like "%" ? "%"',$post['s2'])
 			->where('b.begindate like "%" ? "%"',$begindate)
 			->where('b.closedate like "%" ? "%"',$closedate);
 		$result = $this->fetchAll($select);
 		return $result->toArray();
-  		// return searched offerdetails
+		} else {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('p' => 'ourbank_productsoffer'),array('id'),array('id as productid','name as productname','shortname as shortnames','begindate','closedate'))
+	           	->join(array('A' => 'ourbank_product'),'p.product_id = A.id')
+			->join(array('B' => 'ourbank_category'),'A.category_id=B.id')
+                        ->where('A.category_id = 1') 
+			->join(array('c'=>'ourbank_master_membertypes'),'p.applicableto = c.id');
+// die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+		}
 
 	}
 

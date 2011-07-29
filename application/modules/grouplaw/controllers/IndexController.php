@@ -117,6 +117,7 @@ class Grouplaw_IndexController extends Zend_Controller_Action
                 $y1=690;    
 
             $Declaration = new Declaration_Model_Dec();
+            
             $code=$this->_request->getParam('groupcode');
             $this->view->result = $this->view->loan->groupDeatils($code);
             $this->view->groupmembers= $this->view->loan->getgroupmembers($code);
@@ -207,7 +208,7 @@ foreach($this->view->groupmembers as $member) {
                     ->drawText(''.$member['uid'].'',140,$y1);
 
 				$page->setFont($font, 9)
-                    ->drawText(''.$member['family_id'].'',200,$y1);
+                    ->drawText(''.$member['fathername'].'',200,$y1);
 
 				$y1=$y1-10;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
@@ -221,6 +222,6 @@ foreach($this->view->groupmembers as $member) {
 		$pdf->save('/var/www/'.$projname.'/reports/grouplaw.pdf');
 		$path = '/var/www/'.$projname.'/reports/grouplaw.pdf';
 		chmod($path,0777);
-//                 $this->_redirect('/declaration/index');
+          //  $this->_redirect('/grouplaw/index');
 	}
 }

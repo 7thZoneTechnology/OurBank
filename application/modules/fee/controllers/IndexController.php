@@ -78,32 +78,21 @@ class Fee_Indexcontroller extends Zend_Controller_Action
 	{
                
 	$searchForm = new Fee_Form_Search();
-		$this->view->form = $searchForm;
-		$individual = new Fee_Model_Fee();
- $id=$this->_getParam('id');
-			$this->view->id=$id;
-		$page = $this->_getParam('page',1);
-		$paginator = Zend_Paginator::factory($this->view->adm->viewRecord("ourbank_fee","id","DESC"));
+       $this->view->form = $searchForm;
 
-	if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-			$formData = $this->_request->getPost();
-			if ($this->_request->isPost()) {
-				$formData = $this->_request->getPost();
-				if ($searchForm->isValid($formData)) {
-					$result = $individual->feeSearch($searchForm->getValues());
-					$page = $this->_getParam('page',1);
-					$paginator = Zend_Paginator::factory($result);
-		$this->view->paginator = $paginator;
-				} 
-				if (!$result){
-					echo "<font color='RED'>Records Not Found Try Again...</font>";
-				}
-			}
-		}
-		$paginator->setItemCountPerPage($this->view->adm->paginator());
-		$paginator->setCurrentPageNumber($page);
-		$this->view->paginator = $paginator;
+	$fee = new Fee_Model_Fee();
+// 
+	if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
 
+   $result = $fee->SearchFee($postedvalues);
+		$this->view->Fee = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
 	}
 public function viewAction() 
 	{

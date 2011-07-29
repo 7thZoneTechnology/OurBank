@@ -17,92 +17,134 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-/*  action for view and pdf */
+?>
+
+<?php
+/*
+ *  create an cashscroll controller for view and pdf
+ */
 class Daybook_IndexController extends Zend_Controller_Action
 {
-    function init() { 
-            $this->view->title=$this->view->translate("Day book");
-            $this->view->pageTitle=$this->view->translate("Day book report");
-            $this->view->type = "financialReports";
-            $this->view->dateconvert=new App_Model_dateConvertor();
-			$this->view->adm = new App_Model_Adm();
-	    $storage = new Zend_Auth_Storage_Session();
-            $data = $storage->read();
-            if(!$data){
-               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
-                 }
-
-           $sessionName = new Zend_Session_Namespace('ourbank');
-           $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-
-          $login=new App_Model_Users();
-          $loginname=$login->username($userid);
-          foreach($loginname as $loginname) {
-           $this->view->username=$loginname['username']; // get the user name
-       }
- 
-
+    public function init() 
+    { 
+        $this->view->pageTitle = $this->view->translate("Daybook");
+        $this->view->title =  $this->view->translate('Reports');
+        $this->view->type = $this->view->translate("financialReports");
+$this->view->adm = new App_Model_Adm();
     }
-    //view action
-    function indexAction() {
-        $this->view->pageTitle=$this->view->translate("Day book report");
-	//form element instance
-        $searchForm = new Daybook_Form_Search();
+	//view action
+    public function indexAction() 
+    {
+
+        $path = $this->view->baseUrl();
+
+        $searchForm = new Cashscroll_Form_Search($path);
         $this->view->form = $searchForm;
-	//model instance
-        $transaction = new Daybook_Model_Daybook();
+//         $sample = new Reports_Form_Sample();
+//         $this->view->sample = $sample;
+
+                $transaction = new Daybook_Model_Daybook();
+
       $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
-				$searchForm->branch->addMultiOption($officename['id'],$officename['type']);
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-            $formData = $this->_request->getPost();  
-            if ($searchForm->isValid($formData)) { 
+       		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+//         if ($searchForm->isValid($formData)) {
+$dateconvert= new App_Model_dateConvertor();
 
-            $fromDate = $this->view->dateconvert->phpmysqlformat($this->_request->getParam('datefrom')); 
-            $this->view->fromdate=$this->_request->getParam('datefrom');
-            $this->view->branchid=$branchid = $this->_request->getParam('branch'); 
-            $this->view->resultshow = $this->view->translate("As of  <font color= #039>".$this->view->dateconvert->phpnormalformat($fromDate)."</font>");
-    
-            if($fromDate){
-                $this->view->savings = 10;
-                // Credit side Cash Transactions
-                $this->view->savingsCredit =$transaction->totalSavingsCredit(1,$fromDate,$branchid);
-                // Debit side Cash Transactions
-                $this->view->savingsDebit =$transaction->totalSavingsDebit(1,$fromDate,$branchid);
-               // Credit side Tranfer Transactions
-                $this->view->TransfersavingsCredit =$transaction->totalSavingsCredit(5,$fromDate,$branchid);
-                //Debit side Tranfer Transactions
-                $this->view->TransfersavingsDebit =$transaction->totalSavingsDebit(5,$fromDate,$branchid);
-                $osc = $transaction->openingBalance($fromDate,$branchid); 
+
+     
+       $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
+$this->view-> date1 =$fromDate;
+
+       $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
+$this->view-> date2 =$toDate;
+
+ 		$branch=$this->_request->getParam('branch');
+ 		$group=$this->_request->getParam('group');
+			$officename=$transaction->getOffice($branch);
+foreach ($officename as $officename) {
+$this->view-> name =$officename['name'];
+}
+ 	$group=$this->_request->getParam('group');
+/*
+        $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
+	$fromDate = $dateconvertor->mysqlformat($fromDate);
+
+            $title1 = $this->view->translate("Cash Scroll");
+            $this->view->pageTitle = $title1;
+            $formData = $this->_request->getPost();
+                $this->view->savings = 10;*/
+if ($group=="") {
+                //Saving Account Credit and Debit
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);
+           //     $officename=$transaction-> officename($branchid);
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch);
+}else {
+  $this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
+          //      $officename=$transaction-> officename($branchid);
+                $this->view->savingsDebit = $transaction->totalSavingsDebitg($fromDate,$toDate,$group);
+
+                // Opening Balance
+                $osc = $transaction->openingBalanceg($fromDate,$toDate,$group);
                 foreach($osc as $osc1) {
-                    $this->view->openingBalance = $osc1["openingBalance"];
+                $this->view->openingBalance = $osc1["openingBalance"];
                 }
-            }
-          } 
+                if((!$this->view->savingsCredit) && (!$this->view->savingsDebit)){
+                                echo "<font color='red'><b> Record not found</b> </font>";
+                }
+            
+         }
+    } }
+	//report display
+    public function sublevelAction() 
+    {
+        $path = $this->view->baseUrl();
+
+        $this->_helper->layout()->disableLayout();
+$searchForm = new Cashscroll_Form_Search($path);
+        $this->view->form = $searchForm;
+
+             $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
+        		$cashscroll = new Cashscroll_Model_Cashscroll();
+            $officelevel = $cashscroll->subofficeFromUrl($hierarchy);
+  foreach($officelevel as $officetype) { 
+        $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
+  public function groupAction() 
+    {
+        $path = $this->view->baseUrl();
+
+        $this->_helper->layout()->disableLayout();
+$searchForm = new Cashscroll_Form_Search($path);
+        $this->view->form = $searchForm;
+
+             $branch=$this->view->hierarchy = $this->_request->getParam('branch');
+        		$cashscroll = new Cashscroll_Model_Cashscroll();
+            $officelevel = $cashscroll->subgroupFromUrl($branch);
+  foreach($officelevel as $officetype) { 
+        $searchForm->group->addMultiOption($officetype->id,$officetype->name);
         }
     }
 
-    function viewtransactionAction() {
-    }
-	//for pdf view action
-    function reportdisplayAction() {
-        $this->_helper->layout->disableLayout();
-        $file1 = $this->_request->getParam('file'); 
+	//report display
+    public function reportdisplayAction() 
+    {
         $app = $this->view->baseUrl();
         $word=explode('/',$app);
-        $projname='';
-        for($i=0; $i<count($word); $i++) {
-                if($i>0 && $i<(count($word)-1)) { $projname.='/'.$word[$i]; }
-        }
-        $this->view->filename = $projname."/reports/".$file1;
+        $projname = $word[1];
+	//disable layout
+        $this->_helper->layout->disableLayout();
+        $file1 = $this->_request->getParam('file'); 
+        $this->view->filename = "/".$projname."/reports/".$file1;
     }
 
-    function reportviewAction() {
-    }
-	//pdf action
-    function pdftransactionAction() 
-    {
+     //pdf transaction
+    public function pdftransactionAction() 
+    { 
             //rupees right alignment
             function position($amt,$posValue) {
                       $len=strlen($amt);
@@ -110,308 +152,167 @@ class Daybook_IndexController extends Zend_Controller_Action
                       return $pos;
                }
 
-            $fromDate = $this->view->dateconvert->phpmysqlformat($this->_request->getParam('fromdate')); 
-            $this->view->fromdate=$this->_request->getParam('fromdate');
-            $this->view->branchid=$branchid = $this->_request->getParam('branchid');
+        $fromDate = $this->_request->getParam('date');
+        $branchid = $this->_request->getParam('office');
+        $this->view->field1 = $fromDate;
+        $this->view->branchid = $branchid;
 
+//         $fromDate = $this->_request->getParam('field1'); 
+//         $this->view->field1 = $fromDate;
+	//date format instance
+	$dateconvertor = new App_Model_dateConvertor();
+	$cfromDate = $dateconvertor->mysqlformat($fromDate);
         $pdf = new Zend_Pdf();
         $page = $pdf->newPage(Zend_Pdf_Page::SIZE_A4);
         $pdf->pages[] = $page;
         //Path
         $app = $this->view->baseUrl();
         $word=explode('/',$app);
-        $projname='';
-        for($i=0; $i<count($word); $i++) {
-                if($i>0 && $i<(count($word)-1)) { $projname.='/'.$word[$i]; }
-        }
+        $projname = $word[1];
         // Image
-        $image_name = "/var/www".$projname."/public/images/logo.jpg";
+        $image_name = "/var/www/".$projname."/public/images/logo.jpg";
         $image = Zend_Pdf_Image::imageWithPath($image_name);
-
+    
         $page->drawImage($image, 30, 770, 130, 820);
         $page->setLineWidth(1)->drawLine(25, 25, 570, 25); //bottom horizontal
         $page->setLineWidth(1)->drawLine(25, 25, 25, 820); //left vertical
         $page->setLineWidth(1)->drawLine(570, 25, 570, 820); //right vertical
         $page->setLineWidth(1)->drawLine(570, 820, 25, 820); //top horizontal
+
+        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 9);
+
+        $page->drawText("Cash Scroll",270, 780);
+        $page->drawText("Cash Scroll",270, 780);
+
         //set the font
-        $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 12);
-
-//         $this->view->fromdate=$fromDate = $this->_request->getParam('field1');
-//         $branchid=$this->view->branchid;
-        $this->view->savings = 10;
-        $page->drawText("Day Book",270, 770);
-        $page->drawText("Day Book",270, 770);
-        $title="As of ".$this->view->dateconvert->phpnormalformat($fromDate);
-        $text = array($title,"Particulars","GLcode","Cash","Transfer","Particulars","GLcode","Cash","Transfer");
-
-        $xx=35; $xy=270;
-        $yx=310; $yy=560;
-        $x1=array(40,115,255,300,320,400,545,590);
-        $xl=array(35,110,175,225,270,310,395,465,515,560);
-
         $page->setFont(Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA), 8);
-        $y1=730;
-        $page->drawText("Credit",35,$y1);
+        $y1=745;
+        $page->drawText("Credit",50,$y1);
         $page->drawText("Debit",310,$y1);
 
-        $y1=740;	$y2=740;
-        $page->drawText($text[0],500,$y1);//For Top Header
+        $y1=745;	$y2=740;
+        $page->drawText("As of From ".$fromDate,465,$y1);//For Top Header
+        $text = array("",
+                    "SL No.",
+                    "Particulars",
+                    "Amount",
+                    "Total",
+                    "Particulars",
+                    "Opening Cash",
+                    "Closing Cash");
+        $this->view->savings = 10;
+        $page->drawText("Date : ".date('d-m-Y'),500, 800); //date('Y-m-d')
+//         $page->drawText("Date : ".date('d-m-Y'),500, 800); 
+        $page->drawText($text[0],240, 780);$page->drawText($text[0],240, 780);
 
-        $y1-=15;
-        $startPoint=$y1;
-        $page->drawLine($xx, $y1, $xy, $y1); 
-        $page->drawLine($yx, $y1, $yy, $y1); 
-
-        $y1-=15;
-        $page->drawText("Date : ".date('d/m/Y'),500, 800); //date('Y-m-d')
-
-        $xt=array(40,115,180,230,320,400,470,520);
-        $page->drawText($text[1],$xt[0],$y1);	
-        $page->drawText($text[2],$xt[1],$y1);
-        $page->drawText($text[3],$xt[2],$y1);	
-        $page->drawText($text[4],$xt[3],$y1);
-        $page->drawText($text[5],$xt[4],$y1);
-        $page->drawText($text[6],$xt[5],$y1);
-        $page->drawText($text[7],$xt[6],$y1);
-        $page->drawText($text[8],$xt[7],$y1); $y1-=10;
-
-        $page->drawLine($xx, $y1, $xy, $y1);
-        $page->drawLine($yx, $y1, $yy, $y1); $y1-=15;
-
-        $y2=$y1;
-
-        $this->view->resultshow = $this->view->translate("As of <font color=#039>".$this->view->dateconvert->phpnormalformat($fromDate)."</font>");
-        
-        $transaction = new Daybook_Model_Daybook();
-        $CreditSide=$this->view->savingsCredit =$transaction->totalSavingsCredit(1,$fromDate,$branchid);
-//             echo '<pre>'; print_r($CreditSide);
-        $DebitSide=$this->view->savingsDebit =$transaction->totalSavingsDebit(1,$fromDate,$branchid);
-        $CreditTransferSide=$this->view->TransfersavingsCredit =$transaction->totalSavingsCredit(5,$fromDate,$branchid);
-        $DebitTransferSide=$this->view->TransfersavingsDebit =$transaction->totalSavingsDebit(5,$fromDate,$branchid);
-
-        $totalTrnsferCashcredit="0.00";
-        $totalCashCredit="0.00";
-        $creditTotal="0.00";
-                
-        $transferFlagCr = 0; $matchedProductsCr=array();$unmatchedProductsCr=array();
-        
-        if($CreditSide) {
-            foreach($CreditSide as $savingsCredit) {
-                $page->drawText($savingsCredit['name'],$x1[0],$y1); 
-                $page->drawText($savingsCredit['glcode'],$x1[1],$y1); 
-
-//                 $page->drawText($savingsCredit['amount_to_bank'],$x1[2],$y1); 
-               $pos=position(sprintf("%4.2f",$savingsCredit['amount_to_bank']),$x1[2]);
-               $page->drawText(sprintf("%4.2f",$savingsCredit['amount_to_bank']),$pos+2,$y1);
-        
-                    if($CreditTransferSide) { $transferFlagCr=1; $flag1=0;
-                    foreach($CreditTransferSide as $tsc) {
-                        if($savingsCredit['name']==$tsc['name']) {
-//                             $page->drawText($tsc['amount_to_bank'],$x1[3],$y1);
-               $pos=position(sprintf("%4.2f",$tsc['amount_to_bank']),$x1[3]);
-               $page->drawText(sprintf("%4.2f",$tsc['amount_to_bank']),$pos+2,$y1); 
-                            $flag1=1;
-                            $totalTrnsferCashcredit+= $tsc['amount_to_bank'];
-                            $matchedProductsCr[]=$tsc['name'];
-                        }
-                        else{
-                                $unmatchedProductsCr[]=$tsc['name'];
-                        }
-                    }
+        $x1 = 60; 
+        $x2 = 120; 
+        $x3 = 310;
+        $x4 = 315;
+        $x5 = 390;
+        $x6 = 570;
     
-                    $totalCashCredit+=$savingsCredit['amount_to_bank'];
-                }
-            $y1-=15;
-            }
-        }
-        $unmatchedProductsCr=array_diff($unmatchedProductsCr,$matchedProductsCr);
-        $unmatchedProductsCr=array_values($unmatchedProductsCr);
-        $unmatchedProductsCr = array_unique($unmatchedProductsCr);
+        $page->drawLine(50, 740, 550, 740);
+        $page->drawLine(50, 720, 550, 720);
 
-        if(count($CreditTransferSide))
-        {
-            for($k=0;$k<count($CreditTransferSide);$k++) {
-                if($k>count($matchedProductsCr)-1) {
-                    $matchedProductsCr[$k]='a';
-                }
-                if($k>count($unmatchedProductsCr)-1) {
-                    $unmatchedProductsCr[$k]='a';
-                }
-            }
-        }
+        $page->drawText($text[1], $x1, 725);
+        $page->drawText($text[2], $x2, 725);
+        $page->drawText($text[3], 250, 725);
+        $page->drawText($text[1], $x4, 725);
+        $page->drawText($text[5], $x5, 725);
+        $page->drawText($text[3], 510, 725);
+    
+        $y1 = 710;
+        $y2 = 710;
 
-        if($transferFlagCr==0){
-            foreach($CreditTransferSide as $tsc) {
-                $page->drawText($tsc['name'],$x1[0],$y1); 
-                $page->drawText($tsc['glcode'],$x1[1],$y1); 
-//                 $page->drawText($tsc['amount_to_bank'],$x1[3],$y1); 
-               $pos=position(sprintf("%4.2f",$tsc['amount_to_bank']),$x1[3]);
-               $page->drawText(sprintf("%4.2f",$tsc['amount_to_bank']),$pos+2,$y1);
-            $totalTrnsferCashcredit+= $tsc['amount_to_bank'];
-            $y1-=15;
-            }
-        }
-        //The unmatched records(Transfer with Cash) will be checked and printed here
-        else {
-            foreach($CreditTransferSide as $tsc) {
-                if($unmatchedProductsCr){
-                    for($j=0;$j<count($CreditTransferSide);$j++) {
-                        if($tsc['name']==$unmatchedProductsCr[$j] && $unmatchedProductsCr[$j]!=$matchedProductsCr[$j]) {
-                            $page->drawText($tsc['name'],$x1[0],$y1); 
-                            $page->drawText($tsc['glcode'],$x1[1],$y1); 
-//                             $page->drawText($tsc['amount_to_bank'],$x1[3],$y1);
-               $pos=position(sprintf("%4.2f",$tsc['amount_to_bank']),$x1[3]);
-               $page->drawText(sprintf("%4.2f",$tsc['amount_to_bank']),$pos+2,$y1);
-                        $totalTrnsferCashcredit+= $tsc['amount_to_bank'];	
-                        }
-                    $y1-=15;
-                    }
-                }
-            }
-        }
 
-        $opening="0.00";
-        $osc = $transaction->openingBalance($fromDate,$branchid); //echo '<pre>'; print_r($osc);
+
+        $transaction = new Cashscroll_Model_Cashscroll();
+
+        $this->view->savings = 10;
+
+        $this->view->savingsCredit = $transaction->totalSavingsCredit($cfromDate,$branchid);
+        $this->view->savingsDebit = $transaction->totalSavingsDebit($cfromDate,$branchid);
+
+        //Credit and Debit
+        $savingsCredit = $transaction->totalSavingsCredit($cfromDate,$branchid);
+        $savingsDebit = $transaction->totalSavingsDebit($cfromDate,$branchid);
+       // Opening Cash 
+        $openingBalance = 0; 
+        $osc = $transaction->openingBalance($cfromDate,$branchid);
         foreach($osc as $osc1) {
-            $this->view->openingBalance =$opening = $osc1["openingBalance"];
-        }
-        
-        $totalTrnsferCashDebit="0.00";
-        $totalCashDebit="0.00";
-        $debitTotal="0.00";
-
-        $transferFlagDr = 0; $matchedProductsDr=array(); $unmatchedProductsDr=array();
-        if($DebitSide) {
-            foreach($DebitSide as $savingsDebit) { 
-                $page->drawText($savingsDebit['name'],$x1[4],$y2); 
-                $page->drawText($savingsDebit['glcode'],$x1[5],$y2); 
-//                 $page->drawText($savingsDebit['amount_from_bank'],$x1[6],$y2); 
-               $pos=position(sprintf("%4.2f",$savingsDebit['amount_from_bank']),$x1[6]);
-               $page->drawText(sprintf("%4.2f",$savingsDebit['amount_from_bank']),$pos+2,$y2);
-
-                if($DebitTransferSide) { $transferFlagDr=1;$flag2=0;
-                foreach($DebitTransferSide as $tsd) {
-                    if($savingsDebit['name']==$tsd['name']) {
-//                         $page->drawText($tsd['amount_from_bank'],$x1[7],$y2); 
-               $pos=position(sprintf("%4.2f",$tsd['amount_from_bank']),$x1[7]);
-               $page->drawText(sprintf("%4.2f",$tsd['amount_from_bank']),$pos+2,$y2);
-                $flag2=1;
-
-                        $totalTrnsferCashDebit+=$tsd['amount_from_bank'];
-                        $matchedProductsDr[]=$tsd['name'];
-                    } else{
-                            $unmatchedProductsDr[]=$tsd['name'];
-                        }
-                }
-                $totalCashDebit+=$savingsDebit['amount_from_bank'];
-            } $y2-=15;  
-        }
-        }
-        $unmatchedProductsDr=array_diff($unmatchedProductsDr,$matchedProductsDr);
-        $unmatchedProductsDr=array_values($unmatchedProductsDr);
-        $unmatchedProductsDr = array_unique($unmatchedProductsDr);
-        
-        if(count($DebitTransferSide)) {
-            for($l=0;$l<count($DebitTransferSide);$l++) {
-                if($l>(count($matchedProductsDr)-1)) {
-                        $matchedProductsDr[$l]='a';
-                }
-                if($l>(count($unmatchedProductsDr)-1)) {
-                        $unmatchedProductsDr[$l]='a';
-                }
-            }
+            $openingBalance = $osc1->openingBalance;
         }
 
-        if($transferFlagDr==0){
-            foreach($DebitTransferSide as $tsd) {
-                $page->drawText($tsd['name'],$x1[4],$y2); 
-                $page->drawText($tsd['glcode'],$x1[5],$y2); 
-//                 $page->drawText($tsd['amount_from_bank'],$x1[7],$y2); 
-               $pos=position(sprintf("%4.2f",$tsd['amount_from_bank']),$x1[7]);
-               $page->drawText(sprintf("%4.2f",$tsd['amount_from_bank']),$pos+2,$y2);
-            $totalTrnsferCashDebit+=$tsd['amount_from_bank'];	
-            $y2-=15;
-            }
-        }else { $i=0;
-            foreach($DebitTransferSide as $tsd) {
-                if($unmatchedProductsDr){
-                    if($tsd['name']==$unmatchedProductsDr[$i] && $unmatchedProductsDr[$i]!=$matchedProductsDr[$i]) {
-                        $page->drawText($tsd['name'],$x1[4],$y2);
-                        $page->drawText($tsd['glcode'],$x1[5],$y2);
-//                         $page->drawText($tsd['amount_from_bank'],$x1[7],$y2);
-               $pos=position(sprintf("%4.2f",$tsd['amount_from_bank']),$x1[7]);
-               $page->drawText(sprintf("%4.2f",$tsd['amount_from_bank']),$pos+2,$y2);
-                    $totalTrnsferCashDebit+= $tsd['amount_from_bank'];
-                    }
-                }$i++;
-            $y2-=15;
-            }
+
+
+        $this->view->openingBalance = $openingBalance;
+
+        $amountCredit = "0";
+        $amountDebit = "0";
+        $i = 0; $j=0;
+
+        foreach($savingsCredit as $savingsCredit) {
+            $i++;
+            $page->drawText($i,$x1, $y1);
+            $page->drawText($savingsCredit->account_number,$x2, $y1);
+//             $page->drawText($savingsCredit->amount_to_bank,$x3, $y1);
+               $pos=position(sprintf("%4.2f",$savingsCredit->amount_to_bank),$x3);
+               $page->drawText(sprintf("%4.2f",$savingsCredit->amount_to_bank),$pos+2,$y1);
+            $amountCredit = $amountCredit + $savingsCredit->amount_to_bank;
+            $y1 = $y1 - 15;
         }
+        foreach($savingsDebit as $savingsDebit) {
+            $j++;
+            $page->drawText($j,$x4, $y2);
+            $page->drawText($savingsDebit->account_number,$x5, $y2);
+//             $page->drawText($savingsDebit->amount_from_bank,$x6, $y2);
+               $pos=position(sprintf("%4.2f",$savingsDebit->amount_from_bank),$x6);
+               $page->drawText(sprintf("%4.2f",$savingsDebit->amount_from_bank),$pos+2,$y2);
+            $amountDebit = $amountDebit + $savingsDebit->amount_from_bank;
+            $y2 = $y2 - 15;
+        }
+       
+        $page->drawLine(50, $y1, 550, $y1);
+        //opening balnce
+        $page->drawText($text[6], $x1, $y1 - 10);
+//         $page->drawText(sprintf("%4.2f", $openingBalance), $x3, $y1 -10);
+               $pos=position(sprintf("%4.2f",$openingBalance),$x3);
+               $page->drawText(sprintf("%4.2f",$openingBalance),$pos+2,$y1 -10);
 
-        $bottomY=min($y1,$y2);
-        $page->drawLine($xx, $bottomY, $xy, $bottomY);	
-        $page->drawLine($yx, $bottomY, $yy, $bottomY); 
-        $bottomY-=10;
-        $page->drawText("Total",$x1[1],$bottomY); 
-//         $page->drawText($totalCashCredit,$x1[2],$bottomY);
-               $pos=position(sprintf("%4.2f",$totalCashCredit),$x1[2]);
-               $page->drawText(sprintf("%4.2f",$totalCashCredit),$pos+2,$bottomY);
-//  	$page->drawText($totalTrnsferCashcredit,$x1[3],$bottomY); 
-               $pos=position(sprintf("%4.2f",$totalTrnsferCashcredit),$x1[3]);
-               $page->drawText(sprintf("%4.2f",$totalTrnsferCashcredit),$pos+2,$bottomY); 
-        $page->drawText("Total",$x1[5],$bottomY); 
-//         $page->drawText($totalCashDebit,$x1[6],$bottomY); 
-               $pos=position(sprintf("%4.2f",$totalCashDebit),$x1[6]);
-               $page->drawText(sprintf("%4.2f",$totalCashDebit),$pos+2,$bottomY);
-// 	$page->drawText($totalTrnsferCashDebit,$x1[7],$bottomY);
-               $pos=position(sprintf("%4.2f",$totalTrnsferCashDebit),$x1[7]);
-               $page->drawText(sprintf("%4.2f",$totalTrnsferCashDebit),$pos+2,$bottomY);
-        $bottomY-=10;
-        $page->drawLine($xl[1], $bottomY, $xl[4], $bottomY);	$page->drawLine($xl[6], $bottomY, $xl[9], $bottomY);
-        $bottomY-=10;
+        //closing Balance
+        $page->drawText($text[7], $x4, $y1 -10); 
+//         $page->drawText(sprintf("%4.2f", ( $sum = ($amountCredit + $openingBalance) - $amountDebit)), $x6, $y1 -10);
+               $pos=position(sprintf("%4.2f",( $sum = ($amountCredit + $openingBalance) - $amountDebit)),$x6);
+               $page->drawText(sprintf("%4.2f",( $sum = ($amountCredit + $openingBalance) - $amountDebit)),$pos+2,$y1 -10);
 
+        $page->drawLine(50, $y1 = $y1 - 20, 550, $y1);
+        $page->drawLine(50, $y1 -20, 550, $y1-20);
+    
 
-        $page->drawText("Opening balance",$x1[1],$bottomY); 
-//         $page->drawText($opening,$x1[2],$bottomY);
-               $pos=position(sprintf("%4.2f",$opening),$x1[2]);
-               $page->drawText(sprintf("%4.2f",$opening),$pos+2,$bottomY);
-        $total=$opening+$totalCashCredit;
-        $page->drawText("Closing balance",$x1[5],$bottomY);  
-        $closing=$total-$totalCashDebit;
-//         $page->drawText($closing,$x1[6],$bottomY); 
-               $pos=position(sprintf("%4.2f",$closing),$x1[6]);
-               $page->drawText(sprintf("%4.2f",$closing),$pos+2,$bottomY);	
-        $bottomY-=10;
-        $page->drawLine($xl[1], $bottomY, $xl[4], $bottomY);	$page->drawLine($xl[6], $bottomY, $xl[9], $bottomY);
-        $bottomY-=10;
-
-        $creditTotal=$opening+$totalCashCredit;
-        $page->drawText("Total",$x1[1],$bottomY); 
-//         $page->drawText($creditTotal,$x1[2],$bottomY);	
-               $pos=position(sprintf("%4.2f",$creditTotal),$x1[2]);
-               $page->drawText(sprintf("%4.2f",$creditTotal),$pos+2,$bottomY);
-//         $page->drawText($totalTrnsferCashcredit,$x1[3],$bottomY);
-               $pos=position(sprintf("%4.2f",$totalTrnsferCashcredit),$x1[3]);
-               $page->drawText(sprintf("%4.2f",$totalTrnsferCashcredit),$pos+2,$bottomY); 
-
-        $page->drawText("Total",$x1[5],$bottomY); 
-//         $page->drawText(($totalCashDebit+$closing),$x1[6],$bottomY);
-               $pos=position(sprintf("%4.2f",$totalCashDebit+$closing),$x1[6]);
-               $page->drawText(sprintf("%4.2f",$totalCashDebit+$closing),$pos+2,$bottomY);
-//  	$page->drawText($totalTrnsferCashDebit,$x1[7],$bottomY);
-               $pos=position(sprintf("%4.2f",$totalTrnsferCashDebit),$x1[7]);
-               $page->drawText(sprintf("%4.2f",$totalTrnsferCashDebit),$pos+2,$bottomY);
-        $bottomY-=10;
-        $page->drawLine($xx, $bottomY, $xy, $bottomY); 	$page->drawLine($yx, $bottomY, $yy, $bottomY); 
-        
-        for($i=0; $i<count($xl); $i++) {
-                $page->drawLine($xl[$i], $bottomY, $xl[$i], $startPoint);
-        }//vertical lines
+        $page->drawText($text[4], $x1, $y1 -15);$page->drawText($text[4], $x1, $y1 -15);
+               $pos=position(sprintf("%4.2f",($amountCredit + $openingBalance)),$x3);
+               $page->drawText(sprintf("%4.2f",($amountCredit + $openingBalance)),$pos+2,$y1 -15);
+//         $page->drawText(sprintf("%4.2f", ($amountCredit + $openingBalance)), $x3, $y1 -15);
+//         $page->drawText(sprintf("%4.2f", ($amountCredit + $openingBalance)), $x3, $y1 -15);
+        $page->drawText($text[4], $x4, $y1 -15); $page->drawText($text[4], $x4, $y1 -15);
+//         $page->drawText(sprintf("%4.2f", $amountDebit + $sum), $x6, $y1 -15);
+//         $page->drawText(sprintf("%4.2f", $amountDebit + $sum), $x6, $y1 -15);  
+               $pos=position(sprintf("%4.2f",$amountDebit + $sum),$x6);
+               $page->drawText(sprintf("%4.2f",$amountDebit + $sum),$pos+2,$y1 -15);
+    
+        // Virtual table
+        $page->setLineWidth(1)->drawLine(50, $y1 - 20, 50, 740); //Table left vertical
+        $page->setLineWidth(1)->drawLine(300, $y1 - 20, 300, 740); //Table center vertical
+        $page->setLineWidth(1)->drawLine(550, $y1 - 20, 550, 740); //table rigth vertical
+        //$page->drawText("ಭಾವನಾ. ಕೆ. ಎಸ್ ",$x6 + 30, $y1 -15, 'UTF-8'); 
 
         $pdfData = $pdf->render();
-	//folder path
-        $pdf->save('/var/www'.$projname.'/reports/daybook-'.date('Y-m-d').'.pdf');
-        $path = '/var/www'.$projname.'/reports/daybook-'.date('Y-m-d').'.pdf';
+    
+        $pdf->save('/var/www/'.$projname.'/reports/cashscroll.pdf');
+	$path = '/var/www/'.$projname.'/reports/cashscroll.pdf';
+    
         chmod($path,0777);
+
     }
 }

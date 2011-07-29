@@ -44,51 +44,27 @@ class Holiday_IndexController extends Zend_Controller_Action
 	{
                
 		$this->view->title = "Holiday";
-//		$storage = new Zend_Auth_Storage_Session();
-//		$data = $storage->read();
-//		if(!$data){
-//			$this->_redirect('index/login');
-//		}
-// 		$category = new Category_Model_Category();
-// 		$categorydetails=$category->getCategoryinformation();
-// 		$this->view->changelog=$category->getUpdatesinformation();
-// calling search form
-		$searchForm = new Holiday_Form_Search();
-		$this->view->form = $searchForm;
-//calling holiday model
-		$holiday = new Holiday_Model_Holiday();
-		$result = $holiday->getHolidayDetails();
-//listing office names
+
+	$searchForm = new Holiday_Form_Search();
+       $this->view->form = $searchForm;
 $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
-				$searchForm->office_id->addMultiOption($officename['id'],$officename['type']);
+				$searchForm->s2->addMultiOption($officename['id'],$officename['type']);
 			}
-//pagination
-		$page = $this->_getParam('page',1);
-		$paginator = Zend_Paginator::factory($result);
-		$paginator->setItemCountPerPage(5);
-		$paginator->setCurrentPageNumber($page);
-		$this->view->paginator = $paginator;
-//search function
-		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-			$formData = $this->_request->getPost();
-                        $this->view->errormsg="Record not found....Try again...";
-			if ($this->_request->isPost()) {
-				$formData = $this->_request->getPost();
-				if ($searchForm->isValid($formData)) {
-//getting values from search form
-					$result = $holiday->SearchHoliday($searchForm->getValues());
-					$page = $this->_getParam('page',1);
-					$paginator = Zend_Paginator::factory($result);
-                                         if(!$paginator)
-                                        {          $this->view->errormsg="Record not found....Try again...";
-                                        }
-					$paginator->setItemCountPerPage(5);
-					$paginator->setCurrentPageNumber($page);
-					$this->view->paginator = $paginator;
-				}
-			}
-		}
+	$holiday = new Holiday_Model_Holiday();
+// 
+	if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+   $result = $holiday->SearchHoliday($postedvalues);
+		$this->view->holiday = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+
 	}
 	public function holidayaddAction() 
 	{

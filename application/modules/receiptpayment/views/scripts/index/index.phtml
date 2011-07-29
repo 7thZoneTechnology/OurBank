@@ -21,7 +21,7 @@
 <h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5>
 <div style="float:left;width:370px">
 
-            <?php 
+            <?php
               $amountCredit = 0.00;
               $amountDebit = 0.00;
               $openingamountCredit = 0.00;
@@ -41,7 +41,7 @@
         <TR>
 
             <TD ><?php echo $savingsCredit->name ?></TD>
-            <TD align = "right"><?php echo $savingsCredit->savingcredit; 
+            <TD align = "right"><?php echo $savingsCredit->savingcredit= str_replace('-', '', number_format ($savingsCredit->savingcredit, 2, ".", "")); 
             $amountCredit = $amountCredit + $savingsCredit->savingcredit; ?></TD>
         </TR>
         <?php } ?>
@@ -53,10 +53,17 @@
             <?php foreach($this->openingsavingsCredit as $openingsavingsCredit) { ?>
             <TR>
                 <TD ><B>Opening Balance</B></TD>
-                <TD align = "right"><B><?php echo $openingsavingsCredit->openingBalance;
+                <TD align = "right"><B><?php echo $openingsavingsCredit->openingBalance= str_replace('-', '', number_format ($openingsavingsCredit->openingBalance, 2, ".", ""));
                 $openingamountCredit = $openingamountCredit + $openingsavingsCredit->openingBalance; ?></B></TD>
             </TR>
             <?php } ?>
+        <!-- Opening cash -->
+        <tr>
+            <?php foreach($this->cashcredit as $cashcredit) {?>
+            <td align="left"><?php echo $this->translate('Opening Cash');?></td>
+            <td align="right"><?php  echo $cashcredit = str_replace('-', '', number_format ($cashcredit['balance'], 2, ".", "")); ?></td>
+            <?php } ?>
+        </tr>
             <TR>
                 <TD ><B>Total</B></TD>
                 <?php if($openingamountCredit + $amountCredit != "0") { ?>
@@ -85,7 +92,7 @@
         <TR>
 
             <TD ><?php echo $savingsDebit->name ?></TD>
-            <TD align = "right" ><?php echo $savingsDebit->savingdebit; 
+            <TD align = "right" ><?php echo $savingsDebit->savingdebit= str_replace('-', '', number_format ($savingsDebit->savingdebit, 2, ".", "")); 
             $amountDebit = $amountDebit + $savingsDebit->savingdebit; ?></TD>
         </TR>
         <?php } ?>
@@ -96,10 +103,18 @@
         <?php foreach($this->openingsavingsDebit as $openingsavingsDebit) { ?>
         <TR>
             <TD ><B>Closing Balance</B></TD>
-            <TD align = "right"><B><?php echo $openingamountDebit = ($openingamountCredit + $amountCredit - $amountDebit); 
+            <TD align = "right"><B><?php $openingamountDebit = ($openingamountCredit + $amountCredit - $amountDebit); 
+             echo $openingamountDebit = str_replace('-', '', number_format ($openingamountDebit, 2, ".", "")); 
             //$openingamountDebit = $openingamountDebit + $openingsavingsDebit->closingBalance; ?></B></TD>
         </TR>
         <?php } ?>
+        <!-- closing cash-->
+        <tr>
+            <?php foreach($this->cashdebit as $cashdebit) {?>
+            <td align="left"><?php echo $this->translate('Closing Cash');?></td>
+            <td align="right"><?php  echo $cashdebit = str_replace('-', '', number_format ($cashdebit['balance'], 2, ".", "")); ?></td>
+            <?php } ?>
+        </tr>
         <TR>
              <TD ><b>Total</TD></TD>
              <?php if($openingamountDebit + $amountDebit != "0") { ?>
@@ -108,45 +123,41 @@
              <TD align = "right" ><B>----</B></TD>
              <?php } ?>
         </TR>
-        			<?php  } else {?>
+        			<?php } else { ?>
 				<tr>
 					<td><?php echo "----";?></td>
 					<td align = "right"><?php echo "----";?></td>
 				</tr>
 		
-			<?php } }  ?>
+			<?php } } ?>
     </table>
 </div>
 
-<form action="<?php echo $this->baseUrl();?>/receiptspayments/pdftransaction" method="POST"
-onClick="window.open('/ourbank/public/receiptspayments/reportdisplay/file/ReceiptsPayments.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+<div style="float:left;width:800px">
+<form action="<?php echo $this->baseUrl();?>/receiptpayment/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl();?>/receiptpayment/index/reportdisplay/file/ReceiptsPayments.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
             <input type="hidden" name="field2" value="<?php echo $this->field2;?>">
             <input type="submit" value="PDF" id="submit">
 </form>
-<?php } else {?>
+</div>
 
-<fieldset>
-    <legend> search </legend>
+<?php } else {?>
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b">
+			<th colspan="4">Search</th>
                 <form action="<?php echo $this->baseUrl();?>/receiptpayment" method="POST">
                     <TR>
-                            <TD >Date From</TD>
+                            <TD ><br>Date From</TD>
                             <TD ><?php echo $this->form->field1;?></TD>
-                            <TD >Date To</TD>
+                            <TD ><br>Date To</TD>
                             <TD ><?php echo $this->form->field2;?></TD>
                     </TR>
-                   
-
+				<TD><input type="submit" name="Search" id="Submit" value="Search"></TD></tr>
             </table>
 
-				<input type="submit" name="Search" id="Submit" value="Search">			
                 </form>
 
         </div>
-</fieldset>
-
-
 <?php } ?>
 

@@ -42,7 +42,7 @@ class Loans_Model_Loan extends Zend_Db_Table {
 
  public function getGlCode($header){
                 $db = $this->getAdapter();
-                        $sql = "select max(glsubcode) as glsubcode from ourbank_glsubcode where glcode_id =(select id from ourbank_glcode where header like '%".$header."%')";
+                        $sql = "select max(glsubcode) as glsubcode from ourbank_glsubcode where glcode_id =(select id from ourbank_glcode where header  = '".$header."')";
                 $result = $db->fetchOne($sql);
 	       return $result; // //return liabilities values 
         } 
@@ -50,14 +50,14 @@ class Loans_Model_Loan extends Zend_Db_Table {
 
         public function getGlCodeid($header){
                 $db = $this->getAdapter();
-                        $sql = "select id from ourbank_glcode where header like '%".$header."%'";
+                        $sql = "select id from ourbank_glcode where header = '".$header."'";
                 $result = $db->fetchOne($sql);
 	       return $result; // //return liabilities values 
         } 
 
         public function getGlCodeexist($header){
                 $db = $this->getAdapter();
-                        $sql = "select glcode from ourbank_glcode where header like '%".$header."%'";
+                        $sql = "select glcode from ourbank_glcode where header ='".$header."'";
                 $result = $db->fetchOne($sql);
 	       return $result; // //return liabilities values 
         }

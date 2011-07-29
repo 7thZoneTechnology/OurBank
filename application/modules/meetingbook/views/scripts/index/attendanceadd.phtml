@@ -21,6 +21,10 @@
 <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.2.js"></script>
 <script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/meetingbook.js"></script>
+
+<script src="<?php echo $this->baseUrl(); ?>/js/jquery.calendrical.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl(); ?>/css/calendrical.css" />
+
 <script>
 $(document).ready(function() {
     $('#myform').submit(function(e) {
@@ -137,7 +141,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting held date"); ?></TD>
                 <TD><?php echo $this->attendanceform->meeting_date;?></TD>
                 <TD><label for="fld1" class="mand"><?php echo $this->translate("Meeting held Time"); ?></TD>
-                <TD><?php echo $this->attendanceform->meeting_time;?></TD>
+                <TD><span class="display"><?php echo $this->attendanceform->meeting_time;?></span></TD>
             </TR>
 
            <tr><TD colspan="4">

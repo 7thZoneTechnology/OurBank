@@ -130,33 +130,21 @@ class Savings_IndexController extends Zend_Controller_Action{
 	 
 	public function indexAction() {
                 //  when delete particular saving product offer we should check that particular saving product offer is used by other one or not according to result we should delete that record if that saving product offer is used by some one then we should display message
-                if($this->_helper->flashMessenger->getMessages()){
-                    $messages = $this->_helper->flashMessenger->getMessages();
-                        foreach($messages as $error){
-                    echo "<script> alert('$error');</script>";
-                    }
-                }
+              
 		$this->view->title = "Savings";
 		$searchForm = new Savings_Form_Search();
 		$this->view->form = $searchForm;
 		$offerproduct = new Savings_Model_Savings();
-		$result = $offerproduct->fetchAllofferProductDetails();
-		$page = $this->_getParam('page',1);
-		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-                    $formData = $this->_request->getPost();
-                    if ($searchForm->isValid($formData)) {
-                        $result = $offerproduct->SearchofferProduct($searchForm->getValues()); // get savings details
-                        $paginator = Zend_Paginator::factory($result); // set pagination 
-                        $this->view->search = true;
-                    }
-                } else {
-                            $result = $offerproduct->fetchAllofferProductDetails(); // get default savings offer values
-                            $paginator = Zend_Paginator::factory($result); // set pagination
- 
-                }
-                $paginator->setItemCountPerPage($this->view->adm->paginator());
-                $paginator->setCurrentPageNumber($page);
-                $this->view->paginator = $paginator;
+if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+                        $result = $offerproduct->SearchofferProduct($postedvalues); // get savings details
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
 			
 		
 	}

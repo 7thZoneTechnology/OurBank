@@ -24,8 +24,9 @@ class Groupm_Form_Search extends Zend_Form {
 			//$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
 			$formfield = new App_Form_Field ();
                         // send parameters to get input fields 
-			$groupcode = $formfield->field('Text','groupcode','','','','Group code',false,'','','','','',1,'');
-			$groupname = $formfield->field('Text','groupname','','','','Group name',false,'','','','','',1,'');
-			$this->addElements(array($groupcode,$groupname));
+			$s1 = $formfield->field('Text','s1','','','','Group code',false,'','','','','',1,'');//$groupcode,groupcode
+			$s2 = $formfield->field('Text','s2','','','','Group name',false,'','','','','',1,'');//$groupname,groupname
+                        $s3 = $formfield->field('Text','s3','','','','Village name',false,'','','','','',1,'');//$groupname,groupname
+			$this->addElements(array($s1,$s2,$s3));
 		}
 }

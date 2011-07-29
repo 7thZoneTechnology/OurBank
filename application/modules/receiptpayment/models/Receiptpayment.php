@@ -42,7 +42,7 @@ class Receiptpayment_Model_Receiptpayment extends Zend_Db_Table
     public function totalSavingsDebit($fromDate,$toDate) {
          $select = $this->select()
                        ->setIntegrityCheck(false)
-                        ->from(array('A' => 'ourbank_transaction'),array('SUM(amount_to_bank) as savingdebit'))
+                        ->from(array('A' => 'ourbank_transaction'),array('SUM(amount_from_bank) as savingdebit'))
                         ->where('A.recordstatus_id = 3 OR A.recordstatus_id = 1')
                         ->where('A.transactiontype_id = 2' )
                         ->where('A.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ')
@@ -64,11 +64,9 @@ class Receiptpayment_Model_Receiptpayment extends Zend_Db_Table
                         ->join(array('D'=>'ourbank_transaction'),'A.transaction_id = D.transaction_id')
                         ->where('D.transaction_date < "'.$fromDate.'" ')
                         ->join(array('B'=>'ourbank_glsubcode'),'A.	glsubcode_id_to = B.id')
-                        ->join(array('C'=>'ourbank_glcode'),'C.id = B.glcode_id')
-                        ->where('C.id = 4');
+                        ->join(array('C'=>'ourbank_glcode'),'C.id = B.glcode_id');
+                       // ->where('C.id = 4'); 
 //die($select->__toString());
-
-
         return $this->fetchAll($select);
     }
 
@@ -84,14 +82,50 @@ class Receiptpayment_Model_Receiptpayment extends Zend_Db_Table
 //;
         $db = $this->getAdapter();
         $sql = "SELECT sum(credit)-sum(debit) closingBalance FROM ourbank_Assets a, ourbank_transaction b,ourbank_glsubcode c
-where a.transaction_id = b.transaction_id
-and c.id = b.glsubcode_id_to
-and b.glsubcode_id_to = a.glsubcode_id_to
-and b.transaction_date >= '$fromDate' and  b.transaction_date <= '$toDate'
-and c.glcode_id = 4";
-        
+                    where a.transaction_id = b.transaction_id
+                    and c.id = b.glsubcode_id_to
+                    and b.glsubcode_id_to = a.glsubcode_id_to
+                    and b.transaction_date >= '$fromDate' and  b.transaction_date <= '$toDate'";
+                    //and c.glcode_id = 4";
+
         return $db->fetchAll($sql);
 
 
-    } 
+    }
+
+     public function cashdetailscredit($date) {
+
+            $db = $this->getAdapter();
+            $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_from in
+                        (select B.glsubcode_id_to from 
+                        ourbank_transaction B, ourbank_glsubcode C , ourbank_Assets D
+                        where B.transaction_date <='".$date."' and 
+                        B.recordstatus_id in (3,1) and C.id = B.glsubcode_id_to 
+                        and C.header like 'cash%')
+                        or glsubcode_id_to in (select B.glsubcode_id_to from 
+                        ourbank_transaction B, ourbank_glsubcode C , ourbank_Assets D
+                        where B.transaction_date <='".$date."' and 
+                        B.recordstatus_id in (3,1) and C.id = B.glsubcode_id_to 
+                        and C.header like 'cash%')";
+            return $db->fetchAll($sql);
+
+        }
+
+        public function cashdetailsdebit($date) {
+
+            $db = $this->getAdapter();
+            $sql = "select sum(credit)-sum(debit) as balance from ourbank_Assets where glsubcode_id_from in
+                        (select B.glsubcode_id_to from 
+                        ourbank_transaction B, ourbank_glsubcode C , ourbank_Assets D
+                        where B.transaction_date <='".$date."' and 
+                        B.recordstatus_id in (3,1) and C.id = B.glsubcode_id_to 
+                        and C.header like 'cash%')
+                        or glsubcode_id_to in (select B.glsubcode_id_to from 
+                        ourbank_transaction B, ourbank_glsubcode C , ourbank_Assets D
+                        where B.transaction_date <='".$date."' and 
+                        B.recordstatus_id in (3,1) and C.id = B.glsubcode_id_to 
+                        and C.header like 'cash%')";
+            return $db->fetchAll($sql);
+
+        } 
 }
