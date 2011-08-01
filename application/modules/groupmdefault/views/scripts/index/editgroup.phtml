@@ -16,8 +16,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<script src="<?php echo $this->baseUrl(); ?>/js/jquery.calendrical.js"></script>
-<link rel="stylesheet" href="<?php echo $this->baseUrl(); ?>/css/calendrical.css" />
 
 <script language="javascript">
  function getBranch(bankid) { 
@@ -79,16 +77,32 @@ if($status == "OK"){
                        <?php } ?>
                     </TD>
                </TR>
-             <TR>
+            <TR>
                     <TD><label for="fld1" class="mand">Village name</td>
                     <TD><?php echo $this->form->offedit;?></TD>
-                    <?php echo $this->form->offeditv;?>
-                    <TD><?php echo $this->form->bank;?></TD>
-                    <TD><label class="mand">Bank branch</label></TD>
+                    <?php //echo $this->form->offeditv;?>
+            </TR>
+            <TR>   <TD><label class="mand">Bank</label></TD> <TD><?php echo $this->form->bank;?></TD> </TR>
+            <TR>   <TD><label class="mand">Bank branch</label></TD>
                     <TD><div id="branch"><?php echo $this->form->branch;?></div></TD>
                     <TD><?php echo $this->form->groupname;?></TD>
                     <td></td>
-                </TR> 
+                </TR>
+
+              <!--  <TR>
+                    <TD><label class="mand">Village name</td>
+                    <TD><?php echo $this->form->offedit;?></TD>
+                </TR>
+                <TR>
+                    <TD><label class="mand">Bank</label></TD>
+                    <TD><div id="bank"><?php echo $this->form->bank;?></div></TD>
+                 </TR>
+                <TR><TD><label class="mand">Bank branch</label></TD>
+                    <TD><div id="branch"><?php echo $this->form->branch;?></div></TD>
+                    <TD><?php echo $this->form->groupname;?></TD>
+                </TR> -->
+
+
                 <TR>
                     <TD><?php echo $this->form->savingamt;?></td>
                     <TD><?php echo $this->form->penaltylate;?></TD>
@@ -96,7 +110,7 @@ if($status == "OK"){
                 </TR>  
                  <TR>
                     <TD><?php echo $this->form->place;?></td>
-                    <TD><span class="display"><?php echo $this->form->times;?></span></TD>
+                    <TD><?php echo $this->form->times;?></TD>
                     <TD><?php echo $this->form->day;?></TD>
                 </TR>
                 <TR>

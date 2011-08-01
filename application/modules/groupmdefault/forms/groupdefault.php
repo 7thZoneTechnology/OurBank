@@ -15,13 +15,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-?>
-<script type="text/javascript">
-       $(function() {
-           $('#times').calendricalTime(); 
-       });
-</script>
-<?php
 
     class  Groupmdefault_Form_groupdefault extends Zend_Form {
             public function init() {
@@ -34,7 +27,8 @@
                 $formfield = new App_Form_Field ();
                 // send required parameters to get respective form fields ( first parameter is a input type)
                 $office = $formfield->field('Select','office','','','mand required','Village name',true,'','','','','',1,'');
-                $office->setAttrib('onchange','getMember(this.value,"'.$app.'")');
+                $office->setAttrib('onchange','getMember(this.value,"'.$app.'")','getbank(this.value)');
+
                 $groupname = $formfield->field('Text','groupname','','','mand required','Group name',true,'','','','','',1,'');
                 $groupname->setAttrib('maxlength',30);
 
@@ -56,7 +50,7 @@
                 $interest->setAttrib('maxlength',3);
 
 
-                $bank = $formfield->field('Select','bank','','','mand required','Bank',true,'','','','','',1,'');
+                $bank = $formfield->field('Select','bank','','','mand required','Bank',true,'','','','','',0,'');
                 $bank->setAttrib('onchange','getBranch(this.value)');
 
                 $branch = $formfield->field('Select','branch','','','mand required','Bank branch',true,'','','','','',0,'');
@@ -66,7 +60,6 @@
 
                  $time = $formfield->field('Text','times','','','mand required','Time',true,'','','','','',1,'');
                  $time->setAttrib('maxlength',10);
-                $time->setAttrib('autocomplete','off');
 
                  $day = $formfield->field('Select','day','','','mand required','Day',true,'','','','','',1,'');
                     

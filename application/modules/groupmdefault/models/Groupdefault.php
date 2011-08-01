@@ -76,6 +76,28 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
         return $result->toArray(); //  return respective bank branch names
 	}
 
+        public function Getbank($officeid) {
+            /*$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a' => 'ourbank_master_bank'),array('id','name'))
+                ->join(array('b' => 'ourbank_office'),'b.id = a.village_id',array('id as officeid'))
+                ->join(array('c' => 'ourbank_master_villagelist'),'c.village_id = a.village_id',array('c.panchayat_id'))
+                ->where('a.village_id = '.$officeid)
+                ->where('c.panchayat_id in ?' ;
+        // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray(); //  return respective bank branch names  */
+
+        $db = $this->getAdapter();
+	$sql = "select distinct a.id,a.name,a.village_id from ourbank_master_bank a where a.village_id in
+                (select b.village_id from ourbank_master_villagelist b where b.panchayath_id =
+                (select c.panchayath_id from ourbank_master_villagelist c 
+                where c.village_id = '".$officeid."'))";
+        $result = $db->fetchAll($sql);
+	return $result;
+
+	}
+
         public function getsavings($acc){
             $select=$this->select()
                 ->setIntegrityCheck(false)

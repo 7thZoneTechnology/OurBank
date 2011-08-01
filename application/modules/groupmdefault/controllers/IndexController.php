@@ -107,10 +107,10 @@ unset($sessionName->Created_Date);
             $addForm->day->addMultiOption($day['id'],$day['name']);
         }
 
-        $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
+       /* $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
         foreach($bank as $banks) {
             $addForm->bank->addMultiOption($banks['id'],$banks['name']);
-        }
+        } */
            $hierarchy = $this->view->dbobj->getofficehierarchy();
                foreach($hierarchy as $hiearchyids){
              $hiearchyid = $hiearchyids['hierarchyid'];
@@ -494,9 +494,9 @@ unset($sessionName->Created_Date);
             $addForm->day->addMultiOption($day['id'],$day['name']);
         }
         $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
-        foreach($bank as $banks) {
+       /* foreach($bank as $banks) {
             $addForm->bank->addMultiOption($banks['id'],$banks['name']);
-        }
+        }*/
         $branch = $this->view->adm->viewRecord("ourbank_master_branch","id","ASC");
         foreach($branch as $branch) {
             $addForm->branch->addMultiOption($branch['id'],$branch['name']);
@@ -538,6 +538,16 @@ unset($sessionName->Created_Date);
 
         $addForm->Created_Date->setValue($convertdate->phpnormalformat($group['group_created_date']));
         }
+
+        $dbobj = new Groupmdefault_Model_Groupdefault();
+        $officeid = $group['officeid'];
+        $banks = $dbobj->Getbank($officeid);
+        //  load applicable to values
+        foreach($banks as $banks) {
+                $addForm->bank->addMultiOption($banks['id'],$banks['name']);
+        }
+
+
         // enable javascript function to load groupmembers 
         echo "<script>getMember('".$group['officeid']."','".$app."','".$group['groupid']."','".$grouptype."');</script>";
             $gacc = array(); 
@@ -724,7 +734,7 @@ unset($sessionName->Created_Date);
                                                   'id' =>$grouprepmemDetails['id'],
                                                   'group_id' => $grouprepmemDetails['group_id'],
                                                   'representative_id' => $grouprepmemDetails['representative_id']));
-                                                    
+
                  } // add group Representative members details to log table
 
                     $dbobject->UpdateGroupreps($group_id);
@@ -821,5 +831,24 @@ $branches = $dbobj->Getbranch($bankid);
 		foreach($branches as $bankbranch) {
 			$groupForm->branch->addMultiOption($bankbranch['id'],$bankbranch['name']);
 		}
+        }
+
+        public function bankAction()
+        {
+
+        $app = $this->view->baseUrl();
+        $this->_helper->layout->disableLayout();
+
+        $officeid = $this->_request->getParam('officeid');
+
+        $groupForm = new Groupmdefault_Form_groupdefault($app);
+        $this->view->form = $groupForm;
+
+        $dbobj = new Groupmdefault_Model_Groupdefault();
+        $banks = $dbobj->Getbank($officeid);
+        // load applicable to values
+                        foreach($banks as $banks) {
+                                $groupForm->bank->addMultiOption($banks['id'],$banks['name']);
+                        }
         }
 }
