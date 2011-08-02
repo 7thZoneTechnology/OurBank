@@ -21,8 +21,8 @@ class Thumbdeclaration_IndexController extends Zend_Controller_Action
 {
     public function init() 
     {
-        $this->view->pageTitle = $this->view->translate('Membership');
-        $this->view->title = 'Accounting';
+        $this->view->pageTitle = $this->view->translate('Thumb declaration');
+        $this->view->title = 'Thumb declaration';
         $this->view->adm = new App_Model_Adm ();
         $this->view->dbobj = new Thumbdeclaration_Model_Dec();
     }

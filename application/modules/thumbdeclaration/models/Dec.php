@@ -34,7 +34,7 @@ class Thumbdeclaration_Model_Dec  extends Zend_Db_Table {
                         ->join(array('g' => 'ourbank_master_branch'),'g.bank_id=f.id',array('name as branchname'))
                         ->group('a.groupcode');
 
-//                 die($select->__toString($select));
+//                  die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}

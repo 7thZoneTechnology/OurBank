@@ -25,7 +25,7 @@ else { echo "<font color=red>".$this->errormsg."</font>"; } ?>
 
 <?php if($this->groupresult){
 $results = $this->groupresult;
-foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
+$i=0; foreach($results as $result) {  $i++ ;$dateconvert= new App_Model_dateConvertor();?>
 
     <table id="hor-minimalist-b" width="100%">
 	<th colspan="4">Thumb impression declaration</th>
@@ -37,8 +37,9 @@ foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
     <tr><td colspan="4" align="center"><b>Thumb impression Declaration</b></td></tr>
 
 	<tr><TD >
-    <p align="justify"> I hereby declare that Smt/sri <?php echo "<font color=green>".$result['membername']."</font>"?> has given the thumb impression in the presence of me and his mother tongue ___________________________</p></td>
-    <tr>
+    <p align="justify"> I hereby declare that Smt/sri <?php echo "<font color=green>".$result['membername']."</font>"?> has given the thumb impression in the presence of me and his mother tongue ___________________________</p></td><tr>
+
+<tr><TD></TD><TD><div style="background-color:white;width:150px;height:60px;border:1px solid #000"></div></TD></tr>
 
 	<tr><TD>DATE :<?php echo "<font color=green>".date('d-m-Y')."</font>"?></TD><TD align="left">Yours sincerely</TD></tr>
 	</table>

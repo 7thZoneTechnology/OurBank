@@ -13,6 +13,8 @@ function display (yy)  {
     }
     if(yy!=2) {
     document.getElementById("7").style.display = 'none';
+    document.getElementById("5").style.display = 'none';
+    document.getElementById("4").style.display = 'none';
     }
     if(yy==300){
     document.getElementById("4").style.display = 'none';
@@ -95,18 +97,18 @@ function display (yy)  {
 
 
 	<div id = "1" style="display:none;">
-			<?php foreach($this->alterTransaction  as $ledger) : ?>
-				<form action = "<?php echo $this->baseUrl(); ?>/altertransaction/deletetransaction" method="POST">
-   					 <table id = "hor-minimalist-b">
-       					<tr>
-            				<TD><input type = "hidden" name = "vochure_number" value = "<?php echo $ledger['transaction_id'];?>"></TD>
-        					</tr>
+			<?php foreach($this->result  as $ledger) : ?>
+				<form action = "<?php echo $this->baseUrl(); ?>/altertransaction/index/deletetransaction" method="POST">
+   					 <table id = "hor-minimalist-b" class="fieldsets">
+       					<tr><th colspan="4">Remarks</th></tr>
+            				<input type = "hidden" name = "vNum" value ="<?php echo $ledger['vNum'];?>">
         				<TR>
-            				<TD>transactionRemarks<textarea value="" name="transaction_remarks"></textarea></td>
+            				<TD><label class="mand">Transaction Remarks</label>
+								<textarea value="" name="transaction_remarks"></textarea></td>
         				</TR>
-        				<tr>
-            				<TD><input name="submit" type="submit" class="officebutton" value="Save"></TD>
-        				</tr>
+        				<tr><TD><input name="submit" type="submit"  value="Save"></TD>
+							<TD align="right"><a href="<?php echo $this->baseUrl();?>/altertransaction"><input type="submit" name="back" id="back" value="<?php echo $this->translate('Back'); ?>"></TD>
+						</tr>
    					</table>
 				</form>
 			<?php endforeach; ?>

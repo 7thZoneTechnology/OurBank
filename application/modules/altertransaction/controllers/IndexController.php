@@ -22,11 +22,24 @@ class Altertransaction_IndexController extends Zend_Controller_Action
     public function init() 
     {
     	$this->view->title = "Alter transaction";
-	$this->view->pageTitle = "Transaction";
         $this->view->tranModel = new Altertransaction_Model_Altertransaction ();
-        $this->view->cl = new App_Model_Users ();
+        //$this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
+
+         $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id 
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        }
     }
+
     public function indexAction() 
     {
 	$this->view->form = new Altertransaction_Form_Search();
@@ -105,6 +118,25 @@ class Altertransaction_IndexController extends Zend_Controller_Action
 		$this->view->vouchernumber = base64_decode($this->_request->getParam('vouchernumber'));
 		
     }
+
+
+	function deletetransactionAction() {
+    $transaction_id=$this->_request->getParam('vochure_number');
+		$storage = new Zend_Auth_Storage_Session();
+		$data = $storage->read();
+		if(!$data){
+			$this->_redirect('index/login');
+		}
+
+    $transaction_remarks= $this->_request->getParam('transaction_remarks');
+    $alterTransaction = new Transaction_Model_AlterTransaction();
+
+        $deleteData = array('recordstatus_id' => 1);
+        $alterTransaction->transactionUpdate($transaction_id,$deleteData);
+        $this->_redirect('/altertransaction/index');
+    }
+
+
 }
 
  

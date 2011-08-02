@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 /*
  *  create an office default for add, edit, delete and suboffice actions
  */
@@ -38,7 +35,6 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
-
     }
 
     public function indexAction() {
@@ -108,7 +104,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                } 
 
 	//insert glsubcode
-        for($j=1;$j<=6;$j++){
+        for($j=1;$j<=12;$j++){
              $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
            $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
            $glcode = $fetchglcodedetails[0]['glcode'];
@@ -136,7 +132,8 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                $glsubcode;
            }
 
-           $headername=array('bank','cash','loans','savings','interest','fee');
+//            $headername=array('bank','cash','loans','savings','interest','fee');
+            $headername = array('Bank','Cash','Loans','Savings','Interest','Fee','SrvChrg','Penalty','IntOnLoan','MeetingExpenses','OtherExpenses','IntOnSavings');
            $gInsert = $ledger->insertGlsubcode(array('id' => '',
 						   'office_id' => $lastid,
                            'glsubcode' => $glsubcode,
@@ -152,7 +149,6 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 		}
         }
         }
-    
 
     public function subofficeAction() {
 	//disable layout
@@ -184,7 +180,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         foreach($hierarchylevel2 as $hierarchylevel1) {
             $hierarchylevel=$hierarchylevel1->hierarchylevel; //level
         }
-        
+
         $officetypeIds=$subOffice->officetypeid($hierarchylevel);
         foreach($officetypeIds as $officetypeIds1) {
             $officetypeId=$officetypeIds1->id;
@@ -210,7 +206,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         }
     }
-        
+
         public function gettalukAction()
         {
         $this->_helper->layout()->disableLayout();
