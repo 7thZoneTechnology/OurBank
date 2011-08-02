@@ -178,8 +178,8 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                     $this->view->adm->addRecord('ourbank_Income',$fee);
                 }
 
-               $transactionamount = array('amount_from_bank' =>$disburseamount-$feeamount);
-               $this->view->loanModel->loanupdate($tranID,$transactionamount);
+//                $transactionamount = array('amount_from_bank' =>$disburseamount-$feeamount);
+//                $this->view->loanModel->loanupdate($tranID,$transactionamount);
 
                 $feeData = $this->view->loanModel->glBank($officeid,'fee'.$officeid);
                 $fee = array('office_id'=>$officeid,
@@ -199,7 +199,25 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             'amount_disbursed' => $this->_request->getPost('Amount'),
                             'transaction_description'=> $this->_request->getPost('description'),
                             'recordstatus_id'=>3);
-                $tranID = $this->view->adm->addRecord('ourbank_loan_disbursement',$input);
+                $this->view->adm->addRecord('ourbank_loan_disbursement',$input);
+
+                if($intType == 3) {
+                $currentbalance=$this->view->loanModel->findbalance($accId);
+                if($currentbalance){
+                    $repaybalance=$currentbalance[0]['balanceamount'];
+                }
+                else {
+                    $repaybalance=0;
+                }
+                $repaydetails=array(
+                    'transaction_id'=>$tranID,
+                    'account_id'=>$accId,
+                    'paid_interest'=>$this->_request->getPost('Amount'),
+                    'paid_date'=>$this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
+                    'balanceamount'=>$this->_request->getPost('Amount')+$repaybalance );
+                $tranID = $this->view->adm->addRecord('ourbank_loan_repayment',$repaydetails);
+                }
+
                 if ($intType == 2 or $intType == 3) {
                     if($loanamount==$balance){
                     $emi =0;$roi=0;

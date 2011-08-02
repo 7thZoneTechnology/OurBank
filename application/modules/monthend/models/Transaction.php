@@ -2,47 +2,79 @@
 class Monthend_Model_Transaction extends Zend_Db_Table 
 {
     protected $_name = 'ourbank_transaction';
-    public function transaction() 
-    {
-        $dtFirstDay = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d")-date("d")+1, date("Y")))."<br>";
-        $dtLastDay = date("Y-m-d", mktime(0, 0, 0, date("m")+1 , date("d")-date("d"), date("Y")))."<br>"; 
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT 
-                A.account_id as id
-                FROM 
-                ourbank_transaction A,
-                ourbank_accounts B
-                WHERE
-                B.account_number LIKE '%S%' AND
-                A.account_id = B.id AND
-                A.transaction_date between '$dtFirstDay' AND '$dtLastDay'
-                group by(A.account_id)
-                ";
-        //echo $sql;
-        $result = $db->fetchAll($sql);
-        return $result;
+
+    public function getloandetails($startdate,$enddate){
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id','a.account_number'))
+        ->join(array('b'=>'ourbank_loanaccounts'),'a.id=b.account_id',array('b.id as loanaccountid','b.loan_interest'))
+        ->where('b.interesttype_id=3')
+        ->join(array('c'=>'ourbank_loan_repayment'),'a.id=c.account_id',array('c.account_id','c.paid_date','min(c.balanceamount)'))
+        ->where('c.paid_date <= "'.$enddate.'"')
+        ->where('c.paid_date >= "'.$startdate.'"')
+        ->where('c.monthend_tag=0')
+        ->join(array('d'=>'ourbank_transaction'),'c.transaction_id=d.transaction_id',array('d.transaction_id'))
+        ->group('c.paid_date')
+        ->group('c.account_id');
+        die($select->__toString($select));
+        //$result=$this->fetchAll($select);
+        //return $result->toArray();
     }
 
-    public function getSavingsDetails($id) 
+    public function interestcalculation($fdate,$ldate,$trnsdate,$bal,$loaninterest)
     {
-        $dtFirstDay = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d")-date("d")+1, date("Y")))."<br>";
-        $dtLastDay = date("Y-m-d", mktime(0, 0, 0, date("m")+1 , date("d")-date("d"), date("Y")))."<br>"; 
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT 
-                account_id as id,
-                glsubcode_id_to as glSub,
-                transaction_date as transaction_date,
-                amount_to_bank - amount_from_bank as balance
-                FROM 
-                ourbank_savings_transaction 
-                WHERE
-                account_id = '$id' AND
-                transaction_date between '$dtFirstDay' AND '$dtLastDay'
-                ";
-        //echo $sql;
-        $result = $db->fetchAll($sql);
-        return $result;
+            $len = count($trnsdate);
+                for($i=0;$i < $len;$i++)
+                {
+                    $be[]=explode('-',$trnsdate[$i]); //exploding
+                    $gr[] = gregoriantojd($be[$i][1],$be[$i][2],$be[$i][0]); //gregorian format
+                }
+            // echo "len".$len;
+            $fdateexp = explode('-',$fdate);
+            $fdatevalue =  gregoriantojd($fdateexp[1],$fdateexp[2],$fdateexp[0]); //gregorian format
+
+            $ldateexp = explode('-',$ldate);
+            $ldatevalue =  gregoriantojd($ldateexp[1],$ldateexp[2],$ldateexp[0]); //gregorian format
+            // //find difference between transaction date
+            $interest = 0;
+            $balance = 0;
+
+            if($len == 1) {
+                $diff = $gr[0] - $fdatevalue;
+                $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
+                $diff =  $ldatevalue - $gr[0];
+                $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
+                $balance += round($bal[0]+$interest,2);
+            }
+        else {
+        for($k=0;$k<$len;$k++)
+	{	
+                        if($k == 0) {
+                            $diff = $gr[$k] - $fdatevalue;
+                            $interest += $diff * $bal[$k] * $loaninterest/100 * 1/365;
+                        } 
+                        if($k != $len and $k !=0)
+                        {
+                           $diffdate = $gr[$k]-$gr[$k-1];
+                           $interest += $diffdate * $bal[$k] * $loaninterest/100 * 1/365;
+                        }
+
+	 }
+                           $diff =  $ldatevalue - $gr[$len-1];
+                $interest += $diff * $bal[$len-1] * $loaninterest/100 * 1/365;
+                $balance += round($bal[$len-1]+$interest,2);
+
+        }
+	
+    $result = array(round($interest,2),$balance);
+    return $result;
     }
+
+    public function accUpdate($tablename,$accId,$input,$fieldname)
+    {
+    	$where[] = $fieldname."= '".$accId."'";
+	$db = $this->getAdapter();
+        $result = $db->update($tablename,$input,$where);
+    }
+
 }

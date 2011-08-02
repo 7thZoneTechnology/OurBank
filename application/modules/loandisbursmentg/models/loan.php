@@ -167,7 +167,18 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
         ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
         ->where('b.account_number=?',$accNum)
         ->group('b.account_number');
-        //die ($select->__toString($select));
+      //  die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findbalance($accId) {
+            $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('a.balanceamount','a.transaction_id'))
+        ->where('a.account_id=?',$accId)
+        ->where("a.transaction_id in(select max(transaction_id) from ourbank_loan_repayment where account_id = '". $accId ."' )");
+//        die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -220,7 +231,7 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
     {
     	$where[] = "transaction_id = '".$accId."'";
 	$db = $this->getAdapter();
-        $result = $db->update('ourbank_transaction',$input,$where);
+        $result = $db->update('ourbank_loan_repayment',$input,$where);
     }
 
     public function maxid($accNum)

@@ -101,8 +101,9 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			->join(array('B' => 'ourbank_loan_repayment'),'A.id = B.account_id')
 			->join(array('C' => 'ourbank_transaction'),'C.transaction_id = B.transaction_id',array('C.transaction_id'))
 			->join(array('D' => 'ourbank_master_paymenttypes'),'D.id = C.paymenttype_id',array('D.name as paymentmode'))
-			->where('A.account_number = ?',$accNum);
-		//die($select->__toString($select));
+			->where('A.account_number = ?',$accNum)
+                        ->order('B.transaction_id');
+	//	die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
