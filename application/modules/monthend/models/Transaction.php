@@ -9,20 +9,35 @@ class Monthend_Model_Transaction extends Zend_Db_Table
         ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id','a.account_number'))
         ->join(array('b'=>'ourbank_loanaccounts'),'a.id=b.account_id',array('b.id as loanaccountid','b.loan_interest'))
         ->where('b.interesttype_id=3')
-        ->join(array('c'=>'ourbank_loan_repayment'),'a.id=c.account_id',array('c.account_id','c.paid_date','min(c.balanceamount)'))
+        ->join(array('c'=>'ourbank_loan_repayment'),'a.id=c.account_id',array('c.account_id','max(c.transaction_id) as paymentid'))
         ->where('c.paid_date <= "'.$enddate.'"')
         ->where('c.paid_date >= "'.$startdate.'"')
         ->where('c.monthend_tag=0')
-        ->join(array('d'=>'ourbank_transaction'),'c.transaction_id=d.transaction_id',array('d.transaction_id'))
+        ->join(array('d'=>'ourbank_transaction'),'c.transaction_id=d.transaction_id',array(NULL))
         ->group('c.paid_date')
         ->group('c.account_id');
-        die($select->__toString($select));
-        //$result=$this->fetchAll($select);
-        //return $result->toArray();
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
     }
 
-    public function interestcalculation($fdate,$ldate,$trnsdate,$bal,$loaninterest)
+	public function findcurrentbalance($transid)
+	{
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('a.balanceamount','a.paid_date','a.installment_id'))
+        ->where('a.transaction_id = ?',$transid);
+   //     die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+
+	}
+
+    public function interestcalculation($fdate,$ldate,$trnsdate,$bal,$loaninterest,$installmentid)
     {
+
+            Zend_Debug::dump($installmentid);
+
             $len = count($trnsdate);
                 for($i=0;$i < $len;$i++)
                 {
@@ -39,19 +54,29 @@ class Monthend_Model_Transaction extends Zend_Db_Table
             $interest = 0;
             $balance = 0;
 
-            if($len == 1) {
-                $diff = $gr[0] - $fdatevalue;
-                $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
-                $diff =  $ldatevalue - $gr[0];
-                $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
-                $balance += round($bal[0]+$interest,2);
+        if($len == 0) {
+            if($installmentid[0]!=1) {
+            $diff = $gr[0] - $fdatevalue;
+            $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
+            $diff =  $ldatevalue - $gr[0];
+            $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
+            $balance += round($bal[0]+$interest,2);
             }
+            else
+            {
+            $diff =  $ldatevalue - $gr[0];
+            $interest += $diff * $bal[0] * $loaninterest/100 * 1/365;
+            $balance += round($bal[0]+$interest,2);
+            }
+        }
         else {
         for($k=0;$k<$len;$k++)
 	{	
                         if($k == 0) {
+                            if($installmentid[$k]!=1) {
                             $diff = $gr[$k] - $fdatevalue;
                             $interest += $diff * $bal[$k] * $loaninterest/100 * 1/365;
+                            }
                         } 
                         if($k != $len and $k !=0)
                         {

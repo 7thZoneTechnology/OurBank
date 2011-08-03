@@ -53,12 +53,13 @@ background-color : silver;
 <br><b>Sate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['state'];?></td>
 <td align="left"><b>Group code :</b><?php  echo $member['groupcode'];?></td></tr>
 </table>
-<?php endforeach; ?>
-<br><br>
+<br>
+<tr><td><b>Koota Name :</b><font color="green"><?php  echo $member['kootaname'];?></font></td></tr><br><br>
         <p>1) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
         <p>2) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
         <p>3) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
         <p>4) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
+<?php endforeach; ?>
 <?php $i=0; foreach($this->represent as $name){ $i++ ?>
 <?php echo $i.")"; ?>&nbsp;<?php echo "<font color=green>".$name['memnames']."</font>"?><br><br>
 <?php } ?>

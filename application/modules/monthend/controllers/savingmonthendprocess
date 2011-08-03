@@ -1,0 +1,31 @@
+$savings = $this->view->transaction->getSavingdetails($startdate,$enddate);
+       foreach($savings as $savingsdetails){
+           $accountid[] = $savingsdetails['id'];
+       }
+       // get number of transaction occurance
+// //         $numberofoccur =  array_count_values($accountid);
+       // get unique value
+       $accountuniqueid = array_values(array_unique($accountid));
+       Zend_Debug::dump($savings);
+//         Zend_Debug::dump($accountuniqueid);
+//         Zend_Debug::dump($numberofoccur);
+       for($j=0;$j< count($accountuniqueid);$j++)
+       {
+//     $k = 0;
+           foreach($savings as $savingsfor){
+// //             $len = $numberofoccur[$savingsfor['id']];
+               if($savingsfor['id'] == $accountuniqueid[$j])
+               {
+                           $bal[] = $savingsfor['balance'];
+
+                      $date[] = $savingsfor['transaction_date'];
+// //                        $k++;
+// //                        if($k == $len) {
+// //                         }
+               }
+           }
+//     $k = 0 ;
+       }
+
+       Zend_Debug::dump($bal);
+       Zend_Debug::dump($date);

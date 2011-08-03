@@ -144,6 +144,14 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                         {
                             $interestdate=$paiddetails[0]['paid_date'];
                             $this->view->p=$p=$paiddetails[0]['balanceamount'];
+                            if($paiddetails[0]['balanceamount']==date('Y-m-d'))
+                            {
+                            $currentinstallment=$paiddetails[0]['installment_id']+1;
+                            }
+                            else
+                            {
+                            $currentinstallment=$paiddetails[0]['installment_id'];
+                            }
                         }
                         else
                         {
@@ -244,7 +252,7 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                         CASE 4:
                                 BREAK;
                     }
-                    $array = $this->view->loanModel->insertTran($data,$int,$totalAmt,$intType);
+                    $array = $this->view->loanModel->insertTran($data,$int,$totalAmt,$intType,$currentinstallment);
                     //if group
                     if (substr($accNum,4,1) == 2)
                     {

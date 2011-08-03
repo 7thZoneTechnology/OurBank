@@ -53,35 +53,45 @@ class Monthend_IndexController extends Zend_Controller_Action
         foreach($monthloandetails as $monthloandetails1) {
         $accountid[]=$monthloandetails1['account_id'];
         }
-
-        $accountidunique = array_unique($accountid);
+        
+        $accountidunique = array_values(array_unique($accountid)); 
         $totalinterest=0;
-// Zend_Debug::dump($accountidunique);
+        //Zend_Debug::dump($accountidunique);
+// Zend_Debug::dump($accountid);
         for($j=0;$j< count($accountidunique);$j++)
         {
           foreach($monthloandetails as $interestdetails)
           {
             if($interestdetails['account_id']==$accountidunique[$j])
-            {
-                $interest = $interestdetails['loan_interest'];
-                $paiddate[] =$interestdetails['paid_date'];
-                $amount[] = $interestdetails['min(c.balanceamount)'];
+            {	$interest=$interestdetails['loan_interest'];
+		$repaymentbalance=$monthmodle->findcurrentbalance($interestdetails['paymentid']);
+                $paiddate[] =$repaymentbalance[0]['paid_date'];
+                $amount[] = $repaymentbalance[0]['balanceamount'];
+                $installmentid[]=$repaymentbalance[0]['installment_id'];
 // Zend_Debug::dump($accid);
-// Zend_Debug::dump($amount);
+
             }
 // $amount = array();
           }
-          $monthinterest=$monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest);
+// Zend_Debug::dump($paiddate);
+// Zend_Debug::dump($amount);
+          $monthinterest=$monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest,$installmentid);
+          
+//  Zend_Debug::dump($monthinterest);
           $totalinterest+=$monthinterest[0];
+
           $input=array('monthend_tag'=>1);
           $monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
           $repaymentarray=array('account_id'=>$accountidunique[$j],'paid_date'=>date('Y-m-d'),'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
           $this->view->adm->addRecord('ourbank_loan_repayment',$repaymentarray);
+
             // Zend_Debug::dump($paiddate);
             // Zend_Debug::dump($amount);
             $paiddate = array();
             $amount = array();
+            $installmentid= array();
         }
+
         $transactionarray=array('transaction_date'=>date('Y-m-d'),'amount_to_bank'=>$totalinterest,'transactiontype_id'=>1,'created_by'=>$this->view->createdby,'created_date'=>date('Y-m-d'),'paymenttype_id'=>5);
         $trasid=$this->view->adm->addRecord('ourbank_transaction',$transactionarray);
         $input=array('transaction_id'=>$trasid,'monthend_tag'=>1);

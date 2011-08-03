@@ -412,7 +412,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         }
         return $roi;
     }
-    public function insertTran($data,$int,$totalAmt,$intType)
+    public function insertTran($data,$int,$totalAmt,$intType,$currentinstallment)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $acc = $this->searchaccounts($data["accNum"]);
@@ -443,6 +443,15 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 $pram = $idData->installment_id;
         }
         //insert into loan repayment
+
+        if($intType == 3) {
+            $currentinstallid=$currentinstallment;
+        }
+        else
+        {
+            $currentinstallid=$pram -1;
+        }
+
         $repayData= array('account_id' => $accId,
                 'transaction_id' => $tranId,
                 'paid_date' => $cl->phpmysqlformat($data["date"]),
@@ -450,7 +459,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 'paid_principal' => $data["amount"] - $int,
                 'paid_interest' => $int,
                 'balanceamount' => $totalAmt-$data["amount"],
-                'installment_id' => $pram -1,
+                'installment_id' => $currentinstallid,
                 'recordstatus_id' => 3);
         $db->insert("ourbank_loan_repayment",$repayData);
         // Insertion into Assets ourbank_Assets Cash Cr entry
@@ -678,7 +687,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         $select=$this->select()
                                 ->setIntegrityCheck(false)
                                 ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
-                                ->join(array('b'=>'ourbank_loan_repayment'),'a.id=b.account_id',array('b.id','b.paid_date','b.balanceamount'))
+                                ->join(array('b'=>'ourbank_loan_repayment'),'a.id=b.account_id',array('b.id','b.paid_date','b.balanceamount','b.installment_id','b.paid_date'))
                                 ->where("b.transaction_id = ?",$trasid)
                                 ->where('a.account_number=?',$accNum);
        // die($select->__toString($select));

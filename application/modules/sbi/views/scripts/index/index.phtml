@@ -16,27 +16,53 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<?php if(!$this->result && !$this->groupresult) { ?>
+<div id="searchDiv">
+<fieldset>
+	<legend>Search member</legend>
+		<form action="<?php echo $this->baseUrl();?>/sbi" method="POST">
+			<table class="fieldsets">
+                            <TR>
+                                <TD><label class="mand">Group code:</label></TD>
+                                <TD><? echo $this->form->groupcode;?></TD>
+                            </TR>
+                        </table>
+                        <div class="btnhouse">
+                            <div class="ltbtns">
+                                <input type="Submit" name="Submit" value="Search">
 
+                            </div>
+                        </div>
+	 </form>
+
+</fieldset>
+</div>
+
+<?php } else { echo "<font color=red>".$this->errormsg."</font>"; } ?>
+
+<?php if($this->groupresult){ 
+$results = $this->groupresult;
+foreach($results as $result) { ?>
 <div style=" height:500px; overflow-y: auto; padding-bottom:5px;">
 <table id="hor-minimalist-b">
-<th colspan="2">Applicationto be submitted by SHG to Bank branch while applying for loan assistance</th>
+<th colspan="2" >Applicationto be submitted by SHG to Bank branch while applying for loan assistance</th>
     <tr>
-		<td>Name of the self group:</td>
+		<td>Name of the self group: <?php echo "<font color=green>".$result['name']."</font>"?></td>
     </tr>
 	<tr>
-		<td>Address:</td>
+		<td>Address: <?php echo "<font color=green>".$result['address1'].' , '.$result['city'].' , '.$result['district'].' , '.$result['state'].'-'.$result['zipcode']."</font>"?></td>
     </tr>
 	<tr>
 		<td>Formed /established on:</td>
     </tr>
 	<tr>
-		<td>Registered:</td>
+		<td>Registered: <?php echo "<font color=green>".$result['group_created_date']."</font>"?></td>
     </tr>
 	<tr>
 		<td>If registered give number and date and furnish the original certificate of rgistration:</td>
     </tr>
 	<tr>
-		<td>Number of members in the group:</td>
+		<td>Number of members in the group: <?php echo "<font color=green>".$result['totalmember']."</font>"?></td>
     </tr>
 	<tr>
 		<td>Number of SHPI/NGO/VA assisting the group if any:</td>
@@ -46,7 +72,7 @@
     </tr>
 
 </table>
-<p><b>To<div style="float: right; width: 120px;">Place</div><br>The Branch manager<div style="float: right; width: 120px;">Date</div><br>STATE BANK OF INDIA<br><br><br></b>Dear sir,<br><b><u>APPLICATION FOR LOAN</u></b><br>We the duly authorised representatives of the above SHG hereby apply for a loan aggregating
+<p><b>To<div style="float: right; width: 120px;">Place</div><br>The Branch manager<div style="float: right; width: 120px;">Date : <?php echo "<font color=green>".date('d-m-Y')."</font>"?></div><br>STATE BANK OF INDIA<br><br><br></b>Dear sir,<br><b><u>APPLICATION FOR LOAN</u></b><br>We the duly authorised representatives of the above SHG hereby apply for a loan aggregating
 Rs (Rupees , .
 .............................................................................:............. only) for on-lending to our members.
 The financial particulars of the group as on.................................. are given in the enclosed sheet<br>2. REPAYMENT SCHEDULE :
@@ -83,7 +109,7 @@ herewith is found incorrect and I or containing misrepresentation of facts.</p>
 <b><u>State bank of India</u></b><div style="float: right; width: 100px;"><u><b>To</b></u></div><br><br>
 <b>......................................................</b><div style="float: right; width: 100px;"><b>....................................................</b></div><br><br>
 <b>.....................................Branch</b><div style="float: right; width: 100px;"><b>(Name of SHG)</b></div><br><br>
-<div style="float: right; width: 95px;"><b>.............................</b></div>
+<div style="float: right; wigroupresultdth: 95px;"><b>.............................</b></div>
 <b><u>ARRANGEMENT LETTER</u></b><br><br>
 <b>(Term Loan I Cash Credit to Self Help Groups)</b><br><br>
 <b>Dear sir/madam,</b><br><br>
@@ -300,8 +326,8 @@ hereunto at the place.................................. and on..................
 
 </p>
 
-
-
 </body>
 </html>
+
  </div>
+<?php } }?>

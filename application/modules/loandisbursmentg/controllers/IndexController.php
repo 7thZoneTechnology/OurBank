@@ -205,13 +205,22 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                 $currentbalance=$this->view->loanModel->findbalance($accId);
                 if($currentbalance){
                     $repaybalance=$currentbalance[0]['balanceamount'];
+                    if($currentbalance[0]['installment_id']==date('Y-m-d')){
+                        $incrementvalue=$currentbalance[0]['installment_id'];
+                    }
+                    else
+                    {
+                        $incrementvalue=$currentbalance[0]['installment_id']+1;
+                    }
                 }
                 else {
                     $repaybalance=0;
+                    $incrementvalue=1;
                 }
                 $repaydetails=array(
                     'transaction_id'=>$tranID,
                     'account_id'=>$accId,
+                    'installment_id'=>$incrementvalue,
                     'paid_interest'=>$this->_request->getPost('Amount'),
                     'paid_date'=>$this->view->dateconvector->phpmysqlformat($this->_request->getPost('date')),
                     'balanceamount'=>$this->_request->getPost('Amount')+$repaybalance );

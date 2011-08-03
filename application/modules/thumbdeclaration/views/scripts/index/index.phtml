@@ -25,7 +25,7 @@ else { echo "<font color=red>".$this->errormsg."</font>"; } ?>
 
 <?php if($this->groupresult){
 $results = $this->groupresult;
-$i=0; foreach($results as $result) {  $i++ ;$dateconvert= new App_Model_dateConvertor();?>
+foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
 
     <table id="hor-minimalist-b" width="100%">
 	<th colspan="4">Thumb impression declaration</th>

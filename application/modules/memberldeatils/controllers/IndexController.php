@@ -68,7 +68,7 @@ class Memberldeatils_IndexController extends Zend_Controller_Action
             }
             else
             {
-                $this->view->error = "Record Not Found ... ";
+                $this->view->error = "Record Not Found...Try again ";
             }
         }
         else

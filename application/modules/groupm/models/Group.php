@@ -30,7 +30,7 @@ class Groupm_Model_Group extends Zend_Db_Table {
     }
     // get search group details  
     public function searchDetails($post) 
-    {   
+    {
         	$keyvalue = array_filter($post);
 		$searchcounter = count($keyvalue);
 	if($searchcounter > 0) 

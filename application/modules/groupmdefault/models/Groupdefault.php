@@ -88,13 +88,23 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
         $result=$this->fetchAll($select);
         return $result->toArray(); //  return respective bank branch names  */
 
-        $db = $this->getAdapter();
+      /*  $db = $this->getAdapter();
 	$sql = "select distinct a.id,a.name,a.village_id from ourbank_master_bank a where a.village_id in
                 (select b.village_id from ourbank_master_villagelist b where b.panchayath_id =
                 (select c.panchayath_id from ourbank_master_villagelist c 
                 where c.village_id = '".$officeid."'))";
         $result = $db->fetchAll($sql);
-	return $result;
+	return $result; */
+
+        $db = $this->getAdapter();
+        $sql = "select a.id, a.name, a.village_id, c.name GP, b.name Village, a.name bank
+                from ourbank_master_bank a, ourbank_master_villagelist b, ourbank_master_gillapanchayath c
+                where a.village_id = b.village_id
+                and b.panchayath_id = c.id
+                and a.village_id = '".$officeid."'";
+
+        $result = $db->fetchAll($sql);
+        return $result;
 
 	}
 

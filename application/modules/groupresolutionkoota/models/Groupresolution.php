@@ -25,8 +25,9 @@ class Groupresolutionkoota_Model_Groupresolution extends Zend_Db_Table {
 			->join(array('a' => 'ourbank_group'),array('id'),array('id as groupid','village_id as officeid','name as groupname','group_created_date','groupcode','saving_perweek','penalty_latecoming','penalty_notcoming','rateinterest'))
              ->where('a.groupcode=?',$id)
 
-// 			->join(array('b' => 'ourbank_office'),'b.id = a.village_id',array('name as kotta'))
-			
+            ->join(array('b' => 'ourbank_office'),'b.id = a.village_id',array('b.id','b.parentoffice_id','b.name as kootaname'))
+            ->join(array('d'=>'ourbank_officehierarchy'),'d.id=b.officetype_id',array('d.type'))
+
 			->joinLeft(array('c' => 'ourbank_address'),'c.id  = a.id',array('address1','address2','address3','city','district','state','zipcode'))
 			->group('a.groupcode');
 // //  		die($select->__toString($select));
