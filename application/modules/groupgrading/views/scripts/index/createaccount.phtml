@@ -61,50 +61,50 @@ foreach ($this->account as $account) {
 <div style="float:left;width:380px"> 
     <table id="hor-minimalist-s" summary="Employee Pay Sheet">
         <TR>
-            <TH>Member details</TH>
+            <TH><?php echo $this->translate("Member details"); ?></TH>
             <TH></TH>
         </TR>
         <TR>
-            <td>Member code:</td>
+            <td><?php echo $this->translate("Member code:"); ?></td>
             <TD><? echo $account->code; ?></TD>
         </TR>
         <TR>
-            <td>Name:</td>
+            <td><?php echo $this->translate("Name:"); ?></td>
             <TD><?php echo $account->name;?></TD>
         </TR>
         <TR>
-            <td>Branch:</td>
+            <td><?php echo $this->translate("Branch:"); ?></td>
             <td><?php echo $account->officename ;?></TD>
         </TR>
         <TR>
-            <TH>Product details</TH>
+            <TH><?php echo $this->translate("Product details"); ?></TH>
             <TH></TH>
-        </TR>          
+        </TR>
 
         <TR>
-            <td>Product name:</td>
+            <td><?php echo $this->translate("Product name:"); ?></td>
             <TD><?php echo $account->productname;?></TD>
         </TR>
         <TR>
-            <td>Min disbursement:</b></td>
+            <td><?php echo $this->translate("Min disbursement:"); ?></b></td>
             <TD><?php echo $account->minamount;?></TD>
         </TR>
 
         <TR>
-            <td>Max disbursement:</td>
+            <td><?php echo $this->translate("Max disbursement:"); ?></td>
             <TD><?php echo $account->maxamount; ?></TD>
         </TR> 
         <TR>
-            <td>Penal interest:</td>
+            <td><?php echo $this->translate("Penal interest:"); ?></td>
             <TD><?php echo $account->penalInterest; ?></TD>
         </TR>
         <TR>
-            <TH>Interest per annum</TH>
+            <TH><?php echo $this->translate("Interest per annum"); ?></TH>
             <TH></TH>
         </TR>
         <TR>
-            <TD><B>Periods in months</B></TD>
-            <TD><B>Interest</B></TD>
+            <TD><B><?php echo $this->translate("Periods in months"); ?></B></TD>
+            <TD><B><?php echo $this->translate("Interest"); ?></B></TD>
         </TR>
         <?php if ($this->interestRates) {
               foreach ($this->interestRates as $interestRates) { ?>
@@ -118,39 +118,39 @@ foreach ($this->account as $account) {
 </div>
 <div style="float:left;width:350px"> 
     <fieldset>
-        <legend>Loan account</legend>
+        <legend><?php echo $this->translate("Member"); ?>Loan account</legend>
             <form name="addform" action="<?php echo $this->baseUrl();?>/groupgrading/index/createaccount" method="POST">
             <table class="fieldsets">
                     <TR>
-                        <TD><label for="fld1" class="mand">Date of account</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Date of account"); ?></TD>
                         <TD><?php echo $this->loanForm->date;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Disbursement amount</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Disbursement amount"); ?></TD>
                         <TD><?php echo $this->loanForm->amount;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Installments (Months)</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Installments (Months)"); ?></TD>
                         <TD><?php echo $this->loanForm->installments;?></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Interest rate</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Interest rate"); ?></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->interest;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Interest type</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Interest type"); ?></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->interesttype_id;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Transfer amount to</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Transfer amount to"); ?></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->savingAccount;?></div></TD>
                     </TR>
                     <TR>
-                        <TD><label for="fld1" class="mand">Fundings</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Fundings"); ?></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->fundings;?></div></TD>
                     </TR>
                     <TR id = "funder" style="display:none">
-                        <TD><label for="fld1" class="mand">Funder</TD>
+                        <TD><label for="fld1" class="mand"><?php echo $this->translate("Funder"); ?></TD>
                         <TD><div id="interestratediv"><?php echo $this->loanForm->funders;?></div></TD>
                     </TR>
                     <TR>

@@ -19,17 +19,17 @@
 <?php if(!$this->result && !$this->groupresult) { ?>
 <div id="searchDiv">
 <fieldset>
-	<legend>Search member</legend>
+	<legend><?php echo $this->translate("Search member"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/sbi" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <TD><label class="mand">Group code:</label></TD>
+                                <TD><label class="mand"><?php echo $this->translate("Group code:"); ?></label></TD>
                                 <TD><? echo $this->form->groupcode;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <input type="Submit" name="Submit" value="Search">
+                                <input type="Submit" name="Submit" value="<?php echo $this->translate("Search"); ?>">
 
                             </div>
                         </div>
@@ -59,7 +59,7 @@ foreach($results as $result) { ?>
 		<td>Registered: <?php echo "<font color=green>".$result['group_created_date']."</font>"?></td>
     </tr>
 	<tr>
-		<td>If registered give number and date and furnish the original certificate of rgistration:</td>
+		<td>If registered give number and date and furnish the original certificate of registration:</td>
     </tr>
 	<tr>
 		<td>Number of members in the group: <?php echo "<font color=green>".$result['totalmember']."</font>"?></td>

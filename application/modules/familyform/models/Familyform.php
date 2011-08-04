@@ -37,7 +37,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
                 ->join(array('f'=>'ourbank_master_educationtype'),'f.id=a.eductaion_id',array('f.name as educationname'))
                 ->join(array('g'=>'ourbank_master_familytype'),'g.id=b.familytype_id',array('f.name as familytype'));
 
-// // 		 die($select->__toString($select));
+//  die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
    	}
@@ -118,7 +118,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
                       	->where('d.familycode=?',$id)
                         ->join(array('e'=>'ourbank_family'),'d.family_id=e.id')
                       ->join(array('a'=>'ourbank_agriculture'),'e.id=a.land_id',array('a.id'));
-//        die($select->__toString($select));
+//         die($select->__toString($select));
       $result=$this->fetchAll($select);
       return $result->toArray();
   }

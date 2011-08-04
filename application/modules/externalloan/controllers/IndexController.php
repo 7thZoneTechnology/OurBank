@@ -22,7 +22,6 @@ class Externalloan_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle = $this->view->translate('Externalloan');
-        $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->dbobj = new Externalloan_Model_Dec();
     }

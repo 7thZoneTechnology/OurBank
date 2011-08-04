@@ -21,7 +21,7 @@ class Familyform_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-        $this->view->pageTitle='Membership';
+        $this->view->pageTitle='Family form';
 	$this->view->adm = new App_Model_Adm();
 
         /* Initialize action controller here */

@@ -70,6 +70,12 @@ class Loandetailsg_IndexController extends Zend_Controller_Action
 	$this->view->instalments = $this->view->loanModel->loanInstalments($this->_request->getParam('accNum'));
 	$this->view->paid = $this->view->loanModel->paid($this->_request->getParam('accNum'));
 	$this->view->declainedpaid= $this->view->loanModel->declainedpaid($this->_request->getParam('accNum'));
+        foreach($this->view->declainedpaid as $declainpaid) {
+            $this->view->paidamound+=$declainpaid['paid_amount'];
+            $balance[]=$declainpaid['balanceamount'];
+        }
+//         echo $this->view->paidamound;
+             $this->view->balanceamount=end($balance);
 	$this->view->unpaid = $this->view->loanModel->unpaid($this->_request->getParam('accNum'));
         }
         else {

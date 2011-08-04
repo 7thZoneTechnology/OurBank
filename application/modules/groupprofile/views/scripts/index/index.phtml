@@ -70,17 +70,17 @@
 <?php if(!$this->membercode) { ?>
 
 <fieldset>
-	<legend>Search member</legend>
+	<legend><?php echo $this->translate("Search member"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/groupprofile/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <th><label class="mand">Group code :</label></TD>
+                                <th><label class="mand"><?php echo $this->translate("Group code :"); ?></label></TD>
                                 <th><? echo $this->form->s1;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <?php echo $this->form->Submit;?><br><br>
+                                <input type="Submit" name="Submit" value="<?php echo $this->translate("Search"); ?>"><br><br>
                                 <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
                             </div>
                         </div>

@@ -21,8 +21,7 @@ class Affidavit_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-//         $this->view->pageTitle = 'Affidavit';
-        $this->view->title = 'Loan Process';
+        $this->view->pageTitle = 'Affidavit';
         $this->view->Dbobj = new Affidavit_Model_Affidavit();
         $this->view->adm = new App_Model_Adm ();
 

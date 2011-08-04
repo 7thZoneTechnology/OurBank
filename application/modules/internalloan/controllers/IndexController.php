@@ -22,7 +22,6 @@ class Internalloan_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle = $this->view->translate('Declaration');
-        $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->loan = new Internalloan_Model_Internalloan ();
 $this->view->withdrawal = new Sbwithdrawal_Model_Sbwithdrawal();

@@ -1,19 +1,19 @@
 <fieldset>
-	<legend>Enter/Search member</legend>
+	<legend><?php echo $this->translate("Enter/Search member"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/sbwithdrawal/index/withdrawal" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <th><label class="mand">Group code :</label></TD>
+                                <th><label class="mand"><?php echo $this->translate("Group code :"); ?></label></TD>
                                 <th><?php echo $this->form->membercode;?></TD>
                             </TR> 
                             <TR>
-                                <th><label class="mand">Withdrawal amount :</label></TD>
+                                <th><label class="mand"><?php echo $this->translate("Withdrawal amount :"); ?></label></TD>
                                 <th><?php echo $this->form->amount;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <?php echo $this->form->Submit;?>
+                             <input type="Submit" name="Submit" value="<?php echo $this->translate("Search"); ?>"><br><br>
                             </div>
                         </div>
 	       </form>

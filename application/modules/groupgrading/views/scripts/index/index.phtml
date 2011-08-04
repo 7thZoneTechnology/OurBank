@@ -1,9 +1,9 @@
 <fieldset>
-	<legend>Search member</legend>
+	<legend><?php echo $this->translate("Search member"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/groupgrading/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <th><label for="fld3">Member code / Group code</label></TD>
+                                <th><label for="fld3"><?php echo $this->translate("SMember code / Group code"); ?></label></TD>
                                 <th><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
@@ -20,12 +20,12 @@ $dbobj = new App_Model_dateConvertor();
 ?>
     <table id="hor-minimalist-b" border="1">
 	<tr>
-                <th>Code</th>
-        	<th>Group name / Individual name</th>
-                <th>UID</th>
-	        <th>Amount</th>
-                <th>Request date</th>
-                <th>Status</th>
+            <th><?php echo $this->translate("Code"); ?>Code</th>
+        	<th><?php echo $this->translate("Group name / Individual name"); ?></th>
+            <th><?php echo $this->translate("UID"); ?></th>
+	        <th><?php echo $this->translate("Amount"); ?></th>
+            <th><?php echo $this->translate("Request date"); ?></th>
+            <th><?php echo $this->translate("Status"); ?></th>
 	</tr>
 
 	<?php foreach($this->result as $member) : ?>

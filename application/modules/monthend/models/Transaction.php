@@ -35,9 +35,6 @@ class Monthend_Model_Transaction extends Zend_Db_Table
 
     public function interestcalculation($fdate,$ldate,$trnsdate,$bal,$loaninterest,$installmentid)
     {
-
-            Zend_Debug::dump($installmentid);
-
             $len = count($trnsdate);
                 for($i=0;$i < $len;$i++)
                 {

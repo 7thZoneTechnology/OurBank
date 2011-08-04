@@ -22,7 +22,6 @@ class Grouplaw_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle = $this->view->translate('Group law');
-        $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->datechange= new App_Model_dateConvertor();
         $this->view->loan = new Grouplaw_Model_grouplaw ();
@@ -48,14 +47,14 @@ class Grouplaw_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
 
-        $declarationform = new Grouplaw_Form_grouplaw();
-        $this->view->form = $declarationform;
+        $this->view->form = $declarationform = new Grouplaw_Form_grouplaw();
+// //         $this->view->form = $declarationform;
 
-        $dec = $this->view->adm->viewRecord("ourbank_declaration","id","DESC");
-        foreach($dec as $dec)
-        {
-            $declarationform->age->addMultiOption($dec['id'],$dec['name']);
-        }
+//         $dec = $this->view->adm->viewRecord("ourbank_declaration","id","DESC");
+//         foreach($dec as $dec)
+//         {
+//             $declarationform->age->addMultiOption($dec['id'],$dec['name']);
+//         }
         //submit action
         if ($this->_request->isPost() && $this->_request->getPost('Submit'))
         {

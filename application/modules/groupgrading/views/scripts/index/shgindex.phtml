@@ -1,9 +1,9 @@
 <fieldset>
-    <legend>Search member</legend>
+    <legend><?php echo $this->translate("Search member"); ?></legend>
         <form action="<?php echo $this->baseUrl();?>/groupgrading/index/shgadvances" method="POST">
             <table class="fieldsets">
                 <TR>
-                    <th><label class="mand">Group code :</label></TD>
+                    <th><label class="mand"><?php echo $this->translate("Group code :"); ?></label></TD>
                     <th><? echo $this->form->membercode;?></TD>
                 </TR>
             </table>

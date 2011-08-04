@@ -1,11 +1,11 @@
 <?php if(!$this->result) { ?>
 <div id="searchDiv">
 <fieldset>
-	<legend>Search member</legend>
+	<legend><?php echo $this->translate("Search member"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/internalloan/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <TD><label class="mand">Group code:</label></TD>
+                                <TD><label class="mand"><?php echo $this->translate("Group code:"); ?></label></TD>
                                 <TD><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
@@ -26,7 +26,7 @@ foreach ($this->result as $result) {
 if ($count == 0) {
 ?>
 <fieldset>
-	<legend>Individual loan sanction</legend>
+	<legend><?php echo $this->translate("Individual loan sanction"); ?></legend>
         <div align="center"><h3><b><u>Member loan application - sanction</u></b></h3></div>
         <br>
         <div align="left">

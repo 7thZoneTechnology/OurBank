@@ -151,7 +151,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                             'paymenttype_details'=>$paymentdetails,
                             'transactiontype_id' => 2,
                             'recordstatus_id'=> 3,
-                            'transaction_description'=> $this->_request->getPost('description') ,
+                            'transaction_description'=> "(Disbursement) ".$this->_request->getPost('description') ,
                             'confirmation_flag'=>0,
                             'created_by'=>1);
                 $tranID = $this->view->adm->addRecord('ourbank_transaction',$data);
@@ -205,7 +205,7 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
                 $currentbalance=$this->view->loanModel->findbalance($accId);
                 if($currentbalance){
                     $repaybalance=$currentbalance[0]['balanceamount'];
-                    if($currentbalance[0]['installment_id']==date('Y-m-d')){
+                    if($currentbalance[0]['paid_date']==date('Y-m-d')){
                         $incrementvalue=$currentbalance[0]['installment_id'];
                     }
                     else
@@ -488,8 +488,5 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             $loanForm->etransfer->addMultiOption($savingaccount['id'],$savingaccount['account_number']);
 	    	    }
 	}
-	
-	
-
     }
 }

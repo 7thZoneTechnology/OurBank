@@ -1,9 +1,9 @@
     <fieldset>
-        <legend>Search account</legend>
+        <legend><?php echo $this->translate("Search account"); ?></legend>
         <form action="<?php echo $this->baseUrl();?>/memberldeatils/index/loandetails" method="POST">
             <table class="fieldsets">
                 <tr>
-                    <td><br><label for="fld1" class="mand">Account number :</label></td>
+                    <td><br><label for="fld1" class="mand"><?php echo $this->translate("Account number :"); ?></label></td>
                     <td><?php echo $this->form->accNum;?></td>
                 </tr>
             </table>

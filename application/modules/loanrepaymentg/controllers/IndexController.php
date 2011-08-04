@@ -144,13 +144,13 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                         {
                             $interestdate=$paiddetails[0]['paid_date'];
                             $this->view->p=$p=$paiddetails[0]['balanceamount'];
-                            if($paiddetails[0]['balanceamount']==date('Y-m-d'))
+                            if($paiddetails[0]['paid_date']==date('Y-m-d'))
                             {
-                            $currentinstallment=$paiddetails[0]['installment_id']+1;
+                            $currentinstallment=$paiddetails[0]['installment_id'];
                             }
                             else
                             {
-                            $currentinstallment=$paiddetails[0]['installment_id'];
+                            $currentinstallment=$paiddetails[0]['installment_id']+1;
                             }
                         }
                         else

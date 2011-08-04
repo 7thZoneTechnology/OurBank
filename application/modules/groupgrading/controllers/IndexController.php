@@ -22,7 +22,6 @@ class groupgrading_IndexController extends Zend_Controller_Action
     public function init()
     {
         $this->view->pageTitle = 'Group grading';
-        $this->view->title = 'Accounting';
         $this->view->accounts = new groupgrading_Model_Loanprocess();
         $this->view->adm = new App_Model_Adm ();
 

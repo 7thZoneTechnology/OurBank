@@ -26,15 +26,15 @@ background-color : silver;
 <?php if(!$this->groupname){ ?>
 <!--search form action !-->
 <fieldset>
-	<legend>Group Resolution</legend>
+	<legend><?php echo $this->translate("Group Resolution"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/groupresolutionkoota" method="POST">
 			<table class="fieldsets">
 					<tr>
-						<td ><label class="mand">Group code:</label></td>
+						<td ><label class="mand"><?php echo $this->translate("Group code:"); ?></label></td>
 						<td ><? echo $this->form->membercode;?></td>
 					</tr>
 			</table>
-			<input type="submit" name="Search" id="Submit" value="Search">			
+			<input type="submit" name="Search" id="Submit" value="<?php echo $this->translate("Search"); ?>">			
 		</form>	
 </fieldset>
 <?php } ?>
@@ -44,17 +44,17 @@ background-color : silver;
   <?php $i=0; if($this->groupname){ $i++ ?>
 	<?php foreach($this->groupname as $member) : ?>
 	<table width="100%" border="2" id="hor-minimalist-b">	
-	<th colspan="4"><?php echo "<font color=green>";?>Group Resolution</th>
+	<th colspan="4"><?php echo "<font color=green>";?><?php echo $this->translate("Group Resolution"); ?></th>
 
-<tr><TD><b>Group name :</b><?php echo $member['groupname'];?></TD>
-<td align="left"><b>Date :</b><?php echo date('d-m-Y');?></td></tr>
-<tr><TD><br><b>Address:</b><?php  echo $member['address1'];?><?php  echo $member['address2'];?><?php  echo $member['address3'];?>
-<br><b>City&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['city'];?>
-<br><b>Sate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['state'];?></td>
-<td align="left"><b>Group code :</b><?php  echo $member['groupcode'];?></td></tr>
+<tr><TD><b><?php echo $this->translate("Group name :"); ?></b><?php echo $member['groupname'];?></TD>
+<td align="left"><b><?php echo $this->translate("Date :"); ?></b><?php echo date('d-m-Y');?></td></tr>
+<tr><TD><br><b><?php echo $this->translate("Address:"); ?></b><?php  echo $member['address1'];?><?php  echo $member['address2'];?><?php  echo $member['address3'];?>
+<br><b><?php echo $this->translate("City"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['city'];?>
+<br><b><?php echo $this->translate("Sate"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b><?php  echo $member['state'];?></td>
+<td align="left"><b><?php echo $this->translate("Group code :"); ?></b><?php  echo $member['groupcode'];?></td></tr>
 </table>
 <br>
-<tr><td><b>Koota Name :</b><font color="green"><?php  echo $member['kootaname'];?></font></td></tr><br><br>
+<tr><td><b><?php echo $this->translate("Koota Name :"); ?></b><font color="green"><?php  echo $member['kootaname'];?></font></td></tr><br><br>
         <p>1) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
         <p>2) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
         <p>3) cdsjsjlkdsfjlkd sfjkldfjlksdfjsd   kfjdsfhjdsfhds  jgfgiuiqup</p>
@@ -67,11 +67,11 @@ background-color : silver;
 
 	<table id="hor-minimalist-b" border="2">
 <tr>
-		<Th>S.no</Th>
-		<Th>Member name</Th>
+		<Th><?php echo $this->translate("S.no"); ?></Th>
+		<Th><?php echo $this->translate("Member name"); ?></Th>
 <!--		<Th>Survey no</Th>
 		<Th>Loan request amount</Th>-->
-		<Th>Signature</Th>
+		<Th><?php echo $this->translate("Signature"); ?></Th>
 </tr>
 
 	<?php $i=1; foreach($this->groupmembers as $memberdetail) :?>

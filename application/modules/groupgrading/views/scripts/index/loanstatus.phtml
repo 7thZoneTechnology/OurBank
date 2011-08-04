@@ -1,10 +1,10 @@
 <?php if(!$this->result) { ?>
 <fieldset>
-	<legend>Request status</legend>
+	<legend><?php echo $this->translate("Request status"); ?></legend>
 		<form action="<?php echo $this->baseUrl();?>/groupgrading/index/loanstatus" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <TD><label for="fld3">Member code / Group code</label></TD>
+                                <TD><label for="fld3"><?php echo $this->translate("Member code / Group code"); ?></label></TD>
                                 <TD><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
@@ -21,25 +21,25 @@
     <form action="<?php echo $this->baseUrl();?>/groupgrading/index/loanupdate/id/<?php echo base64_encode($this->id); ?>" method="POST">
     <table id="hor-minimalist-b">
 	<tr>
-	    <Th colspan="3">Loan details</Th>
+	    <Th colspan="3"><?php echo $this->translate("Loan details"); ?></Th>
 
 	</tr>
 	<?php foreach($this->result as $loan){ ?>
 	<tr>
-		<td>Group code / Individual code</td>
+		<td><?php echo $this->translate("Group code / Individual code"); ?></td>
 		<td colspan="2"><?php  echo $loan['code'];?></td>
         </tr>
         <tr>
-		<td>Name</td>
+		<td><?php echo $this->translate("Name"); ?></td>
 		<td colspan="2"><?php  echo $loan['name'];?></td>
 	</tr>
         <tr>
-		<td>Loan amount</td>
+		<td><?php echo $this->translate("Loan amount"); ?></td>
 		<td colspan="2"><?php  echo $loan['Amount'];?></td>
 	</tr>
         <?php if($this->memtype==1) { ?>
         <tr>
-		<td>Purpose</td>
+		<td><?php echo $this->translate("Purpose"); ?></td>
 		<td colspan="2"><?php  echo $loan['purpose'];?></td>
 	</tr>
         <?php } ?>
@@ -67,14 +67,14 @@
                 </td>
                 </tr>
                <tr>
-                <td>Process description</td>
+                <td><?php echo $this->translate("Process description"); ?></td>
                 <td colspan="2"><textarea name="description" cols="25" rows="5"></textarea></td>
                 </tr>
                 <?php if($this->getgroupmember) { ?>
                     <tr>
-                    <th>Member name</th>
-                    <th>Amount</th>
-                    <th>Purpose</th>
+                    <th><?php echo $this->translate("PMember name"); ?></th>
+                    <th><?php echo $this->translate("Amount"); ?></th>
+                    <th><?php echo $this->translate("Purpose"); ?></th>
                     </tr>
                     <?php $j=0; foreach($this->getgroupmember as $groupdetails) { $j++;?>
                     <tr>

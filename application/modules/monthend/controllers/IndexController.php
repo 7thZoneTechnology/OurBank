@@ -43,7 +43,9 @@ class Monthend_IndexController extends Zend_Controller_Action
     {
 
         $this->view->monthstart=$startdate=date('Y-m-d', mktime(0, 0, 0, date("m"), 1, date("Y")));
+        $nextstartdate=date('Y-m-d', mktime(0, 0, 0, date("m")+1, 1, date("Y")));
         $this->view->monthend=$enddate=date('Y-m-t', mktime(0, 0, 0, date("m"), 1, date("Y")));
+        
         if ($this->_request->isPost() && $this->_request->getPost('continue')) {
         if(date('Y-m-d')==$enddate) {
         $monthmodle=new Monthend_Model_Transaction();
@@ -79,10 +81,10 @@ class Monthend_IndexController extends Zend_Controller_Action
           
 //  Zend_Debug::dump($monthinterest);
           $totalinterest+=$monthinterest[0];
-
+          $nextinstallmentid=end($installmentid)+1;
           $input=array('monthend_tag'=>1);
           $monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
-          $repaymentarray=array('account_id'=>$accountidunique[$j],'paid_date'=>date('Y-m-d'),'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
+          $repaymentarray=array('account_id'=>$accountidunique[$j],'installment_id'=>$nextinstallmentid,'paid_date'=>$nextstartdate,'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
           $this->view->adm->addRecord('ourbank_loan_repayment',$repaymentarray);
 
             // Zend_Debug::dump($paiddate);
@@ -92,7 +94,7 @@ class Monthend_IndexController extends Zend_Controller_Action
             $installmentid= array();
         }
 
-        $transactionarray=array('transaction_date'=>date('Y-m-d'),'amount_to_bank'=>$totalinterest,'transactiontype_id'=>1,'created_by'=>$this->view->createdby,'created_date'=>date('Y-m-d'),'paymenttype_id'=>5);
+        $transactionarray=array('transaction_date'=>$nextstartdate,'amount_to_bank'=>$totalinterest,'transactiontype_id'=>1,'transaction_description'=>' Month end interest on '.$nextstartdate,'created_by'=>$this->view->createdby,'created_date'=>$nextinstallmentid,'paymenttype_id'=>5);
         $trasid=$this->view->adm->addRecord('ourbank_transaction',$transactionarray);
         $input=array('transaction_id'=>$trasid,'monthend_tag'=>1);
         $monthmodle->accUpdate('ourbank_loan_repayment',2,$input,'monthend_tag');

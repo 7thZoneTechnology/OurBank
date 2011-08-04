@@ -432,7 +432,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                         'paymenttype_id' => $data["paymentMode"],
                         'recordstatus_id' => 3,
                         'transactiontype_id' => 1,
-                        'transaction_description'=>$data["description"],
+                        'transaction_description'=>"(Repayment) ".$data["description"],
                         'created_by'=>1);
         $db->insert("ourbank_transaction",$tranData);
         $tranId = $db->lastInsertId('id');

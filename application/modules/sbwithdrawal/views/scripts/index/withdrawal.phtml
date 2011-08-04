@@ -5,14 +5,14 @@
 <?php $dateconvertor = new App_Model_dateConvertor();?>
 <div id="searchDiv">
         <fieldset>
-                <legend>To Withdraw Amount </legend> 
-                <p align="center"><b>Declaration to withdraw amount from savings amount</b></p>
+                <legend><?php echo $this->translate("To Withdraw Amount"); ?></legend> 
+                <p align="center"><b><?php echo $this->translate("Declaration to withdraw amount from savings amount"); ?></b></p>
                 <table border="2" width="100%" id="hor-minimalist-b">
 
                     <TR>
-                        <TD><b>Group name</b></TD>
+                        <TD><b><?php echo $this->translate("Group name"); ?></b></TD>
                         <td><?php echo $this->groupname;?></td>
-                        <td><b>date</b></td>
+                        <td><b><?php echo $this->translate("date"); ?></b></td>
                         <td><?php echo $dateconvertor->phpnormalformat($this->createdate);?></td>
                     </tr>
                     <?php
@@ -24,8 +24,8 @@
                         $repmembers = $this->repmemberslist;
                      ?>
                     <tr>
-                        <td colspan="2"><b>Address</b></td>
-                        <td><b>groupcode</b></td>
+                        <td colspan="2"><b><?php echo $this->translate("Address"); ?></b></td>
+                        <td><b><?php echo $this->translate("groupcode"); ?></b></td>
                         <td><?php echo $this->groupcode;?></td>
                     </tr> 
                     <tr>
@@ -46,12 +46,12 @@
                   echo $representative['membername']."<br>";
                  } ?>
                 </p>
-                <p>Notice:All members</p>
+                <p><?php echo $this->translate("Notice:All members"); ?></p>
                 <table border="2" width="100%" id="hor-minimalist-b">
                     <TR>
-                        <th>Sl.No</th>
-                        <th>Group Members</th>
-                        <th>Signature</th>
+                        <th><?php echo $this->translate("Sl.No"); ?></th>
+                        <th><?php echo $this->translate("Group Members"); ?></th>
+                        <th><?php echo $this->translate("Signature"); ?></th>
                     </TR>   
                     <?php $i = 1; foreach($groupmembers as $groupmemb) { ?> 
                     <TR>
@@ -69,9 +69,9 @@
                 <br><br><br>
                 <table width="100%" >
                     <TR>
-                        <td align="center">Village facilitator</td>
-                        <td align="center">Field officer</td>
-                        <td align="center">Block office</td>
+                        <td align="center"><?php echo $this->translate("Village facilitator"); ?></td>
+                        <td align="center"><?php echo $this->translate("Field officer"); ?></td>
+                        <td align="center"><?php echo $this->translate("Block office"); ?></td>
                     </TR>   
                 </table>
     </fieldset>

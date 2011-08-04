@@ -22,7 +22,7 @@ class Memberldeatils_IndexController extends Zend_Controller_Action
     public function init() 
     {
     	$this->view->title = "Reports";
-	$this->view->pageTitle = "Loans ledger";
+		$this->view->pageTitle = "Loans ledger";
         $this->view->type = "generalFields";
         $this->view->loanModel = new Memberldeatils_Model_Memberldeatils();
         $this->view->adm = new App_Model_Adm ();
