@@ -49,7 +49,7 @@ class Familyform_IndexController extends Zend_Controller_Action
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 		$id = $this->_getParam('membercode');
 		$this->view->id = $id;
- 	$familydetails = new Familyform_Model_Familyform();
+ 		$familydetails = new Familyform_Model_Familyform();
  		$result = $familydetails->getFamilydetails($id);
 		$this->view->familydetails = $result;
         $this->view->family =$familydetails->getfamily($id);

@@ -1,3 +1,25 @@
+<!--<script type="text/javascript">
+$(document).ready(
+  function() {
+//     $('#showemi').click()(function() {
+	    $('#showemi').click(function(){
+    $('#emichart').slideToggle();
+});
+});
+</script>-->
+<script type="text/javascript">
+function toggle(showHideDiv) {
+       var ele = document.getElementById(showHideDiv);
+       if(ele.style.display == "block") {
+               ele.style.display = "none";
+//               imageEle.innerHTML = '<img src="<?php echo $this->baseUrl();?>/images/down.png/"/>';
+       }
+       else {
+               ele.style.display = "block";
+//               imageEle.innerHTML = '<img src="<?php echo $this->baseUrl();?>/images/down.png/"/>';
+       }
+}
+</script>
 <?php if (count($this->details)) { ?>
  <div style="float:left;width:350px"> 
     <?php foreach($this->details as $details) { ?>
@@ -82,10 +104,15 @@
                 <td colspan="9"><?php echo sprintf("%4.2f",$this->balanceamount); ?></td>
 				<?php } } ?>
             </tr>
-		</table>
+
+</table>
 </div>
 <?php $convertdate = new App_Model_dateConvertor(); ?>
-<?php if($this->intesttype==2) { ?>
+<div id="headerDivImg">
+    <div id="titleTextImg">
+    <span><a title="Expand/Collapse" href="javascript:toggle('contentDivImg_1');">&nbsp;EMI Chart</a></span>
+</div>
+<div id="contentDivImg_1" style="display: none;">
     <table id="hor-minimalist-b" border="1">
         <tr>
             <th>Inst.</th>
@@ -149,7 +176,10 @@
 <?php } ?>
         </tr>
     </table>
-    <?php } else { ?>
+</div>
+</div>
+<br>
+    <?php if($this->intesttype==3){ ?>
     <table id="hor-minimalist-b" border="1">
         <tr>
             <th>S.No</th>

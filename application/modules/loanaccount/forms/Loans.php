@@ -4,19 +4,18 @@ class Loanaccount_Form_Loans extends Zend_Form
     public function init() 
     {
     }
-    public function __construct($minimumDeposit,$maxDeposite,$ID,$code,$app) 
+    public function __construct($minimumDeposit,$maxDeposite,$ID,$code,$app,$messageerr) 
     {
         parent::__construct($minimumDeposit,$maxDeposite,$ID,$code,$app);
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
        	$formfield = new App_Form_Field ();
-        $amount = $formfield->field('Text','amount','','','txt_put amountclass','',true,'','','','','',0,0);
+        $amount = $formfield->field('Text','amount','','','txt_put amountclass','',true,'','','','','',0,$maxDeposite);
         $amount->addValidators(array(array('Float'),
                                array('GreaterThan',false,array($minimumDeposit-.0001,
                                      'messages' => array('notGreaterThan' => 'Minimum 
-                                      Amount To open a savings account ='.$minimumDeposit))),
-                               array('LessThan',false,array($maxDeposite-.0001,
-                                     'messages' => array('notLessThan' => 'Maximum 
-                                      Amount To open a savings account ='.$maxDeposite)))
+                                      Amount To open a loan account ='.$minimumDeposit))),
+                               array('LessThan',false,array($maxDeposite+1,
+                                     'messages' => array('notLessThan' => $messageerr)))
                                ));
         $date = $formfield->field('Text','date','','','txt_put','',true,'','','','','',0,0);
 //         $date = new ZendX_JQuery_Form_Element_DatePicker('date');

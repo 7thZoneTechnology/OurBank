@@ -96,10 +96,21 @@ class Loanaccount_IndexController extends Zend_Controller_Action
             $minDeposite = $account->minamount; // Validate for min balance
             $maxDeposite = $account->maxamount;
             $minInstallments = $account->minInstallments; 
-            $maxInstallments = $account->maxInstallments; 
+            $maxInstallments = $account->maxInstallments;
+            $requetloan=$account->requestamount;
+        }
+        if($requetloan<=$maxDeposite && $requetloan>=$minDeposite)
+        {
+           $maxloanamount = $requetloan;
+           $messageerr='Loan amount is less than or equal requested amount ='.$maxloanamount;
+        }
+        else
+        {
+           $maxloanamount = $maxDeposite;
+           $messageerr='Maximum Amount To open a loan account ='.$minimumDeposit;
         }
         $app = $this->view->baseUrl();
-        $loanForm = new Loanaccount_Form_Loans($minDeposite,$maxDeposite,$this->_request->getParam('Id'),$this->_request->getParam('code'),$app);
+        $loanForm = new Loanaccount_Form_Loans($minDeposite,$maxloanamount,$this->_request->getParam('Id'),$this->_request->getParam('code'),$app,$messageerr);
         for($i=$minInstallments;$i<=$maxInstallments;$i++)  {
 		$loanForm->installments->addMultiOption($i,$i);
 	}

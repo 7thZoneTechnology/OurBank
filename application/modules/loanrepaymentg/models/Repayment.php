@@ -261,7 +261,6 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         //die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
-
     }
     public function more($accId,$amt,$accNum) 
     {
@@ -502,12 +501,47 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                          'recordstatus_id' => 3);
        	$db->insert('ourbank_Income',$interest);
         }
+
+        $monthinterest=$this->findmonthinterest($accId);
+        if($monthinterest) {
+        $interestledger = $this->getGlcode($officeid,'interest'.$officeid);
+        $interest =  array('office_id' => $officeid,
+                        'glsubcode_id_from' => $interestledger[0]['id'],
+                        'glsubcode_id_to' => '',
+                        'transaction_id' => $tranId,
+                        'credit' => $monthinterest[0]['monthinterest'],
+                        'recordstatus_id' => 3);
+        $db->insert('ourbank_Income',$interest);
+        $input=array('monthend_tag'=>1);
+        $this->accUpdate('ourbank_loan_repayment',2,$accId,$input,'monthend_tag');
+        }
        	//Retuns some variables
         return array('transaction_id' => $tranId,
                         'account_id' => $accId,
                         'paymentMode' => $data["paymentMode"],
                         'installment_id' => $accId);
 	}
+
+
+    public function accUpdate($tablename,$monthtag,$accId,$input)
+    {
+    	$where[] ="monthend_tag= '".$monthtag."' and account_id ='".$accId."'";
+	$db = $this->getAdapter();
+        $result = $db->update($tablename,$input,$where);
+    }
+
+    public function findmonthinterest($accId)
+    {
+        $select= $this->select()
+                ->setIntegrityCheck(false)
+                ->from(array('a'=>'ourbank_loan_repayment'),array('a.paid_interest as monthinterest'))
+                ->where('monthend_tag=2')
+                ->where('account_id=?',$accId);
+        // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return  $result->toArray();
+    }
+
     public function getGlcode($officeId,$headername)
     {
         $select=$this->select()

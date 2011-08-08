@@ -201,11 +201,44 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
        			return $result->toArray();
 	}
  	public function tabledata($tablename){
+
+	if($tablename=='ourbank_master_habitation'){
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+				->from(array('a' => $tablename),array('id','name as habit','village_id','a.name_regional'))
+				->from(array('b' =>'ourbank_master_villagelist'),array('id as vid','name as vname','panchayath_id'))
+               		->where('b.village_id =a.village_id')
+				->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
+        	        ->where('c.id =b.panchayath_id');
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		} elseif($tablename=='ourbank_master_gillapanchayath') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+				->from(array('a' => $tablename),array('id','name as habit','hobli_id','a.name_regional'))
+				->from(array('b' =>'ourbank_master_hoblilist'),array('id as hbid','name_regional as hbname','taluk_id'))
+                	->where('b.id =a.hobli_id')
+				->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
+                	->where('e.id =b.taluk_id');
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		} elseif($tablename=='ourbank_master_taluklist') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+				->from(array('a' => $tablename),array('id','name as habit','district_id','a.name_regional'))
+				->from(array('b' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
+                	->where('a.district_id =b.id');
+
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		}else{
+
 	$select = $this->select()
 		->setIntegrityCheck(false)  
 		->join(array('b' => $tablename),array('b.id'));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
+		}
     }
 	 public function district($state) {
  	$select = $this->select()

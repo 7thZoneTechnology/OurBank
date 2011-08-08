@@ -256,17 +256,21 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 C.maximunloanamount as maxamount,
                 C.penal_Interest as penalInterest,
                 C.minimumfrequency as minInstallments,
-                C.maximumfrequency as maxInstallments
+                C.maximumfrequency as maxInstallments,
+                G.request_amount as requestamount
                 FROM 
                 ourbank_productsoffer B,
                 ourbank_productsloan C,
                 ourbank_office F,
-                ourbank_familymember E
+                ourbank_familymember E,
+                ourbank_loanprocess G
                 WHERE
                 E.familycode = $code AND 
                 B.id = $productId AND
                 F.id = E.village_id AND
-                B.id = C.productsoffer_id
+                B.id = C.productsoffer_id AND
+                E.id = G.member_id AND
+                G.status = 5
                 UNION 
                 SELECT 
 		E.id as memberId,
@@ -283,18 +287,21 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 C.maximunloanamount as maxamount,
                 C.penal_Interest as penalInterest,
                 C.minimumfrequency as minInstallments,
-                C.maximumfrequency as maxInstallments
+                C.maximumfrequency as maxInstallments,
+                G.request_amount as requestamount
                 FROM 
                 ourbank_productsoffer B,
                 ourbank_productsloan C,
                 ourbank_office F,
-                ourbank_group E
+                ourbank_group E,
+                ourbank_loanprocess G
                 WHERE
                 E.groupcode = $code AND 
                 B.id = $productId AND
                 F.id = E.village_id AND
-                B.id = C.productsoffer_id 
-                ";
+                B.id = C.productsoffer_id AND
+                E.id = G.member_id AND
+                G.status = 5";
 //        echo $sql;
         $result = $db->fetchAll($sql,array($productId,$code));
         return $result;

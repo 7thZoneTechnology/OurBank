@@ -63,7 +63,7 @@ foreach ($this->account as $account) {
         <TR>
             <TH>Product details</TH>
             <TH></TH>
-        </TR>          
+        </TR>
 
         <TR>
             <td>Product name:</td>
@@ -81,6 +81,10 @@ foreach ($this->account as $account) {
         <TR>
             <td>Penal interest:</td>
             <TD><?php echo $account->penalInterest; ?></TD>
+        </TR>
+        <TR>
+            <td>Requested loan amount:</td>
+            <TD><?php echo $account->requestamount; ?></TD>
         </TR>
         <TR>
             <TH>Interest per annum</TH>
@@ -148,7 +152,7 @@ foreach ($this->account as $account) {
                     </TR>
                     <TR>
                         <TD><?php echo $this->loanForm->Submit; ?></TD>
-                        <td><?php echo $this->loanForm->Back; ?></td>
+                        <td><a href="<?php echo $this->baseUrl();?>/loanaccount"<?php echo $this->loanForm->Back; ?></a></td>
                     </TR>
                     <?php echo '<font color=RED>'.$this->maxdate.'</font>'; ?>
                 </table>

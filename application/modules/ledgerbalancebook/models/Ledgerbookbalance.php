@@ -34,23 +34,20 @@ protected $_name = 'ourbank_transaction';
         $sql = "select 
                     D.id as glsubcode_id,
                     D.header as subheader,
-		    		D.glsubcode as glsubcode,
+		    D.glsubcode as glsubcode,
                     (sum(A.debit)-sum(A.credit)) as assetsBalance
-
                     from 
 		    ourbank_Assets A,
 		    ourbank_glcode B,
 		    ourbank_glsubcode D,
 		    ourbank_transaction E
-
 		    where (
 			A.glsubcode_id_to = D.id AND 
 		    B.id = D.glcode_id AND
 		    B.ledgertype_id = 3 AND
 		    A.transaction_id = E.transaction_id AND
-            E.transaction_date <= '$date') 
+                    E.transaction_date <= '$date') 
 		    group by D.id";
-// echo $sql;
         $result=$db->fetchAll($sql);
         return $result;
 

@@ -1,11 +1,11 @@
-<?php  if(!$this->ledegerListAssets || !$this->ledegerList) { ?>   
+<?php  if(!$this->ledegerListAssets && !$this->ledegerList) { ?>   
 <form action="<?php echo $this->baseUrl();?>/ledgerbalancebook" method="POST">  
 <div style="margin-left:20px;">
     <fieldset>
         <legend>Ledger details</legend>
         <TABLE style="margin-left:20px;" class="fieldsets">
 			    <tr>
-                	<td><label class="mand">Begin Date :</td>
+                	<td><label class="mand">As of Date :</td>
                 	<td><?php  echo $this->form->date1;?></td>
        			</tr>
 			</table>
@@ -97,14 +97,7 @@
 				</tr>
 		
 			<?php } }  $i=0;$j=0; ?>
-        </table><br>
+        </table>
 </div></tr></TR></table></fieldset>
-<form action="<?php echo $this->baseUrl();?>/ledgerbalancebook/index/pdfdisplay" method="POST" onClick="window.open('<?php echo $this->baseUrl();?>/ledgerbalancebook/index/reportdisplay/file/ledgerbalancebook.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
 
-           		<input type="submit" value="PDF" id="submit">
-				<input type="hidden" name="field1" value="<?php echo $this->ledegerList; ?>"/>
-                <input type="hidden" name="field1" value="<?php echo $this->ledegerListAssets; ?>"/>
-				<input type="hidden" name="date1" value="<?php echo $this->date1; ?>"/>
-
-</form>
 <?php } ?>

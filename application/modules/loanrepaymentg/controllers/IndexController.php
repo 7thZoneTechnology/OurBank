@@ -118,7 +118,6 @@ class Loanrepaymentg_IndexController extends Zend_Controller_Action
                             $interestdate=$disburseddetails[0]['loandisbursement_date'];
                             $this->view->p=$p=$disburseddetails[0]['amount'];
                         }
-
                         $dateDiff = $this->view->loanModel->dateDiff($interestdate,date("Y-m-d"));
                         $this->view->int= $int = round(($p*$dateDiff*$interest)/(100*365),2);
                         $this->view->totalamount=$totalAmt = round($int+$p,2);
