@@ -209,16 +209,22 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 				->from(array('b' =>'ourbank_master_villagelist'),array('id as vid','name as vname','panchayath_id'))
                		->where('b.village_id =a.village_id')
 				->from(array('c' =>'ourbank_master_gillapanchayath'),array('id as gpid','name as gpname','hobli_id'))
-        	        ->where('c.id =b.panchayath_id');
+        	        ->where('c.id =b.panchayath_id')
+
+				->join(array('d'=>'ourbank_office'),'d.id=a.village_id',array('d.id','d.parentoffice_id'))
+                ->join(array('e'=>'ourbank_officehierarchy'),'e.id=d.officetype_id',array('e.type'));
+
+//  die($select->__toString($select));
+
 		$result = $this->fetchAll($select);
     	return $result->toArray();
 		} elseif($tablename=='ourbank_master_gillapanchayath') {
 		$select = $this->select()
             ->setIntegrityCheck(false)
 				->from(array('a' => $tablename),array('id','name as habit','hobli_id','a.name_regional'))
-				->from(array('b' =>'ourbank_master_hoblilist'),array('id as hbid','name_regional as hbname','taluk_id'))
+				->from(array('b' =>'ourbank_master_hoblilist'),array('id as hbid','name as hbname','taluk_id'))
                 	->where('b.id =a.hobli_id')
-				->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name_regional as tname','district_id'))
+				->from(array('e' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
                 	->where('e.id =b.taluk_id');
 		$result = $this->fetchAll($select);
     	return $result->toArray();
@@ -229,6 +235,55 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 				->from(array('b' =>'ourbank_master_districtlist'),array('id as did','name as dname','state_id'))
                 	->where('a.district_id =b.id');
 
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		}elseif($tablename=='ourbank_master_hoblilist') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+					->from(array('a' => $tablename),array('id','name as habit','taluk_id','a.name_regional'))
+					->from(array('b' =>'ourbank_master_taluklist'),array('id as tid','name as tname','district_id'))
+                ->where('b.id =a.taluk_id');
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		}elseif($tablename=='ourbank_master_cbopromoter') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+			->from(array('a' => $tablename),array('id as cbid','name as habit','a.name_regional'))
+			->join(array('b'=>'ourbank_office'),'b.id=a.koota_id',array('parentoffice_id','name as kootaname'))
+            ->join(array('c'=>'ourbank_officehierarchy'),'c.id=b.officetype_id',array('c.type'));
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		}elseif($tablename=='ourbank_master_cbos') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+			->from(array('a' => $tablename),array('id as cbosid','name as habit','a.name_regional'))
+			->from(array('b' =>'ourbank_master_cbopromoter'),array('b.id'))
+				 ->where('b.id =a.cbopromoter_id')
+			->join(array('c'=>'ourbank_office'),'c.id=b.koota_id',array('c.id','c.parentoffice_id','name as kootaname'));
+// die($select->__toString($select));
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		}elseif($tablename=='ourbank_master_bank') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+			->from(array('a' => $tablename),array('id','name as habit','a.name_regional','a.village_id'))
+			->join(array('b' =>'ourbank_master_villagelist'),'b.village_id = a.village_id',array('village_id','name as vname'))
+			->join(array('c' =>'ourbank_master_gillapanchayath'),'c.id =b.panchayath_id',array('id as gpid','name as gpname'))
+			->join(array('d'=>'ourbank_office'),'d.id=a.village_id',array('d.id','d.parentoffice_id'))
+            ->join(array('e'=>'ourbank_officehierarchy'),'e.id=d.officetype_id',array('e.type'));
+		$result = $this->fetchAll($select);
+    	return $result->toArray();
+		}elseif($tablename=='ourbank_master_branch') {
+		$select = $this->select()
+            ->setIntegrityCheck(false)
+			->from(array('a' => $tablename),array('id','name as habit','a.name_regional','a.bank_id','a.village_id'))
+			->from(array('b' => 'ourbank_master_bank'),array('b.id','name as bankname'))
+				 ->where('b.id = a.bank_id')
+			->join(array('c' =>'ourbank_master_villagelist'),'c.village_id=a.village_id',array('village_id'))
+			->join(array('d' =>'ourbank_master_gillapanchayath'),'d.id =c.panchayath_id',array('id as gpid','name as gpname'))
+			->join(array('e'=>'ourbank_office'),'e.id=a.village_id',array('e.id','e.parentoffice_id'))
+            ->join(array('f'=>'ourbank_officehierarchy'),'f.id=e.officetype_id',array('f.type'));
+//   die($select->__toString($select));
 		$result = $this->fetchAll($select);
     	return $result->toArray();
 		}else{
@@ -256,6 +311,16 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
 				$result = $this->fetchAll($select);
        			return $result->toArray();
     }
+
+	 public function getkoota($parant) {
+ 	$select = $this->select()
+              ->setIntegrityCheck(false)
+					->from(array('a' =>'ourbank_office'),array('a.name as kootaname'))
+					->where('a.id =?',$parant);
+				$result = $this->fetchAll($select);
+       			return $result->toArray();
+    }
+
 	 public function gillapanchayath($hobli) {
 	 $select = $this->select()
              ->setIntegrityCheck(false)
