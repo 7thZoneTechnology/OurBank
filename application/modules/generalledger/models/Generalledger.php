@@ -155,4 +155,35 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         return $result;
 
     }
+
+	public function suboffice($hierarchy) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_office WHERE officetype_id = $hierarchy";
+        $result = $this->db->fetchAll($sql,array($hierarchy));
+        return $result;
+
+
+    	}
+	public function subgroup($branch) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_group WHERE village_id = $branch";
+        $result = $this->db->fetchAll($sql,array($branch));
+        return $result;
+
+
+    	}
+	public function getOffice($id) {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
+						->where('a.village_id = ?',$id);
+
+//die($select->__toString($select));
+
+
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
 }

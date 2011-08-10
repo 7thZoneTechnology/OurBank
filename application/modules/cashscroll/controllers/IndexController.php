@@ -30,7 +30,7 @@ class Cashscroll_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = $this->view->translate("Cash scroll");
         $this->view->title =  $this->view->translate('Reports');
         $this->view->type = $this->view->translate("financialReports");
-  $storage = new Zend_Auth_Storage_Session();
+  		$storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
                 $this->_redirect('index/login'); // once session get expired it will redirect to Login page
@@ -66,30 +66,29 @@ $this->view->adm = new App_Model_Adm();
 
        		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 //         if ($searchForm->isValid($formData)) {
-$dateconvert= new App_Model_dateConvertor();
+			$dateconvert= new App_Model_dateConvertor();
 
 
        $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
-$this->view-> date1 =$fromDate;
+		$this->view-> date1 =$fromDate;
 
        $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
-$this->view-> date2 =$toDate;
+		$this->view-> date2 =$toDate;
 
  		$branch=$this->_request->getParam('branch');
  		$group=$this->_request->getParam('group');
+
 			$officename=$villageoffice->getOffice($branch);
-foreach ($officename as $officename) {
-$this->view-> name =$officename['name'];
-}
+			foreach ($officename as $officename) {
+			$this->view-> name =$officename['name'];
+				}
                 $transaction = new Cashscroll_Model_Cashscroll();
-if ($group=="") {
+			if ($group=="") {
                 //Saving Account Credit and Debit
                 $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);
-           //     $officename=$transaction-> officename($branchid);
                 $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch);
-}else {
-  $this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
-          //      $officename=$transaction-> officename($branchid);
+			}else {
+  				$this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
                 $this->view->savingsDebit = $transaction->totalSavingsDebitg($fromDate,$toDate,$group);
 
                 // Opening Balance

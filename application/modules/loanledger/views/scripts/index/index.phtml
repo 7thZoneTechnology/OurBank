@@ -1,17 +1,62 @@
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+
+<?php
+if($this->searchaccounts == 0) { ?>   
+        <form action="<?php echo $this->baseUrl();?>/loanledger/index/loandetails" method="POST">
     <fieldset>
         <legend>Search account</legend>
-        <form action="<?php echo $this->baseUrl();?>/loanledger/index/loandetails" method="POST">
-            <table class="fieldsets" style="margin-left:20px;">
-                <tr>
-                    <td><br><label class="mand">Account number :</label></td>
-                    <td><?php echo $this->form->accNum;?></td>
-                </tr>
+            <table  style="margin-left:20px;">
+
+
+  						<tr>
+							<TD></TD><TD></TD>
+							<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+						</tr>
+						<tr>
+                    		<TD><br><label class="mand">Account number :</label></TD>
+                    		<TD><?php echo $this->form->accNum;?></TD>
+                            <TD><?php echo $this->translate('Branch'); ?></TD>
+                            <TD><div id="statediv"><?php echo $this->form->branch;?></div></TD>
+						</tr>
+						<tr id="hide">
+							<TD></TD><TD></TD>
+							<TD><?php echo $this->translate('Group'); ?></TD>
+                            <TD><div id="groupdiv"><?php echo $this->form->group;?></TD>
+						</tr>
+
             </table>
             <div class="btnhouse">
                 <div class="ltbtns" style="margin-left:20px;">
                     <?php echo $this->form->Search;?>
                 </div>
             </div>
-        </form>
     </fieldset>
+        </form>
 
+<?php } ?>

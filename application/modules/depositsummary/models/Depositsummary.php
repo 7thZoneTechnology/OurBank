@@ -28,13 +28,13 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
                                 ->setIntegrityCheck(false)  
                                 ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
                                 ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id')
-                                ->where('C.status_id = 3 || C.status_id = 1')
+                                	->where('C.status_id = 3 || C.status_id = 1')
                                 ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','D.name as productname')
-                                ->where('D.category_id = 1')
+                                	->where('D.category_id = 1')
                                 ->join(array('E'=>'ourbank_familymember'),'E.id = C.member_id',array('E.name as membername'))
                                 ->join(array('F'=>'ourbank_office'),'F.id = E.village_id',array('F.name as officename'))
-                                ->where('F.id = "'.$office_id.'"')
-                                 ->group('B.name')
+                                	->where('F.id = "'.$office_id.'"')
+                                ->group('B.name')
                                 ->order('D.name');
                //  die($select->__toString());
                 $result = $this->fetchAll($select);
@@ -103,4 +103,32 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
         return $result->toArray();
         }
 
+	public function subofficeFromUrl($hierarchy) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_office WHERE officetype_id = $hierarchy";
+        $result = $this->db->fetchAll($sql,array($hierarchy));
+        return $result;
+
+
+    	}
+	public function subgroupFromUrl($branch) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_group WHERE village_id = $branch";
+        $result = $this->db->fetchAll($sql,array($branch));
+        return $result;
+
+
+    	}
+	public function getOffice($id) {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
+						->where('a.village_id = ?',$id);
+
+//die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+	}
 }

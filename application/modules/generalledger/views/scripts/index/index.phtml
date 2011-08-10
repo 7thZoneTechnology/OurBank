@@ -16,7 +16,32 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
 
+}
+});
+});
+
+</script>
 <?php
 if($this->search == 0) { ?>   
 <form action="<?php echo $this->baseUrl();?>/generalledger/index" method="POST">  
@@ -24,13 +49,22 @@ if($this->search == 0) { ?>
 <fieldset>
     <legend>Search</legend>
         <TABLE width="100%">
-            <tr><br>
-                <td align = "center" class="label">Begin Date :</td>
-                <td align = "center"><?php  echo $this->form->datefrom;?></td>
-                <td class="label">Close Date :</td>
-                <td align = "right"><?php  echo $this->form->dateto;?></td>
-            </tr>
-           
+  						<tr>
+							<td><?php echo $this->translate('Hierarchy'); ?></td>
+                            <td id="show"><?php echo $this->form->hierarchy;?></td>
+                			<td align = "center" class="label">Begin Date :</td>
+                			<td align = "left"><?php  echo $this->form->datefrom;?></td>
+						</tr>
+						<tr>
+                            <td><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+			                <td align = "center">Close Date :</td>
+            			    <td ><?php  echo $this->form->dateto;?></td>
+						</tr>
+						<tr id="hide">
+							<TD><?php echo $this->translate('Group'); ?></TD>
+                            <TD><div id="groupdiv"><?php echo $this->form->group;?></TD>
+						</tr>
             <tr>
                 <TD align="center"><br><input type="submit" name="Search" value="Search"></TD>
             </tr>

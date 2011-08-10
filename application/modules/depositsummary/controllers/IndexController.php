@@ -45,16 +45,19 @@ class Depositsummary_IndexController extends Zend_Controller_Action
       //view action
      function indexAction()
      {
+      $path = $this->view->baseUrl();
+      $this->view->form = $searchForm = new Depositsummary_Form_Search($path);
+      $savingsummary = new Depositsummary_Model_Depositsummary();
 
-	$searchForm = new Depositsummary_Form_Search();
-        $this->view->form = $searchForm;
-       
-	 $savingsummary = new Depositsummary_Model_Depositsummary();
- 
-        $products = $this->view->adm->viewRecord('ourbank_office','id','asc');
-        foreach($products as $subBranch1) {
-                        $searchForm->branch->addMultiOption($subBranch1['id'],$subBranch1['name']);
-                }
+//         $products = $this->view->adm->viewRecord('ourbank_office','id','asc');
+//         foreach($products as $subBranch1) {
+//                         $searchForm->branch->addMultiOption($subBranch1['id'],$subBranch1['name']);
+//                 }
+
+      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
         $this->view->depositeAmount = 0;
         $this->view->withdrawlAmount = 0;
         $this->view->totalAmount = 0; 
@@ -65,25 +68,55 @@ class Depositsummary_IndexController extends Zend_Controller_Action
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
              $formData = $this->_request->getPost();
-                 if ($searchForm->isValid($formData)) {
-                    $office_id = $this->_request->getParam('branch'); 
-                    $this->view->office_id=$office_id;
-                    $this->view->result = $savingsummary->fetchSavingsDetails($office_id); 
-                    $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
 
-                    $this->view->accountBalanc = $accountBalanc;
+                 if ($searchForm->isValid($formData)) {
+//            			$this->view->office_id = $office_id = $this->_request->getParam('branch');
+			 		$branch=$this->_request->getParam('branch');
+ 					$group=$this->_request->getParam('group');
+
+                    $this->view->result = $savingsummary->fetchSavingsDetails($office_id); 
+                    $this->view->accountBalanc = $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
+
                     if ((!$this->view->result) && (!$accountBalanc)) {
                         echo "<font color='RED' size = '3'>No Savings Account</font>";	
                     } else {
                         foreach($this->view->result as $result1) {
-                            $this->view->officeName = $result1["officename"];
-                        }
-                    }   
-                    
-            } 
+                            $this->view->officeName = $result1["officename"]; }
+                    		}
+            			}
+    				}
+     			}
+
+    public function sublevelAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+        $this->view->form = $searchForm = new Depositsummary_Form_Search($path);
+        $this->view->form = $searchForm;
+
+        $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
+        $savingsummary = new Depositsummary_Model_Depositsummary();
+        $officelevel = $savingsummary->suboffice($hierarchy);
+  		foreach($officelevel as $officetype) { 
+        $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
+        }
     }
-     }
- 
+  public function groupAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+        $this->view->form = $searchForm = new Depositsummary_Form_Search($path);
+        $this->view->form = $searchForm;
+
+        $branch=$this->view->hierarchy = $this->_request->getParam('branch');
+        $savingsummary = new Depositsummary_Model_Depositsummary();
+        $officelevel = $savingsummary->subgroup($branch);
+  		foreach($officelevel as $officetype) { 
+        $searchForm->group->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
+
+
      function pdftransactionAction()
      {
         $pdf = new Zend_Pdf();

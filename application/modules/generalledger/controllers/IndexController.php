@@ -28,49 +28,80 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $this->view->title = "Reports";
         $this->view->type = "generalFields";
         $this->view->adm = new App_Model_Adm();
-	$this->view->dateconvertor = new App_Model_dateConvertor();
+		$this->view->dateconvertor = new App_Model_dateConvertor();
     }
     
     function indexAction()
     { 
-        $this->view->pageTitle = "General Ledger";
-        $searchForm = new Generalledger_Form_Search();
-        $this->view->form = $searchForm;
+        $path = $this->view->baseUrl();
+        $this->view->form = $searchForm = new Generalledger_Form_Search($path);
+        $generalLedger = new Generalledger_Model_Generalledger();
 
-        
-      
-         
+	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+		  foreach($officename as $officename){
+			$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
+
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
- 
-        $formData = $this->_request->getPost();
-        if ($searchForm->isValid($formData)) {
-	$fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
-	$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
-	$glsubcode =$this->_request->getParam('glcode');
-            $this->view->datefrom = $fromDate;             
-            $this->view->dateto = $toDate;             
+	        $formData = $this->_request->getPost();
 
-            $this->view->search = 10;             
-            $generalLedger = new Generalledger_Model_Generalledger();
-             
+        if ($searchForm->isValid($formData)) {
+			$fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
+			$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
+			$glsubcode =$this->_request->getParam('glcode');
+ 			$branch=$this->_request->getParam('branch');
+ 			$group=$this->_request->getParam('group');
+
+			$officename=$generalLedger->getOffice($branch);
+			foreach ($officename as $officename) {
+			$this->view-> name =$officename['name'];
+				}
+
+            $this->view->datefrom = $fromDate;
+            $this->view->dateto = $toDate;
+            $this->view->search = 10;
+
              //Lia
             $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$glsubcode);
-
             $this->view->openingCash = $generalLedger->openingBalance($fromDate,$glsubcode);
-             
-//             // Assets
+
+            // Assets
             $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
             $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
-            if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){
-                }
-        } else {
-            $this->view->search = 0;
-                                echo "<font color='red'><b> Record not found</b> </font>";
+            if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){             }
+        		} else {    $this->view->search = 0;
+                            echo "<font color='red'><b> Record not found</b> </font>"; }
+			  }
+    		}
 
-        }
-			
+	public function sublevelAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+		$this->view->form = $searchForm = new Generalledger_Form_Search($path);
+
+        $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
+		$generalLedger = new Generalledger_Model_Generalledger();
+        $officelevel = $generalLedger->suboffice($hierarchy);
+  			foreach($officelevel as $officetype) { 
+        		$searchForm->branch->addMultiOption($officetype->id,$officetype->name);
         }
     }
+
+    public function groupAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+		$this->view->form = $searchForm = new Generalledger_Form_Search($path);
+
+        $branch=$this->view->hierarchy = $this->_request->getParam('branch');
+		$generalLedger = new Generalledger_Model_Generalledger();
+        $officelevel = $generalLedger->subgroup($branch);
+  			foreach($officelevel as $officetype) { 
+        		$searchForm->group->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
+
     public function reportdisplayAction() 
     {
         $this->_helper->layout->disableLayout();
