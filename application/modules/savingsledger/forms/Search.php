@@ -3,26 +3,23 @@ class Savingsledger_Form_Search extends ZendX_JQuery_Form {
     public function init() {
     Zend_Dojo::enableForm($this);
     }
-      public function __construct($options = null) {
-        Zend_Dojo::enableForm($this);
-        parent::__construct($options);
+      public function __construct($path) {
+        $formfield = new App_Form_Field ();
 
-
-        $field1 = new ZendX_JQuery_Form_Element_DatePicker('datefrom');
-        $field1->setAttrib('class', 'txt_put');
-
-        $field2 = new ZendX_JQuery_Form_Element_DatePicker('dateto');
-        $field2->setAttrib('class', 'txt_put');
-
-        $field4 = new Zend_Form_Element_Text('acc');
-        $field4->setAttrib('class', 'txt_put');
-
-
+        $hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
+        $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
+        $hierarchy->setRegisterInArrayValidator(false);
+        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
+        $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
+        $branch->setRegisterInArrayValidator(false);
+        $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+        $field1 = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
+        $field2 = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
+        $field4 = $formfield->field('Text','acc','','','mand','acc',true,'','','','','',0,'');
 
         $submit = new Zend_Form_Element_Submit('Search');
-	$pdf=new Zend_Form_Element_Submit('PDF');
 
-        $this->addElements(array($field1,$field2,$field4,$submit,$pdf));
+        $this->addElements(array($hierarchy,$branch,$group,$field1,$field2,$field4,$submit));
 
     }
 }

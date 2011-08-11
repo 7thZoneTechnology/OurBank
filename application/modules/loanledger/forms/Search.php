@@ -1,13 +1,11 @@
 <?php
-class Loandetailsg_Form_Search extends Zend_Form 
-{
+class Loandetailsg_Form_Search extends ZendX_JQuery_Form {
 
-public function __construct($path) 
-		{
-                parent::__construct();
+
+      public function __construct($path) {
+        $formfield = new App_Form_Field ();
                 //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
-                $formfield = new App_Form_Field ();
-                //$vtype=array('Alpha');
+
         		$hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
         		$hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
         		$hierarchy->setRegisterInArrayValidator(false);

@@ -40,13 +40,11 @@ class Overduelist_Model_Overduelist extends Zend_Db_Table {
                     INNER JOIN `ourbank_loanaccounts` AS `b` ON b.account_id=a.account_id 
                     INNER JOIN `ourbank_accounts` AS `c` ON c.id=b.account_id 
                     INNER JOIN `ourbank_familymember` AS `f` ON f.id=c.member_id 
-                    INNER JOIN `ourbank_office` AS `e` ON e.id=f.village_id 
                     WHERE 
                     (a.installment_date <= '$date') AND 
                     (a.installment_status=5) AND 
                     (b.created_by like '%' '$officer' '%') AND 
-                    (c.membertype_id=1) AND 
-                    (e.id like '%' '$bank' '%') 
+                    (c.membertype_id=1)
                     GROUP BY 
                     `a`.`account_id` 
                     UNION
@@ -56,20 +54,17 @@ class Overduelist_Model_Overduelist extends Zend_Db_Table {
                     `a`.`installment_date`,
                     `b`.`id`,
                     `c`.`account_number`,
-                    `e`.`officetype_id`,
                     `f`.`name` 
                     FROM 
                     `ourbank_installmentdetails` AS `a` 
                     INNER JOIN `ourbank_loanaccounts` AS `b` ON b.account_id=a.account_id 
                     INNER JOIN `ourbank_accounts` AS `c` ON c.id=b.account_id 
                     INNER JOIN `ourbank_group` AS `f` ON f.id=c.member_id 
-                    INNER JOIN `ourbank_office` AS `e` ON e.id=f.village_id 
                     WHERE 
                     (a.installment_date <= '$date') AND 
                     (a.installment_status=5) AND 
                     (b.created_by like '%' '$officer' '%') AND 
-                    (c.membertype_id=2 or c.membertype_id=3) AND 
-                    (e.id like '%' '$bank' '%') 
+                    (c.membertype_id=2 or c.membertype_id=3)
                     GROUP BY 
                     `a`.`account_id`";
 //             echo $sql;

@@ -1,54 +1,55 @@
-<script language="javascript">
- function getBranch(bankid) { 
-            targeturl='<?php echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
-            $.ajax({ url: targeturl, success: function(data){ $('#branch').html(data) }});
-       }
+<!-- <script language="javascript"> 
+//  function getBranch(bankid) { 
+//             targeturl='<?php //echo $this->baseUrl();?>/groupmdefault/index/branch?bankid='+bankid; 
+//             $.ajax({ url: targeturl, success: function(data){ $('#branch').html(data) }});
+//        }
 
-</script>
+ </script> 
 
 <script>
 
 $(document).ready(function() {
 
-path=$("#baseurl").val();
-    $('#office').change(function(){
-    getbank();
-    });
-});
+// path=$("#baseurl").val();
+//     $('#office').change(function(){
+//     getbank();
+//     });
+// });
 
-    function getbank(){
-    var strURL=path+"/groupmdefault/index/bank";
-    var officeid=$("#office").val();
-    $.ajax({
-        url: strURL,
-        data : { officeid: officeid },
-        success: function(result){
-    $('#bank').html(result);
-    }
-    }); }
+//     function getbank(){
+//     var strURL=path+"/groupmdefault/index/bank";
+//     var officeid=$("#office").val();
+//     $.ajax({
+//         url: strURL,
+//         data : { officeid: officeid },
+//         success: function(result){
+//     $('#bank').html(result);
+//     }
+//     }); }
 
 
 </script>
-
+-->
 <?php
-function checkConnection()
-{
-    //Initiates a socket connection to www.itechroom.com at port 80
-    $conn = @fsockopen("www.itechroom.com", 80, $errno, $errstr, 30);
-    if ($conn)
-    {
-        $status = "OK";
-        fclose($conn);
-    }
-    else
-    {
-        $status = "NO";
-//         $status .= "$errstr ($errno)";
-    }
-    return $status;
-}
-
-$status = checkConnection();
+/* for google map 
+// // function checkConnection()
+// // {
+// //     //Initiates a socket connection to www.itechroom.com at port 80
+// //     $conn = @fsockopen("www.itechroom.com", 80, $errno, $errstr, 30);
+// //     if ($conn)
+// //     {
+// //         $status = "OK";
+// //         fclose($conn);
+// //     }
+// //     else
+// //     {
+// //         $status = "NO";
+// // //         $status .= "$errstr ($errno)";
+// //     }
+// //     return $status;
+// // }
+// // 
+// // $status = checkConnection();
 
 if($status == "OK"){
 ?>
@@ -59,6 +60,8 @@ if($status == "OK"){
    </script>
 </head>
 <?php } ?>
+*/
+?>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/group/membershipgroupm.js"></script>
 <script>
 </script>
@@ -72,9 +75,10 @@ if($status == "OK"){
                 <tr>
                     <TD><label class="mand">Group type</label></td>
                     <td colspan="3">
-                    <?php if($this->gtype) { $gtype = $this->gtype; } ?>
-                    <input type="radio" name="grouptype" id="grouptype"  checked <?php if($gtype == 2) { ?> checked <?php } ?> value=2>SHG
-                    <input type="radio" name="grouptype" id="grouptype"  <?php if($gtype == 3) { ?> checked <?php } ?> value=3>JLG
+
+                    <?php if(isset($this->gtype)) { $gtype = $this->gtype; } ?>
+                    <input type="radio" name="grouptype" id="grouptype"  checked <?php if(isset($this->gtype) == 2) { ?> checked <?php } ?> value=2>SHG
+                    <input type="radio" name="grouptype" id="grouptype"  <?php if(isset($this->gtype) == 3) { ?> checked <?php } ?> value=3>JLG
                     </TD>
                </TR>
                 <TR>
@@ -102,6 +106,9 @@ if($status == "OK"){
                     <TD><?php echo $this->form->interest;?></TD>
                     <TD colspan="2"><?php echo $this->form->Created_Date;?></TD>
                 </tr>
+                <tr>
+                    <br><TD colspan="3" align="left"><a href="javascript:loadmembers();" ><u>Click here to select group members</u></a></TD>
+                </tr>
             </table><br/>
          <div id='error'>&nbsp;</div>
 
@@ -112,7 +119,9 @@ if($status == "OK"){
         </div>
 </table>
 <br>
+
 <?php 
+/*
 if($status == "OK"){
 ?>
         <div id="map" style="width: 250px; height:200px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
@@ -138,7 +147,10 @@ if($status == "OK"){
 
 echo "<font color ='red'>Internet connection is not available due to that google map not displayed...</font>";
 
-}?>
+}
+*/
+?>
+
             <div class="btnhouse">
                 <div class="ltbtns">
                     <?php echo $this->form->Submit;?>

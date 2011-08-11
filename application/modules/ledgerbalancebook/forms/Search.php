@@ -25,9 +25,8 @@ class Ledgerbalancebook_Form_Search extends ZendX_JQuery_Form {
 		{
                 parent::__construct();
                 //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
-                $formfield = new App_Form_Field ();
+                $formfield = new App_Form_Field ($path);
                 //$vtype=array('Alpha');
-
         		$hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
         		$hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
         		$hierarchy->setRegisterInArrayValidator(false);
@@ -37,9 +36,11 @@ class Ledgerbalancebook_Form_Search extends ZendX_JQuery_Form {
         		$branch->setRegisterInArrayValidator(false);
 
         		$group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+				$group->setRegisterInArrayValidator(false);
 
                 $datefrom = $formfield->field('Text','date1','','','mand','From date',true,'','','','','',0,'');
-			
-			$this->addElements(array($hierarchy,$branch,$group,$datefrom));
+				$datefrom = new Zend_Form_Element_Text('date1', array('autocomplete' => 'off')); 
+
+				$this->addElements(array($hierarchy,$branch,$group,$datefrom));
 		}
 }

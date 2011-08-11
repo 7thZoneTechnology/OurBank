@@ -23,16 +23,21 @@
 <?php class Overduelist_Form_Search extends Zend_Form 
 {
 
-    public function __construct($app) 
+    public function __construct($path) 
     {
         $vtype=array('Alpha','StringLength');
         $formfield = new App_Form_Field ();
-        parent::__construct($app);
+        parent::__construct($path);
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-        $officebranch = $formfield->field('Select','bank_id','','','mand','',false,'','','','','',0,0);
-        $officebranch->setAttrib('onchange', 'Getofficer(this.value,"'.$app.'")');
+        $hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
+        $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
+        $hierarchy->setRegisterInArrayValidator(false);
+        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
+        $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
+        $branch->setRegisterInArrayValidator(false);
+        $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
         $loanofficer = $formfield->field('Select','loanofficer','','','mand','',false,'','','','','',0,0);
         $date = $formfield->field('Text','datefrom','','','mand','',true,'','','','','',0,0);
-        $this->addElements(array($loanofficer,$officebranch,$date));
+        $this->addElements(array($hierarchy,$branch,$group,$loanofficer,$date));
     }
 }

@@ -4,81 +4,39 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
     function init()
     { 
 	$this->view->pageTitle = "Ledger balancebook";
-	$this->view->title = "Reports";
+ 	$this->view->title = "Reports";
     $this->view->type = "generalFields";
     $this->view->adm = new App_Model_Adm();
 	$this->view->dateconvertor = new App_Model_dateConvertor();
-	$globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-	
-	$storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-            $this->_redirect('index/login');
-        }
-    }
+	}
 	
     function indexAction()
-    {
-    $path = $this->view->baseUrl();
+    { 
+	$path = $this->view->baseUrl();
 	$this->view->form = $searchForm = new Ledgerbalancebook_Form_Search($path);
-	
-	$officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-	foreach($officename as $officename){
-			$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+						$dateconvertor = new App_Model_dateConvertor();
+            			$GeneralList = new Ledgerbalancebook_Model_Ledgerbookbalance();
+
+     $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+						$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
 	if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-			$dateconvertor = new App_Model_dateConvertor();
-			$formData = $this->_request->getPost();
+		$formData = $this->_request->getPost();
 
 	if ($searchForm->isValid($formData)) {
-            $GeneralList = new Ledgerbalancebook_Model_Ledgerbookbalance();
+        $fromDate = $dateconvertor->mysqlformat($this->view->date1 = $this->_request->getParam('date1'));
 
-        	$fromDate = $dateconvertor->mysqlformat($this->_request->getParam('date1'));
-	 		$branch=$this->_request->getParam('branch');
- 			$group=$this->_request->getParam('group');
+		$hierarchy=$this->_request->getParam('hierarchy');
+		$branch = $this->_request->getParam('branch');
+		$group = $this->_request->getParam('group');
 
-			$officename=$GeneralList->getOffice($branch);
-			foreach ($officename as $officename) {
-			$this->view->name =$officename['name'];
-				}
-            $this->view->ledegerList = $GeneralList->generalLedger($fromDate);
-            $this->view->ledegerListAssets = $GeneralList->generalLedgerAssets($fromDate,$branch);
-			}
-			$this->view->date1 = $this->_request->getParam('date1');
-		}
+        $this->view->ledegerList = $GeneralList->generalLedger($fromDate);
+        $this->view->ledegerListAssets = $GeneralList->generalLedgerAssets($fromDate,$hierarchy,$branch);
+	}
+	}
     }
-
-    public function sublevelAction() 
-    {
-        $path = $this->view->baseUrl();
-        $this->_helper->layout()->disableLayout();
-		$this->view->form = $searchForm = new Ledgerbalancebook_Form_Search($path);
-
-        $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
-        $GeneralList = new Ledgerbalancebook_Model_Ledgerbookbalance();
-        $officelevel = $GeneralList->subofficeFromUrl($hierarchy);
-  			foreach($officelevel as $officetype) { 
-        		$searchForm->branch->addMultiOption($officetype->id,$officetype->name);
-        }
-    }
-
-    public function groupAction() 
-    {
-        $path = $this->view->baseUrl();
-        $this->_helper->layout()->disableLayout();
-		$this->view->form = $searchForm = new Ledgerbalancebook_Form_Search($path);
-
-        $branch=$this->view->hierarchy = $this->_request->getParam('branch');
-        $GeneralList = new Ledgerbalancebook_Model_Ledgerbookbalance();
-        $officelevel = $GeneralList->subgroupFromUrl($branch);
-  			foreach($officelevel as $officetype) { 
-        		$searchForm->group->addMultiOption($officetype->id,$officetype->name);
-        }
-    }
-
+	
     public function reportdisplayAction() 
     {
 	$this->_helper->layout->disableLayout();
@@ -88,7 +46,7 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 	$projname = $word[1];
 	$this->view->filename = "/".$projname."/reports/".$file1;    
     }
-
+    
     public function pdfdisplayAction() 
     { 
 	$GeneralList = new Ledgerbalancebook_Model_Ledgerbookbalance();

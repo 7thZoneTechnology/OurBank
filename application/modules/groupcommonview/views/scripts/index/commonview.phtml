@@ -21,9 +21,9 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 <title>Group Location</title>
-<link href="http://code.google.com/apis/maps/documentation/javascript/examples/standard.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript">
+<!-- <link href="http://code.google.com/apis/maps/documentation/javascript/examples/standard.css" rel="stylesheet" type="text/css" /> -->
+<!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
+<!--<script type="text/javascript">
   var geocoder;
   var map;
   var infowindow = new google.maps.InfoWindow();
@@ -60,11 +60,12 @@
       }
     });
   }
-</script>
+</script>-->
 </head>
-<body onload="initialize()">
+<!-- <body onload="initialize()"> -->
+<body>
 <div>
-  <input id="latlng" type="hidden" value="<?php echo $this->latitude.",".$this->longitude;?>">
+<!--   <input id="latlng" type="hidden" value="<?php //echo $this->latitude.",".$this->longitude;?>"> -->
 </div>
 <div id = "searchDiv">
 <table id="hor-minimalist-b">
@@ -261,7 +262,7 @@
       <tr><td><a href="<?php echo $this->baseUrl(); ?>/groupm"><input type="button" name="back" value="Back"></a></TD></tr>
 </table>
 </div> <BR/> <BR/>
-<div id="map_canvas" style="width: 250px; height:200px; border: 1px solid black;"></div>
+<!-- <div id="map_canvas" style="width: 250px; height:200px; border: 1px solid black;"></div> -->
 </body>
 </html>
  

@@ -18,12 +18,30 @@
 !-->
 
 <script type="text/javascript">
-function Getofficer(id,path) {
-	if(id) {
-		targeturl=path+"/overduelist/index/getloanofficer?bankid="+id;
-		$.ajax({ url: targeturl, success: function(data){ $("#loandiv").html(data) }});
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
 </script>
 
 <?php if(!$this->loanView){ ?>
@@ -31,15 +49,24 @@ function Getofficer(id,path) {
 <form action="<?php echo $this->baseUrl();?>/overduelist" method="POST">
                     <TABLE id="hor-minimalist-b">
 					<th colspan="4">Overdue List</th>
+
+  					<tr>	<TD><label class="mand"><?php echo $this->translate('Hierarchy'); ?></label></TD>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></TD>
+                        	<TD>Loan officer:</TD>
+                        	<TD id="loandiv"><? echo $this->form->loanofficer;?></TD>
+
+  					</tr>
+					<tr>    <TD><label class="mand"><?php echo $this->translate('Branch'); ?></label></TD>
+                            <TD><div id="statediv"><?php echo $this->form->branch;?></div></TD>
+                            <TD class="label">Date:</TD>
+                            <TD ><? echo $this->form->datefrom;?></TD><TD colspan="2"></TD>
+					</tr>
+					<tr id="hide"><TD><label class="mand"><?php echo $this->translate('Group'); ?></label></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td><td></td><td></td>
+					</tr>
+
                     <tr>
-                        <td >Branch:</td>
-                        <td ><? echo $this->form->bank_id;?></td>
-                        <td >Loan officer:</td>
-                        <td id="loandiv"><? echo $this->form->loanofficer;?></td>
-                    </tr>
-                    <tr>
-                            <td class="label">Date:</td>
-                            <td ><? echo $this->form->datefrom;?></td><td colspan="2"></td>
+
                     </tr>
                 	<tr><TD><input type="submit" name="Search" id="Submit" value="Search"></TD></tr>
                     </TABLE>

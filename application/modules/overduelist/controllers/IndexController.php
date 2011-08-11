@@ -45,45 +45,32 @@ class Overduelist_IndexController extends Zend_Controller_Action
 
     function indexAction()
     {
-        $app=$this->view->baseUrl();
-     	$searchForm = new Overduelist_Form_Search($app);
-       	$this->view->form = $searchForm;
-	$overduemodel = new Overduelist_Model_Overduelist();
+        $path=$this->view->baseUrl();
+     	$this->view->form = $searchForm = new Overduelist_Form_Search($path);
+		$overduemodel = new Overduelist_Model_Overduelist();
 
-        $hierarchy = $overduemodel->getofficehierarchy();
-        foreach($hierarchy as $hiearchyids){
-        $hiearchyid = $hiearchyids['hierarchyid'];
-        }
-        $institution = $overduemodel->office($hiearchyid);
+        $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
 
-	foreach($institution as $institution) 
-        {
-	   $searchForm->bank_id->addMultiOption($institution['village_id'],$institution['villagename']);
-	}
-        $loanofficer = $this->view->adm->viewRecord("ourbank_user","id","DESC");
-	foreach($loanofficer as $loanofficer)
-        {
-	   $searchForm->loanofficer ->addMultiOption($loanofficer['id'],$loanofficer['name']);
-	}
 
      	if ($this->_request->isPost() && $this->_request->getPost('Search')) 
         {
             $formData = $this->_request->getPost(); //print_r($formData);
             if ($searchForm->isValid($formData)) 
             {
-            $this->view->loanofficerid=$officer = $this->_request->getParam('loanofficer');
+			$group = $this->_request->getParam('group');
+			$branch = $this->_request->getParam('branch');
+            $this->view->loanofficerid = $officer = $this->_request->getParam('loanofficer');
             if($officer){
             $officename=$overduemodel->getofficername($officer);
             $this->view->officername=$officename[0]['name'];
             }
-            $this->view->bankid=$bank = $this->_request->getParam('bank_id');
-            if($bank){
-            $bankname=$overduemodel->getbanknames($bank);
-            $this->view->bankname=$bankname[0]['name'];
-            }
+
             $this->view->normaldate=$this->_request->getParam('datefrom');
             $this->view->asofdate=$date = $this->view->dateconvertor->phpmysqlformat($this->_request->getParam('datefrom'));
-            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$bank,$officer);
+            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$officer);
             }
         }
     }

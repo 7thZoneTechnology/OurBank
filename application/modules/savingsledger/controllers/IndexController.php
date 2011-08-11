@@ -24,12 +24,13 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 		$this->view->tilte = "Reports";
         $this->view->type = "generalFields";
 		$this->view->dateconvert=new App_Model_dateConvertor();
-	$globalsession = new App_Model_Users();
+		$globalsession = new App_Model_Users();
                 $this->view->globalvalue = $globalsession->getSession();// get session values
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
-	
-	$storage = new Zend_Auth_Storage_Session();
+		         $this->view->adm = new App_Model_Adm();
+
+		$storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
             $this->_redirect('index/login');
@@ -37,9 +38,13 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 	}
 
 	function indexAction() {
-		$searchForm = new Savingsledger_Form_Search();
-		$this->view->form = $searchForm;
+        $path = $this->view->baseUrl();
+		$this->view->form = $searchForm = new Savingsledger_Form_Search($path);
 
+        $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
 		$dateFrom =$this->view->fromdate=$this->_request->getParam('datefrom');
 		$dateTo =$this->view->todate= $this->_request->getParam('dateto');
 		$accountNo =$this->view->accno= $this->_request->getParam('acc');
@@ -56,6 +61,35 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 			} else { echo "Enter account number"; }
 		} 
 	}
+
+    public function sublevelAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+        $this->view->form = $searchForm = new Savingsledger_Form_Search($path);
+
+        $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
+        $transaction = new Savingsledger_Model_Savingsledger();
+        $officelevel = $transaction->suboffice($hierarchy);
+  		foreach($officelevel as $officetype) { 
+        $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
+  public function groupAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+        $this->view->form = $searchForm = new Savingsledger_Form_Search($path);
+
+        $branch=$this->view->hierarchy = $this->_request->getParam('branch');
+        $transaction = new Savingsledger_Model_Savingsledger();
+        $officelevel = $transaction->subgroup($branch);
+  		foreach($officelevel as $officetype) { 
+        $searchForm->group->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
+
+
 
 	function viewtransactionAction() {
 		$this->view->pageTitle = "Savings ledger";

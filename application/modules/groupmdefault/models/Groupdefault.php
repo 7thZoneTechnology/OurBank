@@ -15,7 +15,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
-
 class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
 
  {
@@ -33,19 +32,16 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
 	public function GetBranchMembers($branchid,$type) {
         $db = $this->getAdapter();
         if($type == 2){
-	$sql = "select * from ourbank_familymember 
-            where ((family_id in (select id from ourbank_family where rev_village_id  = $branchid)) and (gender_id = 2))
-            and id not in
-            (select member_id from ourbank_groupmembers 
-            where (groupmember_status = 3 or groupmember_status = 1) and id in (select id from ourbank_groupmembers where (groupmember_status = 3 or groupmember_status = 1))) order by(family_id)";
+//  modified by raghu on aug 4 8:06 pm
+//  modified by albert on aug 8 2:41 pm
+	$sql = "select id,family_id,name,uid from ourbank_familymember where ((family_id in (select id from ourbank_family where rev_village_id  = $branchid)) and (gender_id = 2)) and id not in (select member_id from ourbank_groupmembers where (groupmember_status = 3 or groupmember_status = 1) and id in (select id from ourbank_groupmembers where (groupmember_status = 3 or groupmember_status = 1))) order by(family_id)";
         } 
         else{
-	$sql = "select * from ourbank_familymember 
-            where (family_id in (select id from ourbank_family where rev_village_id  = $branchid)) 
-            and id not in
-            (select member_id from ourbank_groupmembers 
-            where (groupmember_status = 3 or groupmember_status = 1) and id in (select id from ourbank_groupmembers where (groupmember_status = 3 or groupmember_status = 1))) order by(family_id)";
+	$sql = "select id,family_id,name,uid from ourbank_familymember where (family_id in (select id from ourbank_family where rev_village_id  = $branchid)) 
+            and id not in (select member_id from ourbank_groupmembers where (groupmember_status = 3 or groupmember_status = 1) and id in (select id from
+			ourbank_groupmembers where (groupmember_status = 3 or groupmember_status = 1))) order by(family_id)";
         }
+
 	$result = $db->fetchAll($sql);
 	return $result;
 	}
@@ -53,9 +49,11 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
    public function GetExistMembers($branchid,$type) {
         $db = $this->getAdapter();
 	$sql = "SELECT distinct(`family_id`) FROM `ourbank_familymember` WHERE `id` in (SELECT `member_id` FROM `ourbank_groupmembers` WHERE `group_id` in (select `id` FROM `ourbank_group` WHERE `village_id` = $branchid and substr(`groupcode`,5,1) = $type))";
+
 	$result = $db->fetchAll($sql);
 	return $result;
 	}
+
 	public function Getgrouphead($group_id){
             $select=$this->select()
                 ->setIntegrityCheck(false)
@@ -69,7 +67,7 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
         public function Getbranch($bankid){
             $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a' => 'ourbank_master_branch'),array('id'))
+                ->join(array('a' => 'ourbank_master_branch'),array('id'),array('id','name'))
                 ->where('a.bank_id = '.$bankid);
 // die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -77,6 +75,7 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
 	}
 
         public function Getbank($officeid) {
+
             /*$select=$this->select()
                 ->setIntegrityCheck(false)
                 ->join(array('a' => 'ourbank_master_bank'),array('id','name'))
@@ -88,20 +87,28 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
         $result=$this->fetchAll($select);
         return $result->toArray(); //  return respective bank branch names  */
 
-      /*  $db = $this->getAdapter();
-	$sql = "select distinct a.id,a.name,a.village_id from ourbank_master_bank a where a.village_id in
+//         $select=$this->select()
+//                 ->setIntegrityCheck(false)
+//                 ->join(array('a' => 'ourbank_master_bank'),array('id'),array('id','name'))
+//                 ->join(array('b' => 'ourbank_master_villagelist'),'a.id=b.village_id',array(null))
+//                 ->where('b.village_id in (select c.village_id from ourbank_master_village c where c.panchayath_id = (select d.panchayath_id from ourbank_master_village d where d.village_id = '.$officeid.'))');
+//         $result=$this->fetchAll($select);
+//         return $result->toArray();
+
+        $db = $this->getAdapter();
+	$sql = "select distinct a.id,a.name from ourbank_master_bank a where a.village_id in
                 (select b.village_id from ourbank_master_villagelist b where b.panchayath_id =
                 (select c.panchayath_id from ourbank_master_villagelist c 
                 where c.village_id = '".$officeid."'))";
         $result = $db->fetchAll($sql);
-	return $result; */
+	return $result; 
 
-        $db = $this->getAdapter();
-        $sql = "select a.id, a.name, a.village_id, c.name GP, b.name Village, a.name bank
-                from ourbank_master_bank a, ourbank_master_villagelist b, ourbank_master_gillapanchayath c
-                where a.village_id = b.village_id
-                and b.panchayath_id = c.id
-                and a.village_id = '".$officeid."'";
+//         $db = $this->getAdapter();
+//         $sql = "select a.id, a.name
+//                 from ourbank_master_bank a, ourbank_master_villagelist b, ourbank_master_gillapanchayath c
+//                 where a.village_id = b.village_id
+//                 and b.panchayath_id = c.id
+//                 and a.village_id = '".$officeid."'";
 
         $result = $db->fetchAll($sql);
         return $result;
@@ -160,8 +167,7 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
         }
         public function GetAllvillagemembers($branchid){
             $db = $this->getAdapter();
-	       $sql = "select * from ourbank_familymember 
-		where (family_id in (select id from ourbank_family where rev_village_id = $branchid)) order by family_id";
+	      $sql = "select * from ourbank_familymember where (family_id in (select id from ourbank_family where rev_village_id = $branchid)) order by family_id";
             $result = $db->fetchAll($sql);
 	return $result; // get branch members for branch id , group id
 
@@ -169,8 +175,7 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
 
         public function getfamilyMembersforedit($familyid){
         $db = $this->getAdapter();
-                $sql = "select * from ourbank_familymember 
-                        where (family_id  = $familyid)";
+                $sql = "select * from ourbank_familymember where (family_id  = $familyid)";
                                 $result = $db->fetchAll($sql);
                 return $result; // get family members 
         }
@@ -194,8 +199,7 @@ class Groupmdefault_Model_Groupdefault extends Zend_Db_Table
 
 	public function getgroupdetails($group_id) {
 	$db = $this->getAdapter();
-	$sql = "select * from ourbank_group 
-		where id = $group_id";
+	$sql = "select * from ourbank_group where id = $group_id";
 		$result = $db->fetchAll($sql);
 	return $result; // return group details for particular group id
 		
