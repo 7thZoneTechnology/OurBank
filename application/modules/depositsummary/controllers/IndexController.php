@@ -49,11 +49,6 @@ class Depositsummary_IndexController extends Zend_Controller_Action
       $this->view->form = $searchForm = new Depositsummary_Form_Search($path);
       $savingsummary = new Depositsummary_Model_Depositsummary();
 
-//         $products = $this->view->adm->viewRecord('ourbank_office','id','asc');
-//         foreach($products as $subBranch1) {
-//                         $searchForm->branch->addMultiOption($subBranch1['id'],$subBranch1['name']);
-//                 }
-
       $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
@@ -66,20 +61,23 @@ class Depositsummary_IndexController extends Zend_Controller_Action
         $this->view->sum = 0;
 
 
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) { 
              $formData = $this->_request->getPost();
+// 
+                 if ($searchForm->isValid($formData)) {  
 
-                 if ($searchForm->isValid($formData)) {
-//            			$this->view->office_id = $office_id = $this->_request->getParam('branch');
-			 		$branch=$this->_request->getParam('branch');
- 					$group=$this->_request->getParam('group');
+			 		 $hierarchy=$this->_request->getParam('hierarchy');
+			 		 $branch=$this->_request->getParam('branch');
+ 					 $group=$this->_request->getParam('group');
 
-                    $this->view->result = $savingsummary->fetchSavingsDetails($office_id); 
-                    $this->view->accountBalanc = $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
+                    $this->view->result = $savingsummary->fetchSavingsDetails($branch,$hierarchy); 
+
+
+                    $this->view->accountBalanc = $accountBalanc = $savingsummary->accountBalanceDetails($branch,$hierarchy);
+					
 
                     if ((!$this->view->result) && (!$accountBalanc)) {
-                        echo "<font color='RED' size = '3'>No Savings Account</font>";	
-                    } else {
+                        echo "<font color='RED' size = '3'>No Savings Account</font>";} else {
                         foreach($this->view->result as $result1) {
                             $this->view->officeName = $result1["officename"]; }
                     		}

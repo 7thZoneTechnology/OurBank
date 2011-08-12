@@ -19,13 +19,13 @@
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
 	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		targeturl=path+"/generalledger/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
 function getgroups(branch,path) {
 	if(branch) {
-		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		targeturl=path+"/generalledger/index/group?branch="+branch;
 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
 	}
 }
@@ -44,11 +44,10 @@ $("#hide").show();
 </script>
 <?php
 if($this->search == 0) { ?>   
-<form action="<?php echo $this->baseUrl();?>/generalledger/index" method="POST">  
-
 <fieldset>
-    <legend>Search</legend>
-        <TABLE width="100%">
+  <legend>Search</legend>
+	<form action="<?php echo $this->baseUrl();?>/generalledger/index" method="POST">  
+      <TABLE width="100%">
   						<tr>
 							<td><?php echo $this->translate('Hierarchy'); ?></td>
                             <td id="show"><?php echo $this->form->hierarchy;?></td>
@@ -65,16 +64,15 @@ if($this->search == 0) { ?>
 							<TD><?php echo $this->translate('Group'); ?></TD>
                             <TD><div id="groupdiv"><?php echo $this->form->group;?></TD>
 						</tr>
-            <tr>
-                <TD align="center"><br><input type="submit" name="Search" value="Search"></TD>
-            </tr>
+            <tr><TD align="center"><br><input type="submit" name="Search" value="Search"></TD></tr>
         </table>
+	</form>
 </fieldset>
-</form>
+
 <?php } ?>
 <?php if (count($this->ledegerList)) { ?>
-	<h3 align="right">From <?php echo "<font color='#045'>".$this->datefrom."</font>"; ?> </h3>
-	<h3 align="right"> To <?php echo "<font color='#045'>".$this->dateto."</font>"; ?></h3> 
+	<h3 align="right">From <?php echo "<font color='#045'>".$this->from."</font>"; ?> </h3>
+	<h3 align="right"> To <?php echo "<font color='#045'>".$this->to."</font>"; ?></h3> 
 	<?php foreach($this->ledegerList as $ledegerList) { $type = $ledegerList["subheader"]; }?>
 	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
 	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>

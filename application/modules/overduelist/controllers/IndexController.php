@@ -63,14 +63,10 @@ class Overduelist_IndexController extends Zend_Controller_Action
 			$group = $this->_request->getParam('group');
 			$branch = $this->_request->getParam('branch');
             $this->view->loanofficerid = $officer = $this->_request->getParam('loanofficer');
-            if($officer){
-            $officename=$overduemodel->getofficername($officer);
-            $this->view->officername=$officename[0]['name'];
-            }
-
             $this->view->normaldate=$this->_request->getParam('datefrom');
             $this->view->asofdate=$date = $this->view->dateconvertor->phpmysqlformat($this->_request->getParam('datefrom'));
-            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$officer);
+
+            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$officer,$branch);
             }
         }
     }
@@ -78,7 +74,7 @@ class Overduelist_IndexController extends Zend_Controller_Action
     public function getloanofficerAction() 
     { 
 	$this->_helper->layout->disableLayout();
-        $bankid=$this->_request->getParam('bankid');
+        $bankid=$this->_request->getParam('branch');
         $app=$this->view->baseUrl();
      	$this->view->form = new Overduelist_Form_Search($app);
 

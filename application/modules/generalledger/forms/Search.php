@@ -36,6 +36,7 @@ class Generalledger_Form_Search extends ZendX_JQuery_Form {
         		$branch->setRegisterInArrayValidator(false);
 
         		$group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+        		$group->setRegisterInArrayValidator(false);
 
                 $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
                 $dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');

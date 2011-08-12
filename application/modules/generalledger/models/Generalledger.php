@@ -44,10 +44,12 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 // 	return $result->toArray();
 //     }
     
-    public function generalLedger($date1,$date2,$glsubcode) 
-    {
+    public function generalLedger($date1,$date2,$branch,$hierarchy){
+       if ($hierarchy==3){
         $db = $this->getAdapter();
         $sql = "select 
+					G.id as vid,
+					H.id as memberid,
                     D.id as glsubcode_id,
 					A.glsubcode_id_to,
 					D.glsubcode as glsubcode,
@@ -59,41 +61,61 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    		ourbank_Liabilities A,
 					ourbank_glcode B,
 		    		ourbank_glsubcode D,
-		    		ourbank_transaction E
+					ourbank_office G,
+					ourbank_familymember H,
+					ourbank_accounts I,
+					ourbank_transaction E
 		    		where (
-  		  A.glsubcode_id_to = D.id AND 
-		B.id = D.glcode_id AND
+  		  	A.glsubcode_id_to = D.id AND 
+			B.id = D.glcode_id AND
 		    B.ledgertype_id = 4 AND
+			G.parentoffice_id = '$branch' AND
+			G.id = H.village_id AND
+			H.id = I.member_id AND
+					I.status_id =3 OR I.status_id =1 AND
 		    A.transaction_id = E.transaction_id AND
-
-
+					E.amount_from_bank >0 AND
+					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
+					E.paymenttype_id <= 4 AND
 			E.transaction_date BETWEEN '$date1' AND '$date2')
 		    group by D.id";
-//echo $sql;
+// echo $sql;
 
         $result=$db->fetchAll($sql);
         return $result;
 
 
     }
-    
-    public function openingBalance($date,$glsubcode) 
-    {
+    }
+    public function openingBalance($date,$branch,$hierarchy){
+	if ($hierarchy==3){
         $db = $this->getAdapter();
         $sql = "select 
+					G.id as vid,
+					H.id as memberid,
                     F.id as glsubcode_id,
-		    F.glsubcode as glsubcode,
+		    		F.glsubcode as glsubcode,
                     F.header as subheader,
                     (sum(A.credit)-sum(A.debit)) as openingCash
                     from 
 		    ourbank_Liabilities A,
 		    ourbank_glcode B,
-	            ourbank_transaction E,
+	        ourbank_transaction E,
+			ourbank_office G,
+			ourbank_familymember H,
+			ourbank_accounts I,
 		    ourbank_glsubcode F
 		    where (A.glsubcode_id_to = F.id AND 
 		    B.id = F.glcode_id AND
 		    B.ledgertype_id = 4 AND
+			G.parentoffice_id = '$branch' AND
+			G.id = H.village_id AND
+			H.id = I.member_id AND
+					I.status_id =3 OR I.status_id =1 AND
 		    A.transaction_id = E.transaction_id AND
+					E.amount_from_bank >0 AND
+					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
+					E.paymenttype_id <= 4 AND
                     E.transaction_date < '$date') 
 		    group by F.id";
 //echo $sql;
@@ -101,14 +123,17 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 
         $result=$db->fetchAll($sql);
         return $result;
-
+	}
     }
-    public function generalLedgerAssets($date1,$date2,$glsubcode) 
-    {
+    public function generalLedgerAssets($date1,$date2,$branch,$hierarchy){
+       if ($hierarchy==3){
+
         $db = $this->getAdapter();
         $sql = "select 
+					G.id as vid,
+					H.id as memberid,
                     F.id as glsubcode_id,
-		    F.glsubcode as glsubcode,
+		    		F.glsubcode as glsubcode,
                     F.header as subheader,
                     sum(A.credit) as credit,
                     sum(A.debit) as debit
@@ -116,20 +141,31 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 		    ourbank_Assets A,
 		    ourbank_glcode B,
 		    ourbank_transaction E,
+			ourbank_office G,
+			ourbank_familymember H,
+			ourbank_accounts I,
 		    ourbank_glsubcode F
 		    where (A.glsubcode_id_to = F.id AND 
 		    B.id = F.glcode_id AND
 		    B.ledgertype_id = 3 AND
+			G.parentoffice_id = '$branch' AND
+			G.id = H.village_id AND
+			H.id = I.member_id AND
+					I.status_id =3 OR I.status_id =1 AND
 		    A.transaction_id = E.transaction_id AND
+					E.amount_from_bank >0 AND
+					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
+					E.paymenttype_id <= 4 AND
                     E.transaction_date BETWEEN '$date1' AND '$date2') 
 		    group by F.id";
-//echo $sql;
+//  echo $sql;
 
          $result=$db->fetchAll($sql);
          return $result;
 
     }
-    
+    }
+
     public function openingBalanceAssets($date,$glsubcode) 
     {
         $db = $this->getAdapter();

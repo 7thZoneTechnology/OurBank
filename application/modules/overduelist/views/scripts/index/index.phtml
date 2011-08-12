@@ -30,6 +30,8 @@ function getgroups(branch,path) {
 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
 	}
 }
+
+
 $(document).ready(function() {
 $('#show').change(function(){
 var va = $('#hierarchy').val();
@@ -52,9 +54,7 @@ $("#hide").show();
 
   					<tr>	<TD><label class="mand"><?php echo $this->translate('Hierarchy'); ?></label></TD>
                             <TD id="show"><?php echo $this->form->hierarchy;?></TD>
-                        	<TD>Loan officer:</TD>
-                        	<TD id="loandiv"><? echo $this->form->loanofficer;?></TD>
-
+							<TD></TD><TD></TD>
   					</tr>
 					<tr>    <TD><label class="mand"><?php echo $this->translate('Branch'); ?></label></TD>
                             <TD><div id="statediv"><?php echo $this->form->branch;?></div></TD>
@@ -62,7 +62,9 @@ $("#hide").show();
                             <TD ><? echo $this->form->datefrom;?></TD><TD colspan="2"></TD>
 					</tr>
 					<tr id="hide"><TD><label class="mand"><?php echo $this->translate('Group'); ?></label></td>
-                            <td><div id="groupdiv"><?php echo $this->form->group;?></td><td></td><td></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
+			                <TD>Loan officer:</TD>
+                        	<TD id="loandiv"><? echo $this->form->loanofficer;?></TD>
 					</tr>
 
                     <tr>
@@ -103,13 +105,13 @@ $outstanding_amount+=$loandue['overdue'];
                     <td><?php echo $loandue['name']; ?></td>
                      <td class="label1" align="center"><?php echo $loandue['totalinstallments']; ?></td>
 		     <td class="label1" align="center"><?php echo $this->dateconvertor->dateDiff($loandue['installment_date'], $this->asofdate)?></td>
-                    <td class="label" align="right"><?php echo sprintf("%4.2f",$loandue['overdue']); ?></td> 
+                    <td class="label" align="center"><?php echo sprintf("%4.2f",$loandue['overdue']); ?></td> 
                 </tr>
 <?php } ?>
                 <tr>
                     <td><?php echo $this->translate('Total'); ?></td>
                     <td></td><td></td><td></td>
-                    <td class="label" align="right"><?php echo sprintf("%4.2f",$outstanding_amount);  ?></td>
+                    <td class="label" align="center"><?php echo sprintf("%4.2f",$outstanding_amount);  ?></td>
                 </tr>
 </TABLE>
 </div>

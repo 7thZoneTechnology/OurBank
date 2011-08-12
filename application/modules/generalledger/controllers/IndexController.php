@@ -30,45 +30,39 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $this->view->adm = new App_Model_Adm();
 		$this->view->dateconvertor = new App_Model_dateConvertor();
     }
-    
+
     function indexAction()
     { 
         $path = $this->view->baseUrl();
         $this->view->form = $searchForm = new Generalledger_Form_Search($path);
-        $generalLedger = new Generalledger_Model_Generalledger();
+        					$generalLedger = new Generalledger_Model_Generalledger();
 
 	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-		  foreach($officename as $officename){
-			$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+		foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-	        $formData = $this->_request->getPost();
+	        $formData = $this->_request->getPost(); 
 
-        if ($searchForm->isValid($formData)) {
-			$fromDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('datefrom'));
-			$toDate = $this->view->dateconvertor->mysqlformat($this->_request->getParam('dateto'));
-			$glsubcode =$this->_request->getParam('glcode');
+        if ($searchForm->isValid($formData)) {  
+			$fromDate = $this->view->dateconvertor->mysqlformat($this->view->from = $this->_request->getParam('datefrom'));
+			$toDate = $this->view->dateconvertor->mysqlformat($this->view->to = $this->_request->getParam('dateto'));
+ 			$hierarchy=$this->_request->getParam('hierarchy');
  			$branch=$this->_request->getParam('branch');
  			$group=$this->_request->getParam('group');
 
-			$officename=$generalLedger->getOffice($branch);
-			foreach ($officename as $officename) {
-			$this->view-> name =$officename['name'];
-				}
-
-            $this->view->datefrom = $fromDate;
-            $this->view->dateto = $toDate;
             $this->view->search = 10;
-
-             //Lia
-            $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$glsubcode);
-            $this->view->openingCash = $generalLedger->openingBalance($fromDate,$glsubcode);
-
-            // Assets
-            $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$glsubcode);
-            $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$glsubcode);
-            if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){             }
+// 
+//              //Lia
+            $this->view->ledegerList = $generalLedger->generalLedger($fromDate,$toDate,$branch,$hierarchy);
+            $this->view->openingCash = $generalLedger->openingBalance($fromDate,$branch,$hierarchy);
+// 
+//             // Assets
+            $this->view->ledegerListAssets = $generalLedger->generalLedgerAssets($fromDate,$toDate,$branch,$hierarchy);
+            $this->view->openingCashAssets = $generalLedger->openingBalanceAssets($fromDate,$branch,$hierarchy);
+// 
+// 			if((!$this->view->ledegerListAssets) && (!$this->view->openingCashAssets)){             }
         		} else {    $this->view->search = 0;
                             echo "<font color='red'><b> Record not found</b> </font>"; }
 			  }

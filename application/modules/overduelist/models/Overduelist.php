@@ -23,54 +23,88 @@
 class Overduelist_Model_Overduelist extends Zend_Db_Table { 
     protected $_name = 'ourbank_accounts';
 
-    public function search($date,$bank,$officer)
-    {
- $this->db = Zend_Db_Table::getDefaultAdapter();
-     
-            $sql = "SELECT
-                    count(a.installment_id) AS `totalinstallments`,
-                    Sum(a.installment_amount) AS `overdue`,
-                    `a`.`installment_date`, 
-                    `b`.`id`,
-                    `c`.`account_number`,
-                    `e`.`officetype_id`,
-                    `f`.`name`
-                    FROM 
-                    `ourbank_installmentdetails` AS `a` 
-                    INNER JOIN `ourbank_loanaccounts` AS `b` ON b.account_id=a.account_id 
-                    INNER JOIN `ourbank_accounts` AS `c` ON c.id=b.account_id 
-                    INNER JOIN `ourbank_familymember` AS `f` ON f.id=c.member_id 
-                    WHERE 
-                    (a.installment_date <= '$date') AND 
-                    (a.installment_status=5) AND 
-                    (b.created_by like '%' '$officer' '%') AND 
-                    (c.membertype_id=1)
-                    GROUP BY 
-                    `a`.`account_id` 
-                    UNION
-                    SELECT 
-                    count(a.installment_id) AS `totalinstallments`,
-                    Sum(a.installment_amount) AS `overdue`,
-                    `a`.`installment_date`,
-                    `b`.`id`,
-                    `c`.`account_number`,
-                    `f`.`name` 
-                    FROM 
-                    `ourbank_installmentdetails` AS `a` 
-                    INNER JOIN `ourbank_loanaccounts` AS `b` ON b.account_id=a.account_id 
-                    INNER JOIN `ourbank_accounts` AS `c` ON c.id=b.account_id 
-                    INNER JOIN `ourbank_group` AS `f` ON f.id=c.member_id 
-                    WHERE 
-                    (a.installment_date <= '$date') AND 
-                    (a.installment_status=5) AND 
-                    (b.created_by like '%' '$officer' '%') AND 
-                    (c.membertype_id=2 or c.membertype_id=3)
-                    GROUP BY 
-                    `a`.`account_id`";
+    public function search($date,$branch,$officer) {
+
+        $selectA = $this->select()
+                       	->setIntegrityCheck(false)
+
+						->from(array('a' => 'ourbank_installmentdetails'),array('count(a.installment_id) AS totalinstallments','Sum(a.installment_amount) AS overdue','a.installment_date'))
+                         	 ->where('a.installment_date = "'.$date.'"' AND 'a.installment_status = 5')
+
+						->join(array('b' =>'ourbank_loanaccounts'),'b.account_id=a.account_id',array('b.id'))
+                         	 ->where('b.created_by = "'.$officer.'"')
+
+						->join(array('c'=>'ourbank_accounts'),'c.id=b.account_id',array('c.account_number'))
+                         	 ->where('c.membertype_id=1')
+
+						->join(array('f' =>'ourbank_familymember'),'f.id=c.member_id',array('f.name'))
+							 ->group('a.account_id');
+
+        $selectB = $this->select()
+                       	->setIntegrityCheck(false)
+
+						->from(array('a' => 'ourbank_installmentdetails'),array('count(a.installment_id) AS totalinstallments','Sum(a.installment_amount) AS overdue','a.installment_date'))
+                         	 ->where('a.installment_date = "'.$date.'"' AND 'a.installment_status = 5')
+
+						->join(array('b' =>'ourbank_loanaccounts'),'b.account_id=a.account_id',array('b.id'))
+                         	 ->where('b.created_by = "'.$officer.'"')
+
+						->join(array('c'=>'ourbank_accounts'),'c.id=b.account_id',array('c.account_number'))
+                         	 ->where('c.membertype_id=2 or c.membertype_id=3')
+
+						->join(array('f' =>'ourbank_group'),'f.id=c.member_id',array('f.name'))
+							 ->group('a.account_id');
+
+						$db = $this->getAdapter();
+       					$select = $db->select()
+       					->union(array($selectA, $selectB));
+       die($select->__toString($select));
+
+}
+
+//             $sql = "SELECT
+//                     count(a.installment_id) AS `totalinstallments`,
+//                     Sum(a.installment_amount) AS `overdue`,
+//                     `a`.`installment_date`, 
+//                     `b`.`id`,
+//                     `c`.`account_number`,
+//                     `f`.`name`
+//                     FROM 
+//                     `ourbank_installmentdetails` AS `a` 
+//                     INNER JOIN `ourbank_loanaccounts` AS `b` ON b.account_id=a.account_id 
+//                     INNER JOIN `ourbank_accounts` AS `c` ON c.id=b.account_id 
+//                     INNER JOIN `ourbank_familymember` AS `f` ON f.id=c.member_id 
+//                     WHERE 
+//                     (a.installment_date <= '$date') AND 
+//                     (a.installment_status=5) AND 
+//                     (b.created_by like '%' '$officer' '%') AND 
+//                     (c.membertype_id=1)
+//                     GROUP BY 
+//                     `a`.`account_id` 
+//                     UNION
+//                     SELECT 
+//                     count(a.installment_id) AS `totalinstallments`,
+//                     Sum(a.installment_amount) AS `overdue`,
+//                     `a`.`installment_date`,
+//                     `b`.`id`,
+//                     `c`.`account_number`,
+//                     `f`.`name` 
+//                     FROM 
+//                     `ourbank_installmentdetails` AS `a` 
+//                     INNER JOIN `ourbank_loanaccounts` AS `b` ON b.account_id=a.account_id 
+//                     INNER JOIN `ourbank_accounts` AS `c` ON c.id=b.account_id 
+//                     INNER JOIN `ourbank_group` AS `f` ON f.id=c.member_id 
+//                     WHERE 
+//                     (a.installment_date <= '$date') AND 
+//                     (a.installment_status=5) AND 
+//                     (b.created_by like '%' '$officer' '%') AND 
+//                     (c.membertype_id=2 or c.membertype_id=3)
+//                     GROUP BY 
+//                     `a`.`account_id`";
 //             echo $sql;
-            $result = $this->db->fetchAll($sql);
-            return $result;
-     }
+//             $result = $this->db->fetchAll($sql);
+//             return $result;
+//      }
 
         public function office($hiearchyid) {
             $select = $this->select()

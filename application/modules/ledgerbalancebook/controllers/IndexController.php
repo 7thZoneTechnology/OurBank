@@ -26,7 +26,6 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 
 	if ($searchForm->isValid($formData)) {
         $fromDate = $dateconvertor->mysqlformat($this->view->date1 = $this->_request->getParam('date1'));
-
 		$hierarchy=$this->_request->getParam('hierarchy');
 		$branch = $this->_request->getParam('branch');
 		$group = $this->_request->getParam('group');

@@ -1,13 +1,13 @@
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
 	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		targeturl=path+"/ledgerbalancebook/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
 function getgroups(branch,path) {
 	if(branch) {
-		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		targeturl=path+"/ledgerbalancebook/index/group?branch="+branch;
 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
 	}
 }
@@ -37,7 +37,7 @@ $("#hide").show();
                             <TD id="show"><?php echo $this->form->hierarchy;?></td>
 						</tr>
 						<tr>
-                			<TD>&nbsp;&nbsp;&nbsp;<label class="mand">As of Date :</label></TD>
+                			<TD>&nbsp;&nbsp;&nbsp;<br><label class="mand">As of Date :</label></TD>
                 			<TD><?php  echo $this->form->date1;?></TD>  
                             <TD><?php echo $this->translate('Branch'); ?></td>
                             <TD><div id="statediv"><?php echo $this->form->branch;?></div></TD>
