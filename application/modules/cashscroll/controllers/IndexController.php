@@ -65,20 +65,20 @@ $this->view->adm = new App_Model_Adm();
 
        		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 //         if ($searchForm->isValid($formData)) {
-		$dateconvert= new App_Model_dateConvertor();
+$dateconvert= new App_Model_dateConvertor();
        $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
-		$this->view-> date1 =$fromDate;
+$this->view-> date1 =$fromDate;
        $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
-		$this->view-> date2 =$toDate;
+$this->view-> date2 =$toDate;
 
  		$branch=$this->_request->getParam('branch');
  		$hierarchy=$this->_request->getParam('hierarchy');
 
  		$group=$this->_request->getParam('group');
-		$officename=$villageoffice->getOffice($branch);
-	foreach ($officename as $officename) {
-			$this->view->name =$officename['name'];}
-
+			$officename=$villageoffice->getOffice($branch);
+foreach ($officename as $officename) {
+$this->view-> name =$officename['name'];
+}
                 $transaction = new Cashscroll_Model_Cashscroll();
 if ($group=="") {
                 //Saving Account Credit and Debit

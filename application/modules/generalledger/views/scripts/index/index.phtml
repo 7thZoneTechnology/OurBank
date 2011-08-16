@@ -19,13 +19,13 @@
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
 	if(hierarchy) {
-		targeturl=path+"/generalledger/index/sublevel?hierarchy="+hierarchy;
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
 function getgroups(branch,path) {
 	if(branch) {
-		targeturl=path+"/generalledger/index/group?branch="+branch;
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
 	}
 }

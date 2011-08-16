@@ -30,7 +30,7 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 		$branch = $this->_request->getParam('branch');
 		$group = $this->_request->getParam('group');
 
-        $this->view->ledegerList = $GeneralList->generalLedger($fromDate);
+        $this->view->ledegerList = $GeneralList->generalLedger($fromDate,$hierarchy,$branch);
         $this->view->ledegerListAssets = $GeneralList->generalLedgerAssets($fromDate,$hierarchy,$branch);
 	}
 	}

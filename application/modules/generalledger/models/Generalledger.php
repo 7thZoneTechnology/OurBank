@@ -23,172 +23,209 @@
 class Generalledger_Model_Generalledger extends Zend_Db_Table
 {
     protected $_name = 'ourbank_transaction';
-//     public function fetchAllProductNames() 
-//     {
-//         $select = $this->select()
-// 		->setIntegrityCheck(false)  
-// 		->join(array('p' => 'ourbank_product'),array('id'));
-// 	$result = $this->fetchAll($select);
-// 	return $result->toArray();
-//     }
-    
-//     public function getGlsubocde() 
-//     {
-//         $select = $this->select()
-// 		->setIntegrityCheck(false)  
-//                         ->from(array('A' => 'ourbank_glsubcode'))
-//                         ->join(array('C'=>'ourbank_glsubcodeupdates'),'C.glsubcode_id = A.glsubcode_id')
-//                         ->where('C.recordstatus_id =3 OR C.recordstatus_id =1')
-// 			->order('A.glsubcode');
-// 	$result = $this->fetchAll($select);
-// 	return $result->toArray();
-//     }
-    
+
     public function generalLedger($date1,$date2,$branch,$hierarchy){
-       if ($hierarchy==3){
-        $db = $this->getAdapter();
-        $sql = "select 
-					G.id as vid,
-					H.id as memberid,
-                    D.id as glsubcode_id,
-					A.glsubcode_id_to,
-					D.glsubcode as glsubcode,
-					D.id,
-                    D.header as subheader,
-                    sum(A.credit) as credit,
-                    sum(A.debit) as debit
-                    from 
-		    		ourbank_Liabilities A,
-					ourbank_glcode B,
-		    		ourbank_glsubcode D,
-					ourbank_office G,
-					ourbank_familymember H,
-					ourbank_accounts I,
-					ourbank_transaction E
-		    		where (
-  		  	A.glsubcode_id_to = D.id AND 
-			B.id = D.glcode_id AND
-		    B.ledgertype_id = 4 AND
-			G.parentoffice_id = '$branch' AND
-			G.id = H.village_id AND
-			H.id = I.member_id AND
-					I.status_id =3 OR I.status_id =1 AND
-		    A.transaction_id = E.transaction_id AND
-					E.amount_from_bank >0 AND
-					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
-					E.paymenttype_id <= 4 AND
-			E.transaction_date BETWEEN '$date1' AND '$date2')
-		    group by D.id";
-// echo $sql;
 
-        $result=$db->fetchAll($sql);
-        return $result;
+		switch($hierarchy){
+			case '3': {
+        $select = $this->select()
+                       	->setIntegrityCheck(false)
+
+             ->from(array('d' => 'ourbank_glsubcode'),array('d.id as glsubcode_id','d.glsubcode as glsubcode','d.id','d.header as subheader'))
+
+             ->join(array('a' => 'ourbank_Liabilities'),'a.glsubcode_id_to = d.id',array('sum(a.credit) as credit',
+                    'sum(a.debit) as debit'))
+
+             ->join(array('b' => 'ourbank_glcode'),'b.id=d.glcode_id')
+				  ->where('b.ledgertype_id = 4')
+
+             ->join(array('g' => 'ourbank_office'),'g.id = a.office_id')
+				  ->where('g.parentoffice_id = "'.$branch.'"')
+
+             ->join(array('h' => 'ourbank_familymember'),'g.id = h.village_id')
+
+             ->join(array('i' => 'ourbank_accounts'),'h.id = i.member_id')
+					->where('i.status_id =3' OR 'i.status_id =1')
+
+             ->join(array('e' => 'ourbank_transaction'),'a.transaction_id = e.transaction_id')
+                  ->where('e.amount_from_bank >0')
+				  ->where('e.recordstatus_id = 3' OR 'e.recordstatus_id = 1')
+				  ->where('e.paymenttype_id = 4')
+				  ->where('e.transaction_date BETWEEN "'.$date1.'" AND "'.$date2.'"');
+
+// // die($select->__toString($select));
+		return $this->fetchAll($select);
 
 
-    }
+
+
+// //         $db = $this->getAdapter();
+// //         $sql = "select 
+// // 					G.id as vid,
+// // 					H.id as memberid,
+// //                     D.id as glsubcode_id,
+// // 					A.glsubcode_id_to,
+// // 					D.glsubcode as glsubcode,
+// // 					D.id,
+// //                     D.header as subheader,
+// //                     sum(A.credit) as credit,
+// //                     sum(A.debit) as debit
+// //                     from 
+// // 		    		ourbank_Liabilities A,
+// // 					ourbank_glcode B,
+// // 		    		ourbank_glsubcode D,
+// // 					ourbank_office G,
+// // 					ourbank_familymember H,
+// // 					ourbank_accounts I,
+// // 					ourbank_transaction E
+// // 		    		where (
+// //   		  	A.glsubcode_id_to = D.id AND 
+// // 			B.id = D.glcode_id AND
+// // 		    B.ledgertype_id = 4 AND
+// // 			G.parentoffice_id = '$branch' AND
+// // 			G.id = H.village_id AND
+// // 			H.id = I.member_id AND
+// // 					I.status_id =3 OR I.status_id =1 AND
+// // 		    A.transaction_id = E.transaction_id AND
+// // 					E.amount_from_bank >0 AND
+// // 					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
+// // 					E.paymenttype_id <= 4 AND
+// // 			E.transaction_date BETWEEN '$date1' AND '$date2')
+// // 		    group by D.id";
+// // // echo $sql;
+// // 
+// //         $result=$db->fetchAll($sql);
+// //         return $result;
+
+
+    }}
     }
     public function openingBalance($date,$branch,$hierarchy){
-	if ($hierarchy==3){
-        $db = $this->getAdapter();
-        $sql = "select 
-					G.id as vid,
-					H.id as memberid,
-                    F.id as glsubcode_id,
-		    		F.glsubcode as glsubcode,
-                    F.header as subheader,
-                    (sum(A.credit)-sum(A.debit)) as openingCash
-                    from 
-		    ourbank_Liabilities A,
-		    ourbank_glcode B,
-	        ourbank_transaction E,
-			ourbank_office G,
-			ourbank_familymember H,
-			ourbank_accounts I,
-		    ourbank_glsubcode F
-		    where (A.glsubcode_id_to = F.id AND 
-		    B.id = F.glcode_id AND
-		    B.ledgertype_id = 4 AND
-			G.parentoffice_id = '$branch' AND
-			G.id = H.village_id AND
-			H.id = I.member_id AND
-					I.status_id =3 OR I.status_id =1 AND
-		    A.transaction_id = E.transaction_id AND
-					E.amount_from_bank >0 AND
-					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
-					E.paymenttype_id <= 4 AND
-                    E.transaction_date < '$date') 
-		    group by F.id";
-//echo $sql;
-
-
-        $result=$db->fetchAll($sql);
-        return $result;
-	}
+// 	if ($hierarchy==3){
+//         $db = $this->getAdapter();
+//         $sql = "select 
+// 					G.id as vid,
+// 					H.id as memberid,
+//                     F.id as glsubcode_id,
+// 		    		F.glsubcode as glsubcode,
+//                     F.header as subheader,
+//                     (sum(A.credit)-sum(A.debit)) as openingCash
+//                     from 
+// 		    ourbank_Liabilities A,
+// 		    ourbank_glcode B,
+// 	        ourbank_transaction E,
+// 			ourbank_office G,
+// 			ourbank_familymember H,
+// 			ourbank_accounts I,
+// 		    ourbank_glsubcode F
+// 		    where (A.glsubcode_id_to = F.id AND 
+// 		    B.id = F.glcode_id AND
+// 		    B.ledgertype_id = 4 AND
+// 			G.parentoffice_id = '$branch' AND
+// 			G.id = H.village_id AND
+// 			H.id = I.member_id AND
+// 					I.status_id =3 OR I.status_id =1 AND
+// 		    A.transaction_id = E.transaction_id AND
+// 					E.amount_from_bank >0 AND
+// 					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
+// 					E.paymenttype_id <= 4 AND
+//                     E.transaction_date < '$date') 
+// 		    group by F.id";
+// //echo $sql;
+// 
+// 
+//         $result=$db->fetchAll($sql);
+//         return $result;
+// 	}
     }
     public function generalLedgerAssets($date1,$date2,$branch,$hierarchy){
-       if ($hierarchy==3){
 
-        $db = $this->getAdapter();
-        $sql = "select 
-					G.id as vid,
-					H.id as memberid,
-                    F.id as glsubcode_id,
-		    		F.glsubcode as glsubcode,
-                    F.header as subheader,
-                    sum(A.credit) as credit,
-                    sum(A.debit) as debit
-                    from 
-		    ourbank_Assets A,
-		    ourbank_glcode B,
-		    ourbank_transaction E,
-			ourbank_office G,
-			ourbank_familymember H,
-			ourbank_accounts I,
-		    ourbank_glsubcode F
-		    where (A.glsubcode_id_to = F.id AND 
-		    B.id = F.glcode_id AND
-		    B.ledgertype_id = 3 AND
-			G.parentoffice_id = '$branch' AND
-			G.id = H.village_id AND
-			H.id = I.member_id AND
-					I.status_id =3 OR I.status_id =1 AND
-		    A.transaction_id = E.transaction_id AND
-					E.amount_from_bank >0 AND
-					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
-					E.paymenttype_id <= 4 AND
-                    E.transaction_date BETWEEN '$date1' AND '$date2') 
-		    group by F.id";
-//  echo $sql;
+		switch($hierarchy){
+			case '3': {
+        $select = $this->select()
+                       	->setIntegrityCheck(false)
 
-         $result=$db->fetchAll($sql);
-         return $result;
+		->join(array('f' =>'ourbank_glsubcode'),array('f.header as subheader','f.glsubcode as glsubcode'))
+
+		->join(array('a' =>'ourbank_Assets'),'a.glsubcode_id_to = f.id',array('sum(a.credit) as credit',
+                    'sum(a.debit) as debit'))
+
+		->join(array('b' =>'ourbank_glcode'),'b.id=f.glcode_id')
+
+		->join(array('e' =>'ourbank_transaction'),'a.transaction_id = e.transaction_id')
+			 ->where('e.amount_from_bank >0')
+			 ->where('e.recordstatus_id = 3' OR 'e.recordstatus_id = 1')
+			 ->where('e.paymenttype_id = 4')
+			 ->where('e.transaction_date BETWEEN "'.$date1.'" AND "'.$date2.'"')
+
+		->join(array('g' =>'ourbank_office'),'g.id = a.office_id')
+			 ->where('g.parentoffice_id = "'.$branch.'"')
+
+		->join(array('h' =>'ourbank_familymember'),'g.id = h.village_id',array('h.id as memberid'))
+
+		->join(array('i' =>'ourbank_accounts'),'h.id = i.member_id')
+			 ->where('i.status_id =3' OR 'i.status_id =1');
+die($select->__toString($select));
+		return $this->fetchAll($select);}break;}
+
+
+//         $db = $this->getAdapter();
+//         $sql = "select 
+// 					G.id as vid,
+// 					H.id as memberid,
+//                     F.id as glsubcode_id,
+// 		    		F.glsubcode as glsubcode,
+//                     F.header as subheader,
+//                     sum(A.credit) as credit,
+//                     sum(A.debit) as debit
+//                     from 
+// 		    ourbank_Assets A,
+// 		    ourbank_glcode B,
+// 		    ourbank_transaction E,
+// 			ourbank_office G,
+// 			ourbank_familymember H,
+// 			ourbank_accounts I,
+// 		    ourbank_glsubcode F
+// 		    where (A.glsubcode_id_to = F.id AND 
+// 		    B.id = F.glcode_id AND
+// 		    B.ledgertype_id = 3 AND
+// 			G.parentoffice_id = '$branch' AND
+// 			G.id = H.village_id AND
+// 			H.id = I.member_id AND
+// 					I.status_id =3 OR I.status_id =1 AND
+// 		    A.transaction_id = E.transaction_id AND
+// 					E.amount_from_bank >0 AND
+// 					E.recordstatus_id = 3 OR E.recordstatus_id = 1 AND
+// 					E.paymenttype_id <= 4 AND
+//                     E.transaction_date BETWEEN '$date1' AND '$date2') 
+// 		    group by F.id";
+// //  echo $sql;
+// 
+//          $result=$db->fetchAll($sql);
+//          return $result;
 
     }
-    }
 
-    public function openingBalanceAssets($date,$glsubcode) 
+    public function openingBalanceAssets($date,$branch,$hierarchy) 
     {
-        $db = $this->getAdapter();
-        $sql = "select 
-                    F.id as glsubcode_id,
-                    F.header as subheader,
-		    F.glsubcode as glsubcode,
-                    (sum(A.credit)-sum(A.debit)) as openingCash
-                    from 
-		    ourbank_Assets A,
-		    ourbank_glcode B,
-		    ourbank_transaction E,
-		    ourbank_glsubcode F
-		    where (A.glsubcode_id_to = F.id AND
-		    B.id = F.glcode_id AND
-		    B.ledgertype_id = 3 AND
-		    A.transaction_id = E.transaction_id AND
-                    E.transaction_date < '$date') 
-		    group by F.id";
-//echo $sql;
+		switch($hierarchy){
+			case '3': {
+        $select = $this->select()
+                       	->setIntegrityCheck(false)
+		->join(array('f' =>'ourbank_glsubcode'),array('f.id as glsubcode_id','f.header as subheader','f.glsubcode as glsubcode'))
 
-        $result=$db->fetchAll($sql);
-        return $result;
+		->join(array('a' =>'ourbank_Assets'),'a.glsubcode_id_to=f.id',array('(sum(a.credit)-sum(a.debit)) as openingCash'))
+
+		->join(array('b' =>'ourbank_glcode'),'b.id=f.glcode_id')
+     		 ->where('b.ledgertype_id = 3')
+
+		->join(array('e' =>'ourbank_transaction'),'a.transaction_id=e.transaction_id')
+			 ->where('e.transaction_date = "'.$date.'"')
+
+			 ->group('f.id');
+
+// 			die($select->__toString($select));
+		return $this->fetchAll($select);}break;}
 
     }
 
