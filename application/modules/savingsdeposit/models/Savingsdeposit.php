@@ -131,6 +131,7 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
     public function deposit($acc,$amount,$date,$type,$transactionMode,$description,$paymenttype_details,$createdby) 
     {
 	$cl = new App_Model_dateConvertor ();
+        $adm = new App_Model_Adm();
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
 	$accData = $this->search($acc);
@@ -139,7 +140,8 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
 	   $gl = $accData->gl;
 	   $officeid = $accData->officeid;
 	}
-	// Transaction entry
+     
+// // // 	Transaction entry
 	$input = array('account_id' => $accId,
                       'glsubcode_id_to' => $gl,
                        'transaction_date' => $cl->phpmysqlformat($date),
@@ -154,6 +156,16 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
                        'created_by' => $createdby);
 	$db->insert("ourbank_transaction",$input);
 	$tranId = $db->lastInsertId('ourbank_transaction');
+
+       $transid = $adm->getsingleRecord('ourbank_savings_transaction','max(transaction_id)','account_id',$accId);
+       $Balance = $adm->getsingleRecord('ourbank_savings_transaction','balance','transaction_id',$transid);
+       $Balance = $Balance + $amount;
+
+       $ltrasactiondate = $adm->getsingleRecord('ourbank_savings_transaction','transaction_date','transaction_id',$transid);
+       $trancount = $adm->getsingleRecord('ourbank_savings_transaction','transactioncount','transaction_id',$transid);
+       if ( $ltrasactiondate != date('Y-m-d') ) {
+                $trancount += 1;
+        } 
 	// Saving transaction entry 
         $saving = array('transaction_id' => $tranId,
       	                'account_id' => $accId,
@@ -161,6 +173,8 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
                         'transactiontype_id' => 1,
 			'glsubcode_id_to' => $gl,
 	               	'amount_to_bank' => $amount,
+                        'balance' => $Balance,
+                        'transactioncount' => $trancount,
                         'paymenttype_id'=> $transactionMode,
                         'paymenttype_details'=> $paymenttype_details,                        'transaction_description' => $description,
 			'transaction_by' => $createdby);

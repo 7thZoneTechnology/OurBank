@@ -22,46 +22,50 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 {
     protected $_name = 'ourbank_productsoffer';
 
-    public function fetchSavingsDetails($branch)
+    public function fetchSavingsDetails($office_id,$hierarchy)
     {
-
                 $select = $this->select()
                                 ->setIntegrityCheck(false)  
-                        ->from(array('A' => 'ourbank_office'),array('A.id as vid'))
-                         	 ->where('A.parentoffice_id = "'.$branch.'"')
+                                ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
 
-						->join(array('b' =>'ourbank_familymember'),'A.id = b.village_id',array('b.id as memberid'))
+                                ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id')
+                                     ->where('C.status_id = 3 || C.status_id = 1')
 
-						->join(array('C'=>'ourbank_accounts'),'b.id = C.member_id')
-                       		 ->where('C.status_id =3 OR C.status_id =1')
+                                ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','D.name as productname')
+                                     ->where('D.category_id = 1')
 
-                        ->join(array('D' =>'ourbank_product'),'D.id = C.product_id',array('D.name as productname'))
-                             ->where('D.category_id = 1')
+                                ->join(array('E'=>'ourbank_familymember'),'E.id = C.member_id',array('E.name as membername'))
 
-                        ->join(array('E' => 'ourbank_productsoffer'),'D.id = E.product_id',array('id'))
-							 ->group('E.name')
-							 ->order('D.name');
+                                ->join(array('F'=>'ourbank_office'),'F.id = E.village_id',array('F.name as officename'))
+                                     ->where('F.id = "'.$office_id.'"')
+                                     ->group('B.name')
+                                     ->order('D.name');
+               //  die($select->__toString());
+                $result = $this->fetchAll($select);
+                return $result->toArray();
+    }
 
-//                 die($select->__toString());
-				return $this->fetchAll($select);
-
-	}
-    public function accountBalanceDetails($branch)
+    public function accountBalanceDetails($office_id)
     {
          $select = $this->select()
-                        ->setIntegrityCheck(false)
+                        ->setIntegrityCheck(false)  
                         ->from(array('A' => 'ourbank_accounts'))
-                        ->where('A.status_id = 3 || A.status_id = 1')
-                        ->join(array('B'=>'ourbank_productsoffer'),'A.product_id = B.id',array('B.id as offerprodid'))
-                        ->join(array('F' =>'ourbank_transaction'),'A.id = F.account_id')
-                        ->where('F.recordstatus_id = 3 || F.recordstatus_id = 1')
-                        ->join(array('J' =>'ourbank_product'),'B.product_id = J.id')
-                        ->where('J.category_id = 1')
-                        ->join(array('E'=>'ourbank_familymember'),'E.id = A.member_id')
-                        ->join(array('G'=>'ourbank_office'),'G.id = E.village_id')
-                        ->where('G.id = "'.$branch.'"');
+                             ->where('A.status_id = 3 || A.status_id = 1')
 
-// die($select->__toString());
+                        ->join(array('B'=>'ourbank_productsoffer'),'A.product_id = B.id',array('B.id as offerprodid'))
+
+                        ->join(array('F' =>'ourbank_transaction'),'A.id = F.account_id',array('sum(F.amount_to_bank)-sum(F.amount_from_bank) as balance'))
+                             ->where('F.recordstatus_id = 3 || F.recordstatus_id = 1')
+
+                        ->join(array('J' =>'ourbank_product'),'B.product_id = J.id')
+                             ->where('J.category_id = 1')
+
+                        ->join(array('E'=>'ourbank_familymember'),'E.id = A.member_id')
+
+                        ->join(array('G'=>'ourbank_office'),'G.id = E.village_id')
+                             ->where('G.id = "'.$office_id.'"');
+
+//                 die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
     }
@@ -109,22 +113,4 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
         return $result->toArray();
         }
 
-	public function suboffice($hierarchy) {
-        $this->db = Zend_Db_Table::getDefaultAdapter();
-        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT id,name  FROM ourbank_office WHERE officetype_id = $hierarchy";
-        $result = $this->db->fetchAll($sql,array($hierarchy));
-        return $result;
-
-
-    	}
-	public function subgroup($branch) {
-        $this->db = Zend_Db_Table::getDefaultAdapter();
-        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT id,name  FROM ourbank_group WHERE village_id = $branch";
-        $result = $this->db->fetchAll($sql,array($branch));
-        return $result;
-
-
-    	}
 }

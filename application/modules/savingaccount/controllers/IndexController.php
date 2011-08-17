@@ -182,6 +182,8 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                                     'transactiontype_id' => 1,
                                     'glsubcode_id_to' => $glsubID,
                                     'amount_to_bank' => $this->_request->getPost('amount'),
+                                    'balance' => $this->_request->getPost('amount'),
+                                    'transactioncount' => 1,
                                     'paymenttype_id' => 1,
                                     'transaction_description'=> "Opening amount",
                                     'transaction_by' => 1);

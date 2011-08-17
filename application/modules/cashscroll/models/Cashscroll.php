@@ -212,7 +212,7 @@ public function openingBalanceg($fromDate,$toDate,$group) {
 
 
     	}
-public function subgroupFromUrl($branch) {
+	public function subgroupFromUrl($branch) {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT id,name  FROM ourbank_group WHERE village_id = $branch";
@@ -221,15 +221,12 @@ public function subgroupFromUrl($branch) {
 
 
     	}
-public function getOffice($id) {
+	public function getOffice($id) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
 						->where('a.village_id = ?',$id);
-
-//die($select->__toString($select));
-
-
+			//die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
