@@ -33,18 +33,19 @@
         $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
         $hierarchy->setRegisterInArrayValidator(false);
 
-        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
-        $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")','getofficer(this.value,"'.$path.'")');
-      //  $branch->setAttrib('onchange', 'getofficer(this.value,"'.$path.'")');
-
-
-        $branch->setRegisterInArrayValidator(false);
+        $officebranch = $formfield->field('Select','bank_id','','','mand','',false,'','','','','',0,0);
+        $officebranch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
 
         $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+        $group->setAttrib('onchange', 'Getofficer(this.value,"'.$path.'")');
+
         $group->setRegisterInArrayValidator(false);
 
         $loanofficer = $formfield->field('Select','loanofficer','','','mand','',false,'','','','','',0,0);
+        $loanofficer->setRegisterInArrayValidator(false);
+
         $date = $formfield->field('Text','datefrom','','','mand','',true,'','','','','',0,0);
-        $this->addElements(array($hierarchy,$branch,$group,$loanofficer,$date));
+
+        $this->addElements(array($hierarchy,$officebranch,$group,$loanofficer,$date));
     }
 }

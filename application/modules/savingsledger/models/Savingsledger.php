@@ -141,7 +141,6 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
         }
 	
 	else if(!$accountNo && $dateFrom && !$dateTo) {
-                
         $select = $this->select()
                     ->setIntegrityCheck(false) 
                     ->join(array('a' => 'ourbank_accounts'),array('id'))
@@ -178,8 +177,6 @@ class Savingsledger_Model_Savingsledger extends Zend_Db_Table
         }
 
         else  {
-
-                
         $select = $this->select()
                     ->setIntegrityCheck(false) 
                     ->join(array('a' => 'ourbank_accounts'),array('id'))

@@ -86,20 +86,17 @@ $("#hide").show();
                     <TR>
                        <TD><?php echo $savingsdetails['prodoffername'];?></TD>
 			    	   <TD  align="center"><?php echo $savingsdetails['countvalue'];?></TD>
-                    <?php foreach($this->accountBalanc as $balance){  ?>
-
-			    	   <TD  align="right"><?php echo $balance['balance'];?></TD>
-
+       
+			    	   <TD  align="right"><?php $test=end($this->accountBalanc); echo $test['balance'];?></TD>
                     </TR>
-                 <?php } ?>
-	    </table>
+	    </table> 
             <table align = "right" >
 		     <TR>
                         <TH></TH>
                         <TH></TH>
-			<Th align="left"><b>Total :</b></Th>
-			<th align="right"><font color="#039"><b><?php  echo $balance['balance'];?></b></font></TH>
-		   </TR><? } ?>
+		<Th align="left"><b>Total :</b></Th>
+		<th align="right"><font color="#039"><b><?php $test=end($this->accountBalanc); echo $test['balance'];?></b></font></TH>
+		   </TR><?  }?>
              </table>
         </div>
 <form action="<?php echo $this->baseUrl();?>/depositsummary/index/pdftransaction" method="POST"
