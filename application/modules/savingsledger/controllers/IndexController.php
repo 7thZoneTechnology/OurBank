@@ -45,6 +45,7 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
+
 		$dateFrom =$this->view->fromdate=$this->_request->getParam('datefrom');
 		$dateTo =$this->view->todate= $this->_request->getParam('dateto');
 		$accountNo =$this->view->accno= $this->_request->getParam('acc');

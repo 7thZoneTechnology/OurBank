@@ -24,7 +24,10 @@ class Loanledger_IndexController extends Zend_Controller_Action
     	$this->view->title = "Reports";
 		$this->view->pageTitle = "Loans ledger";
         $this->view->type = "generalFields";
-        $this->view->loanModel = $loanmodel = new Loanledger_Model_loandetails();
+
+		$this->view->form = $loansearch = new Loandetailsg_Form_Search();
+		$this->view->model = $loanmodel = new Loanledger_Model_loandetails();
+
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
 		$globalsession = new App_Model_Users();
@@ -48,22 +51,28 @@ class Loanledger_IndexController extends Zend_Controller_Action
     public function loandetailsAction() 
     {
         $path = $this->view->baseUrl();
-		$this->view->form = $loansearch = new Loandetailsg_Form_Search();
 
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+	        $formData = $this->_request->getPost(); 
 
-	$this->view->accNum=$this->_request->getParam('accNum');
-	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-		  foreach($officename as $officename){
-			$loansearch->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
-	$this->view->details = $this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
-	$this->view->tran = $this->view->loanModel->loanInstalments($this->_request->getParam('accNum'));
-	$this->view->paid = $this->view->loanModel->paid($this->_request->getParam('accNum'));
-	$this->view->unpaid = $this->view->loanModel->unpaid($this->_request->getParam('accNum'));
-	 		$branch=$this->_request->getParam('branch');
- 			$group=$this->_request->getParam('group');
+        if ($this->view->form->isValid($formData)) {  
+
+ 		$hierarchy=$this->_request->getParam('hierarchy');
+	 	$branch=$this->_request->getParam('branch');
+ 		$group=$this->_request->getParam('group');
+		$this->view->accNum= $acc =$this->_request->getParam('accNum');
+
+// 	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+// 			  foreach($officename as $officename)
+// 				{	  $loansearch->hierarchy->addMultiOption($officename['id'],$officename['type']);}
+
+	$this->view->details = $this->view->model->searchaccounts($acc);
+	$this->view->tran = $this->view->model->loanInstalments($this->_request->getParam('accNum'));
+	$this->view->paid = $this->view->model->paid($this->_request->getParam('accNum'));
+	$this->view->unpaid = $this->view->model->unpaid($this->_request->getParam('accNum'));
     }
-
+   }
+ }
 	public function reportdisplayAction() 
     {
         $app = $this->view->baseUrl();

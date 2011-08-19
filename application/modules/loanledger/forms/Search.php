@@ -3,7 +3,6 @@ class Loandetailsg_Form_Search extends ZendX_JQuery_Form {
 
 
       public function __construct($path) {
-
         		$formfield = new App_Form_Field ();
                 //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
 
@@ -15,7 +14,7 @@ class Loandetailsg_Form_Search extends ZendX_JQuery_Form {
         		$branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
         		$branch->setRegisterInArrayValidator(false);
 
-        		$group = $formfield->field('Text','group','','','mand','Group',false,'','','','','',0,'');
+        		$group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
 
                 $num = $formfield->field('Text','accNum','','','mand','accNum',true,'','','','','',0,'');
 

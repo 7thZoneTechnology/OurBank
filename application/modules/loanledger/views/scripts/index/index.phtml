@@ -22,21 +22,19 @@ $("#hide").show();
 }
 });
 });
-
 </script>
 
 <?php
-if($this->searchaccounts == 0) { ?>   
-  <form action="<?php echo $this->baseUrl();?>/loanledger/index/loandetails" method="POST">
-    <fieldset>
-        <legend>Search account</legend>
+if($this->searchaccounts == 0) { ?>
+<fieldset>
+  <legend>Search account</legend>
+  		<form action="<?php echo $this->baseUrl();?>/loanledger/index/loandetails" method="POST">
             <table  style="margin-left:20px;">
 
-
-  						<tr>
+ 						<tr>
 							<TD></TD><TD></TD>
-							<TD><?php echo $this->translate('Hierarchy'); ?></td>
-                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+							<TD><?php echo $this->translate('Hierarchy'); ?></TD>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></TD>
 						</tr>
 						<tr>
                     		<TD><br><label class="mand">Account number :</label></TD>
@@ -49,14 +47,12 @@ if($this->searchaccounts == 0) { ?>
 							<TD><?php echo $this->translate('Group'); ?></TD>
                             <TD><div id="groupdiv"><?php echo $this->form->group;?></TD>
 						</tr>
-
             </table>
             <div class="btnhouse">
                 <div class="ltbtns" style="margin-left:20px;">
                     <?php echo $this->form->Search;?>
                 </div>
             </div>
-    </fieldset>
-  </form>
-
+	  </form>
+</fieldset>
 <?php } ?>
