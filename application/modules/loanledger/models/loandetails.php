@@ -37,7 +37,7 @@ class Loanledger_Model_loandetails extends Zend_Db_Table {
 //   die($select->__toString($select));
 // 		return $this->fetchAll($select);
 
-    public function loanInstalments($accNum) 
+    public function loanInstalments($accNum)
     {
 
         $db = Zend_Db_Table::getDefaultAdapter();

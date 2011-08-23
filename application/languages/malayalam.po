@@ -1,0 +1,2179 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ourbank\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-14 18:37+0530\n"
+"PO-Revision-Date: \n"
+"Last-Translator: jebastine <jebastine.j@mahiti.org>\n"
+"Language-Team: ourbank <ourbank@mahiti.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Kannada\n"
+"X-Poedit-Country: India\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: /var/www/OurBankc/\n"
+"X-Poedit-SearchPath-0: application\n"
+
+#: application/modules/officehierarchy/forms/Deletehierarchy.php:40
+#: application/modules/officehierarchy/forms/Hierarchy1.php:33
+msgid "select"
+msgstr ""
+
+#: application/modules/officehierarchy/forms/Deletehierarchy.php:69
+msgid "search"
+msgstr ""
+
+#: application/modules/officehierarchy/controllers/IndexController.php:29
+msgid "Office Hierarchy"
+msgstr ""
+
+#: application/modules/officehierarchy/controllers/IndexController.php:37
+msgid "OfficeHierarchy"
+msgstr ""
+
+#: application/modules/officehierarchy/controllers/IndexController.php:132
+msgid "Edit OfficeHierarchy"
+msgstr ""
+
+#: application/modules/officehierarchy/controllers/IndexController.php:320
+msgid "update"
+msgstr ""
+
+#: application/modules/contactdetails/controllers/IndexController.php:27
+msgid "Contact Details"
+msgstr ""
+
+#: application/modules/contactdetails/controllers/IndexController.php:57
+msgid "Add Contact"
+msgstr ""
+
+#: application/modules/contactdetails/controllers/IndexController.php:89
+msgid "Edit Contact"
+msgstr ""
+
+#: application/modules/infrastructure/controllers/IndexController.php:52
+#: application/modules/infrastructure/controllers/IndexController.php:112
+msgid "Basic Infrastructure"
+msgstr ""
+
+#: application/modules/infrastructure/controllers/IndexController.php:69
+#: application/modules/infrastructure/controllers/IndexController.php:129
+msgid "PRA details"
+msgstr ""
+
+#: application/modules/health/controllers/IndexController.php:25
+msgid "Health"
+msgstr ""
+
+#: application/modules/health/controllers/IndexController.php:47
+msgid "Add health details"
+msgstr ""
+
+#: application/modules/health/controllers/IndexController.php:151
+msgid "Edit health details"
+msgstr ""
+
+#: application/modules/familydefault/controllers/IndexController.php:27
+#: application/modules/familydefault/controllers/IndexController.php:65
+#: application/modules/familydefault/controllers/IndexController.php:212
+msgid "Family Information"
+msgstr ""
+
+#: application/modules/transferscroll/controllers/IndexController.php:30
+msgid "Transfer scroll"
+msgstr ""
+
+#: application/modules/transferscroll/controllers/IndexController.php:31
+#: application/modules/loansupplementary/controllers/IndexController.php:24
+msgid "Reports"
+msgstr ""
+
+#: application/modules/transferscroll/controllers/IndexController.php:32
+msgid "financialReports"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:23
+#: application/modules/loansupplementary/controllers/IndexController.php:100
+#: application/modules/loansupplementary/controllers/IndexController.php:120
+msgid "Loan Supplementary"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:121
+msgid "Sl"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:122
+msgid "Particulars"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:123
+msgid "A/C No."
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:124
+msgid "Cash"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:125
+msgid "Transfer"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:126
+msgid "Total"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:127
+msgid "As of"
+msgstr ""
+
+#: application/modules/loansupplementary/controllers/IndexController.php:128
+msgid "Amount in Rs"
+msgstr ""
+
+#: application/modules/attendanceindex/controllers/IndexController.php:24
+msgid "Attendance"
+msgstr ""
+
+#: application/modules/cashscroll/controllers/IndexController.php:30
+msgid "Cash scroll"
+msgstr ""
+
+#: application/modules/livingassets/controllers/IndexController.php:25
+msgid "Livestock"
+msgstr ""
+
+#: application/modules/livingassets/controllers/IndexController.php:51
+msgid "Add living asset details"
+msgstr ""
+
+#: application/modules/livingassets/controllers/IndexController.php:112
+msgid "Edit Livingasset details"
+msgstr ""
+
+#: application/modules/incomeexpenditure/controllers/IndexController.php:24
+#: application/modules/incomeexpenditure/controllers/IndexController.php:25
+#: application/modules/incomeexpenditure/controllers/IndexController.php:110
+msgid "Income and Expenditure"
+msgstr ""
+
+#: application/modules/incomeexpenditure/controllers/IndexController.php:111
+msgid "Income"
+msgstr ""
+
+#: application/modules/incomeexpenditure/controllers/IndexController.php:112
+#: application/modules/incomeexpenditure/controllers/IndexController.php:114
+msgid "Amount"
+msgstr ""
+
+#: application/modules/incomeexpenditure/controllers/IndexController.php:113
+msgid "Expenditure"
+msgstr ""
+
+#: application/modules/incomeexpenditure/controllers/IndexController.php:115
+msgid "Grand total"
+msgstr ""
+
+#: application/modules/individual/controllers/IndexController.php:25
+msgid "Individual"
+msgstr ""
+
+#: application/modules/individual/controllers/IndexController.php:77
+msgid "Add activity"
+msgstr ""
+
+#: application/modules/meetingbookindex/controllers/IndexController.php:24
+msgid "Meeting book"
+msgstr ""
+
+#: application/modules/officecommonview/controllers/IndexController.php:30
+msgid "New Office"
+msgstr ""
+
+#: application/modules/funderdetails/controllers/IndexController.php:30
+msgid "Funder"
+msgstr ""
+
+#: application/modules/funderdetails/controllers/IndexController.php:66
+msgid "Funder Details"
+msgstr ""
+
+#: application/modules/fundercommonview/controllers/IndexController.php:58
+msgid "Edit Funder Common"
+msgstr ""
+
+#: application/modules/crop/controllers/IndexController.php:27
+msgid "Membership"
+msgstr ""
+
+#: application/modules/crop/controllers/IndexController.php:62
+#: application/modules/crop/controllers/IndexController.php:153
+msgid "Add Crop"
+msgstr ""
+
+#: application/modules/agriculture/controllers/IndexController.php:25
+msgid "Agriculture"
+msgstr ""
+
+#: application/modules/agriculture/controllers/IndexController.php:51
+msgid "Add agriculture details"
+msgstr ""
+
+#: application/modules/agriculture/controllers/IndexController.php:129
+msgid "Edit agriculture details"
+msgstr ""
+
+#: application/modules/loans/controllers/IndexController.php:95
+msgid "Loans"
+msgstr ""
+
+#: application/modules/loans/controllers/IndexController.php:134
+msgid "New loan"
+msgstr ""
+
+#: application/modules/loans/controllers/IndexController.php:267
+msgid "Edit loan"
+msgstr ""
+
+#: application/modules/loans/controllers/IndexController.php:508
+msgid "Delete loan"
+msgstr ""
+
+#: application/modules/meetingbookreport/controllers/IndexController.php:24
+#: application/modules/meetingbookreport/controllers/IndexController.php:68
+msgid "Meeting Book"
+msgstr ""
+
+#: application/modules/expense/controllers/IndexController.php:25
+msgid "Expense details"
+msgstr ""
+
+#: application/modules/expense/controllers/IndexController.php:51
+msgid "Add expense details"
+msgstr ""
+
+#: application/modules/expense/controllers/IndexController.php:123
+msgid "Edit expense information"
+msgstr ""
+
+#: application/modules/praservice/controllers/IndexController.php:25
+msgid "(PRA Based) Service Requirement at family member level"
+msgstr ""
+
+#: application/modules/declaration/controllers/IndexController.php:26
+msgid "Declaration"
+msgstr ""
+
+#: application/modules/address/controllers/IndexController.php:61
+msgid "Add address"
+msgstr ""
+
+#: application/modules/address/controllers/IndexController.php:86
+msgid "Edit address"
+msgstr ""
+
+#: application/modules/familymembers/controllers/IndexController.php:24
+msgid "Family information"
+msgstr ""
+
+#: application/modules/familymembers/controllers/IndexController.php:98
+msgid "Add family members"
+msgstr ""
+
+#: application/modules/familymembers/controllers/IndexController.php:234
+msgid "Edit Family"
+msgstr ""
+
+#: application/modules/externalloan/controllers/IndexController.php:24
+msgid "Externalloan"
+msgstr ""
+
+#: application/modules/grouplaw/controllers/IndexController.php:24
+msgid "Group law"
+msgstr ""
+
+#: application/modules/nonlivingassets/controllers/IndexController.php:25
+msgid "Other assets owned"
+msgstr ""
+
+#: application/modules/nonlivingassets/controllers/IndexController.php:51
+msgid "Add other assets owned"
+msgstr ""
+
+#: application/modules/nonlivingassets/controllers/IndexController.php:112
+msgid "Edit other assets owned"
+msgstr ""
+
+#: application/modules/loandetails/controllers/IndexController.php:25
+msgid "Family loan details"
+msgstr ""
+
+#: application/modules/loandetails/controllers/IndexController.php:53
+msgid "Add loan details"
+msgstr ""
+
+#: application/modules/loandetails/controllers/IndexController.php:104
+msgid "Edit health information"
+msgstr ""
+
+#: application/modules/depositsummary/controllers/IndexController.php:29
+#: application/modules/depositsummary/controllers/IndexController.php:111
+msgid "Deposit summary"
+msgstr ""
+
+#: application/modules/depositsummary/controllers/IndexController.php:111
+msgid "Deposit Summary"
+msgstr ""
+
+#: application/modules/depositsummary/controllers/IndexController.php:111
+msgid "Product"
+msgstr ""
+
+#: application/modules/depositsummary/controllers/IndexController.php:111
+msgid "No. of Savings"
+msgstr ""
+
+#: application/modules/depositsummary/controllers/IndexController.php:111
+msgid "Total Savings Amount"
+msgstr ""
+
+#: application/modules/depositsummary/controllers/IndexController.php:134
+msgid "Branch Name : "
+msgstr ""
+
+#: application/modules/family/controllers/IndexController.php:27
+#: application/modules/family/controllers/IndexController.php:52
+msgid "Family"
+msgstr ""
+
+#: application/modules/ledgerreport/controllers/IndexController.php:27
+#: application/modules/ledgerreport/controllers/IndexController.php:28
+msgid "Transaction"
+msgstr ""
+
+#: application/modules/daybook/controllers/IndexController.php:30
+msgid "Dayboo"
+msgstr ""
+
+#: application/modules/incomedetails/controllers/IndexController.php:25
+msgid "Income details"
+msgstr ""
+
+#: application/modules/incomedetails/controllers/IndexController.php:53
+msgid "Add Income details"
+msgstr ""
+
+#: application/modules/incomedetails/controllers/IndexController.php:107
+msgid "Edit Income Details"
+msgstr ""
+
+#: application/modules/thumbdeclaration/views/scripts/index/reportdisplay.phtml:40
+msgid "back"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/inlineedit.phtml:20
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:183
+msgid " Office Level"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/inlineedit.phtml:27
+#: application/modules/officehierarchy/views/scripts/index/edit.phtml:62
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:255
+msgid "cancel"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/edit.phtml:28
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:165
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:205
+msgid "Office level"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/edit.phtml:29
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:166
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:206
+msgid "Office Type"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/edit.phtml:30
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:167
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:207
+msgid "Office TypeCode"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/edit.phtml:48
+msgid "After Which Level"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/edit.phtml:52
+msgid "Office Level"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/delete.phtml:23
+msgid "Are you sure you want to delete"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/delete.phtml:23
+msgid "Level"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:21
+msgid "View Holiday"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:26
+msgid "Holiday Name"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:34
+msgid "Office Name"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:42
+msgid "Holiday From"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:50
+msgid "Holiday UpTo"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:58
+msgid "Repayment"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/officehierarchyview.phtml:68
+#: application/modules/contactdetails/views/scripts/index/editcontact.phtml:31
+#: application/modules/contactdetails/views/scripts/index/addcontact.phtml:31
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:142
+#: application/modules/infrastructure/views/scripts/index/add.phtml:145
+msgid "Back"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:170
+msgid "Enter number of office level"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:222
+msgid "edit"
+msgstr ""
+
+#: application/modules/officehierarchy/views/scripts/index/index.phtml:238
+msgid "After WhichLevel"
+msgstr ""
+
+#: application/modules/contactdetails/views/scripts/index/editcontact.phtml:22
+msgid "Edit Contact Details"
+msgstr ""
+
+#: application/modules/contactdetails/views/scripts/index/addcontact.phtml:22
+msgid "Add Contact Details"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:31
+#: application/modules/infrastructure/views/scripts/index/add.phtml:47
+msgid "ಕುಟುಂಬದ ಕೋಡ :"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:36
+#: application/modules/infrastructure/views/scripts/index/add.phtml:52
+msgid "ಮನೆ ಸಂಖ್ಯೆ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:38
+#: application/modules/infrastructure/views/scripts/index/add.phtml:54
+msgid "ರೇಷನ್ ಕಾರ್ಡ್:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:43
+#: application/modules/infrastructure/views/scripts/index/add.phtml:59
+msgid "ಬೀದಿ /ರಸ್ತೆ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:45
+#: application/modules/infrastructure/views/scripts/index/add.phtml:61
+msgid "ಆರೋಗ್ಯ ವಿಮೆ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:51
+#: application/modules/infrastructure/views/scripts/index/add.phtml:67
+msgid "ಕಂದಾಯ ಗ್ರಾಮ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:53
+#: application/modules/infrastructure/views/scripts/index/add.phtml:69
+msgid "ಉದ್ಯೋಗಖಾತ್ರಿ ಜಾಬ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:57
+#: application/modules/infrastructure/views/scripts/index/add.phtml:73
+msgid " ಗ್ರಾಮ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:59
+#: application/modules/infrastructure/views/scripts/index/add.phtml:75
+msgid "ಆದಾಯದ ಪ್ರಮುಖ ಮೂಲ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:63
+#: application/modules/infrastructure/views/scripts/index/add.phtml:79
+msgid "ಕುಟುಂಬದ ವಿಧ :"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:65
+#: application/modules/infrastructure/views/scripts/index/add.phtml:81
+msgid "ದೂರವಾಣಿ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:70
+#: application/modules/infrastructure/views/scripts/index/add.phtml:86
+msgid "ಜಾತಿ:"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:72
+msgid "ಮೊಬೈಲ್ :"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:81
+#: application/modules/infrastructure/views/scripts/index/add.phtml:97
+msgid "ಕ್ರ.ಸಂ"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:82
+#: application/modules/infrastructure/views/scripts/index/add.phtml:98
+msgid "ಮೂಲಭೂತ ಸೌಕರ್ಯದ ವಿವರ"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:83
+#: application/modules/infrastructure/views/scripts/index/add.phtml:99
+msgid "ವಿಧ "
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/edit.phtml:141
+msgid "Update"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/add.phtml:37
+msgid "ಕಟುಂಬದ ವಿವರ"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/add.phtml:88
+msgid " ಮೊಬೈಲ್ :"
+msgstr ""
+
+#: application/modules/infrastructure/views/scripts/index/add.phtml:143
+msgid "Submit"
+msgstr ""
+
+#: application/modules/roles/views/scripts/index/rolesdelete.phtml:23
+msgid "Delete Role"
+msgstr ""
+
+#: application/modules/roles/views/scripts/index/rolesdelete.phtml:30
+msgid "Are you sure you want to delete?"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/edit.phtml:23
+msgid "Family member Name"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/edit.phtml:24
+msgid "Health Problem"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/edit.phtml:25
+msgid "Under Treatment"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/edit.phtml:26
+msgid "Clinical Accessibility"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/add.phtml:44
+msgid "Back:"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/addhealth.phtml:113
+msgid "ರೇಶನ್ ಕಾರ್ಡ್:"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/addhealth.phtml:118
+msgid "ಬೀದಿರ್/ರಸ್ತೆ:"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/addhealth.phtml:126
+msgid "ಗ್ರಾಮ:"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/addhealth.phtml:138
+msgid "ಕುಟುಂಬದ ವಿದ:"
+msgstr ""
+
+#: application/modules/health/views/scripts/index/addhealth.phtml:147
+msgid "ಕುಟುಂಬ ಸದಸ್ಯರ ಕ್ರಮ ಸಂಖ್ಯೆ:"
+msgstr ""
+
+#: application/modules/familydefault/views/scripts/index/deletemember.phtml:9
+msgid "Cancel"
+msgstr ""
+
+#: application/modules/savings/views/scripts/index/savingsdelete.phtml:22
+msgid "Delete productoffer"
+msgstr ""
+
+#: application/modules/savings/views/scripts/index/fixedsavings.phtml:114
+#: application/modules/savings/views/scripts/index/persnolsavings.phtml:103
+msgid "Add"
+msgstr ""
+
+#: application/modules/savings/views/scripts/index/savingsview.phtml:6
+msgid "productdetails"
+msgstr ""
+
+#: application/modules/savings/views/scripts/index/index.phtml:39
+msgid "Record not found try again"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:49
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:23
+#: application/modules/loansupplementary/views/scripts/index/index.phtml:40
+#: application/modules/loansupplementary/views/scripts/index/pdftransaction.phtml:23
+msgid "Amount in"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:49
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:23
+#: application/modules/loansupplementary/views/scripts/index/index.phtml:40
+#: application/modules/loansupplementary/views/scripts/index/pdftransaction.phtml:23
+msgid "Rs"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:67
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:41
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:34
+msgid "Credit"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:70
+#: application/modules/transferscroll/views/scripts/index/index.phtml:123
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:44
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:97
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:33
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:105
+msgid "Sl No."
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:91
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:65
+msgid "Total Receipt"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:96
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:70
+msgid "Opening Cash"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:120
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:94
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:106
+msgid "Debit"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:143
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:117
+msgid "Total Payment"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:148
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:122
+msgid "Closing Cash"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:176
+#: application/modules/transferscroll/views/scripts/index/index.phtml:200
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:160
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:171
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:173
+msgid "Search"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:183
+msgid "Hierarchy"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:185
+msgid "From date"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:189
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:164
+msgid "Branch"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:191
+msgid "To date"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/index.phtml:196
+msgid "Group"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:151
+#: application/modules/sbwithdrawal/views/scripts/index/withdrawal.phtml:88
+#: application/modules/sbwithdrawal/views/scripts/index/pdfdisplay.phtml:87
+msgid "PDF"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/pdftransaction.phtml:167
+#: application/modules/loansupplementary/views/scripts/index/index.phtml:27
+msgid "As of date"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:24
+msgid "Credit List"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:81
+msgid "Opening Balance"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:102
+msgid "Debit List"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:153
+msgid "Closing Balance"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:178
+msgid "Date From"
+msgstr ""
+
+#: application/modules/transferscroll/views/scripts/index/viewtransaction.phtml:180
+msgid "Date To"
+msgstr ""
+
+#: application/modules/loansupplementary/views/scripts/index/index.phtml:74
+#: application/modules/loansupplementary/views/scripts/index/pdftransaction.phtml:57
+msgid "To"
+msgstr ""
+
+#: application/modules/loansupplementary/views/scripts/index/index.phtml:153
+#: application/modules/loansupplementary/views/scripts/index/pdftransaction.phtml:135
+msgid "By"
+msgstr ""
+
+#: application/modules/attendanceindex/views/scripts/index/index.phtml:39
+#: application/modules/attendanceindex/views/scripts/index/index.phtml:59
+msgid "Meeting name"
+msgstr ""
+
+#: application/modules/attendanceindex/views/scripts/index/index.phtml:41
+#: application/modules/attendanceindex/views/scripts/index/index.phtml:61
+msgid "Meeting date"
+msgstr ""
+
+#: application/modules/attendanceindex/views/scripts/index/index.phtml:60
+msgid "Meeting Number"
+msgstr ""
+
+#: application/modules/livingassets/views/scripts/index/addasset.phtml:73
+#: application/modules/livingassets/views/scripts/index/editasset.phtml:73
+msgid "ಸ್ವತ್ತು"
+msgstr ""
+
+#: application/modules/livingassets/views/scripts/index/addasset.phtml:74
+#: application/modules/livingassets/views/scripts/index/editasset.phtml:74
+msgid "ಎಷ್ಟು"
+msgstr ""
+
+#: application/modules/livingassets/views/scripts/index/addasset.phtml:75
+#: application/modules/livingassets/views/scripts/index/editasset.phtml:75
+msgid "ಸ್ವತ್ತಿನ ಮೌಲ್ಯ"
+msgstr ""
+
+#: application/modules/livingassets/views/scripts/index/addasset.phtml:76
+#: application/modules/livingassets/views/scripts/index/editasset.phtml:76
+msgid "ಮೌಲ್ಯದ ದಿನಾಂಕ"
+msgstr ""
+
+#: application/modules/livingassets/views/scripts/index/addasset.phtml:77
+msgid "Action"
+msgstr ""
+
+#: application/modules/incomeexpenditure/views/scripts/index/index.phtml:67
+#: application/modules/incomeexpenditure/views/scripts/index/index.phtml:101
+#: application/modules/incomeexpenditure/views/scripts/index/pdftransaction.phtml:67
+#: application/modules/incomeexpenditure/views/scripts/index/pdftransaction.phtml:101
+msgid "Grand Total"
+msgstr ""
+
+#: application/modules/incomeexpenditure/views/scripts/index/index.phtml:131
+#: application/modules/incomeexpenditure/views/scripts/index/pdftransaction.phtml:131
+msgid "Excess of income"
+msgstr ""
+
+#: application/modules/incomeexpenditure/views/scripts/index/index.phtml:131
+#: application/modules/incomeexpenditure/views/scripts/index/pdftransaction.phtml:131
+msgid "over expenditure"
+msgstr ""
+
+#: application/modules/incomeexpenditure/views/scripts/index/index.phtml:135
+#: application/modules/incomeexpenditure/views/scripts/index/pdftransaction.phtml:135
+msgid "Excess of expenditure"
+msgstr ""
+
+#: application/modules/incomeexpenditure/views/scripts/index/index.phtml:135
+#: application/modules/incomeexpenditure/views/scripts/index/pdftransaction.phtml:135
+msgid "over income"
+msgstr ""
+
+#: application/modules/individual/views/scripts/index/addactivities.phtml:43
+#: application/modules/individual/views/scripts/index/editactivities.phtml:58
+msgid "Activities willing to takeup to increase the income"
+msgstr ""
+
+#: application/modules/management/views/scripts/institution/index.phtml:123
+msgid "<font color='RED'>Records not found try again...</font>"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:22
+msgid "Office information"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:31
+msgid "Office type:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:36
+msgid "parent office:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:41
+msgid "Office name:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:46
+msgid "Office short name:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:52
+msgid "District:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:58
+msgid "Taluk:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:64
+msgid "Hobli:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:70
+msgid "Gilla panchayath:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:81
+msgid "Address information"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:93
+msgid "Address line1:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:98
+msgid "Address line2:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:103
+msgid "Address line3:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:108
+msgid "City:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:113
+msgid "State:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:123
+msgid "Pin code:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:133
+msgid "Contact information"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:145
+msgid "Contact person:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:150
+msgid "Telephone number:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:155
+msgid "Mobile number:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/commonview.phtml:160
+msgid "Email ID:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:23
+msgid "Add Individual Information"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:28
+msgid "Member Details :"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:29
+#: application/modules/officecommonview/views/scripts/index/index.phtml:38
+#: application/modules/officecommonview/views/scripts/index/index.phtml:49
+#: application/modules/officecommonview/views/scripts/index/index.phtml:60
+#: application/modules/officecommonview/views/scripts/index/index.phtml:71
+#: application/modules/officecommonview/views/scripts/index/index.phtml:82
+#: application/modules/officecommonview/views/scripts/index/index.phtml:93
+#: application/modules/officecommonview/views/scripts/index/index.phtml:104
+#: application/modules/officecommonview/views/scripts/index/index.phtml:115
+#: application/modules/officecommonview/views/scripts/index/index.phtml:126
+#: application/modules/officecommonview/views/scripts/index/index.phtml:137
+#: application/modules/officecommonview/views/scripts/index/index.phtml:148
+msgid "Click to Add :"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:30
+#: application/modules/officecommonview/views/scripts/index/index.phtml:39
+#: application/modules/officecommonview/views/scripts/index/index.phtml:50
+#: application/modules/officecommonview/views/scripts/index/index.phtml:61
+#: application/modules/officecommonview/views/scripts/index/index.phtml:72
+#: application/modules/officecommonview/views/scripts/index/index.phtml:83
+#: application/modules/officecommonview/views/scripts/index/index.phtml:94
+#: application/modules/officecommonview/views/scripts/index/index.phtml:105
+#: application/modules/officecommonview/views/scripts/index/index.phtml:116
+#: application/modules/officecommonview/views/scripts/index/index.phtml:127
+#: application/modules/officecommonview/views/scripts/index/index.phtml:138
+#: application/modules/officecommonview/views/scripts/index/index.phtml:149
+msgid "ADD"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:37
+msgid "Middle and Last Name:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:48
+msgid "Member address:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:59
+msgid "Family Information:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:70
+msgid "Website and Email:"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:81
+msgid "Member Personal Information"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:92
+msgid "Add Photograph"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:103
+msgid "Asset Details"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:114
+msgid "Family Details"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:125
+msgid "Family Health Details"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:136
+msgid "Family Economic details"
+msgstr ""
+
+#: application/modules/officecommonview/views/scripts/index/index.phtml:147
+msgid "Family Education details"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/addfunder.phtml:29
+#: application/modules/funderdetails/views/scripts/index/editfunder.phtml:26
+msgid "Funder details"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:28
+#: application/modules/funderdetails/views/scripts/index/delete.phtml:29
+msgid "Funder Information"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:31
+msgid "Funders Name:"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:32
+msgid "Funders Type:"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:33
+msgid "Funders Status:"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:33
+msgid "Active"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:33
+msgid "Deactive"
+msgstr ""
+
+#: application/modules/funderdetails/views/scripts/index/deletemember.phtml:37
+#: application/modules/funderdetails/views/scripts/index/delete.phtml:31
+msgid "Do you want to delete"
+msgstr ""
+
+#: application/modules/fundercommonview/views/scripts/index/commonview.phtml:28
+msgid "Funder information"
+msgstr ""
+
+#: application/modules/fundercommonview/views/scripts/index/commonview.phtml:40
+msgid "Funder name:"
+msgstr ""
+
+#: application/modules/fundercommonview/views/scripts/index/commonview.phtml:45
+msgid "Funder type:"
+msgstr ""
+
+#: application/modules/fundercommonview/views/scripts/index/commonview.phtml:50
+msgid "Active:"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:211
+#: application/modules/crop/views/scripts/index/addcrop.phtml:212
+msgid "ಭೂ ಮಾಲೀಕತ್ವ "
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:212
+#: application/modules/crop/views/scripts/index/editcrop.phtml:255
+#: application/modules/crop/views/scripts/index/addcrop.phtml:215
+#: application/modules/crop/views/scripts/index/addcrop.phtml:259
+#: application/modules/agriculture/views/scripts/index/edit.phtml:186
+#: application/modules/agriculture/views/scripts/index/add.phtml:195
+msgid "ಎಕರೆ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:213
+#: application/modules/crop/views/scripts/index/editcrop.phtml:256
+#: application/modules/crop/views/scripts/index/addcrop.phtml:216
+#: application/modules/crop/views/scripts/index/addcrop.phtml:260
+#: application/modules/agriculture/views/scripts/index/edit.phtml:187
+#: application/modules/agriculture/views/scripts/index/add.phtml:196
+msgid "ಗುಂಟೆ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:214
+#: application/modules/crop/views/scripts/index/addcrop.phtml:217
+msgid "ಮಾಲೀಕತ್ವ  ಹೆಸುರು"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:215
+#: application/modules/crop/views/scripts/index/addcrop.phtml:218
+#: application/modules/agriculture/views/scripts/index/edit.phtml:190
+#: application/modules/agriculture/views/scripts/index/add.phtml:198
+msgid "ಸರ್ವೇ ನಂಬರ್"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:216
+#: application/modules/crop/views/scripts/index/addcrop.phtml:219
+msgid "ಗ್ರಾಮ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:233
+msgid "ಮೊತ್ತ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:252
+#: application/modules/crop/views/scripts/index/addcrop.phtml:255
+msgid "* ಜಮೀನಿನ ಕ್ರಮ ಸಂಖ್ಯೆ( ಕೋಷ್ಟಕ 4 ಕೃಷಿ ಜಮೀನಿಗೆ ಸಂಬಂಧಿಸಿದಂತೆ)"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:253
+#: application/modules/crop/views/scripts/index/addcrop.phtml:257
+msgid "* ಬೆಳೆ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:254
+#: application/modules/crop/views/scripts/index/addcrop.phtml:258
+msgid "* ಋತುಮಾನ "
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:257
+#: application/modules/crop/views/scripts/index/addcrop.phtml:261
+msgid "* ಘಟಕ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:258
+#: application/modules/crop/views/scripts/index/addcrop.phtml:262
+msgid "* ಬೆಳೆಯ ಉತ್ಪಾದನಾ ಪ್ರಮಾನ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:259
+#: application/modules/crop/views/scripts/index/addcrop.phtml:263
+msgid "ಮಾರಿದ ಪ್ರಮಾಣ  (ಎ)"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:260
+#: application/modules/crop/views/scripts/index/editcrop.phtml:263
+#: application/modules/crop/views/scripts/index/addcrop.phtml:264
+#: application/modules/crop/views/scripts/index/addcrop.phtml:267
+msgid "ಮಾರಿದ ದಿನಾಂಕ"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:261
+#: application/modules/crop/views/scripts/index/addcrop.phtml:265
+msgid "ಒಂದು ಯೂನಿಟ್ ಗೆ ಸಿಕ್ಕ ಬೆಲೆ(ಬಿ)"
+msgstr ""
+
+#: application/modules/crop/views/scripts/index/editcrop.phtml:262
+#: application/modules/crop/views/scripts/index/addcrop.phtml:266
+msgid "ಮಾರಿದ ಮೌಲ್ಯ(ಎ*ಬಿ)"
+msgstr ""
+
+#: application/modules/agriculture/views/scripts/index/edit.phtml:133
+msgid "ಕುಟುಂಬದ ಕೋಡ:"
+msgstr ""
+
+#: application/modules/agriculture/views/scripts/index/edit.phtml:184
+#: application/modules/agriculture/views/scripts/index/add.phtml:193
+msgid "* ಭೂ ಮಾಲೀಕತ್ವ "
+msgstr ""
+
+#: application/modules/agriculture/views/scripts/index/edit.phtml:185
+#: application/modules/agriculture/views/scripts/index/edit.phtml:188
+#: application/modules/agriculture/views/scripts/index/add.phtml:194
+msgid "* ಮಾಲೀಕತ್ವ "
+msgstr ""
+
+#: application/modules/agriculture/views/scripts/index/edit.phtml:189
+#: application/modules/agriculture/views/scripts/index/add.phtml:197
+msgid "* ಮಾಲೀಕತ್ವ  ವಿಧ"
+msgstr ""
+
+#: application/modules/agriculture/views/scripts/index/edit.phtml:191
+#: application/modules/agriculture/views/scripts/index/add.phtml:199
+msgid "* ಗ್ರಾಮ"
+msgstr ""
+
+#: application/modules/loans/views/scripts/index/index.phtml:8
+#: application/modules/loans/views/scripts/index/index.phtml:31
+msgid "Product name"
+msgstr ""
+
+#: application/modules/loans/views/scripts/index/index.phtml:10
+msgid "Product short name"
+msgstr ""
+
+#: application/modules/loans/views/scripts/index/index.phtml:15
+msgid "Minimum Frequency"
+msgstr ""
+
+#: application/modules/loans/views/scripts/index/index.phtml:17
+#: application/modules/loans/views/scripts/index/index.phtml:34
+msgid "Maximum loan amount"
+msgstr ""
+
+#: application/modules/loans/views/scripts/index/index.phtml:32
+msgid "Product shortname"
+msgstr ""
+
+#: application/modules/loans/views/scripts/index/index.phtml:33
+msgid "Minimum frequency"
+msgstr ""
+
+#: application/modules/fundings/views/scripts/index/deletefundings.phtml:30
+msgid "Do you want to delete?"
+msgstr ""
+
+#: application/modules/fundings/views/scripts/index/index.phtml:38
+msgid "Fundings name"
+msgstr ""
+
+#: application/modules/fundings/views/scripts/index/index.phtml:40
+msgid "Fundings period from"
+msgstr ""
+
+#: application/modules/fundings/views/scripts/index/index.phtml:45
+msgid "Fundings amount"
+msgstr ""
+
+#: application/modules/fundings/views/scripts/index/index.phtml:47
+msgid "Fundings period to"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:24
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:24
+msgid "Group Information"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:46
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:46
+msgid "Attendance Information"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:64
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:64
+msgid "Member details"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:65
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:65
+msgid "Savings"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:72
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:72
+msgid "Members"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:73
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:73
+msgid "UID"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:74
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:74
+msgid "Attn."
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:75
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:75
+msgid "Late"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:76
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:76
+msgid "Absent"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:77
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:77
+msgid "Balance"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:78
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:78
+msgid "pay"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:79
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:79
+msgid "Outstanding"
+msgstr ""
+
+#: application/modules/meetingbookreport/views/scripts/index/pdfmeeting.phtml:80
+#: application/modules/meetingbookreport/views/scripts/index/index.phtml:80
+msgid "Due"
+msgstr ""
+
+#: application/modules/expense/views/scripts/index/edit.phtml:98
+#: application/modules/expense/views/scripts/index/add.phtml:82
+msgid "ಖರ್ಚು"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/address.phtml:27
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:68
+msgid "District"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/address.phtml:31
+msgid "Taluk"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/address.phtml:35
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:70
+msgid "Hobli"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/address.phtml:39
+msgid "Grama panchayath"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeadd.phtml:17
+msgid "NewOffice"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeadd.phtml:23
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:55
+msgid "Office type"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeadd.phtml:27
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:58
+msgid "Parent office"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeadd.phtml:30
+msgid "Name"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeadd.phtml:33
+msgid "Short name"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/deleteoffice.phtml:22
+msgid "Member Information"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/deleteoffice.phtml:24
+msgid "Are you sure you want to delete Office ?"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:60
+msgid "Office name"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:63
+msgid "Office short name"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:69
+msgid "Talue"
+msgstr ""
+
+#: application/modules/officedefault/views/scripts/index/officeedit.phtml:71
+msgid "Gilla panchayath"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:72
+msgid "Meeting Information"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:92
+msgid "Meeting time"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:98
+msgid "Absentees"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:103
+msgid "Late Comer"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:109
+msgid "Discussion"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:113
+msgid "Decision"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:117
+msgid "Note"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:121
+msgid "Resolution"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:145
+msgid "Pay"
+msgstr ""
+
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:146
+#: application/modules/meetingbookcommonview/views/scripts/index/index.phtml:149
+msgid "Paid"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceadd.phtml:137
+msgid "Meeting held date"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceadd.phtml:139
+msgid "Meeting held Time"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceadd.phtml:148
+msgid "Discussions and Savings"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceadd.phtml:199
+#: application/modules/meetingbook/views/scripts/index/attendanceedit.phtml:163
+msgid "Notes"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceedit.phtml:65
+msgid "Edit Attendance"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceedit.phtml:85
+msgid "Meeting Time"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceedit.phtml:99
+msgid "Discussion List"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendanceedit.phtml:100
+msgid "Decision List"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendancedelete.phtml:21
+msgid "Delete penalty"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/attendancedelete.phtml:33
+msgid "Delete"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/fetchmembers.phtml:20
+#: application/modules/meetingbook/views/scripts/index/fetchmembersedit.phtml:23
+msgid "Attendance Details"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/fetchmembers.phtml:27
+#: application/modules/meetingbook/views/scripts/index/fetchmembersedit.phtml:30
+msgid "No."
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/fetchmembers.phtml:29
+#: application/modules/meetingbook/views/scripts/index/fetchmembersedit.phtml:32
+msgid "Absent/Late"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/fetchmembers.phtml:30
+msgid "Fee"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/fetchmembers.phtml:33
+#: application/modules/meetingbook/views/scripts/index/fetchmembersedit.phtml:36
+msgid "To be pay"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/index.phtml:23
+msgid "test"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/index.phtml:47
+msgid "Meeting Name"
+msgstr ""
+
+#: application/modules/meetingbook/views/scripts/index/index.phtml:48
+msgid "Member's Name"
+msgstr ""
+
+#: application/modules/address/views/scripts/index/edit.phtml:22
+#: application/modules/address/views/scripts/index/add.phtml:22
+msgid "Address details"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:56
+msgid "ಕುಟುಂಬದ ವಿಧ:"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:64
+msgid "ಮೊಬೈಲ್:"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:81
+msgid "* Name"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:82
+msgid "ಹೆಸರು"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:83
+msgid "Alias"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:84
+msgid "ಅಲಿಯಾಸ್"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:85
+msgid "ತಂದೆಯ ಹೆಸರು"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:86
+msgid "ಯು ಎಯೇ ಡೀ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:87
+msgid "ಪ್ರ್ಧಧಾನ ಸಂಪಾದಕ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:88
+msgid "ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:89
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:93
+msgid "* ಲಿಂಗ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:90
+msgid "* ಜನ್ಮ ದಿನಾಂಕ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:91
+msgid "ವಯಸ್ಸು"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:92
+msgid "* ಸಂಬಂಧ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:94
+msgid "* ವೈವಾಹಿಕ ಸ್ಥಿತಿ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:95
+msgid "ಪೆನ್ಷನ್"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:96
+msgid "* ವಿಧ್ಯಾಬ್ಯಾಸ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:97
+msgid "* ಉಧ್ಯೋಗ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:98
+msgid "ವೃತ್ತಿ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:99
+msgid "* ಸಂಘ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:100
+msgid "* ಸಂಘದ ಹೆಸರು"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:101
+msgid "* ಖಾತೆ ವಿದ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:102
+msgid "* ಬ್ಯಾಂಕ್/ ಅಂಚೆ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:103
+msgid "* ಶಾಖೆ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:104
+msgid "* ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:105
+msgid "ದೂರವಾಣಿ"
+msgstr ""
+
+#: application/modules/familymembers/views/scripts/index/addfamily.phtml:106
+msgid "* ಬ್ಲಡ್ ಗ್ರೂಪ್"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:4
+msgid "Group details"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:10
+msgid "Group name"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:14
+msgid "Group code"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:18
+msgid "Village"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:22
+msgid "No. of members"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:31
+msgid "Sl no"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:32
+msgid "Member name"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:33
+msgid "Age"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:34
+msgid "Education"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:35
+msgid "Member code"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:36
+msgid "Caste"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:37
+msgid "land"
+msgstr ""
+
+#: application/modules/groupprofile/views/scripts/index/index.phtml:38
+msgid "Occupation"
+msgstr ""
+
+#: application/modules/groupgrading/views/scripts/index/newprocess.phtml:116
+msgid "Group member"
+msgstr ""
+
+#: application/modules/groupgrading/views/scripts/index/newprocess.phtml:118
+msgid "Purpose"
+msgstr ""
+
+#: application/modules/groupgrading/views/scripts/index/newprocess.phtml:120
+msgid "Required with in the period"
+msgstr ""
+
+#: application/modules/nonlivingassets/views/scripts/index/addasset.phtml:75
+#: application/modules/nonlivingassets/views/scripts/index/editasset.phtml:74
+msgid "ಎಷ್ಟು "
+msgstr ""
+
+#: application/modules/nonlivingassets/views/scripts/index/editasset.phtml:75
+msgid "ಸ್ವತ್ತಿನ ಮೌಲ್ಯ "
+msgstr ""
+
+#: application/modules/office/views/scripts/index/search.phtml:30
+#: application/modules/office/views/scripts/index/index.phtml:11
+msgid "Office Short Name:"
+msgstr ""
+
+#: application/modules/office/views/scripts/index/search.phtml:36
+#: application/modules/office/views/scripts/index/index.phtml:17
+msgid "Office Name:"
+msgstr ""
+
+#: application/modules/office/views/scripts/index/search.phtml:52
+#: application/modules/office/views/scripts/index/index.phtml:32
+msgid "S.No"
+msgstr ""
+
+#: application/modules/office/views/scripts/index/search.phtml:54
+#: application/modules/office/views/scripts/index/index.phtml:34
+msgid "Short Name"
+msgstr ""
+
+#: application/modules/office/views/scripts/index/index.phtml:36
+msgid "Parent Office"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:43
+#: application/modules/altertransaction/views/scripts/index/index.phtml:129
+msgid "Voucher number"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:47
+#: application/modules/altertransaction/views/scripts/index/index.phtml:137
+msgid "Transaction type"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:52
+#: application/modules/altertransaction/views/scripts/index/index.phtml:142
+msgid "Account number"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:59
+msgid "Transaction date"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:64
+msgid "Transaction mode "
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:150
+msgid "date"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:155
+msgid "Transaction mode"
+msgstr ""
+
+#: application/modules/altertransaction/views/scripts/index/index.phtml:168
+msgid "Transaction remarks"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:86
+#: application/modules/loandetails/views/scripts/index/add.phtml:85
+msgid "ಮೂಲ"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:87
+#: application/modules/loandetails/views/scripts/index/add.phtml:86
+msgid "ಕುಟುಂಬದ ಸದಸ್ಯ"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:88
+#: application/modules/loandetails/views/scripts/index/add.phtml:87
+msgid "ವಾರ್ಷೀಕ ಬಡ್ಡಿ  %"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:89
+#: application/modules/loandetails/views/scripts/index/add.phtml:88
+msgid "ಸಾಲದ ಮೊತ್ತ"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:90
+#: application/modules/loandetails/views/scripts/index/add.phtml:89
+msgid "ಬಾಕಿಯಿರುವ ಸಾಲ"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:91
+#: application/modules/loandetails/views/scripts/index/add.phtml:90
+msgid "ಕಾರಣ"
+msgstr ""
+
+#: application/modules/loandetails/views/scripts/index/edit.phtml:92
+#: application/modules/loandetails/views/scripts/index/add.phtml:91
+msgid "ಉಳಿತಾಯ.. ಉಳಿತಾಯ./ಠೆವಣಿ ಮೊತ್ತ"
+msgstr ""
+
+#: application/modules/depositsummary/views/scripts/index/chart.phtml:89
+#: application/modules/depositsummary/views/scripts/index/chart.phtml:95
+msgid "Deposit Details"
+msgstr ""
+
+#: application/modules/depositsummary/views/scripts/index/chart.phtml:103
+msgid "Type of savings"
+msgstr ""
+
+#: application/modules/depositsummary/views/scripts/index/chart.phtml:104
+msgid "Number of accounts"
+msgstr ""
+
+#: application/modules/depositsummary/views/scripts/index/index.phtml:41
+#: application/modules/depositsummary/views/scripts/index/pdftransaction.phtml:45
+msgid "Branch Name"
+msgstr ""
+
+#: application/modules/user/views/scripts/index/index.phtml:38
+msgid "Test Ourbank"
+msgstr ""
+
+#: application/modules/attendancecommonview/views/scripts/index/index.phtml:48
+msgid "Absentees name"
+msgstr ""
+
+#: application/modules/family/views/scripts/index/index.phtml:27
+msgid "ಫ್ಯಾಮಿಲಿ ಕೋಡ್   :"
+msgstr ""
+
+#: application/modules/family/views/scripts/index/index.phtml:31
+msgid "ಹೌಸೆ  ನಂಬರ್  :"
+msgstr ""
+
+#: application/modules/family/views/scripts/index/index.phtml:32
+msgid "ಗ್ರಾಮದ   ಹೆಸರು  :"
+msgstr ""
+
+#: application/modules/family/views/scripts/index/index.phtml:52
+msgid "Family code"
+msgstr ""
+
+#: application/modules/family/views/scripts/index/index.phtml:54
+msgid "House number"
+msgstr ""
+
+#: application/modules/ledgerreport/views/scripts/index/index.phtml:69
+msgid "Sub ledger"
+msgstr ""
+
+#: application/modules/ledgerreport/views/scripts/index/pdftransaction.phtml:20
+msgid "As of "
+msgstr ""
+
+#: application/modules/ledgerreport/views/scripts/index/pdftransaction.phtml:21
+msgid "Amount in "
+msgstr ""
+
+#: application/modules/funder/views/scripts/index/index.phtml:35
+msgid "Funder code:"
+msgstr ""
+
+#: application/modules/funder/views/scripts/index/index.phtml:65
+msgid "Funder name"
+msgstr ""
+
+#: application/modules/funder/views/scripts/index/index.phtml:66
+msgid "Funder type"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:4
+msgid "1. ಕಟುಂಬದ ವಿವರ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:19
+msgid "ಸುಙೀವನ ನಂ:"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:36
+msgid "ಕೂಟ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:47
+msgid "ತಾಲ್ಲೂಕು:"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:53
+msgid "ಪಿನ್:"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:76
+msgid "Caste:"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:81
+msgid "ಅಲ್ಪಸಂಖ್ಯಾತರು:"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:135
+msgid "2. ಕುಟುಂಬ ಸದಸ್ಯರ ವಿವರ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:157
+msgid "Breadwinner"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:158
+msgid "Head"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:159
+msgid "ಲಿಂಗ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:160
+msgid "ಜನ್ಮ ದಿನಾಂಕ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:162
+msgid "ಸಂಬಂದ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:163
+msgid "ವೈವಾಹಿಕ ಸ್ಥಿತಿ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:165
+msgid "ವಿದ್ಯಾಬ್ಯಾಸ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:166
+msgid "ಉದ್ಯೊಗ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:168
+msgid "ಸಂಘದ ಹೆಸರು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:169
+msgid "ಸಂಘ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:170
+msgid "ಖಾತೆ ವಿದ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:171
+msgid "ಬ್ಯಾಂಕ್/ ಅಂಚೆ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:172
+msgid "ಶಾಖೆ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:173
+msgid "ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:175
+msgid "ಬಲಡ ಗೃಪ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:228
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:254
+msgid "Activities details"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:283
+msgid "3. ಮೂಲಭೂತ ಸೌಕರ್ಯದ ವಿವರ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:335
+msgid "4. ಕೃಷಿ ಜಮೀನು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:353
+msgid "ಕಂದಾಯ ಗ್ರಾಮ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:390
+msgid "5. ಬೆಳೆ ಪ್ರಮಾಣ ಹಾಗೂ ಬೆಳೆಗೆ ಸಿಕ್ಕ ಬೆಲೆ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:415
+msgid "ಬೆಳೆ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:418
+msgid "ಘಟಕ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:419
+msgid "ಬೆಳೆಯ ಉತ್ಪಾದನಾ ಪ್ರಮಾಣ "
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:420
+msgid "ಮಾರಿದ ಪ್ರಮಾನ (ಎ)"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:459
+msgid "6. ಜಾನುವಾರು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:477
+msgid "ಮೌಲ್ಯ "
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:502
+msgid "7. ಇತರೇ ಸ್ವತ್ತಿನ ಮಾಲೀಕತ್ವ "
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:521
+msgid "ಮೌಲ್ಯ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:547
+msgid "8. ಕುಟುಂಬದ ಸಾಲ ಮತ್ತು ಉಳಿತಾಯ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:565
+msgid "ವಾರ್ಷೀಕ ಬಡ್ಡಿ %"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:608
+msgid "9. ಆರೊಗ್ಯ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:621
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:666
+msgid "ಸದಸ್ಯರ ಹೆಸರು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:622
+msgid "ದುರಭ್ಯಾಸ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:623
+msgid "ಅಂಗವಿಕಲತೆ ಇದ್ದರೆ ಇತ್ಯಾದಿ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:624
+msgid "ಖಾಯಿಲೆ ಹೆಸರು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:653
+msgid "10. ಕುಟುಂಬದ ಸದಸ್ಯರಿಗೆ ಬೇಕಾದ ಸೇವೆಗಳು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:667
+msgid "ಸೇವೆಗಳು"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:688
+msgid "11. ಕುಟುಂಬದ ವಾರ್ಷಿಕ ಆದಯ "
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:701
+msgid "ಆದಾಯದ ಮೂಲ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:724
+msgid "12. ಕುಟುಂಬದ ವಾರ್ಷಿಕ ವೆಚ್ಹ"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:762
+msgid "Service required by the family"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:774
+msgid "Service details"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:775
+msgid "To whom"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:776
+msgid "Own fund"
+msgstr ""
+
+#: application/modules/familycommonview/views/scripts/index/commonview.phtml:777
+msgid "Recuired loan/help"
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:57
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:7
+msgid "Bank name "
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:58
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:8
+msgid "Loan officer "
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:60
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:10
+msgid "* Amount in "
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:63
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:13
+msgid "Account Number"
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:65
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:15
+msgid "Number of overdue"
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:66
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:16
+msgid "Age(in days)"
+msgstr ""
+
+#: application/modules/overduelist/views/scripts/index/index.phtml:67
+#: application/modules/overduelist/views/scripts/index/pdftransaction.phtml:17
+msgid "OverDue Amount"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:22
+msgid "Member information"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:31
+msgid "Bank:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:36
+msgid "Name:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:41
+msgid "Gender:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:46
+msgid "Date of birth:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:51
+msgid "Mobile:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:99
+msgid "Country:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:127
+msgid "Father:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:132
+msgid "Mother:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:137
+msgid "Spouse:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:142
+msgid "Children:"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:147
+msgid "Other information"
+msgstr ""
+
+#: application/modules/holidaycommonview/views/scripts/index/commonview.phtml:179
+msgid "Mobile number"
+msgstr ""
+
+#: application/modules/attendance/views/scripts/index/attendancedelete.phtml:21
+msgid "Delete attendance"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:73
+#: application/modules/familyform/views/scripts/index/index.phtml:101
+msgid "Name of Member"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:74
+#: application/modules/familyform/views/scripts/index/index.phtml:102
+msgid "Relation to HOF"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:75
+#: application/modules/familyform/views/scripts/index/index.phtml:103
+msgid "Gender"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:77
+msgid "Entitlements"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:78
+#: application/modules/familyform/views/scripts/index/index.phtml:105
+msgid "Education Level"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:81
+#: application/modules/familyform/views/scripts/index/index.phtml:108
+msgid "Bank Account No"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:82
+#: application/modules/familyform/views/scripts/index/index.phtml:109
+msgid "Mobile Phone No"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:106
+#: application/modules/familyform/views/scripts/index/index.phtml:132
+msgid "Details of Tenant"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:108
+#: application/modules/familyform/views/scripts/index/index.phtml:134
+msgid "Survey No"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:109
+#: application/modules/familyform/views/scripts/index/index.phtml:135
+msgid "Acre"
+msgstr ""
+
+#: application/modules/familyform/views/scripts/index/pdfgeneration.phtml:110
+#: application/modules/familyform/views/scripts/index/index.phtml:136
+msgid "Value"
+msgstr ""
+

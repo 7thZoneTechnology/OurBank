@@ -172,12 +172,33 @@ class App_Model_Adm extends Zend_Db_Table
                 where $param2 ='".$value."'";
                 $result = $db->fetchOne($sql);
         return $result;
+    } 
+
+// modified by albert on aug 8 2:41 pm
+// function used to get particular record from a table ex., id,name with out condition
+    public function getdropdownRecord($table,$param1)
+    {
+     $db = $this->getAdapter();
+        $sql = "select $param1 from $table ";
+                $result = $db->fetchAll($sql);
+        return $result;
+    } 
+
+// modified by albert on aug 8 2:41 pm
+// function used to get particular record from a table ex., id,name with condition
+
+    public function getdropdownRecordc($table,$param1,$where,$condition)
+    {
+     $db = $this->getAdapter();
+        $sql = "select $param1 from $table where $where = $condition";
+                $result = $db->fetchAll($sql);
+        return $result;
     }
     public function getRecord($table,$parameter,$value)
     { 
         $select = $this->select()
-                                ->setIntegrityCheck(false)  
-                                ->join(array('a' => $table),array('id'))
+                    ->setIntegrityCheck(false)  
+                    ->join(array('a' => $table),array('id'))
                 ->where($parameter.'=?',$value);
         $result = $this->fetchAll($select);
         return $result->toArray();
