@@ -32,12 +32,10 @@ function display (yy)  {
 
 
 <?php if(count($this->result)) { ?>
-
-<fieldset>
-    <legend>Transaction Details</legend>
 	<div class="cont-rgt-data">
          <form action="<?php echo $this->baseUrl();?>/altertransaction/alter" method="POST">
             <TABLE id="hor-minimalist-s" >
+			<th>Transaction Details</th><th></th>
                 <tr>
 
                 <?php foreach($this->result  as $tran) : ?>
@@ -104,7 +102,7 @@ function display (yy)  {
             				<input type = "hidden" name = "vNum" value ="<?php echo $ledger['vNum'];?>">
         				<TR>
             				<TD><label class="mand">Transaction Remarks</label>
-								<textarea value="" name="transaction_remarks"></textarea></td>
+								<textarea value="" name="transaction_remarks"></textarea></td><td></td>
         				</TR>
         				<tr><TD><input name="submit" type="submit"  value="Save"></TD>
 							<TD align="right"><a href="<?php echo $this->baseUrl();?>/altertransaction"><input type="submit" name="back" id="back" value="<?php echo $this->translate('Back'); ?>"></TD>
@@ -114,7 +112,6 @@ function display (yy)  {
 			<?php endforeach; ?>
 	</div>
 			<?php }  ?>
-		</fieldset>
 	</div>
 
 
