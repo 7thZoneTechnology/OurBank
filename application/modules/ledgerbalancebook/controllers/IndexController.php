@@ -35,8 +35,8 @@ class Ledgerbalancebook_IndexController extends Zend_Controller_Action
 	}
 	}
     }
-	
-    public function reportdisplayAction() 
+
+    public function reportdisplayAction()
     {
 	$this->_helper->layout->disableLayout();
 	$file1 = $this->_request->getParam('file'); 

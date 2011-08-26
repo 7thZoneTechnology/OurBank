@@ -46,17 +46,13 @@ class Loanledger_IndexController extends Zend_Controller_Action
     {
 	$this->view->form = $loansearch = new Loandetailsg_Form_Search();
 
-    }
-
-    public function loandetailsAction() 
-    {
         $path = $this->view->baseUrl();
 
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	        $formData = $this->_request->getPost(); 
 
-        if ($this->view->form->isValid($formData)) {  
-
+        if ($this->view->form->isValid($formData)) { echo '<pre>';print_r($formData);
+/*
  		$hierarchy=$this->_request->getParam('hierarchy');
 	 	$branch=$this->_request->getParam('branch');
  		$group=$this->_request->getParam('group');
@@ -69,11 +65,11 @@ class Loanledger_IndexController extends Zend_Controller_Action
 	$this->view->details = $this->view->model->searchaccounts($acc);
 	$this->view->tran = $this->view->model->loanInstalments($this->_request->getParam('accNum'));
 	$this->view->paid = $this->view->model->paid($this->_request->getParam('accNum'));
-	$this->view->unpaid = $this->view->model->unpaid($this->_request->getParam('accNum'));
+	$this->view->unpaid = $this->view->model->unpaid($this->_request->getParam('accNum'));*/
     }
    }
  }
-	public function reportdisplayAction() 
+	public function reportdisplayAction()
     {
         $app = $this->view->baseUrl();
         $word=explode('/',$app);

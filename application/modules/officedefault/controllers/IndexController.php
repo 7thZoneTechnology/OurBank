@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-/*
- *  create an office default for add, edit, delete and suboffice actions
- */
 class Officedefault_IndexController extends Zend_Controller_Action{
 
     public function init() {

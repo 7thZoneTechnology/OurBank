@@ -15,6 +15,7 @@ class Loandetailsg_Form_Search extends ZendX_JQuery_Form {
         		$branch->setRegisterInArrayValidator(false);
 
         		$group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+        		$group->setRegisterInArrayValidator(false);
 
                 $num = $formfield->field('Text','accNum','','','mand','accNum',true,'','','','','',0,'');
 
