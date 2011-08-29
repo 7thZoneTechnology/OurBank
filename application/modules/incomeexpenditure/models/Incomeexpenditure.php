@@ -36,7 +36,7 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
 
                 $db = $this->getAdapter();
                 $sql = "select sum(A.credit)-sum(A.debit) as credit from ourbank_Income A 
-                            where A.tranasction_id in 
+                            where A.transaction_id in 
                             (select B.transaction_id from ourbank_transaction B 
                              where B.transaction_date <='".$date."' and 
                              B.recordstatus_id in (3,1)) and  A.recordstatus_id in (3,1) ";
@@ -65,11 +65,11 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
         public function incomedetails1($date) {
 
                 $db = $this->getAdapter();
-                $sql = "select header from ourbank_glsubcode where id in (select glsubcode_id_to from ourbank_transaction where transaction_id in (select A.tranasction_id as credit from ourbank_Income A 
-                            where A.tranasction_id in 
+                $sql = "select header from ourbank_glsubcode where id in (select glsubcode_id_to from ourbank_transaction where transaction_id in (select A.transaction_id as credit from ourbank_Income A 
+                            where A.transaction_id in 
                             (select B.transaction_id from ourbank_transaction B 
                              where B.transaction_date <='".$date."' and 
-                             B.recordstatus_id in (3,1)) and  A.recordstatus_id in (3,1) group by A.tranasction_id) and subledger_id=1)";
+                             B.recordstatus_id in (3,1)) and  A.recordstatus_id in (3,1) group by A.transaction_id) and subledger_id=1)";
                 return $db->fetchAll($sql);
 
 	} 
@@ -90,7 +90,7 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
         return $result->toArray();*/
                         $db = $this->getAdapter();
                 $sql = "select sum(A.credit)-sum(A.debit) as credit from ourbank_Expenditure A 
-                            where A.tranasction_id in 
+                            where A.transaction_id in 
                             (select B.transaction_id from ourbank_transaction B 
                              where B.transaction_date <='".$date."' and 
                              B.recordstatus_id in (3,1)) and  A.recordstatus_id in (3,1) ";
@@ -101,11 +101,11 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
         public function expendituredetails1($date) {
 
                 $db = $this->getAdapter();
-                $sql = "select header from ourbank_glsubcode where id in (select glsubcode_id_to from ourbank_transaction where transaction_id in (select A.tranasction_id as credit from ourbank_Expenditure A 
-                            where A.tranasction_id in 
+                $sql = "select header from ourbank_glsubcode where id in (select glsubcode_id_to from ourbank_transaction where transaction_id in (select A.transaction_id as credit from ourbank_Expenditure A 
+                            where A.transaction_id in 
                             (select B.transaction_id from ourbank_transaction B 
                              where B.transaction_date <='".$date."' and 
-                             B.recordstatus_id in (3,1)) and  A.recordstatus_id in (3,1) group by A.tranasction_id) and subledger_id=2)";
+                             B.recordstatus_id in (3,1)) and  A.recordstatus_id in (3,1) group by A.transaction_id) and subledger_id=2)";
                 return $db->fetchAll($sql);
         }
 

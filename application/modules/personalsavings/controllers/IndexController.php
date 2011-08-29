@@ -23,7 +23,7 @@ class Personalsavings_IndexController extends Zend_Controller_Action
 
      function init()
      { 
-      	$this->view->pageTitle = "Personal Savings";
+      	$this->view->pageTitle = "Latest Savings Details";
         $this->view->title = "Reports";
         $this->view->type = "generalFields";
         $storage = new Zend_Auth_Storage_Session();

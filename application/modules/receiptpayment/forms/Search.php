@@ -19,14 +19,26 @@
 */
 class Receiptpayment_Form_Search extends ZendX_JQuery_Form 
 {
-    public function init() 
-    {
+  public function __construct($path) 
+		{
+			parent::__construct();
+			//$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
+			$formfield = new App_Form_Field ();
         $date1 = new ZendX_JQuery_Form_Element_DatePicker('field1');
         $date1->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
               $date1->setAttrib('autocomplete','off');
         $date2 = new ZendX_JQuery_Form_Element_DatePicker('field2');
         $date2->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
                $date2->setAttrib('autocomplete','off');
-        $this->addElements(array($date1,$date2));
+ $hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
+        $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
+        $hierarchy->setRegisterInArrayValidator(false);
+        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
+        $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
+        $branch->setRegisterInArrayValidator(false);
+        $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+
+
+        $this->addElements(array($date1,$date2,$hierarchy,$branch,$group));
    }
 }

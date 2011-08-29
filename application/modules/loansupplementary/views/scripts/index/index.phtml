@@ -17,20 +17,73 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
+?>
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+
+<?php
+
+
 if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
-<fieldset>
     <legend> <?php echo $this->translate('search'); ?> </legend>
         <div class="cont-rgt-data">
-            <table id="hor-minimalist-b">
                 <form action="<?php echo $this->baseUrl();?>/loansupplementary/index" method="POST">
+            <table id="hor-minimalist-b">
+
                     <TR>
-                            <TD ><?php echo $this->translate('As of date'); ?></td>
+							<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+   <TD ><?php echo $this->translate('As of date'); ?></td>
                             <TD ><?php echo $this->form->datefrom;?></TD>
+ 						
+</tr><tr>
+
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+						<td></td>
+<td></td>
+</tr>
+<tr id="hide">
+							<TD><?php echo $this->translate('Group'); ?></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
+<td></td>
+<td></td>
+
+</tr>
+
+
+
+
+                         
                             <TD ><input type="submit" name="Search" value="Search"/></TD>
                     </TR>
 
-                </form>
-            </table>
+            </table>                </form>
+
         </div>
 
 <?php } ?>

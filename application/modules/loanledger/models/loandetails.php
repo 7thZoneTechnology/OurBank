@@ -2,44 +2,74 @@
 class Loanledger_Model_loandetails extends Zend_Db_Table {
 	protected $_name = 'ourbank_accounts';
 
-    public function searchaccounts($acc) {
+    public function searchaccounts($acc) 
+	{
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+       $sql="SELECT 
+                A.name as name,
+                A.familycode as code,
+                B.name as officename,
+                B.id as officeid,
+                D.account_number as number,
+                D.id as accId,
+                E.name as loanname,
+                E.glsubcode_id as gl,
+                F.loan_amount as amount,
+                F.loan_installments as installments,
+                DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
+                F.loan_interest as interest,
+                F.interesttype_id as interesttype,
+                F.savingsaccount_id as sAccId
+                FROM
+                ourbank_familymember A,
+                ourbank_office B,
+                ourbank_accounts D,
+                ourbank_productsoffer E,
+                ourbank_loanaccounts F
+                WHERE 
+                (A.name = '$acc' OR D.account_number = '$acc') AND
+                D.membertype_id = substr(A.familycode,5,1) AND
+                D.member_id = A.id AND
+                B.id=A.village_id AND
+                D.product_id = E.id AND
+                F.account_id = D.id
+                UNION
+                SELECT 
+                A.name as name,
+                A.groupcode as code,
+                B.name as officename,
+                B.id as officeid,
+                D.account_number as number,
+                D.id as accId,
+                E.name as loanname,
+                E.glsubcode_id as gl,
+                F.loan_amount as amount,
+                F.loan_installments as installments,
+                DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
+                F.loan_interest as interest,
+                F.interesttype_id as interesttype,
+                F.savingsaccount_id as sAccId
+                FROM
+                ourbank_group A,
+                ourbank_office B,
+                ourbank_accounts D,
+                ourbank_productsoffer E,
+                ourbank_loanaccounts F
+                WHERE 
+                (A.name = '$acc' OR D.account_number = '$acc') AND
+                D.membertype_id = substr(A.groupcode,5,1) AND
+                D.member_id = A.id AND
+                B.id=A.village_id AND
+                D.product_id = E.id AND
+                F.account_id = D.id";
+				//echo $sql;
+        $result = $db->fetchAll($sql,array($acc));
+        return $result;
+    }
 
-        $select = $this->select()
-                       	->setIntegrityCheck(false)
-
-             ->from(array('a' => 'ourbank_familymember'),array('a.village_id','a.familycode as code','a.name'))
-
-             ->join(array('d' => 'ourbank_accounts'),'d.member_id = a.id',array('d.id as accId','d.account_number as number'))
-				  ->where('d.account_number = "'.$acc.'"')
-
-             ->join(array('b' => 'ourbank_office'),'b.id = a.village_id',array('b.id as officeid','b.name as officename'))
-
-             ->join(array('e' => 'ourbank_productsoffer'),'d.product_id = e.id',array('e.name as loanname','e.glsubcode_id as gl'))
-
-             ->join(array('f' => 'ourbank_loanaccounts'),'f.account_id = d.id',array('f.loan_amount as amount','f.loan_installments as installments','f.loansanctioned_date as sanctioned','f.loan_interest as interest','f.interesttype_id as interesttype','f.savingsaccount_id as sAccId'));
-
-		return $this->fetchAll($select);
-		}
-// 		$select = $this->select()
-//                        	->setIntegrityCheck(false)
-//              ->from(array('a' => 'ourbank_group'),array('a.name','a.groupcode as code'))
-// 
-//              ->join(array('b' => 'ourbank_office'),'b.id=a.village_id',array('b.id as officeid','b.name as officename'))
-// 
-//              ->join(array('d' => 'ourbank_accounts'),'d.member_id = a.id',array('d.id as accId','d.account_number as number'))
-// 				  ->where('d.account_number = "'.$acc.'"')
-// 
-//           ->join(array('e' => 'ourbank_productsoffer'),'d.product_id = e.id',array('e.name as loanname','e.glsubcode_id as gl'))
-// 
-//              ->join(array('f' => 'ourbank_loanaccounts'),'f.account_id = d.id',array('f.loan_amount as amount','f.loansanctioned_date as sanctioned','f.loan_interest as interest','f.savingsaccount_id as sAccId','f.interesttype_id as interesttype'));
-// 
-// 
-//   die($select->__toString($select));
-// 		return $this->fetchAll($select);
-
-    public function loanInstalments($accNum)
+    public function loanInstalments($accNum) 
     {
-
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT 

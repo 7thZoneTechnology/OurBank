@@ -39,7 +39,7 @@ class Ledgerbalancebook_Form_Search extends ZendX_JQuery_Form {
 				$group->setRegisterInArrayValidator(false);
 
                 $datefrom = $formfield->field('Text','date1','','','mand','From date',true,'','','','','',0,'');
-				$datefrom = new Zend_Form_Element_Text('date1', array('autocomplete' => 'off')); 
+				$datefrom ->setAttrib('autocomplete' ,'off'); 
 
 				$this->addElements(array($hierarchy,$branch,$group,$datefrom));
 		}

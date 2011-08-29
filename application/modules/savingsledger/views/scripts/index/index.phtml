@@ -16,56 +16,24 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<script type="text/javascript">
-function getlevels(hierarchy,path) {
-	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
-		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
-	}
-}
-function getgroups(branch,path) {
-	if(branch) {
-		targeturl=path+"/cashscroll/index/group?branch="+branch;
-		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
-	}
-}
-$(document).ready(function() {
-$('#show').change(function(){
-var va = $('#hierarchy').val();
-if(va != 4){
-$("#hide").hide();
-}else {
-$("#hide").show();
-
-}
-});
-});
-
-</script>
 <fieldset>
     <legend> search </legend>
 
-            <table width="100%" class="fieldsets">
+            <table >
                 <form action="<?php echo $this->baseUrl();?>/savingsledger/index" method="POST">
-
-  					<tr>	<TD><label class="mand"><?php echo $this->translate('Hierarchy'); ?></label></TD>
-                            <TD id="show"><?php echo $this->form->hierarchy;?></TD>
-                            <TD ><label class="mand"><?php echo $this->translate('Date from'); ?></label></TD>
+                    <TR>
+                            <TD align="center"><br>Date from :</TD>
                             <TD ><?php echo $this->form->datefrom;?></TD>
-  					</tr>
-					<tr>    <TD><label class="mand"><?php echo $this->translate('Branch'); ?></label></td>
-                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
-                            <TD ><label class="mand"><?php echo $this->translate('Date to'); ?></label></TD>
+                            <TD ><br>Date to :</TD>
                             <TD ><?php echo $this->form->dateto;?></TD>
-					</tr>
-					<tr id="hide"><TD><label class="mand"><?php echo $this->translate('Group'); ?></label></td>
-                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
-					</tr>
-					<tr>   <TD><label class="mand"><?php echo $this->translate('Account Number'); ?></label></TD>
-                            <TD><?php echo $this->form->acc;?></TD></tr>
+                    </TR>
+                    <TR>
+                            <TD align="center"><br>Account number :</TD>
+                            <TD ><?php echo $this->form->acc;?></TD>
+                            <TD ></TD>
 
-
-                        <tr><TD><?php echo $this->form->Search;?></TD></tr>
+                    </TR>
+                        <tr><TD align="center"><?php echo $this->form->Search;?></TD></tr>
                 </form>
             </table>
 

@@ -16,6 +16,34 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+
+
 <?php
 if((!$this->income) && (!$this->expenditure)){ ?>
 <form action="<?php echo $this->baseUrl();?>/incomeexpenditure/index" method="POST">
@@ -24,8 +52,31 @@ if((!$this->income) && (!$this->expenditure)){ ?>
                 <TABLE id="hor-minimalist-b">
 				<th colspan="4">Search</th>
                    <tr>
+  <TR>
+							<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+  
                             <TD><br><?php echo $this->translate('As of date :'); ?></td>
                             <td><?php echo $this->form->datefrom;?></td>
+ 						
+</tr><tr>
+
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+						<td></td>
+<td></td>
+</tr>
+<tr id="hide">
+							<TD><?php echo $this->translate('Group'); ?></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
+<td></td>
+<td></td>
+
+</tr>
+
+
+
+
                             <td><input type="submit" name="Search" value="Search"/></td>
                    </tr>
         	</TABLE>

@@ -39,18 +39,30 @@ class Sbcashscroll_IndexController extends Zend_Controller_Action
        foreach($loginname as $loginname) {
            $this->view->username=$loginname['username']; // get the user name
        }
- 
+  $this->view->adm = new App_Model_Adm();
+
     }
 
     function indexAction() 
     {
-        $searchForm = new Sbcashscroll_Form_Search();
+        $path = $this->view->baseUrl();
+
+
+        $searchForm = new Sbcashscroll_Form_Search($path);
         $this->view->form = $searchForm;
-        
+         $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();
             $date = $this->_request->getParam('field1'); 
 $mysqldate = $this->view->dateconvertor->mysqlformat($date);
+ $hierarchy = $this->_request->getParam('hierarchy'); 
+                $branch = $this->_request->getParam('branch'); 
+                $group = $this->_request->getParam('group'); 
+
+
             $formData = $this->_request->getPost();
 //             if ($searchForm->isValid($formData)) {
                 $this->view->savings = 10;
@@ -59,8 +71,15 @@ $mysqldate = $this->view->dateconvertor->mysqlformat($date);
                 $transaction = new Sbcashscroll_Model_Sbcashscroll();
 
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $transaction->totalSavingsCredit($mysqldate);
-                $this->view->savingsDebit = $transaction->totalSavingsDebit($mysqldate);
+if($group==''){
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($mysqldate,$hierarchy,$branch,$branch);
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($mysqldate,$hierarchy,$branch,$branch);
+}else{
+ $this->view->savingsCredit = $transaction->totalSavingsCreditg($mysqldate,$hierarchy,$branch,$branch);
+                $this->view->savingsDebit = $transaction->totalSavingsDebitg($mysqldate,$hierarchy,$branch,$branch);
+
+
+}
 // Zend_Debug::dump($this->view->savingsCredit);
                 $this->view->field1 = $date;
 

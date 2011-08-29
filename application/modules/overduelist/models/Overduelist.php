@@ -23,7 +23,7 @@
 class Overduelist_Model_Overduelist extends Zend_Db_Table { 
     protected $_name = 'ourbank_accounts';
 
-    public function search($date,$bank,$hierarchy)
+    public function search($date,$bank,$officer)
     {
         $select = $this->select()
                        	->setIntegrityCheck(false)
@@ -35,40 +35,18 @@ class Overduelist_Model_Overduelist extends Zend_Db_Table {
                          	 ->where('c.membertype_id=1')
 
 						->join(array('b' =>'ourbank_loanaccounts'),'b.account_id=c.id',array('b.account_id'))
-                         	 ->where('b.created_by = 1')
 
 						->join(array('f' =>'ourbank_familymember'),'f.id=c.member_id',array('f.name'))
+								->where('f.village_id = "'.$bank.'"')
+
+						->join(array('e' =>'ourbank_office'),'e.id=f.village_id',array('f.name'))
+
 							 ->group('a.account_id');
 
+// die($select->__toString($select));
             return $this->fetchAll($select);
-
-// //         $selectB = $this->select()
-// //                        	->setIntegrityCheck(false)
-// // 
-// // 						->from(array('a' => 'ourbank_installmentdetails'),array('a.id','a.account_id','a.installment_id AS totalinstallments','a.installment_amount AS overdue','a.installment_date','a.installment_status'))
-// //                          	 ->where('a.installment_date = "'.$date.'"' AND 'a.installment_status = 5')
-// // 
-// // 						->join(array('c'=>'ourbank_accounts'),'c.id=a.account_id',array('c.account_number'))
-// //                          	 ->where('c.membertype_id=2 or c.membertype_id=3')
-// // 
-// // 						->join(array('b' =>'ourbank_loanaccounts'),'b.account_id=c.id',array('b.account_id'))
-// // 
-// // // 						->join(array('f' =>'ourbank_groupmembers'),'f.id=c.member_id',array('f.id'))
-// // // 						->join(array('g' =>'ourbank_group'),'g.id=f.group_id',array('g.name'))
-// // // 						->join(array('h' =>'ourbank_familymember'),'c.member_id=h.id',array('h.id'));
-// // 
-// // 							 ->group('a.account_id');
-// // 
-// // 						$db = $this->getAdapter();
-// //        					$select = $db->select()
-// //        					->union(array($selectA, $selectB));
-// // 
-// //        die($select->__toString($select));
-		}
-
-
 //  $this->db = Zend_Db_Table::getDefaultAdapter();
-// 
+//      
 //             $sql = "SELECT
 //                     count(a.installment_id) AS `totalinstallments`,
 //                     Sum(a.installment_amount) AS `overdue`,
@@ -114,10 +92,11 @@ class Overduelist_Model_Overduelist extends Zend_Db_Table {
 //                     (e.id like '%' '$bank' '%') 
 //                     GROUP BY 
 //                     `a`.`account_id`";
-// //              echo $sql;
+//              //echo $sql;
 //             $result = $this->db->fetchAll($sql);
 //             return $result;
-// }
+     }
+
         public function office($hiearchyid) {
             $select = $this->select()
                     ->setIntegrityCheck(false)
@@ -131,7 +110,6 @@ class Overduelist_Model_Overduelist extends Zend_Db_Table {
         {
          $db = $this->getAdapter();
         $sql = "SELECT id as hierarchyid FROM `ourbank_officehierarchy` where Hierarchy_level in (SELECT max(Hierarchy_level) FROM `ourbank_officehierarchy`)";
-
         $result = $db->fetchAll($sql);
         return $result;
         }

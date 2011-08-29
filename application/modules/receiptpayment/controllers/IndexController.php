@@ -45,8 +45,19 @@ class Receiptpayment_IndexController extends Zend_Controller_Action
 
     public function indexAction() 
     {
-        $searchForm = new Receiptpayment_Form_Search();
+        $path = $this->view->baseUrl();
+
+
+
+        $searchForm = new Receiptpayment_Form_Search($path);
         $this->view->form = $searchForm;
+  $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
+
+
+
 	$this->view->title = "Receipts and payments";
 	 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formData = $this->_request->getPost();

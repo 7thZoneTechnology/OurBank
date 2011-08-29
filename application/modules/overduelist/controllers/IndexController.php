@@ -21,87 +21,87 @@ class Overduelist_IndexController extends Zend_Controller_Action
 {
     function init() 
     { 
-    $this->view->pageTitle=$this->view->translate('Overdue List');
+        
 	$sessionName = new Zend_Session_Namespace('ourbank');
     $this->view->type = "generalFields";
 	$storage = new Zend_Auth_Storage_Session();
-    $data = $storage->read();
+       $data = $storage->read();
        if(!$data){
-           $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
        }
+
        $sessionName = new Zend_Session_Namespace('ourbank');
        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
        $login=new App_Model_Users();
        $loginname=$login->username($userid);
-       	  foreach($loginname as $loginname) {
+       foreach($loginname as $loginname) {
            $this->view->username=$loginname['username']; // get the user name
        }
-       $this->view->adm = new App_Model_Adm();
-       $this->view->dateconvertor=new App_Model_dateConvertor();
+ 
+        $this->view->adm = new App_Model_Adm();
+        $this->view->dateconvertor=new App_Model_dateConvertor();
     }
 
     function indexAction()
     {
-        $path=$this->view->baseUrl();
-     	$this->view->form = $searchForm = new Overduelist_Form_Search($path);
-		$overduemodel = new Overduelist_Model_Overduelist();
+        $app=$this->view->baseUrl();
+     	$searchForm = new Overduelist_Form_Search($app);
+       	$this->view->form = $searchForm;
+	$overduemodel = new Overduelist_Model_Overduelist();
 
         $hierarchy = $overduemodel->getofficehierarchy();
         foreach($hierarchy as $hiearchyids){
-        		$hiearchyid = $hiearchyids['hierarchyid'];
+        $hiearchyid = $hiearchyids['hierarchyid'];
         }
-	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-		foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
-//         $institution = $overduemodel->office($hiearchyid);
-// 		foreach($institution as $institution) 
-// 		{	$searchForm->bank_id->addMultiOption($institution['village_id'],$institution['villagename']); }
+        $institution = $overduemodel->office($hiearchyid);
 
-// 		$loanofficer = $this->view->adm->viewRecord("ourbank_user","id","DESC");
-// 		foreach($loanofficer as $loanofficer)
-//         {   $searchForm->loanofficer ->addMultiOption($loanofficer['id'],$loanofficer['name']);		}
+	foreach($institution as $institution) 
+        {
+	   $searchForm->bank_id->addMultiOption($institution['village_id'],$institution['villagename']);
+	}
+        $loanofficer = $this->view->adm->viewRecord("ourbank_user","id","DESC");
+	foreach($loanofficer as $loanofficer)
+        {
+	   $searchForm->loanofficer ->addMultiOption($loanofficer['id'],$loanofficer['name']);
+	}
 
-     	if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-            $formData = $this->_request->getPost();
-
-            if ($searchForm->isValid($formData))  {
-
- 			$hierarchy=$this->_request->getParam('hierarchy');
-
-            $this->view->bankid =$bank = $this->_request->getParam('bank_id');
-            if($bank){
-            			$bankname=$overduemodel->getbanknames($bank);
-            			$this->view->bankname=$bankname[0]['name'];   }
-
+     	if ($this->_request->isPost() && $this->_request->getPost('Search')) 
+        {
+            $formData = $this->_request->getPost(); //print_r($formData);
+            if ($searchForm->isValid($formData)) 
+            {
             $this->view->loanofficerid=$officer = $this->_request->getParam('loanofficer');
             if($officer){
-	           			$officename=$overduemodel->getofficername($officer);
-               			$this->view->officername=$officename[0]['name'];  }
-
-//             $this->view->normaldate=$this->_request->getParam('datefrom');
-            $this->view->asofdate=$date = $this->view->dateconvertor->phpmysqlformat($this->view->dat = $this->_request->getParam('datefrom'));
-
-
-            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$bank,$hierarchy);
+            $officename=$overduemodel->getofficername($officer);
+            $this->view->officername=$officename[0]['name'];
+            }
+            $this->view->bankid=$bank = $this->_request->getParam('bank_id');
+            if($bank){
+            $bankname=$overduemodel->getbanknames($bank);
+            $this->view->bankname=$bankname[0]['name'];
+            }
+            $this->view->normaldate=$this->_request->getParam('datefrom');
+            $this->view->asofdate=$date = $this->view->dateconvertor->phpmysqlformat($this->_request->getParam('datefrom'));
+            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$bank,$officer,$hierarchy);
             }
         }
     }
 
-//     public function getloanofficerAction() 
-//     { 
-// 	$this->_helper->layout->disableLayout();
-//         $bankid=$this->_request->getParam('bankid');
-//         $app=$this->view->baseUrl();
-//      	$this->view->form = new Overduelist_Form_Search($app);
-// 
-//        	$overduemodel=new Overduelist_Model_Overduelist();
-//         $loanofficer=$overduemodel->getloanofficer($bankid);
-// 	foreach($loanofficer as $officer) 
-//         {
-// 	   $this->view->form->loanofficer->addMultiOption($officer['id'],$officer['name']);
-//         }
-//     }
+    public function getloanofficerAction() 
+    { 
+	$this->_helper->layout->disableLayout();
+        $bankid=$this->_request->getParam('bankid');
+        $app=$this->view->baseUrl();
+     	$this->view->form = new Overduelist_Form_Search($app);
+
+       	$overduemodel=new Overduelist_Model_Overduelist();
+        $loanofficer=$overduemodel->getloanofficer($bankid);
+	foreach($loanofficer as $officer) 
+        {
+	   $this->view->form->loanofficer->addMultiOption($officer['id'],$officer['name']);
+        }
+    }
 
      public function reportdisplayAction() {
         $app = $this->view->baseUrl();

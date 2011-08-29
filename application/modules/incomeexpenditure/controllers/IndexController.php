@@ -40,24 +40,44 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
         {
             $this->view->username=$loginname['username']; // get the user name
         }
+ $this->view->adm = new App_Model_Adm();
+
+
     }
 
     function indexAction()
     {
-        $searchForm = new Incomeexpenditure_Form_Search();
+        $path = $this->view->baseUrl();
+
+
+        $searchForm = new Incomeexpenditure_Form_Search($path);
         $this->view->form = $searchForm;
         $incomeexpenditure = new Incomeexpenditure_Model_Incomeexpenditure();
+   $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
+
+
+
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 
             $formData = $this->_request->getPost();
             if ($searchForm->isValid($formData)) {
                 $fromdate = $this->_request->getParam('datefrom');
+                $hierarchy = $this->_request->getParam('hierarchy');
+                $branch = $this->_request->getParam('branch');
+                $group = $this->_request->getParam('group');
+
                 $this->view->asofdate = $fromdate;
                 $dateconvertor = new App_Model_dateConvertor();
                 $Date = $dateconvertor->mysqlformat($fromdate);
                 //$Date = $fromdate;
 
                 $this->view->fdate = $Date;
+
+
+if($group==''){
                 $this->view->income=$incomeexpenditure->incomedetails($Date); 
 // echo '<pre>'; print_r($this->view->income);
                 $this->view->incomeheader=$incomeexpenditure->incomedetails1($Date);
@@ -67,7 +87,21 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
 
                 $this->view->cashcredit= $incomeexpenditure->cashdetailscredit($Date);
                 $this->view->cashdebit= $incomeexpenditure->cashdetailsdebit($Date);
+}else{
 
+ $this->view->income=$incomeexpenditure->incomedetailsg($Date); 
+// echo '<pre>'; print_r($this->view->income);
+                $this->view->incomeheader=$incomeexpenditure->incomedetails1g($Date);
+// echo '<pre>'; print_r($this->view->incomeheader);
+                $this->view->expenditure=$incomeexpenditure->expendituredetailsg($Date);
+                $this->view->expenditureheader=$incomeexpenditure->expendituredetails1g($Date);
+
+                $this->view->cashcredit= $incomeexpenditure->cashdetailscreditg($Date);
+                $this->view->cashdebit= $incomeexpenditure->cashdetailsdebitg($Date);
+
+
+
+}
                 if((!$this->view->income) && (!$this->view->expenditure)) {
                     echo "<font color='red'><b> Record not found</b> </font>";
                 }

@@ -23,6 +23,31 @@ function Getsearch(id,path) {
 		$.ajax({ url: targeturl, success: function(data){ $("#optiondiv").html(data) }});
 	}
 }
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+
 </script>
 
 <?php 
@@ -197,10 +222,27 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/dcb/index/reportdisplay/fi
 	            <table id="hor-minimalist-b">
 				<th colspan="4">Search</th>
                     <TR>
-                        <TD>Date From</TD>
+                        
+                        	<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+  <TD>Date From</TD>
                         <TD><?php echo $this->form->datefrom;?></TD>
-                        <TD>Search for</TD>
-                        <TD><?php echo $this->form->option; ?></TD>
+ 						
+</tr><tr>
+
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+						<td></td>
+<td></td>
+</tr>
+<tr id="hide">
+							<TD><?php echo $this->translate('Group'); ?></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
+<td></td>
+<td></td>
+
+</tr>
+
                     </TR>
                     <tr id="optiondiv">
                     </tr>

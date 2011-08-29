@@ -61,6 +61,8 @@ $this->view-> date1 =$fromDate;
 $this->view-> date2 =$toDate;
 
  		$branch=$this->_request->getParam('branch');
+ 		$hierarchy=$this->_request->getParam('hierarchy');
+
  		$group=$this->_request->getParam('group');
 			$officename=$transaction->getOffice($branch);
 foreach ($officename as $officename) {
@@ -68,9 +70,9 @@ $this->view-> name =$officename['name'];
 }
 if ($group=="") {
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch,$hierarchy);
 		//     $officename=$transaction-> officename($branchid);
-                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch);
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch,$hierarchy );
 }else {
   				$this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
 		//      $officename=$transaction-> officename($branchid);

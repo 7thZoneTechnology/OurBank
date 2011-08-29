@@ -77,7 +77,7 @@ $this->view-> date2 =$toDate;
  		$group=$this->_request->getParam('group');
 			$officename=$villageoffice->getOffice($branch);
 foreach ($officename as $officename) {
-$this->view->name =$officename['name'];
+$this->view-> name =$officename['name'];
 }
                 $transaction = new Cashscroll_Model_Cashscroll();
 if ($group=="") {

@@ -294,13 +294,16 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 ourbank_productsloan C,
                 ourbank_office F,
                 ourbank_group E,
+                ourbank_groupmembers I,
                 ourbank_loanprocess G
                 WHERE
                 E.groupcode = $code AND 
                 B.id = $productId AND
                 F.id = E.village_id AND
                 B.id = C.productsoffer_id AND
-                E.id = G.member_id AND
+                E.id = I.group_id AND
+                I.member_id = G.member_id AND
+                (G.membertype=3 OR G.membertype=2) AND
                 G.status = 5";
 //        echo $sql;
         $result = $db->fetchAll($sql,array($productId,$code));

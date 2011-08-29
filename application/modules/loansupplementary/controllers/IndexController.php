@@ -37,30 +37,57 @@ class Loansupplementary_IndexController extends Zend_Controller_Action
        foreach($loginname as $loginname) {
            $this->view->username=$loginname['username']; // get the user name
        }
- 
+ $this->view->adm = new App_Model_Adm();
+
     }
 
     function indexAction() {
-        $searchForm = new Loansupplementary_Form_Search();
+
+        $path = $this->view->baseUrl();
+
+        $searchForm = new Loansupplementary_Form_Search($path);
         $this->view->form = $searchForm;
+
+      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
+
+
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-            $formData = $this->_request->getPost();
-            if ($searchForm->isValid($formData)) {
+    
                 $Dispdate = $this->_request->getParam('datefrom'); 
+                $hierarchy = $this->_request->getParam('hierarchy'); 
+                $branch = $this->_request->getParam('branch'); 
+                $group = $this->_request->getParam('group'); 
+
  	        $this->view->field1 = $Dispdate;
 	        $dateconvertor = new App_Model_dateConvertor();
                 $Date = $dateconvertor->mysqlformat($Dispdate);
                 $this->view->loan = 11;
-                $transaction = new Loansupplementary_Model_Loansupplementary();
-// //              //Loan Account Credit and Debit
-                $loanCredit = $transaction->totalloanCredit($Date);
+
+$transaction= new Loansupplementary_Model_Loansupplementary();
+if($group==''){
+
+  $loanCredit = $transaction->totalloanCredit($Date,$hierarchy,$branch,$group);
 		$this->view->loanCredit=$loanCredit;
 // echo "<pre>";
 // var_dump($loanCredit);
-	        $loanDebit = $transaction->totalloanDebit($Date);
+	        $loanDebit = $transaction->totalloanDebit($Date,$hierarchy,$branch,$group);
 	        $this->view->loanDedit=$loanDebit;
+
+}else{
+
+$loanCredit = $transaction->totalloanCreditg($Date,$hierarchy,$branch,$group);
+		$this->view->loanCredit=$loanCredit;
+// echo "<pre>";
+// var_dump($loanCredit);
+	        $loanDebit = $transaction->totalloanDebitg($Date,$hierarchy,$branch,$group);
+	        $this->view->loanDedit=$loanDebit;
+}
+
             }
-         }
+         
     }
 
     function reportdisplayAction() {

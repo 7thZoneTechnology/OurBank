@@ -5,30 +5,60 @@ protected $_name = 'ourbank_transaction';
 
     public function generalLedger($date,$hierarchy,$branch) 
     {
+		switch($hierarchy){
+			case '4': {
         $select = $this->select()
                        	->setIntegrityCheck(false)
-		->from(array('a' =>'ourbank_Assets'),array('(sum(a.credit)+sum(a.debit)) as liabilitiesBalance'))
+		->from(array('a' =>'ourbank_Liabilities'),array('(sum(a.credit)-sum(a.debit)) as liabilitiesBalance'))
 
 		->join(array('d' =>'ourbank_glsubcode'),'a.glsubcode_id_to=d.id',array('d.id as glsubcode_id','d.header as subheader','d.glsubcode as glsubcode'))
 
 		->join(array('b' =>'ourbank_glcode'),'b.id=d.glcode_id')
-			 ->where('b.ledgertype_id = 4')
+// 			 ->where('b.ledgertype_id = 4')
 
         ->join(array('f' => 'ourbank_office'),'f.id=a.office_id',array('id as vid'))
              ->where('f.id = "'.$branch.'"')
 
 		->join(array('c' =>'ourbank_familymember'),'f.id=c.village_id ',array('c.id as memberid'))
-
+/*
 		->join(array('e' =>'ourbank_transaction'),'a.transaction_id=e.transaction_id')
-			 ->where('e.transaction_date = "'.$date.'"')
+			 ->where('e.transaction_date = "'.$date.'"')*/
 			->group('d.id');
 
-// //  die($select->__toString($select));
+//     die($select->__toString($select));
 
 		return $this->fetchAll($select);
+		}break;
 
+		case '3': {
+
+        $select = $this->select()
+                       	->setIntegrityCheck(false)
+		->from(array('a' =>'ourbank_Liabilities'),array('(sum(a.credit)-sum(a.debit)) as liabilitiesBalance'))
+
+		->join(array('d' =>'ourbank_glsubcode'),'a.glsubcode_id_to=d.id',array('d.id as glsubcode_id','d.header as subheader','d.glsubcode as glsubcode'))
+
+		->join(array('b' =>'ourbank_glcode'),'b.id=d.glcode_id')
+// 			 ->where('b.ledgertype_id = 4')
+
+        ->join(array('f' => 'ourbank_office'),'f.id=a.office_id',array('id as vid'))
+             ->where('f.id = "'.$branch.'"')
+
+		->join(array('c' =>'ourbank_group'),'f.id=c.village_id ',array('c.id as memberid'))
+
+
+/*
+		->join(array('e' =>'ourbank_transaction'),'a.transaction_id=e.transaction_id')
+			 ->where('e.transaction_date = "'.$date.'"')*/
+			->group('d.id');
+
+//    die($select->__toString($select));
+
+		return $this->fetchAll($select);
+		}break;
+		}
     }
-    public function generalLedgerAssets($fromDate,$hierarchy,$branch) 
+    public function generalLedgerAssets($date,$hierarchy,$branch) 
     {
 		switch($hierarchy){
 			case '4': {
@@ -50,8 +80,8 @@ protected $_name = 'ourbank_transaction';
 						->join(array('C'=>'ourbank_accounts'),'b.id = C.member_id')
                          	 ->where('C.status_id =3' OR 'C.status_id =1')
 
-						->join(array('d' =>'ourbank_transaction'),'g.transaction_id = d.transaction_id')
-							 ->where('d.transaction_date = "'.$fromDate.'"')
+// 						->join(array('d' =>'ourbank_transaction'),'g.transaction_id = d.transaction_id')
+// 							 ->where('d.transaction_date = "'.$fromDate.'"')
 
 						->group('f.id');
 
@@ -73,18 +103,17 @@ protected $_name = 'ourbank_transaction';
                         ->join(array('A' => 'ourbank_office'),'A.id=g.office_id',array('id as vid'))
                              ->where('A.parentoffice_id = "'.$branch.'"')
 
-						->join(array('b' =>'ourbank_familymember'),'A.id=b.village_id',array('b.id'))
+						->join(array('b' =>'ourbank_group'),'A.id=b.village_id',array('b.id'))
 
 						->join(array('C'=>'ourbank_accounts'),'b.id = C.member_id')
                          	 ->where('C.status_id =3' OR 'C.status_id =1')
 
-						->join(array('d' =>'ourbank_transaction'),'g.transaction_id = d.transaction_id')
-							 ->where('d.transaction_date = "'.$fromDate.'"')
+// 						->join(array('d' =>'ourbank_transaction'),'g.transaction_id = d.transaction_id')
+// 							 ->where('d.transaction_date = "'.$fromDate.'"')
 						->group('f.id');
 
-//                      die($select->__toString($select));
+// //                      die($select->__toString($select));
         			return $this->fetchAll($select);} break;
 					}
 		}
-
-}
+	}

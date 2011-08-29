@@ -1,21 +1,32 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
+<?php 
+?>
+
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
 
 <?php if($this->savings) { ?><h5 align="right">From <?php echo "<font color='#039'>".$this->field1."</font>"; ?> </h5><h5 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h5>  <br>
 <h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5>
@@ -148,10 +159,33 @@ onClick="window.open('<?php echo $this->baseUrl();?>/receiptpayment/index/report
 			<th colspan="4">Search</th>
                 <form action="<?php echo $this->baseUrl();?>/receiptpayment" method="POST">
                     <TR>
+<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+
+
                             <TD ><br>Date From</TD>
                             <TD ><?php echo $this->form->field1;?></TD>
-                            <TD ><br>Date To</TD>
+                           
+  
+ 						
+</tr><tr>
+
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+						 <TD ><br>Date To</TD>
                             <TD ><?php echo $this->form->field2;?></TD>
+							
+</tr>
+<tr id="hide">
+							<TD><?php echo $this->translate('Group'); ?></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
+<td></td>
+<td></td>
+
+</tr>
+
+
+
                     </TR>
 				<TD><input type="submit" name="Search" id="Submit" value="Search"></TD></tr>
             </table>

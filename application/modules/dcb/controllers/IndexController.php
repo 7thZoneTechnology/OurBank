@@ -44,14 +44,18 @@ class Dcb_IndexController extends Zend_Controller_Action
     }
         //view action
 	public function indexAction()
-	{       $app=$this->view->baseUrl();
+	{       $path=$this->view->baseUrl();
 		$this->view->pageTitle = "Demand collections & balance";
 		$this->view->tilte = "Reports";
-		$searchForm = new Dcb_Form_Search($app);
+		$searchForm = new Dcb_Form_Search($path);
 		$this->view->form = $searchForm;
                 $option=array('1'=>'Account number','2'=>'Group','3'=>'Village');
 	        $searchForm->option->addMultiOptions($option);
                 $Loandemand = new Dcb_Model_Dcb();
+  $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+			foreach($officename as $officename){
+				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
+			}
 
 		if ($this->_request->isPost() && $this->_request->getPost('Search'))
                 {

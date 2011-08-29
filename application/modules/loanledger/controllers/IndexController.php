@@ -22,12 +22,9 @@ class Loanledger_IndexController extends Zend_Controller_Action
     public function init() 
     {
     	$this->view->title = "Reports";
-		$this->view->pageTitle = "Loans ledger";
+	$this->view->pageTitle = "Loans ledger";
         $this->view->type = "generalFields";
-
-		$this->view->form = $loansearch = new Loandetailsg_Form_Search();
-		$this->view->model = $loanmodel = new Loanledger_Model_loandetails();
-
+        $this->view->loanModel = new Loanledger_Model_loandetails();
         $this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();
 		$globalsession = new App_Model_Users();
@@ -35,7 +32,7 @@ class Loanledger_IndexController extends Zend_Controller_Action
                 $this->view->createdby = $this->view->globalvalue[0]['id'];
                 $this->view->username = $this->view->globalvalue[0]['username'];
 	
-		$storage = new Zend_Auth_Storage_Session();
+	$storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
             $this->_redirect('index/login');
@@ -44,32 +41,21 @@ class Loanledger_IndexController extends Zend_Controller_Action
 
     public function indexAction() 
     {
-	$this->view->form = $loansearch = new Loandetailsg_Form_Search();
-
-        $path = $this->view->baseUrl();
-
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-	        $formData = $this->_request->getPost(); 
-
-        if ($this->view->form->isValid($formData)) { echo '<pre>';print_r($formData);
-/*
- 		$hierarchy=$this->_request->getParam('hierarchy');
-	 	$branch=$this->_request->getParam('branch');
- 		$group=$this->_request->getParam('group');
-		$this->view->accNum= $acc =$this->_request->getParam('accNum');
-
-// 	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-// 			  foreach($officename as $officename)
-// 				{	  $loansearch->hierarchy->addMultiOption($officename['id'],$officename['type']);}
-
-	$this->view->details = $this->view->model->searchaccounts($acc);
-	$this->view->tran = $this->view->model->loanInstalments($this->_request->getParam('accNum'));
-	$this->view->paid = $this->view->model->paid($this->_request->getParam('accNum'));
-	$this->view->unpaid = $this->view->model->unpaid($this->_request->getParam('accNum'));*/
+	$loansearch = new Loandetailsg_Form_Search();
+	$this->view->form = $loansearch;
+// 	$loantransactions = new Loandisbursmentg_Model_loan();
     }
-   }
- }
-	public function reportdisplayAction()
+
+    public function loandetailsAction() 
+    {
+	$this->view->accNum=$this->_request->getParam('accNum');
+	$this->view->details = $this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
+	$this->view->tran = $this->view->loanModel->loanInstalments($this->_request->getParam('accNum'));
+	$this->view->paid = $this->view->loanModel->paid($this->_request->getParam('accNum'));
+	$this->view->unpaid = $this->view->loanModel->unpaid($this->_request->getParam('accNum'));
+    }
+
+	public function reportdisplayAction() 
     {
         $app = $this->view->baseUrl();
         $word=explode('/',$app);
@@ -162,9 +148,8 @@ class Loanledger_IndexController extends Zend_Controller_Action
 
 	foreach($this->view->paid as $paid) {
 	$y1 = $y1-25;
-		$page->drawText('Paid',320, $y1);
+		$page->drawText('Paid'.$paid->paidAmt,320, $y1);
 		$page->drawText($paid->paidCount,390, $y1);
-		$page->drawText($paid->paidAmt,420, $y1);
 		
 	} foreach ($this->view->unpaid as $unpaid){
 	$y1 = $y1-20;

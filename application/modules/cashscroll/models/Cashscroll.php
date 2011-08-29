@@ -60,60 +60,89 @@ class Cashscroll_Model_Cashscroll extends Zend_Db_Table
 					case '3':
 					{  $select = $this->select()
                        	->setIntegrityCheck(false)
-                        ->from(array('A' => 'ourbank_office'),array('id as vid'))
+                        ->from(array('A' => 'ourbank_office'),array('id as vid','name as koota'))
                          ->where('A.parentoffice_id = "'.$branch.'"')
-						->join(array('b' =>'ourbank_familymember'),'A.id = b.village_id',array('b.id as memberid'))
-						 ->join(array('C'=>'ourbank_accounts'),'b.id = C.member_id')
-                       ->where('C.status_id =3 OR C.status_id =1')
-  						->from(array('d' => 'ourbank_transaction'))
+						->join(array('b' =>'ourbank_family'),'A.id = b.rev_village_id',array('b.id as familyid'))
+						->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_accounts'),'c.id = C.member_id',array('id as accountid','account_number'))
+                     	->where('C.status_id =3 OR C.status_id =1')
+						->join(array('d'=>'ourbank_transaction'),'C.id = d.account_id')
                         ->where('d.amount_to_bank >0')
                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
   						->where('d.paymenttype_id <= 4')
-                         ->where('d.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ');
-                 //  die($select->__toString($select));
+                         ->where('d.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ')
+
+;
+            //  die($select->__toString($select));
         return $this->fetchAll($select);}break;
 
 case '4':
-					{  $select = $this->select()
-                       	->setIntegrityCheck(false)
+					{ 
                       
-						->join(array('b' =>'ourbank_familymember'),array('b.id as memberid'))
-                         ->where('b.village_id = "'.$branch.'"')
-
-						 ->join(array('C'=>'ourbank_accounts'),'b.id = C.member_id')
-                       ->where('C.status_id =3 OR C.status_id =1')
-  						->from(array('d' => 'ourbank_transaction'))
+					 $select = $this->select()
+                       	->setIntegrityCheck(false)
+						->join(array('b' =>'ourbank_family'),array('b.id'))
+                         ->where('b.rev_village_id = "'.$branch.'"')
+						->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_accounts'),'c.id = C.member_id',array('id as accountid','account_number'))
+                     	->where('C.status_id =3 OR C.status_id =1')
+						->join(array('d'=>'ourbank_transaction'),'C.id = d.account_id')
                         ->where('d.amount_to_bank >0')
                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
   						->where('d.paymenttype_id <= 4')
                          ->where('d.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ');
-                //   die($select->__toString($select));
+                 // die($select->__toString($select));
         return $this->fetchAll($select);}break;
 }
 }
     
 
 	//debit 
-//     public function totalSavingsDebit($fromDate,$toDate,$branch,$hierarchy) {
-//        if ($hierarchy==3){
-// 
-//         $select = $this->select()
-//                        	->setIntegrityCheck(false)
-//                         ->from(array('A' => 'ourbank_office'),array('id as vid'))
-//                          ->where('A.parentoffice_id = "'.$branch.'"')
-// 						->join(array('b' =>'ourbank_familymember'),'A.id = b.village_id',array('b.id as memberid'))
-// 						 ->join(array('C'=>'ourbank_accounts'),'b.id = C.member_id')
-//                        ->where('C.status_id =3 OR C.status_id =1')
-//   						->from(array('d' => 'ourbank_transaction'))
-//                         ->where('d.amount_from_bank >0')
-//                         ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
-//   						->where('d.paymenttype_id <= 4')
-//                          ->where('d.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ');
-//                 //    die($select->__toString($select));
-//         return $this->fetchAll($select);
-// 
-// }
-//     }
+   public function totalSavingsDebit($fromDate,$toDate,$branch,$hierarchy) 
+
+  {
+
+				switch($hierarchy){
+					case '3':
+					{  $select = $this->select()
+                       	->setIntegrityCheck(false)
+                        ->from(array('A' => 'ourbank_office'),array('id as vid','name as koota'))
+                         ->where('A.parentoffice_id = "'.$branch.'"')
+						->join(array('b' =>'ourbank_family'),'A.id = b.rev_village_id',array('b.id as familyid'))
+						->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_accounts'),'c.id = C.member_id',array('id as accountid','account_number'))
+                     	->where('C.status_id =3 OR C.status_id =1')
+						->join(array('d'=>'ourbank_transaction'),'C.id = d.account_id')
+                        ->where('d.amount_from_bank >0')
+                        ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
+  						->where('d.paymenttype_id <= 4')
+                         ->where('d.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ')
+
+;
+            //     die($select->__toString($select));
+        return $this->fetchAll($select);}break;
+
+case '4':
+					{ 
+                      
+					 $select = $this->select()
+                       	->setIntegrityCheck(false)
+						->join(array('b' =>'ourbank_family'),array('b.id'))
+                         ->where('b.rev_village_id = "'.$branch.'"')
+						->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_accounts'),'c.id = C.member_id',array('id as accountid','account_number'))
+                     	->where('C.status_id =3 OR C.status_id =1')
+						->join(array('d'=>'ourbank_transaction'),'C.id = d.account_id')
+                        ->where('d.amount_from_bank >0')
+                        ->where('d.recordstatus_id = 3 OR d.recordstatus_id = 1')
+  						->where('d.paymenttype_id <= 4')
+                         ->where('d.transaction_date BETWEEN "'.$fromDate.'" AND "'.$toDate.'" ');
+                 // die($select->__toString($select));
+        return $this->fetchAll($select);}break;
+}
+}
+    
+
 public function totalSavingsCreditg($fromDate,$toDate,$group) 
     {
         				$select = $this->select()
@@ -212,7 +241,7 @@ public function openingBalanceg($fromDate,$toDate,$group) {
 
 
     	}
-	public function subgroupFromUrl($branch) {
+public function subgroupFromUrl($branch) {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
         $sql = "SELECT id,name  FROM ourbank_group WHERE village_id = $branch";
@@ -221,12 +250,15 @@ public function openingBalanceg($fromDate,$toDate,$group) {
 
 
     	}
-	public function getOffice($id) {
+public function getOffice($id) {
 		$select = $this->select()
 			->setIntegrityCheck(false)  
 			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
 						->where('a.village_id = ?',$id);
-			//die($select->__toString($select));
+
+//die($select->__toString($select));
+
+
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
