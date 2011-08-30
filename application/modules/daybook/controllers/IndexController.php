@@ -45,7 +45,7 @@ $this->view->adm = new App_Model_Adm();
 
                 $transaction = new Daybook_Model_Daybook();
 
-      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+    $officename = $transaction->getHier();
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}

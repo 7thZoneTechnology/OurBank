@@ -63,7 +63,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
                        	->setIntegrityCheck(false)
 
 
-		->from(array('a' =>'ourbank_Liabilities'),array('(sum(a.credit)+sum(a.debit)) as openingCash'))
+		->from(array('a' =>'ourbank_Liabilities'),array('(sum(a.credit)-sum(a.debit)) as openingCash'))
 
 		->join(array('f' =>'ourbank_glsubcode'),'a.glsubcode_id_to = f.id',array('f.id as glsubcode_id','f.header as subheader'))
 
@@ -124,7 +124,7 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
         $select = $this->select()
                        	->setIntegrityCheck(false)
 
-		->from(array('a' =>'ourbank_Assets'),array('(sum(a.credit)+sum(a.debit)) as openingCash'))
+		->from(array('a' =>'ourbank_Assets'),array('(sum(a.credit)-sum(a.debit)) as openingCash'))
 
 		->join(array('f' =>'ourbank_glsubcode'),'a.glsubcode_id_to=f.id',array('f.header as subheader','f.glsubcode as glsubcode'))
 
@@ -149,16 +149,13 @@ class Generalledger_Model_Generalledger extends Zend_Db_Table
 
     }
 
-	public function getOffice($id) {
-		$select = $this->select()
-			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
-						->where('a.village_id = ?',$id);
-
-//die($select->__toString($select));
-
-
-		$result = $this->fetchAll($select);
-		return $result->toArray();
+	public function getHier() {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
+                ->where('a.id !=1 AND id !=2');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
 	}
 }

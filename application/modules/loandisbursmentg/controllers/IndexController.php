@@ -345,14 +345,14 @@ class Loandisbursmentg_IndexController extends Zend_Controller_Action {
             $bankEntry = array('office_id'=>$officeid,
                         'glsubcode_id_to'=>$bankData[0]['id'],
                         'transaction_id'=>$tranID,
-                        'debit' => $this->_request->getPost('Amount'),
+                        'debit' => $this->_request->getPost('Amount')-$feeamount,
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$bankEntry);
             $loanData = $this->view->loanModel->glBank($officeid,'loans'.$officeid);
             $glbankEntry = array('office_id'=>$officeid,
                         'glsubcode_id_to'=>$loanData[0]['id'],
                         'transaction_id'=>$tranID,
-                        'debit' => $this->_request->getPost('Amount')-$feeamount,
+                        'debit' => $this->_request->getPost('Amount'),
                         'record_status'=>'3');
             $this->view->adm->addRecord('ourbank_Assets',$glbankEntry);
 

@@ -120,14 +120,14 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 		}
 	}
 
-        public function officeNamefetch($offie_id) {
-        $select = $this->select()
-                ->setIntegrityCheck(false)  
-                ->from('ourbank_office')
-                ->where('id = ?',$offie_id);
-        //die($select->__toString());
-        $result = $this->fetchAll($select);
+	public function getHier() {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
+                ->where('a.id !=1 AND id !=2');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
         return $result->toArray();
-        }
+	}
 
 }

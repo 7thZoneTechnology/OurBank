@@ -57,7 +57,7 @@ $this->view->adm = new App_Model_Adm();
 //         $this->view->sample = $sample;
         $villageoffice = new Cashscroll_Model_Cashscroll();
 
-      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+      $officename = $villageoffice->getHier();
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}

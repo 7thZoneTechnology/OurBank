@@ -44,11 +44,12 @@ class Loansupplementary_IndexController extends Zend_Controller_Action
     function indexAction() {
 
         $path = $this->view->baseUrl();
+$transaction= new Loansupplementary_Model_Loansupplementary();
 
         $searchForm = new Loansupplementary_Form_Search($path);
         $this->view->form = $searchForm;
 
-      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+       $officename = $transaction->getHier();
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}

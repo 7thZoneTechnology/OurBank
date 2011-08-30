@@ -47,10 +47,11 @@ class Sbcashscroll_IndexController extends Zend_Controller_Action
     {
         $path = $this->view->baseUrl();
 
+                $transaction = new Sbcashscroll_Model_Sbcashscroll();
 
         $searchForm = new Sbcashscroll_Form_Search($path);
         $this->view->form = $searchForm;
-         $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+          $officename = $transaction->getHier();
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}

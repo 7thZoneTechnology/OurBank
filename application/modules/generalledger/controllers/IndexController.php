@@ -37,7 +37,7 @@ class Generalledger_IndexController extends Zend_Controller_Action
         $this->view->form = $searchForm = new Generalledger_Form_Search($path);
         					$generalLedger = new Generalledger_Model_Generalledger();
 
-	    $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
+	    $officename = $generalLedger->getHier();
 		foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}

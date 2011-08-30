@@ -45,7 +45,7 @@ class Transferscroll_IndexController extends Zend_Controller_Action
 
                 $transaction = new Transferscroll_Model_Transferscroll();
 
-      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+     $officename = $transaction->getHier();
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}

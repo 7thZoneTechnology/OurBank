@@ -27,10 +27,12 @@ class Depositsummary_Form_Search extends ZendX_JQuery_Form {
         $hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
         $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
         $hierarchy->setRegisterInArrayValidator(false);
+		$hierarchy->setAttribs(array('style' => 'width: 160px;'));
 
         $branch = $formfield->field('Select','branch','','','mand','Branch',false,'','','','','',0,'');
         $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
         $branch->setRegisterInArrayValidator(false);
+		$branch->setAttribs(array('style' => 'width: 160px;'));
 
         $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
 		$group->setRegisterInArrayValidator(false);

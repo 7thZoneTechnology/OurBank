@@ -53,7 +53,15 @@ class Transferscroll_Model_Transferscroll extends Zend_Db_Table
                        //die($select->__toString($select));
         return $this->fetchAll($select);
     }
-
+public function getHier() {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
+                ->where('a.id !=1 AND id !=2');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
 	//credit
     public function totalSavingsCredit($fromDate,$toDate,$branch,$hierarchy) 
 

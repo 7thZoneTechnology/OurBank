@@ -23,12 +23,12 @@ function getlevels(hierarchy,path) {
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
-function getgroups(branch,path) {
-	if(branch) {
-		targeturl=path+"/cashscroll/index/group?branch="+branch;
-		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
-	}
-}
+// // function getgroups(branch,path) {
+// // 	if(branch) {
+// // 		targeturl=path+"/cashscroll/index/group?branch="+branch;
+// // 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+// // 	}
+// // }
 $(document).ready(function() {
 $('#show').change(function(){
 var va = $('#hierarchy').val();
@@ -55,9 +55,9 @@ $("#hide").show();
 					<tr>    <TD><?php echo $this->translate('Branch'); ?></td>
                             <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
 					</tr>
-					<tr id="hide"><TD><?php echo $this->translate('Group'); ?></td>
-                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
-					</tr>
+<!--					<tr id="hide"><TD><?php //echo $this->translate('Group'); ?></td>
+                            <td><div id="groupdiv"><?php //echo $this->form->group;?></td>
+					</tr>-->
 					<tr><TD><br><input type="submit" name="Search" value="Search"></TD></tr>
             </table>
           </form>
@@ -86,7 +86,6 @@ $("#hide").show();
                     <TR>
                        <TD><?php echo $savingsdetails['prodoffername'];?></TD>
 			    	   <TD  align="center"><?php echo $savingsdetails['countvalue'];?></TD>
-       
 			    	   <TD  align="right"><?php $test=end($this->accountBalanc); echo $test['balance'];?></TD>
                     </TR>
 	    </table> 

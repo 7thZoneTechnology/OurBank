@@ -49,8 +49,8 @@ class Depositsummary_IndexController extends Zend_Controller_Action
       $this->view->form = $searchForm = new Depositsummary_Form_Search($path);
       $savingsummary = new Depositsummary_Model_Depositsummary();
 
-      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-			foreach($officename as $officename){
+	    $officename = $savingsummary->getHier();
+		foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
  
@@ -73,7 +73,7 @@ class Depositsummary_IndexController extends Zend_Controller_Action
                     $this->view->result = $savingsummary->fetchSavingsDetails($office_id,$hierarchy); 
                     $this->view->accountBalanc = $accountBalanc = $savingsummary->accountBalanceDetails($office_id,$hierarchy);
 
-                    if ((!$this->view->result) && (!$accountBalanc))
+                    if ((!$this->view->result) && (!$accountBalanc) && ($hierarchy==4))
 					 {  echo "<font color='RED'>No Savings Account</font>";	 } else {
                         foreach($this->view->result as $result1) {
                             $this->view->officeName = $result1["officename"]; }

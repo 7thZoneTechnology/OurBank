@@ -186,4 +186,15 @@ case '3':
         $result = $this->fetchAll($select);
         return $result;
 }
+public function getHier() {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
+                ->where('a.id !=1 AND id !=2');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
+
+
 }
