@@ -22,7 +22,7 @@ class Loanledger_IndexController extends Zend_Controller_Action
     public function init() 
     {
     	$this->view->title = "Reports";
-	$this->view->pageTitle = "Loans ledger";
+	$this->view->pageTitle = "Loans Ledger";
         $this->view->type = "generalFields";
         $this->view->loanModel = new Loanledger_Model_loandetails();
         $this->view->cl = new App_Model_Users ();
@@ -48,8 +48,11 @@ class Loanledger_IndexController extends Zend_Controller_Action
 
     public function loandetailsAction() 
     {
+	$this->view->form = $loansearch = new Loandetailsg_Form_Search();
+
 	$this->view->accNum=$this->_request->getParam('accNum');
 	$this->view->details = $this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
+
 	$this->view->tran = $this->view->loanModel->loanInstalments($this->_request->getParam('accNum'));
 	$this->view->paid = $this->view->loanModel->paid($this->_request->getParam('accNum'));
 	$this->view->unpaid = $this->view->loanModel->unpaid($this->_request->getParam('accNum'));
@@ -128,7 +131,7 @@ class Loanledger_IndexController extends Zend_Controller_Action
 	$y1 = $y1-25;
 		$page->drawText('Loan name  : '.$details->loanname,$x0, $y1);
 	$y1 = $y1-20;
-		$page->drawText('Loan amount R$  : '.$details->amount,$x0, $y1);
+		$page->drawText('Loan amount Rs  : '.$details->amount,$x0, $y1);
 	$y1 = $y1-20;
 		$page->drawText('Interest rate %  : '.$details->interest,$x0, $y1);
 	$y1 = $y1-20;

@@ -1,152 +1,813 @@
-<!--
-############################################################################
-#  This file is part of OurBank.
-############################################################################
-#  OurBank is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-############################################################################
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-############################################################################
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-############################################################################
-!-->
-
-<!--
- *  view common funder details, add, edit
--->
-
-<!-- view Funder information -->
+<!--show the individual member details and edit option !-->
 <table id="hor-minimalist-b">
     <tr>
-	<!--to change language -->
-        <th class="firsttd"><?php echo $this->translate("Funder information"); ?></th>
+        <th class="firsttd"><?php echo $this->translate("1. ಕಟುಂಬದ ವಿವರ"); ?></th>
         <th class = "secondtd"></th>
-	<!-- check funder information and edit page link -->
-        <?php if(($this->fundername)!=NULL) {
-        foreach($this->fundername as $edit_id) { ?>
-        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/funderdetails/index/editfunder/id/<?php echo $this->id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/familydefault/index/editfamily/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+    </tr>
+
+    <?php 
+    $convertdate = new App_Model_dateConvertor();
+    foreach($this->membername as $family_view){ ?>
+
+<!--    <tr>
+        <td class="firsttd"><?php //echo $this->translate("Family ID:"); ?></td>
+        <td class = "secondtd"><?php //echo $family_view['family_id']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>-->
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಸುಙೀವನ ನಂ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['sujeevana']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಮನೆ ಸಂಖ್ಯೆ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['house_no']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಬೀದಿ /ರಸ್ತೆ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['street']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಕೂಟ"); ?></td>
+        <td class = "secondtd"><?php echo $this->kootaname; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+	<tr>
+        <td class="firsttd"><?php echo $this->translate("ಕಂದಾಯ ಗ್ರಾಮ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['villagename']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ತಾಲ್ಲೂಕು:"); ?></td>
+        <td class = "secondtd"><?php echo $this->villagename; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಪಿನ್:"); ?></td>
+        <td class = "secondtd"><?php echo $this->pincode1; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate(" ಗ್ರಾಮ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['names']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+        <tr>
+        <td class="firsttd"><?php echo $this->translate("ಕುಟುಂಬದ ವಿಧ :"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['familytype']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಜಾತಿ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['caste']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <!--<tr>
+        <td class="firsttd"><?php echo $this->translate("Caste:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['subcaste']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>-->
+	<tr>
+        <td class="firsttd"><?php echo $this->translate("ಅಲ್ಪಸಂಖ್ಯಾತರು:"); ?></td>
+        <?php if ($family_view['minority_id']) { ?>
+        <td class = "secondtd"><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"></td>
+        <?php } else { ?>
+        <td class = "secondtd">----</td>
+        <?php } ?>
+        <td class="thirdtd"></td>
+    </tr>
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ರೇಷನ್ ಕಾರ್ಡ್:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['ration']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಆರೋಗ್ಯ ವಿಮೆ:"); ?></td>
+        <td class = "secondtd"><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
+            
+        }?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಉದ್ಯೋಗಖಾತ್ರಿ ಜಾಬ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['nregs_jobno']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate("ಆದಾಯದ ಪ್ರಮುಖ ಮೂಲ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['income']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+        <tr>
+        <td class="firsttd"><?php echo $this->translate("ದೂರವಾಣಿ:"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['phone']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <tr>
+        <td class="firsttd"><?php echo $this->translate(" ಮೊಬೈಲ್ :"); ?></td>
+        <td class = "secondtd"><?php echo $family_view['mobile']; ?></td>
+        <td class="thirdtd"></td>
+    </tr>
+
+    <?php } ?>
+</table> 
+<br/>
+
+<!--show the Family members details and edit option !-->
+
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("2. ಕುಟುಂಬ ಸದಸ್ಯರ ವಿವರ"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->family)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/familymembers/index/editfamily/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/familymembers/index/addfamily/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>
+
+
+<?php if($this->family) { ?>
+<div style="width:760px; overflow-x:scroll ; overflow-y: scroll; padding-bottom:10px;">
+<table id="hor-minimalist-b" border="1">
+    <tr>
+        <th><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+        <!--<th ><?php echo $this->translate("Name"); ?></th>-->
+        <th ><?php echo $this->translate("ಹೆಸರು"); ?></th>
+        <!--<th ><?php echo $this->translate("Alias"); ?></th>-->
+        <th ><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+        <th ><?php echo $this->translate("ಮೆಮ್ಬೆರ್ ಕೋಡ್"); ?></th>
+        <th ><?php echo $this->translate("ತಂದೆಯ ಹೆಸರು"); ?></th>
+        <th><?php echo $this->translate("UID"); ?></th>
+        <th ><?php echo $this->translate("Breadwinner"); ?></th>
+        <th ><?php echo $this->translate("Head"); ?></th>
+        <th ><?php echo $this->translate("ಲಿಂಗ"); ?></th>
+        <th ><?php echo $this->translate("ಜನ್ಮ ದಿನಾಂಕ"); ?></th>
+        <th ><?php echo $this->translate("ವಯಸ್ಸು"); ?></th>
+        <th ><?php echo $this->translate("ಸಂಬಂದ"); ?></th>
+        <th ><?php echo $this->translate("ವೈವಾಹಿಕ ಸ್ಥಿತಿ"); ?></th>
+        <th ><?php echo $this->translate("ಪೆನ್ಷನ್"); ?></th>
+        <th ><?php echo $this->translate("ವಿದ್ಯಾಬ್ಯಾಸ"); ?></th>
+        <th ><?php echo $this->translate("ಉದ್ಯೊಗ"); ?></th>
+        <th ><?php echo $this->translate("ವೃತ್ತಿ"); ?></th>
+        <th ><?php echo $this->translate("ಸಂಘದ ಹೆಸರು"); ?></th>
+        <th ><?php echo $this->translate("ಸಂಘ"); ?></th>
+        <th ><?php echo $this->translate("ಖಾತೆ ವಿದ"); ?></th>
+        <th ><?php echo $this->translate("ಬ್ಯಾಂಕ್/ ಅಂಚೆ"); ?></th>
+        <th ><?php echo $this->translate("ಶಾಖೆ"); ?></th>
+        <th ><?php echo $this->translate("ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"); ?></th>
+        <th ><?php echo $this->translate("ದೂರವಾಣಿ"); ?></th>
+        <th ><?php echo $this->translate("can sign"); ?></th>
+        <th ><?php echo $this->translate("ಬಲಡ ಗೃಪ"); ?></th>
+
+
+    </tr>
+    <?php $convertdate = new App_Model_dateConvertor(); $i=0;
+     foreach($this->family as $family){ $i++;  ?>
+    <tr>
+        <td><?php echo $i; ?></td>
+        <td><?php echo $family['name']; ?></td>
+        <!--<td><?php echo $family['name_inregional']; ?></td>-->
+        <td><?php echo $family['alias']; ?></td>
+        <!--<td><?php echo $family['alias_inregional']; ?></td>-->
+        <td><?php echo $family['familycode']; ?></td>
+        <td><?php echo $family['father_name']; ?></td>
+        <td><?php echo $family['uid']; ?></td>
+        <td align="center"><?php if($family['breadwinner_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
+        <td align="center"><?php if($family['head_id']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"><?php } else {echo "-";} ?></td>
+        <td><?php echo $family['gendername']; ?></td>
+        <td><?php echo $convertdate->phpnormalformat($family['dob']); ?></td>
+        <td><?php echo $family['age']; ?></td>
+        <td><?php echo $family['relationname']; ?></td>
+        <td><?php echo $family['maritalname']; ?></td>
+        <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
+                   $entitlment=$familycommon->getentitlement($family['id']);
+		  if(!$entitlment){ echo 'None';
+		  }
+		  else{
+                  $m=1; foreach($entitlment as $entitlment1)  {  echo $m.". ".$entitlment1['entitlename']."<br>"; $m++;  }} ?></td>
+        <td><?php echo $family['qualifyname']; ?></td>
+        <td><?php echo $family['employmentname']; ?></td>
+        <td><?php  $familycommon=new Familycommonview_Model_familycommonview();
+                   $profession=$familycommon->getprofession($family['id']);
+		  if(!$profession){ echo 'None';
+		  }
+		  else{
+                  $m=1; foreach($profession as $profession1)  {  echo $m.". ".$profession1['professionname']."<br>"; $m++;  }} ?></td>
+        <td><?php echo $family['promoter']; ?></td>
+        <td><?php echo $family['cbos']; ?></td>
+        <td><?php echo $family['accountype']; ?></td>
+        <td><?php echo $family['bankname']; ?></td>
+        <td><?php echo $family['branchname']; ?></td>
+        <td><?php echo $family['bank_ac']; ?></td>
+        <td><?php echo $family['mobile_number']; ?></td>
+<td align="center"><?php if($family['sign']==1){  ?><img src="<?php echo $this->baseUrl()?>/images/checkbox.jpeg" border=0 width="16" height="16"> <?php } else {echo "-";} ?></td>
+        <td><?php echo $family['blood']; ?></td>
+
+    </tr>
+
+    <?php } ?>
+
+</table>
+</div>
+
+
+<!--show the Activities details and edit option !-->
+<!--<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Activities details"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->activities)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/editactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/addactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>-->
+<?php if($this->activities) { ?>
+<table id="hor-minimalist-b">
+<tr>
+    <th ><?php echo $this->translate("Activities willing to takeup to increase the income"); ?></th>
+
+</tr>
+    <?php foreach($this->activities as $crop) {   ?>
+    <tr>
+        <td><?php echo $crop['activity']; ?></td>
+
+    </tr>
+    <?php } ?>
+</table>
+<?php } ?>
+<!--show the Activities details and edit option !-->
+<!--<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("Activities details"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->activities)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/editactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/activities/index/addactivities/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>-->
+<?php if($this->activities) { ?>
+<table id="hor-minimalist-b">
+<tr>
+    <th ><?php echo $this->translate("Activities willing to takeup to increase the income"); ?></th>
+
+</tr>
+    <?php foreach($this->activities as $crop) {   ?>
+    <tr>
+        <td><?php echo $crop['activity']; ?></td>
+
+    </tr>
+    <?php } ?>
+</table>
+<?php } ?>
+<br>
+
+
+<!--show the Basic Infrastructure details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("3. ಮೂಲಭೂತ ಸೌಕರ್ಯದ ವಿವರ"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if((($this->housingtype) || ($this->ownership) || ($this->fuel))!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/infrastructure/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php  if(($this->housingtype) || ($this->ownership) || ($this->fuel)){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+   <th align="center"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+   <th ><?php echo $this->translate("ಮೂಲಭೂತ ಸೌಕರ್ಯದ ವಿವರ"); ?></th>
+   <th ><?php echo $this->translate("ವಿಧ "); ?></th>
+</tr> 
+
+<tr>
+	<TD>1</TD>
+	<td>ಮನೆ ವಿದ</td>
+	<td>
+	<?php foreach($this->housingtype as $housetype){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $housetype['name_regional']; ?></div><?php  } ?>
+	</td>
+</tr>
+
+<tr>
+	<TD>2</TD>
+	<td>ಮನೆ ಮಾಲಿಕತ್ವ</td>
+	<td>
+	<?php foreach($this->ownership as $ownership){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $ownership['name_regional']; ?></div><?php  } ?>
+	</td>
+</tr>
+<?php if($this->cookfuel){ ?>
+<tr>
+	<TD>3</TD>
+	<td>ಅಡುಗೆ ಇಂಧನ</td>
+	<td><?php foreach($this->cookfuel as $fuel){  ?>			
+	<div style="float:left;width:70px;"> <?php echo $fuel['name_regional']; ?></div><?php  } ?>
+	</td>
+</tr>
+<?php } ?>
+</table>
+<?php } ?>
+<br>
+<!-- end infrastructure-->
+
+
+<!--show the Agriculture details and edit option !-->
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("4. ಕೃಷಿ ಜಮೀನು"); ?></th>
+        <th class = "secondtd"></th>
+        <?php if(($this->agriculture)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/agriculture/index/edit/id/<?php echo $this->memberid; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+        <?php } ?>
+    </tr>
+</table>
+<?php if($this->agriculture){ ?>
+<table id="hor-minimalist-b" border="1">
+    <tr>
+        <th align="center" width="5%"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+        <th align="right"><?php echo $this->translate("ಭೂ ಮಾಲೀಕತ್ವ "); ?></th>
+ 		<th align="right"><?php echo $this->translate("ಎಕರೆ"); ?></th>
+        <th align="right"><?php echo $this->translate("ಗುಂಟೆ"); ?></th>
+        <th align="right"><?php echo $this->translate("ಮಾಲೀಕತ್ವ  ಹೆಸುರು"); ?></th>
+        <th align="right"><?php echo $this->translate("ಸರ್ವೇ ನಂಬರ್"); ?></th>
+        <th align="right"><?php echo $this->translate("ಕಂದಾಯ ಗ್ರಾಮ"); ?></th>
+       
+    </tr>
+    <?php $i=0; foreach($this->agriculture as $agri) { $i++;  ?>
+    <tr>
+        <td align="center"><?php echo $i; ?></td>
+        <td><?php echo $agri['name_regional']; ?></td>
+        <td align="right"><?php echo $agri['acre']; ?></td>
+        <td align="right"><?php echo $agri['gunta']; ?></td>
+        <td><?php echo $agri['membername']; ?></td>
+        <td align="right"><?php echo $agri['survey_no']; ?></td>
+        <td><?php echo $agri['villagenames']; ?></td>
+
+    </tr>
+    <?php } ?>
+    <tr>
+    <?php foreach($this->acretotal as $total){   ?>
+<td></td>
+   <td><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+      <td align="right"><?php echo $total['total']; ?></td>
+<?php } ?>
+    <?php foreach($this->guntatotal as $gunta){   ?>
+      <td align="right"><?php echo $gunta['total']; ?></td>
+<?php } ?>
+
+   <td></td>
+   <td></td>
+   <td></td>
+   
+</tr>
+</table>
+<?php } ?>
+<br/>	
+
+<!--show the Crop details and edit option !-->
+<table id="hor-minimalist-b">
+    <tr>
+        <th class="firsttd"><?php echo $this->translate("5. ಬೆಳೆ ಪ್ರಮಾಣ ಹಾಗೂ ಬೆಳೆಗೆ ಸಿಕ್ಕ ಬೆಲೆ"); ?></th>
+        <th class = "secondtd"></th>
+        <?php 
+		if(($this->agriculture)!=NULL) {
+		if(($this->crop)!=NULL) { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/crop/index/editcrop/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+        <?php } else { ?>
+        <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/crop/index/addcrop/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
         <?php }} ?>
     </tr>
-
-    	<!-- view funder information -->
-    <?php foreach($this->fundername as $view){ ?>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Funder name:"); ?></td>
-            <td class = "secondtd"><?php echo $view['name']; ?></td>
-            <td class="thirdtd"></td>
-        </tr>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Funder type:"); ?></td>
-            <td class = "secondtd"><?php echo $view['fundertypename']; ?></td>
-            <td class="thirdtd"></td>
-        </tr>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Active:"); ?></td>
-            <?php if($view['status']==1){ ?><td class="secondtd"><?php echo $this->translate("Active"); ?></td><?php } else { ?>
-            <td class="secondtd"><?php echo $this->translate("Deactive"); ?></td> <?php } ?> 
-            </td><td class="thirdtd"></td>
-        </tr>
-    <?php } ?>
 </table>
+<?php if($this->crop){ ?>
+<?php 
+$totalAcer = 0;
+$totalGunta = 0;
+$totalUnit = 0;
+$totalQty = 0;
+$totalMrktd = 0;
+$totalPrice = 0;
+$totalRealised = 0;
+
+?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+    <th align="center" width="5%"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+    <th ><?php echo $this->translate("ಬೆಳೆ"); ?></th>
+    <th align="right"><?php echo $this->translate("ಎಕರೆ"); ?></th>
+    <th align="right"><?php echo $this->translate("ಗುಂಟೆ"); ?></th>
+    <th align="right"><?php echo $this->translate("ಘಟಕ"); ?></th>
+    <th align="right"><?php echo $this->translate("ಬೆಳೆಯ ಉತ್ಪಾದನಾ ಪ್ರಮಾಣ "); ?></th>
+    <th align="right"><?php echo $this->translate("ಮಾರಿದ ಪ್ರಮಾನ (ಎ)"); ?></th>
+    <th align="right"><?php echo $this->translate("ಒಂದು ಯೂನಿಟ್ ಗೆ ಸಿಕ್ಕ ಬೆಲೆ(ಬಿ)"); ?></th>
+    <th align="right"><?php echo $this->translate("ಮಾರಿದ ಮೌಲ್ಯ(ಎ*ಬಿ)"); ?></th>
+    <th align="right"><?php echo $this->translate("ಮಾರಿದ ದಿನಾಂಕ"); ?></th>
+
+
+</tr>
+    <?php $i=0; $dateconvert= new App_Model_dateConvertor(); foreach($this->crop as $crop) { $i++;  ?>
+    <tr>
+        <td align="center" width="5%"><?php echo $i; ?></td>
+        <td ><?php echo $crop['name_regional']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['acre']); $totalAcer = $totalAcer + $crop['acre']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['gunta']); $totalGunta = $totalGunta + $crop['gunta']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['unit']); $totalUnit = $totalUnit + $crop['unit']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['quantity']); $totalQty = $totalQty + $crop['quantity']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['marketed']); $totalMrktd = $totalMrktd + $crop['marketed']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['price']); $totalPrice = $totalPrice + $crop['price']; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$crop['realised']); $totalRealised = $totalRealised + $crop['realised']; ?></td>
+        <td align="right"><?php echo $dateconvert->phpnormalformat($crop['sold_date']);?></td>
+
+    </tr>
+    <?php } ?>
+     <tr><td></td>
+        <td ><?php echo $this->translate("Total"); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalAcer); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalGunta); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalUnit); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalQty); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalMrktd); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalPrice); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalRealised); ?></td>
+    </tr>
+</table>
+<?php } ?>
 <br/>
 
-<!-- view Address information -->
+<!--show the Living assets details and edit option !-->
 <table id="hor-minimalist-b">
-    <tr>
-        <th class = "firsttd"><?php echo $this->translate("Address information"); ?></th>
-        <th class = "secondtd"></th>
-	<!-- check funder address detail and add, edit page link -->
-        <?php if (count($this->address)!=0) {?>
-        <th class = "thirdtd"><a href="<?php echo $this->baseUrl();?>/address/index/edit/id/<?php echo $this->id;?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
-        <?php } else { ?>
-        <th class = "firsttd"><a href="<?php echo $this->baseUrl();?>/address/index/add/id/<?php echo $this->id; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a></th>
-        <?php } ?>
-    </tr>
-	<!-- view address information -->
-    <?php foreach($this->address as $address_view){ ?>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Address line1:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['address1']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Address line2:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['address2']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Address line3:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['address3']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("City:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['city']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("State:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['state']; ?></td>
-        <td class="thirdtd"></td>
-    </tr>
-
-    <tr>
-        <td class="firsttd"><?php echo $this->translate("Pin code:"); ?></td>
-        <td class = "secondtd"><?php echo $address_view['zipcode']; ?></td>
-        <td class="thirdtd"></td></tr>
-    <?php } ?>
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("6. ಜಾನುವಾರು"); ?></th>
+      <th class = "secondtd"></th>
+      <?php if(($this->livingassets)!=NULL) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/editasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/livingassets/index/addasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
 </table>
-<br/>
+<?php if($this->livingassets){ 	$dateconvert= new App_Model_dateConvertor();
+$totalNumber = 0;
+$totalValue = 0;
+?>
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+  <td align="center" width="5%"><font color="#787878"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></font></td>
+  <td ><font color="#787878"><?php echo $this->translate("ಸ್ವತ್ತು"); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("ಎಷ್ಟು "); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("ಮೌಲ್ಯ "); ?></font></td>
+  <td align="right"><font color="#787878"><?php echo $this->translate("ಮೌಲ್ಯದ ದಿನಾಂಕ"); ?></font></td>
+</tr>
+  <?php $i=0; foreach($this->livingassets as $livingassets) { $i++;  ?>
+  <tr>
+      <td align="center"><?php echo $i; ?></td>
+      <td><?php echo $livingassets['name_regional']; ?></td>
+      <td align="right"><?php echo $livingassets['number']; $totalNumber+=$livingassets['number']; ?></td>
+      <td align="right"><?php echo sprintf("%4.2f",$livingassets['value']); $totalValue+=$livingassets['value'];?></td>
+      	  <td align="right"><?php if($livingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($livingassets['date_of_value']); } else { echo "Null"; } ?>
+        </td>
+  </tr>
+  <?php } ?>
+   <tr><td></td>
+       <td><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+        <td align="right"><?php echo $totalNumber; ?></td>
+       <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+   </tr>
+</table>
+<?php } ?>
+<br>
 
-<!-- view Contact information -->
-<table id="hor-minimalist-b"> 
-    <tr>
-        <th class="firsttd"><?php echo $this->translate("Contact information"); ?></th>
-        <th class = "secondtd"></th>
-	<!-- check contact information detail and add, edit page link -->
-        <?php if((count($this->contact))!=0) {
-        foreach($this->contact as $edit_id) { ?>
-        <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/editcontact/id/<?php echo $this->id; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="20" height="20"></a></th>
-        <?php }} else { ?>
-        <th><a href="<?php echo $this->baseUrl();?>/contactdetails/index/addcontact/id/<?php echo $this->id; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a></th>
-        <?php } ?>
+<!--show the NonLiving assets details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("7. ಇತರೇ ಸ್ವತ್ತಿನ ಮಾಲೀಕತ್ವ "); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->nonlivingassets)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/nonlivingassets/index/editasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/nonlivingassets/index/addasset/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->nonlivingassets){
+$totalNumber = 0;
+$totalValue = 0;
+?>
+
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+   <td align="center" width="5%"><font color="#787878"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></font></td>
+   <td ><font color="#787878"><?php echo $this->translate("ಸ್ವತ್ತು"); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("ಎಷ್ಟು "); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("ಮೌಲ್ಯ"); ?></font></td>
+   <td align="right"><font color="#787878"><?php echo $this->translate("ಮೌಲ್ಯದ ದಿನಾಂಕ"); ?></font></td>
+</tr>
+   <?php $i=0; foreach($this->nonlivingassets as $nonlivingassets){ $dateconvert= new App_Model_dateConvertor(); $i++;
+ ?>
+     <tr>
+       <td align="center"><?php echo $i; ?></td>
+       <td><?php echo $nonlivingassets['name_regional']; ?></td>
+       <td align="right"><?php echo $nonlivingassets['number']; $totalNumber+=$nonlivingassets['number']; ?></td>
+       <td align="right"><?php echo sprintf("%4.2f",$nonlivingassets['value']); $totalValue+=$nonlivingassets['value'];?></td>
+      	 <td align="right"><?php if($nonlivingassets['date_of_value'] != '0000-00-00') { echo $dateconvert->phpnormalformat($nonlivingassets['date_of_value']); } else { echo "Null"; } ?></td>
+   </tr>
+   <?php } ?>
+    <tr><td></td>
+        <td ><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+          <td align="right"><?php echo $totalNumber; ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+
+    </tr>
+</table>
+<?php } ?><br>
+</br>
+
+<!--show the Loan details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("8. ಕುಟುಂಬದ ಸಾಲ ಮತ್ತು ಉಳಿತಾಯ"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->loandetails)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/loandetails/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/loandetails/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->loandetails){ 
+$laonTotal = 0;
+$oustanding = 0;
+$deposit = 0; ?>
+<table id="hor-minimalist-b" border="1">
+    <tr> 
+        <th align="center" width="5%"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+        <th ><?php echo $this->translate("ಮೂಲ"); ?></th>
+        <th ><?php echo $this->translate("ಕುಟುಂಬದ ಸದಸ್ಯ"); ?></th>
+        <th ><?php echo $this->translate("ವಾರ್ಷೀಕ ಬಡ್ಡಿ %"); ?></th>
+        <th ><?php echo $this->translate("ಸಾಲದ ಮೊತ್ತ"); ?></th>
+        <th ><?php echo $this->translate("ಬಾಕಿಯಿರುವ ಸಾಲ"); ?></th>
+        <th ><?php echo $this->translate("ಕಾರಣ"); ?></th>
+        <th ><?php echo $this->translate("ಉಳಿತಾಯ.. ಉಳಿತಾಯ./ಠೆವಣಿ ಮೊತ್ತ"); ?></th>
     </tr>
 
-	<!-- view contact information -->
-    <?php foreach($this->contact as $contact){
-        ?>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Contact person:"); ?></td>
-            <td class = "secondtd"><?php echo $contact['contact_person']; ?></td>
-            <td class="thirdtd"></td>
-        </tr>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Telephone number:"); ?></td>
-            <td class = "secondtd"><?php echo $contact['telephone']; ?></td>
-            <td class="thirdtd"></td>
-        </tr>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Mobile number:"); ?></td>
-            <td class = "secondtd"><?php echo $contact['mobile']; ?></td>
-            <td class="thirdtd"></td>
-        </tr>
-        <tr>
-            <td class="firsttd"><?php echo $this->translate("Email ID:"); ?></td>
-            <td class = "secondtd"><?php echo $contact['email']; ?></td>
-            <td class="thirdtd"></td>
-        </tr>
-    <?php } ?>
-</table>
+   <?php $i=0; foreach($this->loandetails as $loandetails) { $i++;?>
+   <tr>
+       <td align="center"><?php echo $i; ?></td>
+       <td><?php echo $loandetails['name_regional']; ?></td>
+       <td><?php echo $loandetails['membername']; ?></td>
+       <td align="right"><?php echo $loandetails['interest']; ?></td>
+       <td align="right"><?php echo $loandetails['loanamount']; 
+       $laonTotal = $laonTotal + $loandetails['loanamount'];
+       ?></td>
+       <td align="right"><?php echo $loandetails['outstanding_amount'];
+       $oustanding = $oustanding + $loandetails['outstanding_amount'];
+       ?></td>
+       <td><?php echo $loandetails['purposename']; ?></td>
+       <td align="right"><?php echo $loandetails['deposit']; 
+       $deposit = $deposit + $loandetails['deposit'];
+       ?></td>
 
-<div class="btnhouse">
-        <div class="rtbtns">
-            <a href="<?php echo $this->baseUrl(); ?>/funder"><input type="button" name="back" value="<?php echo $this->translate('Back'); ?>"></a>
-        </div>
-</div>
- 
+   </tr>
+   <?php } ?>
+<tr><td></td>
+   <td><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+   <td></td>
+   <td align="right"><?php echo sprintf("%4.2f",$laonTotal); ?></td> 
+   <td align="right"></td>
+  
+   <td align="right"><?php echo sprintf("%4.2f",$oustanding); ?></td>
+   <td></td>
+   <td align="right"><?php echo sprintf("%4.2f",$deposit); ?></td>
+</tr>
+</table>
+<?php } ?>
+<br>
+
+<!--show the health details and edit option !-->
+<table id="hor-minimalist-b">
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("9. ಆರೊಗ್ಯ"); ?></th>
+      <th class = "secondtd"></th>
+      <?php if((($this->gethabithealth) || ($this->gethabitchallenge) || ($this->getchronicdisease) )) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/edithealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/health/index/addhealth/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
+</table>
+<?php if( ($this->gethabithealth) || ($this->gethabitchallenge) || ($this->getchronicdisease) ) { ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+  <th width="5%" align="center"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+  <th ><?php echo $this->translate("ಸದಸ್ಯರ ಹೆಸರು"); ?></th>
+  <th ><?php echo $this->translate("ದುರಭ್ಯಾಸ"); ?></th>
+  <th ><?php echo $this->translate("ಅಂಗವಿಕಲತೆ ಇದ್ದರೆ ಇತ್ಯಾದಿ"); ?></th> 
+  <th ><?php echo $this->translate("ಖಾಯಿಲೆ ಹೆಸರು"); ?></th> 
+</tr>
+  <?php $i=0; foreach($this->getfamilymembers as $familymembers) { $i++;?>
+<tr>
+<td width="5%" align="center"><?php echo $i; ?></td>
+<td><?php echo $familymembers['name']; ?></td>
+<td><?php   foreach($this->gethabithealth as $health) {
+            if($familymembers['name'] == $health['membername']){
+                    echo $health['habitname']."<br>";
+            }    }?></td>
+<td><?php foreach($this->gethabitchallenge as $challenge) {
+            if($familymembers['name'] == $challenge['membername']){
+                    echo $challenge['challengename']."<br>";
+            }   }?></td>
+<td><?php foreach($this->getchronicdisease as $chronic) {
+            if($familymembers['name'] == $chronic['membername']){
+                    echo $chronic['diseasename']."<br>";
+            }  }?></td>
+</tr><?php } ?>
+</table>
+<?php } ?>
+<br>
+
+<!--show the PRA Service Requirement details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd" colspan="4"><?php echo $this->translate("10. ಕುಟುಂಬದ ಸದಸ್ಯರಿಗೆ ಬೇಕಾದ ಸೇವೆಗಳು"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->praservice)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/praservice/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/praservice/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php  if($this->praservice){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+  <th align="center" width="5%"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></th>
+  <th width="40%"><?php echo $this->translate("ಸದಸ್ಯರ ಹೆಸರು"); ?></th>
+  <th width="55%"><?php echo $this->translate("ಸೇವೆಗಳು"); ?></th>
+</tr>
+<?php $i=0; foreach($this->getfamilymembers as $familymembers) { $i++; ?>
+<tr>
+<td align="center" width="5%"><?php echo $i; ?></td>
+<td width="40%"><?php echo $familymembers['name']; ?></td>
+<td width="55%"><?php foreach($this->praservice as $servicedetails){ 
+            if($servicedetails['member_id'] == $familymembers['id']){
+                    echo $servicedetails['name_regional']."<br>";
+            }
+    }?></td>
+</tr>
+<?php } ?>
+</table>
+<?php } ?>
+<br>
+
+<!--show the income details and edit option !-->
+<table id="hor-minimalist-b">
+  <tr>
+      <th class="firsttd"><?php echo $this->translate("11. ಕುಟುಂಬದ ವಾರ್ಷಿಕ ಆದಯ "); ?></th>
+      <th class = "secondtd"></th>
+      <?php if(($this->incomedetails)!=NULL) { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/incomedetails/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+      <?php } else { ?>
+      <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/incomedetails/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+      <?php } ?>
+  </tr>
+</table>
+<?php if($this->incomedetails){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+  <th align="center" width="5%"><font color="#787878"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></font></th>
+  <th width="80%"><?php echo $this->translate("ಆದಾಯದ ಮೂಲ"); ?></th>
+  <th style="text-align:right;" width="15%"><?php echo $this->translate("ಮೊತ್ತ"); ?></th>
+</tr>
+  <?php $i=0; foreach($this->incomedetails as $incomedetails) { $i++;  ?>
+  <tr>
+      <td width="5%" align="center"><?php echo $i; ?></td><td width="80%"><?php echo $incomedetails['name_regional']; ?></td>
+      <td align="right" width="15%"><?php echo sprintf("%4.2f",$incomedetails['value']); ?></td>
+  </tr>
+  <?php } ?>
+<tr>
+<?php foreach($this->incometotal as $total){   ?>
+  <td></td>
+  <td><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+  <td align="right"><?php echo sprintf("%4.2f",$total['incometotal']); ?></td>
+<?php } ?>
+</tr>
+</table>
+<?php } ?>
+<br>
+
+<!--show the Expense details and edit option !-->
+<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("12. ಕುಟುಂಬದ ವಾರ್ಷಿಕ ವೆಚ್ಹ"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->expense)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/expense/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/expense/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>
+<?php if($this->expense){
+$totalValue = 0;
+?>
+<table id="hor-minimalist-b" border="1">
+<tr bgcolor="Silver">
+   <td align="left" width="5%"><font color="#787878"><?php echo $this->translate("ಕ್ರ.ಸಂ"); ?></font></td>
+   <td width="80%"><font color="#787878"><?php echo $this->translate("ಖರ್ಚು"); ?></font></td>
+   <td align="right" width="15%"><font color="#787878"><?php echo $this->translate("ಮೊತ್ತ"); ?></font></td>
+</tr>
+   <?php $i=0; foreach($this->expense as $expense) { $i++;  ?>
+   <tr>
+    <td align="center" width="5%"><?php echo $i; ?></td><td width="80%"><?php echo $expense['name_regional']; ?></td>
+       <td align="right" width="15%"><?php echo sprintf("%4.2f",$expense['value']); $totalValue+=$expense['value']; ?></td>
+   </tr>
+   <?php } ?>
+    <tr><td></td>
+        <td ><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+        <td align="right"><?php echo sprintf("%4.2f",$totalValue); ?></td>
+    </tr>
+</table>
+<?php } ?>
+</table> 
+<br>
+
+
+
+<!--show the services details and edit option !-->
+<!--<table id="hor-minimalist-b">
+   <tr>
+       <th class="firsttd"><?php echo $this->translate("Service required by the family"); ?></th>
+       <th class = "secondtd"></th>
+       <?php if(($this->servicedetails)!=NULL) { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/services/index/edit/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/edit.gif" border=0 width="16" height="16"></a></th>
+       <?php } else { ?>
+       <th class="thirdtd"><a href="<?php echo $this->baseUrl();?>/services/index/add/id/<?php echo $this->memberid; ?>/subId/<?php echo $this->sub_id;  ?>/modId/<?php echo $this->mod_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"></a></th>
+       <?php } ?>
+   </tr>
+</table>-->
+<?php if($this->servicedetails){ ?>
+<table id="hor-minimalist-b" border="1">
+<tr>
+   <th ><?php echo $this->translate("Service details"); ?></th>
+   <th align="right"><?php echo $this->translate("To whom"); ?></th>
+   <th ><?php echo $this->translate("Own fund"); ?></th>
+   <th ><?php echo $this->translate("Recuired loan/help"); ?></th>
+</tr>
+   <?php foreach($this->servicedetails as $servicedetails){   ?>
+   <tr>
+       <td><?php echo $servicedetails['name']; ?></td>
+       <td><?php echo $servicedetails['to_whom']; ?></td>
+       <td><?php echo $servicedetails['own_land']; ?></td>
+       <td><?php echo $servicedetails['recuired_loan_help']; ?></td>
+   </tr>
+   <?php } ?>
+<!--<tr>
+<?php foreach($this->loandtotal as $total){   ?>
+
+   <td><?php echo $this->translate("ಮೊತ್ತ"); ?></td>
+   <td align="right"><?php echo $total['loantotal']; ?></td>
+   <td></td>
+   <td align="right"><?php echo $total['repaytotal']; ?></td>
+   <td align="right"><?php echo $total['duetotal']; ?></th>
+   <td align="right"><?php echo $total['outstandingtotal']; ?></th>
+<?php } ?>
+</tr>-->
+</table>
+<?php } ?>
+<!-- <br> -->
+
+<?php
+ } ?>
+
+
+ <div class="btnhouse">
+    <div class="rtbtns">
+        <a href="<?php echo $this->baseUrl(); ?>/family"><input type="button" name="back" value="<?php echo $this->translate("Back"); ?>"></a>
+    </div>
+ </div>

@@ -53,7 +53,7 @@ public function indexAction()
 
                 if ($this->_request->isPost() && $this->_request->getPost('Search')) {
                             $formdata = $this->_request->getPost();
-                            $acc = $this->_request->getPost('accNum');
+                            $acc = trim($this->_request->getPost('accNum'));
                             if($searchform->isValid($formdata)){
                                 $validaccno = $dbobj->savingsAccountsSearch($acc);
                                 $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);

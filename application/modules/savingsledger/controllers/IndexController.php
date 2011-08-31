@@ -37,8 +37,7 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 	}
 
 	function indexAction() {
-		$searchForm = new Savingsledger_Form_Search();
-		$this->view->form = $searchForm;
+		$this->view->form = $searchForm = new Savingsledger_Form_Search();
 
 		$dateFrom =$this->view->fromdate=$this->_request->getParam('datefrom');
 		$dateTo =$this->view->todate= $this->_request->getParam('dateto');

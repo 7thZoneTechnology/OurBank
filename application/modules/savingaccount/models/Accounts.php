@@ -338,10 +338,10 @@ $member_id=$code['s1'];
     
     }
     
-    public function getGlcode($officeId)
+    public function getGlcode($officeId,$glcode)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId";
+        $sql = "select id from ourbank_glsubcode where (office_id = $officeId && glcode_id = $glcode) ";
         return $result = $db->fetchAll($sql);
     }
 

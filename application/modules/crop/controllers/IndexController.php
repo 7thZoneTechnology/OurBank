@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-/**
-* Class does add and edit crop deatils of a particular family
-*/
 class crop_IndexController extends Zend_Controller_Action{
 
     public function init() 
@@ -125,7 +122,13 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
             $soldDate = $this->_getParam('date');
             $i = 0;
             foreach($this->_getParam('crop_id') as $val) {
-                        if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
+                        if($soldDate[$i]){ 
+                                            if(($soldDate[$i] == "00/00/0000") or ($soldDate[$i] == NULL)) { 
+                                                $date = date("y/m/d H:i:s"); 
+                                            } else { 
+                                                $date=$dateconvert->mysqlformat($soldDate[$i]); 
+                                            }
+                        } else { $date= date("y/m/d H:i:s") ; }
                 $crop = array('family_id' => $member_id,
                               'crop_id' => $val,
  'land_id' => $tenant[$i],
@@ -214,7 +217,13 @@ $this->view->acretotal =$familycommon->getacretotal($this->_getParam('id'));
             $dateconvert= new App_Model_dateConvertor();
             $i = 0;
             foreach($this->_getParam('crop_id') as $val) {
-                        if($soldDate[$i]){ $date=$dateconvert->mysqlformat($soldDate[$i]); } else { $date=''; }
+                                    if($soldDate[$i]) {
+                                            if(($soldDate[$i] == "00/00/0000") or ($soldDate[$i] == NULL)) { 
+                                                $date = date("y/m/d H:i:s"); 
+                                            } else { 
+                                                $date=$dateconvert->mysqlformat($soldDate[$i]); 
+                                            }
+                        } else { echo $date= date("y/m/d H:i:s"); }
                 $crop = array('family_id' => $id,
                               'crop_id' => $val,
                             'land_id' => $tenant[$i],

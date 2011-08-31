@@ -44,7 +44,7 @@ class Savings_IndexController extends Zend_Controller_Action{
             $this->view->username=$loginname['username'];
         }
 
- 
+        }
 
 //                 $globalsession = new App_Model_Users();
 //                 $this->view->globalvalue = $globalsession->getSession();// get session values
@@ -55,78 +55,78 @@ class Savings_IndexController extends Zend_Controller_Action{
 //         		if(!$data){
 //            		 $this->_redirect('index/login');
 //         			}
-                $dbobj = new Savings_Model_Savings();
+// // //                 $dbobj = new Savings_Model_Savings();
+// // // 
+// // //                     $status = $dbobj->getStatus('Savings');
+// // // 
+// // //                     if(!$status) {
+// // //                     $headerCon = "L";
+// // //                     $glsubcode = $dbobj->genarateGlCode('personal saving');
+// // //                     $glcode = $dbobj->getGlCodeid('personal saving');
+// // //                     $glcodeexist = $dbobj->getGlCodeexist('personal saving');
+// // //                     $glco=substr($glcodeexist, 1, 2);
+// // // 
+// // //                     if($glsubcode){
+// // //                         $first=substr($glsubcode, 0, 3);
+// // //                         $existcode=substr($glsubcode, 3, 3);
+// // //                         $existcode++;
+// // //                         $last = str_pad(($existcode),3,0,STR_PAD_LEFT);
+// // //                         $newglsubcode = $first.$last;                  
+// // //                     }
+// // //                     else{
+// // //                         $glcodeId=$headerCon.$glco."001";
+// // //                         $newglsubcode = $glcodeId;
+// // //                     }
+// // //                     $date=date("y/m/d H:i:s");
+// // //                     $ledgertype = $this->view->adm->getsingleRecord('ourbank_master_ledgertypes','id','name','Liabilities');// get the ledgertype for Liability
+// // //                     $officeid = $this->view->adm->getsingleRecord('ourbank_user','bank_id','id',$this->view->createdby);// get the ledgertype for Liability
+// // //                     // Insert glsubcode details
+// // //                     $glsubcodeid = $this->view->adm->addRecord('ourbank_glsubcode',
+// // //                                 array('id' => '',
+// // //                                         'office_id' => $officeid,
+// // //                                         'glsubcode' => $newglsubcode,
+// // //                                         'glcode_id' => $glcode,
+// // //                                         'subledger_id' => $ledgertype,
+// // //                                         'header' => 'Savings',
+// // //                                         'description' => 'Savings',
+// // //                                         'created_date' =>date("Y-m-d"),
+// // //                                         'created_by'=>$this->view->createdby));
+// // //                 }
+// // // 
+// // //                 $productvalues = $dbobj->getAllOffer('Savings');
+// // //                 $procuctid = $dbobj->getProductid('ps');
+// // // 
+// // //                 $name = 'Savings';
+// // //                 $desc = 'For savings products';
+// // //                     // If product offer not available we have to insert base offer details
+// // //                     if(empty($productvalues)){
+// // //                     $offerid = $this->view->adm->addRecord('ourbank_productsoffer',array('id' => '',
+// // //                         'name' => $name,'shortname' => 'sb',
+// // //                         'product_id' =>$procuctid,'description' => $desc,'begindate' => date("Y-m-d"),'closedate'=>'','applicableto' => 4,'glsubcode_id' => $glsubcodeid));
+// // // 
+// // //                     // Insert product saving details
+// // //                     $this->view->adm->addRecord('ourbank_productssaving',
+// // //                                 array('productsoffer_id' => $offerid,
+// // //                                         'frequencyofdeposit' => 1,
+// // //                                         'minmumdeposit' => 1,
+// // //                                         'minimumbalanceforinterest' => 1,
+// // //                                         'frequencyofinterestupdating' => 'AvgBalance',
+// // //                                         'Int_timefrequency_id' => 1)); 
+// // // 
+// // // //                     // Insert product saving details
+// // //                     $this->view->adm->addRecord('ourbank_interest_periods',
+// // //                                 array('id' => '',
+// // //                                         'period_ofrange_monthfrom' => 1,
+// // //                                         'period_ofrange_monthto' => 2,
+// // //                                         'period_ofrange_description' => '1-1 Months',
+// // //                                         'offerproduct_id' => $offerid,
+// // //                                         'Interest' => 1,
+// // //                                         'intereststatus_id' => 3));
+// // //                 
+// // // 
+// // //                 }
 
-                    $status = $dbobj->getStatus('Savings');
-
-                    if(!$status) {
-                    $headerCon = "L";
-                    $glsubcode = $dbobj->genarateGlCode('personal saving');
-                    $glcode = $dbobj->getGlCodeid('personal saving');
-                    $glcodeexist = $dbobj->getGlCodeexist('personal saving');
-                    $glco=substr($glcodeexist, 1, 2);
-
-                    if($glsubcode){
-                        $first=substr($glsubcode, 0, 3);
-                        $existcode=substr($glsubcode, 3, 3);
-                        $existcode++;
-                        $last = str_pad(($existcode),3,0,STR_PAD_LEFT);
-                        $newglsubcode = $first.$last;                  
-                    }
-                    else{
-                        $glcodeId=$headerCon.$glco."001";
-                        $newglsubcode = $glcodeId;
-                    }
-                    $date=date("y/m/d H:i:s");
-                    $ledgertype = $this->view->adm->getsingleRecord('ourbank_master_ledgertypes','id','name','Liabilities');// get the ledgertype for Liability
-                    $officeid = $this->view->adm->getsingleRecord('ourbank_user','bank_id','id',$this->view->createdby);// get the ledgertype for Liability
-                    // Insert glsubcode details
-                    $glsubcodeid = $this->view->adm->addRecord('ourbank_glsubcode',
-                                array('id' => '',
-                                        'office_id' => $officeid,
-                                        'glsubcode' => $newglsubcode,
-                                        'glcode_id' => $glcode,
-                                        'subledger_id' => $ledgertype,
-                                        'header' => 'Savings',
-                                        'description' => 'Savings',
-                                        'created_date' =>date("Y-m-d"),
-                                        'created_by'=>$this->view->createdby));
-                }
-
-                $productvalues = $dbobj->getAllOffer('Savings');
-                $procuctid = $dbobj->getProductid('ps');
-
-                $name = 'Savings';
-                $desc = 'For savings products';
-                    // If product offer not available we have to insert base offer details
-                    if(empty($productvalues)){
-                    $offerid = $this->view->adm->addRecord('ourbank_productsoffer',array('id' => '',
-                        'name' => $name,'shortname' => 'sb',
-                        'product_id' =>$procuctid,'description' => $desc,'begindate' => date("Y-m-d"),'closedate'=>'','applicableto' => 4,'glsubcode_id' => $glsubcodeid));
-
-                    // Insert product saving details
-                    $this->view->adm->addRecord('ourbank_productssaving',
-                                array('productsoffer_id' => $offerid,
-                                        'frequencyofdeposit' => 1,
-                                        'minmumdeposit' => 1,
-                                        'minimumbalanceforinterest' => 1,
-                                        'frequencyofinterestupdating' => 'AvgBalance',
-                                        'Int_timefrequency_id' => 1)); 
-
-//                     // Insert product saving details
-                    $this->view->adm->addRecord('ourbank_interest_periods',
-                                array('id' => '',
-                                        'period_ofrange_monthfrom' => 1,
-                                        'period_ofrange_monthto' => 2,
-                                        'period_ofrange_description' => '1-1 Months',
-                                        'offerproduct_id' => $offerid,
-                                        'Interest' => 1,
-                                        'intereststatus_id' => 3));
-                
-
-                }
-
-	 }
+// // // 	 }
 	 
 	public function indexAction() {
                 //  when delete particular saving product offer we should check that particular saving product offer is used by other one or not according to result we should delete that record if that saving product offer is used by some one then we should display message

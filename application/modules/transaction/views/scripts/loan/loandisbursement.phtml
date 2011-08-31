@@ -35,10 +35,10 @@
 							<td width="30%">Installments:</td><TD width="50%"><?php echo $this->loan_installments;?></TD>
 						</tr>
 						<tr>
-							<td width="30%">Sancioned loan amount R$ :</td><TD width="50%">R$. <?php echo $this->loan_amount;?></TD>
+							<td width="30%">Sancioned loan amount Rs :</td><TD width="50%">Rs. <?php echo $this->loan_amount;?></TD>
 						</tr>
 						<tr>
-							<td width="30%">loanAmount remaining R$:</td><TD width="50%">R$. <?php echo $this->loanamounttobesancioned;?></TD>
+							<td width="30%">loanAmount remaining Rs:</td><TD width="50%">Rs. <?php echo $this->loanamounttobesancioned;?></TD>
 						</tr>
 					</table>
 				</div>
@@ -52,14 +52,14 @@
 						<tr>
 							<th width="20%">Disbursement number</th>
 							<th width="40%">Disbursement date</th>
-							<th width="40%">AmountR$</th>
+							<th width="40%">Amount Rs</th>
 						<tr>
 						<?php if($this->fetchLoanAccountDetails)  { 
 						$i=1; foreach($this->fetchLoanAccountDetails as $arrayroles2) {	?>
 						<tr>
 							<td width="20%"><?php echo $i++;?></td>
 							<TD width="40%"><?php echo $arrayroles2['loandisbursement_date'];?></TD>
-							<TD width="40%">R$. <?php  echo $arrayroles2['amount_disbursed'];?></TD>
+							<TD width="40%">Rs. <?php  echo $arrayroles2['amount_disbursed'];?></TD>
 						</tr>
 						<?php }?>
 						<?php }?>
@@ -113,7 +113,7 @@
 								<?php echo $this->form2->transactionType_id; ?></TD>
 							</tr>
 							<tr class="tdbrown1">
-								<td width="30%">Amount R$ <span class="reqMark">*</span><B style='color:red'>*</b> </td>
+								<td width="30%">Amount Rs <span class="reqMark">*</span><B style='color:red'>*</b> </td>
 								<TD><?php echo $this->form2->Amount; ?></TD>
 							</TR>	
 							<tr class="tdbrown1">
@@ -162,7 +162,7 @@
 								<?php echo $this->form2->Amount1; ?></TD>
 							</tr>
 							<tr class="tdbrown1">
-								<td width="30%">Amount R$ <B style='color:red'>*</b> </td>
+								<td width="30%">Amount Rs <B style='color:red'>*</b> </td>
 								<TD><?php echo $this->disburasedamount; ?></TD>
 							</TR>	
 							<tr class="tdbrown1">

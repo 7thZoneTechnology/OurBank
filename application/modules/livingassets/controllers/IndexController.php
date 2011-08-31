@@ -82,9 +82,13 @@ class Livingassets_IndexController extends Zend_Controller_Action
             $i = 0;
             foreach($this->_getParam('assettype') as $val) {
                     if($date[$i]){
-                        $dates = $dateconvert->mysqlformat($date[$i]);
+                                if($date[$i] == NULL) { 
+                                     $dates = date("y/m/d H:i:s");
+                                } else { 
+                                     $dates = $dateconvert->mysqlformat($date[$i]);
+                                }
                     } else {
-                        $dates = '0000/00/00';
+                        $dates = date("y/m/d H:i:s");
                     }
                     if($value[$i]){
                         $values = $value[$i];
@@ -151,9 +155,13 @@ class Livingassets_IndexController extends Zend_Controller_Action
             $i = 0;
             foreach($this->_getParam('assettype') as $val) {
                    if($date[$i]){
-                        $dates = $dateconvert->mysqlformat($date[$i]);
+                                if(($date[$i] == "00/00/0000") or ($date[$i] == NULL)) { 
+                                     $dates = date("y/m/d H:i:s"); 
+                                } else { 
+                                     $dates = $dateconvert->mysqlformat($date[$i]);
+                                }
                     } else {
-                        $dates = '0000/00/00';
+                        $dates = date("y/m/d H:i:s");
                     }
                     if($value[$i]){
                         $values = $value[$i];
