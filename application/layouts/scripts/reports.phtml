@@ -99,6 +99,16 @@ $(document).ready(function() {
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/par">PAR</a></li>
     </ul>
     <?php } ?>
+
+      <?php if($this->type == "fieldReports") { ?>
+    <h4><a>Field Reports</a></h4>
+    <ul>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familyreport">GP Wise Family's</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregsreport">GP Wise Poverty & NREGS Cards</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expenincome">GP Wise Expenditure & income</a></li>
+
+    </ul>
+    <?php } ?>
   </div>
 
     <div id="pagecontent">
