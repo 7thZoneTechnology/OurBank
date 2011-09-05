@@ -17,11 +17,11 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-class Nregsreport_IndexController extends Zend_Controller_Action
+class Prareport_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle =$this->view->translate("Poverty & NREGS Report");
+        $this->view->pageTitle =$this->view->translate("Praservice Report");
         $this->view->tilte = $this->view->translate('Reports');
     	$this->view->type = "fieldReports";
         $storage = new Zend_Auth_Storage_Session();
@@ -46,20 +46,21 @@ class Nregsreport_IndexController extends Zend_Controller_Action
 //index action call individual index page...
     public function indexAction()
     {
-		$this->view->form = new Nregsreport_Form_Search();
-		$model = new Nregsreport_Model_Nregsreport();
+		$this->view->form = new Prareport_Form_Search();
+		$pramodel = new Prareport_Model_Prareport();
 
 		$gramapanchayat = $this->view->adm->viewRecord("ourbank_master_gillapanchayath","id","DESC");
 		foreach($gramapanchayat as $gramapanchayat){
-				$this->view->form ->nregs->addMultiOption($gramapanchayat['id'],$gramapanchayat['name']);
+				$this->view->form ->gramapanchayat->addMultiOption($gramapanchayat['id'],$gramapanchayat['name']);
 			}
+
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
              $formData = $this->_request->getPost();
-                 if ($this->view->form->isValid($formData)) {
+                 if ($this->view->form->isValid($formData)) { 
 
-                    $this->view->nregs = $nrega = $this->_request->getParam('nregs');
+					     $this->view->gramapanchayat = $praservice = $this->_request->getParam('gramapanchayat');
+						 $this->view->result = $pramodel->fetchDetails($praservice);
 
-					$this->view->result = $model->fetchDetails($nrega);
 
 			}
 		}

@@ -38,19 +38,19 @@
 <?php if ($this->result) { ?>
 
 		<table id="hor-minimalist-b" border="2">
-		<th width="5%">S.No</th><th>Gramapanchayat Name</th><th>Nregs Cards</th>
-		<th>Job Card No</th><th>APL</th><th>BPL</th><th>AAY</th><th>None</th>
+		<th width="5%">S.No</th><th>Gramapanchayat Name</th><th>Job Card No</th>
+		<th>APL</th><th>BPL</th><th>AAY</th><th>None</th><th>Nregs Cards</th>
 
 			<TR>
 			<?php $i=0; foreach($this->result as $familydeatails) $i++; {?>
 				<TD width="5%" align="center"><?php echo $i ?></TD>
-				<TD><?php  //echo $familydeatails['gpname'];?></TD>
-				<TD><?php // echo $familydeatails['totalcards'];?></TD>
+				<TD><?php  echo $familydeatails['name'];?></TD>
 				<TD><?php  //echo $familydeatails['jobcardno'];?></TD>
-				<TD><?php echo $familydeatails['second_condition'];?></TD>
-				<TD><?php echo $familydeatails['third_condition'];?></TD>
-				<TD><?php echo $familydeatails['fourth_condition'];?></TD>
-				<TD><?php echo $familydeatails['first_condition'];?></TD>
+				<TD><?php echo $familydeatails['APL'];?></TD>
+				<TD><?php echo $familydeatails['BPL'];?></TD>
+				<TD><?php echo $familydeatails['AAY'];?></TD>
+				<TD><?php echo $familydeatails['norationcard'];?></TD>
+				<TD><?php // echo $gpname['totalcards'];?></TD>
 			<?php } ?>
 			</TR>
 		</table>

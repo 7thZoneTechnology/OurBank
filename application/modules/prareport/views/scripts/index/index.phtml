@@ -1,0 +1,56 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+<!--search for individual member !-->
+<?php if (!$this->result) { ?>
+<fieldset>
+	<legend><?php echo $this->translate("Search Family"); ?></legend>
+		<form action="<?php echo $this->baseUrl();?>/prareport/index" method="POST">
+			<table width="100%" class="fieldsets">
+                            <TR>
+								<TD><label class="mand"><?php echo $this->translate("Grama Panchayat:"); ?></label></TD>
+                                <TD><?php echo $this->form->gramapanchayat;?></TD>
+                            </TR>
+                        </table>
+					<tr><TD></TD>
+						<TD><br><input type="submit" name="Search" value="Search"></TD>
+					</tr>
+
+	 </form>
+</fieldset>
+<?php } ?>
+
+<?php if ($this->result) { ?>
+	<table id="hor-minimalist-b">
+		<?php  foreach($this->result as $pradetails) {?>
+		<TH>Grama Panchayat Name :<font color="green"> <?php echo $this->gramapanchayat;?></font></TH>
+	</table>
+	<table id="hor-minimalist-b" border="2">
+		<th width="5%">S.No</th><th>Service Sector</th><th>No of Members</th>
+		<tr><TD align="center">1</TD><TD>Widow Pension</TD><TD><?php  echo $pradetails['wpension'];?></TD></tr>
+		<tr><TD align="center">2</TD><TD>Housing Construction/Repair</TD><TD><?php  echo $pradetails['hcrepair'];?></TD></tr>
+		<tr><TD align="center">3</TD><TD>Ration Card</TD><TD><?php  echo $pradetails['rcard'];?></TD></tr>
+		<tr><TD align="center">4</TD><TD>Old Age Pension</TD><TD><?php  echo $pradetails['oapension'];?></TD></tr>
+		<tr><TD align="center">5</TD><TD>Disability Pension</TD><TD><?php  echo $pradetails['dpension'];?></TD></tr>
+		<tr><TD align="center">6</TD><TD>NREGS Job Card</TD><TD><?php  echo $pradetails['nregs'];?></TD></tr>
+		<tr><TD align="center">7</TD><TD>Skills Training</TD><TD><?php  echo $pradetails['skills'];?></TD></tr>
+		<tr><TD align="center">8</TD><TD>J2G</TD><TD><?php  echo $pradetails['j2g'];?></TD></tr>
+		<tr><TD align="center">9</TD><TD>Health Insurance</TD><TD><?php  echo $pradetails['Hinsurance'];?></TD></tr>
+		<tr><TD align="center">10</TD><TD>Sanitation</TD><TD><?php  echo $pradetails['Sanitation'];?></TD></tr>
+		<?php } }?>
+	</table>

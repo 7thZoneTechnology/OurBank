@@ -26,45 +26,44 @@ class Nregsreport_Model_Nregsreport extends Zend_Db_Table
 
  public function fetchDetails($gilla_id)
     {
-//         $select = $this->select()
-//             ->setIntegrityCheck(false)  
-// 			->from(array('f' => 'ourbank_master_village'),array('f.id','f.panchayath_id'))
-//             ->join(array('a' => 'ourbank_master_gillapanchayath'),'f.panchayath_id = a.id',array('SUM(a.id)','a.name as gpname'))
-// 
-//             ->joinLeft(array('b' => 'ourbank_family'),'f.village_id = b.village_id',array('COUNT(b.ration_id) as totalcards','COUNT(b.nregs_jobno!=null) as jobcardno'))
-// 			->where('a.id = "'.$gilla_id.'"');
-// 
-//                //  die($select->__toString());
-//                 $result = $this->fetchAll($select);
-//                 return $result->toArray();
-
          $db = $this->getAdapter();
+	     $sql = "SELECT
 
-       $sql = "SELECT
+(SELECT COUNT(ration_id) FROM ourbank_family
 
-(SELECT COUNT(ration_id) FROM ourbank_family 
-	join ourbank_master_village on ourbank_family.village_id = ourbank_master_village.village_id
-	join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
-	 WHERE ourbank_family.ration_id = 1 and ourbank_master_gillapanchayath.id = $gilla_id) AS first_condition,
+    join ourbank_master_villagelist on ourbank_family.rev_village_id = ourbank_master_villagelist.village_id
+    join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_villagelist.panchayath_id
 
-(SELECT COUNT(ration_id) FROM ourbank_family 
-	join ourbank_master_village on ourbank_family.village_id = ourbank_master_village.village_id
-	join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
-	 WHERE ourbank_family.ration_id = 2 and ourbank_master_gillapanchayath.id = $gilla_id) AS second_condition,
+     WHERE ourbank_family.ration_id = 1 and ourbank_master_gillapanchayath.id = $gilla_id) AS norationcard,
 
-(SELECT COUNT(ration_id) FROM ourbank_family 
-	join ourbank_master_village on ourbank_family.village_id = ourbank_master_village.village_id
-	join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
-	 WHERE ourbank_family.ration_id = 3 and ourbank_master_gillapanchayath.id = $gilla_id) AS third_condition ,
+(SELECT COUNT(ration_id) FROM ourbank_family
 
-(SELECT COUNT(ration_id) FROM ourbank_family 
-	join ourbank_master_village on ourbank_family.village_id = ourbank_master_village.village_id
-	join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
-	 WHERE ourbank_family.ration_id = 4 and ourbank_master_gillapanchayath.id = $gilla_id
-) AS fourth_condition
+    join ourbank_master_villagelist on ourbank_family.rev_village_id = ourbank_master_villagelist.village_id
+    join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_villagelist.panchayath_id
 
-FROM ourbank_family group by ration_id limit 0,1 AND ";
+     WHERE ourbank_family.ration_id = 2 and ourbank_master_gillapanchayath.id = $gilla_id) AS APL,
 
+(SELECT COUNT(ration_id) FROM ourbank_family
+
+    join ourbank_master_villagelist on ourbank_family.rev_village_id = ourbank_master_villagelist.village_id
+    join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_villagelist.panchayath_id
+
+     WHERE ourbank_family.ration_id = 3 and ourbank_master_gillapanchayath.id = $gilla_id) AS BPL ,
+
+(SELECT COUNT(ration_id) FROM ourbank_family
+
+    join ourbank_master_villagelist on ourbank_family.rev_village_id = ourbank_master_villagelist.village_id
+    join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_villagelist.panchayath_id
+
+     WHERE ourbank_family.ration_id = 4 and ourbank_master_gillapanchayath.id = $gilla_id
+) AS AAY,ourbank_master_gillapanchayath.name
+
+
+FROM ourbank_family
+join ourbank_master_villagelist on ourbank_family.rev_village_id = ourbank_master_villagelist.village_id
+join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_villagelist.panchayath_id where ourbank_master_gillapanchayath.id= $gilla_id limit 0,1 ";
+
+//echo $sql;
         $result = $db->fetchAll($sql);
         return $result;
     }
