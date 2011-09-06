@@ -1,0 +1,120 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+<?php if($this->savingsCredit) { ?>
+<h1><b><?php echo "Level: ".$this->name; ?></b></h1>
+<h5 align="right"><?php echo $this->translate('Date From'); ?> <?php echo "<font color='#039'>".$this->date1."</font>"; ?></h5> 
+<h5 align="right"><?php echo $this->translate('Date To'); ?> <?php echo "<font color='#039'>".$this->date2."</font>"; ?></h5> 
+
+<h5 style="text-align:right">* <?php echo $this->translate("Amount in"); ?>  <font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
+
+
+<div style="float:left;width:370px">
+            <?php 
+              $i = 1;
+            
+            ?>
+
+<h5><?php echo $this->translate("Credit"); ?></h5>
+    <table id="hor-minimalist-b">
+        <TR>
+            <TH ><?php echo $this->translate("Sl No."); ?></TH>
+            <TH ><?php echo $this->translate("Particulars"); ?></TH>
+            <TH ><?php echo $this->translate("Amount"); ?></TH>
+      </TR>
+<tr>
+<?php foreach($this->savingsCredit as $income) {?>
+<td><?php echo $i; ?></td>
+
+<td><?php echo $income['incomename']; ?></td>
+<td><?php echo $income['value']; ?></td>
+
+</tr>
+<?php $i++; }?>
+    </table>
+  </div>
+
+
+
+<?php } else { ?>
+<div id="searchDiv">
+    <fieldset>
+        <legend><?php echo $this->translate("Search"); ?></legend>
+ <form action="<?php echo $this->baseUrl();?>/expensereport" method="POST">
+             <table width="100%">
+               
+                 
+  <tr>
+							<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+ 							
+</tr><tr>
+
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+							
+
+</tr>
+
+<tr id="hide">
+							<TD><?php echo $this->translate('Group'); ?></td>
+                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
+
+
+
+
+</tr>
+                       <td><input type="submit" name="Search" value="<?php echo $this->translate('Search');?>"> </td>
+                       <td></td> 
+                   </tr>
+                
+            </table>
+       </form>
+</fieldset>
+</div>
+
+<?php } ?>
+
+

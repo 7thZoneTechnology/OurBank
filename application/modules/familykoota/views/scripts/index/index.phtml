@@ -1,0 +1,74 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+<!--search for individual member !-->
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+
+<?php if (!$this->result) { ?>
+<fieldset>
+	<legend><?php echo $this->translate("Search Family"); ?></legend>
+		<form action="<?php echo $this->baseUrl();?>/familykoota/index" method="POST">
+			<table width="100%">
+                        <tr align="center"><td><?php echo $this->translate('Hierarchy :'); ?></td>
+                            <td id="show" align="left"><?php echo $this->form->hierarchy;?></td></tr>
+						<tr align="center"><td><br><?php echo $this->translate('Branch :'); ?></td>
+                            <td align="left"><br><div id="statediv"><?php echo $this->form->branch;?></div></td></tr>
+					<tr align="center"><td><br><input type="submit" name="Search" value="Search"></td>
+					</tr>
+           </table>
+
+
+	 </form>
+</fieldset>
+<?php } ?>
+
+<?php if ($this->result) { ?>
+	<table id="hor-minimalist-b" border="2">
+		<th width="5%">S.No</th><th>Village Name</th>
+		<th>No of Family</th><th width="20%">Individual</th><th>No of Group</th>
+			<TR>
+				<?php $i=1; foreach($this->result as $familydeatails) {?>
+				<TD width="5%" align="center"><?php echo $i ?></TD>
+				<TD><font color="green"><?php  echo $familydeatails['village'];?></font></TD>
+				<TD width="15%" align="center"><?php  echo $familydeatails['countfamily'];?></TD>
+				<TD width="15%" align="center"><?php  echo $familydeatails['indimember'];?></TD>
+				<TD width="15%" align="center"><?php  echo $familydeatails['groupmem'];?></TD>
+			</TR>
+			<?php $i++; } }?>
+	</table>
+
