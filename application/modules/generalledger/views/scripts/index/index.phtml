@@ -23,12 +23,7 @@ function getlevels(hierarchy,path) {
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
-// // function getgroups(branch,path) {
-// // 	if(branch) {
-// // 		targeturl=path+"/cashscroll/index/group?branch="+branch;
-// // 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
-// // 	}
-// // }
+
 $(document).ready(function() {
 $('#show').change(function(){
 var va = $('#hierarchy').val();
@@ -40,7 +35,6 @@ $("#hide").show();
 }
 });
 });
-
 </script>
 <?php
 if($this->search == 0) { ?>   

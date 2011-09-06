@@ -16,14 +16,14 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script> 
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
-
 
 <script>
 $(document).ready(function() {
@@ -105,11 +105,23 @@ $(document).ready(function() {
     <ul>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familyreport">GP Wise Family's</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregsreport">GP Wise Poverty & NREGS Cards</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expenincome">GP Wise Expenditure & income</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/prareport">GP Wise PRA Service</a></li>
-
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/incomereport">GP Wise income</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expensereport">GP Wise expense</a></li>
     </ul>
     <?php } ?>
+
+<?php if($this->type == "kootaReports") { ?>
+    <h4><a>Koota Reports</a></h4>
+    <ul>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familykoota">Koota Wise Family's</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregsreport">Koota Wise Poverty & NREGS Cards</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/prareport">Koota Wise PRA Service</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/incomereport">Koota Wise income</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expensereport">Koota Wise expense</a></li>
+    </ul>
+    <?php } ?>
+
   </div>
 
     <div id="pagecontent">

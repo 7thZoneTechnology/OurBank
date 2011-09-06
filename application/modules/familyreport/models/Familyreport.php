@@ -30,12 +30,15 @@ class Familyreport_Model_Familyreport extends Zend_Db_Table
                     ->setIntegrityCheck(false)  
 					->from(array('f' => 'ourbank_master_village'),array('f.id','f.panchayath_id'))
                     ->join(array('a' => 'ourbank_master_gillapanchayath'),'f.panchayath_id = a.id',array('SUM(a.id)','a.name as gpname'))
-                    ->joinLeft(array('b' => 'ourbank_family'),'f.village_id = b.village_id',array('COUNT(b.id) as totalfamily'))
-                    ->joinLeft(array('c' => 'ourbank_familymember'),'f.village_id = c.village_id',array('COUNT(c.id) as totalmember'))
-                    ->joinLeft(array('d' => 'ourbank_group'),'f.village_id = d.village_id',array('COUNT(d.id) as totalgroup'))
+                    ->joinLeft(array('b' => 'ourbank_family'),'f.village_id = b.rev_village_id',array('COUNT(b.rev_village_id) as totalfamily'))
+
+                    ->joinLeft(array('c' => 'ourbank_familymember'),'b.village_id = c.family_id',array('COUNT(c.village_id) as totalmember'))
+			        ->join(array('e' => 'ourbank_groupmembers'),'c.id  = e.member_id',array('e.id as groupmemid'))
+
+                    ->joinLeft(array('d' => 'ourbank_group'),'e.group_id = d.id',array('COUNT(d.village_id) as totalgroup'))
 					->where('a.id = "'.$gilla_id.'"');
 
-               //  die($select->__toString());
+//                 die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
     }

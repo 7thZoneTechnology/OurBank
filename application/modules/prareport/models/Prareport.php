@@ -87,7 +87,13 @@ class Prareport_Model_Prareport extends Zend_Db_Table
 		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
 		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
 		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
-		where ourbank_praservice.source_id = 10 and ourbank_master_village.panchayath_id = $gilla_id) AS Sanitation";
+		where ourbank_praservice.source_id = 10 and ourbank_master_village.panchayath_id = $gilla_id) AS Sanitation,ourbank_master_gillapanchayath.name
+
+		FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_master_gillapanchayath.id= $gilla_id limit 0,1 ";
 
 // 		echo $sql;
         $result = $db->fetchAll($sql);
