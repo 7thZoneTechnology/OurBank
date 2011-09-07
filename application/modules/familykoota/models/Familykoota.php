@@ -46,8 +46,9 @@ class Familykoota_Model_Familykoota extends Zend_Db_Table
                 ->joinLeft(array('e' => 'ourbank_group'),'e.id  = c.group_id',array('COUNT(e.village_id) as groupmem'))
 				->joinLeft(array('d' =>'ourbank_master_villagelist'),'a.rev_village_id = d.village_id',array('d.name as village'))
 				->group('d.id');
-            // die($select->__toString($select));
+//             die($select->__toString($select));
         return $this->fetchAll($select);}break;
+
 
 				case '4':
 			    {   $select = $this->select()

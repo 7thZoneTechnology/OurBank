@@ -17,12 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-/*
- *  create an view controller
- */
 class Officecommonview_IndexController extends Zend_Controller_Action
 {
     public function init() 

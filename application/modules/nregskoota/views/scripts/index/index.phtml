@@ -17,43 +17,65 @@
 ############################################################################
 !-->
 <!--search for individual member !-->
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+
 <?php if (!$this->result) { ?>
 <fieldset>
-	<legend><?php echo $this->translate("Search"); ?></legend>
-		<form action="<?php echo $this->baseUrl();?>/nregsreport/index" method="POST">
-			<table width="100%" class="fieldsets">
-                            <TR>
-								<TD><label class="mand"><?php echo $this->translate("Grama Panchayat:"); ?></label></TD>
-                                <TD><?php echo $this->form->nregs;?></TD>
-                            </TR>
-                        </table>
-					<tr><TD></TD>
-						<TD><br><input type="submit" name="Search" value="Search"></TD>
+	<legend><?php echo $this->translate("Search Family"); ?></legend>
+		<form action="<?php echo $this->baseUrl();?>/nregskoota/index" method="POST">
+			<table width="100%">
+                        <tr align="center"><td><?php echo $this->translate('Hierarchy :'); ?></td>
+                            <td id="show" align="left"><?php echo $this->form->hierarchy;?></td></tr>
+						<tr align="center"><td><br><?php echo $this->translate('Branch :'); ?></td>
+                            <td align="left"><br><div id="statediv"><?php echo $this->form->branch;?></div></td></tr>
+					<tr align="center"><td><br><input type="submit" name="Search" value="Search"></td>
 					</tr>
+           </table>
+
 
 	 </form>
 </fieldset>
 <?php } ?>
 
+
 <?php if ($this->result) { ?>
 
 		<table id="hor-minimalist-b" border="2">
-		<th width="5%">S.No</th><th>Gramapanchayat Name</th><th>Job Card No</th>
+		<th width="5%">S.No</th><th>Village Name</th><th>Job Card No</th>
 		<th>APL</th><th>BPL</th><th>AAY</th><th>None</th><th>Nregs Cards</th>
-			<?php $i=1; foreach($this->result as $familydeatails){?>
-
+			<?php $i=1; foreach($this->result as $familydeatails) {?>
 			<TR>
 				<TD width="5%" align="center"><?php echo $i ?></TD>
-				<TD><?php  echo $familydeatails['name'];?></TD>
-				<TD><?php  //echo $familydeatails['jobcardno'];?></TD>
+				<TD><font color="green"><?php echo $familydeatails['village'];?></font></TD>
+				<TD align="center"><?php  echo $familydeatails['jobcardno'];?></TD>
 				<TD align="center"><?php echo $familydeatails['APL'];?></TD>
 				<TD align="center"><?php echo $familydeatails['BPL'];?></TD>
 				<TD align="center"><?php echo $familydeatails['AAY'];?></TD>
 				<TD align="center"><?php echo $familydeatails['norationcard'];?></TD>
 				<TD align="center"><?php echo $totalcount = $familydeatails['APL'] + $familydeatails['BPL'] + $familydeatails['AAY'];?></TD>
 			</TR>
-			<?php $i++;  } ?>
+			<?php $i++; } ?>
 
-		</table>
+		</table><br>
 
 <?php } ?>
