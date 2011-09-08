@@ -39,7 +39,6 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 
                                 ->join(array('F'=>'ourbank_office'),'F.id = E.village_id',array('F.name as officename'))
                                      ->where('F.id = "'.$office_id.'"')
-                                     ->group('B.name')
                                      ->order('D.name');
 //                  die($select->__toString());
                 $result = $this->fetchAll($select);
@@ -49,7 +48,7 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 				case '3': {
                 $select = $this->select()
                                 ->setIntegrityCheck(false)  
-                                ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
+                                ->joinleft(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
 
                                 ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id',array('C.product_id'))
                                      ->where('C.status_id = 3 || C.status_id = 1')
@@ -62,8 +61,7 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 
                                 ->from(array('F'=>'ourbank_office'))
                                      ->where('F.parentoffice_id = "'.$office_id.'"')
-                                     ->group('B.name')
-                                     ->order('D.name');
+                                    ->order('D.name');
 //                   die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();

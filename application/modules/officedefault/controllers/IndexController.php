@@ -340,7 +340,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
         }
 
-        $panchayath = $office->getpanchayathlist($address[0]['taluk_id']);
+        $panchayath = $office->getpanchayathlist($address[0]['hobli_id']);
         foreach($panchayath as $panchayath1){
         $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
         }
@@ -384,7 +384,7 @@ echo $typeid;
                   $office->updatevillage($office_id,array(
                                                 'taluk_id' => $this->_request->getParam('taluque'),
                                                 'district_id'=>$this->_request->getParam('district'),
-                                                'panchayath_id' => $this->_request->getParam('panchayath'),
+                                                'panchayath_id' =>$this->_request->getParam('panchayath'),
                                                 'hobli_id' => $this->_request->getParam('hobli'),
                                                 'created_date' =>$createdate,'created_by'=>$this->view->createdby));
                } 

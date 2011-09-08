@@ -1,0 +1,106 @@
+
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<script type="text/javascript">
+function getInterests(officetype_id,path) 
+{
+	if(officetype_id) {
+                targeturl=path+"/user/index/suboffice?officetype_id="+officetype_id;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+</script>
+
+<fieldset>
+<!--  delete button  !-->
+	<legend>Edit user information <a href="<?php echo $this->baseUrl();?>/user/index/delete/id/<?php echo $this->id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" border=0 width="16" height="16"></a></legend>
+
+<!-- edit form action  !-->
+<form action="<?php echo $this->baseUrl();?>/user/index/edituserdetail/id/<?php echo $this->id; ?>" method="POST">
+	<table class="fieldsets">
+				
+			<?php echo $this->form->fee_id;?>
+<!--			<?php echo $this->form;?> -->
+
+                <div class="register">
+                     <div class="profile_tab">
+
+                    </div>
+                </div>
+        </table>
+
+ 
+
+        <table class="fieldsets">
+                <div class="register">
+                    <div class="profile_tab"> 
+                        <tr>
+                           <td width="50%"> </td>  <td width="50%"><?php  echo $this->form->name;?></td>
+                        </tr>
+                        <tr>
+                           <td width="50%"> </td> <td><?php echo $this->form->officetype; ?></td>
+                        </tr>
+               		<tr>
+        		<!-- displaying the office branches after the office type is selected and passed through jquery -->
+       			<!-- refers suboffice.phtml -->
+       			<td width="50%">&nbsp;&nbsp;&nbsp;Office</td>
+        		<td> <div id="statediv"><?php echo $this->form->bank_id; ?> </div></td>
+    			</tr>
+                        <tr>
+                           <td width="50%"> </td> <td> <?php echo $this->form->gender; ?> </td> 
+                        </tr>
+                        <tr>
+                           <td width="50%"> </td> <td><?php echo $this->form->designation; ?></td>
+                        </tr>
+   <!--                     <tr>
+                           <td width="50%"> </td> <td><?php echo $this->form->department; ?></td>
+                        </tr>
+                        <tr>
+                           <td width="50%"> </td> <td><?php echo $this->form->grant_id; ?></td>
+                        </tr> -->
+                        <tr>
+                           <td width="50%"> </td> <td><?php echo $this->form->username; ?></td>
+                        </tr>
+                        <tr>
+                           <td width="50%"> </td> <td><?php echo $this->form->password; ?></td>
+                        </tr>
+		        <tr>
+                        <td><?php echo $this->form->createdby; echo $this->form->createddate; ?></td>
+		        </tr>
+                        <td></td>
+			<td><B style='color:red'><?php echo $this->error; ?></B></td>
+		        </tr>
+                    </div>
+               </div>
+        </table>
+
+
+            <div class="btnhouse">
+			<div class="ltbtns">
+<!-- update button  !-->
+			<input type="submit" name="Update" id="Update" value="<?php echo $this->translate("Update"); ?>">                  </div>
+			<div class="rtbtns">
+<!-- back button !-->
+			<a href="<?php echo $this->baseUrl();?>/usercommonview/index/commonview/id/<?php echo $this->id; ?>"><input type="submit" name="back" id="back" value="<?php echo $this->translate("Back"); ?>"></a>
+			</div>
+
+            </div>
+	</form>
+</fieldset>

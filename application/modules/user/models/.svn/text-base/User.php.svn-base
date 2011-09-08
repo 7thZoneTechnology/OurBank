@@ -1,0 +1,281 @@
+<?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
+class User_Model_User extends Zend_Db_Table
+{
+    protected $_name = 'ourbank_user';
+
+
+//     // search function
+//     public function getUserDetails() 
+//     {
+//         $select = $this->select()
+//             ->setIntegrityCheck(false)
+//             ->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
+//             ->join(array('b'=>'ourbank_master_designation'),'a.designation = b.id',array('name as desi_name'))
+//             ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id',array('name as name'))
+//             ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'));
+// 
+//       //die($select->__toString());	
+//            return $this->fetchAll($select);
+//     }
+
+    // view function
+    public function getUser($id) 
+    {
+
+        $select = $this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_user'),array('a.id'),array('name as username','id as userid','password','username as usename'))
+                ->where('a.id='.$id)
+                ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id',array('name as officename'))
+                ->join(array('b'=>'ourbank_master_designation'),'a.designation = b.id',array('name as desi_name'))
+                ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+
+    // view module
+    public function getmodule($modulename)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('ourbank_modules'),array('module_id'))
+                ->where('module_description=?',$modulename);
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+        //die ($select->__toString($select));
+    }
+
+    public function userSearch($post = array())
+    {
+
+          $keyvalue = array_filter($post);
+            $searchcounter = count($keyvalue);
+            if($searchcounter > 0) {
+                $select = $this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
+                    ->where('a.name like "%" ? "%"',$post['s1'])
+                    ->where('a.designation like "%" ? "%"',$post['s2'])
+                    ->where('a.bank_id like "%" ? "%"',$post['s3'])
+                    // ->where('e.id like "%" ? "%"',$post['bank'])
+                        // ->where('e.id like "%" ? "%"',$post['grant_id'])
+                    ->join(array('b'=>'ourbank_master_designation'),'a.designation = b.id',array('name as desi_name'))
+                    ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id',array('name as name'))
+                    ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'));
+                    //die($select->__toString());	
+                $result = $this->fetchAll($select);
+                return $result->toArray();
+        } else {
+           $select = $this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_user'),array('id'),array('name as username','id as userid'))
+            ->join(array('b'=>'ourbank_master_designation'),'a.designation = b.id',array('name as desi_name'))
+            ->join(array('c'=>'ourbank_office'),'a.bank_id = c.id',array('name as name'))
+            ->join(array('d'=>'ourbank_master_gender'),'a.gender = d.id',array('name as sex'));
+
+      //die($select->__toString());	
+           return $this->fetchAll($select);
+        }
+
+    }
+
+    //view personal details
+    public function getpersonal($id)
+        {
+            $select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ob_personal_details'),array('id'))
+                    ->where('id=?',$id);
+            $result=$this->fetchAll($select);
+            return $result->toArray();
+        //die ($select->__toString($select));
+        }
+
+
+    //view address details
+    public function getaddress($id)
+        {
+            $select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_address'),array('id'))
+                    ->where('id=?',$id);
+        //  die ($select->__toString($select));
+            $result=$this->fetchAll($select);
+            return $result->toArray();
+        }
+
+
+    //view contact details
+    public function getcontact($id)
+        {
+            $select=$this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_contact'),array('id'))
+                    ->where('id=?',$id);
+        //  die ($select->__toString($select));
+            $result=$this->fetchAll($select);
+            return $result->toArray();
+        }
+
+
+    //Get the office names
+        public function getofficename($id)
+        {
+            $select = $this->select()
+                    ->setIntegrityCheck(false)
+                    ->join(array('a'=>'ourbank_user'),array('a.id'),array('id as id'))
+                    ->where('a.id=' .$id)
+                    ->join(array('b' =>'ourbank_office_child'),'a.id = b.id')
+                    ->join(array('c'=>'ourbank_office'),'b.bank_id = c.id','name as officename');
+
+        // die($select->__toString($select));
+            $result=$this->fetchAll($select);
+        return $result->toArray();
+        }
+
+    //view the office types
+        public function officehierarchyselect() 
+        {
+
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = "SELECT * FROM ourbank_office WHERE id = 1";
+            $result = $this->db->fetchAll($sql,array());
+            return $result;
+        }
+
+
+         //view the office types previously assigned to a user for edit purpose
+        public function getSelectedOfficeType($id) 
+        {
+
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = "SELECT parentoffice_id FROM ourbank_office WHERE id in (select bank_id from ourbank_office_child where id = $id)";
+            $result = $this->db->fetchAll($sql,array());
+            return $result;
+        }
+
+        //get the office type
+        public function getOffice()
+        {
+                $select = $this->select()
+                        ->setIntegrityCheck(false)
+                        ->join(array('a' => 'ourbank_office'),array('a.name,a.short_name'))
+                        ->join(array('c'=>'ourbank_officehierarchy'),'a.officetype_id = c.id','c.type');
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+        }
+        
+        public function findofficename($officeid)
+        {
+        $select = $this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a' => 'ourbank_office'),array('a.name,a.short_name'))
+	->where('a.officetype_id=?',$officeid);
+	//die($select->__toString($select));
+        $result = $this->fetchAll($select);
+        return $result->toArray();
+        }
+    
+        //get the office hierarchy details
+        public function getOfficehierarchyDetailsout()
+        {
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = "SELECT * FROM ourbank_officehierarchy";
+            $result = $this->db->fetchAll($sql,array());
+            return $result;
+        }
+
+        //get the office hierarchy details
+        public function getOfficehierarchyDetails()
+            {
+            $result = $this->fetchAll();
+            return $result; 
+            }
+
+        //to find the last level of id in hierarchy table
+        public function findlastlevel()
+            {
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = "SELECT MAX(id) as lastid FROM `ourbank_officehierarchy`";
+            $result = $this->db->fetchAll($sql,array());
+            return $result;
+            }
+
+        //to get the office type id for the corresponding hierarchy table
+        public function officetypeid($hierarchylevel) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id  FROM ourbank_officehierarchy WHERE Hierarchy_level = $hierarchylevel";
+        $result = $this->db->fetchAll($sql,array($hierarchylevel));
+        return $result;
+    	}
+
+        //to get the name of the branches for the corresponding office type id
+        public function office_branches($hierarchylevel) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name FROM ourbank_office WHERE officetype_id = $hierarchylevel";
+        $result = $this->db->fetchAll($sql,array($hierarchylevel));
+        return $result;
+    	}
+
+        //to get the suboffice from url
+        public function subofficeFromUrl($officetype_id) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT name,id FROM ourbank_office WHERE officetype_id = $officetype_id";
+        $result = $this->db->fetchAll($sql,array($officetype_id));
+        return $result;
+    	}
+
+        //select office type
+	public function officetypename($officetype_id) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT type,id FROM ourbank_officehierarchy WHERE id = $officetype_id";
+        $result = $this->db->fetchAll($sql,array($officetype_id));
+        return $result;
+    	}
+
+        //select hierarchy wise office
+	public function hierarchylevel($officetype_id) {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT IF(Hierarchy_level=1,Hierarchy_level,Hierarchy_level-1) as hierarchylevel  FROM ourbank_officehierarchy WHERE id = $officetype_id";
+        $result = $this->db->fetchAll($sql,array($officetype_id));
+        return $result;
+    	}
+
+        public function getOfficeTypeId($id)
+        {
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+            $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $sql = "select distinct officetype_id from ourbank_office where id=$id";
+                       $result = $this->db->fetchAll($sql,array($id));
+            return $result;
+        }
+
+}

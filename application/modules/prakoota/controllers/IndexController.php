@@ -21,9 +21,9 @@ class Prakoota_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle =$this->view->translate("Praservice Report for Koota");
+        $this->view->pageTitle =$this->view->translate("Praservice Report for GP & Koota");
         $this->view->tilte = $this->view->translate('Reports');
-    	$this->view->type = "kootaReports";
+    	$this->view->type = "fieldReports";
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
@@ -50,10 +50,7 @@ class Prakoota_IndexController extends Zend_Controller_Action
 		$this->view->form = $searchForm = new Prakoota_Form_Search($path);
 		$pramodel = new Prakoota_Model_Prakoota();
 
-					    $officename = $pramodel->getHier();
-		foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
+		$searchForm->hierarchy->addMultiOptions(array( '3'=>'Koota', '4'=>'Village','5'=>'Gilla panchayath'));
 
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	        $formData = $this->_request->getPost(); 
@@ -66,4 +63,18 @@ class Prakoota_IndexController extends Zend_Controller_Action
 			}
 		}
 	}
+ 	public function sublevelAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+		$this->view->form = $searchForm = new Prakoota_Form_Search($path);
+
+        $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
+        $pramodel = new Prakoota_Model_Prakoota();
+        $officelevel = $pramodel->subofficeFromUrl($hierarchy);
+  			foreach($officelevel as $officetype) { 
+        $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
+
 }

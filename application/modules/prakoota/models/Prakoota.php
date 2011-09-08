@@ -172,15 +172,104 @@ class Prakoota_Model_Prakoota extends Zend_Db_Table
         $result = $db->fetchAll($sql);
         return $result;
 			}break;
+		case '5':
+		{	$db = $this->getAdapter();
+		     $sql = "SELECT
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 1 and ourbank_master_village.panchayath_id = $gilla_id) AS wpension,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 2 and ourbank_master_village.panchayath_id = $gilla_id) AS hcrepair,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 3 and ourbank_master_village.panchayath_id = $gilla_id) AS rcard,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 4 and ourbank_master_village.panchayath_id = $gilla_id) AS oapension,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 5 and ourbank_master_village.panchayath_id = $gilla_id) AS dpension,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 6 and ourbank_master_village.panchayath_id = $gilla_id) AS nregs,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 7 and ourbank_master_village.panchayath_id = $gilla_id) AS skills,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 8 and ourbank_master_village.panchayath_id = $gilla_id) AS j2g,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 9 and ourbank_master_village.panchayath_id = $gilla_id) AS Hinsurance,
+
+		(SELECT count(source_id) FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_praservice.source_id = 10 and ourbank_master_village.panchayath_id = $gilla_id) AS Sanitation,ourbank_master_gillapanchayath.name as village
+
+		FROM ourbank_praservice
+		join ourbank_family on ourbank_praservice.member_id = ourbank_family.id
+		join ourbank_master_village on ourbank_master_village.village_id = ourbank_family.rev_village_id
+		join ourbank_master_gillapanchayath on ourbank_master_gillapanchayath.id = ourbank_master_village.panchayath_id
+		where ourbank_master_gillapanchayath.id= $gilla_id limit 0,1 ";
+
+// 		echo $sql;
+        $result = $db->fetchAll($sql);
+        return $result;
 		}
 	}
-		public function getHier() {
-		$select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
-                ->where('a.id !=1 AND id !=2');
-// 		die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
+}
+	public function subofficeFromUrl($hierarchy) {
+	   switch($hierarchy){
+		case '3':{
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_office WHERE officetype_id = $hierarchy";
+        $result = $this->db->fetchAll($sql,array($hierarchy));
+        return $result;   	}break;
+
+		case '4':{
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_office WHERE officetype_id = $hierarchy";
+        $result = $this->db->fetchAll($sql,array($hierarchy));
+        return $result; 	}break;
+
+		case '5':{
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "SELECT id,name  FROM ourbank_master_gillapanchayath";
+        $result = $this->db->fetchAll($sql,array($hierarchy));
+        return $result;}break;
+		}
 	}
 }

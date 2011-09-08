@@ -20,7 +20,7 @@
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
 	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		targeturl=path+"/incomereport/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }
@@ -45,10 +45,8 @@ $("#hide").show();
 </script>
 <?php if($this->savingsCredit) { ?>
 <h1><b><?php echo "Level: ".$this->name; ?></b></h1>
-<h5 align="right"><?php echo $this->translate('Date From'); ?> <?php echo "<font color='#039'>".$this->date1."</font>"; ?></h5> 
-<h5 align="right"><?php echo $this->translate('Date To'); ?> <?php echo "<font color='#039'>".$this->date2."</font>"; ?></h5> 
+<h5 align="right"><?php echo $this->translate('Name'); ?></h5>
 
-<h5 style="text-align:right">* <?php echo $this->translate("Amount in"); ?>  <font color="red"><?php echo $this->translate("Rs"); ?></font></h5>
 
 
 <div style="float:left;width:370px">
@@ -57,25 +55,31 @@ $("#hide").show();
             
             ?>
 
-<h5><?php echo $this->translate("Credit"); ?></h5>
     <table id="hor-minimalist-b">
         <TR>
             <TH ><?php echo $this->translate("Sl No."); ?></TH>
             <TH ><?php echo $this->translate("Particulars"); ?></TH>
             <TH ><?php echo $this->translate("Amount"); ?></TH>
       </TR>
-<tr>
-<?php foreach($this->savingsCredit as $income) {?>
-<td><?php echo $i; ?></td>
+<?php $i=1;
+	foreach($this->income as $incomemaster){ ?>
+	<tr>
+		<TD><?php echo $incomemaster['id']; ?></TD>
+		<TD><?php echo $incomemaster['name']; ?></TD>
+		<?php foreach($this->savingsCredit as $savingsCredit){ 
+			if($incomemaster['id']==$savingsCredit['expenseid']){
+?>
+		<td><?php echo $savingsCredit['value']; ?></td>
 
-<td><?php echo $income['incomename']; ?></td>
-<td><?php echo $income['value']; ?></td>
+<?php } } 
 
-</tr>
-<?php $i++; }?>
+ ?>
+ <?php $i++;  }?>
+
+
+<?php $i++; ?>
     </table>
   </div>
-
 
 
 <?php } else { ?>
@@ -98,14 +102,6 @@ $("#hide").show();
 
 </tr>
 
-<tr id="hide">
-							<TD><?php echo $this->translate('Group'); ?></td>
-                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
-
-
-
-
-</tr>
                        <td><input type="submit" name="Search" value="<?php echo $this->translate('Search');?>"> </td>
                        <td></td> 
                    </tr>

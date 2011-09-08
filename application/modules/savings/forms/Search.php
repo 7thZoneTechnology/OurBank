@@ -25,10 +25,10 @@ class Savings_Form_Search extends Zend_Form
                 // create instance to call common field
 		$formfield = new App_Form_Field ();
                 // send parameters to get form fields (first parameter is a form field type)
-		$prodname = $formfield->field('Text','s1','','','','Product name',false,'','','','','',0,'');
-		$shrtname = $formfield->field('Text','s2','','','','Short name',false,'','','','','',0,'');
-                $fromdate = $formfield->field('Text','s3','','','','Begin date',false,'','','','','',0,'');
-		$closedate = $formfield->field('Text','s4','','','','Close date',false,'','','','','',0,'');
+		$prodname = $formfield->field('Text','prodname','','','','Product name',false,'','','','','',0,'');
+		$shrtname = $formfield->field('Text','shname','','','','Short name',false,'','','','','',0,'');
+                $fromdate = $formfield->field('Text','fromdate','','','','Begin date',false,'','','','','',0,'');
+		$closedate = $formfield->field('Text','todate','','','','Close date',false,'','','','','',0,'');
 		$this->addElements(array($prodname,$shrtname,$fromdate,$closedate));
 	}
 }

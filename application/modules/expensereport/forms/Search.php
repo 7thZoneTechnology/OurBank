@@ -3,7 +3,7 @@
 /*
  *  create search form elements for cashscroll
  */
-class Expensereport_Form_Search extends Zend_Form {
+class Incomereport_Form_Search extends Zend_Form {
 	
    public function init() {
 

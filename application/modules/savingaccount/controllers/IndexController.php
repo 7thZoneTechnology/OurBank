@@ -135,6 +135,7 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                         $begindate = $account->begindate;
                         $officeid = $account->officeid;
                         $typeID = $account->typeID;
+                        $glsubID = $account->glsubID;
                         $memberId = $account->id;
                 }
                 if ($this->view->cl->phpmysqlformat($this->_request->getPost('date')) < date('Y-m-d')) {
@@ -161,12 +162,6 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                     $a=str_pad($accId,6,"0",STR_PAD_LEFT);
                     $account = array('account_number' =>$b.$t.$p.$i.$a);
                     $this->view->accounts->accUpdate($accId,$account);
-
-                 $glcode =  $this->view->adm->getsingleRecord('ourbank_glcode','id','header','Savings');
-                    $glresult = $this->view->accounts->getGlcode($officeid,$glcode);
-                        foreach ($glresult as $glresult) {
-                            $glsubID = $glresult->id;
-                        }
                     // Insertion into transaction 
                     $input = array('account_id' => $accId,
                                     'glsubcode_id_to' => $glsubID,
@@ -193,32 +188,30 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                                     'transaction_description'=> "Opening amount",
                                     'transaction_by' => 1);
                     $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
-
-                   
                     // Insertion into Liabilities
                     $liabilities = array('office_id' => $officeid,
-                                         'productid' => $productId,
+                                         'glsubcode_id_from' => '',
                                          'glsubcode_id_to' => $glsubID,
                                          'transaction_id' => $tranID,
                                          'credit' => $this->_request->getPost('amount'),
                                          'record_status'=> 3);
                     $this->view->adm->addRecord('ourbank_Liabilities',$liabilities);
-//                     $glresult = $this->view->accounts->getGlcode($officeid);
-//                     if($glresult){
-//                         foreach ($glresult as $glresult) {
-//                                 $cashglsubocde = $glresult->id;
-//                         }
-//                     }else {
-//                                 $cashglsubocde = 0 ;
-//                     }
-// //                     // Insertion into Assets ourbank_Assets
-// //                     $assets =  array('office_id' => $officeid,
-// //                                          'glsubcode_id_from' => '',
-// //                                          'glsubcode_id_to' => $cashglsubocde,
-// //                                          'transaction_id' => $tranID,
-// //                                          'credit' => $this->_request->getPost('amount'),
-// //                                          'record_status' => 3);
-// //                     $this->view->adm->addRecord('ourbank_Assets',$assets);
+                    $glresult = $this->view->accounts->getGlcode($officeid);
+                    if($glresult){
+                        foreach ($glresult as $glresult) {
+                                $cashglsubocde = $glresult->id;
+                        }
+                    }else {
+                                $cashglsubocde = 0 ;
+                    }
+                    // Insertion into Assets ourbank_Assets
+                    $assets =  array('office_id' => $officeid,
+                                         'glsubcode_id_from' => '',
+                                         'glsubcode_id_to' => $cashglsubocde,
+                                         'transaction_id' => $tranID,
+                                         'credit' => $this->_request->getPost('amount'),
+                                         'record_status' => 3);
+                    $this->view->adm->addRecord('ourbank_Assets',$assets);
                     // Group Acc + Transaction entry
                     if ($this->view->group) {
                         $this->view->accounts->goupAcc($code,

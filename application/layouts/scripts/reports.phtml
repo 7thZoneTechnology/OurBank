@@ -103,25 +103,13 @@ $(document).ready(function() {
       <?php if($this->type == "fieldReports") { ?>
     <h4><a>Field Reports</a></h4>
     <ul>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familyreport">GP Wise Family's</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregsreport">GP Wise Poverty & NREGS Cards</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/prareport">GP Wise PRA Service</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familykoota">GP & Koota Wise Family's</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregskoota">GP & Koota Wise Poverty & NREGS Cards</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/prakoota">GP & Koota Wise PRA Service</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/incomereport">GP Wise income</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expensereport">GP Wise expense</a></li>
     </ul>
     <?php } ?>
-
-<?php if($this->type == "kootaReports") { ?>
-    <h4><a>Koota Reports</a></h4>
-    <ul>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familykoota">Koota Wise Family's</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregskoota">Koota Wise Poverty & NREGS Cards</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/prakoota">Koota Wise PRA Service</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/incomereport">Koota Wise income</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expensereport">Koota Wise expense</a></li>
-    </ul>
-    <?php } ?>
-
   </div>
 
     <div id="pagecontent">

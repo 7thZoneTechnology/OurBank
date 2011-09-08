@@ -1,0 +1,37 @@
+10
+
+dir
+983
+svn+ssh://albert@192.168.2.2/Ourbank/jmfl/application/modules/user/views/scripts
+svn+ssh://albert@192.168.2.2/Ourbank
+
+
+
+2011-07-26T10:31:27.226956Z
+965
+albert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3abbab64-32ff-4d2d-926a-23361b8b1c8f
+
+partials
+dir
+
+index
+dir
+
+modules
+dir
+

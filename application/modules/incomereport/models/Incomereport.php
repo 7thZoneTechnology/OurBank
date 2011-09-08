@@ -47,6 +47,37 @@ public function getHier() {
         $result=$this->fetchAll($select);
         return $result->toArray();
 	}
+
+public function getvillagename($branch) {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_villagelist'),array('id'))
+                        ->where('a.village_id = "'.$branch.'"');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
+
+public function getpanchayathname($branch) {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_master_gillapanchayath'),array('id'))
+                        ->where('a.id = "'.$branch.'"');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
+public function getgroupname($branch) {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_group'),array('id'))
+                        ->where('a.id = "'.$branch.'"');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+	}
+
+
 //office name
     public function officename($branchid) 
     {
@@ -64,53 +95,56 @@ public function getHier() {
 
     {
 
-				switch($hierarchy){
-					case '3':
-					{  $select = $this->select()
+switch($hierarchy)
+{
+		case '3':
+					  $select = $this->select()
                        	->setIntegrityCheck(false)
                         ->from(array('A' => 'ourbank_master_villagelist'),array('village_id'))
                          ->where('A.panchayath_id = "'.$branch.'"')
  						->join(array('b' =>'ourbank_family'),'b.rev_village_id=A.village_id',array('b.id'))
 						->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
 						 ->join(array('C'=>'ourbank_incomedetails'),'c.id = C.member_id',array('(sum(C.value)) as value','income_id'))
-						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.income_id',array('name as incomename'))
+						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.income_id',array('name as incomename','id as incomeid'))
 						->group('d.name');
-            // die($select->__toString($select));
-        return $this->fetchAll($select);}break;
+
+
+//             die($select->__toString($select));
+       break;
 
 case '4':
-					{ 
-                      
 					 $select = $this->select()
                        	->setIntegrityCheck(false)
-						->join(array('b' =>'ourbank_family'),array('b.id'))
+						->join(array('b' =>'ourbank_family'),array('b.id'),array('b.id'))
                          ->where('b.rev_village_id = "'.$branch.'"')
 						->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
-						 ->join(array('C'=>'ourbank_incomedetails'),'c.id = C.member_id',array('(sum(C.value)) as value','income_id'))
-						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.income_id',array('name as incomename'))
-						->group('d.name');
-//                  die($select->__toString($select));
-        return $this->fetchAll($select);}break;
+						 ->join(array('C'=>'ourbank_incomedetails'),'c.id = C.member_id',array('(sum(C.value)) as value'))
+						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.income_id',array('name as incomename','id as incomeid'))
+						->group('d.name')
+->order('d.id ASC');
+
+
+;
+                 // die($select->__toString($select));
+       break;
 
 case '5':
-					{ 
-                      
 					 $select = $this->select()
                        	->setIntegrityCheck(false)
 						->join(array('b' =>'ourbank_groupmembers'),array('b.id'))
                          ->where('b.id = "'.$branch.'"')
 					//	->join(array('c' =>'ourbank_familymember'),'c.id = c.member_id',array('c.id as memberid'))
-						 ->join(array('C'=>'ourbank_incomedetails'),'C.member_id = b.member_id',array('(sum(C.value)) as value','income_id'))
-						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.income_id',array('name as incomename'))
+						 ->join(array('C'=>'ourbank_incomedetails'),'C.member_id = b.member_id',array('income_id'))
+						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.income_id',array('(sum(C.value)) as value','name as incomename','id as incomeid'))
 						->group('d.name')
+					->order('d.id ASC');
 
-
-;
-                //  die($select->__toString($select));
-        return $this->fetchAll($select);}break;
+                
+        		break;
 }
-
-
+// die($select->__toString($select));
+$result = $this->fetchAll($select);
+return $result->toArray();
 
 }
     public function totalSavingsCreditg($group) {
@@ -126,6 +160,17 @@ case '5':
 
 
 ;
+               //   die($select->__toString($select));
+        return $this->fetchAll($select);
+
+
+}
+ public function totalincome() {
+
+                         $select = $this->select()
+                       	->setIntegrityCheck(false)
+                       	->join(array('a' => 'ourbank_master_income'),array('id'));
+						//->where('a.group_id = ?',$group)
                //   die($select->__toString($select));
         return $this->fetchAll($select);
 

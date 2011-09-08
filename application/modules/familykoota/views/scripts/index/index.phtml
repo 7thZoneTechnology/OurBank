@@ -20,7 +20,7 @@
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
 	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		targeturl=path+"/familykoota/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }

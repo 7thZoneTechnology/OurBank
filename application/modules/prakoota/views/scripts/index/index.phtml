@@ -20,9 +20,11 @@
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
 	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+//alert('hierarchy');
+		targeturl=path+"/prakoota/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
+
 }
 
 $(document).ready(function() {

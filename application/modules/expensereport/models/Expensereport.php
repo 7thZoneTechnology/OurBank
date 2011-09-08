@@ -64,37 +64,55 @@ public function getHier() {
 
     {
 
-				switch($hierarchy){
-					case '3':
-					{  $select = $this->select()
+switch($hierarchy)
+{
+		case '3':
+					  $select = $this->select()
                        	->setIntegrityCheck(false)
-                        ->from(array('A' => 'ourbank_office'),array('id as vid','name as koota'))
-                         ->where('A.parentoffice_id = "'.$branch.'"')
- 						->join(array('b' =>'ourbank_family'),'A.id = b.rev_village_id',array('b.id as familyid'))
- 						//->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
- 						 ->join(array('C'=>'ourbank_expensedetails'),'b.id = C.family_id',array('(sum(C.value)) as value','expense_id'))
-						// ->join(array('d'=>'ourbank_master_expense'),'d.id = C.expense_id',array('name as incomename'))
- 					//	->group('d.name')
+                        ->from(array('A' => 'ourbank_master_villagelist'),array('village_id'))
+                         ->where('A.panchayath_id = "'.$branch.'"')
+ 						->join(array('b' =>'ourbank_family'),'b.rev_village_id=A.village_id',array('b.id'))
+					//	->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_expensedetails'),'b.id = C.family_id',array('(sum(C.value)) as value','expense_id'))
+						 ->join(array('d'=>'ourbank_master_income'),'d.id = C.expense_id',array('name as incomename','id as expenseid'))
+						->group('d.name');
+//             die($select->__toString($select));
+       break;
+
+case '4':
+					 $select = $this->select()
+                       	->setIntegrityCheck(false)
+						->join(array('b' =>'ourbank_family'),array('b.id'),array('b.id'))
+                         ->where('b.rev_village_id = "'.$branch.'"')
+						//->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_expensedetails'),'b.id = C.family_id',array('(sum(C.value)) as value'))
+						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.expense_id',array('name as incomename','id as expenseid'))
+						->group('d.name')
+->order('d.id ASC');
 
 
 ;
-//            die($select->__toString($select));
-        return $this->fetchAll($select);}break;
+                 // die($select->__toString($select));
+       break;
 
-case '4':
-					{ 
-                      
+case '5':
 					 $select = $this->select()
                        	->setIntegrityCheck(false)
-						->join(array('b' =>'ourbank_family'),array('b.id'))
-                         ->where('b.rev_village_id = "'.$branch.'"')
-					//	->join(array('c' =>'ourbank_familymember'),'b.id = c.family_id',array('c.id as memberid'))
-						 ->join(array('C'=>'ourbank_expensedetails'),'b.id = C.family_id',array('(sum(C.value)) as value','expense_id'))
-						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.expense_id',array('name as incomename'))
-						->group('d.name');
-                 // die($select->__toString($select));
-        return $this->fetchAll($select);}break;
+						->join(array('b' =>'ourbank_groupmembers'),array('b.id'))
+                         ->where('b.id = "'.$branch.'"')
+					//	->join(array('c' =>'ourbank_familymember'),'c.id = c.member_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_expensedetails'),'C.member_id = b.member_id',array('expense_id'))
+						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.expense_id',array('(sum(C.value)) as value','name as incomename','id as expenseid'))
+						->group('d.name')
+					->order('d.id ASC');
+
+                
+        		break;
 }
+ die($select->__toString($select));
+$result = $this->fetchAll($select);
+return $result->toArray();
+
 }
     public function totalSavingsCreditg($group) {
 
@@ -102,13 +120,24 @@ case '4':
                        	->setIntegrityCheck(false)
                        	->join(array('a' => 'ourbank_groupmembers'),array('id'))
 						->where('a.group_id = ?',$group)
-						//->join(array('b' =>'ourbank_familymember'),'a.member_id = b.id')
-->join(array('C'=>'ourbank_expensedetails'),'b.id = C.member_id',array('(sum(C.value)) as value','expense_id'))
-						 ->join(array('d'=>'ourbank_master_expense'),'b.id = C.family_id',array('name as incomename'))
+						->join(array('b' =>'ourbank_familymember'),'a.member_id = b.id')
+							->join(array('C'=>'ourbank_incomedetails'),'b.id = C.member_id',array('(sum(C.value)) as value','income_id'))
+						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.income_id',array('name as incomename'))
 						->group('d.name')
 
 
 ;
+               //   die($select->__toString($select));
+        return $this->fetchAll($select);
+
+
+}
+ public function totalincome() {
+
+                         $select = $this->select()
+                       	->setIntegrityCheck(false)
+                       	->join(array('a' => 'ourbank_master_income'),array('id'));
+						//->where('a.group_id = ?',$group)
                //   die($select->__toString($select));
         return $this->fetchAll($select);
 

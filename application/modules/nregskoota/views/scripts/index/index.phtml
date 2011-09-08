@@ -19,8 +19,8 @@
 <!--search for individual member !-->
 <script type="text/javascript">
 function getlevels(hierarchy,path) {
-	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+	if(hierarchy) { 
+		targeturl=path+"/nregskoota/index/sublevel?hierarchy="+hierarchy;
 		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
 	}
 }

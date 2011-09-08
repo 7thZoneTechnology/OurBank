@@ -21,9 +21,9 @@ class Nregskoota_IndexController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->pageTitle =$this->view->translate("Poverty & NREGS Koota");
+        $this->view->pageTitle =$this->view->translate("GP & Koota Wise Poverty & NREGS Reports");
         $this->view->tilte = $this->view->translate('Reports');
-    	$this->view->type = "kootaReports";
+    	$this->view->type = "fieldReports";
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
@@ -50,10 +50,8 @@ class Nregskoota_IndexController extends Zend_Controller_Action
 		$this->view->form = $searchForm = new Nregskoota_Form_Search($path);
 		$familymodel = new Nregskoota_Model_Nregskoota();
 
-					    $officename = $familymodel->getHier();
-		foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
+		$searchForm->hierarchy->addMultiOptions(array( '3'=>'Koota', '4'=>'Village','5'=>'Gilla panchayath'));
+
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 	        $formData = $this->_request->getPost(); 
         if ($searchForm->isValid($formData)) { 
@@ -65,4 +63,18 @@ class Nregskoota_IndexController extends Zend_Controller_Action
 			}
 		}
 	}
+
+ 	public function sublevelAction() 
+    {
+        $path = $this->view->baseUrl();
+        $this->_helper->layout()->disableLayout();
+		$this->view->form = $searchForm = new Nregskoota_Form_Search($path);
+
+        $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
+        $familymodel = new Nregskoota_Model_Nregskoota();
+        $officelevel = $familymodel->subofficeFromUrl($hierarchy);
+  			foreach($officelevel as $officetype) { 
+        $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
+        }
+    }
 }

@@ -27,7 +27,7 @@ class Expensereport_IndexController extends Zend_Controller_Action
 {
     public function init() 
     { 
-        $this->view->pageTitle = $this->view->translate("FIF Expense report");
+        $this->view->pageTitle = $this->view->translate("Expense report");
         $this->view->title =  $this->view->translate('Reports');
         $this->view->type = $this->view->translate("fieldReports");
   $storage = new Zend_Auth_Storage_Session();
@@ -51,16 +51,16 @@ $this->view->adm = new App_Model_Adm();
 
         $path = $this->view->baseUrl();
 
-        $searchForm = new Expensereport_Form_Search($path);
+        $searchForm = new Incomereport_Form_Search($path);
         $this->view->form = $searchForm;
 //         $sample = new Reports_Form_Sample();
 //         $this->view->sample = $sample;
-        $villageoffice = new Expensereport_Model_Expensereport();
+        $villageoffice = new Incomereport_Model_Incomereport();
 
-      $officename = $villageoffice->getHier();
-			foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
+    //  $officename = $villageoffice->getHier();
+
+ 				$formdata1=array( '4'=>'Village', '3'=>'Gilla panchayath','5'=>'Group');
+				$searchForm->hierarchy->addMultiOptions($formdata1);
 
 
        		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
@@ -77,13 +77,9 @@ $this->view-> date2 =$toDate;
  		$group=$this->_request->getParam('group');
 			
                 $transaction = new Expensereport_Model_Expensereport();
-if ($group=="") {
-                //Saving Account Credit and Debit
                 $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch,$hierarchy);
-           //     $officename=$transaction-> officename($branchid);
-}else {
-  $this->view->savingsCredit = $transaction->totalSavingsCreditg($group);
-          //
+					$this->view->income = $transaction->totalincome();
+
                 // Opening Balance
                
                 if((!$this->view->savingsCredit) && (!$this->view->savingsDebit)){
@@ -91,7 +87,7 @@ if ($group=="") {
                 }
             
          }
-    } }
+    } 
 	//report display
     public function sublevelAction() 
     {
@@ -103,10 +99,13 @@ $searchForm = new Cashscroll_Form_Search($path);
 
              $hierarchy=$this->view->hierarchy = $this->_request->getParam('hierarchy');
         		$cashscroll = new Cashscroll_Model_Cashscroll();
+
             $officelevel = $cashscroll->subofficeFromUrl($hierarchy);
   foreach($officelevel as $officetype) { 
+
         $searchForm->branch->addMultiOption($officetype->id,$officetype->name);
         }
+           
     }
   public function groupAction() 
     {

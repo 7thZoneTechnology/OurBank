@@ -27,7 +27,7 @@ class Incomereport_IndexController extends Zend_Controller_Action
 {
     public function init() 
     { 
-        $this->view->pageTitle = $this->view->translate("FIF income report");
+        $this->view->pageTitle = $this->view->translate("Income report");
         $this->view->title =  $this->view->translate('Reports');
         $this->view->type = $this->view->translate("fieldReports");
   $storage = new Zend_Auth_Storage_Session();
@@ -73,14 +73,35 @@ $this->view-> date2 =$toDate;
 
  		$branch=$this->_request->getParam('branch');
  		$hierarchy=$this->_request->getParam('hierarchy');
+		$this->view-> hierarchy =$hierarchy;
 
  		$group=$this->_request->getParam('group');
 			
                 $transaction = new Incomereport_Model_Incomereport();
                 $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch,$hierarchy);
-          
+					$this->view->income = $transaction->totalincome();
+
+
+switch($hierarchy)
+{
+		case '4':
+
+
+					$common= $transaction->getvillagename($branch);
+break;
+case '3';
+					$common = $transaction->getpanchayathname($branch);
+break;
+		case '5':
+					$common = $transaction->getgroupname($branch);break;
+
+}
                 // Opening Balance
-               
+foreach($common as $common){
+             $commonname=$common['name'];}
+
+$this->view->commonname=$commonname;
+
                 if((!$this->view->savingsCredit) && (!$this->view->savingsDebit)){
                                 echo "<font color='red'><b> Record not found</b> </font>";
                 }
