@@ -41,7 +41,7 @@ class Officedefault_Form_officedefault extends Zend_Form{
 
         $officeshort_name = new Zend_Form_Element_Text('short_name');
         $officeshort_name->setAttrib('class', 'txt_put');
-	$officeshort_name->setRequired(true)
+		$officeshort_name->setRequired(true)
 		 	->addValidators(array(array('NotEmpty'),array('stringLength', false, array(3,3))));
         $officeshort_name->addValidator('Alpha', true, array('allowWhiteSpace'=>true));
 
@@ -58,24 +58,33 @@ class Officedefault_Form_officedefault extends Zend_Form{
         $officetype_id->setRegisterInArrayValidator(false);
 	//get url path from edit action
         $officetype_id->setAttrib('onchange', 'getInterests(this.value,"'.$path.'"),getaddress(this.value,"'.$path.'")');
+		$officetype_id->setAttribs(array('style' => 'width: 200px;'));
 
         $parentoffice_id = new Zend_Form_Element_Select('parentoffice_id');
-	$parentoffice_id->addMultiOption('','Select OfficeType'.'...');
-	$parentoffice_id->setAttrib('class','selectbutton');
+		$parentoffice_id->addMultiOption('','Select OfficeType'.'...');
+		$parentoffice_id->setAttrib('class','selectbutton');
         $parentoffice_id->setRegisterInArrayValidator(false);
+		$parentoffice_id->setAttribs(array('style' => 'width: 200px;'));
+
         $district = $formfield->field('Select','district','','','','','','','','','','',0,0);
-	$district->setRegisterInArrayValidator(false);
+		$district->setRegisterInArrayValidator(false);
         $district->setAttrib('onchange', 'gettaluk(this.value,"'.$path.'")');
+		$district->setAttribs(array('style' => 'width: 200px;'));
+
         $taluque = $formfield->field('Select','taluque','','','','','','','','','','',0,0);
         $taluque->setRegisterInArrayValidator(false);
         $taluque->setAttrib('onchange', 'gethobli(this.value,"'.$path.'")');
+		$taluque->setAttribs(array('style' => 'width: 200px;'));
 
         $hobli = $formfield->field('Select','hobli','','','','','','','','','','',0,0);
         $hobli->setRegisterInArrayValidator(false);
         $hobli->setAttrib('onchange', 'getpanchayath(this.value,"'.$path.'")');
+		$hobli->setAttribs(array('style' => 'width: 200px;'));
 
         $panchayath = $formfield->field('Select','panchayath','','','','','','','','','','',0,0);
         $panchayath->setRegisterInArrayValidator(false);
+		$panchayath->setAttribs(array('style' => 'width: 200px;'));
+
         $created_by = $formfield->field('Hidden','createdby','','','','','','','','','','',0,$createdid);
         $created_date = $formfield->field('Hidden','createddate','','','','','','','','','','',0,date("y/m/d H:i:s"));
 

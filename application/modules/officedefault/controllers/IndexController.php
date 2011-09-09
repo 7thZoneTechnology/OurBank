@@ -17,6 +17,12 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
+?>
+
+<?php
+/*
+ *  create an office default for add, edit, delete and suboffice actions
+ */
 class Officedefault_IndexController extends Zend_Controller_Action{
 
     public function init() {
@@ -32,6 +38,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         foreach($module as $module_id){ }
         $this->view->mod_id=$module_id['parent'];
         $this->view->sub_id=$module_id['module_id'];
+
     }
 
     public function indexAction() {
@@ -101,7 +108,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                } 
 
 	//insert glsubcode
-        for($j=1;$j<=12;$j++){
+        for($j=1;$j<=6;$j++){
              $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
            $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
            $glcode = $fetchglcodedetails[0]['glcode'];
@@ -129,8 +136,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                $glsubcode;
            }
 
-//            $headername=array('bank','cash','loans','savings','interest','fee');
-            $headername = array('Bank','Cash','Loans','Savings','Interest','Fee','SrvChrg','Penalty','IntOnLoan','MeetingExpenses','OtherExpenses','IntOnSavings');
+           $headername=array('bank','cash','loans','savings','interest','fee');
            $gInsert = $ledger->insertGlsubcode(array('id' => '',
 						   'office_id' => $lastid,
                            'glsubcode' => $glsubcode,
@@ -146,6 +152,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 		}
         }
         }
+    
 
     public function subofficeAction() {
 	//disable layout
@@ -177,7 +184,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         foreach($hierarchylevel2 as $hierarchylevel1) {
             $hierarchylevel=$hierarchylevel1->hierarchylevel; //level
         }
-
+        
         $officetypeIds=$subOffice->officetypeid($hierarchylevel);
         foreach($officetypeIds as $officetypeIds1) {
             $officetypeId=$officetypeIds1->id;
@@ -203,7 +210,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         }
     }
-
+        
         public function gettalukAction()
         {
         $this->_helper->layout()->disableLayout();
@@ -340,7 +347,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
         }
 
-        $panchayath = $office->getpanchayathlist($address[0]['hobli_id']);
+        $panchayath = $office->getpanchayathlist($address[0]['taluk_id']);
         foreach($panchayath as $panchayath1){
         $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
         }
@@ -384,7 +391,7 @@ echo $typeid;
                   $office->updatevillage($office_id,array(
                                                 'taluk_id' => $this->_request->getParam('taluque'),
                                                 'district_id'=>$this->_request->getParam('district'),
-                                                'panchayath_id' =>$this->_request->getParam('panchayath'),
+                                                'panchayath_id' => $this->_request->getParam('panchayath'),
                                                 'hobli_id' => $this->_request->getParam('hobli'),
                                                 'created_date' =>$createdate,'created_by'=>$this->view->createdby));
                } 
@@ -453,5 +460,55 @@ echo $typeid;
             $this->view->branchId = $branchId[0]['id'];
         }
    }
+    public function glsubcodeAction()
+    {
+        $treeobj = new Officedefault_Model_officedefault();
+        $branch = $treeobj->getofficeid();
+        $totaloffice=count($branch);
+        foreach($branch as $officedetails) { /*echo $officedetails['id'];*/
+        for($j=1;$j<=12;$j++) {
+             $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
+           $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
+           $glcode = $fetchglcodedetails[0]['glcode'];
+           $header = $fetchglcodedetails[0]['header'];
 
+           $ledger = new Officedefault_Model_officedefault();
+           $genarateGlsub = $ledger->genarateGlsubCode1($ledgertype_id,$j);
+           $glsubcode=$genarateGlsub->id;
+
+           if($glsubcode) {
+               $ini=substr($glsubcode,0,1);
+               $last=substr($glsubcode,1,5);
+               $last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glsubcode=$ini.$last;
+               $glsubcode;
+           } else {
+               $glcode1=$ledger->fetchGlcode($j);
+               $glcode=$glcode1->glcode;
+               $ini=substr($glcode,0,1);
+               $last=substr($glcode,1,5);
+               $last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+               $glsubcode=$ini.$last;
+               $glsubcode;
+           }
+
+//            $headername=array('bank','cash','loans','savings','interest','fee');
+            $headername = array('Bank','Cash','Loans','Savings','Interest','Fee','SrvChrg','Penalty','IntOnLoan','MeetingExpenses','OtherExpenses','IntOnSavings');
+           $gInsert = $ledger->insertGlsubcode(array('id' => '',
+						   'office_id' => $officedetails['id'],
+                           'glsubcode' => $glsubcode,
+                           'glcode_id' => $j,
+                           'subledger_id' => $ledgertype_id,
+                           'header' => $headername[$j-1].$officedetails['id'],
+                           'description' => $headername[$j-1].$officedetails['id'],
+                           'created_date' =>date("Y-m-d"),
+                           'created_by'=>$this->view->createdby));
+           }
+
+
+
+        }
+    }
 }

@@ -17,7 +17,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-
+/*
+ *  create an office controller to view all details
+ */
 class Office_IndexController extends Zend_Controller_Action
 {
    public function init() 

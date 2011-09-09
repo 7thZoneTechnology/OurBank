@@ -14,7 +14,7 @@ function getaddress(officetype_id,path){
 }
 </script>
 <fieldset>
-    <legend><?php echo $this->translate('NewOffice'); ?></legend>
+    <legend><?php echo $this->translate('New Office'); ?></legend>
         <div class="register">
             <div class="profile_tab">
                 <form action="<?php  echo $this->baseUrl();?>/officedefault/index/officeadd" method="POST" name="joe" id="signupForm" class="cmxform">
@@ -22,28 +22,27 @@ function getaddress(officetype_id,path){
                         <tr>
                             <td width="50%"><?php echo $this->translate('Office type'); ?></td><td width="50%"><?php  echo $this->form->officetype_id;?></td>    
                         </tr>
-
-                         <tr>
-                           <td><?php echo $this->translate('Parent office'); ?></td> <td><div id="statediv"><?php echo $this->form->parentoffice_id; ?></div></td>    
-                        </tr>
-
+                <tr>
+                    <td><?php echo $this->translate('Parent office'); ?></td>
+					<td><div id="statediv"><?php echo $this->form->parentoffice_id; ?></div></td>    
+                </tr>
 		        <tr><td><?php echo $this->translate('Name'); ?></td>
-			<td><?php  echo $this->form->name;?></td>
+					<td><?php  echo $this->form->name;?></td>
 		        </tr>
 		        <tr><td><?php echo $this->translate('Short name'); ?></td>
-			<td><?php  echo $this->form->short_name; echo $this->form->createdby; echo $this->form->createddate; ?></td>
+					<td><?php  echo $this->form->short_name; echo $this->form->createdby; echo $this->form->createddate; ?></td>
 		        </tr>
-                        <tr>
-                           <td id="addressdiv" colspan="2"> </td>
-                        </tr>
+                <tr>
+                    <td id="addressdiv" colspan="2"> </td><td></td>
+                </tr>
         		<tr>
-			<td><input name="Submit" id="Submit" type="submit" class="officebutton" value="<?php echo $this->translate('Submit'); ?>"></td>
-		        <td><a href=<?php echo $this->baseUrl();?>/office/index>
+					<td><input name="Submit" id="Submit" type="submit" class="officebutton" value="<?php echo $this->translate('Submit'); ?>"></td><td></td>
+		        	<td><a href=<?php echo $this->baseUrl();?>/office/index>
                         <input name="submit" type="submit" class="officebutton" value="<?php echo $this->translate('cancel'); ?>"></a></td>
 	           	</tr>
-                        <tr>
-			<td></td>
-			<td><B style='color:red'><?php echo $this->error; ?></B></td>
+                <tr>
+					<td></td>
+					<td><B style='color:red'><?php echo $this->error; ?></B></td>
 		        </tr>
 	         </table>
 	   </form>
