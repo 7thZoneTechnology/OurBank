@@ -38,15 +38,7 @@ class Daybook_Model_Daybook extends Zend_Db_Table
                       //  die($select->__toString($select));
         return $this->fetchAll($select);
     }
-public function getHier() {
-		$select=$this->select()
-                ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
-                ->where('a.id !=1 AND id !=2');
-		// die($select->__toString($select));
-        $result=$this->fetchAll($select);
-        return $result->toArray();
-	}
+
 //office name
     public function officename($branchid) 
     {
@@ -196,16 +188,4 @@ public function subgroupFromUrl($branch) {
 
 
     	}
-public function getOffice($id) {
-		$select = $this->select()
-			->setIntegrityCheck(false)  
-			->join(array('a' => 'ourbank_master_villagelist'),array('id'))
-						->where('a.village_id = ?',$id);
-
-//die($select->__toString($select));
-
-
-		$result = $this->fetchAll($select);
-		return $result->toArray();
-	}
 }

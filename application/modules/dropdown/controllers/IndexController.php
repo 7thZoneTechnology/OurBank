@@ -78,6 +78,8 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $tabledatas = $tabledata->tabledata($tablename);
 // Zend_Debug::dump($tabledatas);
         $this->view->tabledata = $tabledatas;
+		$this->view->keyvalue = $tabledata->urlname($this->view->tableName);
+
     }
 
 	public function addAction() 

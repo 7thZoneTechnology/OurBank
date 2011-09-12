@@ -43,9 +43,8 @@ $this->view->adm = new App_Model_Adm();
 //         $sample = new Reports_Form_Sample();
 //         $this->view->sample = $sample;
 
-                $transaction = new Daybook_Model_Daybook();
 
-    $officename = $transaction->getHier();
+      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
@@ -54,19 +53,10 @@ $this->view->adm = new App_Model_Adm();
 $dateconvert= new App_Model_dateConvertor();
 
 
-     
        $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
-$this->view-> date1 =$fromDate;
-
        $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
-$this->view-> date2 =$toDate;
 
- 		$branch=$this->_request->getParam('branch');
- 		$group=$this->_request->getParam('group');
-			$officename=$transaction->getOffice($branch);
-foreach ($officename as $officename) {
-$this->view-> name =$officename['name'];
-}
+ 	$branch=$this->_request->getParam('branch');
  	$group=$this->_request->getParam('group');
 /*
         $this->view->field1 = $fromDate;
@@ -77,6 +67,7 @@ $this->view-> name =$officename['name'];
             $this->view->pageTitle = $title1;
             $formData = $this->_request->getPost();
                 $this->view->savings = 10;*/
+                $transaction = new Daybook_Model_Daybook();
 if ($group=="") {
                 //Saving Account Credit and Debit
                 $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);

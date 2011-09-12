@@ -160,10 +160,11 @@ onClick="window.open('<?php echo $this->baseUrl();?>/par/index/reportdisplay/fil
 </div>
 
 <? } else { ?>
+<fieldset>
+<legend> search </legend>
 	<div class="cont-rgt-data">
 		<form action="<?php echo $this->baseUrl();?>/par" method="POST">
 	<table id="hor-minimalist-b">
-	<th colspan="4">search</th>
 			<TR>
 				<TD >Date From</TD>
 				<TD ><?php echo $this->form->fromdate;?></TD>
@@ -177,16 +178,16 @@ onClick="window.open('<?php echo $this->baseUrl();?>/par/index/reportdisplay/fil
 				<TD id="officerdiv"><?php echo $this->form->loanofficer; ?></TD>
 			</TR>
 			<TR>
+				<TD ></TD>
+				<TD ></TD>
+				<TD ></TD>
 				<TD ><?php echo $this->form->Search;?></TD>
-				<TD ></TD>
-				<TD ></TD>
-				<TD ></TD>
-
 			</TR>
 	</table>
 		</form>
 <? echo $this->errormsg; ?>
 	</div>
+</fieldset>
 <? }
 ?>
 

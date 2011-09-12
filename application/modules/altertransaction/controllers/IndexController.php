@@ -22,8 +22,7 @@ class Altertransaction_IndexController extends Zend_Controller_Action
     public function init() 
     {
     	$this->view->title = "Alter transaction";
-		$this->view->pageTitle = "Transaction";
-
+	$this->view->pageTitle = "Transaction";
         $this->view->tranModel = new Altertransaction_Model_Altertransaction ();
         //$this->view->cl = new App_Model_Users ();
         $this->view->adm = new App_Model_Adm ();

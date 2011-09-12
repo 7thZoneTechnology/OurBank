@@ -13,8 +13,6 @@ function display (yy)  {
     }
     if(yy!=2) {
     document.getElementById("7").style.display = 'none';
-    document.getElementById("5").style.display = 'none';
-    document.getElementById("4").style.display = 'none';
     }
     if(yy==300){
     document.getElementById("4").style.display = 'none';
@@ -32,10 +30,12 @@ function display (yy)  {
 
 
 <?php if(count($this->result)) { ?>
+
+<fieldset>
+    <legend>Transaction Details</legend>
 	<div class="cont-rgt-data">
          <form action="<?php echo $this->baseUrl();?>/altertransaction/alter" method="POST">
             <TABLE id="hor-minimalist-s" >
-			<th>Transaction Details</th><th></th>
                 <tr>
 
                 <?php foreach($this->result  as $tran) : ?>
@@ -99,19 +99,19 @@ function display (yy)  {
 				<form action = "<?php echo $this->baseUrl(); ?>/altertransaction/index/deletetransaction" method="POST">
    					 <table id = "hor-minimalist-b" class="fieldsets">
        					<tr><th colspan="4">Remarks</th></tr>
-            				<input type = "hidden" name = "vNum" value ="<?php echo $ledger['vNum'];?>">
+            				<input type = "hidden" name = "vNum" value = "<?php echo $ledger['vNum'];?>">
         				<TR>
-            				<TD><label class="mand">Transaction Remarks</label>
-								<textarea value="" name="transaction_remarks"></textarea></td><td></td>
+            				<TD><label class="mand">Transaction Remarks</label><textarea value="" name="transaction_remarks"></textarea></td>
         				</TR>
-        				<tr><TD><input name="submit" type="submit"  value="Save"></TD>
-							<TD align="right"><a href="<?php echo $this->baseUrl();?>/altertransaction"><input type="submit" name="back" id="back" value="<?php echo $this->translate('Back'); ?>"></TD>
-						</tr>
+        				<tr>
+            				<TD><input name="submit" type="submit" class="officebutton" value="Save"></TD>
+        				</tr>
    					</table>
 				</form>
 			<?php endforeach; ?>
 	</div>
 			<?php }  ?>
+		</fieldset>
 	</div>
 
 
@@ -120,14 +120,14 @@ function display (yy)  {
 <?php if(count($this->result)) { ?>
 <table>
 	<TABLE id="hor-minimalist-s">
-    <th colspan="4">Transaction Details</th>
+    <th colspan="2">Transaction Details</th>
 	<div class="cont-rgt-data">
          <form action="<?php echo $this->baseUrl();?>/altertransaction/index/alter" method="POST">
 
                 <?php foreach($this->result  as $tran) : ?>
                 <TR>
                     <TD align="right"><?php echo $this->translate("Voucher number"); ?></TD>
-                    <TD ><input type = "text" name = "vochure_number" size = 6 readonly="true" value = "<?php echo $tran['vNum'];?>" ></TD><TD></TD>
+                    <TD ><input type = "text" name = "vochure_number" size = 6 readonly="true" value = "<?php echo $tran['vNum'];?>" ></TD>
                 </TR>
                 <input type = "hidden" name = "accID"  value = "<?php echo $tran['aID'];?>" >
                 <input type = "hidden" name = "gl"  value = "<?php echo $tran['gl'];?>" >
@@ -157,7 +157,7 @@ function display (yy)  {
                </TR>
                 <tr>
 					<TD></TD>
-                    <TD id="7" style="display:none;"><input type="text" name="modeDetails" value = "" size= "20" class = "txt_put" ></TD><TD></TD>
+                    <TD id="7" style="display:none;"><input type="text" name="modeDetails" value = "" size= "20" class = "txt_put" ></TD>
                 </tr>
                 <TR>
                     <TD align="right"><br><?php echo $this->translate("Amount"); ?></TD>

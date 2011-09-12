@@ -16,24 +16,14 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <head>
 <title><?php echo $this->escape($this->title); ?></title>
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
-
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#meeting_date").datepicker({"dateFormat":"dd/mm/yy"});
-});
-</script>
 </head>
+
 
 <body>
 <div id="container">
@@ -44,35 +34,35 @@ $(document).ready(function() {
 	<?php if($this->pageTitle == "Community Meetings") { ?>
 	<h4><a href="#">Meeting</a></h4>
         <ul>
-		<li><a href="<?php  echo $this->baseUrl();?>/meetingindex">Group Meeting</a></li>
-		<li><a href="<?php  echo $this->baseUrl();?>/attendanceindex">Attendance</a></li>
-                <li><a href="<?php  echo $this->baseUrl();?>/officemeetingindex">Office Meeting</a></li>
-                <li><a href="<?php  echo $this->baseUrl();?>/meetingbookindex">Meeting Book</a></li>
+<!--		<li><a href="<?php  //echo $this->baseUrl();?>/meetingindex">Group Meeting</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/attendanceindex">Attendance</a></li>
+                <li><a href="<?php  //echo $this->baseUrl();?>/officemeetingindex">Office Meeting</a></li>-->
+                <li><a href="<?php  echo $this->baseUrl();?>/meetingbookindex">Group Meeting Book</a></li>
 	</ul>
 	<?php } ?>
-	<?php if($this->pageTitle == "Group meeting") { ?>
+<!--	<?php //if($this->pageTitle == "Group meeting") { ?>
 		<h4><a href="#">Meeting</a></h4>
 		<ul>
-		<li><a href="<?php  echo $this->baseUrl();?>/meetingindex"><img src="<?php echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
-		<li><a href="<?php  echo $this->baseUrl();?>/meeting/index/meetingadd"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Meeting add</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/meetingindex"><img src="<?php //echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/meeting/index/meetingadd"><img src="<?php //echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Meeting add</a></li>
 		</ul>
-	<?php } ?>
+	<?php //} ?>
 
-	<?php if($this->pageTitle == "Office meetings") { ?>
+	<?php// if($this->pageTitle == "Office meetings") { ?>
 		<h4><a href="#">Office Meeting</a></h4>
 		<ul>
-		<li><a href="<?php  echo $this->baseUrl();?>/officemeetingindex"><img src="<?php echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
-		<li><a href="<?php  echo $this->baseUrl();?>/officemeeting/index/meetingadd"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Meeting add</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/officemeetingindex"><img src="<?php //echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/officemeeting/index/meetingadd"><img src="<?php //echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Meeting add</a></li>
 		</ul>
-	<?php } ?>
+	<?php //} ?>
 	
-	<?php if($this->pageTitle == "Attendance") { ?>
+	<?php //if($this->pageTitle == "Attendance") { ?>
 		<h4><a href="#">Attendance</a></h4>
 		<ul>
-		<li><a href="<?php  echo $this->baseUrl();?>/attendanceindex"><img src="<?php echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
-		<li><a href="<?php  echo $this->baseUrl();?>/attendance/index/attendanceadd"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Attendance add</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/attendanceindex"><img src="<?php //echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
+		<li><a href="<?php  //echo $this->baseUrl();?>/attendance/index/attendanceadd"><img src="<?php //echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Attendance add</a></li>
 		</ul>
-	<?php } ?>
+	<?php //} ?> -->
 
 	<?php if($this->pageTitle == "Meeting book") { ?>
 		<h4><a href="#">Meeting book</a></h4>
@@ -80,7 +70,7 @@ $(document).ready(function() {
 		<li><a href="<?php  echo $this->baseUrl();?>/meetingbookindex"><img src="<?php echo $this->baseUrl(); ?>/images/Button-search-64.png" border=0 width="16" height="16"> Search</a></li>
 		<li><a href="<?php  echo $this->baseUrl();?>/meetingbook/index/attendanceadd"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Meetingbook add</a></li>
 		</ul>
-	<?php } ?>
+	<?php } ?> 
    
   </div>
 

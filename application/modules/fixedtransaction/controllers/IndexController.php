@@ -1042,7 +1042,7 @@ $Incomesubcode = 0;
                             $bankincomeaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
                                                     'glsubcode_id_to'=>$Incomesubcode,
-                                                    'tranasction_id'=>$transaction_id1,
+                                                    'transaction_id'=>$transaction_id1,
                                                     'credit'=>$feeamount,
                                                     'debit' => '',
                                                     'recordstatus_id'=>'3'));
@@ -1061,7 +1061,7 @@ $Expenseglsubcode = 0;
                         $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
                                                     'glsubcode_id_to'=>$Expenseglsubcode,
-                                                    'tranasction_id'=>$transaction_id1,
+                                                    'transaction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $interestedamount,
                                                     'recordstatus_id'=>'3'));
@@ -1269,7 +1269,7 @@ $bankcashgl = '';
 //                         if($currentdate<$maturedate) {
 //                             $bankincomeaccountinsert = (array('office_id' => $memberbranch_id,
 //                                                     'glsubcode_id_to'=>'16',
-//                                                     'tranasction_id'=>$transaction_id1,
+//                                                     'transaction_id'=>$transaction_id1,
 //                                                     'credit'=>$feeamount,
 //                                                     'debit' => '',
 //                                                     'recordstatus_id'=>'3'));
@@ -1278,7 +1278,7 @@ $bankcashgl = '';
 // 
 //                         $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
 //                                                     'glsubcode_id_to'=>'20',
-//                                                     'tranasction_id'=>$transaction_id1,
+//                                                     'transaction_id'=>$transaction_id1,
 //                                                     'credit'=>'',
 //                                                     'debit' => $interestedamount,
 //                                                     'recordstatus_id'=>'3'));

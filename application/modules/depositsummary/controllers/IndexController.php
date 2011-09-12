@@ -1,3 +1,4 @@
+
 <?php
 /*
 ############################################################################
@@ -44,15 +45,16 @@ class Depositsummary_IndexController extends Zend_Controller_Action
       //view action
      function indexAction()
      {
-      $path = $this->view->baseUrl();
-      $this->view->form = $searchForm = new Depositsummary_Form_Search($path);
-      $savingsummary = new Depositsummary_Model_Depositsummary();
 
-	    $officename = $savingsummary->getHier();
-		foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
+	$searchForm = new Depositsummary_Form_Search();
+        $this->view->form = $searchForm;
+       
+	 $savingsummary = new Depositsummary_Model_Depositsummary();
  
+        $products = $this->view->adm->viewRecord('ourbank_office','id','asc');
+        foreach($products as $subBranch1) {
+                        $searchForm->branch->addMultiOption($subBranch1['id'],$subBranch1['name']);
+                }
         $this->view->depositeAmount = 0;
         $this->view->withdrawlAmount = 0;
         $this->view->totalAmount = 0; 
@@ -64,21 +66,22 @@ class Depositsummary_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
              $formData = $this->_request->getPost();
                  if ($searchForm->isValid($formData)) {
-
-					$hierarchy=$this->_request->getParam('hierarchy');
-                    $this->view->office_id = $office_id = $this->_request->getParam('branch'); 
-
-
-                    $this->view->result = $savingsummary->fetchSavingsDetails($office_id,$hierarchy); 
-                    $this->view->accountBalanc = $accountBalanc = $savingsummary->accountBalanceDetails($office_id,$hierarchy);
-
-                    if ((!$this->view->result) && (!$accountBalanc) && ($hierarchy==4))
-					 {  echo "<font color='RED'>No Savings Account</font>";	 } else {
+                    $office_id = $this->_request->getParam('branch'); 
+                    $this->view->office_id=$office_id;
+                    $this->view->result = $savingsummary->fetchSavingsDetails($office_id); 
+                    $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
+        
+                    $this->view->accountBalanc = $accountBalanc;
+                    if ((!$this->view->result) && (!$accountBalanc)) {
+                        echo "<font color='RED' size = '3'>No Savings Account</font>";	
+                    } else {
                         foreach($this->view->result as $result1) {
-                            $this->view->officeName = $result1["officename"]; }
-                    		}
-            			} 
-    				}
+                            $this->view->officeName = $result1["officename"];
+                        }
+                    }   
+                    
+            } 
+    }
      }
  
      function pdftransactionAction()
@@ -134,10 +137,10 @@ if ($this->_request->getParam('field1')) {
 //point to draw Side line
 $startlinepoint=$y1;
 
-            $page->drawLine($xx, $y1, $xy, $y1); $y1-=20;
+            $page->drawLine($xx, $y1, $xy, $y1); $y1-=15;
             $page->drawText($text[1],$x1,$y1);                   $page->drawText($text[2],$x2,$y1); 
-            $page->drawText($text[3],$x3,$y1);                   $page->drawText($text[4],$x4,$y1); $y1-=5;
-            $page->drawLine($xx, $y1, $xy, $y1); $y1-=20;
+            $page->drawText($text[3],$x3,$y1);                   $page->drawText($text[4],$x4,$y1); $y1-=10;
+            $page->drawLine($xx, $y1, $xy, $y1); $y1-=15;
 
         $this->view->depositAmount = 0;
         $this->view->withdrawlAmount = 0;
@@ -162,13 +165,12 @@ $startlinepoint=$y1;
             $withdrawl=0;
             $totalamount=0;
             $sum=0;
-
             foreach($result as $result){
 
                     $page->drawText($result['productname'],$x1,$y1);
                     $page->drawText($result['prodoffername'],$x2,$y1);
                     $page->drawText($result['countvalue'],$x3,$y1); 
-$y1-=15;
+
                 $accountBalanc = $savingsummary->accountBalanceDetails($office_id);
                 $this->view->accountBalanc = $accountBalanc;
                       foreach($accountBalanc as $accountBalanc){
@@ -286,7 +288,7 @@ $page->drawLine($xy, $y1, $xy, $startlinepoint);//1st vertical line
                    $page->drawLine($xx, $y1, $xy, $y1);$y1=18;
                     $page->drawText("Total",$x3,$y1);
                      $pos=position(sprintf("%4.2f",$sum));
-                    $page->drawText(sprintf("%4.2f",$sum),$pos,$y1);$y1=15;
+                    $page->drawText(sprintf("%4.2f",$sum),$pos,$y1);$y1=10;
                     $page->drawLine($xx, $y1, $xy, $y1);
 
 $page->drawLine($xx, $y1, $xx, $startlinepoint);//1st vertical line

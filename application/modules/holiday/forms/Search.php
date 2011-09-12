@@ -30,18 +30,18 @@
 
 		
 	
-        	$s1 = $formfield->field('Text','s1','','','mand','Holiday name',false,'','','','','',0,0);
-        	$s2 = $formfield->field('Select','s2','','','mand','Office name',false,'','','','','',0,0);
-			$s3 = $formfield->field('Text','s3','','','mand','Holiday from',false,'','','','','',0,0);
-			 $s3->setAttrib('autocomplete','off'); 
-			$s4 = $formfield->field('Text','s4','','','mand','Holiday upto',false,'','','','','',0,0);
-			 $s4->setAttrib('autocomplete','off'); 
+        	$holidayname = $formfield->field('Text','name','','','mand','Holiday name',false,'','','','','',0,0);
+        	$office_id = $formfield->field('Select','office_id','','','mand','Office name',false,'','','','','',0,0);
+			$holidayfrom = $formfield->field('Text','holiday_from','','','mand','Holiday from',false,'','','','','',0,0);
+			 $holidayfrom->setAttrib('autocomplete','off'); 
+			$holidayto = $formfield->field('Text','holiday_upto','','','mand','Holiday upto',false,'','','','','',0,0);
+			 $holidayto->setAttrib('autocomplete','off'); 
 
-  $submit = new Zend_Form_Element_Submit('Search');
-        $submit->setAttrib('id', 'submitbutton');
-        $submit->removeDecorator('DtDdWrapper');
+
+        // Hidden Feilds 
+        	$id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
 
 					
-		$this->addElements(array($s1,$s2,$s3,$s4,$submit));
+		$this->addElements(array($holidayname,$office_id,$holidayfrom,$holidayto,$id));
     }
 }

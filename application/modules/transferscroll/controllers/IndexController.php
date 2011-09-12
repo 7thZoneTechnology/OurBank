@@ -43,9 +43,8 @@ class Transferscroll_IndexController extends Zend_Controller_Action
 //         $sample = new Reports_Form_Sample();
 //         $this->view->sample = $sample;
 
-                $transaction = new Transferscroll_Model_Transferscroll();
 
-     $officename = $transaction->getHier();
+      $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($officename as $officename){
 				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
 			}
@@ -54,25 +53,18 @@ class Transferscroll_IndexController extends Zend_Controller_Action
 $dateconvert= new App_Model_dateConvertor();
 
 
-        $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
-$this->view-> date1 =$fromDate;
-
+       $fromDate = $dateconvert->mysqlformat($this->_request->getParam('datefrom'));
        $toDate = $dateconvert->mysqlformat($this->_request->getParam('dateto'));
-$this->view-> date2 =$toDate;
 
- 		$branch=$this->_request->getParam('branch');
- 		$hierarchy=$this->_request->getParam('hierarchy');
+ 	$branch=$this->_request->getParam('branch');
+ 	$group=$this->_request->getParam('group');
 
- 		$group=$this->_request->getParam('group');
-			$officename=$transaction->getOffice($branch);
-foreach ($officename as $officename) {
-$this->view-> name =$officename['name'];
-}
+                $transaction = new Transferscroll_Model_Transferscroll();
 if ($group=="") {
                 //Saving Account Credit and Debit
-                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch,$hierarchy);
+                $this->view->savingsCredit = $transaction->totalSavingsCredit($fromDate,$toDate,$branch);
 		//     $officename=$transaction-> officename($branchid);
-                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch,$hierarchy );
+                $this->view->savingsDebit = $transaction->totalSavingsDebit($fromDate,$toDate,$branch);
 }else {
   				$this->view->savingsCredit = $transaction->totalSavingsCreditg($fromDate,$toDate,$group);
 		//      $officename=$transaction-> officename($branchid);

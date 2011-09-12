@@ -25,15 +25,12 @@
 		$vtype=array('Alpha','StringLength');
 		$formfield = new App_Form_Field ();
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
-			$s1 = $formfield->field('Text','s1','','','mand','',false,'','','','','',0,0);
-        	$s2 = $formfield->field('Text','s2','','','mand','',false,'','','','','',0,0);
-        	$s3 = $formfield->field('Text','s3','','','mand','',false,'','','','','',0,0);
-        	$s4 = $formfield->field('Text','s4','','','mand','',false,'','','','','',0,0);
-
+        		$category_id = $formfield->field('Select','category_id','','','mand','',false,'','','','','',0,0);
+			$productname = $formfield->field('Text','name','','','mand','',false,'','','','','',0,0);
+			$productdescription = $formfield->field('Text','description','','','mand','',false,'','','','','',0,0);
+			$shortname = $formfield->field('Text','shortname','','','mand','',false,'','','','','',0,0);
         // Hidden Feilds 
-        $submit = new Zend_Form_Element_Submit('Search');
-        $submit->setAttrib('id', 'submitbutton');
-        $submit->removeDecorator('DtDdWrapper');
-		$this->addElements(array($s1,$s2,$s3,$s4,$submit));
+                	$id = $formfield->field('Hidden','id','','','','',false,'','','','','',0,0);
+        		$this->addElements(array($category_id,$productdescription,$productname,$id,$shortname));
     }
 }

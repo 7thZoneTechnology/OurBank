@@ -30,7 +30,7 @@ class Grouplaw_Model_grouplaw extends Zend_Db_Table
             ->join(array('b'=>'ourbank_groupmembers'),'b.group_id =a.id')
              ->join(array('c'=>'ourbank_familymember'),'c.id =b.member_id',array('c.id'))
             ->join(array('d'=>'ourbank_master_weekdays'),'d.id =a.days',array('d.name as dayname'));
- // die($select->__toString($select));
+        //die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -42,8 +42,7 @@ class Grouplaw_Model_grouplaw extends Zend_Db_Table
                 ->join(array('a'=>'ourbank_group'),array('a.id'))
            ->where('a.groupcode=?',$groupcode)
                 ->join(array('b'=>'ourbank_groupmembers'),'b.group_id=a.id')
-                ->join(array('c'=>'ourbank_familymember'),'b.member_id=c.id',array('c.name as membername','c.family_id','c.uid','c.father_name as fathername'));
- // die($select->__toString($select));         
+                ->join(array('c'=>'ourbank_familymember'),'b.member_id=c.id',array('c.name as membername','c.family_id','c.uid'));
             $result=$this->fetchAll($select);
             return $result->toArray();
     }
@@ -52,13 +51,11 @@ class Grouplaw_Model_grouplaw extends Zend_Db_Table
     {
         $select= $this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('a.father_name as fathername'))
-                ->where('a.family_id=?',$familyid);
-               // echo $select;
-               // ->join(array('c' => 'ourbank_master_realtionshiptype'),'a.relationship_id=c.id',array('c.name as relaname'));
-                //->where('b.name=?','Father');
-
-  // die($select->__toString($select));
+                ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('a.name as fathername'))
+                ->where('a.family_id=?',$familyid)
+                ->join(array('b'=>'ourbank_master_realtionshiptype'),'b.id=a.relationship_id')
+                ->where('b.name=?','Father');
+        //die($select->__toString($select));
             $result=$this->fetchAll($select);
             return $result->toArray();
     }

@@ -47,27 +47,34 @@ class Individual_IndexController extends Zend_Controller_Action{
     public function indexAction() 
     {
         $this->view->form =$searchform = new Individual_Form_Search();
-         $individual = new Individual_Model_Individual();
-  
             $villagelist = $this->view->adm->viewRecord('ourbank_master_villagelist','id','asc'); // get village list
 // Zend_Debug::dump($villagelist);
             foreach($villagelist as $villages){
-                $searchform->s2->addMultiOption($villages['id'],$villages['name']);
+                $searchform->village->addMultiOption($villages['id'],$villages['name']);
             }
-        if($_POST)
-            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
-	else
-	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
 
-         $result = $individual->searchDetails($postedvalues);
-		$this->view->individual = $result;
-
-        $page = $this->_getParam('page',1);
-        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
-        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
-          if (!$result){
-                       echo "<font color='RED'>Records Not Found Try Again...</font>";
-                            }
+        if ($this->_request->isPost() && $this->_request->getPost('Search')){
+			$result = $this->view->db->searchDetails($this->_request->getPost());	// get search criteria values
+			$page = $this->_getParam('page',1);
+			$paginator = Zend_Paginator::factory($result); // assign searched values for pagination
+			$paginator->setItemCountPerPage($this->view->adm->paginator());
+			$paginator->setCurrentPageNumber($page);
+				$this->view->paginator = $paginator;
+			$this->view->search = true;
+		} else {
+			$this->view->title = "Individual member"; 
+			$storage = new Zend_Auth_Storage_Session();
+			$data = $storage->read();
+			if (!$data) {
+				$this->_redirect('index/login');
+            }
+            
+            $page = $this->_getParam('page',1);
+            $paginator = Zend_Paginator::factory($this->view->db->getMemberdetails()); // assign default values for pagination
+	    	$this->view->paginator = $paginator;
+		}
+	    $paginator->setItemCountPerPage($this->view->adm->paginator());
+	    $paginator->setCurrentPageNumber($page);
 
 
     }

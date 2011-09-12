@@ -15,7 +15,7 @@
 	 </form>
 
 </fieldset>
-
+<?php if ($this->paginator) { ?>
     <table id="hor-minimalist-b" summary="Employee Pay Sheet">
 	<tr>
 	    <Th>Member Code</Th>
@@ -24,7 +24,7 @@
 	    <td class="centertd" align="center">Type</td>
             <th></th>
 	</tr>
-	<?php foreach($this->loanaccount as $member) : ?>
+	<?php foreach($this->paginator as $member) { ?>
 	<tr>
 		<td><a href="<?php echo $this->baseUrl();?>/loanaccount/index/details/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
 		<td><?php  echo $member->name;?></td>
@@ -44,7 +44,7 @@
 		}?>
 		</td>
 	</tr>
-	<?php endforeach; ?>
+	<?php } } ?>
 	
      
    <?php if ($this->paginator) { ?>

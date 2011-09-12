@@ -401,6 +401,21 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
             return $result->toArray(); // return group member details
     }
 
+
+    public function getloanrequest($code)
+    {
+            $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_group'),array('id'),array(null))
+            ->join(array('b' => 'ourbank_groupmembers'),'a.id=b.group_id',array(null))
+            ->join(array('c'=>'ourbank_loanprocess'),'c.member_id=b.member_id',array('sum(c.request_amount) as requestamount'))
+            ->where('c.status=5')
+            ->where('a.groupcode=?',$code);
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray(); // return group member details
+    }
+
     public function getmemberlist($memberId,$typeID)
     {
         if($typeID == 2 or $typeID == 3){

@@ -104,10 +104,7 @@ foreach ($this->result as $result)
         <tr>
         <td><?php echo $member['membername']; ?></td>
         <td><?php echo $member['uid']; ?></td>
-        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']);
-                                 if($fatherdetails) 
-                                 {
-                                 echo $fatherdetails[0]['fathername']; }?></td>
+        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']); if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>
         <td></td>
         <td></td>
         <td></td>
@@ -124,6 +121,7 @@ onClick="window.open('<?php echo $this->baseUrl(); ?>/grouplaw/index/reportdispl
 </div> 
 </form>
 <?php } $count = $count + 1; } }?>
+
 
 
 

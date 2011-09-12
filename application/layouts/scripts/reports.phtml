@@ -16,24 +16,22 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
 <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script> 
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
+
 
 <script>
 $(document).ready(function() {
     $("#field1").datepicker({"dateFormat":"dd/mm/yy"});
     $("#field2").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#datefrom").datepicker({"dateFormat":"dd/mm/yy"});
+   $("#datefrom").datepicker({"dateFormat":"dd/mm/yy"});
     $("#dateto").datepicker({"dateFormat":"dd/mm/yy"});
     $("#date1").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#fromdate").datepicker({"dateFormat":"dd/mm/yy"});
-
 });
 </script>
 </head> 
@@ -70,8 +68,8 @@ $(document).ready(function() {
 	<li class="selected"><a href="<?php  echo $this->baseUrl();?>/loanledger">Loan ledger</a></li>
 	<li class="selected"><a href="<?php  echo $this->baseUrl();?>/summarymfi">Summary of MFI</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/depositsummary">Deposit summary</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/savingsledger">Individual / Group Savings ledger</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/personalsavings">Latest Savings Details</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/savingsledger">Savings ledger</a></li>
+        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/personalsavings">Personal savings</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/overduelist">Overdue list</a></li>
 
 
@@ -97,17 +95,6 @@ $(document).ready(function() {
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/receiptpayment">Receipt & payment</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/dcb">DCB</a></li>
         <li class="selected"><a href="<?php  echo $this->baseUrl();?>/par">PAR</a></li>
-    </ul>
-    <?php } ?>
-
-      <?php if($this->type == "fieldReports") { ?>
-    <h4><a>Field Reports</a></h4>
-    <ul>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/familykoota">GP & Koota Wise Family's</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/nregskoota">GP & Koota Wise Poverty & NREGS Cards</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/prakoota">GP & Koota Wise PRA Service</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/incomereport">GP Wise income</a></li>
-        <li class="selected"><a href="<?php  echo $this->baseUrl();?>/expensereport">GP Wise expense</a></li>
     </ul>
     <?php } ?>
   </div>

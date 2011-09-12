@@ -44,45 +44,28 @@ class Dcb_IndexController extends Zend_Controller_Action
     }
         //view action
 	public function indexAction()
-	{       $path=$this->view->baseUrl();
+	{       $app=$this->view->baseUrl();
 		$this->view->pageTitle = "Demand collections & balance";
 		$this->view->tilte = "Reports";
-		$searchForm = new Dcb_Form_Search($path);
+		$searchForm = new Dcb_Form_Search($app);
 		$this->view->form = $searchForm;
                 $option=array('1'=>'Account number','2'=>'Group','3'=>'Village');
 	        $searchForm->option->addMultiOptions($option);
                 $Loandemand = new Dcb_Model_Dcb();
-  $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-			foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
 
 		if ($this->_request->isPost() && $this->_request->getPost('Search'))
                 {
                     $this->view->hidedate=$fromDate = $this->_request->getParam('datefrom');
                     $this->view->accountno=$account1 = $this->_request->getParam('account');
-                    if($account1) {
-					  	$this->view->hideacc=$account=$account1;
-                      	$Type = substr($account,4,1);
-                    } else { 
-						$this->view->hideacc=$account=''; $Type=0; 
-							}
-
+                    if($account1)
+                    { $this->view->hideacc=$account=$account1;
+                      $Type = substr($account,4,1);
+                    } else { $this->view->hideacc=$account=''; $Type=0; }
                     $this->view->village=$village1 = $this->_request->getParam('village'); 
-                    if($village1){ 
-						$this->view->hidevillage=$village=$village1;
-					 } else {
-						 $this->view->hidevillage=$village='';
-							 } 
-
+                    if($village1){ $this->view->hidevillage=$village=$village1; } else { $this->view->hidevillage=$village=''; } 
                     $this->view->group=$group1 = $this->_request->getParam('group'); 
-                    if($group1){ 
-						$this->view->hidegroup=$group=$group1;
-					 } else {
-						$this->view->hidegroup=$group=''; 
-							}
+                    if($group1){ $this->view->hidegroup=$group=$group1; } else { $this->view->hidegroup=$group=''; }
                     $hierarchy = $Loandemand->getofficehierarchy();
-
                     foreach($hierarchy as $hiearchyids){
                     $hiearchyid = $hiearchyids['hierarchyid'];
                     }

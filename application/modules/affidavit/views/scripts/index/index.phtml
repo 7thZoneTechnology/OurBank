@@ -1,9 +1,9 @@
 <fieldset>
-	<legend><?php echo $this->translate("Enter/Search member"); ?></legend>
+	<legend>Enter/Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/affidavit/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <th><label class="mand"><?php echo $this->translate("Group code :"); ?></label></TD>
+                                <th><label class="mand">Group code :</label></TD>
                                 <th><?php echo $this->form->membercode;?></TD>
                             </TR> 
                         </table>
@@ -20,8 +20,8 @@ echo "<font color='RED'>Records Not Found Try Again...</font>";
 if(count($this->paginator)!=0) { ?>
     <table id="hor-minimalist-b">
         <tr class="tdbrownheading">
-            <th><?php echo $this->translate("Group code"); ?></th>
-            <th><?php echo $this->translate("Group name"); ?></td>
+            <th>Group code</th>
+            <th>Group name</td>
         </tr>
         <?php if (count($this->paginator)): ?>
         <?php foreach ($this->paginator as $individual): ?>
@@ -40,4 +40,4 @@ if(count($this->paginator)!=0) { ?>
             </td>
         </tr>
     </table>
-<?php } ?>
+<?php } 

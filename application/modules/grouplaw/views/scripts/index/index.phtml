@@ -13,17 +13,17 @@ th
 <?php if(!$this->result) { ?>
 <div id="searchDiv">
 <fieldset>
-	<legend><?php echo $this->translate("Search member"); ?></legend>
+	<legend>Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/grouplaw/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <TD><label class="mand"><?php echo $this->translate("Group code :"); ?></label></TD>
+                                <TD><label class="mand">Group code :</label></TD>
                                 <TD><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                             <input type="Submit" name="Submit" value="<?php echo $this->translate("Search"); ?>"><br><br>
+                                <input type="Submit" name="Submit" value="Search"><br><br>
                                 <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
                             </div>
                         </div>
@@ -40,7 +40,7 @@ foreach ($this->result as $result)
     if($count == 0){
 ?>
 <fieldset>
-	<legend><?php echo $this->translate("Template"); ?></legend>
+	<legend>Template</legend>
         <div align="center"><h3><b><u>Group law</u></b></h3></div>
         <br>
 
@@ -109,20 +109,19 @@ foreach ($this->result as $result)
 
         <div align="left">
         <table  width="100%" border="1">
-        <tr><th>S.No</th>
+        <tr>
             <th>Member name</th>
             <th>UID</th>
             <th>Father name</th>
             <th>Nominee</th>
-            <th>Relationship</th>
+            <th>Nominee relationship</th>
             <th>Signature</th>
         </tr>
-        <?php $i=0; foreach($this->groupmembers as $member) { $i++?>
-        <tr><td align="center" width="5%"><?php echo $i ?></td>
-        <td  width="20%"><?php echo $member['membername']; ?></td>
-        <td  width="20%"><?php echo $member['uid']; ?></td> 
-	    <td  width="20%"><?php echo $member['fathername']; ?></td>
-        <td  width="20%"><?php $fatherdetails=$this->loan->getfathername($member['family_id']);
+        <?php foreach($this->groupmembers as $member) {?>
+        <tr>
+        <td><?php echo $member['membername']; ?></td>
+        <td><?php echo $member['uid']; ?></td>
+        <td><?php $fatherdetails=$this->loan->getfathername($member['family_id']);
 					 if($fatherdetails) {echo $fatherdetails[0]['fathername']; }?></td>
         <td></td>
         <td></td>

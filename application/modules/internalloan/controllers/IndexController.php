@@ -22,9 +22,10 @@ class Internalloan_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle = $this->view->translate('Declaration');
+        $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->loan = new Internalloan_Model_Internalloan ();
-$this->view->withdrawal = new Sbwithdrawal_Model_Sbwithdrawal();
+
         /* Initialize action controller here */
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
@@ -62,12 +63,9 @@ $this->view->withdrawal = new Sbwithdrawal_Model_Sbwithdrawal();
             if ($declarationform->isValid($formData)) 
             {
                 $id = $this->_getParam('membercode');
-				$groupid = $this->view->adm->getsingleRecord('ourbank_group','id','groupcode',$id);
-
                 $this->view->groupid=$id;
                 $groupcommon=new Internalloan_Model_Internalloan();
                 $group_name=$groupcommon->groupDeatils($id);
-				$this->view->repmemberslist  = $this->view->withdrawal->getrepmembers($groupid);
                  if($group_name)
                 {
                     $this->view->result = $group_name;

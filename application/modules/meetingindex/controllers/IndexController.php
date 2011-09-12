@@ -54,51 +54,35 @@ class Meetingindex_IndexController extends Zend_Controller_Action
             $this->_redirect('index/login');
         }
         $this->view->title = "Group meeting";
-
+        
         $searchForm = new Meeting_Form_Search();
         $this->view->form = $searchForm;
-
+        
         $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
         foreach($days as $days) {
-            $searchForm->s1->addMultiOption($days['id'],$days['name']);
+            $searchForm->search_weekdays->addMultiOption($days['id'],$days['name']);
         }
         $meeting = new Meeting_Model_Meeting();
-      
-      //  $result = $meeting->fetchAllmeetingdetails();
-
-// //         $page = $this->_getParam('page',1);
-// //         $paginator = Zend_Paginator::factory($result);
-// //         $paginator->setItemCountPerPage(5);
-// //         $paginator->setCurrentPageNumber($page);
-// //         $this->view->paginator = $paginator;
-// // 
-// //         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-// //             $formData = $this->_request->getPost();
-// // 
-// //                 if ($searchForm->isValid($formData)) {
-// //                     $meeting = new Meeting_Model_Meeting();
-// //                     $result = $meeting->SearchMeeting($formData);
-// //                     $page = $this->_getParam('page',1);
-// //                     $paginator = Zend_Paginator::factory($result);
-// //                     $paginator->setItemCountPerPage(5);
-// //                     $paginator->setCurrentPageNumber($page);
-// //                     $this->view->paginator = $paginator;
-// //                 }
-// //         }
-// //     }
-// // }
-  
-        if($_POST)
-            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
-	else
-	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
-
-         $result = $meeting->SearchMeeting($postedvalues);
+        $result = $meeting->fetchAllmeetingdetails();
 
         $page = $this->_getParam('page',1);
-        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
-        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
-         
-	}
-}	
-	
+        $paginator = Zend_Paginator::factory($result);
+        $paginator->setItemCountPerPage(5);
+        $paginator->setCurrentPageNumber($page);
+        $this->view->paginator = $paginator;
+
+        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+            $formData = $this->_request->getPost();
+
+                if ($searchForm->isValid($formData)) {
+                    $meeting = new Meeting_Model_Meeting();
+                    $result = $meeting->SearchMeeting($formData);
+                    $page = $this->_getParam('page',1);
+                    $paginator = Zend_Paginator::factory($result);
+                    $paginator->setItemCountPerPage(5);
+                    $paginator->setCurrentPageNumber($page);
+                    $this->view->paginator = $paginator;
+                }
+        }
+    }
+}

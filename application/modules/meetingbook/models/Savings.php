@@ -243,7 +243,7 @@ public function updateRecord($table,$param,$data)
 public function updateRecord1($table,$param,$data)  
     {
 	$db = $this->getAdapter();
-        $db->update($table, $data , array('tranasction_id = '.$param)); 
+        $db->update($table, $data , array('transaction_id = '.$param)); 
         return;
     }
 

@@ -17,73 +17,20 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-<script type="text/javascript">
-function getlevels(hierarchy,path) {
-	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
-		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
-	}
-}
-function getgroups(branch,path) {
-	if(branch) {
-		targeturl=path+"/cashscroll/index/group?branch="+branch;
-		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
-	}
-}
-$(document).ready(function() {
-$('#show').change(function(){
-var va = $('#hierarchy').val();
-if(va != 4){
-$("#hide").hide();
-}else {
-$("#hide").show();
-
-}
-});
-});
-
-</script>
-
-<?php
-
-
 if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
+<fieldset>
     <legend> <?php echo $this->translate('search'); ?> </legend>
         <div class="cont-rgt-data">
-                <form action="<?php echo $this->baseUrl();?>/loansupplementary/index" method="POST">
             <table id="hor-minimalist-b">
-
+                <form action="<?php echo $this->baseUrl();?>/loansupplementary/index" method="POST">
                     <TR>
-							<TD><?php echo $this->translate('Hierarchy'); ?></td>
-                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
-   <TD ><?php echo $this->translate('As of date'); ?></td>
+                            <TD ><?php echo $this->translate('As of date'); ?></td>
                             <TD ><?php echo $this->form->datefrom;?></TD>
- 						
-</tr><tr>
-
-                            <TD><?php echo $this->translate('Branch'); ?></td>
-                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
-						<td></td>
-<td></td>
-</tr>
-<tr id="hide">
-							<TD><?php echo $this->translate('Group'); ?></td>
-                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
-<td></td>
-<td></td>
-
-</tr>
-
-
-
-
-                         
                             <TD ><input type="submit" name="Search" value="Search"/></TD>
                     </TR>
 
-            </table>                </form>
-
+                </form>
+            </table>
         </div>
 
 <?php } ?>
@@ -91,7 +38,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 	<h5 align="right"><?php echo $this->translate('As of'); ?> <?php echo "<font color='#039'>".$this->field1."</font>"; ?></h5>
 
 	<h5 style="text-align:right">* <?php echo $this->translate('Amount in'); ?> <font color="red"><?php echo $this->translate('Rs'); ?></font></h5>
-<div style="float:left;width:370px"> 
+<div style="float:left;width:375px"> 
         <?php 
 		$i = 0;
 		$j = 0;
@@ -178,13 +125,12 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 			<?php } } ?>
 	</table>
   </div>
-<div style="float:left;width:370px">
-
 <?php
 
  } $k=0;$j=0; ?>
 
 <?php if($this->loanDedit) { ?>
+<div style="float:left;width:375px">
 <h5>Debit</h5>
 <table id="hor-minimalist-s">
 		<TR>
@@ -229,7 +175,7 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 					<td></td>
 					<td></td>
 				 <?php if ($totalDebit != "0") { ?>
-						<td align = "right"><b><?php echo sprintf("%4.2f", $totalDebit); ?></b></td>
+						<b align = "right"><b><?php echo sprintf("%4.2f", $totalDebit); ?></b></td>
 						<?php } else { ?>
 						<td align = "right"><b>----</b></td>
 						<?php } ?>
@@ -261,7 +207,12 @@ if((!$this->loanCredit) && (!$this->loanDedit))  { ?>
 
 <?php  } 
 if(($this->loanCredit) && ($this->loanDedit))  { ?>
-<div>
-
+<div style="float:left;width:375px">
+<form action="<?php echo $this->baseUrl();?>/loansupplementary/index/pdftransaction" method="POST"
+onClick="window.open('<?php echo $this->baseUrl(); ?>/loansupplementary/index/reportdisplay/file/loansupplementary.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+            <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
+            
+            <input type="submit" value="PDF" id="submit">
+</form>
 </div>
 <?php } ?>

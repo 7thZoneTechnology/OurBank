@@ -16,18 +16,14 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
 <title><?php echo $this->escape($this->title); ?></title>
-
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
-
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.1.js"></script>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/transactionPeriods.js"></script>
+<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.1.js"></script>
 <script type='text/javascript' src="<?php echo $this->baseUrl();?>/js/management/saving.js"></script>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script>
@@ -98,8 +94,6 @@ $(document).ready(function() {
    <ul>
        <li><a href="<?php  echo $this->baseUrl();?>/office"><img src="<?php echo $this->baseUrl(); ?>/images/Button-search-64" border=0 width="16" height="16">Search</a></li>
      <li><a href="<?php  echo $this->baseUrl();?>/officedefault/index/officeadd"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> New office</a></li>
-
-      <li><a href="<?php  echo $this->baseUrl();?>/officedefault/index/glsubcode"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="16" height="16"> Glcodeupdate</a></li> 
    </ul>
    <?php } ?>
 
@@ -190,5 +184,7 @@ $(document).ready(function() {
   </div>
 </div>
 </BODY>
+
+
 </html>
 

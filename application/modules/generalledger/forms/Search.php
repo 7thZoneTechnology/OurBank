@@ -21,29 +21,17 @@
 
 <?php
 class Generalledger_Form_Search extends ZendX_JQuery_Form {
-	public function __construct($path) 
+	public function __construct() 
 		{
                 parent::__construct();
                 //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
                 $formfield = new App_Form_Field ();
                 //$vtype=array('Alpha');
-        		$hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
-        		$hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
-        		$hierarchy->setRegisterInArrayValidator(false);
-				$hierarchy->setAttribs(array('style' => 'width: 160px;'));
-
-        		$branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
-        		$branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
-        		$branch->setRegisterInArrayValidator(false);
-				$branch->setAttribs(array('style' => 'width: 160px;'));
-
-//         		$group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
-//         		$group->setRegisterInArrayValidator(false);
-
                 $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
                 $dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
+                $ledger = $formfield->field('Select','ledger','','','mand','Ledger',false,'','','','','',0,'');
 
 			
-			$this->addElements(array($hierarchy,$branch,$datefrom,$dateto));
+			$this->addElements(array($datefrom,$dateto,$ledger));
 		}
 }

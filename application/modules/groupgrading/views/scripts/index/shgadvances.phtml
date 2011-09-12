@@ -32,82 +32,82 @@ input.txt , textarea.txt
 <form action="<?php echo $this->baseUrl();?>/groupgrading/index/shgadvances" method="POST">
     <div class="profile_tab"> 
     <fieldset>
-        <p><h3 align="center"><?php echo $this->translate("SUJEEVANA PROGRAMME"); ?></h3></p>
+        <p><h3 align="center">SUJEEVANA PROGRAMME</h3></p>
               <table  width="100%">	
                 <tr>
-                    <TD width="30%"><?php echo $this->translate("SHG/JLG Group : "); ?><?php echo "<b>".$this->groupname."</b>";?></TD>
-                    <TD width="50%" colspan="3" align="center"><h3><?php echo $this->translate("SHG/JLG QUALITY EVALUATION"); ?></h3></TD>
-                    <td width="20%"><?php echo $this->translate("Village facilitator"); ?></td>
+                    <TD width="30%">SHG/JLG Group : <?php echo "<b>".$this->groupname."</b>";?></TD>
+                    <TD width="50%" colspan="3" align="center"><h3>SHG/JLG QUALITY EVALUATION</h3></TD>
+                    <td width="20%">Village facilitator</td>
                 </tr>
                 <tr>
-                    <TD width="30%"><?php echo $this->translate("Village :"); ?><?php echo "<b>".$this->villagename."</b>";?></TD>
+                    <TD width="30%">Village : <?php echo "<b>".$this->villagename."</b>";?></TD>
                     <TD width="50%" colspan="3" align="center"></TD>
-                    <td width="20%"><?php echo $this->translate("Area officer"); ?></td>
+                    <td width="20%">Area officer</td>
                 </tr>
                 <tr>
-                    <TD width="20%"><?php echo $this->translate("Farmer's group"); ?></TD>
+                    <TD width="20%">Farmer's group</TD>
                     <TD width="50%" colspan="3" align="center"></TD>
-                    <Th width="30%"><?php echo $this->translate("Date :"); ?><?php echo "<b>".date('d/m/Y')."</b>";?></td>
+                    <Th width="30%">Date : <?php echo "<b>".date('d/m/Y')."</b>";?></td>
                 </tr>
             </table>
             <table border="1" width="100%">
                 <TR>
-                    <Td width="10%" align="center"><?php echo $this->translate("S.No"); ?></Td>
-                    <Td width="50%" colspan="2" align="center"><?php echo $this->translate("Quality indicators"); ?></Td>
-                    <Td width="20%"  align="center"><?php echo $this->translate("Maximum marks"); ?></Td>
-                    <Td width="20%"  align="center"><?php echo $this->translate("Scored marks"); ?></Td>
+                    <Td width="10%" align="center">S.No</Td>         
+                    <Td width="50%" colspan="2" align="center">Quality indicators</Td>
+                    <Td width="20%"  align="center">Maximum marks</Td>
+                    <Td width="20%"  align="center">Scored marks</Td>
                 </TR>
                 <tr>
                     <TD align="center"><b>#</b></TD>
-                    <td colspan="2"><b><?php echo $this->translate("Group meeting & other information"); ?></b></TD>
+                    <td colspan="2"><b>Group meeting & other information</b></TD>
                     <TD align="center"><b>350</b></TD>
                     <TD></TD>
                 </tr> 
                 <tr>
                     <TD align="center">1</TD>
-                    <TD colspan="2"><?php echo $this->translate("Attendance(<50%=0)"); ?></TD>
+                    <TD colspan="2">Attendance(<50%=0)</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->gattendance?></TD>
                     <input type="hidden" name="gattendanceV" value="50"/>
                 </tr> 
                 <tr>
                     <TD align="center">2</TD>
-                    <TD colspan="2"><?php echo $this->translate("Savings(<50%=0)"); ?></TD>
+                    <TD colspan="2">Savings(<50%=0)</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->gsaving?></TD>
                     <input type="hidden" name="gsavingV" value="50"/>
                 </tr>
                 <tr>
                     <TD align="center">3</TD>
-                    <TD colspan="2"><?php echo $this->translate("Meeting discipline ?"); ?></TD>
+                    <TD colspan="2">Meeting discipline ?</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->gmeetdiscipline?></TD>
                     <input type="hidden" name="gmeetdisciplineV" value="20"/>
                 </tr>
                 <tr>
                     <TD align="center">4</TD>
-                    <TD colspan="2"><?php echo $this->translate("Participation of members in discussion ?"); ?></TD>
+                    <TD colspan="2">Participation of members in discussion ?</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->gparticipation?></TD>
                     <input type="hidden" name="gparticipationV" value="20"/>
                 </tr>
                 <tr>
                     <TD align="center">5</TD>
-                    <TD colspan="2"><?php echo $this->translate("Weekly meeting limit(<80%=0)"); ?></TD>
+                    <TD colspan="2">Weekly meeting limit(<80%=0)</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->gweeklymeet?></TD>   
                  <input type="hidden" name="gweeklymeetV" value="20"/>
                 </tr>
                 <tr>
                     <TD align="center">6</TD>
-                    <TD colspan="2"><?php echo $this->translate("Change of membership(<50%=0)"); ?></TD>
+                    <TD colspan="2">Change of membership(<50%=0)</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->gchangememb?></TD>
                     <input type="hidden" name="gchangemembV" value="50"/>
                 </tr>
                 <tr>
                     <TD align="center">7</TD>
-                    <TD colspan="2"><?php echo $this->translate("Preparation of workplan for the meeting"); ?></TD>
+                    <TD colspan="2">Preparation of workplan for the meeting</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->gpreparation?></TD>
                     <input type="hidden" name="gpreparationV" value="20"/>
@@ -115,7 +115,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">8</TD>
-                    <TD colspan="2"><?php echo $this->translate("Number of signing members"); ?></TD>
+                    <TD colspan="2">Number of signing members</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->gsigningmemb?></TD>
                     <input type="hidden" name="gsigningmembV" value="20"/>
@@ -123,7 +123,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">9</TD>
-                    <TD colspan="2"><?php echo $this->translate("Group members co operation"); ?></TD>
+                    <TD colspan="2">Group members co operation</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->ggroupcooperation?></TD>
                     <input type="hidden" name="ggroupcooperationV" value="50"/>
@@ -131,7 +131,7 @@ input.txt , textarea.txt
                 </tr> 
                 <tr>
                     <TD align="center">10</TD>
-                    <TD colspan="2"><?php echo $this->translate("Group sustainability training"); ?></TD>
+                    <TD colspan="2">Group sustainability training</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->ggroupsustaiable?></TD>
                     <input type="hidden" name="ggroupsustaiableV" value="50"/>
@@ -140,13 +140,13 @@ input.txt , textarea.txt
 
                 <tr>
                     <TD align="center"><b>#</b></TD>
-                    <td colspan="2"><b><?php echo $this->translate("Book Keeping"); ?></b></TD>
+                    <td colspan="2"><b>Book Keeping</b></TD>
                     <TD align="center"><b>250</b></TD>
                     <TD></TD>
                 </tr>
                 <tr>
                     <TD align="center">1</TD>
-                    <TD colspan="2"><?php echo $this->translate("Savings-attendance sheet"); ?></TD>
+                    <TD colspan="2">Savings-attendance sheet</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->bsavingattend?></TD>
                     <input type="hidden" name="bsavingattendV" value="50"/>
@@ -154,7 +154,7 @@ input.txt , textarea.txt
                 </tr> 
                 <tr>
                     <TD align="center">2</TD>
-                    <TD colspan="2"><?php echo $this->translate("Loan disbursement"); ?></TD>
+                    <TD colspan="2">Loan disbursement</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->bloandisburse?></TD>
                     <input type="hidden" name="bloandisburseV" value="20"/>
@@ -162,7 +162,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">3</TD>
-                    <TD colspan="2"><?php echo $this->translate("Discussion and decisions"); ?></TD>
+                    <TD colspan="2">Discussion and decisions</TD>
                     <TD align="center">30</TD>
                     <TD><?php echo $this->form->bdiscussion?></TD>
                     <input type="hidden" name="bdiscussionV" value="30"/>
@@ -170,7 +170,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">4</TD>
-                    <TD colspan="2"><?php echo $this->translate("Weekly Income - Expenditure details"); ?></TD>
+                    <TD colspan="2">Weekly Income - Expenditure details</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->bincomeandexpend?></TD>
                     <input type="hidden" name="bincomeandexpendV" value="50"/>
@@ -178,7 +178,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">5</TD>
-                    <TD colspan="2"><?php echo $this->translate("Individual saving account"); ?></TD>
+                    <TD colspan="2">Individual saving account</TD>
                     <TD align="center">30</TD>
                     <TD><?php echo $this->form->bindividualsave?></TD>
                     <input type="hidden" name="bindividualsaveV" value="30"/>
@@ -186,7 +186,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">6</TD>
-                    <TD colspan="2"><?php echo $this->translate("Individual loan account"); ?></TD>
+                    <TD colspan="2">Individual loan account</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->bindividualloan?></TD>
                     <input type="hidden" name="bindividualloanV" value="20"/>
@@ -194,7 +194,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">7</TD>
-                    <TD colspan="2"><?php echo $this->translate("General account"); ?></TD>
+                    <TD colspan="2">General account</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->bgeneralacc?></TD>
                     <input type="hidden" name="bgeneralaccV" value="50"/>
@@ -202,13 +202,13 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center"><b>#</b></TD>
-                    <td colspan="2"><b><?php echo $this->translate("Previous loan information"); ?></b></TD>
+                    <td colspan="2"><b>Previous loan information</b></TD>
                     <TD align="center"><b>250</b></TD>
                     <TD></TD>
                 </tr>
                 <tr>
                     <TD align="center">1</TD>
-                    <TD colspan="2"><?php echo $this->translate("Loan holders percentage(<50%=0)"); ?></TD>
+                    <TD colspan="2">Loan holders percentage(<50%=0)</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->ploanholder?></TD>
                     <input type="hidden" name="ploanholderV" value="50"/>
@@ -216,7 +216,7 @@ input.txt , textarea.txt
                 </tr> 
                 <tr>
                     <TD align="center">2</TD>
-                    <TD colspan="2"><?php echo $this->translate("Usage of savings/loans for income generating activities"); ?></TD>
+                    <TD colspan="2">Usage of savings/loans for income generating activities </TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->pusageofsaving?></TD>
                     <input type="hidden" name="pusageofsavingV" value="50"/>
@@ -224,7 +224,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">3</TD>
-                    <TD colspan="2"><?php echo $this->translate("Loan repayment percentage(<50%=0)"); ?></TD>
+                    <TD colspan="2">Loan repayment percentage(<50%=0)</TD>
                     <TD align="center">100</TD>
                     <TD><?php echo $this->form->ploanrepayment?></TD>
                     <input type="hidden" name="ploanrepaymentV" value="100"/>
@@ -232,7 +232,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">4</TD>
-                    <TD colspan="2"><?php echo $this->translate("Minimum repayment"); ?></TD>
+                    <TD colspan="2">Minimum repayment</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->pminimumrepay?></TD>
                     <input type="hidden" name="pminimumrepayV" value="50"/>
@@ -240,14 +240,14 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center"><b>#</b></TD>
-                    <td colspan="2"><b><?php echo $this->translate("Farmers school & information"); ?></b></TD>
+                    <td colspan="2"><b>Farmers school & information</b></TD>
                     <TD align="center"><b>150</b></TD>
                     <TD></TD>
 
                 </tr>
                 <tr>
                     <TD align="center">1</TD>
-                    <TD colspan="2"><?php echo $this->translate("Participation(<70%=0)"); ?></TD>
+                    <TD colspan="2">Participation(<70%=0)</TD>
                     <TD align="center">30</TD>
                     <TD><?php echo $this->form->fparticipation?></TD>
                     <input type="hidden" name="fparticipationV" value="30"/>
@@ -255,7 +255,7 @@ input.txt , textarea.txt
                 </tr> 
                 <tr>
                     <TD align="center">2</TD>
-                    <TD colspan="2"><?php echo $this->translate("Farmer school"); ?></TD>
+                    <TD colspan="2">Farmer school </TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->ffarmerschool?></TD>
                     <input type="hidden" name="ffarmerschoolV" value="50"/>
@@ -263,7 +263,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">3</TD>
-                    <TD colspan="2"><?php echo $this->translate("Weekly plan"); ?></TD>
+                    <TD colspan="2">Weekly plan</TD>
                     <TD align="center">20</TD>
                     <TD><?php echo $this->form->fweeklyplan?></TD>
                     <input type="hidden" name="fweeklyplanV" value="20"/>
@@ -271,7 +271,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center">4</TD>
-                    <TD colspan="2"><?php echo $this->translate("School learnings followup percentage(<50%=0)"); ?></TD>
+                    <TD colspan="2">School learnings followup percentage(<50%=0)</TD>
                     <TD align="center">50</TD>
                     <TD><?php echo $this->form->fschoollearning?></TD>
                     <input type="hidden" name="fschoollearningV" value="50"/>
@@ -279,7 +279,7 @@ input.txt , textarea.txt
                 </tr>
                 <tr>
                     <TD align="center"><b>#</b></TD>
-                    <td colspan="2"><b><?php echo $this->translate("Total marks"); ?></b></TD>
+                    <td colspan="2"><b>Total marks</b></TD>
                     <TD align="center"><b>1000</b></TD>
                     <TD><?php echo $this->form->totalmarks?></TD>
                 </tr>
@@ -288,23 +288,25 @@ input.txt , textarea.txt
 </div>
 </form>
 <fieldset>
-<legend><?php echo $this->translate("Percentage calculation"); ?></legend>
+<legend>Percentage calculation</legend>
 <div style="float:left; width:300px">
             <table border="1">
             <tr>
-                <Td><?php echo $this->translate("Currently applicable total marks"); ?></Td>
+                <Td>Currently applicable total marks</Td>
                 <td><input type="textbox" name="marks" class="marks" value="" readonly="true"/></td>
             </tr> 
             <tr>
-                <TD><?php echo $this->translate("Scored marks"); ?></TD>
+                <TD>Scored marks</TD>
                 <TD><?php echo $this->form->totalmarks?></TD>
             </tr> 
             <tr>
-                <TD><?php echo $this->translate("Percentage of marks (%)"); ?></TD>
+                <TD>Percentage of marks (%)</TD>
                 <TD><?php echo $this->form->percentage?></TD>
             </tr>
             <tr>
-            <TD><?php echo $this->translate("Grade"); ?></TD>
+            <TD>
+                  Grade
+            </TD>
              <TD>
                  <input type="text" class="grade" name="grade" readonly="true"></label>
             </TD>
@@ -313,7 +315,9 @@ input.txt , textarea.txt
 <br>
  <table border="1" width="100%">
     <TR>
-        <TD width="30%" valign="top"><?php echo $this->translate("Observed - good points"); ?></TD>
+        <TD width="30%" valign="top">
+            Observed - good points
+        </TD>
         <td width="70%"><?php echo $this->form->observe?></td>
     </TR>
     </table>
@@ -341,8 +345,8 @@ input.txt , textarea.txt
 </div>
 </fieldset>
             <br>
-            <p><?php echo $this->translate("Observed - need changes in"); ?></p>
-            <p align="right"><?php echo $this->translate("Evaluator name & signature"); ?></p>
+            <p>Observed - need changes in</p>
+            <p align="right">Evaluator name & signature</p>
 
 <form action="<?php echo $this->baseUrl();?>/groupgrading/index/pdfdisplay" method="POST"
 onClick="window.open('<?php echo $this->baseUrl(); ?>/loanprocess/index/reportdisplay/file/shgadvances.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">

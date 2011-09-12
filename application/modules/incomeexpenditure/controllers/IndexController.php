@@ -40,75 +40,32 @@ class Incomeexpenditure_IndexController extends Zend_Controller_Action
         {
             $this->view->username=$loginname['username']; // get the user name
         }
- $this->view->adm = new App_Model_Adm();
-
-
     }
 
-    function indexAction()
+    function indexAction() 
     {
-        $path = $this->view->baseUrl();
-
-
-        $searchForm = new Incomeexpenditure_Form_Search($path);
+        $searchForm = new Incomeexpenditure_Form_Search();
         $this->view->form = $searchForm;
         $incomeexpenditure = new Incomeexpenditure_Model_Incomeexpenditure();
-   $officename = $this->view->adm->viewRecord("ourbank_officehierarchy","id","ASC");
-			foreach($officename as $officename){
-				$searchForm->hierarchy->addMultiOption($officename['id'],$officename['type']);
-			}
-
-
-
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 
             $formData = $this->_request->getPost();
             if ($searchForm->isValid($formData)) {
                 $fromdate = $this->_request->getParam('datefrom');
-                $hierarchy = $this->_request->getParam('hierarchy');
-                $branch = $this->_request->getParam('branch');
-                $group = $this->_request->getParam('group');
-
                 $this->view->asofdate = $fromdate;
                 $dateconvertor = new App_Model_dateConvertor();
                 $Date = $dateconvertor->mysqlformat($fromdate);
                 //$Date = $fromdate;
 
                 $this->view->fdate = $Date;
-
-
-if($group==''){
                 $this->view->income=$incomeexpenditure->incomedetails($Date); 
-// echo '<pre>'; print_r($this->view->income);
-                $this->view->incomeheader=$incomeexpenditure->incomedetails1($Date);
-// echo '<pre>'; print_r($this->view->incomeheader);
                 $this->view->expenditure=$incomeexpenditure->expendituredetails($Date);
-                $this->view->expenditureheader=$incomeexpenditure->expendituredetails1($Date);
-
-                $this->view->cashcredit= $incomeexpenditure->cashdetailscredit($Date);
-                $this->view->cashdebit= $incomeexpenditure->cashdetailsdebit($Date);
-}else{
-
- $this->view->income=$incomeexpenditure->incomedetailsg($Date); 
-// echo '<pre>'; print_r($this->view->income);
-                $this->view->incomeheader=$incomeexpenditure->incomedetails1g($Date);
-// echo '<pre>'; print_r($this->view->incomeheader);
-                $this->view->expenditure=$incomeexpenditure->expendituredetailsg($Date);
-                $this->view->expenditureheader=$incomeexpenditure->expendituredetails1g($Date);
-
-                $this->view->cashcredit= $incomeexpenditure->cashdetailscreditg($Date);
-                $this->view->cashdebit= $incomeexpenditure->cashdetailsdebitg($Date);
-
-
-
-}
                 if((!$this->view->income) && (!$this->view->expenditure)) {
                     echo "<font color='red'><b> Record not found</b> </font>";
                 }
             }
         }
     }
-
     function pdftransactionAction() 
     { 
         $fromdate = $this->_request->getParam('fdate');
@@ -119,9 +76,7 @@ if($group==''){
         $this->view->asofdate = $asofDate;
         $incomeexpenditure = new Incomeexpenditure_Model_Incomeexpenditure();
         $this->view->income=$income=$incomeexpenditure->incomedetails($Date); 
-        $this->view->incomeheader=$income1=$incomeexpenditure->incomedetails1($Date);
         $this->view->expenditure=$expenditure=$incomeexpenditure->expendituredetails($Date);
-        $this->view->expenditureheader=$expenditure1=$incomeexpenditure->expendituredetails1($Date);
         $app = $this->view->baseUrl();
         $word=explode('/',$app);
         $projname='';
@@ -169,7 +124,7 @@ if($group==''){
 
                 $page->drawText($criteria,500, 780); //Search criteria
                 $page->drawText($criteria,500, 780);
-
+        
                 $page->drawText($currency,500, 770); //Currency
                 $page->drawText($currency,500, 770); 
 
@@ -177,38 +132,36 @@ if($group==''){
                 $page->drawText($text[2],$x2, $my);
                 $page->drawText($text[3],$x3, $my);
                 $page->drawText($text[4],$x4, $my);
-
+                
                 $page->drawLine(30, 750, 570, 750);
                 $page->drawLine(30, 730, 570, 730);
 
-                foreach($income1 as $income1) {
-                    $page->drawText($income1['header'],$x1, $y1);
                 foreach($income as $income) {
+                    $page->drawText($income['header'],$x1, $y1);
                     $page->drawText( $income['credit'],$x2, $y1);
                     $totalincome +=$income['credit'];
-
+                
                     $y1 = $y1 - 15;
-                } }
+                }
 
-                foreach($expenditure1 as $expe1) {
                 foreach($expenditure as $expe) {
-                        $page->drawText($expe1['header'],$x3, $y2);
+                        $page->drawText($expe['header'],$x3, $y2);
                         $page->drawText( $expe['credit'],$x4, $y2);
                         $totalexpe +=$expe['credit'];
-
+                
                     $y2 = $y2 - 15;
-                } }
+                }
 
 
                 $page->drawLine(30, $y1, 570, $y1);
                 $page->drawLine(30, $y1 -20, 570, $y1 -20);
-
+        
                 $page->drawText($text[5], $x1, $y1 -15);
                 $page->drawText(sprintf("%4.2f",$totalincome),$x2, $y1 -15);
 
                 $page->drawText($text[5], $x3, $y1 -15);
                 $page->drawText(sprintf("%4.2f",$totalexpe),$x4, $y1 -15);
-
+                
                 // Virtual table
                 $page->setLineWidth(1)->drawLine(30, $y1 - 20, 30, 750); //Table left vertical
                 $page->setLineWidth(1)->drawLine(300, $y1 - 20, 300, 750); //Table center vertical
@@ -221,6 +174,7 @@ if($group==''){
                 $path = '/var/www/'.$projname.'/reports/'.$account_number.'incomeexpenditure.pdf';
                 chmod($path,0777);
     }
+        
 
     function reportdisplayAction() {
         $this->_helper->layout->disableLayout();

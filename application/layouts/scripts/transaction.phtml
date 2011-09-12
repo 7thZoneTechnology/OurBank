@@ -4,24 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <title><?php echo $this->escape($this->title); ?></title>
 
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
-<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
 
-<script type='text/javascript' src="<?php  echo $this->baseUrl();?>/js/jquery-1.3.1.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
-<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script> 
-
-<script>
-$(document).ready(function() {
-    $("#loanAccountdate").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#date").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#date1").datepicker({"dateFormat":"dd/mm/yy"});
-    $("#recurringDate").datepicker({"dateFormat":"yy-mm-dd"});
-     $("#transactiondate").datepicker({"dateFormat":"yy-mm-dd"});
-
-});
-</script>
 </head>
 <body>
 <div id="container">
@@ -40,7 +23,6 @@ $(document).ready(function() {
 	   <li ><a href="<?php echo $this->baseUrl();?>/loandisbursmentg">Loans</a></li>
 	   <li ><a href="<?php echo $this->baseUrl();?>/ledgerreport">Ledger Report</a></li>
 	   <li ><a href="<?php echo $this->baseUrl();?>/receipts">Receipts and payments</a></li>
-	   <li ><a href="<?php echo $this->baseUrl();?>/cashtransactions">Cash Transactions</a></li>
    	   <li ><a href="<?php echo $this->baseUrl();?>/altertransaction">Alter transaction</a></li>
    	   <li ><a href="<?php echo $this->baseUrl();?>/amounttransfer">Amount transfer</a></li>
 
@@ -52,8 +34,8 @@ $(document).ready(function() {
 		<ul>
             <li><a href="<?php echo $this->baseUrl();?>/savingswithdrawal">Saving withdrawal</a></li>
             <li><a href="<?php echo $this->baseUrl();?>/savingsdeposit">Saving deposit</a></li>
-            <li><a href="<?php echo $this->baseUrl();?>/psdetails">Individual Saving details</a></li>
-            <li><a href="<?php echo $this->baseUrl();?>/msdetails">Group Member Saving details</a></li>
+            <li><a href="<?php echo $this->baseUrl();?>/psdetails">Saving details</a></li>
+            <li><a href="<?php echo $this->baseUrl();?>/msdetails">Member saving details</a></li>
                 </ul>
 	<?php } ?>
 	<?php if($this->type == "loans") { ?>

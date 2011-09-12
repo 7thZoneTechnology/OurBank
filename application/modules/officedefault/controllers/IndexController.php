@@ -17,12 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-/*
- *  create an office default for add, edit, delete and suboffice actions
- */
 class Officedefault_IndexController extends Zend_Controller_Action{
 
     public function init() {
@@ -460,55 +454,5 @@ echo $typeid;
             $this->view->branchId = $branchId[0]['id'];
         }
    }
-    public function glsubcodeAction()
-    {
-        $treeobj = new Officedefault_Model_officedefault();
-        $branch = $treeobj->getofficeid();
-        $totaloffice=count($branch);
-        foreach($branch as $officedetails) { /*echo $officedetails['id'];*/
-        for($j=1;$j<=12;$j++) {
-             $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
-           $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
-           $glcode = $fetchglcodedetails[0]['glcode'];
-           $header = $fetchglcodedetails[0]['header'];
 
-           $ledger = new Officedefault_Model_officedefault();
-           $genarateGlsub = $ledger->genarateGlsubCode1($ledgertype_id,$j);
-           $glsubcode=$genarateGlsub->id;
-
-           if($glsubcode) {
-               $ini=substr($glsubcode,0,1);
-               $last=substr($glsubcode,1,5);
-               $last+=1;
-               $last = str_pad($last,5,0,STR_PAD_LEFT);
-               $glsubcode=$ini.$last;
-               $glsubcode;
-           } else {
-               $glcode1=$ledger->fetchGlcode($j);
-               $glcode=$glcode1->glcode;
-               $ini=substr($glcode,0,1);
-               $last=substr($glcode,1,5);
-               $last+=1;
-               $last = str_pad($last,5,0,STR_PAD_LEFT);
-               $glsubcode=$ini.$last;
-               $glsubcode;
-           }
-
-//            $headername=array('bank','cash','loans','savings','interest','fee');
-            $headername = array('Bank','Cash','Loans','Savings','Interest','Fee','SrvChrg','Penalty','IntOnLoan','MeetingExpenses','OtherExpenses','IntOnSavings');
-           $gInsert = $ledger->insertGlsubcode(array('id' => '',
-						   'office_id' => $officedetails['id'],
-                           'glsubcode' => $glsubcode,
-                           'glcode_id' => $j,
-                           'subledger_id' => $ledgertype_id,
-                           'header' => $headername[$j-1].$officedetails['id'],
-                           'description' => $headername[$j-1].$officedetails['id'],
-                           'created_date' =>date("Y-m-d"),
-                           'created_by'=>$this->view->createdby));
-           }
-
-
-
-        }
-    }
 }

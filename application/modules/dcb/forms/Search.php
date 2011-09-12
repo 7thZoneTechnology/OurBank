@@ -24,26 +24,21 @@
  *  create search form elements for cashscroll
  */
 class Dcb_Form_Search extends Zend_Form {
-	public function __construct($path) 
+	public function __construct($app) 
 		{
                 Zend_Dojo::enableForm($this);
-                parent::__construct($path);
+                parent::__construct($app);
                 //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$decorator,$value
                 $formfield = new App_Form_Field ();
                 // send parameter to get input fields
                 $datefrom = $formfield->field('Text','datefrom','','','mand','From date',true,'','','','','',0,'');
-                    $datefrom->setAttrib('autocomplete','off');
 //                $dateto = $formfield->field('Text','dateto','','','mand','To date',true,'','','','','',0,'');
                 $option = $formfield->field('Select','option','','','','',false,'','','','','',0,'');
-	        $option->setAttrib('onchange', 'Getsearch(this.value,"'.$path.'")');
-               $hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
-        $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
-        $hierarchy->setRegisterInArrayValidator(false);
-        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
-        $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
-        $branch->setRegisterInArrayValidator(false);
-        $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
+	        $option->setAttrib('onchange', 'Getsearch(this.value,"'.$app.'")');
+                $village = $formfield->field('Select','village','','','','',false,'','','','','',0,'');
+                $group = $formfield->field('Select','group','','','','',false,'','','','','',0,'');
+                $account = $formfield->field('Text','account','','','','',false,'','','','','',0,'');
                 //add element to form
-		$this->addElements(array($datefrom,$option,$hierarchy,$group,$branch));
+		$this->addElements(array($datefrom,$account,$option,$village,$group));
 		}
 }

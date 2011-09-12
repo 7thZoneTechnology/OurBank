@@ -284,14 +284,5 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
         $result = $db->update('ourbank_master_village',$input,$where);
         }
 
-        public function getofficeid()
-        {
-         $select = $this->select()
-               ->setIntegrityCheck(false)  
-               ->join(array('a' => 'ourbank_office'),array('a.id'),array('a.id'));
-         //die($select->__toString($select));
-         $result = $this->fetchAll($select);
-         return $result->toArray();
-        }
 
 }

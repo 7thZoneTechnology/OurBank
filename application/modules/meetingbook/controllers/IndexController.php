@@ -218,7 +218,7 @@ $abs1=($i)*$formData['absentfee'];
                                             array('Income_id' => '',
                                             'office_id' => $formData['officeid'],
                                             'glsubcode_id_from' => $formData['absentglsubcode'],
-                                            'tranasction_id' => $tranId,
+                                            'transaction_id' => $tranId,
                                             'credit' => $abs1,
                                             'recordstatus_id'=>3));
                                     }
@@ -259,7 +259,7 @@ $abs2=($j)*$formData['latefee'];
                                             array('Income_id' => '',
                                             'office_id' => $formData['officeid'],
                                             'glsubcode_id_from' => $formData['lateglsubcode'],
-                                            'tranasction_id' => $tranId,
+                                            'transaction_id' => $tranId,
                                             'credit' => $abs2,
                                             'recordstatus_id'=>3));
                             }
@@ -343,11 +343,11 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
 	$this->view->editdiscussion=$fetchattendance->getdiscussion($attendance_id);
 	$this->view->editdecision=$fetchattendance->getdecision($attendance_id);
 
-        $memberattendance=$fetchattendance->fetchmemberttendance($attendance_id); 
+        $memberattendance=$fetchattendance->fetchmemberttendance($attendance_id);
         if($memberattendance){
-        $fetchattendance1=$fetchattendance->fetchattendancedetailsforID($attendance_id);  
+        $fetchattendance1=$fetchattendance->fetchattendancedetailsforID($attendance_id);
         } else {
-        $fetchattendance1=$fetchattendance->fetchattendancedetailsforID1($attendance_id);  
+        $fetchattendance1=$fetchattendance->fetchattendancedetailsforID1($attendance_id);
         }
 // //         Zend_Debug::dump($fetchattendance1);
 
@@ -366,7 +366,7 @@ function array_search_values( $m_needle, $a_haystack, $b_strict = false){
             $this->view->attendanceform->resolution->setValue($fetchattendance1['resolution']);
             $this->view->groupid=$fetchattendance1['meeting_id'];
             $this->view->attendanceform->meeting_name->setValue($fetchattendance1['meeting_id']); 
-            $this->view->weekno=$fetchattendance1['meeting'];
+            $this->view->weekno=$fetchattendance1['meetimg'];
             $this->view->vNo=$vNo=$fetchattendance1['transaction_id'];
 
             $this->view->attendanceform->meeting_time->setValue($fetchattendance1['attendancetime']); 
@@ -560,7 +560,7 @@ $abs1=($i)*$formData['absentfee'];
                                             array('Income_id' => '',
                                             'office_id' => $formData['officeid'],
                                             'glsubcode_id_from' => $formData['absentglsubcode'],
-                                            'tranasction_id' => 1,
+                                            'transaction_id' => 1,
                                             'credit' => $abs1,
                                             'recordstatus_id'=>3));
                             }
@@ -597,7 +597,7 @@ $abs2=($j)*$formData['latefee'];
                                             array('Income_id' => '',
                                             'office_id' => $formData['officeid'],
                                             'glsubcode_id_from' => $formData['lateglsubcode'],
-                                            'tranasction_id' => 1,
+                                            'transaction_id' => 1,
                                             'credit' => $abs2,
                                             'recordstatus_id'=>3));
                                 }
@@ -740,12 +740,23 @@ for($j=0;$j<count($latemember_id);$j++){
         $this->_helper->layout->disableLayout();
         $path = $this->view->baseUrl();
 	$fetchMembers=new Meetingbook_Model_Attend();
-        $transID=$this->_request->getParam('transID');
-            
+        $fetchattendance=new Meetingbook_Model_Meetingbook();
 
-    $this->view->savingsdetails=$this->view->savings->fetchsavingsdetails($transID); 
-//     $this->view->loandetails=$this->view->savings->fetchloandetails($transID);
-//         echo '<pre>'; print_r($this->view->savingsdetails);
+        $attendance_id = $this->_request->getParam('attendance_id');
+
+        $memberattendance=$fetchattendance->fetchmemberttendance($attendance_id); 
+        if($memberattendance){
+        $fetchattendance1=$fetchattendance->fetchattendancedetailsforID($attendance_id);
+        } else {
+        $fetchattendance1=$fetchattendance->fetchattendancedetailsforID1($attendance_id);
+        }
+
+        foreach($fetchattendance1 as $fetchattendance1) {
+           $this->view->vNo=$vNo=$fetchattendance1['transaction_id'];
+        }
+
+        $transId = $this->view->vNo;
+        $this->view->savingsdetails=$this->view->savings->fetchsavingsdetails($transId); 
 
         $this->view->members=$aa=$fetchMembers->fetchMembers($this->_request->getParam('meeting_ID')); 
         $check=array();

@@ -83,7 +83,7 @@ class Overduelist_IndexController extends Zend_Controller_Action
             }
             $this->view->normaldate=$this->_request->getParam('datefrom');
             $this->view->asofdate=$date = $this->view->dateconvertor->phpmysqlformat($this->_request->getParam('datefrom'));
-            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$bank,$officer,$hierarchy);
+            $this->view->loanView=$arrayLoan=$overduemodel->search($date,$bank,$officer);
             }
         }
     }

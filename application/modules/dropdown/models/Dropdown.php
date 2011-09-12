@@ -10,6 +10,16 @@ class Dropdown_Model_Dropdown extends Zend_Db_Table
        return $result->toArray();
      // die($select->__toString($select));
     }
+
+		public function urlname($tableName){
+        $select = $this->select()
+       ->setIntegrityCheck(false)
+		->join(array('a' => 'ourbank_master_mastertables'),array('a.descriptions'))
+		->where('a.name = ?',$tableName);
+       $result = $this->fetchAll($select);
+       return $result->toArray();
+	}
+
     public function insertContent($tName,$input = array())
     {
        $db = $this->getAdapter();

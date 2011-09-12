@@ -4,12 +4,12 @@ class Loanaccount_Form_Loans extends Zend_Form
     public function init() 
     {
     }
-    public function __construct($minimumDeposit,$maxDeposite,$ID,$code,$app,$messageerr) 
+    public function __construct($minimumDeposit,$requetloan,$maxDeposite,$ID,$code,$app,$messageerr) 
     {
-        parent::__construct($minimumDeposit,$maxDeposite,$ID,$code,$app);
+        parent::__construct($minimumDeposit,$requetloan,$maxDeposite,$ID,$code,$app);
         //$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
        	$formfield = new App_Form_Field ();
-        $amount = $formfield->field('Text','amount','','','txt_put amountclass','',true,'','','','','',0,$maxDeposite);
+        $amount = $formfield->field('Text','amount','','','txt_put amountclass','',true,'','','','','',0,$requetloan);
         $amount->addValidators(array(array('Float'),
                                array('GreaterThan',false,array($minimumDeposit-.0001,
                                      'messages' => array('notGreaterThan' => 'Minimum 

@@ -32,7 +32,22 @@ class Monthend_Model_Transaction extends Zend_Db_Table
         return $result->toArray();
 
 	}
+	public function getmonthend($month,$year)
+	{
+        $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_monthend'),array('a.id'),array('a.id as Monthid','a.startdate','a.enddate','monthname(startdate) as Month'))
+	->where('month(startdate) <= ?',$month)
+	->where('month(enddate) <= ?',$month)
+	->where('a.year <= ?',$year)
+	->where('a.processed = 1')
+	->order('a.startdate');
+// // 	->limit(1);
+// //        die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
 
+	}
     public function interestcalculation($fdate,$ldate,$trnsdate,$bal,$loaninterest,$installmentid)
     {
             $len = count($trnsdate);

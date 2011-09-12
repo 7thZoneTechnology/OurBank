@@ -142,4 +142,25 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			   A.installment_status = 4)";
 		return $db->fetchAll($sql);
 	}
+
+        public function updateinstallment($accid,$installid){ //print_r($data); print_r($where);
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+                    $data = array('installment_status'=> 5); //print_r($data);
+                    $where='installment_id ='.$installid.' and account_id ='.$accid; //echo $where;
+            $this->db->update('ourbank_installmentdetails',$data,$where);
+        }
+
+        public function findoverdue($accNum)
+        {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('A' => 'ourbank_accounts'),array('id'),array('id as accountid'))
+			->join(array('B' => 'ourbank_installmentdetails'),'A.id = B.account_id',array('B.installment_id'))
+                        ->where('B.installment_status!=2')
+                        ->where('B.installment_date < ?',date("Y-m-d"))
+			->where('A.account_number = ?',$accNum);
+		//die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
 }

@@ -1,3 +1,24 @@
+<head>
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/reset-min.css" />
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/css/styles.css" />
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker.js"></script>
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/datepicker1.js"></script> 
+<link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
+
+
+<script>
+$(document).ready(function() {
+    $("#loanAccountdate").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#date").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#date1").datepicker({"dateFormat":"dd/mm/yy"});
+    $("#recurringDate").datepicker({"dateFormat":"yy-mm-dd"});
+
+});
+</script>
+</head> 
+
+
+
 <?php echo $this->render('header.phtml'); ?>
 
 
@@ -44,10 +65,11 @@
 	   <?php } ?>
 	   <li ><a href="<?php echo $this->baseUrl();?>/ledgerreport">Ledger Report</a></li>
 	   <li ><a href="<?php echo $this->baseUrl();?>/receipts">Receipts and payments</a></li>
-	   <li ><a href="<?php echo $this->baseUrl();?>/cashtransactions">Cash Transactions</a></li>
    	   <li ><a href="<?php echo $this->baseUrl();?>/altertransaction">Alter transaction</a></li>
            <li ><a href="<?php echo $this->baseUrl();?>/amounttransfer">Amount transfer</a></li>
 
         </ul>
       </div>
     </div>
+
+

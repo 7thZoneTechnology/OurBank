@@ -123,12 +123,12 @@
     <tr>
         <td>Paid</td>
        <td><?php echo $this->noOfInstalmentPaid;?></td>
-       <td>Rs <?php echo $this->paidAmount;?></td>
+       <td>R$ <?php echo $this->paidAmount;?></td>
     </tr>
     <tr>
         <td>Due</td>
        <td><?php echo $this->balanceInstallment;?></td>
-       <td>Rs <?php echo $this->stillHaveToPay;?></td>
+       <td>R$ <?php echo $this->stillHaveToPay;?></td>
     </tr>
 </table>
 </div>
@@ -154,17 +154,17 @@
         <?php foreach($this->loanInstalments as $loanInstalmentDetails) { ?>
         <tr>
             <td><?php echo $loanInstalmentDetails['accountinstallment_id']; ?></td>
-            <td>Rs. <?php echo $loanInstalmentDetails['installment_principal_amount']; 
+            <td>R$. <?php echo $loanInstalmentDetails['installment_principal_amount']; 
                             $total1 = $total1 + $loanInstalmentDetails['installment_principal_amount'];
                         ?></td>
-            <td>Rs. <?php echo $loanInstalmentDetails['accountinstallment_interest_amount'];
+            <td>R$. <?php echo $loanInstalmentDetails['accountinstallment_interest_amount'];
 
                             $total2 = $total2 + $loanInstalmentDetails['accountinstallment_interest_amount'];
                         ?></td>
-            <td>Rs. <?php echo sprintf("%4.2f", $loanInstalmentDetails['billet']);
+            <td>R$. <?php echo sprintf("%4.2f", $loanInstalmentDetails['billet']);
                             $total3 = $total3 + $loanInstalmentDetails['billet'];
                          ?></td>
-            <td>Rs. <?php echo $loanInstalmentDetails['accountinstallment_amount'];
+            <td>R$. <?php echo $loanInstalmentDetails['accountinstallment_amount'];
                             $total4 = $total4 + $loanInstalmentDetails['accountinstallment_amount'];
                              ?></td>
 
@@ -179,13 +179,13 @@
         <?php } ?>
         <tr>
             <th><b>Total</b></th>
-            <th>Rs <?php echo sprintf("%4.2f", $total1); ?></th>
-            <th>Rs <?php echo sprintf("%4.2f", $total2); ?></th>
-            <th>Rs <?php echo sprintf("%4.2f", $total3); ?></th>
-            <th>Rs <?php echo sprintf("%4.2f", $total4); ?></th>
+            <th>R$ <?php echo sprintf("%4.2f", $total1); ?></th>
+            <th>R$ <?php echo sprintf("%4.2f", $total2); ?></th>
+            <th>R$ <?php echo sprintf("%4.2f", $total3); ?></th>
+            <th>R$ <?php echo sprintf("%4.2f", $total4); ?></th>
             <th></th>
             <th></th>
-            <th>Rs <?php echo sprintf("%4.2f", $total5); ?></th>
+            <th>R$ <?php echo sprintf("%4.2f", $total5); ?></th>
         </tr>
     </table>
 <?php } ?>

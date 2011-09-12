@@ -1,18 +1,18 @@
 <?php if(!$this->result && !$this->groupresult) { ?>
 <div id="searchDiv">
 <fieldset>
-	<legend><?php echo $this->translate("Search member"); ?></legend>
+	<legend>Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/externalloan/index" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <TD><label class="mand"><?php echo $this->translate("Group code:"); ?></label></TD>
+                                <TD><label class="mand">Group code:</label></TD>
                                 <TD><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
                             <div class="ltbtns">
-                                <input type="Submit" name="Submit" value="<?php echo $this->translate("Search"); ?>">
-
+                                <input type="Submit" name="Submit" value="Search"><br><br>
+                                <table><TR><TD><?php echo "<font color='red' size='2'>".$this->error."</font>";?></TD></TR></table>
                             </div>
                         </div>
 	 </form>
@@ -20,28 +20,25 @@
 </fieldset>
 </div>
 
-<?php }
-else { echo "<font color=red>".$this->errormsg."</font>"; } ?>
-
-<?php if($this->groupresult){
+<?php } if($this->groupresult){
 $results = $this->groupresult;
 // echo '<pre>'; print_r($results);
 foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
     <?php if($this->represent) { ?>
 
         <table id="hor-minimalist-b" width="100%">
-	<th colspan="2"><?php echo $this->translate("Templates"); ?></th>
+	<th colspan="2">Templates</th>
         <tr><td align="center" colspan="2"><b>( EXTERNAL LOAN REQUEST )</b></td></tr>
         <br>
 
         <tr><TD>Group name :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['name']."</font>"?></br>
                 Group Address :&nbsp;<?php echo "<font color=green>".$result['address1']."</font>"?></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<font color=green>".$result['city']."</font>"?></br> &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<?php echo "<font color=green>".$result['state']."</font>"?><br><br>
-                Communication:Phone/Mobile :&nbsp;<?php echo "<font color=green>".$result['mobile']."</font>"?></TD>
+                Communication:Phone/Mobile :</TD>
 
 
-           <TD align="left" width=30%><?php echo $this->translate("Date"); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php echo "<font color=green>".date('d-m-Y')."</font>"?></br>
-                <?php echo $this->translate("Group code :"); ?><?php echo "<font color=green>".$result['groupcode']."</font>"?></br>
-                <?php echo $this->translate("Saving A/c"); ?> &nbsp;&nbsp;:<?php echo "<font color=green>".$result['account_number']."</font>"?></br>
+           <TD align="left" width=30%> Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<?php echo "<font color=green>".date('d-m-Y')."</font>"?></br>
+                Group code :<?php echo "<font color=green>".$result['groupcode']."</font>"?></br>
+                Saving A/c &nbsp;&nbsp;:<?php echo "<font color=green>".$result['account_number']."</font>"?></br>
                 <?php foreach($this->loans as $loan) { echo "Loan A/c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<font color=green>".$loan['loanaccount']."</font></br>"; }?>
             </TD>
         </tr>
@@ -60,11 +57,11 @@ foreach($results as $result) {  $dateconvert= new App_Model_dateConvertor();?>
     <?php if($this->groupmember) { ?>
         <table border="2" id="hor-minimalist-b">
                 <TR>
-                        <TD width="10%" align="center"><?php echo $this->translate("S.No"); ?></TD>
-                        <td width="40%" colspan="3" align="center"><?php echo $this->translate("Member Name"); ?></td>
-                        <td width="20%" colspan="2" align="center"><?php echo $this->translate("Purpose"); ?></td>
-                        <td width="15%" colspan="2" align="center"><?php echo $this->translate("Loan request"); ?></td>
-                        <td width="15%" colspan="2" align="center"><?php echo $this->translate("Signature"); ?></td>
+                        <TD width="10%" align="center">S.No</TD>
+                        <td width="40%" colspan="3" align="center">Member Name</td>
+                        <td width="20%" colspan="2" align="center">Purpose</td>
+                        <td width="15%" colspan="2" align="center">Loan request</td>
+                        <td width="15%" colspan="2" align="center">Signature</td>
                 </TR>
     <?php $i=0; foreach($this->groupmember as $memberview){ $i++ ?>
                 <tr>

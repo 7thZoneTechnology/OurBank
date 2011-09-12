@@ -1209,7 +1209,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from'=> '',
                                                     'glsubcode_id_to'=> $bankglsubcode,
-                                                    'tranasction_id'=>$transaction_id1,
+                                                    'transaction_id'=>$transaction_id1,
                                                     'credit'=>'',
                                                     'debit' =>$this->view->simpleInterest,
                                                     'recordstatus_id'=>'3'));
@@ -1558,7 +1558,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                 $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from'=> '',
                                                     'glsubcode_id_to'=>  $bankglsubcode,
-                                                    'tranasction_id'=> $transaction_id1,
+                                                    'transaction_id'=> $transaction_id1,
                                                     'credit'=>'',
                                                     'debit' => $bankinterestamount,
                                                     'recordstatus_id'=>'3'));
@@ -1808,7 +1808,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                     $bankincomeaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
                                                     'glsubcode_id_to'=>  $bankglsubcode,
-                                                    'tranasction_id'=>$transaction_id1,
+                                                    'transaction_id'=>$transaction_id1,
                                                     'credit'=>$this->view->paidAmount,
                                                     'debit' => '',
                                                     'record_status'=>'3'));
@@ -1819,7 +1819,7 @@ class Recurringtransaction_IndexController extends Zend_Controller_Action
                         $bankexpenditureaccountinsert = (array('office_id' => $memberbranch_id,
                                                     'glsubcode_id_from' => '',
                                                     'glsubcode_id_to'=> $bankglsubcode,
-                                                    'tranasction_id'=>$transaction_id1,
+                                                    'transaction_id'=>$transaction_id1,
                                                     'credit'=> $bankinterestamount,
                                                     'debit' =>'',
                                                     'record_status'=>'3'));

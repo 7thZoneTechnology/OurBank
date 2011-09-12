@@ -1,38 +1,27 @@
-<?php 
-?>
-
-<script type="text/javascript">
-function getlevels(hierarchy,path) {
-	if(hierarchy) {
-		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
-		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
-	}
-}
-function getgroups(branch,path) {
-	if(branch) {
-		targeturl=path+"/cashscroll/index/group?branch="+branch;
-		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
-	}
-}
-$(document).ready(function() {
-$('#show').change(function(){
-var va = $('#hierarchy').val();
-if(va != 4){
-$("#hide").hide();
-}else {
-$("#hide").show();
-
-}
-});
-});
-
-</script>
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
 
 <?php if($this->savings) { ?><h5 align="right">From <?php echo "<font color='#039'>".$this->field1."</font>"; ?> </h5><h5 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h5>  <br>
 <h5 style="text-align:right">* Amount in <font color="red">Rs</font></h5>
 <div style="float:left;width:370px">
 
-            <?php
+            <?php 
               $amountCredit = 0.00;
               $amountDebit = 0.00;
               $openingamountCredit = 0.00;
@@ -52,7 +41,7 @@ $("#hide").show();
         <TR>
 
             <TD ><?php echo $savingsCredit->name ?></TD>
-            <TD align = "right"><?php echo $savingsCredit->savingcredit= str_replace('-', '', number_format ($savingsCredit->savingcredit, 2, ".", "")); 
+            <TD align = "right"><?php echo $savingsCredit->savingcredit; 
             $amountCredit = $amountCredit + $savingsCredit->savingcredit; ?></TD>
         </TR>
         <?php } ?>
@@ -64,17 +53,10 @@ $("#hide").show();
             <?php foreach($this->openingsavingsCredit as $openingsavingsCredit) { ?>
             <TR>
                 <TD ><B>Opening Balance</B></TD>
-                <TD align = "right"><B><?php echo $openingsavingsCredit->openingBalance= str_replace('-', '', number_format ($openingsavingsCredit->openingBalance, 2, ".", ""));
+                <TD align = "right"><B><?php echo $openingsavingsCredit->openingBalance;
                 $openingamountCredit = $openingamountCredit + $openingsavingsCredit->openingBalance; ?></B></TD>
             </TR>
             <?php } ?>
-        <!-- Opening cash -->
-        <tr>
-            <?php foreach($this->cashcredit as $cashcredit) {?>
-            <td align="left"><?php echo $this->translate('Opening Cash');?></td>
-            <td align="right"><?php  echo $cashcredit = str_replace('-', '', number_format ($cashcredit['balance'], 2, ".", "")); ?></td>
-            <?php } ?>
-        </tr>
             <TR>
                 <TD ><B>Total</B></TD>
                 <?php if($openingamountCredit + $amountCredit != "0") { ?>
@@ -103,7 +85,7 @@ $("#hide").show();
         <TR>
 
             <TD ><?php echo $savingsDebit->name ?></TD>
-            <TD align = "right" ><?php echo $savingsDebit->savingdebit= str_replace('-', '', number_format ($savingsDebit->savingdebit, 2, ".", "")); 
+            <TD align = "right" ><?php echo $savingsDebit->savingdebit; 
             $amountDebit = $amountDebit + $savingsDebit->savingdebit; ?></TD>
         </TR>
         <?php } ?>
@@ -114,18 +96,10 @@ $("#hide").show();
         <?php foreach($this->openingsavingsDebit as $openingsavingsDebit) { ?>
         <TR>
             <TD ><B>Closing Balance</B></TD>
-            <TD align = "right"><B><?php $openingamountDebit = ($openingamountCredit + $amountCredit - $amountDebit); 
-             echo $openingamountDebit = str_replace('-', '', number_format ($openingamountDebit, 2, ".", "")); 
+            <TD align = "right"><B><?php echo $openingamountDebit = ($openingamountCredit + $amountCredit - $amountDebit); 
             //$openingamountDebit = $openingamountDebit + $openingsavingsDebit->closingBalance; ?></B></TD>
         </TR>
         <?php } ?>
-        <!-- closing cash-->
-        <tr>
-            <?php foreach($this->cashdebit as $cashdebit) {?>
-            <td align="left"><?php echo $this->translate('Closing Cash');?></td>
-            <td align="right"><?php  echo $cashdebit = str_replace('-', '', number_format ($cashdebit['balance'], 2, ".", "")); ?></td>
-            <?php } ?>
-        </tr>
         <TR>
              <TD ><b>Total</TD></TD>
              <?php if($openingamountDebit + $amountDebit != "0") { ?>
@@ -134,64 +108,45 @@ $("#hide").show();
              <TD align = "right" ><B>----</B></TD>
              <?php } ?>
         </TR>
-        			<?php } else { ?>
+        			<?php  } else {?>
 				<tr>
 					<td><?php echo "----";?></td>
 					<td align = "right"><?php echo "----";?></td>
 				</tr>
 		
-			<?php } } ?>
+			<?php } }  ?>
     </table>
 </div>
 
-<div style="float:left;width:800px">
-<form action="<?php echo $this->baseUrl();?>/receiptpayment/index/pdftransaction" method="POST"
-onClick="window.open('<?php echo $this->baseUrl();?>/receiptpayment/index/reportdisplay/file/ReceiptsPayments.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
+<form action="<?php echo $this->baseUrl();?>/receiptspayments/pdftransaction" method="POST"
+onClick="window.open('/ourbank/public/receiptspayments/reportdisplay/file/ReceiptsPayments.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
             <input type="hidden" name="field1" value="<?php echo $this->field1; ?>">
             <input type="hidden" name="field2" value="<?php echo $this->field2;?>">
             <input type="submit" value="PDF" id="submit">
 </form>
-</div>
-
 <?php } else {?>
+
+<fieldset>
+    <legend> search </legend>
         <div class="cont-rgt-data">
             <table id="hor-minimalist-b">
-			<th colspan="4">Search</th>
                 <form action="<?php echo $this->baseUrl();?>/receiptpayment" method="POST">
                     <TR>
-<TD><?php echo $this->translate('Hierarchy'); ?></td>
-                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
-
-
-                            <TD ><br>Date From</TD>
+                            <TD >Date From</TD>
                             <TD ><?php echo $this->form->field1;?></TD>
-                           
-  
- 						
-</tr><tr>
-
-                            <TD><?php echo $this->translate('Branch'); ?></td>
-                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
-						 <TD ><br>Date To</TD>
+                            <TD >Date To</TD>
                             <TD ><?php echo $this->form->field2;?></TD>
-							
-</tr>
-<tr id="hide">
-							<TD><?php echo $this->translate('Group'); ?></td>
-                            <td><div id="groupdiv"><?php echo $this->form->group;?></td>
-<td></td>
-<td></td>
-
-</tr>
-
-
-
                     </TR>
-				<TD><input type="submit" name="Search" id="Submit" value="Search"></TD></tr>
+                   
+
             </table>
 
+				<input type="submit" name="Search" id="Submit" value="Search">			
                 </form>
 
         </div>
+</fieldset>
+
+
 <?php } ?>
 

@@ -20,24 +20,10 @@
 
 class Incomeexpenditure_Form_Search extends ZendX_JQuery_Form 
 {
-    public function __construct($path) 
+    public function __construct() 
     {
-			$formfield = new App_Form_Field ();
-
-
         $datefrom = new ZendX_JQuery_Form_Element_DatePicker('datefrom');
         $datefrom->setJQueryParams(array("changeMonth" => "true","changeYear" => "true"));
-        $datefrom->setAttrib('autocomplete','off');
-$hierarchy = $formfield->field('Select','hierarchy','','','mand','',true,'','','','','',0,'');
-        $hierarchy->setAttrib('onchange', 'getlevels(this.value,"'.$path.'")');
-        $hierarchy->setRegisterInArrayValidator(false);
-        $branch = $formfield->field('Select','branch','','','mand','Branch',true,'','','','','',0,'');
-        $branch->setAttrib('onchange', 'getgroups(this.value,"'.$path.'")');
-        $branch->setRegisterInArrayValidator(false);
-        $group = $formfield->field('Select','group','','','mand','Group',false,'','','','','',0,'');
-       
-
-
-        $this->addElements(array($datefrom,$hierarchy,$branch,$group));
+        $this->addElements(array($datefrom));
     }
 }

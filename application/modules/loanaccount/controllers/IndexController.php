@@ -46,7 +46,7 @@ class Loanaccount_IndexController extends Zend_Controller_Action
 
     public function indexAction() 
     {
-        $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
+        $accountsForm = $this->view->form = new Loanprocess_Form_Search();
          $loanaccount = new Loanaccount_Model_Accounts();
 
         if($_POST)
@@ -97,7 +97,13 @@ class Loanaccount_IndexController extends Zend_Controller_Action
             $maxDeposite = $account->maxamount;
             $minInstallments = $account->minInstallments; 
             $maxInstallments = $account->maxInstallments;
+            $typeID = $account->typeID;
             $requetloan=$account->requestamount;
+        }
+        if($typeID == 2 or $typeID == 3)
+        {
+        $grouprequest=$this->view->accounts->getloanrequest($code);
+        $requetloan = $grouprequest[0]['requestamount'];
         }
         if($requetloan<=$maxDeposite && $requetloan>=$minDeposite)
         {
@@ -107,10 +113,10 @@ class Loanaccount_IndexController extends Zend_Controller_Action
         else
         {
            $maxloanamount = $maxDeposite;
-           $messageerr='Maximum Amount To open a loan account ='.$minimumDeposit;
+           $messageerr='Maximum Amount To open a loan account ='.$maxDeposite;
         }
         $app = $this->view->baseUrl();
-        $loanForm = new Loanaccount_Form_Loans($minDeposite,$maxloanamount,$this->_request->getParam('Id'),$this->_request->getParam('code'),$app,$messageerr);
+        $loanForm = new Loanaccount_Form_Loans($minDeposite,$requetloan,$maxDeposite,$this->_request->getParam('Id'),$this->_request->getParam('code'),$app,$messageerr);
         for($i=$minInstallments;$i<=$maxInstallments;$i++)  {
 		$loanForm->installments->addMultiOption($i,$i);
 	}

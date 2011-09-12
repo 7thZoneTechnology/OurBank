@@ -76,17 +76,19 @@ class Funder_IndexController extends Zend_Controller_Action
             if ($searchForm->isValid($formData)) 
             {
 		//fetch the filtered values from funder model
-        $result = $funder->searchDetails($searchForm->getValues());
+                $result = $funder->searchDetails($searchForm->getValues());
 		$countresult=count($result);
 		if($countresult==0){
-		 	$this->view->errormsg=1;
-		} else {
-			$this->view->errormsg=0; }
+		 $this->view->errormsg=1;
+		}
+		else {
+		$this->view->errormsg=0;
+		}
+                $page = $this->_getParam('page',1);
+                $paginator = Zend_Paginator::factory($result);
 
-        $page = $this->_getParam('page',1);
-        $paginator = Zend_Paginator::factory($result);
 		//assign to the view object
-        $this->view->paginator = $paginator;
+                $this->view->paginator = $paginator;
             } 
         }
 	// for pagination

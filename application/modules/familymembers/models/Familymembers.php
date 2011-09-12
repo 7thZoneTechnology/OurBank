@@ -31,7 +31,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                 ->join(array('l'=>'ourbank_master_employmenttype'),'a.employment_status=l.id',array('l.name_regional as employmentname'))
                 ->join(array('f'=>'ourbank_master_bank'),'a.bank=f.id',array('f.name_regional as bankname'))
                 ->join(array('g'=>'ourbank_master_branch'),'a.branch_po=g.id',array('g.name_regional as branchname'))
-                ->join(array('i'=>'ourbank_master_bloodtype'),'i.id=a.blood_id',array('i.name_regional as blood'))
+                ->join(array('i'=>'ourbank_master_bloodtype'),'i.id=a.blood_id',array('i.name as blood'))
                 ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name_regional as maritalname'))
                 ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name_regional as gendername'))
             ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name_regional as promoter'))

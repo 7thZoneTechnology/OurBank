@@ -55,7 +55,7 @@ class Savingsdeposit_IndexController extends Zend_Controller_Action
 $dbobj = new Savingsdeposit_Model_Savingsdeposit();
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
             $formdata = $this->_request->getPost();
-            $acc = trim($this->_request->getPost('accNum'));
+            $acc = $this->_request->getPost('accNum');
                 if($searchform->isValid($formdata)){
                     $validaccno = $dbobj->savingsAccountsSearch($acc);
                     $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$acc);
@@ -161,11 +161,10 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
             $description = $this->_request->getParam('description');
   if($givendate){
  $gdate = $this->view->dc->phpmysqlformat($givendate);
-                if ( $gdate != date('Y-m-d') ) {
+              /*  if ( $gdate != date('Y-m-d') ) {
                                      $this->view->maxdate= "Date should be current date" ;
                 } 
-                
-                else {
+                else { */
             if ($form->isValid($formData)) {
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
 
@@ -219,7 +218,7 @@ $dbobj = new Savingsdeposit_Model_Savingsdeposit();
                     }
             }
 }
-    }
+    //}                                                     end  od date validation tag
 }
 }
 }

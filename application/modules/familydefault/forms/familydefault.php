@@ -34,13 +34,13 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $sujeevana = $formfield->field('Text','sujeevana','','','required digits','',true,'','','','','',0,0);
 		$sujeevana->addValidator('digits')
 		 		  ->addErrorMessage('Enter Numeric data');
-		$sujeevana->setAttrib('maxLength',5);
+		$sujeevana->setAttrib('maxLength',14);
                 $sujeevana->addValidator(new Zend_Validate_Alnum());
 
         $houseno=$formfield->field('Text','houseno','','','','',false,'','','','','',0,0);
                 $houseno->setAttrib('maxLength',10);
         $minority=$formfield->field('Checkbox','minority','','','','',false,'','','','','',0,0);
-		$caste = $formfield->field('Select','caste','','','required','',true,'','','','','',0,0);
+	$caste = $formfield->field('Select','caste','','','required','',true,'','','','','',0,0);
                 $caste->setRequired(true)
                         ->setRegisterInArrayValidator(false)
                         ->addValidators(array(array('NotEmpty')));
@@ -69,7 +69,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
 // 	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),getkoota("'.$path.'",this.value),gettaluk("'.$path.'",this.value)');
 
 	$rev_village = $formfield->field('Select','rev_village','','','required','',true,'','','','','',0,0);
-		           $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),gettaluk("'.$path.'",this.value),getpincode("'.$path.'",this.value,"'.$subid.'")');
+	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),gettaluk("'.$path.'",this.value),getpincode("'.$path.'",this.value,"'.$subid.'")');
         $rev_village->setRegisterInArrayValidator(false);
 
         $village = $formfield->field('Select','village','','','required','',true,'','','','','',0,0);
@@ -80,7 +80,7 @@ class  Familydefault_Form_familydefault extends Zend_Form
 //         $village->setAttrib('onchange','getAreaDetails("'.$path.'",this.value)');
 
         $dateofbirth = $formfield->field('Text','memberdateofbirth','','','','',false,'','','','','',1,0);
-		$mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
+	$mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
 		$mobile->setAttrib('maxLength', 11);
 
         $this->addElements(array($sujeevana,$houseno,$minority,$street,$village,$koota,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));

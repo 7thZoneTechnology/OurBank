@@ -17,10 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-
 class Ledger_Model_Ledger extends Zend_Db_Table
 {
     protected $_name = 'ourbank_glcode';

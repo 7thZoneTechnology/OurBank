@@ -17,6 +17,8 @@
 ############################################################################
 !-->
 <form action="<?php echo $this->baseUrl();?>/personalsavings/index/pdfgeneration" method="POST">   
+<fieldset>
+    <legend>Personal Savings Members</legend>
         <div class="search">
             <table id="hor-minimalist-b" summary="Employee Pay Sheet" width="50%">
                 <TR>
@@ -24,8 +26,8 @@
                     <TH>Account Name</TH> 
                     <TH>Member Code</TH> 
                     <TH>Member Name</TH> 
+                    <TH>Created Date</TH>
                     <TH>Balance</TH>
- 					<TH>Created Date</TH>
                     <TH>Created By</TH> 
                 </TR>
                  <?php foreach($this->savingslist as $savings){?>
@@ -34,14 +36,15 @@
                         <TD><?php echo $savings['offername']; ?></TD> 
                         <TD><?php echo $savings['membercode']; ?></TD> 
                         <TD><?php echo $savings['membername']; ?></TD> 
-                        <TD><?php echo $savings['balance']; ?></TD> 
                         <TD><?php echo $savings['created_date']; ?></TD> 
+                        <TD><?php echo $savings['balance']; ?></TD> 
                         <TD><?php echo $savings['loginname']; ?></TD>  
                     </TR>
                 <?php } ?>
-            </table><br>
+            </table>
             <input type="submit" value="PDF" id="submit">
 	   <?php echo $this->Error;?>
         </div>
+</fieldset>
 </form>
 

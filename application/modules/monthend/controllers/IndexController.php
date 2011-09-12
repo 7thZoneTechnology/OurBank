@@ -37,29 +37,55 @@ class Monthend_IndexController extends Zend_Controller_Action
         if(!$data){
             $this->_redirect('index/login');
         }
+        $this->view->monthmodle = new Monthend_Model_Transaction();
+
 
     }
     public function indexAction() 
     {
 
-        $this->view->monthstart=$startdate=date('Y-m-d', mktime(0, 0, 0, date("m"), 1, date("Y")));
-        $nextstartdate=date('Y-m-d', mktime(0, 0, 0, date("m")+1, 1, date("Y")));
-        $this->view->monthend=$enddate=date('Y-m-t', mktime(0, 0, 0, date("m"), 1, date("Y")));
-        
+// //         $this->view->monthstart=$startdate=date('Y-m-d', mktime(0, 0, 0, date("m"), 1, date("Y")));
+// //         $nextstartdate=date('Y-m-d', mktime(0, 0, 0, date("m")+1, 1, date("Y")));
+// //         $this->view->monthend=$enddate=date('Y-m-t', mktime(0, 0, 0, date("m"), 1, date("Y")));
+//         // Month end process based on Selected Month
+        $app = $this->view->baseUrl();
+	$this->view->form = new Monthend_Form_Form($app);
+	$this->view->pendingmend = $pendingmonthend = $this->view->monthmodle->getmonthend(date("m"),date("Y"));
+
+	$i = 0;
+	foreach($pendingmonthend as $pendingmonthendv)
+	{
+		if($i == 0) {
+			$startend = $pendingmonthendv['startdate'] . '/' . $pendingmonthendv['enddate'];
+			$Monthid  = $pendingmonthendv['Monthid'];
+			$this->view->form->month->addMultiOption($startend,$pendingmonthendv['Month']);
+		}
+		if($i == 1)
+		{
+			$nextmonthfirstdate = $pendingmonthendv['startdate'];
+		}
+		$i++;
+	}
         if ($this->_request->isPost() && $this->_request->getPost('continue')) {
-        if(date('Y-m-d')==$enddate) {
-        $monthmodle=new Monthend_Model_Transaction();
-        $monthloandetails=$this->view->monthloandetails=$monthmodle->getloandetails($startdate,$enddate);
+	$formdata = $this->_request->getPost();
+
+if($this->view->form->isValid($formdata))
+	{
+        $month = $this->_request->getPost('month');
+	list($startdate,$enddate) = explode('/',$month);
+	list($y,$m,$d) = explode('-',$startdate);
+        $monthloandetails=$this->view->monthloandetails=$this->view->monthmodle->getloandetails($startdate,$enddate);
         if($monthloandetails) {
-//        echo "<pre>"; print_r($monthloandetails); 
+                if($m == date('m')) {
+			if(date('Y-m-d')==$enddate)
+				{
+
         foreach($monthloandetails as $monthloandetails1) {
         $accountid[]=$monthloandetails1['account_id'];
         }
         
         $accountidunique = array_values(array_unique($accountid)); 
         $totalinterest=0;
-        //Zend_Debug::dump($accountidunique);
-// Zend_Debug::dump($accountid);
         for($j=0;$j< count($accountidunique);$j++)
         {
           foreach($monthloandetails as $interestdetails)
@@ -70,25 +96,17 @@ class Monthend_IndexController extends Zend_Controller_Action
                 $paiddate[] =$repaymentbalance[0]['paid_date'];
                 $amount[] = $repaymentbalance[0]['balanceamount'];
                 $installmentid[]=$repaymentbalance[0]['installment_id'];
-// Zend_Debug::dump($accid);
 
             }
-// $amount = array();
           }
-// Zend_Debug::dump($paiddate);
-// Zend_Debug::dump($amount);
-          $monthinterest=$monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest,$installmentid);
-          
-//  Zend_Debug::dump($monthinterest);
+          $monthinterest=$this->view->monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest,$installmentid);
           $totalinterest+=$monthinterest[0];
           $nextinstallmentid=end($installmentid)+1;
           $input=array('monthend_tag'=>1);
-          $monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
+          $this->view->monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
           $repaymentarray=array('account_id'=>$accountidunique[$j],'installment_id'=>$nextinstallmentid,'paid_date'=>$nextstartdate,'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
           $this->view->adm->addRecord('ourbank_loan_repayment',$repaymentarray);
 
-            // Zend_Debug::dump($paiddate);
-            // Zend_Debug::dump($amount);
             $paiddate = array();
             $amount = array();
             $installmentid= array();
@@ -98,13 +116,63 @@ class Monthend_IndexController extends Zend_Controller_Action
         $trasid=$this->view->adm->addRecord('ourbank_transaction',$transactionarray);
         $input=array('transaction_id'=>$trasid,'monthend_tag'=>1);
         $monthmodle->accUpdate('ourbank_loan_repayment',2,$input,'monthend_tag');
-        }
-        }
-        else {
-                echo "<font color=red>The month end process will be on ".$this->view->dateconvector->phpnormalformat($enddate)." </font>";
-        }
+        // Update the Month end process table
+        $inputv = array('processed'=>2);
+        $this->view->monthmodle->monthendupdate('ourbank_monthend',$Monthid,$inputv);
+        echo "<font color='green'> Month end process successfully finished </font>";
+        }// // // close for current day
+        else { 
+		echo "<font color='red'> Month end process should happen on last day of this month only </font>";
+	}
+        }  // // //close for current month
+
+        } // Close monthloandetails
+        else { 
+            foreach($monthloandetails as $monthloandetails1) {
+                    $accountid[]=$monthloandetails1['account_id'];
+                }
+        
+        $accountidunique = array_values(array_unique($accountid)); 
+        $totalinterest=0;
+        for($j=0;$j< count($accountidunique);$j++)
+        {
+          foreach($monthloandetails as $interestdetails)
+          {
+            if($interestdetails['account_id']==$accountidunique[$j])
+            {	$interest=$interestdetails['loan_interest'];
+		$repaymentbalance=$this->view->monthmodle->findcurrentbalance($interestdetails['paymentid']);
+                $paiddate[] =$repaymentbalance[0]['paid_date'];
+                $amount[] = $repaymentbalance[0]['balanceamount'];
+                $installmentid[]=$repaymentbalance[0]['installment_id'];
+
+            }
+          }
+          $monthinterest=$this->view->monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest,$installmentid);
+          $totalinterest+=$monthinterest[0];
+          $nextinstallmentid=end($installmentid)+1;
+          $input=array('monthend_tag'=>1);
+          $this->view->monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
+          $repaymentarray=array('account_id'=>$accountidunique[$j],'installment_id'=>$nextinstallmentid,'paid_date'=>$nextstartdate,'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
+          $this->view->adm->addRecord('ourbank_loan_repayment',$repaymentarray);
+
+            $paiddate = array();
+            $amount = array();
+            $installmentid= array();
         }
 
+        $transactionarray=array('transaction_date'=>$nextstartdate,'amount_to_bank'=>$totalinterest,'transactiontype_id'=>1,'transaction_description'=>' Month end interest on '.$nextstartdate,'created_by'=>$this->view->createdby,'created_date'=>$nextinstallmentid,'paymenttype_id'=>5);
+        $trasid=$this->view->adm->addRecord('ourbank_transaction',$transactionarray);
+        $input=array('transaction_id'=>$trasid,'monthend_tag'=>1);
+        $this->view->monthmodle->accUpdate('ourbank_loan_repayment',2,$input,'monthend_tag');
+        // Update the Month end process table
+        $inputv = array('processed'=>2);
+        $this->view->monthmodle->monthendupdate('ourbank_monthend',$Monthid,$inputv);
+        echo "<font color='green'> Month end process successfully finished </font>";
+
+            }
+
+        } // close for valid
+        } // close for submit
     }
     public function messageAction() 
     {

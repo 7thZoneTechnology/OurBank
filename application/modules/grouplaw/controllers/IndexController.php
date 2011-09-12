@@ -22,6 +22,7 @@ class Grouplaw_IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->pageTitle = $this->view->translate('Group law');
+        $this->view->title = 'Accounting';
         $this->view->adm = new App_Model_Adm ();
         $this->view->datechange= new App_Model_dateConvertor();
         $this->view->loan = new Grouplaw_Model_grouplaw ();
@@ -47,14 +48,14 @@ class Grouplaw_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
 
-        $this->view->form = $declarationform = new Grouplaw_Form_grouplaw();
-// //         $this->view->form = $declarationform;
+        $declarationform = new Grouplaw_Form_grouplaw();
+        $this->view->form = $declarationform;
 
-//         $dec = $this->view->adm->viewRecord("ourbank_declaration","id","DESC");
-//         foreach($dec as $dec)
-//         {
-//             $declarationform->age->addMultiOption($dec['id'],$dec['name']);
-//         }
+        $dec = $this->view->adm->viewRecord("ourbank_declaration","id","DESC");
+        foreach($dec as $dec)
+        {
+            $declarationform->age->addMultiOption($dec['id'],$dec['name']);
+        }
         //submit action
         if ($this->_request->isPost() && $this->_request->getPost('Submit'))
         {
@@ -116,7 +117,6 @@ class Grouplaw_IndexController extends Zend_Controller_Action
                 $y1=690;    
 
             $Declaration = new Declaration_Model_Dec();
-            
             $code=$this->_request->getParam('groupcode');
             $this->view->result = $this->view->loan->groupDeatils($code);
             $this->view->groupmembers= $this->view->loan->getgroupmembers($code);
@@ -207,7 +207,7 @@ foreach($this->view->groupmembers as $member) {
                     ->drawText(''.$member['uid'].'',140,$y1);
 
 				$page->setFont($font, 9)
-                    ->drawText(''.$member['fathername'].'',200,$y1);
+                    ->drawText(''.$member['family_id'].'',200,$y1);
 
 				$y1=$y1-10;
                 $page->setLineWidth(1)->drawLine(50, $y1, 550, $y1);
@@ -221,6 +221,6 @@ foreach($this->view->groupmembers as $member) {
 		$pdf->save('/var/www/'.$projname.'/reports/grouplaw.pdf');
 		$path = '/var/www/'.$projname.'/reports/grouplaw.pdf';
 		chmod($path,0777);
-          //  $this->_redirect('/grouplaw/index');
+//                 $this->_redirect('/declaration/index');
 	}
 }

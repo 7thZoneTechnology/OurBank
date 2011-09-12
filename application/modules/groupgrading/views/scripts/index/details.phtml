@@ -1,20 +1,20 @@
 <div style="float:left;width:350px"> 
 <table id="hor-minimalist-s">
       <TR>
-           <TH><?php echo $this->translate("Member details"); ?></TH>
+           <TH>Member details</TH>
            <TH></TH>
       </TR>
 
     <?php foreach($this->result as $result) ?>
    <TR>
-      <td><?php echo $this->translate("Member code"); ?></td><TD><? echo $result->code; ?></TD>
+      <td>Member code</td><TD><? echo $result->code; ?></TD>
    </TR>
    <TR>
-        <td><?php echo $this->translate("Name"); ?></td>
+        <td>Name</td>
          <td><?php echo $result->name; ?></TD>
     </TR>
     <TR>
-        <td><?php echo $this->translate("Branch"); ?></td><td><?php echo $result->officename ;?></td>
+        <td>Branch</td><td><?php echo $result->officename ;?></td>
     </TR>
 </table>
 <br/>
@@ -23,7 +23,7 @@
 if ($this->products) { ?>
 <table id="hor-minimalist-s">
      <tr>
-         <th><?php echo $this->translate("Available Loan"); ?></th>
+         <th>Available Loan</th>
      </tr>
 <?php foreach ($this->products as $products) { ?>
 
@@ -42,8 +42,8 @@ if ($this->account) { ?>
 
     
        <TR>
-           <th><?php echo $this->translate("Active loan account"); ?></td>
-           <th><?php echo $this->translate("Products"); ?></th>
+           <th>Active loan account</td>
+           <th>Products</th>
        </TR>
         <?php foreach($this->account as $account)  { ?>
 

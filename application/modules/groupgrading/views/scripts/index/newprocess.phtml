@@ -1,10 +1,10 @@
 <?php if(!$this->result) { ?>
 <fieldset>
-	<legend><?php echo $this->translate("Search member"); ?></legend>
+	<legend>Search member</legend>
 		<form action="<?php echo $this->baseUrl();?>/groupgrading/index/newprocess" method="POST">
 			<table class="fieldsets">
                             <TR>
-                                <TD><label for="fld3"><?php echo $this->translate("Member code / Group code"); ?></label></TD>
+                                <TD><label for="fld3">Member code / Group code</label></TD>
                                 <TD><? echo $this->form->membercode;?></TD>
                             </TR>
                         </table>
@@ -20,25 +20,25 @@
 <?php if($this->result) { ?>
     <table id="hor-minimalist-b">
 	<tr>
-	    <Th colspan="2"><?php echo $this->translate("Member details"); ?></Th>
+	    <Th colspan="2">Member details</Th>
 	</tr>
 	<?php foreach($this->result as $member) : ?>
 	<tr>
-		<td><?php echo $this->translate("Name"); ?></td>
+		<td>Name</td>
 		<td><?php  echo $member['name'];?></td>
         </tr>
         <?php if($this->typeid==1) { ?>
 	<tr>
-		<td><?php echo $this->translate("UID"); ?></td>
+		<td>UID</td>
 		<td><?php  echo $member['uid'];?></td>
         </tr>
         <?php } ?>
         <tr>
-		<td><?php echo $this->translate("Code"); ?></td>
+		<td>Code</td>
 		<td><?php  echo $member['code'];?></td>
 	</tr> 
         <tr>
-		<td><?php echo $this->translate("Village name"); ?></td>
+		<td>Village name</td>
 		<td><?php  echo $member['villagename'];?></td>
 	</tr>
 	<?php endforeach; ?>
@@ -52,19 +52,19 @@
         <form action="<?php echo $this->baseUrl();?>/groupgrading/index/application/id/<?php echo base64_encode($this->id); ?>" method="POST">
     <table id="hor-minimalist-b">
             <tr>
-                <TD><?php echo $this->translate("Purpose"); ?></TD>
+                <TD>Purpose</TD>
                 <TD><?php echo $this->appform->purpose;?></TD>
             </tr>
             <tr>
-                <TD><?php echo $this->translate("Amount required Rs"); ?></TD>
+                <TD>Amount required Rs</TD>
                 <TD><?php echo $this->appform->amount;?></TD>
                 </tr>
 <tr>
-                <TD><?php echo $this->translate("Loan tenures"); ?></TD>
+                <TD>Loan tenures</TD>
                 <TD><?php echo $this->appform->duration;?>(Months)</TD>
 </tr>
 <tr>
-                <TD><?php echo $this->translate("Need in"); ?></TD>
+                <TD>Need in</TD>
                 <TD><?php echo $this->appform->period;?>(Months)</TD>
             </TR>
             </table>

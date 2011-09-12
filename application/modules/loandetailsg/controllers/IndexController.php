@@ -63,6 +63,16 @@ class Loandetailsg_IndexController extends Zend_Controller_Action
     public function loandetailsAction() 
     {   $accNum=$this->_request->getParam('accNum');
 	$this->view->details = $details=$this->view->loanModel->searchaccounts($this->_request->getParam('accNum'));
+
+        if($this->view->details){
+        $overdue=$this->view->loanModel->findoverdue($accNum);
+        if($overdue) {
+            foreach($overdue as $overduedetails)
+            {
+                $this->view->loanModel->updateinstallment($overduedetails['accountid'],$overduedetails['installment_id']);
+            }
+        }
+
 	foreach($this->view->details as $interest){
 		$this->view->intesttype=$interest->interesttype;
 	}
@@ -86,4 +96,5 @@ class Loandetailsg_IndexController extends Zend_Controller_Action
                 $this->_redirect("/loandetailsg/index/index/msg/".$errorno);
         }
     }
+}
 }

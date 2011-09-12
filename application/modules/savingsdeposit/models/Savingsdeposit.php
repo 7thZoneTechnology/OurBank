@@ -34,6 +34,7 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
                D.account_number as number,
                D.id as accId,
                E.name as offername,
+               E.glsubcode_id as gl,
                substr(A.familycode,5,1) as type,
                DATE_FORMAT(E.begindate, '%d/%m/%Y') as begindate,
                DATE_FORMAT(D.begin_date, '%d/%m/%Y') as createdDate
@@ -59,6 +60,7 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
                D.account_number as number,
                D.id as accId,
                E.name as offername,
+               E.glsubcode_id as gl,
                substr(A.groupcode,5,1) as type,
                DATE_FORMAT(E.begindate, '%d/%m/%Y') as begindate,
                DATE_FORMAT(D.begin_date, '%d/%m/%Y') as createdDate
@@ -126,35 +128,20 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
         $result = $db->fetchAll($sql);
         return $result;
     }
-
- public function getGlcode($officeId,$glcode)
-    {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select id from ourbank_glsubcode where (office_id = $officeId && glcode_id = $glcode) ";
-        return $result = $db->fetchAll($sql);
-    }
-
     public function deposit($acc,$amount,$date,$type,$transactionMode,$description,$paymenttype_details,$createdby) 
     {
 	$cl = new App_Model_dateConvertor ();
-        $adm = new App_Model_Adm();
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
 	$accData = $this->search($acc);
 	foreach ($accData as $accData) {
 	   $accId = $accData->accId;
+	   $gl = $accData->gl;
 	   $officeid = $accData->officeid;
 	}
-
-        $glcode =  $adm->getsingleRecord('ourbank_glcode','id','header','Savings');
-        $glresult = $this->getGlcode($officeid,$glcode);
-        foreach ($glresult as $glresult) {
-            $glsubID = $glresult->id;
-        }
-     
-// // // 	Transaction entry
+	// Transaction entry
 	$input = array('account_id' => $accId,
-                      'glsubcode_id_to' => $glsubID,
+                      'glsubcode_id_to' => $gl,
                        'transaction_date' => $cl->phpmysqlformat($date),
                        'amount_to_bank' => $amount,
                        'transactiontype_id' => 1,
@@ -167,25 +154,13 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
                        'created_by' => $createdby);
 	$db->insert("ourbank_transaction",$input);
 	$tranId = $db->lastInsertId('ourbank_transaction');
-
-       $transid = $adm->getsingleRecord('ourbank_savings_transaction','max(transaction_id)','account_id',$accId);
-       $Balance = $adm->getsingleRecord('ourbank_savings_transaction','balance','transaction_id',$transid);
-       $Balance = $Balance + $amount;
-
-       $ltrasactiondate = $adm->getsingleRecord('ourbank_savings_transaction','transaction_date','transaction_id',$transid);
-       $trancount = $adm->getsingleRecord('ourbank_savings_transaction','transactioncount','transaction_id',$transid);
-       if ( $ltrasactiondate != date('Y-m-d') ) {
-                $trancount += 1;
-        } 
 	// Saving transaction entry 
         $saving = array('transaction_id' => $tranId,
       	                'account_id' => $accId,
                         'transaction_date' => $cl->phpmysqlformat($date),
                         'transactiontype_id' => 1,
-			'glsubcode_id_to' => $glsubID,
+			'glsubcode_id_to' => $gl,
 	               	'amount_to_bank' => $amount,
-                        'balance' => $Balance,
-                        'transactioncount' => $trancount,
                         'paymenttype_id'=> $transactionMode,
                         'paymenttype_details'=> $paymenttype_details,                        'transaction_description' => $description,
 			'transaction_by' => $createdby);
@@ -206,36 +181,39 @@ class Savingsdeposit_Model_Savingsdeposit extends Zend_Db_Table
 		$db->insert('ourbank_group_savingstransaction',$groupsaving);
 	    }
 	}
-        $productId = $adm->getsingleRecord('ourbank_accounts','product_id','id',$accId);
 	// Insertion into Liabilities
 	$liabilities = array('office_id' => $officeid,
-                            'productid' => $productId,
 			    'glsubcode_id_from' => '',
-                            'glsubcode_id_to' => $glsubID,
+                            'glsubcode_id_to' => $gl,
                             'transaction_id' => $tranId,
                             'credit' => $amount,
                             'record_status'=> 3);
 	$db->insert('ourbank_Liabilities',$liabilities);
-// // // 	$glresult = $this->getGlcode($officeid);
-// // // 	 if($glresult){
-// // //                         foreach ($glresult as $glresult) {
-// // //                                 $cashglsubocde = $glresult->id;
-// // //                         }
-// // //                     }else {
-// // //                                 $cashglsubocde = 0 ;
-// // //                     }
-// // // 
-// // //         // Insertion into Assets ourbank_Assets
-// // //         $assets =  array('office_id' => $officeid,
-// // // 			'glsubcode_id_from' => '',
-// // // 			'glsubcode_id_to' => $cashglsubocde,
-// // // 			'transaction_id' => $tranId,
-// // // 			'credit' => $amount,
-// // // 			'record_status' => 3);
-// // // 	$db->insert('ourbank_Assets',$assets);
-// // // 	return $tranId;
+	$glresult = $this->getGlcode($officeid);
+	 if($glresult){
+                        foreach ($glresult as $glresult) {
+                                $cashglsubocde = $glresult->id;
+                        }
+                    }else {
+                                $cashglsubocde = 0 ;
+                    }
+
+        // Insertion into Assets ourbank_Assets
+        $assets =  array('office_id' => $officeid,
+			'glsubcode_id_from' => '',
+			'glsubcode_id_to' => $cashglsubocde,
+			'transaction_id' => $tranId,
+			'credit' => $amount,
+			'record_status' => 3);
+	$db->insert('ourbank_Assets',$assets);
+	return $tranId;
     }
- 
+    public function getGlcode($officeId)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+	$sql = "select id from ourbank_glsubcode where substr(header,5)=$officeId and glcode_id=2";
+	return $result = $db->fetchAll($sql);
+    }
 
     public function getAccountid($memberid)
     {
