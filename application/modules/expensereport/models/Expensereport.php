@@ -100,8 +100,8 @@ case '5':
                        	->setIntegrityCheck(false)
 						->join(array('b' =>'ourbank_groupmembers'),array('b.id'))
                          ->where('b.id = "'.$branch.'"')
-					//	->join(array('c' =>'ourbank_familymember'),'c.id = c.member_id',array('c.id as memberid'))
-						 ->join(array('C'=>'ourbank_expensedetails'),'C.member_id = b.member_id',array('expense_id'))
+						->join(array('c' =>'ourbank_familymember'),'c.id = b.member_id',array('c.id as memberid'))
+						 ->join(array('C'=>'ourbank_expensedetails'),'C.family_id = c.family_id',array('expense_id'))
 						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.expense_id',array('(sum(C.value)) as value','name as incomename','id as expenseid'))
 						->group('d.name')
 					->order('d.id ASC');
@@ -109,7 +109,7 @@ case '5':
                 
         		break;
 }
- die($select->__toString($select));
+// die($select->__toString($select));
 $result = $this->fetchAll($select);
 return $result->toArray();
 
@@ -121,8 +121,8 @@ return $result->toArray();
                        	->join(array('a' => 'ourbank_groupmembers'),array('id'))
 						->where('a.group_id = ?',$group)
 						->join(array('b' =>'ourbank_familymember'),'a.member_id = b.id')
-							->join(array('C'=>'ourbank_incomedetails'),'b.id = C.member_id',array('(sum(C.value)) as value','income_id'))
-						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.income_id',array('name as incomename'))
+							->join(array('C'=>'ourbank_expensedetails'),'b.id = C.family_id',array('(sum(C.value)) as value','expense_id'))
+						 ->join(array('d'=>'ourbank_master_expense'),'d.id = C.expense_id',array('name as incomename'))
 						->group('d.name')
 
 

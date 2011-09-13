@@ -16,19 +16,48 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+// // function getgroups(branch,path) {
+// // 	if(branch) {
+// // 		targeturl=path+"/cashscroll/index/group?branch="+branch;
+// // 		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+// // 	}
+// // }
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
 <?php if (!$this->result && !$this->accountBalanc ) { ?>
 <div id="searchDiv">
     <fieldset>
         <legend><?php echo $this->translate('Search'); ?></legend>
+           <form action="<?php echo $this->baseUrl();?>/depositsummary/index" method="POST">
              <table width="100%">
-                <form action="<?php echo $this->baseUrl();?>/depositsummary/index" method="POST">
-                   <tr>
-                            <td align="center">Branch :</td>
-                            <td><?php echo $this->form->branch;?></td>
-                   </tr>
-<tr><TD align="center"><br><input type="submit" name="Search" value="Search"></TD></tr>
-                </form>
+
+  					<tr>	<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+  					</tr>
+					<tr>    <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+					</tr>
+					<tr><TD><br><input type="submit" name="Search" value="Search"></TD></tr>
             </table>
+          </form>
     </fieldset>
 </div>
 <?php } ?>
@@ -51,55 +80,19 @@
 			    <TD  align="right"><font color="black"><?php echo $this->translate('Total Savings Amount'); ?></font></TD>
                     </TR>
                     <?php foreach($this->result as $savingsdetails){  ?>
-                     
                     <TR>
-                                <TD><?php echo $savingsdetails['prodoffername'];?></TD>
-			    	<TD  align="center"><?php echo $savingsdetails['countvalue'];?></TD>
-
-                                <?php  foreach($this->accountBalanc as $balance1){
-                                            
-                              if($savingsdetails["id"] == $balance1["offerprodid"]) {?>
-
-                                    <?php if($balance1["transactiontype_id"] == 1) {
-                                    
-                                    
-                                        $this->depositAmount = $this->depositAmount + $balance1["amount_to_bank"];
-                                        $this->deposit = $this->deposit + $balance1["amount_to_bank"];
-
-                                        } if($balance1["transactiontype_id"] == 2) {
-                                    
-                                        $this->withdrawlAmount = $this->withdrawlAmount + $balance1["amount_from_bank"];
-                                        $this->withdrawl = $this->withdrawl + $balance1["amount_from_bank"];
-                                        }
-        
-                                        $this->totalamount = $this->depositAmount - $this->withdrawlAmount;
-                                        
-                                        $this->sum = $this->deposit - $this->withdrawl;
-        
-                                    } 
-                                    
-                                } if($this->totalamount) { ?>
-                                
-		                <td align="right"><?php echo sprintf("%4.2f", $this->totalamount);
-                                               $this->totalamount =0; 
-                                               $this->withdrawlAmount =0;  
-                                               $this->depositAmount =0; ?></td>
-                                <? } else {?>
-                                <td></td>
-                                <? }?>
+                       <TD><?php echo $savingsdetails['prodoffername'];?></TD>
+			    	   <TD  align="center"><?php echo $savingsdetails['countvalue'];?></TD>
+			    	   <TD  align="right"><?php $test=end($this->accountBalanc); echo $test['balance'];?></TD>
                     </TR>
-                 <?php } ?>
-	    </table>
+	    </table> 
             <table align = "right" >
 		     <TR>
                         <TH></TH>
                         <TH></TH>
-			<Th align="left"><b>Total :</b></Th>
-			<th align="right"><font color="#039"><b><?php  echo sprintf("%4.2f", $this->sum);?></b></font></TH>
-                        
-                        
-			
-		   </TR>
+		<Th align="left"><b>Total :</b></Th>
+		<th align="right"><font color="#039"><b><?php $test=end($this->accountBalanc); echo $test['balance'];?></b></font></TH>
+		   </TR><?  }?>
              </table>
         </div>
 <form action="<?php echo $this->baseUrl();?>/depositsummary/index/pdftransaction" method="POST"

@@ -60,6 +60,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
     {
         $path =  $this->view->baseUrl();
         $addform=new Dropdown_Form_Drop($path);
+
         $this->view->form=$addform;
 		$this->view->title = "Drop Down";
 		//echo $tableName;

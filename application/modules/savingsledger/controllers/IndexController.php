@@ -20,7 +20,7 @@
 class Savingsledger_IndexController extends Zend_Controller_Action
 {
 	function init() { 
-		$this->view->pageTitle = "Savings ledger";
+		$this->view->pageTitle = "Individual / Group Savings ledger";
 		$this->view->tilte = "Reports";
         $this->view->type = "generalFields";
 		$this->view->dateconvert=new App_Model_dateConvertor();
@@ -37,8 +37,7 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 	}
 
 	function indexAction() {
-		$searchForm = new Savingsledger_Form_Search();
-		$this->view->form = $searchForm;
+		$this->view->form = $searchForm = new Savingsledger_Form_Search();
 
 		$dateFrom =$this->view->fromdate=$this->_request->getParam('datefrom');
 		$dateTo =$this->view->todate= $this->_request->getParam('dateto');
