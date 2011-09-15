@@ -66,7 +66,7 @@ class Dropdown_IndexController extends Zend_Controller_Action
 		//echo $tableName;
 		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","descriptions","ASC");
 		foreach($mastertable as $mastertable) {
-			$addform->name->addMultiOption($mastertable['name'],$mastertable['name_regional']);
+			$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
 		}
 	}
 	public function nameAction()
