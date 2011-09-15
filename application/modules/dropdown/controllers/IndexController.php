@@ -60,12 +60,13 @@ class Dropdown_IndexController extends Zend_Controller_Action
     {
         $path =  $this->view->baseUrl();
         $addform=new Dropdown_Form_Drop($path);
+
         $this->view->form=$addform;
 		$this->view->title = "Drop Down";
 		//echo $tableName;
 		$mastertable = $this->view->adm->viewRecord("ourbank_master_mastertables","descriptions","ASC");
 		foreach($mastertable as $mastertable) {
-			$addform->name->addMultiOption($mastertable['name'],$mastertable['descriptions']);
+			$addform->name->addMultiOption($mastertable['name'],$mastertable['name_regional']);
 		}
 	}
 	public function nameAction()
@@ -78,6 +79,8 @@ class Dropdown_IndexController extends Zend_Controller_Action
         $tabledatas = $tabledata->tabledata($tablename);
 // Zend_Debug::dump($tabledatas);
         $this->view->tabledata = $tabledatas;
+		$this->view->keyvalue = $tabledata->urlname($this->view->tableName);
+
     }
 
 	public function addAction() 
