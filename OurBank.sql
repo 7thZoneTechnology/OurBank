@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `priso7h7_obdemo`
 --
-CREATE DATABASE `priso7h7_obdemo` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `priso7h7_obdemo`;
+CREATE DATABASE `OurBank` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `OurBank`;
 
 -- --------------------------------------------------------
 
