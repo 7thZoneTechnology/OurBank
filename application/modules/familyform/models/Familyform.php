@@ -31,15 +31,13 @@ class Familyform_Model_Familyform extends Zend_Db_Table
                 ->join(array('a'=>'ourbank_familymember'),array('id','dob'))
                 ->where('a.familycode=?',$id)
                 ->join(array('b'=>'ourbank_family'),'b.id=a.family_id')
-                ->join(array('c'=>'ourbank_office'),'c.id=b.id',array('c.name as villagename'))
+                ->join(array('c'=>'ourbank_office'),'c.id=a.village_id',array('c.name as villagename'))
                 ->join(array('d'=>'ourbank_master_gender'),'d.id=a.gender_id',array('d.name as sex'))
                 ->join(array('e'=>'ourbank_master_castetype'),'e.id=b.caste_id',array('e.name as castetype'))
                 ->join(array('f'=>'ourbank_master_educationtype'),'f.id=a.eductaion_id',array('f.name as educationname'))
                 ->join(array('g'=>'ourbank_master_familytype'),'g.id=b.familytype_id',array('f.name as familytype'));
 
-
-				
-		// die($select->__toString($select));
+//  die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
    	}
@@ -53,7 +51,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
          ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
          ->join(array('k'=>'ourbank_master_gender'),'a.gender_id=k.id',array('k.name as genername'))
          ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))
-        ->join(array('e'=>'ourbank_master_profession'),'a.promoter_id=e.id',array('e.name as proffessionname'))
+        ->join(array('e'=>'ourbank_master_cbopromoter'),'a.promoter_id=e.id',array('e.name as proffessionname'))
          ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
          ->join(array('i'=>'ourbank_master_branch'),'a.branch_po=i.id',array('i.name as branchname'))
         ->join(array('j'=>'ourbank_master_bloodtype'),'a.blood_id=j.id',array('j.name as blood'))
@@ -79,8 +77,8 @@ class Familyform_Model_Familyform extends Zend_Db_Table
         $select=$this->select()
         ->setIntegrityCheck(false)
         ->join(array('a'=>'ourbank_master_nonliveassets'),array('a.id'));
-       
-       // die($select->__toString($select));
+
+//       die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -93,7 +91,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
                       ->join(array('b'=>'ourbank_family'),'a.family_id=b.id')
 						->join(array('c'=>'ourbank_liveassetdetails'),'c.family_id=b.id',array('number as number','value as value'))
                       ->join(array('d'=>'ourbank_master_liveassets'),'d.id=c.liveasset_id',array('d.name'));
-      // die($select->__toString($select));
+// //        die($select->__toString($select));
       $result=$this->fetchAll($select);
       return $result->toArray();
   }
@@ -120,7 +118,7 @@ class Familyform_Model_Familyform extends Zend_Db_Table
                       	->where('d.familycode=?',$id)
                         ->join(array('e'=>'ourbank_family'),'d.family_id=e.id')
                       ->join(array('a'=>'ourbank_agriculture'),'e.id=a.land_id',array('a.id'));
-      // die($select->__toString($select));
+//         die($select->__toString($select));
       $result=$this->fetchAll($select);
       return $result->toArray();
   }
@@ -148,8 +146,8 @@ public function Searchloanprocess($id){
               b.membertype = 1
               and
               (a.familycode like '%' '$id' '%')";
-        
-//echo $sql;
+
+// // echo $sql;
             $result = $this->db->fetchAll($sql);
             return $result;
         }
@@ -186,7 +184,7 @@ public function searchaccounts($id)
                 B.id=A.village_id AND
                 D.product_id = E.id AND
                 F.account_id = D.id";
-       //  echo $sql;
+// //          echo $sql;
         $result = $db->fetchAll($sql);
         return $result;
     }

@@ -52,7 +52,7 @@ background-color : silver;
 		<th colspan="2">External loan application</th>
 		<tr>
 			<td>Family id</td>
-			<TD><?php echo $this->escape($familydetails['family_id']);?></TD>
+			<TD><?php echo $this->escape($familydetails['id']);?></TD>
 		</tr>
 		<tr>
 			<td>Name of the family owner</td>
@@ -60,7 +60,7 @@ background-color : silver;
 		</tr>
 		<tr>
 			<td>Husbands/Fathers name of the family own family member</td>
-			<TD></TD>
+			<TD><?php echo $this->escape($familydetails['father_name']);?></TD>
 		</tr>
 		<tr>
 			<td>Date of birth</td>
@@ -126,35 +126,28 @@ background-color : silver;
 	<br></br>
     <?php } } ?>
 
-	<h3>NonLiving assets</h3>
-	<table id="hor-minimalist-b" >
+	<h3>Non Living assets</h3>
+	<table id="hor-minimalist-b" width=100%>
     	<tr class="tdbrownheading" id="bcolor">
-			 <td><?php echo $this->translate("Details of Tenant"); ?></td>
-			<td><?php echo $this->translate("Village"); ?></td>
-        <td align="right"><?php echo $this->translate("Survey No"); ?></td>
-        <td align="right"><?php echo $this->translate("Acre"); ?></td>
-        <td align="right"><?php echo $this->translate("Value"); ?></td>
+			<th><?php echo $this->translate("Details of Tenant"); ?></th>
+			<th><?php echo $this->translate("Village"); ?></th>
+        	<th><?php echo $this->translate("Survey No"); ?></th>
+        	<th><?php echo $this->translate("Acre"); ?></th>
+        	<th><?php echo $this->translate("Value"); ?></th>
         </tr>
         <?php $dateconvert= new App_Model_dateConvertor();
 		if ($this->agriculture){ ?>
         <?php foreach ($this->agriculture as $agri ): ?>
     		<tr>
         <td><?php echo $agri['name']; ?></td>
-        <td><?php echo $agri['villagename']; ?></td>
-        <td align="right" width="20px"><?php echo $agri['survey_no']; ?></td>
-        <td align="right" width="100px"><?php echo $agri['acre'];?></td>
-        <td align="right"><?php echo sprintf("%4.2f",$agri['acre']) ; $totalfixed+=$agri['acre'];?></td>
-   			</tr>
+        <td><?php echo $familydetails['villagename']; ?></td>
+        <td><?php echo $agri['survey_no']; ?></td>
+        <td><?php echo $agri['acre'];?></td>
+        <td><?php echo sprintf("%4.2f",$agri['acre']) ; $totalfixed+=$agri['acre'];?></td>
+		</tr>
      	<?php endforeach; ?>
-<tr>
-   <?php foreach($this->agritotal as $total){   ?>
- <td><?php echo $this->translate("Total"); ?></td>
-   <td></td>
-   <td></td>
-   <td></td>
-   <td align="right"><?php echo sprintf("%4.2f",$totalfixed);?></th>
-<?php } ?></tr>
 	</table>
+<tr><TD>Total</TD><td></td><td></td><td></td></tr>
 	<?php } ?>
 				<br></br>
 	<h3>living assets</h3>
@@ -166,9 +159,7 @@ background-color : silver;
         </tr>
         <?php $dateconvert= new App_Model_dateConvertor();
 		if ($this->livingassets){ ?>
-        <?php foreach ($this->livingassets as $liveassets): 
-
- ?>
+        <?php foreach ($this->livingassets as $liveassets): ?>
     		<tr>
         		<td><?php echo $liveassets['name'];?></td>
 				<td align="right"><?php echo sprintf("%4.2f",$liveassets['number']);$totalNumber+=$liveassets['number']; ?></td>
@@ -197,15 +188,7 @@ background-color : silver;
 			<td></td>
 			<td></td>
         </tr>
-        <?php $dateconvert= new App_Model_dateConvertor();foreach($this->agritotal as $total):   ?>
 
-		<tr>
-			<td>Nonliving assets</td> 
-   			<td></td>
-
- 			<td align="right"><?php //echo $total['total']; ?> <?php echo sprintf("%4.2f",$totalfixed); ?></td>
-		</tr>
-		<?php endforeach; ?>
 		<tr>
        <?php $dateconvert= new App_Model_dateConvertor();
 		if ($this->livingassets){ $totalNumber = 0
@@ -224,7 +207,7 @@ background-color : silver;
 <td align="right"><?php echo sprintf("%4.2f",$totalValue+$totalfixed) ?> </td>
 </tr>
 	</table>
-<? } ?>
+<? } ?><br><br>
 
 	<h3>Family total loan outstanding</h3>
 	<table id="hor-minimalist-b" >
@@ -255,18 +238,19 @@ background-color : silver;
 			<?php } ?>
 
 	</table>
-				<br></br>
-<table id="hor-minimalist-b" >
+	<br></br>
+
+	<!--<table id="hor-minimalist-b" >
     	<tr class="tdbrownheading">
 		<h3>Family total Assets</h3>
 	
         </tr>
-        <?php $dateconvert= new App_Model_dateConvertor();?>
+        <?php// $dateconvert= new App_Model_dateConvertor();?>
     		<tr>
    			</tr>
 	</table>
-				
-				<br></br>
+	<br></br>-->
+
 		<h3>Total loan request</h3>
 	 <table id="hor-minimalist-b"  >
 <tr class="tdbrownheading" id="bcolor">
@@ -291,7 +275,7 @@ background-color : silver;
 </form>
 <form action="<?php echo $this->baseUrl();?>/familyform/index/pdfgeneration/membercode/<?php echo $this->membercode ?>" method="POST"
 onClick="window.open('<?php echo $this->baseUrl();?>/familyform/index/reportdisplay/file/familyform<? echo date('Y-m-d');?>.pdf','mywindow','width=1000,height=700,left=100,top=100,screenX=800,screenY=600')">
-
+<input type="hidden" name="membercode" value="<?php echo $this->id;?>">
            <BR> <input type="submit" value="PDF" id="submit">
 </form>
 	<?php } ?></div>

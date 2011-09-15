@@ -10,57 +10,67 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 </style>
 </head>
 <BODY>
-    <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+   <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
-        <th><?php echo $this->translate("Family information"); ?></th>
+        <th><?php echo $this->translate("Family Members"); ?></th>
         <th></th>
         <th></th>
         <th></th>
    </tr>
-    <?php
+    <?php 
     $convertdate = new App_Model_dateConvertor();
-    foreach($this->membername as $family_view){ ?>
+    $i=0;
+    foreach($this->membername as $family_view){  $i++; ?>
 
     <tr>
-        <td ><?php echo $this->translate("House No:"); ?></td>
+       <!-- <td ><?php echo $this->translate("Family ID:"); ?></td>
+        <td ><?php echo $family_view['family_id']; ?></td>-->
+        <td ><?php echo $this->translate("House Number"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $this->translate("Ration Card"); ?></td>
         <td ><?php echo $family_view['ration']; ?></td>
     </tr>
-
     <tr>
-        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $this->translate("Street/Lane"); ?></td>
         <td ><?php echo $family_view['street']; ?></td>
-        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php echo $this->translate("Insurance"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $this->translate("Village"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
-        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
+        <td ><?php echo $this->translate("Nregs Job Number"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>   
+    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $this->translate("Names:"); ?></td>
         <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $this->translate("Income details"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
-    <tr>
-        <td ><?php echo $this->translate("Family type:"); ?></td>
-        <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['phone']; ?></td>
-    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ವಿಧ:"); ?></td>
+        <td ><?php echo $family_view['familytype']; ?></td>
+        <td ><?php echo $this->translate("ದೂರವಾಣಿ:"); ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
+    </tr>
+    <tr>
+        <td ><?php echo $this->translate("ಜಾತಿ:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $this->translate("ಮೊಬೈಲ್:"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
+
+   <!-- <tr>
+        <td ><?php echo $this->translate("ಜಾತಿ:"); ?></td>
+        <td ><?php echo $family_view['caste']; ?></td>
+        <td></td>
+        <td></td>
+    </tr>-->
    <?php } ?>
 </table> 
 <br/>
@@ -68,32 +78,32 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <form name="form1" id="pluginForm" action="<?php echo $this->baseUrl();?>/familymembers/index/addfamily/id/<?php echo $this->id; ?>/subId/<?php echo $this->subId; ?>/modId/<?php echo $this->modId; ?>" method="POST">
         <table id="hor-minimalist-b" class = 'family'>
             <tr> 
-               <!--<th><?php echo $this->translate("Name"); ?></th>-->
-                <th><?php echo $this->translate("Name"); ?></th>
+                <!--<th><?php echo $this->translate("* Name"); ?></th>-->
+                <th><?php echo $this->translate("ಹೆಸರು"); ?></th>
                 <!--<th><?php echo $this->translate("Alias"); ?></th>-->
-                <th><?php echo $this->translate("Alias"); ?></th>
-                <th><?php echo $this->translate("Fathers name"); ?></th>
-                <th><?php echo $this->translate("UID"); ?></th>
-                <th><?php echo $this->translate("Breadwinner"); ?></th>
-                <th><?php echo $this->translate("Head"); ?></th>
-                <th><?php echo $this->translate("* Gender"); ?></th>
-                <th><?php echo $this->translate("* DOB"); ?></th>
-                <th><?php echo $this->translate("Age"); ?></th>
-                <th><?php echo $this->translate("* Relation"); ?></th>
+                <th><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+                <th><?php echo $this->translate("ತಂದೆಯ ಹೆಸರು"); ?></th>
+                <th><?php echo $this->translate("ಯು ಎಯೇ ಡೀ"); ?></th>
+                <th><?php echo $this->translate("ಪ್ರ್ಧಧಾನ ಸಂಪಾದಕ"); ?></th>
+                <th><?php echo $this->translate("ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥ"); ?></th>
+                <th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>
+                <th><?php echo $this->translate("* ಜನ್ಮ ದಿನಾಂಕ"); ?></th>
+                <th><?php echo $this->translate("ವಯಸ್ಸು"); ?></th>
+                <th><?php echo $this->translate("* ಸಂಬಂಧ"); ?></th>
                 <!--<th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>-->
-                <th><?php echo $this->translate("* Marital Status"); ?></th>
-                <th><?php echo $this->translate("Entitlement"); ?></th>
-                <th><?php echo $this->translate("* Education"); ?></th>
-                <th><?php echo $this->translate("* Employment"); ?></th>
-                <th><?php echo $this->translate("Profession"); ?></th>
-                <th><?php echo $this->translate("* CBO Promoter"); ?></th>"
-                <th><?php echo $this->translate("* CBO"); ?></th>
-                <th><?php echo $this->translate("* Account Type"); ?></th>
-                <th><?php echo $this->translate("* Bank/PO"); ?></th>
-                <th><?php echo $this->translate("* Branch"); ?></th>
-                <th><?php echo $this->translate("* Account No"); ?></th>
-                <th><?php echo $this->translate("Mobile"); ?></th>
-                <th><?php echo $this->translate("* Blood Group"); ?></th>
+                <th><?php echo $this->translate("* ವೈವಾಹಿಕ ಸ್ಥಿತಿ"); ?></th>
+                <th><?php echo $this->translate("ಪೆನ್ಷನ್"); ?></th>
+                <th><?php echo $this->translate("* ವಿಧ್ಯಾಬ್ಯಾಸ"); ?></th>
+                <th><?php echo $this->translate("* ಉಧ್ಯೋಗ"); ?></th>
+                <th><?php echo $this->translate("ವೃತ್ತಿ"); ?></th>
+                <th><?php echo $this->translate("* ಸಂಘ"); ?></th>
+                <th><?php echo $this->translate("* ಸಂಘದ ಹೆಸರು"); ?></th>
+                <th><?php echo $this->translate("* ಖಾತೆ ವಿದ"); ?></th>
+                <th><?php echo $this->translate("* ಬ್ಯಾಂಕ್/ ಅಂಚೆ"); ?></th>
+                <th><?php echo $this->translate("* ಶಾಖೆ"); ?></th>
+                <th><?php echo $this->translate("* ಬ್ಯಾಂಕ್ ಸಂಖ್ಯೆ"); ?></th>
+                <th><?php echo $this->translate("ದೂರವಾಣಿ"); ?></th>
+                <th><?php echo $this->translate("* ಬ್ಲಡ್ ಗ್ರೂಪ್"); ?></th>
                 <th></th>
             </tr>
             <?php 
@@ -117,7 +127,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "gender[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->gender as $gender) { ?>
-                    <option value="<?php echo $gender['id']?>"><?php echo $gender['id']; echo ".  "; echo $gender['name']?></option>
+                    <option value="<?php echo $gender['id']?>"><?php echo $gender['id']; echo ".  "; echo $gender['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -130,7 +140,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "relation[]" class="selectvalid required">
                     <option value=0>Select</option>
                     <?php foreach ($this->relation as $relation) { ?>
-                    <option value="<?php echo $relation['id']?>"><?php echo $relation['id']; echo ".  "; echo $relation['name']?></option>
+                    <option value="<?php echo $relation['id']?>"><?php echo $relation['id']; echo ".  "; echo $relation['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -138,7 +148,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <!--<td><select name = "gender[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->gender as $gender) { ?>
-                    <option value="<?php echo $gender['id']?>"><?php echo $gender['id']; echo ".  "; echo $gender['name']?></option>
+                    <option value="<?php echo $gender['id']?>"><?php echo $gender['id']; echo ".  "; echo $gender['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>-->
@@ -146,7 +156,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "marital[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->marital as $marital) { ?>
-                    <option value="<?php echo $marital['id']?>"><?php echo $marital['id']; echo ".  "; echo $marital['name']?></option>
+                    <option value="<?php echo $marital['id']?>"><?php echo $marital['id']; echo ".  "; echo $marital['name_regional']?></option>
 
                     <?php } ?>
                 </select>
@@ -156,7 +166,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <div style="OVERFLOW-Y:scroll; WIDTH:200px; HEIGHT:50px">
 		<input type="checkbox" name="entitle-1-[]" value=0 class="entitleid1 entitlenone-1">None<br />
                 <?php foreach ($this->entitlements as $entitlements) { ?>
-                <input type="checkbox" name="entitle-1-[]" value="<?php echo $entitlements['id'];  ?>" class="entitleid entitlevalid-1"><?php echo $entitlements['id']; echo ".  "; echo $entitlements['name'];  ?><br />
+                <input type="checkbox" name="entitle-1-[]" value="<?php echo $entitlements['id'];  ?>" class="entitleid entitlevalid-1"><?php echo $entitlements['id']; echo ".  "; echo $entitlements['name_regional'];  ?><br />
 		<?php } ?>
                 <div>
                 </td>
@@ -164,7 +174,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "education[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->qualify as $qualify) { ?>
-                    <option value="<?php echo $qualify['id']?>"><?php echo $qualify['id']; echo ".  "; echo $qualify['name']?></option>
+                    <option value="<?php echo $qualify['id']?>"><?php echo $qualify['id']; echo ".  "; echo $qualify['name_regional']?></option>
 
                     <?php } ?>
                 </select>    
@@ -173,7 +183,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "employ_status[]" class="selectvalid">
                     <option value=0>Select</option>
                     <?php foreach ($this->employment as $employment) { ?>
-                    <option value="<?php echo $employment['id']?>"><?php echo $employment['id']; echo ".  "; echo $employment['name']?></option>
+                    <option value="<?php echo $employment['id']?>"><?php echo $employment['id']; echo ".  "; echo $employment['name_regional']?></option>
                     <?php } ?>
                 </select>
                 </td>
@@ -183,7 +193,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <div style="OVERFLOW-Y:scroll; WIDTH:200px; HEIGHT:50px">
 		<input type="checkbox" name="profid-1-[]" value=0 class="profid1 profidnone-1">None<br />
                 <?php foreach ($this->proffession as $proffession) { ?>
-                <input type="checkbox" name="profid-1-[]" value="<?php echo $proffession['id'];  ?>" class="profid profidvalid-1"><?php echo $proffession['id']; echo ".  "; echo $proffession['name'];  ?><br />
+                <input type="checkbox" name="profid-1-[]" value="<?php echo $proffession['id'];  ?>" class="profid profidvalid-1"><?php echo $proffession['id']; echo ".  "; echo $proffession['name_regional'];  ?><br />
 		<?php } ?>
                 <div>
                 </td>
@@ -206,7 +216,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 <td><select name = "accounttype[]" class="selectvalid findbank" id="accounttype-1">
                     <option value=0>Select</option>
                     <?php foreach ($this->accounttype as $accounttype) { ?>
-                    <option value="<?php echo $accounttype['id']?>"><?php echo $accounttype['id']; echo ".  "; echo $accounttype['name']?></option>
+                    <option value="<?php echo $accounttype['id']?>"><?php echo $accounttype['id']; echo ".  "; echo $accounttype['name_regional']?></option>
                     <?php } ?>
                 </select>
                 <INPUT type="hidden" name = "baseurl[]" id="baseurl" value="<?php echo $this->baseurl?>"></td>

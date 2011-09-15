@@ -26,18 +26,18 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
                 ->setIntegrityCheck(false)
                 ->join(array('a'=>'ourbank_familymember'),array('a.id'))
                 ->where('a.family_id =?',$mebmerid)
-                ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name_regional as relationname'))
-                ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name_regional as qualifyname'))
-                ->join(array('l'=>'ourbank_master_employmenttype'),'a.employment_status=l.id',array('l.name_regional as employmentname'))
-                ->join(array('f'=>'ourbank_master_bank'),'a.bank=f.id',array('f.name_regional as bankname'))
-                ->join(array('g'=>'ourbank_master_branch'),'a.branch_po=g.id',array('g.name_regional as branchname'))
+                ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
+                ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))
+                ->join(array('l'=>'ourbank_master_employmenttype'),'a.employment_status=l.id',array('l.name as employmentname'))
+                ->join(array('f'=>'ourbank_master_bank'),'a.bank=f.id',array('f.name as bankname'))
+                ->join(array('g'=>'ourbank_master_branch'),'a.branch_po=g.id',array('g.name as branchname'))
                 ->join(array('i'=>'ourbank_master_bloodtype'),'i.id=a.blood_id',array('i.name as blood'))
-                ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name_regional as maritalname'))
-                ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name_regional as gendername'))
-            ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name_regional as promoter'))
+                ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
+                ->join(array('j'=>'ourbank_master_gender'),'a.gender_id = j.id',array('j.name as gendername'))
+            ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name as promoter'))
             ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
-            ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name_regional as accountype'));
-//         die($select->__toString($select));
+            ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name as accountype'));
+//        die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -46,7 +46,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
 	$select=$this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a'=>'ourbank_memberentitlememnt'),array('a.id'),array('a.entitlement_id'))
-                    ->join(array('c'=>'ourbank_master_entitlements'),'c.id=a.entitlement_id',array('c.name_regional as entitlename'))
+                    ->join(array('c'=>'ourbank_master_entitlements'),'c.id=a.entitlement_id',array('c.name as entitlename'))
                     ->where('a.member_id=?',$id);
        // die($select->__toString($select));
 	$result=$this->fetchAll($select);
@@ -67,18 +67,8 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
 	$select=$this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a'=>'ourbank_memberprofession'),array('a.id'),array('a.profession_id'))
-                    ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name_regional as professionname'))
-                     ->where('a.member_id=?',$id);
-         // die($select->__toString($select));
-	$result=$this->fetchAll($select);
-	return $result->toArray();
-        }
-
-        public function getsign($id){
-	$select=$this->select()
-                    ->setIntegrityCheck(false)
-                    ->join(array('a'=>'ourbank_familymember'),array('a.id'),array('a.sign'))
-                    ->join(array('c'=>'ourbank_master_sign'),'c.id=a.sign',array('c.name_regional as signname'));
+                    ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name as professionname'))
+                    ->where('a.member_id=?',$id);
          // die($select->__toString($select));
 	$result=$this->fetchAll($select);
 	return $result->toArray();
@@ -98,7 +88,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_master_branch'),array('a.id'),array('a.id','a.name_regional as branchname'))
+                ->join(array('a'=>'ourbank_master_branch'),array('a.id'),array('a.id','a.name as branchname'))
                 ->where('a.bank_id=?',$bank_id);
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -109,7 +99,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_master_cbopromoter'),array('a.id'),array('a.id','a.name_regional'))
+                ->join(array('a'=>'ourbank_master_cbopromoter'),array('a.id'),array('a.id','a.name'))
                 ->where('a.koota_id =?',$kootaid);
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -120,7 +110,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_master_cbos'),array('a.id'),array('a.id','a.name_regional as cboname'))
+                ->join(array('a'=>'ourbank_master_cbos'),array('a.id'),array('a.id','a.name as cboname'))
                 ->where('a.cbopromoter_id=?',$cbo_id);
 //        die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -131,7 +121,7 @@ class Familymembers_Model_Familymembers  extends Zend_Db_Table {
     {
         $select=$this->select()
                 ->setIntegrityCheck(false)
-                ->join(array('a'=>'ourbank_master_bank'),array('a.id'),array('a.id as bank_id','a.name_regional as bankname'))
+                ->join(array('a'=>'ourbank_master_bank'),array('a.id'),array('a.id as bank_id','a.name as bankname'))
                 ->join(array('b'=>'ourbank_master_village'),'b.village_id=a.village_id')
                 ->where('b.panchayath_id = ?',$gpid)
                 ->where('a.accounttype_id =?',$type_id);

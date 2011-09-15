@@ -34,13 +34,15 @@ class  Familydefault_Form_familydefault extends Zend_Form
         $sujeevana = $formfield->field('Text','sujeevana','','','required digits','',true,'','','','','',0,0);
 		$sujeevana->addValidator('digits')
 		 		  ->addErrorMessage('Enter Numeric data');
-		$sujeevana->setAttrib('maxLength',14);
+		$sujeevana->setAttrib('maxLength',5);
                 $sujeevana->addValidator(new Zend_Validate_Alnum());
 
         $houseno=$formfield->field('Text','houseno','','','','',false,'','','','','',0,0);
                 $houseno->setAttrib('maxLength',10);
         $minority=$formfield->field('Checkbox','minority','','','','',false,'','','','','',0,0);
-	$caste = $formfield->field('Select','caste','','','required','',true,'','','','','',0,0);
+		$caste = $formfield->field('Select','caste','','','required','',true,'','','','','',0,0);
+		$caste->setAttribs(array('style' => 'width: 160px;'));
+
                 $caste->setRequired(true)
                         ->setRegisterInArrayValidator(false)
                         ->addValidators(array(array('NotEmpty')));
@@ -50,14 +52,19 @@ class  Familydefault_Form_familydefault extends Zend_Form
                 $health->setRequired(true)
                         ->addValidators(array(array('NotEmpty')));
         $ration = $formfield->field('Select','ration','','','mand required','',true,'','','','','',0,0);
+		$ration->setAttribs(array('style' => 'width: 160px;'));
+
         $jobno = $formfield->field('Text','jobno','','','','',false,'','','','','',0,0);
                 $jobno->setAttrib('maxLength', 16);
         $income = $formfield->field('Select','income','','','required','',true,'','','','','',0,0);
+		$income->setAttribs(array('style' => 'width: 160px;'));
+
                 $income->setRequired(true)
                         ->setRegisterInArrayValidator(false)
                         ->addValidators(array(array('NotEmpty')));
         $familytype = $formfield->field('Select','familytype','','','required','',true,'','','','','',0,0);
-                $familytype->setRequired(true)
+		$familytype->setAttribs(array('style' => 'width: 160px;'));
+        $familytype->setRequired(true)
                         ->setRegisterInArrayValidator(false)
                         ->addValidators(array(array('NotEmpty')));
         $street = $formfield->field('Text','street','','','','',false,'','','','','',0,0);
@@ -66,21 +73,23 @@ class  Familydefault_Form_familydefault extends Zend_Form
 
 	$koota = $formfield->field('Select','koota','','','required','',true,'','','','','',0,0);
 	$koota->setAttrib('onchange','getrevvillage("'.$path.'",this.value)');
-// 	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),getkoota("'.$path.'",this.value),gettaluk("'.$path.'",this.value)');
+	$koota->setAttribs(array('style' => 'width: 160px;'));
 
 	$rev_village = $formfield->field('Select','rev_village','','','required','',true,'','','','','',0,0);
-	       $rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),gettaluk("'.$path.'",this.value),getpincode("'.$path.'",this.value,"'.$subid.'")');
-        $rev_village->setRegisterInArrayValidator(false);
+	$rev_village->setAttrib('onchange','gethabitationDetails("'.$path.'",this.value),gettaluk("'.$path.'",this.value),getpincode("'.$path.'",this.value,"'.$subid.'")');
+    $rev_village->setRegisterInArrayValidator(false);
+	$rev_village->setAttribs(array('style' => 'width: 160px;'));
 
         $village = $formfield->field('Select','village','','','required','',true,'','','','','',0,0);
-                $village->setRegisterInArrayValidator(false)
+		$village->setAttribs(array('style' => 'width: 160px;'));
+        $village->setRegisterInArrayValidator(false)
                         ->setRequired(true)
                          ->addValidators(array(array('NotEmpty')));
 
 //         $village->setAttrib('onchange','getAreaDetails("'.$path.'",this.value)');
 
         $dateofbirth = $formfield->field('Text','memberdateofbirth','','','','',false,'','','','','',1,0);
-	$mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
+		$mobile = $formfield->field('Text','mobile','','','mand required digits','',false,'','','','','',0,0);
 		$mobile->setAttrib('maxLength', 11);
 
         $this->addElements(array($sujeevana,$houseno,$minority,$street,$village,$koota,$rev_village,$familytype,$caste,$ration,$health,$jobno,$income,$phone,$mobile));

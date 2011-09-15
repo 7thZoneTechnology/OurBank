@@ -1,8 +1,8 @@
 <br>
    <TABLE id="hor-minimalist-b" width="100%">
-	<tr><td></td><?php foreach($this->keyvalue as $details) {?>
-		<td><?php if ($this->tableName) : ?><a href="<?php echo $this->baseUrl();?>/dropdown/index/add/name/<?php echo $this->tableName?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20">Add New <?php echo $details['descriptions'];?></a><?php endif;?></td>
-	    <td align="right"><b><h3>List of <?php echo $details['descriptions'];?></h3></b></td><?php } ?>
+	<tr><td></td>
+		<td><?php if ($this->tableName) : ?><a href="<?php echo $this->baseUrl();?>/dropdown/index/add/name/<?php echo $this->tableName?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20">Add New <?php echo substr($this->tableName,15);?></a><?php endif;?></td>
+	    <td align="right"><b><h3>List of <?php echo substr($this->tableName,15);?></h3></b></td>
 	</tr>
 
   <?php if($this->tableName=='ourbank_master_habitation') { ?>

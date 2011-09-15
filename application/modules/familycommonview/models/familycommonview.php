@@ -82,7 +82,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                        ->setIntegrityCheck(false)
                        ->join(array('a'=>'ourbank_cropdetails'),array('a.id'))
                        ->where('a.family_id=?',$mebmerid)
-                       ->join(array('b'=>'ourbank_master_crop'),'b.id=a.crop_id',array('b.name_regional'))
+                       ->join(array('b'=>'ourbank_master_crop'),'b.id=a.crop_id',array('b.name'))
                         ->join(array('c'=>'ourbank_master_landtypes'),'c.id=a.land_id',array('c.name as landtypename'))
                         ->join(array('d'=>'ourbank_master_seasons'),'d.id=a.season_id',array('d.name as season'));
 
@@ -96,10 +96,10 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
         $select=$this->select()
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_agriculture'),array('a.id'))
-                        ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name_regional'))
+                        ->join(array('b'=>'ourbank_master_landtypes'),'b.id=a.land_id',array('b.name'))
                        // ->join(array('c'=>'ourbank_familymember'),'c.id =a.landowner_name',array('c.name as membername'))
-                        ->join(array('d'=>'ourbank_master_villagelist'),'d.id =a.villagename',array('d.name_regional as villagenames'))
-                        ->join(array('c'=>'ourbank_master_landacquisition'),'c.id =a.landowner_name',array('c.name_regional as membername'))
+                        ->join(array('d'=>'ourbank_master_villagelist'),'d.id =a.villagename',array('d.name as villagenames'))
+                        ->join(array('c'=>'ourbank_master_landacquisition'),'c.id =a.landowner_name',array('c.name as membername'))
                         ->where('a.family_id=?',$familyid);
 //        die($select->__toString($select));
        $result=$this->fetchAll($select);
@@ -111,7 +111,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                      ->setIntegrityCheck(false)
                      ->join(array('a'=>'ourbank_nonlivingassetsdetails'),array('a.id'))
                      ->where('a.family_id=?',$mebmerid)
-                     ->join(array('b'=>'ourbank_master_nonliveassets'),'b.id=a.nonliveasset_id',array('b.name_regional'));
+                     ->join(array('b'=>'ourbank_master_nonliveassets'),'b.id=a.nonliveasset_id',array('b.name'));
      // die($select->__toString($select));
      $result=$this->fetchAll($select);
      return $result->toArray();
@@ -137,7 +137,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_liveassetdetails'),array('a.id'))
                       ->where('a.family_id=?',$mebmerid)
-                      ->join(array('b'=>'ourbank_master_liveassets'),'b.id=a.liveasset_id',array('b.name_regional'));
+                      ->join(array('b'=>'ourbank_master_liveassets'),'b.id=a.liveasset_id',array('b.name'));
       // die($select->__toString($select));
       $result=$this->fetchAll($select);
       return $result->toArray();
@@ -148,8 +148,8 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
       $select=$this->select()
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_loandetails'),array('a.id'))
-		      ->join(array('b'=>'ourbank_master_loanpurpose'),'b.id=a.purpose_id',array('b.name_regional as purposename'))
-                      ->join(array('c'=>'ourbank_master_loansource'),'c.id=a.source_id',array('c.name_regional'))
+		      ->join(array('b'=>'ourbank_master_loanpurpose'),'b.id=a.purpose_id',array('b.name as purposename'))
+                      ->join(array('c'=>'ourbank_master_loansource'),'c.id=a.source_id',array('c.name'))
                       ->join(array('d'=>'ourbank_familymember'),'d.id=a.member_id',array('d.name as membername'))
                       ->where('d.family_id=?',$familyid);
 
@@ -186,7 +186,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_expensedetails'),array('a.id'))
                       ->where('a.family_id=?',$mebmerid)
-                      ->join(array('b'=>'ourbank_master_expense'),'b.id=a.expense_id',array('b.name_regional'));
+                      ->join(array('b'=>'ourbank_master_expense'),'b.id=a.expense_id',array('b.name'));
       // die($select->__toString($select));
       $result=$this->fetchAll($select);
       return $result->toArray();
@@ -207,7 +207,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                         ->setIntegrityCheck(false)
                         ->join(array('a'=>'ourbank_incomedetails'),array('a.id'))
                         ->where('a.member_id=?',$mebmerid)
-                        ->join(array('b'=>'ourbank_master_income'),'b.id=a.income_id',array('b.name_regional'));
+                        ->join(array('b'=>'ourbank_master_income'),'b.id=a.income_id',array('b.name'));
         // die($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
@@ -241,7 +241,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_healthhabitdetails'),array('a.id'))
                       ->where('a.family_id=?',$familyid)
-                      ->join(array('b'=>'ourbank_master_habit'),'b.id=a.habit_id',array('b.name_regional as habitname'))
+                      ->join(array('b'=>'ourbank_master_habit'),'b.id=a.habit_id',array('b.name as habitname'))
                       ->join(array('c'=>'ourbank_familymember'),'c.id=a.member_id',array('c.name as membername'));
       // die($select->__toString($select));
       $result=$this->fetchAll($select);
@@ -252,7 +252,7 @@ class Familycommonview_Model_familycommonview extends Zend_Db_Table
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_healthphychallenge'),array('a.id'))
                       ->where('a.family_id=?',$familyid)
-                        ->join(array('b'=>'ourbank_master_phychallenge'),'b.id=a.phychallenge_id',array('b.name_regional as challengename'))
+                        ->join(array('b'=>'ourbank_master_phychallenge'),'b.id=a.phychallenge_id',array('b.name as challengename'))
                         ->join(array('c'=>'ourbank_familymember'),'c.id=a.member_id',array('c.name as membername'));      
       $result=$this->fetchAll($select);
       return $result->toArray();
@@ -263,7 +263,7 @@ public function getchronicdisease($familyid){
                       ->setIntegrityCheck(false)
                       ->join(array('a'=>'ourbank_healthdiseasedetails'),array('a.id'))
                       ->where('a.family_id=?',$familyid)
-                        ->join(array('b'=>'ourbank_master_diseasetypes'),'b.id=a.healthdisease',array('b.name_regional as diseasename'))
+                        ->join(array('b'=>'ourbank_master_diseasetypes'),'b.id=a.healthdisease',array('b.name as diseasename'))
                       ->join(array('c'=>'ourbank_familymember'),'c.id=a.member_id',array('c.name as membername'));      
       $result=$this->fetchAll($select);
       return $result->toArray();
@@ -286,17 +286,17 @@ public function getchronicdisease($familyid){
         ->setIntegrityCheck(false)
         ->join(array('a'=>'ourbank_familymember'),array('a.id'))
         ->where('a.family_id=?',$mebmerid)
-        ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name_regional as relationname'))
-        ->join(array('d'=>'ourbank_master_employmenttype'),'d.id =a.employment_status',array('d.name_regional as employmentname'))
-        ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name_regional as qualifyname'))
-        ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name_regional as maritalname'))
-        ->join(array('i'=>'ourbank_master_branch'),'a.branch_po=i.id',array('i.name_regional as branchname'))
+        ->join(array('b'=>'ourbank_master_realtionshiptype'),'a.relationship_id=b.id',array('b.name as relationname'))
+        ->join(array('d'=>'ourbank_master_employmenttype'),'d.id =a.employment_status',array('d.name as employmentname'))
+        ->join(array('c'=>'ourbank_master_educationtype'),'a.eductaion_id=c.id',array('c.name as qualifyname'))
+        ->join(array('h'=>'ourbank_master_maritalstatus'),'a.maritalstatus_id=h.id',array('h.name as maritalname'))
+        ->join(array('i'=>'ourbank_master_branch'),'a.branch_po=i.id',array('i.name as branchname'))
         ->join(array('j'=>'ourbank_master_bloodtype'),'a.blood_id=j.id',array('j.name as blood'))
-        ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name_regional as bankname'))                ->join(array('k'=>'ourbank_master_gender'),'a.gender_id = k.id',array('k.name_regional as gendername'))
+        ->join(array('g'=>'ourbank_master_bank'),'a.bank=g.id',array('g.name as bankname'))                ->join(array('k'=>'ourbank_master_gender'),'a.gender_id = k.id',array('k.name as gendername'))
 
-        ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name_regional as promoter'))
-        ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name_regional as cbos'))
-        ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name_regional as accountype'));
+        ->join(array('m'=>'ourbank_master_cbopromoter'),'a.promoter_id=m.id',array('m.name as promoter'))
+        ->join(array('n'=>'ourbank_master_cbos'),'a.cbo_id=n.id',array('n.name as cbos'))
+        ->join(array('r'=>'ourbank_master_accountype'),'a.accouttype_id =r.id',array('r.name as accountype'));
 
      //   die($select->__toString($select));
         $result=$this->fetchAll($select);
@@ -307,7 +307,7 @@ public function getchronicdisease($familyid){
 	$select=$this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a'=>'ourbank_memberentitlememnt'),array('a.id'),array('a.entitlement_id'))
-                    ->join(array('c'=>'ourbank_master_entitlements'),'c.id=a.entitlement_id',array('c.name_regional as entitlename'))
+                    ->join(array('c'=>'ourbank_master_entitlements'),'c.id=a.entitlement_id',array('c.name as entitlename'))
                     ->where('a.member_id=?',$id);
          // die($select->__toString($select));
 	$result=$this->fetchAll($select);
@@ -331,7 +331,7 @@ public function getchronicdisease($familyid){
 	$select=$this->select()
                     ->setIntegrityCheck(false)
                     ->join(array('a'=>'ourbank_memberprofession'),array('a.id'),array('a.profession_id'))
-                    ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name_regional as professionname'))
+                    ->join(array('c'=>'ourbank_master_profession'),'c.id=a.profession_id',array('c.name as professionname'))
                     ->where('a.member_id=?',$id);
          // die($select->__toString($select));
 	$result=$this->fetchAll($select);
@@ -344,7 +344,7 @@ public function getchronicdisease($familyid){
 	$select=$this->select()
 			->setIntegrityCheck(false)
 			->join(array('a'=>'ourbank_praservice'),array('a.id'))
-			->join(array('b'=>'ourbank_master_servicesectors'),'b.id=a.source_id',array('b.name_regional'))
+			->join(array('b'=>'ourbank_master_servicesectors'),'b.id=a.source_id',array('b.name'))
 			->where('a.family_id=?',$mebmerid);
 //          die($select->__toString($select));
 	$result=$this->fetchAll($select);
@@ -361,7 +361,7 @@ public function getchronicdisease($familyid){
 	$select=$this->select()
 			->setIntegrityCheck(false)
 			->join(array('a'=>'ourbank_infrastructure'),array('a.id'))
-			->join(array('b'=>'ourbank_master_housingtype'),'b.id=a.housetype_id',array('b.name_regional'))
+			->join(array('b'=>'ourbank_master_housingtype'),'b.id=a.housetype_id',array('b.name'))
 			->where('a.member_id=?',$mebmerid);
 	//die($select->__toString($select));
 	$result=$this->fetchAll($select);
@@ -372,7 +372,7 @@ public function getchronicdisease($familyid){
 	$select=$this->select()
 			->setIntegrityCheck(false)
 			->join(array('a'=>'ourbank_infrastructure'),array('a.id'))
-			->join(array('b'=>'ourbank_master_ownershiptype'),'b.id=a.ownership_id',array('b.name_regional'))
+			->join(array('b'=>'ourbank_master_ownershiptype'),'b.id=a.ownership_id',array('b.name'))
 			->where('a.member_id=?',$mebmerid);
 	//die($select->__toString($select));
 	$result=$this->fetchAll($select);
@@ -383,7 +383,7 @@ public function getchronicdisease($familyid){
 	$select=$this->select()
 			->setIntegrityCheck(false)
 			->join(array('a'=>'ourbank_infrastructure'),array('a.id'))
-			->join(array('b'=>'ourbank_master_cookingfuel'),'b.id=a.fuel_id',array('b.name_regional'))
+			->join(array('b'=>'ourbank_master_cookingfuel'),'b.id=a.fuel_id',array('b.name'))
 			->where('a.member_id=?',$mebmerid);
 	//die($select->__toString($select));
 	$result=$this->fetchAll($select);

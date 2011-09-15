@@ -25,9 +25,8 @@ class Familymembers_Form_Familymembers extends Zend_Form
                 $formfield = new App_Form_Field ();
                 // send required parameters to get respective form fields ( first parameter is a input type)
                 $profession = $formfield->field('MultiCheckbox','profession','','','profid','',false,'','','','','',0,0);
-                $sign = $formfield->field('Checkbox','sign','','','','',false,'','','','','',0,0);
 
-                $this->addElements(array($profession,$sign));
+                $this->addElements(array($profession));
             }
 
 }

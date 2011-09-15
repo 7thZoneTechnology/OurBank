@@ -21,7 +21,7 @@ class Familyform_IndexController extends Zend_Controller_Action
 {
 	public function init() 
 	{
-        $this->view->pageTitle='Membership';
+        $this->view->pageTitle='Family form';
 	$this->view->adm = new App_Model_Adm();
 
         /* Initialize action controller here */
@@ -48,6 +48,7 @@ class Familyform_IndexController extends Zend_Controller_Action
 		$this->view->form = $familyForm;
 		if ($this->_request->isPost() && $this->_request->getPost('Search')) {
 		$id = $this->_getParam('membercode');
+		$this->view->id = $id;
  		$familydetails = new Familyform_Model_Familyform();
  		$result = $familydetails->getFamilydetails($id);
 		$this->view->familydetails = $result;
@@ -103,8 +104,13 @@ class Familyform_IndexController extends Zend_Controller_Action
 	$x10 = 250;
 	$x11 = 285;
 		$id = $this->_getParam('membercode');
+//print_r($id);		
+		
 		$familydetails = new Familyform_Model_Familyform();
- 		$result = $familydetails->getFamilydetails($id);
+  		
+  		$result = $familydetails->getFamilydetails($id); 
+// // Zend_Debug::dump($result);		
+//  		
  		$family = $familydetails->getfamily($id);
 		$this->view->familydetails = $result;
         $this->view->livingassets=$familydetails->getlivingassetsdetails($id);
@@ -183,7 +189,7 @@ class Familyform_IndexController extends Zend_Controller_Action
 		$path = '/var/www'.$projname.'/reports/familyform'.date('Y-m-d').'.pdf';
 		chmod($path,0777);
 	}
-	
+ 	
 	function reportdisplayAction() {
 		$this->_helper->layout->disableLayout();
 		$file1 = $this->_request->getParam('file');
@@ -195,8 +201,6 @@ class Familyform_IndexController extends Zend_Controller_Action
 			if($i>0 && $i<(count($word)-1)) { $projname.='/'.$word[$i]; }
 		}
                 $this->view->filename = $projname."/reports/".$file1;
-	}
+ 	}
 
-	
-	
-}
+    }

@@ -74,7 +74,7 @@ class Familydefault_IndexController extends Zend_Controller_Action
 
         $caste = $this->view->adm->viewRecord("ourbank_master_castetype","id","ASC");
         foreach($caste as $casteresult){
-        $addForm->caste->addMultiOption($casteresult->id,$casteresult->id." -[".$casteresult->name_regional."]");
+        $addForm->caste->addMultiOption($casteresult->id,$casteresult->id." -[".$casteresult->name."]");
         }
 
 //foreach($glsubcode as $glsubcode) {
@@ -82,23 +82,23 @@ class Familydefault_IndexController extends Zend_Controller_Action
 
         $familytype = $this->view->adm->viewRecord("ourbank_master_familytype","id","ASC");
         foreach($familytype as $familytype1){
-        $addForm->familytype->addMultiOption($familytype1->id,$familytype1->id." -[".$familytype1->name_regional."]");
+        $addForm->familytype->addMultiOption($familytype1->id,$familytype1->id." -[".$familytype1->name."]");
         }
 
         $rationcard = $this->view->adm->viewRecord("ourbank_master_rationcard","id","ASC"); 
         foreach($rationcard as $rationcard1){
-        $addForm->ration->addMultiOption($rationcard1->id,$rationcard1->id." -[".$rationcard1->name_regional."]");
+        $addForm->ration->addMultiOption($rationcard1->id,$rationcard1->id." -[".$rationcard1->name."]");
         }
 
         $this->view->insurance = $this->view->adm->viewRecord("ourbank_master_insurance","id","ASC");
         $this->view->countvalue=count($this->view->insurance);
         foreach($this->view->insurance as $insurance1){
-                $addForm->health->addMultiOption($insurance1->id,$insurance1->id." -[".$insurance1->name_regional."]");
+                $addForm->health->addMultiOption($insurance1->id,$insurance1->id." -[".$insurance1->name."]");
         }
 
         $sourceincome = $this->view->adm->viewRecord("ourbank_master_sourceofincome","id","ASC");
         foreach($sourceincome as $sourceincome1){
-                $addForm->income->addMultiOption($sourceincome1->id,$sourceincome1->id." -[".$sourceincome1->name_regional."]");
+                $addForm->income->addMultiOption($sourceincome1->id,$sourceincome1->id." -[".$sourceincome1->name."]");
         }
 
         $familymodel = new Familydefault_Model_familydefault();
@@ -223,19 +223,19 @@ class Familydefault_IndexController extends Zend_Controller_Action
         $caste = $this->view->adm->viewRecord("ourbank_master_castetype","id","ASC");
         foreach($caste as $casteresult){
         //$addForm->caste->addMultiOption($casteresult['id'],$casteresult['name_regional']);
-                $addForm->caste->addMultiOption($casteresult->id,$casteresult->id." -[".$casteresult->name_regional."]");
+                $addForm->caste->addMultiOption($casteresult->id,$casteresult->id." -[".$casteresult->name."]");
         }
 
         $familytype = $this->view->adm->viewRecord("ourbank_master_familytype","id","ASC");
         foreach($familytype as $familytype1){
        // $addForm->familytype->addMultiOption($familytype1['id'],$familytype1['name_regional']);
-        $addForm->familytype->addMultiOption($familytype1->id,$familytype1->id." -[".$familytype1->name_regional."]");
+        $addForm->familytype->addMultiOption($familytype1->id,$familytype1->id." -[".$familytype1->name."]");
         }
 
         $rationcard = $this->view->adm->viewRecord("ourbank_master_rationcard","id","ASC");
         foreach($rationcard as $rationcard1){
 //         $addForm->ration->addMultiOption($rationcard1['id'],$rationcard1['name_regional']);
-        $addForm->ration->addMultiOption($rationcard1->id,$rationcard1->id." -[".$rationcard1->name_regional."]");
+        $addForm->ration->addMultiOption($rationcard1->id,$rationcard1->id." -[".$rationcard1->name."]");
         }
 
         $this->view->insurance = $insurance=$this->view->adm->viewRecord("ourbank_master_insurance","id","ASC");
@@ -245,13 +245,13 @@ class Familydefault_IndexController extends Zend_Controller_Action
 //        $addForm->health->addMultiOption(1,'none');
         foreach($insurance as $insurance1){ 
 //                 $addForm->health->addMultiOption($insurance1['id'],$insurance1['name_regional']);
-        $addForm->health->addMultiOption($insurance1->id,$insurance1->id." -[".$insurance1->name_regional."]");
+        $addForm->health->addMultiOption($insurance1->id,$insurance1->id." -[".$insurance1->name."]");
         }
 
         $sourceincome = $this->view->adm->viewRecord("ourbank_master_sourceofincome","id","ASC");
         foreach($sourceincome as $sourceincome1){
 //         $addForm->income->addMultiOption($sourceincome1['id'],$sourceincome1['name_regional']);
-        $addForm->income->addMultiOption($sourceincome1->id,$sourceincome1->id." -[".$sourceincome1->name_regional."]");
+        $addForm->income->addMultiOption($sourceincome1->id,$sourceincome1->id." -[".$sourceincome1->name."]");
         }
 
        	$institution = $familymodel->office($this->view->lastlevelid);
