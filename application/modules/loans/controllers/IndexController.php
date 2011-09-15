@@ -190,9 +190,9 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $productdetails = new Loans_Model_Loan();
 
                     $headerCon = "A";
-                    $glsubcode = $loan->getGlCode('loan');
-                    $glcode = $loan->getGlCodeid('loan');
-                    $glcodeexist = $loan->getGlCodeexist('loan');
+                    $glsubcode = $loan->getGlCode('Loans');
+                    $glcode = $loan->getGlCodeid('Loans');
+                    $glcodeexist = $loan->getGlCodeexist('Loans');
  
                     $glco=substr($glcodeexist, 1, 2);
 
@@ -290,11 +290,11 @@ class Loans_IndexController extends Zend_Controller_Action{
 // //                 $loanForm->glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
 // //         }
 
-        $glsubcode = $loan->fetchAllglsubcode('2');//ledger id for income 2
-        foreach($glsubcode as $glsubcode) {
-            $loanForm->fee_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
-            $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
-        }
+//         $glsubcode = $loan->fetchAllglsubcode('2');//ledger id for income 2
+//         foreach($glsubcode as $glsubcode) {
+//             $loanForm->fee_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
+//             $loanForm->interest_glsubcode_id->addMultiOption($glsubcode['id'],$glsubcode['header']."[".$glsubcode['glsubcode']."]");
+//         }
 
         $interesttype1 = $this->view->adm->viewRecord("ourbank_master_interesttypes","id","ASC");
         foreach($interesttype1 as $interesttypes){
@@ -352,8 +352,8 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $maximumfrequency = $this->_request->getParam('maximumfrequency'); 
                         $penal_Interest = $this->_request->getParam('penal_Interest');
                         $graceperiodnumber = $this->_request->getParam('graceperiodnumber'); 
-                        $glsubcode_id = $this->_request->getParam('glsubcode_id'); 
-                        $interesttype_id = $this->_request->getParam('interesttype_id'); 
+//                         $glsubcode_id = $this->_request->getParam('glsubcode_id'); 
+//                         $interesttype_id = $this->_request->getParam('interesttype_id'); 
 
 
                         $productnamedetails=$this->view->adm->editRecord('ourbank_product',$product_id);
@@ -383,8 +383,8 @@ class Loans_IndexController extends Zend_Controller_Action{
                         $penal_Interestold=$loan['penal_Interest'];
                         $graceperiodnumberold=$loan['graceperiodnumber'];
 
-                        $glsubcode_idold=$loan['glsubcode_id'];
-                        $interesttype_idold=$loan['interesttype_id'];
+//                         $glsubcode_idold=$loan['glsubcode_id'];
+//                         $interesttype_idold=$loan['interesttype_id'];
                     }
 
                     $updateOldloan = array('productname' => $productnameold,
@@ -394,8 +394,8 @@ class Loans_IndexController extends Zend_Controller_Action{
                                         'begindate' => $begindateold,
                                         'closedate' => $closedateold,
                                         'membertype' => $appliestoold,
-                                        'glsubcode_id' => $glsubcode_idold,
-                                        'interesttype_id' => $interesttype_idold,
+//                                         'glsubcode_id' => $glsubcode_idold,
+//                                         'interesttype_id' => $interesttype_idold,
                                         'minmumloanamount' => $minmumloanamountold,
                                         'maximunloanamount' => $maximunloanamountold,
                                         'minimumfrequency' => $minimumfrequencyold,
@@ -410,8 +410,8 @@ class Loans_IndexController extends Zend_Controller_Action{
                                         'begindate' => $begindate,
                                         'closedate' => $closedate,
                                         'membertype' => $appliesto,
-                                        'glsubcode_id' => $glsubcode_id,
-                                        'interesttype_id' => $interesttype_id,
+//                                         'glsubcode_id' => $glsubcode_id,
+//                                         'interesttype_id' => $interesttype_id,
                                         'minmumloanamount' => $minmumloanamount,
                                         'maximunloanamount' => $maximunloanamount,
                                         'minimumfrequency' => $minimumfrequency,

@@ -105,7 +105,7 @@ class Roles_IndexController extends Zend_Controller_Action{
          if ($this->_request->isPost() && $this->_request->getPost('submit')) {
             $grantname = $this->_request->getParam('grantname'); //get grant name
             $formData = $this->_request->getPost(); //get formdata
-//             if($form->isValid($formData)){
+             if($form->isValid($formData)){
             $moduleid = array();
             $moduleids = array();
             $mainmoduleid = array();
@@ -177,9 +177,9 @@ class Roles_IndexController extends Zend_Controller_Action{
                             }
                     }
                 
-                }
+                } 
         	$this->_redirect('roles/index');
-//        		}  
+       		} 
             }
             }
 

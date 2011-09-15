@@ -64,7 +64,8 @@ class Health_IndexController extends Zend_Controller_Action
         foreach($nameid as $nameids){
          $a='healthdisease'.$nameids;
             foreach($disease as $diseasetype){
-                $this->view->form->$a->addMultiOption($diseasetype['id'],$diseasetype['name']);
+                //$this->view->form->$a->addMultiOption($diseasetype['id'],$diseasetype['name']);
+                $this->view->form->$a->addMultiOption($diseasetype->id,$diseasetype->id." -[".$diseasetype->name_regional."]");
             }
         }
 
@@ -171,7 +172,8 @@ $this->view->form = new Health_Form_health($nameid);
         foreach($nameid as $nameids){
          $a='healthdisease'.$nameids;
             foreach($disease as $diseasetype){
-                $this->view->form->$a->addMultiOption($diseasetype['id'],$diseasetype['name']);
+               // $this->view->form->$a->addMultiOption($diseasetype['id'],$diseasetype['name_regional']);
+                $this->view->form->$a->addMultiOption($diseasetype->id,$diseasetype->id." -[".$diseasetype->name_regional."]");
             }
         }
 foreach($nameid as $namewithid){
@@ -213,7 +215,7 @@ foreach($nameid as $namewithid){
         $this->view->adm->deleteRecordwithparam('ourbank_healthhabitdetails','family_id',$familyid);
         $this->view->adm->deleteRecordwithparam('ourbank_healthphychallenge','family_id',$familyid);
         $this->view->adm->deleteRecordwithparam('ourbank_healthdiseasedetails','family_id',$familyid);
- 
+
 foreach($membername as $memberna){
          if($this->_getParam('healthdisease'.$memberna['memberid'])) {
                 $disease = $this->_getParam('healthdisease'.$memberna['memberid']);

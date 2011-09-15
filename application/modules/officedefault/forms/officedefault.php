@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 /*
  *  create form elements for new office
  */
@@ -40,11 +37,13 @@ class Officedefault_Form_officedefault extends Zend_Form{
                     ->addValidators(array(array('NotEmpty')));
         $office_name->setAttrib('class', 'txt_put');
         $office_name->addValidator(new Zend_Validate_Db_NoRecordExists('ourbank_office', 'name'));
+        $office_name->addValidator('Alpha', true, array('allowWhiteSpace'=>true));
 
         $officeshort_name = new Zend_Form_Element_Text('short_name');
         $officeshort_name->setAttrib('class', 'txt_put');
 	$officeshort_name->setRequired(true)
 		 	->addValidators(array(array('NotEmpty'),array('stringLength', false, array(3,3))));
+        $officeshort_name->addValidator('Alpha', true, array('allowWhiteSpace'=>true));
 
         $officedescription=new Zend_Form_Element_Text('officedescription');
         $officedescription->setAttrib('class', 'txt_put');

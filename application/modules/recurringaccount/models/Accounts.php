@@ -45,9 +45,17 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
 	
     public function search($code) 
     {
+
+		$keyvalue = array_filter($code);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
+
+        $member_id=$code['s1'];
+        
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-         $sql="SELECT 
+         
+        $sql="SELECT 
               DISTINCT a.id as id,
               a.familycode as code,
               a.name as name,
@@ -63,7 +71,7 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
               where
               a.village_id= b.id and
               a.id = d.member_id and
-              (a.name like '%' '$code' '%'  or a.familycode like '%' '$code' '%') AND
+              (a.name like '".$member_id."%'  or a.familycode like '".$member_id."%') AND   
               substr(a.familycode,5,1) = c.id  
               union
               SELECT
@@ -80,12 +88,51 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
               ourbank_master_membertypes c
               where
               a.village_id= b.id and
-              (a.name like '%' '$code' '%'  or a.groupcode like '%' '$code' '%') AND
+              (a.name like '".$member_id."%'  or a.groupcode like '".$member_id."%') AND
               substr(a.groupcode,5,1) = c.id";
-// //              echo $sql;
+
+        $result = $this->db->fetchAll($sql,$member_id);
+         return $result;
+        } else {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+
+     $sql="SELECT 
+              DISTINCT a.id as id,
+              a.familycode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
+              from
+              ourbank_familymember a,
+              ourbank_office b,
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
+              where
+              a.village_id= b.id and
+              a.id = d.member_id AND
+              substr(a.familycode,5,1) = c.id  
+              union
+              SELECT
+	      DISTINCT a.id as id,
+              a.groupcode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
+              from
+              ourbank_group a,
+              ourbank_office b,
+              ourbank_master_membertypes c
+              where
+              a.village_id= b.id and
+              substr(a.groupcode,5,1) = c.id";
  
-        $result = $this->db->fetchAll($sql,array($code));
-        return $result;
+        $result = $this->db->fetchAll($sql);
+          return $result;}
     }
     
     public function getDetails($code)
@@ -143,7 +190,7 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                         (select id 
                                 from ourbank_product 
                                 where shortname ='rd')";
-// // echo $sql;
+// //  echo $sql;
         $result = $db->fetchAll($sql);
         return $result;
     }
@@ -160,11 +207,16 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                     ourbank_accounts A,
                     ourbank_productsoffer B,
                     ourbank_product C,
-                    ourbank_member D
+                    ourbank_familymember D
                 WHERE
-                    (D.membercode like '$membercode' '%') AND
+                    (D.familycode like '$membercode' '%') AND
                     A.member_id = D.id AND 
-                    substr(A.account_number,5,1) = '1' AND
+
+  substr(A.account_number,8,1) = 'R' AND
+                substr(D.familycode,5,1) = A.membertype_id AND
+
+
+
                     A.product_id = B.id AND 
                     B.product_id = C.id AND 
                     C.shortname = 'rd' AND
@@ -182,13 +234,12 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                     ourbank_group D
                 WHERE
                     (D.groupcode like '$membercode' '%') AND
-                    A.member_id = D.id AND 
-                    substr(A.account_number,5,1) = '2' AND
+					substr(A.account_number,8,1) = 'R' AND
+					substr(D.groupcode,5,1) = A.membertype_id AND
                     A.product_id = B.id AND 
                     B.product_id = C.id AND 
                     C.shortname = 'rd' AND
                     C.category_id = 1";
-/*echo $sql;*/
         $result = $db->fetchAll($sql,array($membercode));
         return $result;
     }
@@ -207,6 +258,7 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                     B.begindate as begindate,
                     B.glsubcode_id as glsubID,
                     C.minimum_deposit_amount as minbalance,
+					C.maximum_deposit_amount  as maxbalance,
                     C.penal_Interest as mininterest
                     FROM 
                     ourbank_productsoffer B,
@@ -229,6 +281,7 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
                     B.begindate as begindate,
                     B.glsubcode_id as glsubID,
                     C.minimum_deposit_amount as minbalance,
+					C.maximum_deposit_amount  as maxbalance,
                     C.penal_Interest as mininterest
                     FROM 
                     ourbank_productsoffer B,
@@ -244,6 +297,19 @@ class Recurringaccount_Model_Accounts extends Zend_Db_Table {
         $result = $db->fetchAll($sql);
         return $result;
     }
+
+	 public function getofferdetails($productId) 
+    {
+
+        $select = $this->select()
+            ->setIntegrityCheck(false)  
+            ->join(array('A' => 'ourbank_productsoffer'),array('id'),array('A.name as productname','A.begindate as begindate','A.glsubcode_id as glsubID'))
+            ->join(array('B' => 'ourbank_product_fixedrecurring'),'A.id = B.productsoffer_id',array('B.minimum_deposit_amount as minbalance','B.maximum_deposit_amount as maxbalance','B.penal_Interest as mininterest'))
+            ->where('A.id ='. $productId);
+	$result = $this->fetchAll($select);
+        return $result->toArray();
+    }
+
 
     public function getInterestRates($id)
     {

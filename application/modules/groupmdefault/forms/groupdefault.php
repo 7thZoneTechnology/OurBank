@@ -19,7 +19,7 @@
     class  Groupmdefault_Form_groupdefault extends Zend_Form {
             public function init() {
 
-        Zend_Dojo::enableForm($this);
+             Zend_Dojo::enableForm($this);
             }
     
             public function __construct($app) {
@@ -27,7 +27,9 @@
                 $formfield = new App_Form_Field ();
                 // send required parameters to get respective form fields ( first parameter is a input type)
                 $office = $formfield->field('Select','office','','','mand required','Village name',true,'','','','','',1,'');
-                $office->setAttrib('onchange','getMember(this.value,"'.$app.'")');
+                // modified by Albert Aug 8th 4:59 PM
+                $office->setAttrib('onchange','getbank("'.$app.'")');
+
                 $groupname = $formfield->field('Text','groupname','','','mand required','Group name',true,'','','','','',1,'');
                 $groupname->setAttrib('maxlength',30);
 
@@ -49,8 +51,8 @@
                 $interest->setAttrib('maxlength',3);
 
 
-                $bank = $formfield->field('Select','bank','','','mand required','Bank',true,'','','','','',1,'');
-                $bank->setAttrib('onchange','getBranch(this.value)');
+                $bank = $formfield->field('Select','bank','','','mand required','Bank',true,'','','','','',0,'');
+                $bank->setAttrib('onchange','getBranch(this.value,"'.$app.'")');
 
                 $branch = $formfield->field('Select','branch','','','mand required','Bank branch',true,'','','','','',0,'');
 
@@ -68,8 +70,6 @@
                 $code = new Zend_Form_Element_Hidden('code');
                 $submit = new Zend_Form_Element_Submit('Submit');
                 $back= new Zend_Form_Element_Button('Back');
-                $this->addElements(array($office,$groupname,$officedit,$offeditv,$savingamt,$penaltylate,$penaltyabsence,$interest,$bank,$branch,$place,$date,$time,$code,$day,$submit,$back));
-
-   
+                $this->addElements(array($office,$groupname,$officedit,$offeditv,$savingamt,$penaltylate,$penaltyabsence,$interest,$bank,$branch,$place,$date,$time,$code,$day,$submit,$back)); 
             }
     }

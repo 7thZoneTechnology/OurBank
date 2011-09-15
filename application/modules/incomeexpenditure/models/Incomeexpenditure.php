@@ -28,7 +28,7 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
                     ->join(array('b'=>'ourbank_glsubcode'),'b.id=a.glsubcode_id_to',array('header'))
                     ->join(array('c'=>'ourbank_Income'),'c.glsubcode_id_to=a.glsubcode_id_to',array('sum(credit) as credit'))
                     ->where('c.recordstatus_id =3 OR c.recordstatus_id=1')
-                    ->where('c.tranasction_id  = a.transaction_id')
+                    ->where('c.transaction_id  = a.transaction_id')
                     ->group('b.header');
 //             die($select->__toString());
             $result = $this->fetchAll($select);
@@ -43,7 +43,7 @@ class Incomeexpenditure_Model_Incomeexpenditure extends Zend_Db_Table {
 		->join(array('b'=>'ourbank_glsubcode'),'b.id=a.glsubcode_id_to',array('header'))
 		->join(array('c'=>'ourbank_Expenditure'),'c.glsubcode_id_to=a.glsubcode_id_to',array('sum(debit) as credit'))
                 ->where('c.recordstatus_id =3 OR c.recordstatus_id=1')
-                ->where('c.tranasction_id  = a.transaction_id')
+                ->where('c.transaction_id  = a.transaction_id')
 		->group('b.header');
 //         die($select->__toString());
         $result = $this->fetchAll($select);

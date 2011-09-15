@@ -1,4 +1,22 @@
 <?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
 class Loanprocess_IndexController extends Zend_Controller_Action 
 {
     public function init()
@@ -34,19 +52,37 @@ class Loanprocess_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
        $accountsForm = $this->view->form = new Loanprocess_Form_Search();
-       if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
-	    $formData = $this->_request->getPost();
-		if ($accountsForm->isValid($formData)) {
-                    $membercode = $this->_request->getParam('membercode');
-                    $members = $this->view->accounts->Searchloanprocess($membercode);
-                    $this->view->result = $members;
-                }
-            }
-    }
+       $loanprocess = new Loanprocess_Model_Loanprocess();
+
+       if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $loanprocess->Searchloanprocess($postedvalues);
+		$this->view->loanprocess = $result;
+//Zend_Debug::dump($result);
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+//           if (!$result){
+//                        echo "<font color='RED'>Records Not Found Try Again...</font>";
+//                             }
+
+	}
+// //        if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
+// // 	    $formData = $this->_request->getPost();
+// // 		if ($accountsForm->isValid($formData)) {
+// //                     $membercode = $this->_request->getParam('membercode');
+// //                     $members = $this->view->accounts->Searchloanprocess($membercode);
+// //                     $this->view->result = $members;
+// //                 }
+// //             }
+// //     }
     public function addAction()
     {
         $membercode = $this->_request->getParam('membercode');
-        echo $count = count($this->view->accounts->getMember($membercode));
+        $count = count($this->view->accounts->getMember($membercode));//echo
         //insert the family request
         //if ($this->_request->isPost()) 
         {
@@ -59,7 +95,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
 						'purpose'=>$this->_request->getParam('purpose_id'.$i),
 						'request_amount'=>$this->_request->getParam('amount'.$i),
 						'expecting_inperiod' => $this->_request->getParam('need'.$i),
-                				'status' => 1,
+                				'status' => 5,
 						'created_by'=>$this->view->createdby)); 
 		}
             }
@@ -78,7 +114,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 		$formData = $this->_request->getPost();
 		if ($accountsForm->isValid($formData)) {
-                    $membercode = $this->_request->getParam('membercode');
+                    $membercode = $this->_request->getParam('s1');
                     $available = 0;
                     $this->view->typeid=$Type = substr($membercode,4,1);
                     if (($Type==1) or ($Type==2) or ($Type==3)) {
@@ -145,7 +181,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
                         'expecting_inperiod' => intval($this->_request->getParam('period')),
                         'created_date'=>date('Y-m-d'),
                         'created_by'=>$this->view->createdby,
-                        'status'=>1);
+                        'status'=>5);
         $this->view->adm->addRecord('ourbank_loanprocess',$data);
         $this->_helper->flashMessenger->addMessage('Your loan request accepted');
         $this->_helper->redirector('index');
@@ -170,7 +206,7 @@ class Loanprocess_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
             $formData = $this->_request->getPost();
             if ($searchForm->isValid($formData)) {
-                $membercode = $this->view->id = $this->_request->getPost('membercode');
+                $membercode = $this->view->id = $this->_request->getPost('s1');
                 $this->view->memtype=$Type = substr($membercode,4,1);
                 if($Type==1 or $Type==2 or $Type==3){
                 $checkrequest=$this->view->accounts->checkrequest($membercode,$Type);

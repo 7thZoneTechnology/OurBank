@@ -26,25 +26,36 @@
             </div>
     </fieldset> 
 </div> 
-        <?php if (count($this->paginator) > 0): ?>
 <p align="right"><a href="<?php echo $this->baseUrl()?>/officedefault/index/treestructure">Office tree structure</a></p>
-<table id="hor-minimalist-b">
+<table id="hor-minimalist-b" border="1">
     <tr>
+        <th><?php echo $this->translate('S.No'); ?></th>
         <th><?php echo $this->translate('Office Name'); ?></th>
         <th><?php echo $this->translate('Short Name'); ?></th>
         <th><?php echo $this->translate('Office Type'); ?></th>
+        <th><?php echo $this->translate('Parent Office'); ?></th>
 <!--        <th>City</th>-->
            </tr>
-
+        <?php if (count($this->paginator)): ?>
         <?php foreach ($this->paginator as $office): ?>
     <tr>
-    <td><a href="<?php echo $this->baseUrl()."/officecommonview/index/commonview/id/".$office['id']; ?>"><?php echo $this->escape($office['name']);?></a></td>
-    <td><?php echo $this->escape($office['short_name']);?></td>
-    <td><?php echo $this->escape($office['type']);?></td>
-<!--    <td><?php echo $this->escape($office['officecity']);?></div></td>-->
+	<td align="center" width="5%"><?php echo $this->escape($office['id']);?></td>
+    <td><a href="<?php echo $this->baseUrl()."/officecommonview/index/commonview/id/".$office['id']; ?>">
+                 <?php echo $this->escape($office['name']);?></a></td>
+             <td><?php echo $this->escape($office['short_name']);?></td>
+             <td><?php echo $this->escape($office['type']);?></td>
+             <?php //echo $this->escape($office['parentoffice_id']);?>
+  
+  <!-- this is for fatch the data od parent id-->
+    
+    <?php $adm = new App_Model_Adm(); 
+    $parent = $adm->getsingleRecord('ourbank_office','name','id',$office['parentoffice_id']);?>
+        <td><?php echo $parent;?></td> 
+                
                 <?php endforeach; ?>
                 <?php endif; ?>
     </tr>
+    
 </table>
 <br>
 <div align="right" style="margin-top:10px;color:#CC6633;">

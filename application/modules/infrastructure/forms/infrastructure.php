@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Infrastructure_Form_infrastructure extends Zend_Form {
     public function init()
     {} 

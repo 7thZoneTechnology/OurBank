@@ -18,64 +18,56 @@
 !-->
 <html>
 </head>
-   <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
+    <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
         <th><?php echo $this->translate("Family information"); ?></th>
         <th></th>
         <th></th>
         <th></th>
    </tr>
-    <?php 
+    <?php
     $convertdate = new App_Model_dateConvertor();
-    $i=0;
-    foreach($this->membername as $family_view){  $i++; ?>
+    foreach($this->membername as $family_view){ ?>
 
-    <tr>
-        <td ><?php echo $this->translate("Family ID:"); ?></td>
-        <td ><?php echo $family_view['family_id']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
-        <td ><?php echo $family_view['ration']; ?></td>
-    </tr>
     <tr>
         <td ><?php echo $this->translate("House No:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
+        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $family_view['ration']; ?></td>
+    </tr>
+
+    <tr>
+        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td ><?php echo $family_view['street']; ?></td>
         <td ><?php echo $this->translate("Health Insurance:"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Street/Road/Lane:"); ?></td>
-        <td ><?php echo $family_view['street']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
-        <td ><?php echo $family_view['nregs_jobno']; ?></td>   
-    </tr>
-
-    <tr>
         <td ><?php echo $this->translate("Rev Village:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
-        <td ><?php echo $family_view['income']; ?></td>
-    </tr>
+        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
         <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
         <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
-        <td ><?php echo $family_view['phone']; ?></td>
+        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $family_view['income']; ?></td>
     </tr>
     <tr>
         <td ><?php echo $this->translate("Family type:"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
-        <td ><?php echo $family_view['mobile']; ?></td>
+        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
         <td ><?php echo $this->translate("Category:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td></td>
-        <td></td>
+        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
    <?php } ?>
 </table> 
@@ -85,32 +77,33 @@
     <form name="form1" id="pluginForm" action="<?php echo $this->baseUrl();?>/familymembers/index/editfamily/id/<?php echo $this->id; ?>/subId/<?php echo $this->subId; ?>/modId/<?php echo $this->modId; ?>" method="POST">
         <table id="hor-minimalist-b" class="family">
             <tr> 
+               <!--<th><?php echo $this->translate("Name"); ?></th>-->
                 <th><?php echo $this->translate("Name"); ?></th>
-                <th><?php echo $this->translate("ಹೆಸರು"); ?></th>
+                <!--<th><?php echo $this->translate("Alias"); ?></th>-->
                 <th><?php echo $this->translate("Alias"); ?></th>
-                <th><?php echo $this->translate("ಅಲಿಯಾಸ್"); ?></th>
+                <th><?php echo $this->translate("Fathers name"); ?></th>
                 <th><?php echo $this->translate("UID"); ?></th>
                 <th><?php echo $this->translate("Breadwinner"); ?></th>
                 <th><?php echo $this->translate("Head"); ?></th>
-                <th><?php echo $this->translate("Date of Birth"); ?></th>
+                <th><?php echo $this->translate("* Gender"); ?></th>
+                <th><?php echo $this->translate("* DOB"); ?></th>
                 <th><?php echo $this->translate("Age"); ?></th>
-                <th><?php echo $this->translate("Relation to HOF"); ?></th>
-               <th><?php echo $this->translate("Gender"); ?></th>
-                <th><?php echo $this->translate("Marital Status"); ?></th>
+                <th><?php echo $this->translate("* Relation"); ?></th>
+                <!--<th><?php echo $this->translate("* ಲಿಂಗ"); ?></th>-->
+                <th><?php echo $this->translate("* Marital Status"); ?></th>
                 <th><?php echo $this->translate("Entitlement"); ?></th>
-                <th><?php echo $this->translate("Education"); ?></th>
-                <th><?php echo $this->translate("Employment Status"); ?></th>
+                <th><?php echo $this->translate("* Education"); ?></th>
+                <th><?php echo $this->translate("* Employment"); ?></th>
                 <th><?php echo $this->translate("Profession"); ?></th>
-                <th><?php echo $this->translate("CBO promoter"); ?></th>
-                <th><?php echo $this->translate("CBO"); ?></th>
-                <th><?php echo $this->translate("Account type"); ?></th>
-                <th><?php echo $this->translate("Bank/PO"); ?></th>
-                <th><?php echo $this->translate("Branch"); ?></th>
-                <th><?php echo $this->translate("Account No"); ?></th>
+                <th><?php echo $this->translate("* CBO Promoter"); ?></th>"
+                <th><?php echo $this->translate("* CBO"); ?></th>
+                <th><?php echo $this->translate("* Account Type"); ?></th>
+                <th><?php echo $this->translate("* Bank/PO"); ?></th>
+                <th><?php echo $this->translate("* Branch"); ?></th>
+                <th><?php echo $this->translate("* Account No"); ?></th>
                 <th><?php echo $this->translate("Mobile"); ?></th>
-                <th><?php echo $this->translate("Blood group"); ?></th>
+                <th><?php echo $this->translate("* Blood Group"); ?></th>
                 <th></th>
-
             </tr>
             <?php $i = 0; ?>
             <?php foreach ($this->familydetails as $familydetails) { $i++;?>
@@ -119,13 +112,13 @@
             <?php } else { ?>
             <tr>
             <?php } ?>
-                <td><INPUT type="text" name = "mem_name[]" class="required noncharacters" value="<?php echo $familydetails['name']; ?>" maxlength="30" size="15"></td>
-                <td><INPUT type="text" name = "mem_relname[]"  value="<?php echo $familydetails['name_inregional']; ?>" size="15" maxlength="30" class="noncharacters"></td>
-                <td><INPUT type="text" name = "alias_name[]" size="15" value="<?php echo $familydetails['alias']; ?>" maxlength="20" class="noncharacters"></td>
-                <td><INPUT type="text" name = "alias_relname[]" size="15" value="<?php echo $familydetails['alias_inregional']; ?>" maxlength="20" class="noncharacters"></td>
-
-                <td><INPUT type="text" name = "uid[]" id="uid-<?php echo $i ?>" value="<?php echo $familydetails['uid']; ?>" maxlength="16" size="15" class="required numeric uidvalid uidvaltext">
-		<div id="uiddiv-1" class="uidclass"></div>
+                <td><INPUT type="text" name = "mem_name[]" class="required" value="<?php echo $familydetails['name']; ?>" maxlength="30" size="15"></td>
+                <!--<td><INPUT type="text" name = "mem_relname[]"  value="<?php echo $familydetails['name_inregional']; ?>" size="15" maxlength="30" class="noncharacters" readonly="true"></td>-->
+                <td><INPUT type="text" name = "alias_name[]" size="15" value="<?php echo $familydetails['alias']; ?>" maxlength="20" ></td>
+                <!--<td><INPUT type="text" name = "alias_relname[]" size="15" value="<?php echo $familydetails['alias_inregional']; ?>" maxlength="20" class="noncharacters" readonly="true"></td>-->
+               <td><INPUT type="text" name = "father_name[]" maxlength="30" size="15" value="<?php echo $familydetails['father_name']; ?>"></td>
+                <td><INPUT type="text" name = "uid[]" id="uid-<?php echo $i ?>" value="<?php echo $familydetails['uid']; ?>" maxlength="16" size="15" class="numeric uidvalid uidvaltext">
+		<div id="uiddiv-<?php echo $i ?>" class="uidclass"><input type="hidden" id="hiddenid-<?php echo $i; ?>" name="uidhidden" value=1></div>
                 </td>
 
                 <?php if($familydetails['breadwinner_id']==1){ ?>
@@ -139,6 +132,23 @@
                 <?php } else { ?>
                 <td align="center"><INPUT type="radio" name = "head[]" value="<?php echo $i ?>"></td>
                 <?php } ?>
+
+                <td><select name = "gender[]" class="selectvalid required">
+                <option value=0>select</option>
+                <?php 
+                foreach ($this->gender as $gender) 
+                {
+                    if($gender['id']!= $familydetails["gender_id"]) { ?>
+                        <option value="<?php echo $gender['id']?>"><?php echo $gender['id'];echo ".  "; echo $gender['name']?></option>
+
+                <?php } else { ?>
+                        <OPTION value="<?php echo $familydetails["gender_id"]; ?>" selected="">
+                            <?php echo $gender['id'];echo ".  "; echo $familydetails["gendername"]; ?>
+                        </OPTION>
+                <?php } }     ?>
+                </select>
+                </td>
+
                 <td><INPUT type="text" name = "dob[]" class="date required datechange" id="date-<?php echo $i; ?>" value="<?php echo $convertdate->normalformat($familydetails['dob']); ?>"></td>
                 <INPUT type="hidden" name = "currentdate[]" id="currentdate" value="<?php echo $this->currentdate?>"></td>
                 <td><INPUT type="text" name = "age[]" size="3" maxlength="3" value="<?php echo $familydetails['age']?>" class="agechange" id="age-<?php echo $i; ?>"></td> 
@@ -149,10 +159,10 @@
                     foreach ($this->relation as $relation) 
                     {
                         if($relation['id']!= $familydetails["relationship_id"]) { ?>
-                            <option value="<?php echo $relation['id']?>"><?php echo $relation['name']?></option>
+                            <option value="<?php echo $relation['id']?>"><?php echo $relation['id']; echo ".  " ; echo $relation['name']?></option>
                         <?php } else { ?>
                                 <OPTION value="<?php echo $familydetails["relationship_id"]; ?>" selected="">
-                                <?php echo $familydetails["relationname"]; ?>
+                                <?php echo $familydetails["relationship_id"]; echo ".  ";  echo $familydetails["relationname"]; ?>
                             </OPTION>
                 <?php }
                     }     ?>
@@ -160,21 +170,21 @@
                 </td>
 
 
-                <td><select name = "gender[]" class="selectvalid required">
+                <!--<td><select name = "gender[]" class="selectvalid required">
                 <option value=0>select</option>
                 <?php 
                 foreach ($this->gender as $gender) 
                 {
                     if($gender['id']!= $familydetails["gender_id"]) { ?>
-                        <option value="<?php echo $gender['id']?>"><?php echo $gender['name']?></option>
+                        <option value="<?php echo $gender['id']?>"><?php echo $gender['id'];echo ".  "; echo $gender['name']?></option>
 
                 <?php } else { ?>
                         <OPTION value="<?php echo $familydetails["gender_id"]; ?>" selected="">
-                            <?php echo $familydetails["gendername"]; ?>
+                            <?php echo $gender['id'];echo ".  "; echo $familydetails["gendername"]; ?>
                         </OPTION>
                 <?php } }     ?>
                 </select>
-                </td>
+                </td>-->
 
                 <td><select name = "marital[]" class="selectvalid required">
                         <option value=0>select</option>
@@ -182,11 +192,11 @@
                 foreach ($this->marital as $marital) 
                 {
                     if($marital['id']!= $familydetails["maritalstatus_id"]) { ?>
-                        <option value="<?php echo $marital['id']?>"><?php echo $marital['name']?></option>
+                        <option value="<?php echo $marital['id']?>"><?php echo $marital['id']; echo ".  "; echo $marital['name']?></option>
 
                     <?php } else { ?>
                         <OPTION value="<?php echo $familydetails["maritalstatus_id"]; ?>" selected="">
-                            <?php echo $familydetails["maritalname"]; ?>
+                            <?php echo $familydetails["maritalstatus_id"]; echo ".  "; echo $familydetails["maritalname"]; ?>
                         </OPTION>
                 <?php } } ?>
                 </select>
@@ -226,8 +236,8 @@
                 <?php foreach ($this->entitlements as $entitlements) {
                 if(in_array($entitlements['id'],$entitlelist)) {  
                  ?>
-                <input type="checkbox" name="entitle-<?php echo $i; ?>-[]" value="<?php echo $entitlements['id'];  ?>" checked class ="entitleid entitlevalid-<?php echo $i; ?>"><?php echo $entitlements['name'];  ?><br />
-                <?php } else { ?><input type="checkbox" name="entitle-<?php echo $i; ?>-[]" value="<?php echo $entitlements['id'];  ?>" class="entitleid entitlevalid-<?php echo $i; ?>"><?php echo $entitlements['name'];  ?><br />
+                <input type="checkbox" name="entitle-<?php echo $i; ?>-[]" value="<?php echo $entitlements['id'];  ?>" checked class ="entitleid entitlevalid-<?php echo $i; ?>"><?php echo $entitlements['id']; echo ".  "; echo $entitlements['name'];  ?><br />
+                <?php } else { ?><input type="checkbox" name="entitle-<?php echo $i; ?>-[]" value="<?php echo $entitlements['id'];  ?>" class="entitleid entitlevalid-<?php echo $i; ?>"><?php echo $entitlements['id'];  echo ".  " ; echo $entitlements['name'];  ?><br />
 
                 <?php } } ?>
                 <div>
@@ -238,11 +248,11 @@
                         <option value=0>select</option>
                     <?php foreach ($this->qualify as $qualify) { 
                                 if($qualify['id']!= $familydetails["eductaion_id"]) { ?>
-                    <option value="<?php echo $qualify['id']?>"><?php echo $qualify['name']?></option>
+                    <option value="<?php echo $qualify['id']?>"><?php echo $qualify['id']; echo ".  "; echo $qualify['name_regional']?></option>
 
                     <?php } else { ?> 
                         <OPTION value="<?php echo $familydetails["eductaion_id"]; ?>" selected="">
-                            <?php echo $familydetails["qualifyname"]; ?>
+                            <?php echo $familydetails["eductaion_id"]; echo ".  "; echo $familydetails["qualifyname"]; ?>
                         </OPTION>
                     <?php } } ?>
                 </select>    
@@ -253,11 +263,11 @@
                         <option value=0>select</option>
                     <?php foreach ($this->employment as $employment) { 
                                 if($employment['id']!= $familydetails["employment_status"]) { ?>
-                    <option value="<?php echo $employment['id']?>"><?php echo $employment['name']?></option>
+                    <option value="<?php echo $employment['id']?>"><?php echo $employment['id']; echo ".  "; echo $employment['name_regional']?></option>
 
                     <?php } else { ?>
                         <OPTION value="<?php echo $familydetails["employment_status"]; ?>" selected="">
-                            <?php echo $familydetails["employmentname"]; ?>
+                            <?php echo $familydetails["employment_status"]; echo ".  "; echo $familydetails["employmentname"]; ?>
                         </OPTION>
                     <?php } } ?>
                 </select>
@@ -274,9 +284,9 @@
                 <?php foreach ($this->proffession as $proffession) { 
                 if(in_array($proffession['id'],$proflist)) {
 		?>
-                <input type="checkbox" name="profid-<?php echo $i; ?>-[]" value="<?php echo $proffession['id']; ?>" checked class="profid profidvalid-<?php echo $i; ?>"><?php echo $proffession['name'];  ?><br />
+                <input type="checkbox" name="profid-<?php echo $i; ?>-[]" value="<?php echo $proffession['id']; ?>" checked class="profid profidvalid-<?php echo $i; ?>"><?php echo $proffession['id']; echo ".  "; echo $proffession['name_regional'];  ?><br />
 		<?php } else { ?>
-                <input type="checkbox" name="profid-<?php echo $i; ?>-[]" value="<?php echo $proffession['id'];  ?>" class="profid profidvalid-<?php echo $i; ?>"><?php echo $proffession['name'];  ?><br />
+                <input type="checkbox" name="profid-<?php echo $i; ?>-[]" value="<?php echo $proffession['id'];  ?>" class="profid profidvalid-<?php echo $i; ?>"><?php echo $proffession['id']; echo ".  "; echo $proffession['name_regional'];  ?><br />
 		<?php }} ?>
                 <div>
                 </td>
@@ -285,48 +295,50 @@
                       $familymodel=new Familymembers_Model_Familymembers();
                      $branchname=$familymodel->getbranch($familydetails["bank"]);
                      $cbos=$familymodel->getcbo($familydetails["promoter_id"]);
-                     $banknames=$familymodel->getbank($familydetails["accouttype_id"]);
+					 $gpdetails=$familymodel->getgpid($this->village1);
+        			 $gpid=$gpdetails[0]['panchayath_id'];
+                     $banknames=$familymodel->getbank($familydetails["accouttype_id"],$gpid);
                 ?>
 
                <td>
-                <select name = "cbopromoter[]" class="selectvalid cbofilter"  id="cbopromoter-1">
+                <select name = "cbopromoter[]" class="selectvalid cbofilter"  id="cbopromoter-<?php echo $i; ?>">
                         <option value=0>select</option>
                     <?php foreach ($this->promoter as $cbopromoter) { 
                                 if($cbopromoter['id']!= $familydetails["promoter_id"]) { ?>
-                    <option value="<?php echo $cbopromoter['id']?>"><?php echo $cbopromoter['name']?></option>
+                    <option value="<?php echo $cbopromoter['id']?>"><?php echo $cbopromoter['id']; echo ".  "; echo $cbopromoter['name']?></option>
 
                     <?php } else { ?>
                         <OPTION value="<?php echo $familydetails["promoter_id"]; ?>" selected="">
-                            <?php echo $familydetails["promoter"]; ?>
+                            <?php echo $familydetails["promoter_id"]; echo ".  "; echo $familydetails["promoter"]; ?>
                         </OPTION>
                     <?php } } ?>
                 </select>
                 </td>
 
-                <td><div id="cbodiv-1" class="cboclass">
-                        <select name = "cbo[]" class="selectvalid required">
+                <td><div id="cbodiv-<?php echo $i; ?>" class="cboclass">
+                        <select name = "cbo[]" class="selectvalid required" id="cbo-<?php echo $i; ?>">
                         <option value=0>Select</option>
                      <?php
                      foreach ($cbos as $cbos) {  
                      if($cbos['id']!= $familydetails["cbo_id"]) { ?>
-                    <option value="<?php echo $cbos['id']?>"><?php echo $cbos['cboname']?></option>
+                    <option value="<?php echo $cbos['id']?>"><?php echo $cbos['id']; echo ".  "; echo $cbos['cboname']?></option>
                     <?php } else { ?> 
                     <OPTION value="<?php echo $familydetails["cbo_id"]; ?>" selected="">
-                        <?php echo $familydetails["cbos"]; ?>
+                        <?php echo $familydetails["cbo_id"]; echo ".  "; echo $familydetails["cbos"]; ?>
                     </OPTION>
                     <?php } } ?>
                         </select>
                     </div>
                 </td>
 
-                <td><select name = "accounttype[]" class="selectvalid findbank" id="accounttype-1">
+                <td><select name = "accounttype[]" class="selectvalid findbank" id="accounttype-<?php echo $i; ?>">
                     <option value=0>Select</option>
                     <?php foreach ($this->accounttype as $accounttype) {
                     if($accounttype['id']!= $familydetails["accouttype_id"]) {?>
-                    <option value="<?php echo $accounttype['id']?>"><?php echo $accounttype['name']?></option>
+                    <option value="<?php echo $accounttype['id']?>"><?php echo $accounttype['id']; echo ".  "; echo $accounttype['name']?></option>
                     <?php } else { ?> 
                     <OPTION value="<?php echo $familydetails["accouttype_id"]; ?>" selected="">
-                        <?php echo $familydetails["accountype"]; ?>
+                        <?php echo $familydetails["accouttype_id"]; echo ".  "; echo $familydetails["accountype"]; ?>
                     </OPTION>
                     <?php } } ?>
                 </select>
@@ -334,16 +346,16 @@
                 </td>
 
                 <td>
-                <div id="bankdiv-1" class="bankclass">
+                <div id="bankdiv-<?php echo $i; ?>" class="bankclass">
                     <select name = "bank[]" class="selectvalid bankfilter" id="bank-<?php echo $i; ?>">
                         <option value=0>select</option>
                 <?php
                         foreach ($banknames as $banknames) {  
-                        if($banknames['id']!= $familydetails["bank"]) { ?>
-                        <option value="<?php echo $banknames['id']?>"><?php echo $banknames['bankname']?></option>
+                        if($banknames['bank_id']!= $familydetails["bank"]) { ?>
+                        <option value="<?php echo $banknames['bank_id']?>"><?php echo $banknames['bank_id']; echo ".  "; echo $banknames['bankname']?></option>
                         <?php } else { ?> 
                         <OPTION value="<?php echo $familydetails["bank"]; ?>" selected="">
-                            <?php echo $familydetails["bankname"]; ?>
+                            <?php echo $familydetails["bank"]; echo ".  "; echo $familydetails["bankname"]; ?>
                         </OPTION>
                         <?php }} ?>
                     </select>
@@ -359,10 +371,10 @@
                     <?php
                      foreach ($branchname as $branch) {  
                      if($branch['id']!= $familydetails["branch_po"]) { ?>
-                    <option value="<?php echo $branch['id']?>"><?php echo $branch['branchname']?></option>
+                    <option value="<?php echo $branch['id']?>"><?php echo $branch['id']; echo ".  "; echo $branch['branchname']?></option>
                     <?php } else { ?> 
                     <OPTION value="<?php echo $familydetails["branch_po"]; ?>" selected="">
-                        <?php echo $familydetails["branchname"]; ?>
+                        <?php echo $familydetails["branch_po"]; echo ".  "; echo $familydetails["branchname"]; ?>
                     </OPTION>
                     <?php } } ?>
                 </select>
@@ -391,10 +403,13 @@
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr>
 <?php } ?>
-
+           <input type="hidden" name="villageid" id="villageid" value="<?php echo $this->village1; ?>">
         </table>  
 
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" id="Update" name="Update" value="<?php echo $this->translate("Update"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" id="Update" name="Update" value="<?php echo $this->translate("Update"); ?>">
+<a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 </div>
 

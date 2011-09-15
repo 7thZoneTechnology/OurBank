@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class App_Model_Users extends Zend_Db_Table
  {
     protected $_name="ourbank_master_gender";
@@ -30,7 +27,7 @@ class App_Model_Users extends Zend_Db_Table
                        ->join(array('a' => 'ourbank_user'),array('id'))
                        ->where('a.username = ?',$username);
 
-      // die ($select->__toString($select));
+//       die ($select->__toString($select));
 
        return $this->fetchAll($select);
     }
@@ -85,6 +82,18 @@ class App_Model_Users extends Zend_Db_Table
         } else { return 0; }
 
     }
+    
+    public function checkSession(){
+
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data) return 0;
+        else {
+                  $sessionName = new Zend_Session_Namespace('ourbank');
+                return  $sessionName->primaryuserid;
+        }
+    }
+
  }
 
 

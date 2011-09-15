@@ -261,7 +261,6 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         //die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
-
     }
     public function more($accId,$amt,$accNum) 
     {
@@ -412,7 +411,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
         }
         return $roi;
     }
-    public function insertTran($data,$int)
+    public function insertTran($data,$int,$totalAmt,$intType,$currentinstallment)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $acc = $this->searchaccounts($data["accNum"]);
@@ -432,7 +431,7 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                         'paymenttype_id' => $data["paymentMode"],
                         'recordstatus_id' => 3,
                         'transactiontype_id' => 1,
-                        'transaction_description'=>$data["description"],
+                        'transaction_description'=>"(Repayment) ".$data["description"],
                         'created_by'=>1);
         $db->insert("ourbank_transaction",$tranData);
         $tranId = $db->lastInsertId('id');
@@ -443,65 +442,116 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
                 $pram = $idData->installment_id;
         }
         //insert into loan repayment
+
+        if($intType == 3) {
+            $currentinstallid=$currentinstallment;
+        }
+        else
+        {
+            $currentinstallid=$pram -1;
+        }
+
         $repayData= array('account_id' => $accId,
                 'transaction_id' => $tranId,
                 'paid_date' => $cl->phpmysqlformat($data["date"]),
                 'paid_amount' => $data["amount"],
                 'paid_principal' => $data["amount"] - $int,
                 'paid_interest' => $int,
-                'installment_id' => $pram -1,
+                'balanceamount' => $totalAmt-$data["amount"],
+                'installment_id' => $currentinstallid,
                 'recordstatus_id' => 3);
         $db->insert("ourbank_loan_repayment",$repayData);
         // Insertion into Assets ourbank_Assets Cash Cr entry
-        $glresult = $this->getGlcode($officeid);
-        foreach ($glresult as $glresult) {
-                $cashglsubocde = $glresult->id;
-        }
+        $glbank = $this->getGlcode($officeid,'cash'.$officeid);
         // Insertion into Assets ourbank_Assets cash Cr entry
+
+        if($intType != 3) {
+            $assetamount=$data["amount"]-$interest;
+        }
+        else
+        {
+            $assetamount=$data["amount"];
+        }
+
         $assets =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $cashglsubocde,
+                         'glsubcode_id_from' => $glbank[0]['id'],
                          'glsubcode_id_to' => '',
                          'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
+                         'credit' => $assetamount,
                          'record_status' => 3);
        	$db->insert('ourbank_Assets',$assets);
         // Insertion into Assets ourbank_Assets productgl Cr entry
-		$glassets =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $gl,
-                         'glsubcode_id_to' => '',
-                         'transaction_id' => $tranId,
-                         'credit' => $data["amount"],
-                         'record_status' => 3);
-       	$db->insert('ourbank_Assets',$glassets);
-        // Insertion into Assets ourbank_Liabilities productgl Cr entry
-// 		$glLia =  array('office_id' => $officeid,
-//                          'glsubcode_id_from' => $gl,
-//                          'glsubcode_id_to' => '',
-//                          'transaction_id' => $tranId,
-//                          'credit' => $data["amount"],
-//                          'record_status' => 3);
-//        	$db->insert('ourbank_Liabilities',$glLia);
 
-        // Insertion into Assets ourbank_Assets interest Cr entry
+//         $glassets =  array('office_id' => $officeid,
+//                     'glsubcode_id_from' => $gl,
+//                     'glsubcode_id_to' => '',
+//                     'transaction_id' => $tranId,
+//                     'credit' => $assetamount,
+//                     'record_status' => 3);
+//         $db->insert('ourbank_Assets',$glassets);
+
+        if($intType != 3) {
+        // Insertion into Assets ourbank_Income interest Cr entry
+        $interestledger = $this->getGlcode($officeid,'interest'.$officeid);
         $interest =  array('office_id' => $officeid,
-                         'glsubcode_id_from' => $intGl,
+                         'glsubcode_id_from' => $interestledger[0]['id'],
                          'glsubcode_id_to' => '',
                          'transaction_id' => $tranId,
                          'credit' => $interest,
-                         'record_status' => 3);
-       	$db->insert('ourbank_Assets',$interest);
+                         'recordstatus_id' => 3);
+       	$db->insert('ourbank_Income',$interest);
+        }
+
+        $monthinterest=$this->findmonthinterest($accId);
+        if($monthinterest) {
+        $interestledger = $this->getGlcode($officeid,'interest'.$officeid);
+        $interest =  array('office_id' => $officeid,
+                        'glsubcode_id_from' => $interestledger[0]['id'],
+                        'glsubcode_id_to' => '',
+                        'transaction_id' => $tranId,
+                        'credit' => $monthinterest[0]['monthinterest'],
+                        'recordstatus_id' => 3);
+        $db->insert('ourbank_Income',$interest);
+        $input=array('monthend_tag'=>1);
+        $this->accUpdate('ourbank_loan_repayment',2,$accId,$input,'monthend_tag');
+        }
        	//Retuns some variables
         return array('transaction_id' => $tranId,
                         'account_id' => $accId,
                         'paymentMode' => $data["paymentMode"],
                         'installment_id' => $accId);
 	}
-    public function getGlcode($officeId)
+
+
+    public function accUpdate($tablename,$monthtag,$accId,$input)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $sql = "select id from ourbank_glsubcode where office_id=$officeId and glcode_id=2";
-       // echo $sql;
-        return $db->fetchAll($sql);
+    	$where[] ="monthend_tag= '".$monthtag."' and account_id ='".$accId."'";
+	$db = $this->getAdapter();
+        $result = $db->update($tablename,$input,$where);
+    }
+
+    public function findmonthinterest($accId)
+    {
+        $select= $this->select()
+                ->setIntegrityCheck(false)
+                ->from(array('a'=>'ourbank_loan_repayment'),array('a.paid_interest as monthinterest'))
+                ->where('monthend_tag=2')
+                ->where('account_id=?',$accId);
+        // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return  $result->toArray();
+    }
+
+    public function getGlcode($officeId,$headername)
+    {
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_glsubcode'),array('a.id'),array('a.id'))
+                ->where('a.header=?',$headername)
+                ->where('a.office_id=?',$officeId);
+//        die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
     }
 
     public function paid($accNum) 
@@ -632,5 +682,58 @@ class Loanrepaymentg_Model_Repayment extends Zend_Db_Table
        // die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
+    }
+
+    public function getinstallmentid($accId)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_installmentdetails'),array('a.id'),array('a.installment_id','a.paid_amount','a.installment_amount'))
+                                ->where('a.installment_status=4 or a.installment_status=8')
+                                ->where('a.account_id=?',$accId);
+       // die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findmaxpaidid($accId)
+    {
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('MAX(a.transaction_id) as maxpaidid'))
+                                ->where("a.account_id = ?",$accId)
+                                ->group("a.account_id");
+       // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function declainedpaid1($accNum,$accId)
+    {
+        $maxid=$this->findmaxpaidid($accId);
+
+        if($maxid){
+           $trasid=$maxid[0]['maxpaidid'];
+        }
+        else{
+            $trasid="";
+        }
+        $select=$this->select()
+                                ->setIntegrityCheck(false)
+                                ->join(array('a'=>'ourbank_accounts'),array('a.id'),array('a.id'))
+                                ->join(array('b'=>'ourbank_loan_repayment'),'a.id=b.account_id',array('b.id','b.paid_date','b.balanceamount','b.installment_id','b.paid_date'))
+                                ->where("b.transaction_id = ?",$trasid)
+                                ->where('a.account_number=?',$accNum);
+       // die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function updateinstallment($installmentid,$accid,$paidamount,$balance,$status)
+    {
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+                $data = array('installment_status'=> $status,'paid_amount'=>$paidamount,'balance'=>$balance); //print_r($data);
+                $where='installment_id='.$installmentid.' and account_id='.$accid; //echo $where;
+        $this->db->update('ourbank_installmentdetails',$data,$where);
     }
 }

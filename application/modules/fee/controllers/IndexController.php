@@ -113,8 +113,8 @@ public function viewAction()
 // 		if (($checkaccess != NULL)) {
 			$id=$this->_request->getParam('id');
 		$this->view->id = $id;
-			$form = new Commonviewfee_Form_Feedetails();
-			$this->view->form=$form;
+			//$form = new Commonviewfee_Form_Feedetails();
+			//$this->view->form=$form;
 			$fee = new Fee_Model_Fee;
 			$this->view->feedetails=$fee->getFee($id);
 			$this->view->fetchfee=$fee->fetchfee($id);
@@ -132,7 +132,7 @@ public function viewAction()
 			$form = new Fee_Form_Fee();
 			$this->view->form=$form;
 
-			$appliesTo = new Feecommon_Model_Feecommon();
+			//$appliesTo = new Feecommon_Model_Feecommon();
 $subOffice=new Fee_Model_Fee();
 			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($hierarchy_id as $hierarchy_id){
@@ -156,7 +156,7 @@ $subOffice=new Fee_Model_Fee();
       
 
 // 			$this->view->categorydetails=$appliesTo->getcategory();
-			$this->view->memberdetails=$appliesTo->getmembertypes();
+			//$this->view->memberdetails=$appliesTo->getmembertypes();
 
 
 
@@ -251,7 +251,7 @@ $glsubcode_id=$subOffice->findmaxlevel();
 			$form = new Fee_Form_Fee();
 			$this->view->form=$form;
 
-			$appliesTo = new Feecommon_Model_Feecommon();
+			//$appliesTo = new Feecommon_Model_Feecommon();
 
 			$hierarchy_id = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
 			foreach($hierarchy_id as $hierarchy_id){
@@ -334,7 +334,7 @@ if ($this->_request->isPost()) {
  		$this->view->id=$id;
 // 		$this->view->mod_id=$modId;
 // 		$this->view->sub_id=$subId;
-		$individualcommon=new Feecommon_Model_Feecommon;
+		//$individualcommon=new Feecommon_Model_Feecommon;
 		$fee = new Fee_Model_Fee;
 			$this->view->feedetails=$fee->getFee($id);
 			$this->view->fetchfee=$fee->fetchfee($id);

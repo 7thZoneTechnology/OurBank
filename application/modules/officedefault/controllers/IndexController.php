@@ -17,27 +17,14 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
-/*
- *  create an office default for add, edit, delete and suboffice actions
- */
 class Officedefault_IndexController extends Zend_Controller_Action{
 
     public function init() {
 	//language translator
         $this->view->pageTitle=$this->view->translate('New Office');
 	//session
-      $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $this->view->createdby = $sessionName->primaryuserid;
         $this->view->adm = new App_Model_Adm();
         $individualcommon=new Familycommonview_Model_familycommonview();
         $module=$individualcommon->getmodule('Office');
@@ -103,7 +90,8 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                foreach($maxid as $maxid1) {
                $villagelastid=$maxid1->lastid;}
                if($villagelastid==$officeid)
-               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
+               { $this->view->adm->addRecord("ourbank_master_villagelist",array('id' => '','village_id'=>$lastid,'name'=>$name,
+				'name_regional'=>$name,'panchayath_id' => $this->_request->getParam('panchayath'), 'created_date' =>$createdate,'created_by'=>$this->view->createdby));
                   $this->view->adm->addRecord("ourbank_master_village",array('id' => '',
                                                 'village_id'=>$lastid,
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -114,7 +102,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                } 
 
 	//insert glsubcode
-        for($j=1;$j<=2;$j++){
+        for($j=1;$j<=6;$j++){
              $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$j);
            $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
            $glcode = $fetchglcodedetails[0]['glcode'];
@@ -141,15 +129,15 @@ class Officedefault_IndexController extends Zend_Controller_Action{
                $glsubcode=$ini.$last;
                $glsubcode;
            }
-	//create cash and bank glsubcode
-           if($j==1){ $headername="Bank";} else {$headername="Cash";}
+
+           $headername=array('bank','cash','loans','savings','interest','fee');
            $gInsert = $ledger->insertGlsubcode(array('id' => '',
-                           'office_id'=>$lastid,
+						   'office_id' => $lastid,
                            'glsubcode' => $glsubcode,
                            'glcode_id' => $j,
                            'subledger_id' => $ledgertype_id,
-                           'header' => $headername.$lastid,
-                           'description' => $headername.$lastid,
+                           'header' => $headername[$j-1].$lastid,
+                           'description' => $headername[$j-1].$lastid,
                            'created_date' =>$createdate,
                            'created_by'=>$this->view->createdby));
            }
@@ -216,7 +204,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         }
         }
     }
-
+        
         public function gettalukAction()
         {
         $this->_helper->layout()->disableLayout();
@@ -320,7 +308,9 @@ class Officedefault_IndexController extends Zend_Controller_Action{
 //           $officeForm->officetype_id->addMultiOption($officehierarchy->id,$officehierarchy->type);
 //         }
         $edit_office = $this->view->adm->editRecord("ourbank_office",$office_id); 
+
         $officetype_id=$edit_office[0]['parentoffice_id']; 
+
         $typeid=$edit_office[0]['officetype_id'];
         $office_typeid=$edit_office[0]['officetype_id'];
         $officetypename=$office->getofficetypename($office_typeid);
@@ -351,7 +341,7 @@ class Officedefault_IndexController extends Zend_Controller_Action{
         $officeForm->hobli->addMultiOption($hoblilist1['id'],$hoblilist1['name']);
         }
 
-        $panchayath = $office->getpanchayathlist($address[0]['hobli_id']);
+        $panchayath = $office->getpanchayathlist($address[0]['taluk_id']);
         foreach($panchayath as $panchayath1){
         $officeForm->panchayath->addMultiOption($panchayath1['id'],$panchayath1['name']);
         }
@@ -390,7 +380,7 @@ echo $typeid;
                foreach($maxid as $maxid1) {
                echo $villagelastid=$maxid1->lastid;}
                if($villagelastid==$typeid)
-               {  /*$villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));*/
+               {  $villageid=$this->view->adm->updateRecord("ourbank_master_villagelist",$village_id,array('name'=>$name,'name_regional'=>$name,'village_id'=>$office_id,'created_date' =>$createdate,'created_by'=>$this->view->createdby));
 
                   $office->updatevillage($office_id,array(
                                                 'taluk_id' => $this->_request->getParam('taluque'),
@@ -433,9 +423,9 @@ echo $typeid;
                $office_id=$office->findoffice($id);
                if(!$members && !$office_id)
                {
-                $this->view->adm->deletemember("ourbank_office",$id);
-                $this->view->adm->deleteSubmodule("ourbank_contact",$id,$this->view->sub_id);
-                $this->view->adm->deleteSubmodule("ourbank_address",$id,$this->view->sub_id);
+               $this->view->adm->deletemember("ourbank_office",$id);
+//                 $this->view->adm->deleteSubmodule("ourbank_contact",$id,$this->view->sub_id);
+//                 $this->view->adm->deleteSubmodule("ourbank_address",$id,$this->view->sub_id);
                 $this->_redirect('/office');
                }
                else

@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php 
 class Nonlivingassets_IndexController extends Zend_Controller_Action 
 {
     public function init() 
@@ -88,9 +85,13 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
 
             foreach($this->_getParam('assettype') as $val) {
                       if($date[$i]){
-                        $dates = $dateconvert->mysqlformat($date[$i]);
+                                if($date[$i] == "") { 
+                                     $dates = date("y/m/d H:i:s"); 
+                                } else { 
+                                     $dates = $dateconvert->mysqlformat($date[$i]);
+                                }
                     } else {
-                        $dates = '0000/00/00';
+                        $dates = date("y/m/d H:i:s");
                     }
                     if($value[$i]){
                         $value = $value[$i];
@@ -154,10 +155,14 @@ class Nonlivingassets_IndexController extends Zend_Controller_Action
 			$dateconvert= new App_Model_dateConvertor();
 
             foreach($this->_getParam('assettype') as $val) {
-                    if($date[$i]){
-                        $dates = $dateconvert->mysqlformat($date[$i]);
+                    if($date[$i]){ 
+                                if(($date[$i] == "00/00/0000") or ($date[$i] == NULL)) { 
+                                     $dates = date("y/m/d H:i:s"); 
+                                } else { 
+                                     $dates = $dateconvert->mysqlformat($date[$i]); 
+                                }
                     } else {
-                        $dates = '0000/00/00';
+                       $dates = date("y/m/d H:i:s"); //'0000/00/00';
                     }
                     if($value[$i]){
                         $values = $value[$i];

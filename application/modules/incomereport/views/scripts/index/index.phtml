@@ -1,0 +1,116 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/incomereport/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
+function getgroups(branch,path) {
+	if(branch) {
+		targeturl=path+"/cashscroll/index/group?branch="+branch;
+		$.ajax({ url: targeturl, success: function(data){ $("#groupdiv").html(data) }});
+	}
+}
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+
+</script>
+<?php if($this->savingsCredit) { ?>
+<h1><b><?php if($this->hierarchy ==4){echo "Village: ".$this->commonname; }elseif($this->hierarchy ==5){echo "Group: ".$this->commonname; }elseif($this->hierarchy ==5){echo "Gilla panchayath: ".$this->commonname; }?></b></h1>
+
+
+
+<div style="float:left;width:370px">
+            <?php 
+              $i = 1;
+            
+            ?>
+
+    <table id="hor-minimalist-b">
+        <TR>
+            <TH ><?php echo $this->translate("Sl No."); ?></TH>
+            <TH ><?php echo $this->translate("Particulars"); ?></TH>
+            <TH ><?php echo $this->translate("Amount"); ?></TH>
+<th></th>
+      </TR>
+<?php $i=1;
+	foreach($this->income as $incomemaster){ ?>
+	<tr>
+		<TD><?php echo $incomemaster['id']; ?></TD>
+		<TD><?php echo $incomemaster['name']; ?></TD>
+		<?php foreach($this->savingsCredit as $savingsCredit){ 
+			if($incomemaster['id']==$savingsCredit['incomeid']){
+?>
+		<td><?php echo $savingsCredit['value']; ?></td>
+
+<?php } } 
+
+ ?><td></td>
+ <?php $i++;  }?>
+
+
+<?php $i++; ?>
+    </table>
+  </div>
+
+
+<?php } else { ?>
+<div id="searchDiv">
+    <fieldset>
+        <legend><?php echo $this->translate("Search"); ?></legend>
+ <form action="<?php echo $this->baseUrl();?>/incomereport" method="POST">
+             <table width="100%">
+               
+                 
+  <tr>
+							<TD><?php echo $this->translate('Hierarchy'); ?></td>
+                            <TD id="show"><?php echo $this->form->hierarchy;?></td>
+ 							
+</tr><tr>
+
+                            <TD><?php echo $this->translate('Branch'); ?></td>
+                            <td><div id="statediv"><?php echo $this->form->branch;?></div></td>
+							
+
+</tr>
+
+                       <td><input type="submit" name="Search" value="<?php echo $this->translate('Search');?>"> </td>
+                       <td></td> 
+                   </tr>
+                
+            </table>
+       </form>
+</fieldset>
+</div>
+
+<?php } ?>
+
+

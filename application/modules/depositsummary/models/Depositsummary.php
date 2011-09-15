@@ -22,94 +22,110 @@ class Depositsummary_Model_Depositsummary extends Zend_Db_Table
 {
     protected $_name = 'ourbank_productsoffer';
 
-
-    public function fetchSavingsDetails($office_id)
-    {
-
+    public function fetchSavingsDetails($office_id,$hierarchy) {
+		switch($hierarchy){
+				case '4': {
                 $select = $this->select()
                                 ->setIntegrityCheck(false)  
                                 ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
+
                                 ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id')
-                                ->where('C.status_id = 3 || C.status_id = 1')
+                                     ->where('C.status_id = 3 || C.status_id = 1')
+
                                 ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','D.name as productname')
-                                ->where('D.category_id = 1')
+                                     ->where('D.category_id = 1')
+
                                 ->join(array('E'=>'ourbank_familymember'),'E.id = C.member_id',array('E.name as membername'))
+
                                 ->join(array('F'=>'ourbank_office'),'F.id = E.village_id',array('F.name as officename'))
-                                ->where('F.id = "'.$office_id.'"')
-                                 ->group('B.name')
-                                ->order('D.name');
-               //  die($select->__toString());
+                                     ->where('F.id = "'.$office_id.'"')
+                                     ->order('D.name');
+//                  die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
-    }
+    		}break;
 
-    public function accountBalanceDetails($office_id)
-    {
+				case '3': {
+                $select = $this->select()
+                                ->setIntegrityCheck(false)  
+                                ->joinleft(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
+
+                                ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id',array('C.product_id'))
+                                     ->where('C.status_id = 3 || C.status_id = 1')
+
+                                ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','D.name as productname')
+                                     ->where('D.category_id = 1')
+
+                                ->join(array('E'=>'ourbank_groupmembers'),'E.id = C.member_id',array('E.id as gmid'))
+                                ->join(array('G'=>'ourbank_group'),'E.group_id = G.id',array('G.id as gid'))
+
+                                ->from(array('F'=>'ourbank_office'))
+                                     ->where('F.parentoffice_id = "'.$office_id.'"')
+                                    ->order('D.name');
+//                   die($select->__toString());
+                $result = $this->fetchAll($select);
+                return $result->toArray();
+    		}break;
+		}
+	}
+    public function accountBalanceDetails($office_id,$hierarchy)  {
+		switch($hierarchy){
+				case '4': {
+         $select = $this->select()
+                        ->setIntegrityCheck(false)  
+                        ->from(array('A' => 'ourbank_accounts'),array('A.id as accid'))
+                             ->where('A.status_id = 3 || A.status_id = 1')
+
+                        ->join(array('B'=>'ourbank_productsoffer'),'A.product_id = B.id',array('B.id as offerprodid'))
+
+						->join(array('F' =>'ourbank_savings_transaction'),'A.id = F.account_id',array('F.balance'))
+
+                        ->join(array('J' =>'ourbank_product'),'B.product_id = J.id',array('J.id as productid'))
+                             ->where('J.category_id = 1')
+
+                        ->join(array('E'=>'ourbank_familymember'),'E.id = A.member_id',array('E.id as familymemid'))
+
+                        ->join(array('G'=>'ourbank_office'),'G.id = E.village_id',array('G.id as officeid'))
+                             ->where('G.id = "'.$office_id.'"');
+//                 die($select->__toString());
+                $result = $this->fetchAll($select);
+                return $result->toArray();
+    		}break;
+
+				case '3': {
          $select = $this->select()
                         ->setIntegrityCheck(false)  
                         ->from(array('A' => 'ourbank_accounts'))
-                        ->where('A.status_id = 3 || A.status_id = 1')
+                             ->where('A.status_id = 3' || 'A.status_id = 1'||'A.membertype_id=2'||'A.membertype_id=3')
+
                         ->join(array('B'=>'ourbank_productsoffer'),'A.product_id = B.id',array('B.id as offerprodid'))
-                        ->join(array('F' =>'ourbank_transaction'),'A.id = F.account_id')
-                        ->where('F.recordstatus_id = 3 || F.recordstatus_id = 1')
+
+						->join(array('F' =>'ourbank_savings_transaction'),'A.id = F.account_id',array('F.balance'))
+
                         ->join(array('J' =>'ourbank_product'),'B.product_id = J.id')
-                        ->where('J.category_id = 1')
-                        ->join(array('E'=>'ourbank_familymember'),'E.id = A.member_id')
-                        ->join(array('G'=>'ourbank_office'),'G.id = E.village_id')
-                        ->where('G.id = "'.$office_id.'"');
-                //die($select->__toString());
+                             ->where('J.category_id = 1')
+
+                        ->join(array('E'=>'ourbank_groupmembers'),'E.id = A.member_id',array('E.id as gmid'))
+                        ->join(array('K'=>'ourbank_group'),'E.group_id = K.id',array('K.id as gid'))
+
+                        ->from(array('G'=>'ourbank_office'))
+                             ->where('G.parentoffice_id = "'.$office_id.'"');
+
+// //                  die($select->__toString());
                 $result = $this->fetchAll($select);
                 return $result->toArray();
-               
-    }
+    		}break;
+		}
+	}
 
-    public function SavingsDetails()
-    {
-
-                $select = $this->select()
-                                ->setIntegrityCheck(false) 
-                                ->join(array('B' => 'ourbank_productsoffer'),array('id'),array('B.name as prodoffername, count(B.name) as  countvalue'))
-                               ->join(array('C'=>'ourbank_accounts'),'C.product_id = B.product_id')
-                               ->where('C.status_id = 3 || C.status_id = 1')
-
-                               ->join(array('D' =>'ourbank_product'),'D.id = B.product_id','name as productname')
-                               ->where('D.category_id = 1')
-                                ->group('B.name')
-                                ->order('D.name');
-                  //die($select->__toString());
-                $result = $this->fetchAll($select);
-                return $result->toArray();
-              
-
-    }
-
-    public function accountBalance()
-    {
-         $select = $this->select()
-                        ->setIntegrityCheck(false) 
-                        ->from(array('A' => 'ourbank_accounts'))
-                        ->where('A.status_id = 3 || A.status_id = 1')
-                        ->join(array('B'=>'ourbank_productsoffer'),'A.product_id = B.product_id')
-                        ->join(array('F' =>'ourbank_transaction'),'A.id = F.account_id')
-                        ->where('F.recordstatus_id = 3 || F.recordstatus_id = 1')
-                        ->join(array('J' =>'ourbank_product'),'B.product_id = J.id',array('name as productname'
-
-
-))
-                        ->where('J.category_id = 1');
-                //die($select->__toString());
-                $result = $this->fetchAll($select);
-                return $result->toArray();
-    }
-
-        public function officeNamefetch($offie_id) {
-        $select = $this->select()
-                ->setIntegrityCheck(false)  
-                ->from('ourbank_office')
-                ->where('id = ?',$offie_id);
-        //die($select->__toString());
-        $result = $this->fetchAll($select);
+	public function getHier() {
+		$select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_officehierarchy'),array('id'))
+                ->where('a.id !=1 AND id !=2');
+		// die($select->__toString($select));
+        $result=$this->fetchAll($select);
         return $result->toArray();
-        }
+	}
 
 }

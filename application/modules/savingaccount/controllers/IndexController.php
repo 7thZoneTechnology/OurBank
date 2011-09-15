@@ -46,17 +46,64 @@ class Savingaccount_IndexController extends Zend_Controller_Action
     public function indexAction() 
     {
         $accountsForm = $this->view->form = new Savingaccount_Form_Accounts();
-        if ($this->_request->getPost('Submit')) {
-            $formData = $this->_request->getPost();
-//             $this->view->errormsg="Record not found.. Try agin...";
-            if ($accountsForm->isValid($formData)) {
-                $this->view->result = $result = $this->view->accounts->search($this->_request->getParam('membercode'));
-                    if(!$result){
-                        $this->view->errormsg="Record not found.";
-                    }
-            }
-        }
-    }
+        
+        $savingaccount = new Savingaccount_Model_Accounts();
+// 
+	if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $savingaccount->search($postedvalues);
+         //Zend_Debug::dump($result);
+         
+		$this->view->savingaccount = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+          if (!$result){
+                       echo "<font color='RED'>Records Not Found Try Again...</font>";
+                            }
+
+	}
+        	
+
+//         if ($this->_request->getPost('Submit')) {
+//         			if ($this->_request->isPost()){ 
+// 
+//             $formData = $this->_request->getPost();
+// //             $this->view->errormsg="Record not found.. Try agin...";
+//             if ($accountsForm->isValid($formData)) {
+//             	$page = $this->_getParam('page',1);//me
+//                 $this->view->paginator = $result = $this->view->accounts->search($this->_request->getParam('membercode'));
+//                       $paginator = Zend_Paginator::factory($result);//me
+//                          $paginator->setItemCountPerPage($this->view->adm->paginator());
+//                              $paginator->setCurrentPageNumber($page);
+//                                   $this->view->paginator = $paginator;
+//                            if(!$result){
+//                         $this->view->errormsg="Record not found.";
+//                      }
+//             }
+//         }
+    //me
+    
+    //============ chages ..above code for pagination did
+    
+//     } else {
+// 		$saving = new Savingaccount_Model_Accounts();
+// 		$result = $saving->getDetails($code);
+// 		$paginator = Zend_Paginator::factory($result);
+//                 // assign default values into paginator
+//                 $paginator = Zend_Paginator::factory($result);
+
+//         $paginator->setItemCountPerPage($this->view->adm->paginator());
+//         $paginator->setCurrentPageNumber($page);
+//         $this->view->paginator = $paginator;
+        //}
+ //  } //me 
+    
+    
     public function detailsAction() 
     {
         $code= base64_decode($this->_request->getParam('code'));
@@ -135,6 +182,8 @@ class Savingaccount_IndexController extends Zend_Controller_Action
                                     'transactiontype_id' => 1,
                                     'glsubcode_id_to' => $glsubID,
                                     'amount_to_bank' => $this->_request->getPost('amount'),
+                                    'balance' => $this->_request->getPost('amount'),
+                                    'transactioncount' => 1,
                                     'paymenttype_id' => 1,
                                     'transaction_description'=> "Opening amount",
                                     'transaction_by' => 1);

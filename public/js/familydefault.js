@@ -20,17 +20,32 @@
 /**to select the value of sub office when there is any changes in office type*/					
 
 
-    function Getsubcaste(casteid,path) {
-        if(casteid) {
-        targeturl=path+"/familydefault/index/getsubcaste?casteid="+casteid; 
-        $.ajax({ url: targeturl, success: function(data){ $(".subcaste").html(data) }});
-        }
-    }
     function gethabitationDetails(path,rev_villageid) {
     if(rev_villageid) { 
-            targeturl=path+"/familydefault/index/gethabitation?rev_village="+rev_villageid; 
+            targeturl=path+"/familydefault/index/gethabitation?rev_village="+rev_villageid;
             $.ajax({ url: targeturl, success: function(data){ $("#village").html(data) }});
     }
+    }
+
+    function getrevvillage(path,kootaid) { 
+        if(kootaid) { 
+                targeturl=path+"/familydefault/index/revname?koota_id="+kootaid;
+                $.ajax({ url: targeturl, success: function(data){ $("#revdiv").html(data) }});
+        }
+    }
+
+    function gettaluk(path,rev_villageid) {
+        if(rev_villageid) { 
+                targeturl=path+"/familydefault/index/talukname?rev_village="+rev_villageid;
+                $.ajax({ url: targeturl, success: function(data){ $("#talukdiv").html(data) }});
+        }
+    }
+
+    function getpincode(path,rev_villageid,modid) {
+        if(rev_villageid) { 
+                targeturl=path+"/familydefault/index/pincode?rev_village="+rev_villageid+"&mod_id="+modid;
+                $.ajax({ url: targeturl, success: function(data){ $("#pincodediv").html(data) }});
+        }
     }
 
     $(function(){

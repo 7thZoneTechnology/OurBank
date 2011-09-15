@@ -17,7 +17,7 @@
 ############################################################################
 
 class Groupm_Model_Group extends Zend_Db_Table {
-    protected $_name = 'ourbank_member';// set ourbank_member table is a base table
+    protected $_name = 'ourbank_group';// set ourbank_member table is a base table
 
     // get All group details
     public function getGroupDetails() {

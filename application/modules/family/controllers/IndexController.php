@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Family_IndexController extends Zend_Controller_Action
 {
     public function init()
@@ -63,8 +60,6 @@ class Family_IndexController extends Zend_Controller_Action
         foreach($officename as $officename1){
         $searchForm->office->addMultiOption($officename1['office_id'],$officename1['name']);
         }
-
-
 
 //paginator 
         $page = $this->_getParam('page',1);

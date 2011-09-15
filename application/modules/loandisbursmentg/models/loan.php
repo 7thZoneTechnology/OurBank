@@ -45,13 +45,13 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
                 SELECT 
                 A.name as name,
                 A.groupcode as code,
-                A.absent_subglcode as uid,
                 B.name as officename,
+                A.absent_subglcode as uid,
                 B.id as officeid,
                 D.account_number as number,
-                D.id as accId,
 		D.member_id as memberid,
 		D.membertype_id as membertypeid,
+                D.id as accId,
                 E.name as loanname,
                 E.glsubcode_id as gl,
                 F.loan_amount as amount,
@@ -106,12 +106,18 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
         $result = $db->fetchAll($sql,array($id));
         return $result;
     }	
-    public function glBank($id) 
+    public function glBank($id,$headername) 
     {
-	$db = Zend_Db_Table::getDefaultAdapter();
-	$sql = "select id from ourbank_glsubcode where substr(header,5) = $id and glcode_id = 1 ";
-	$result = $db->fetchAll($sql,array());
-	return $result;
+
+        $select=$this->select()
+                ->setIntegrityCheck(false)
+                ->join(array('a'=>'ourbank_glsubcode'),array('a.id'),array('a.id'))
+                ->where('a.header=?',$headername)
+                ->where('a.office_id=?',$id);
+//        die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+
     }
     public function getFee($accNum) 
     {
@@ -119,7 +125,9 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
 	$sql = "select 
 	        A.name as name,
 	        A.value as value,
-	        A.amountype_id as amountype_id
+	        A.amountype_id as amountype_id,
+                A.glsubcode_id,
+                B.feeamount
 	        from 
 	        ourbank_fee A,
 	        ourbank_accountfee B,
@@ -154,7 +162,18 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
         ->join(array('b'=>'ourbank_accounts'),'b.id=a.account_id',array('b.id as accountid'))
         ->where('b.account_number=?',$accNum)
         ->group('b.account_number');
-        //die ($select->__toString($select));
+      //  die ($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray();
+    }
+
+    public function findbalance($accId) {
+            $select=$this->select()
+        ->setIntegrityCheck(false)
+        ->join(array('a'=>'ourbank_loan_repayment'),array('a.id'),array('a.balanceamount','a.transaction_id','a.installment_id','a.paid_date'))
+        ->where('a.account_id=?',$accId)
+        ->where("a.transaction_id = (select max(transaction_id) from ourbank_loan_repayment where account_id = '". $accId ."' )");
+       // die ($select->__toString($select));
         $result=$this->fetchAll($select);
         return $result->toArray();
     }
@@ -201,7 +220,13 @@ class Loandisbursmentg_Model_loan extends Zend_Db_Table
     	$where[] = "id = '".$accId."'";
 	$db = $this->getAdapter();
         $result = $db->update('ourbank_accounts',$input,$where);
-    
+    }
+
+    public function loanupdate($accId,$input)
+    {
+    	$where[] = "transaction_id = '".$accId."'";
+	$db = $this->getAdapter();
+        $result = $db->update('ourbank_loan_repayment',$input,$where);
     }
 
     public function maxid($accNum)

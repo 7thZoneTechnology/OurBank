@@ -30,8 +30,10 @@ class Family_Form_Search extends Zend_Dojo_Form {
         $code = $formfield->field('Text','code','','','','Membercode','','','','','','',0,0);
         $familyid = $formfield->field('Text','familyid','','','','Member name','','','','','','',0,0);
         $office = $formfield->field('Select','office','','','','Bank name','','','','','','',0,0);
+		$office->setAttribs(array('style' => 'width: 200px;'));
+
         $house = $formfield->field('Text','house','','','','Gender','','','','','','',0,0);
-    
+
         $submit = new Zend_Form_Element_Submit('Search');
         //adding form elements
         $this->addElements(array($code,$familyid,$office,$house,$submit));

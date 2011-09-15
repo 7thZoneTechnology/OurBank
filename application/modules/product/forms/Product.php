@@ -17,8 +17,7 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-<?php class Product_Form_Product extends Zend_Form {
+ class Product_Form_Product extends Zend_Form {
 	public function init() 
 	{
 	$vtype=array('Alpha','StringLength');
@@ -26,6 +25,8 @@
 // 	$fieldtype,$fieldname,$table,$columnname,$cssname,$labelname,$required,$validationtype,$min,$max,$rows,$cols,$decorator,$value
 	        $category_id = $formfield->field('Select','category_id','','','mand','Category name',true,'','','','','',1,0);
 		$producttype = $formfield->field('Text','name','','','mand','Product name',true,'','','','','',1,0);
+                $producttype->addValidator('Alpha', true, array('allowWhiteSpace'=>true));
+
 		$shortname = $formfield->field('Text','shortname','','','mand','Short name',true,'','','','','',1,0);
         	$productdescription = $formfield->field('Text','description','','','mand','Description',true,'','','','','',1,0);
 		// Hidden Feilds 

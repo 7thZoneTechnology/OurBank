@@ -35,10 +35,13 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
-	  <div class="register">
+<fieldset>
+	<legend>Edit Ledger</legend>
+	   <div class="register">
 	       <div class="profile_tab">
+<p align="right"><a href="<?php echo $this->baseUrl();?>/ledger/index/deleteledger/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width="20" height="20"></a></p>
                     <TABLE id="hor-minimalist-b">
-                       <tr><Th colspan="2">Edit Ledger<a href="<?php echo $this->baseUrl();?>/ledger/index/deleteledger/id/<?php echo $this->id;?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="20" height="20"></a></Th></tr>
+
                         <form action="<?php echo $this->baseUrl();?>/ledger/index/editledger" method="POST">
 			  <TR >
                             <TD class="txt_rgt">Gl code</TD>
@@ -54,7 +57,7 @@
                         </TR>
                         <TR>
                             <TD class="txt_rgt"><?php echo $this->form1->Submit;?></TD>
-                            <td align="right"><a href=<?php echo $this->baseUrl(); ?>/ledger/index>
+                            <td><a href=<?php echo $this->baseUrl(); ?>/ledger/index>
                               <input name="submit" type="submit" class="officebutton" value="Back"></a></td>
                         </TR>
                     </TABLE>
@@ -63,4 +66,4 @@
 	           </form>
 	       </div>
 	  </div>
-
+</fieldset>

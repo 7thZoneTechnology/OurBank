@@ -1,0 +1,146 @@
+<BODY ></BODY>  <!--onload="toggleField();"-->
+<script>
+$(document).ready(function() {
+
+path=$("#baseurl").val();
+
+    $('#toglcode').change(function(){
+    getglsubcode();
+    });
+
+$('#amount').keyup(function(){
+getLatestBalanceTo();
+});
+
+function getLatestBalanceTo(){
+var strURL=path+"/cashtransactions/index/latestbalanceto";
+var amount=$("#amount").val();
+var balance2=$("#balance2").val();
+$.ajax({
+    url: strURL,
+    data : { amount: amount, balance2: balance2 },
+    success: function(result){
+$('#amt2').html(result);
+}
+}); }
+
+    function getglsubcode(){
+    var strURL=path+"/cashtransactions/index/getglsubcode";
+    $.ajax({
+    url: strURL,
+    data:"glcode="+$("#toglcode option:selected").val(),
+    success: function(result){
+    $('#tect1').html(result);
+    }
+    }); }
+
+});
+
+
+function getdateamount() {
+    var date = $('#transactiondate').val();
+    var amount = $('#amount').val();
+    $('#transactiondate1').val(date);
+    $('#amount1').val(amount);
+}
+
+function toggleField1() {
+var ptype = $('#paymenttype').val();
+if(ptype!=1){
+$('.show').show();
+}else{
+$('.show').hide();
+}
+// $('#details').show();
+// $('#details1').show();
+// $('#details2').show();
+// $('#details3').show();
+// } else {
+// $('#toglcode').hide();
+// $('#details1').hide();
+// $('#details2').hide();
+// $('#details3').hide();
+// }
+}
+</script> 
+
+<fieldset>
+	<legend>Cash Transactions<br/>
+<?php $receipts= new Receipts_Model_Receipts();
+                $mainBranch = $receipts->getHeadOffice($this->username); foreach($mainBranch as $mainBranch) { if($mainBranch) { ?>
+<p align="right" style="Bold"><font color="Navy"><?php echo $mainBranch['type']; ?></font> :
+<?php echo $mainBranch['name']; ?> <br/>
+<?php $officeid= $mainBranch['id']; }} $branch= $receipts->getBranch($officeid); foreach($branch as $branch) { if ($branch) {?>
+<font color="Navy"><?php echo $branch['type']; ?></font> :
+<?php echo $branch['name']; }}?></p></legend> 
+
+	<div class="cont-rgt-data">
+		<form action="<?php echo $this->baseUrl();?>/cashtransactions" method="POST">
+<input type="hidden" value="<?php  echo $this->baseUrl();?>" id="baseurl"/>
+
+<font color="Purple"><B>LEDGER DETAILS</B></font>
+<table id="hor-minimalist-N" summary="Employee Pay Sheet">
+				<tr>
+					<td></td>
+					<td >* To GL code</td>
+					<td ><?php echo $this->form->toglcode;?></td> 
+                                        <TD></TD>
+				</tr>
+				<tr>
+					<td></td>
+                                        <td >* To GL subcode</td>
+					<td ><div id="tect1"  class="reqMark"><?php echo $this->form->toglsubcode;?></div></td> <td></td>
+					<td></td>
+				</tr>
+                                <tr>
+					<td></td>
+                                        <td>Current Balance: </td>
+                                        <td><?php  echo $this->form->balance2;?></td></td>
+					<td></td>
+                                </tr>
+</table><br/>
+<font color="Purple"><B>TRANSACTION DETAILS</B></font>
+<table id="hor-minimalist-Z" summary="Employee Pay Sheet">
+				<tr>
+					<td>* Transaction mode</td>
+					<td><div id="tect3"><?php echo $this->form->paymenttype;?></div></td>
+					<td>  Description</td>
+					<td><?php echo $this->form->description;?></td></tr>
+
+				<tr>	<td></td><td class="show" style="display:none"><?php echo $this->form->paymenttype_details;?>Voucher/cheque/draft/E-Transfer</td>
+                                        <td></td><td></td><td></td><td></td>
+				</tr>
+
+</table><br/>
+<font color="Purple"><B>AMOUNT DETAILS</B></font>
+<table id="hor-minimalist-N" summary="Employee Pay Sheet">
+				<tr>
+					<td></td>
+					<td>* Amount</td>
+					<td><?php echo $this->form->amount;?></td>
+					<td></td>
+                                </tr>
+                                <tr>
+					<td></td>
+					<td>* Date</td>
+					<td><?php echo $this->form->transactiondate;?></td>
+					<td></td>
+				</tr>
+                                <tr>
+					<td></td>
+                                        <td>Latest Balance :</td>
+                                        <td><div id="amt2"><?php  echo $this->form->latestbalanceto; ?></div></td>
+					<td></td>
+                                </tr>
+				<tr>
+					<TD colspan = "2"><?php echo $this->form->Submit;?></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+				</tr>
+</table>
+</div>
+		</form>
+	</h>
+</fieldset>
+

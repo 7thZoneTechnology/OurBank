@@ -1,72 +1,88 @@
-
 <form action="<?php echo $this->baseUrl();?>/familydefault/index/editfamily/id/<?php echo $this->memberid; ?>" id="validation" method="POST">
 <fieldset>
-        <table class="fieldsets" id="hor-minimalist-b">
-		<th colspan="2">Member details<a href="<?php echo $this->baseUrl();?>/familydefault/index/deletemember/id/<?php echo $this->memberid; ?>/sub_id/<?php echo $this->sub_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></th>
-        <tr>
+            <table class="fieldsets" id="hor-minimalist-b" > 
+
+	<th colspan="2">Family Details<a href="<?php echo $this->baseUrl();?>/familydefault/index/deletemember/id/<?php echo $this->memberid; ?>/sub_id/<?php echo $this->sub_id; ?>"><img src="<?php echo $this->baseUrl(); ?>/images/delete.gif" align="right" width="16" height="16"></a></th>
+        <!--<tr>
             <td><label class="mand">Family ID :</td>
-            <td><?php echo $this->form->familyid1; ?></td>
-        </tr>
+            <td><?php //echo $this->form->familyid; ?></td>
+        </tr>-->
         <tr>
-            <td><label class="mand">Sujeevana No :</td>
+            <td> &nbsp;&nbsp;<label class="mand"> Sujeevana No :</td>
             <td><?php echo $this->form->sujeevana; ?></td>
         </tr>
         <tr>
-            <td><label class="mand">House No :</td>
+            <td> &nbsp;&nbsp; House Number:</td>
             <td><?php echo $this->form->houseno; ?></td>
         </tr>
         <tr> 
-            <td>Street/Road/Lane :</td>
+            <td> &nbsp;&nbsp;Street/Lane:</td>
             <td><?php echo $this->form->street; ?></td>
         </tr>
-		<tr>
-            <td><label class="mand">Revenue Village :</td>
-            <td><?php echo $this->form->rev_village; ?></td>
+
+        <tr>
+            <td><label class="mand">Area:</td>
+            <td><?php echo $this->form->koota; ?></td>
+        </tr>
+
+        <tr>
+            <td><label class="mand">Village:</td>
+            <td><div id="revdiv"><?php echo $this->form->rev_village; ?></div></td>
+        </tr>
+
+        <tr>
+            <td> &nbsp;&nbsp; Taluk:</td>
+            <td><div id="talukdiv"></div></td>
+        </tr>
+
+        <tr>
+            <td> &nbsp;&nbsp; Pin Code:</td>
+            <td><div id="pincodediv"></div></td>
         </tr>
         <tr>
-           <td><label class="mand">Colony/Habitation :</td>
+            <td><label class="mand">Habitation:</td>
             <td><div id="village"><?php echo $this->form->village; ?></div></td>
         </tr>
         <tr>
-            <td><label class="mand">Family Type :</td>
+            <td><label class="mand">Family Type:</td>
             <td><?php echo $this->form->familytype; ?></td>
         </tr>
         <tr>
-            <td><label class="mand">Category :</td>
+            <td><label class="mand">Caste :</td>
             <td><?php echo $this->form->caste; ?></td>
         </tr>
-        <!--<tr>
-            <td>Caste</td>
-            <td class="subcaste"><?php echo $this->form->subcaste; ?></td>
-        </tr>-->
-		<tr>
-            <td>Minority :</td>
+		 <tr>
+            <td>&nbsp;&nbsp; Minority :</td>
             <td><?php echo $this->form->minority; ?></td>
         </tr>
+        <!--<tr>
+            <td><label class="mand">Caste</td>
+            <td class="subcaste"><?php echo $this->form->subcaste; ?></td>
+        </tr>-->
         <tr>
-            <td>Ration Card :</td>
+            <td><label class="mand"> Ration:</td>
             <td><?php echo $this->form->ration; ?></td>
         </tr>
-<tr>
-            <td style="vertical-align: top;"><label class="mand">Health Insurance</td>
+      <tr>
+            <td style="vertical-align: top;"><label class="mand">Health :</td>
             <td><?php echo $this->form->health; ?>
                 <input type="hidden" name="count" id="count" value="<?php echo $this->countvalue; ?>">
             </td>
         </tr>
         <tr>
-            <td>NREGS Job Card NO :</td>
+            <td>&nbsp;&nbsp;Job Number :</td>
             <td><?php echo $this->form->jobno; ?></td>
         </tr>
         <tr>
-            <td><label class="mand">Major Source of Income :</td>
+            <td><label class="mand">Income Details :</td>
             <td><?php echo $this->form->income; ?></td>
         </tr>
         <tr>
-            <td>Phone Number :</td>
+            <td>&nbsp;&nbsp; Phone :</td>
             <td><?php echo $this->form->phone; ?></td>
         </tr>
         <tr>
-            <td>Mobile :</td>
+            <td><label class="mand"> Mobile  :</td>
             <td><?php echo $this->form->mobile; ?></td>
         </tr>
     </table>

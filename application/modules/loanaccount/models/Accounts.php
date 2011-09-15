@@ -24,50 +24,95 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
 	
     public function search($code) 
     {
+        $keyvalue = array_filter($code);
+		$searchcounter = count($keyvalue);
+	if($searchcounter > 0) {
+
+        $member_id=$code['s1'];
+       
+       $this->db = Zend_Db_Table::getDefaultAdapter();
+        $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql="SELECT 
+              DISTINCT a.id as id,
+              a.familycode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
+              from
+              ourbank_familymember a,
+              ourbank_office b,
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
+              where
+              a.village_id= b.id and
+              a.id = d.member_id and
+              (a.name like '".$member_id."%'  or a.familycode like '".$member_id."%') AND
+              substr(a.familycode,5,1) = c.id  
+              union
+              SELECT
+	      DISTINCT a.id as id,
+              a.groupcode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
+              from
+              ourbank_group a,
+              ourbank_office b,
+              ourbank_master_membertypes c
+              where
+              a.village_id= b.id and
+              (a.name like '".$member_id."%'  or a.groupcode like '".$member_id."%') AND
+              substr(a.groupcode,5,1) = c.id";
+//echo $sql;
+        $result = $this->db->fetchAll($sql,$member_id);
+          return $result;
+        } else {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT 
-                a.id as id,
-                a.familycode as code,
-                a.name as name,
-                b.name as officename,
-                substr(a.familycode,5,1) as type,
-                c.type as membertype
-                from  
-                ourbank_familymember a,
-                ourbank_office b,
-                ourbank_master_membertypes c,
-                ourbank_group e,
-                ourbank_groupmembers d
-                where
-                a.id=d.member_id and
-                a.village_id= b.id and
-                d.group_id= e.id and
-                (a.name like '$code' '%'  or a.familycode like '$code' '%') AND
-                substr(a.familycode,5,1) = c.id
-                union
-                SELECT 
-                a.id as id,
-                a.groupcode as code,
-                a.name as name,
-                b.name as officename,
-                substr(a.groupcode,5,1) as type,
-                c.type as membertype
-                from
-                ourbank_group a,
-                ourbank_office b,
-                ourbank_master_membertypes c,
-                ourbank_groupmembers d
-                where
-                a.village_id= b.id and
-                d.group_id= a.id and
-                (a.name like '$code' '%'  or a.groupcode like '$code' '%') AND
-                substr(a.groupcode,5,1) = c.id";
-//         echo $sql;
-        $result = $this->db->fetchAll($sql,array($code));
-        return $result;
+
+
+        $sql="SELECT 
+              DISTINCT a.id as id,
+              a.familycode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+              substr(a.familycode,5,1) as type,
+	      c.type as membertype
+              from
+              ourbank_familymember a,
+              ourbank_office b,
+              ourbank_master_membertypes c,
+              ourbank_groupmembers d
+              where
+              a.village_id= b.id and
+              a.id = d.member_id AND
+              substr(a.familycode,5,1) = c.id  
+              union
+              SELECT
+	      DISTINCT a.id as id,
+              a.groupcode as code,
+              a.name as name,
+              b.id as officeid,
+              b.name as officename,
+	      substr(a.groupcode,5,1) as type,
+              c.type as membertype
+              from
+              ourbank_group a,
+              ourbank_office b,
+              ourbank_master_membertypes c
+              where
+              a.village_id= b.id and
+              substr(a.groupcode,5,1) = c.id";
+ 
+        $result = $this->db->fetchAll($sql);
+          return $result;}
     }
-    
+
     public function getDetails($code) 
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -211,17 +256,21 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 C.maximunloanamount as maxamount,
                 C.penal_Interest as penalInterest,
                 C.minimumfrequency as minInstallments,
-                C.maximumfrequency as maxInstallments
+                C.maximumfrequency as maxInstallments,
+                G.request_amount as requestamount
                 FROM 
                 ourbank_productsoffer B,
                 ourbank_productsloan C,
                 ourbank_office F,
-                ourbank_familymember E
+                ourbank_familymember E,
+                ourbank_loanprocess G
                 WHERE
                 E.familycode = $code AND 
                 B.id = $productId AND
                 F.id = E.village_id AND
-                B.id = C.productsoffer_id
+                B.id = C.productsoffer_id AND
+                E.id = G.member_id AND
+                G.status = 5
                 UNION 
                 SELECT 
 		E.id as memberId,
@@ -238,18 +287,24 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 C.maximunloanamount as maxamount,
                 C.penal_Interest as penalInterest,
                 C.minimumfrequency as minInstallments,
-                C.maximumfrequency as maxInstallments
+                C.maximumfrequency as maxInstallments,
+                G.request_amount as requestamount
                 FROM 
                 ourbank_productsoffer B,
                 ourbank_productsloan C,
                 ourbank_office F,
-                ourbank_group E
+                ourbank_group E,
+                ourbank_groupmembers I,
+                ourbank_loanprocess G
                 WHERE
                 E.groupcode = $code AND 
                 B.id = $productId AND
                 F.id = E.village_id AND
-                B.id = C.productsoffer_id 
-                ";
+                B.id = C.productsoffer_id AND
+                E.id = I.group_id AND
+                I.member_id = G.member_id AND
+                (G.membertype=3 OR G.membertype=2) AND
+                G.status = 5";
 //        echo $sql;
         $result = $db->fetchAll($sql,array($productId,$code));
         return $result;
@@ -333,6 +388,32 @@ class Loanaccount_Model_Accounts extends Zend_Db_Table
                 ";
         $result = $db->fetchAll($sql,array($code));
         return $result;
+    }
+
+    public function getfee($feeid)
+    {
+            $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_fee'),array('id'),array('a.value','a.feetype_id'))
+            ->where('a.id=?',$feeid);
+            //die($select->__toString($select));
+            $result=$this->fetchAll($select);
+            return $result->toArray(); // return group member details
+    }
+
+
+    public function getloanrequest($code)
+    {
+            $select=$this->select()
+            ->setIntegrityCheck(false)
+            ->join(array('a' => 'ourbank_group'),array('id'),array(null))
+            ->join(array('b' => 'ourbank_groupmembers'),'a.id=b.group_id',array(null))
+            ->join(array('c'=>'ourbank_loanprocess'),'c.member_id=b.member_id',array('sum(c.request_amount) as requestamount'))
+            ->where('c.status=5')
+            ->where('a.groupcode=?',$code);
+        //die($select->__toString($select));
+        $result=$this->fetchAll($select);
+        return $result->toArray(); // return group member details
     }
 
     public function getmemberlist($memberId,$typeID)

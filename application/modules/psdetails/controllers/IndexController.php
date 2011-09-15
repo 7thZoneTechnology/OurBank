@@ -59,7 +59,6 @@ class Psdetails_IndexController extends Zend_Controller_Action
               // check its default savings or not
               $tagAcc = $this->view->adm->getsingleRecord('ourbank_accounts','tag_account','account_number',$accNum);
 if($tagAcc != 0){
-
  $this->view->transactions = $this->view->psdetails->transaction($this->_request->getParam('accNum'));
  $credit = $this->view->psdetails->getCreditbalance($this->_request->getParam('accNum'));
 foreach($credit as $creditbal){

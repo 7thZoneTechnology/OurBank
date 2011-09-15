@@ -37,9 +37,6 @@ class Category_IndexController extends Zend_Controller_Action
        foreach($loginname as $loginname) {
            $this->view->username=$loginname['username']; // get the user name
        }
- 
-
-      
 		$this->view->adm = new App_Model_Adm();   
                 $dbobj = new Category_Model_Category();
                 $categoryvalues = $dbobj->getAllCategory();
@@ -54,6 +51,11 @@ class Category_IndexController extends Zend_Controller_Action
                         'created_by' =>1,'created_date'=>date("Y-m-d")));
                 }
                 }
+
+
+
+
+
 
 	}
 
@@ -105,6 +107,7 @@ class Category_IndexController extends Zend_Controller_Action
 	}
 	public function categoryaddAction() 
 	{
+
 //calling the form		
 		$this->view->title = "Category";
 		$categoryForm = new Category_Form_category();
@@ -112,12 +115,14 @@ class Category_IndexController extends Zend_Controller_Action
 //submit action
 		if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 				$formData = $this->_request->getPost();
+
+
 				if ($this->_request->isPost()) {
 					if ($categoryForm->isValid($formData)) {  
-echo "created by".$this->view->createdby;
-//adding the datas to the table
-// 					$id = $this->view->adm->addRecord("ourbank_category",$categoryForm->getValues());
-// 						$this->_redirect('/category/index/categoryview/id/'.$id);
+//                                         echo "created by".$this->view->createdby;
+// adding the datas to the table
+					$id = $this->view->adm->addRecord("ourbank_category",$categoryForm->getValues());
+						$this->_redirect('/category/index/categoryview/id/'.$id);
 				}
 			}
 		}

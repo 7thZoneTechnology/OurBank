@@ -17,7 +17,7 @@
 ############################################################################
 
 class Groupmdefault_Model_groupdefault extends Zend_Db_Table {
-   	protected $_name = 'ourbank_member'; // set ourbank_member is a parent table
+   	protected $_name = 'ourbank_group'; // set ourbank_member is a parent table
 
         public function getofficehierarchy()
         {
@@ -184,7 +184,8 @@ class Groupmdefault_Model_groupdefault extends Zend_Db_Table {
 		$db->delete('ourbank_groupmembers',$where); // delete group details
 	
 	}
-public function UpdateGroupreps($groupid) {
+
+        public function UpdateGroupreps($groupid) {
 		$where = 'group_id = '.$groupid;
 		$db = $this->getAdapter();
 		$db->delete('ourbank_group_representatives',$where); // delete group details

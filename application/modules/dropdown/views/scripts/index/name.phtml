@@ -1,12 +1,202 @@
-<TABLE id="hor-minimalist-s">
-<th><b>List of <?php echo substr($this->tableName,15); ?></b> <?php if ($this->tableName) : ?></b> <a href="<?php echo $this->baseUrl();?>/dropdown/index/add/id/<?php echo $this->id;?>/name/<?php echo $this->tableName?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20"></a><?php endif; ?></th>
-				<?php foreach ($this->tabledata as $datas ): ?>
+<br>
+   <TABLE id="hor-minimalist-b" width="100%">
+	<tr><td></td><?php foreach($this->keyvalue as $details) {?>
+		<td><?php if ($this->tableName) : ?><a href="<?php echo $this->baseUrl();?>/dropdown/index/add/name/<?php echo $this->tableName?>"><img src="<?php echo $this->baseUrl(); ?>/images/add.gif" border=0 width="20" height="20">Add New <?php echo $details['descriptions'];?></a><?php endif;?></td>
+	    <td align="right"><b><h3>List of <?php echo $details['descriptions'];?></h3></b></td><?php } ?>
+	</tr>
 
+  <?php if($this->tableName=='ourbank_master_habitation') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="20%">English</th>
+			<th width="20%">Regional Name</th>
+			<th width="20%">Village</th>
+			<th width="20%">Grama panchayat</th>
+			<th width="20%">Koota list</th>
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="20%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="20%"><?php echo $datas['name_regional']; ?></td>
+			<td width="20%"><?php echo $datas['vname']; ?></a></td>
+			<td width="20%"><?php echo $datas['gpname']; ?></td>
+			<?php $koota = new Dropdown_Model_Dropdown(); ?>
+			<td width="20%"><?php $kootaname = $koota->getkoota($datas['parentoffice_id']);
+					if($kootaname) {echo $kootaname[0]['kootaname']; } ?></a></td>
+			
 
-    				<tr>
-        				<td><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>">  <?php echo $datas['name']; ?></a></td>
-					</tr>
-				<?php endforeach; ?>
-</TABLE>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } elseif($this->tableName=='ourbank_master_gillapanchayath') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="22%">English</th>
+			<th width="22%">Regional Name</th>
+			<th width="22%">Hobli</th>
+			<th width="22%">Taluk</th>
 
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="22%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="22%"><?php echo $datas['name_regional']; ?></td>
+			<td width="22%"><?php echo $datas['hbname']; ?></a></td>
+			<td width="22%"><?php echo $datas['tname']; ?></a></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } elseif($this->tableName=='ourbank_master_taluklist') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="30%">English</th>
+			<th width="30%">Regional Name</th>
+			<th width="30%">District</th>
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="30%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="30%"><?php echo $datas['name_regional']; ?></td>
+			<td width="30%"><?php echo $datas['dname']; ?></a></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } elseif($this->tableName=='ourbank_master_hoblilist') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="30%">English</th>
+			<th width="30%">Regional Name</th>
+			<th width="30%">Taluk</th>
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="30%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="30%"><?php echo $datas['name_regional']; ?></td>
+			<td width="30%"><?php echo $datas['tname']; ?></a></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } elseif($this->tableName=='ourbank_master_cbopromoter') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="30%">English</th>
+			<th width="30%">Regional Name</th>
+			<th width="30%">Koota list</th>
+<!-- 			<th width="22%">grama panchayat</th> -->
 
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="30%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="30%"><?php echo $datas['name_regional']; ?></td>
+			<td width="30%"><?php echo $datas['kootaname']; ?></td>
+<!-- 			<td width="22%"><?php //echo $datas['panchayath_id']; ?></a></td> -->
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } elseif($this->tableName=='ourbank_master_cbos') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="30%">English</th>
+			<th width="30%">Regional Name</th>
+			<th width="30%">Koota list</th>
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="30%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="30%"><?php echo $datas['name_regional']; ?></td>
+			<td width="30%"><?php echo $datas['kootaname']; ?></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php }elseif($this->tableName=='ourbank_master_bank') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="22%">English</th>
+			<th width="22%">Regional Name</th>
+			<th width="22%">Grama panchyat</th>
+			<th width="22%">Koota</th>
+
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="22%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="22%"><?php echo $datas['name_regional']; ?></td>
+			<td width="22%"><?php echo $datas['gpname']; ?></a></td>
+			<?php $koota = new Dropdown_Model_Dropdown(); ?>
+			<td width="22%"><?php $kootaname = $koota->getkoota($datas['parentoffice_id']);
+					if($kootaname) {echo $kootaname[0]['kootaname']; } ?></a></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } elseif($this->tableName=='ourbank_master_branch') { ?>
+	<TABLE id="hor-minimalist-b" width="100%">
+		<tr><th width="6%">Sl.No</th>
+			<th width="20%">English</th>
+			<th width="20%">Regional Name</th>
+			<th width="20%">Bank</th>
+			<th width="20%">Grama panchyat</th>
+			<th width="20%">Koota</th>
+
+		</tr>
+	</TABLE>
+  <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="20%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['habit']; ?></td>
+			<td width="20%"><?php echo $datas['name_regional']; ?></td>
+			<td width="20%"><?php echo $datas['bankname']; ?></td>
+			<td width="20%"><?php echo $datas['gpname']; ?></td>
+			<?php $koota = new Dropdown_Model_Dropdown(); ?>
+			<td width="20%"><?php $kootaname = $koota->getkoota($datas['parentoffice_id']);
+					if($kootaname) {echo $kootaname[0]['kootaname']; } ?></a></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+  </DIV>
+ <?php } else{?>
+			<th width="6%">Sl.No</th>
+			<th width="40%">English</th>
+			<th width="60%">Regional Name</th>
+	</TABLE>
+
+ <DIV style="float: left; clear: left; height:240px; overflow-y: auto; overflow-x: hidden;">
+	<TABLE id="hor-minimalist-b" width="100%" border="4">
+	  <?php $i=0; foreach ($this->tabledata as $datas ):$i++ ?>
+		<tr><td align="center" width="6%"><?php echo $i;?></td>
+			<td width="40%"><a href="<?php echo $this->baseUrl()."/dropdown/index/commonview/id/".$datas['id']; ?>/name/<?php echo $this->tableName?>"><?php echo $datas['name']; ?></td>
+			<td width="60%"><?php echo $datas['name_regional']; ?></a></td>
+		</tr>
+	  <?php endforeach; ?>
+	</TABLE>
+ </DIV>
+ <?php } ?>

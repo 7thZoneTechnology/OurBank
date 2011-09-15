@@ -84,7 +84,9 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
         public function subofficeFromUrledit($officetype_id) {
         $this->db = Zend_Db_Table::getDefaultAdapter();
         $this->db->setFetchMode(Zend_Db::FETCH_OBJ);
-        $sql = "SELECT name,id FROM ourbank_office WHERE id = $officetype_id";
+        $sql = "SELECT name,id FROM ourbank_office WHERE officetype_id in (select officetype_id from ourbank_office
+                       where id=$officetype_id)";
+		//echo $sql;
         $result = $this->db->fetchAll($sql,array($officetype_id));
         return $result;
     	}
@@ -145,7 +147,7 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
           $select = $this->select()
                   ->setIntegrityCheck(false)  
                   ->join(array('a' => 'ourbank_member'),array('a.id'))
-                  ->where('a.village_id =?',$id);
+                  ->where('a.office_id =?',$id);
           $result = $this->fetchAll($select);
           return $result->toArray();
         }
@@ -189,7 +191,7 @@ class Officedefault_Model_officedefault extends Zend_Db_Table_Abstract {
                   ->setIntegrityCheck(false)  
                   ->join(array('a' => 'ourbank_master_gillapanchayath'),array('a.id'))
                   ->where('a.hobli_id = ?',$panchayath);
-       //  die($select->__toString($select));
+         //die($select->__toString($select));
           $result = $this->fetchAll($select);
           return $result->toArray();
         }

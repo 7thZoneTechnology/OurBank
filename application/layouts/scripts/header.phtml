@@ -3,7 +3,6 @@
 $(document).ready(function() {
     $("#validation").validate()
     $("#pluginFormlive").validate()
-
     });
 </script>
    <link rel="stylesheet" type="text/css"  href="<?php  echo $this->baseUrl();?>/js/themes/base/ui.all.css" />
@@ -11,8 +10,11 @@ $(document).ready(function() {
       <h1><a href="#" title="OurBank">OurBank</a></h1>
     </div>
     <div id="welcomebar">
+            <?php 
+            $sessionName = new Zend_Session_Namespace('ourbank');
+            ?>
 	<span class="welcomusr">Welcome <a href="#">
-		<?php echo $this->username;?></a></span> <span class="longdate">
+		<?php echo $sessionName->username;?></a></span> <span class="longdate">
 			<?php echo date("r");?></span><span class="signout">
 				<a href="<?php  echo $this->baseUrl();?>/index/logout">signout</a>
 	</span>

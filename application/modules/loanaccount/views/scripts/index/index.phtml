@@ -4,7 +4,7 @@
 			<table class="fieldsets">
                             <TR>
                                 <TD><label for="fld3">Member code / Name / Group Name</label></TD>
-                                <TD><? echo $this->form->membercode;?></TD>
+                                <TD><? echo $this->form->s1;?></TD>
                             </TR>
                         </table>
                         <div class="btnhouse">
@@ -15,8 +15,7 @@
 	 </form>
 
 </fieldset>
-
-<?php if($this->result) { ?>
+<?php if ($this->paginator) { ?>
     <table id="hor-minimalist-b" summary="Employee Pay Sheet">
 	<tr>
 	    <Th>Member Code</Th>
@@ -25,7 +24,7 @@
 	    <td class="centertd" align="center">Type</td>
             <th></th>
 	</tr>
-	<?php foreach($this->result as $member) : ?>
+	<?php foreach($this->paginator as $member) { ?>
 	<tr>
 		<td><a href="<?php echo $this->baseUrl();?>/loanaccount/index/details/code/<?php echo base64_encode($member->code);?>"><?php echo $member->code;?></a></td>
 		<td><?php  echo $member->name;?></td>
@@ -45,6 +44,19 @@
 		}?>
 		</td>
 	</tr>
-	<?php endforeach; ?>
-	</table>
-<?php }?>
+	<?php } } ?>
+	
+     
+   <?php if ($this->paginator) { ?>
+
+	<div align="center" style="margin-top:10px;color:#CC6633;">
+       <tr>
+       <td colspan="8" align="right"><div class="pagination"><?php echo $this->paginationControl($this->paginator,'Sliding','/partials/my_pagination_control.phtml',$this->requestvalues); ?>
+        </div></td></tr>
+
+        </table>
+  
+    <?php } ?>
+
+
+</table>

@@ -6,48 +6,56 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 	{
         $db = Zend_Db_Table::getDefaultAdapter();
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
-       $sql="SELECT 
+        $sql="SELECT 
                 A.name as name,
                 A.familycode as code,
                 B.name as officename,
+                A.uid as uid,
                 B.id as officeid,
                 D.account_number as number,
+		D.member_id as memberid,
+		D.membertype_id as membertypeid,
                 D.id as accId,
                 E.name as loanname,
                 E.glsubcode_id as gl,
                 F.loan_amount as amount,
                 F.loan_installments as installments,
                 DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
-                F.loan_interest as interest,
+                G.Interest as interest,
                 F.interesttype_id as interesttype,
                 F.savingsaccount_id as sAccId
                 FROM
                 ourbank_familymember A,
                 ourbank_office B,
-                ourbank_accounts D,
+                ourbank_accounts D,		
                 ourbank_productsoffer E,
-                ourbank_loanaccounts F
+                ourbank_loanaccounts F,
+                ourbank_interest_periods G
                 WHERE 
-                (A.name = '$acc' OR D.account_number = '$acc') AND
+                (A.name like '%' '$acc' '%' OR D.account_number = '$acc') AND
                 D.membertype_id = substr(A.familycode,5,1) AND
                 D.member_id = A.id AND
                 B.id=A.village_id AND
                 D.product_id = E.id AND
-                F.account_id = D.id
+                F.account_id = D.id AND
+                F.loan_interest  = G.id
                 UNION
                 SELECT 
                 A.name as name,
                 A.groupcode as code,
                 B.name as officename,
+                A.absent_subglcode as uid,
                 B.id as officeid,
                 D.account_number as number,
+		D.member_id as memberid,
+		D.membertype_id as membertypeid,
                 D.id as accId,
                 E.name as loanname,
                 E.glsubcode_id as gl,
                 F.loan_amount as amount,
                 F.loan_installments as installments,
                 DATE_FORMAT(F.loansanctioned_date, '%d/%m/%Y') as sanctioned,
-                F.loan_interest as interest,
+                G.Interest as interest,
                 F.interesttype_id as interesttype,
                 F.savingsaccount_id as sAccId
                 FROM
@@ -55,15 +63,18 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
                 ourbank_office B,
                 ourbank_accounts D,
                 ourbank_productsoffer E,
-                ourbank_loanaccounts F
+                ourbank_loanaccounts F,
+                ourbank_interest_periods G
                 WHERE 
-                (A.name = '$acc' OR D.account_number = '$acc') AND
+                (A.name like '%' '$acc' '%' OR D.account_number = '$acc') AND
                 D.membertype_id = substr(A.groupcode,5,1) AND
                 D.member_id = A.id AND
+                (D.membertype_id=2 or D.membertype_id=3) AND
                 B.id=A.village_id AND
                 D.product_id = E.id AND
-                F.account_id = D.id";
-				//echo $sql;
+                F.account_id = D.id AND
+                F.loan_interest  = G.id";
+		//echo $sql;
         $result = $db->fetchAll($sql,array($acc));
         return $result;
     }
@@ -77,6 +88,7 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			->join(array('C' => 'ourbank_master_instalstatus'),'B.installment_status = C.id')
                         ->where('B.installment_status!=7')
 			->where('A.account_number = ?',$accNum);
+              //  die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
@@ -87,8 +99,11 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			->setIntegrityCheck(false)  
 			->join(array('A' => 'ourbank_accounts'),array('id'),array('id'))
 			->join(array('B' => 'ourbank_loan_repayment'),'A.id = B.account_id')
-			->where('A.account_number = ?',$accNum);
-		//die($select->__toString($select));
+			->join(array('C' => 'ourbank_transaction'),'C.transaction_id = B.transaction_id',array('C.transaction_id','C.transaction_description'))
+			->join(array('D' => 'ourbank_master_paymenttypes'),'D.id = C.paymenttype_id',array('D.name as paymentmode'))
+			->where('A.account_number = ?',$accNum)
+                        ->order('B.transaction_id');
+	//	die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
@@ -127,4 +142,25 @@ class Loandetailsg_Model_loandetails extends Zend_Db_Table {
 			   A.installment_status = 4)";
 		return $db->fetchAll($sql);
 	}
+
+        public function updateinstallment($accid,$installid){ //print_r($data); print_r($where);
+            $this->db = Zend_Db_Table::getDefaultAdapter();
+                    $data = array('installment_status'=> 5); //print_r($data);
+                    $where='installment_id ='.$installid.' and account_id ='.$accid; //echo $where;
+            $this->db->update('ourbank_installmentdetails',$data,$where);
+        }
+
+        public function findoverdue($accNum)
+        {
+		$select = $this->select()
+			->setIntegrityCheck(false)  
+			->join(array('A' => 'ourbank_accounts'),array('id'),array('id as accountid'))
+			->join(array('B' => 'ourbank_installmentdetails'),'A.id = B.account_id',array('B.installment_id'))
+                        ->where('B.installment_status!=2')
+                        ->where('B.installment_date < ?',date("Y-m-d"))
+			->where('A.account_number = ?',$accNum);
+		//die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
 }

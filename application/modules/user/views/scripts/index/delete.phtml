@@ -17,9 +17,9 @@
 ############################################################################
 !-->
 <!-- delete form action !-->
-<form action="<?php echo $this->baseUrl();?>/user/index/delete/id/<?php echo $this->id; ?>" method="POST">
+<form action="<?php echo $this->baseUrl();?>/user/index/delete/id/<?php echo $this->id; ?>" method="POST" id="validation">
 	<div class="register">
-		<div class="profile_tab"> 
+		<div class="fieldsets"> 
 			<fieldset>
 			<legend>Delete user details</legend>
 			<table id="hor-minimalist-b">
@@ -57,7 +57,7 @@
 			
 
 			<tr>
-                                <td >Remarks<span>*</span></td>
+                                <td><label class="mand">Remarks</label></td>
                                 <td ><?php echo $this->deleteform->remarks;?></td>
                                 <td ></td>  
                         </tr>
@@ -71,7 +71,8 @@
 		</table>
 				<input type="submit" name="Delete" id="Delete" value="Delete">			
 
-<a href="<?php echo $this->baseUrl();?>/user/index/edituserdetail/id/<?php echo $this->user_id ?>"><input type="button" name="no" value="No"></a>
+            <a href="<?php echo $this->baseUrl();?>/user/index/edituserdetail/id/<?php echo $this->user_id ?>">
+            <input type="button" name="no" value="No"></a>
 
 	</fieldset>
 	</div>

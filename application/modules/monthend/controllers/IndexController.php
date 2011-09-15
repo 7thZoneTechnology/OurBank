@@ -32,119 +32,151 @@ class Monthend_IndexController extends Zend_Controller_Action
         $this->view->createdby = $this->view->globalvalue[0]['id'];
         $this->view->username = $this->view->globalvalue[0]['username'];
         $storage = new Zend_Auth_Storage_Session();
+        $this->view->dateconvector = new App_Model_dateConvertor();
         $data = $storage->read();
         if(!$data){
             $this->_redirect('index/login');
         }
+        $this->view->monthmodle = new Monthend_Model_Transaction();
+
 
     }
     public function indexAction() 
     {
-        if ($this->_request->getPost('Procced')) {
-            $transaction = new Monthend_Model_Transaction();
-            $tran  = $transaction->transaction();
-            //
-            $interest = 0; $recentInterest =0; $balance=0; $int=0; $amount=0;
-            foreach ($tran as $tran) 
-            {
-                $accresult = $transaction->getSavingsDetails($tran->id);
-                foreach ($accresult as $dat)
-                {
-                    $trnsdate[] = $dat->transaction_date;
-                    $bal[] = $dat->balance;
-                    $glSub[] = $dat->glSub;
-                    $id[] = $dat->id;
-                }
-                $len = count($trnsdate);
-                for ($i=0;$i<$len;$i++)
-                {
-                $be[]=explode('-',$trnsdate[$i]); //exploding
-                $gr[] = gregoriantojd($be[$i][1],$be[$i][2],$be[$i][0]); //gregorian format
-                }
-                //find difference between transaction date
-                for ($i=0;$i<$len;$i++)
-                {  
-                    if($i==$len-1)
-                    {
-                    } else {
-                        $diffdate[] = $gr[$i+1]-$gr[$i]."<br>";
-                    }
-                }
-                //Interest calculation
-                if (count($diffdate)) {
-                    for($i=0;$i<$len;$i++)  
-                    {
-                        $balance = $balance + $bal[$i];
-                        if($diffdate[$i] !=0)
-                        {	
-                            $interest = ($diffdate[$i] * $balance * 3)/(100 * 365);
-    
-                        } else if ($diffdate[$i] == 0) {
-                            //$interest = ($balance * 3)/(100 *365);
-                        }
-                        //echo "<br/>".$balance." - ".$interest." - ".$diffdate[$i]."<br/>";
-                        $int += $interest;
-                    }
-                }
-                $amount = round($int,2); 
-                // Insertion into transaction 
-                $input = array('account_id' => end($id),
-                                'glsubcode_id_to' => end($glSub),
-                                'transaction_date' => date("y/m/d H:i:s"),
-                                'amount_to_bank' => $amount,
-                                'paymenttype_id' => 1,
-                                'transactiontype_id' => 1,
-                                'recordstatus_id' => 3,
-                                'transaction_description'=> "Opening amount",
-                                'balance' => $amount,
-                                'confirmation_flag' => 0,
-                                'created_by' => 1);
-                $tranID = $this->view->adm->addRecord('ourbank_transaction',$input);
-                // Insertion into saving transaction 
-                $saving = array('transaction_id' =>$tranID,
-                                'account_id' => end($id),
-                                'transaction_date' => date("y/m/d H:i:s"),
-                                'transactiontype_id' => 1,
-                                'glsubcode_id_to' => end($glSub),
-                                'amount_to_bank' => $amount,
-                                'paymenttype_id' => 1,
-                                'transaction_description'=> "interest credited",
-                                'transaction_by' => 1);
-                $this->view->adm->addRecord('ourbank_savings_transaction',$saving);
-                // Insertion into Assets Cr entry
-                // Retrive the offcie id 
-                $assets =  array('office_id' => 1,
-                                'glsubcode_id_from' => '',
-                                'glsubcode_id_to' => end($glSub),
-                                'transaction_id' => $tranID,
-                                'credit' => $amount,
-                                'record_status' => 3);
-                $this->view->adm->addRecord('ourbank_Assets',$assets);
-                // Insertion into Expenditure dt entry
-                // Retrive the offcie id + glsub code for expenditure
-                $assets =  array('office_id' => 1,
-                                'glsubcode_id_from' => '',
-                                'glsubcode_id_to' => end($glSub),
-                                'tranasction_id' => $tranID,
-                                'debit' => $amount,
-                                'recordstatus_id' => 3);
-                $this->view->adm->addRecord('ourbank_Expenditure',$assets);
-                // Insertion into Assets Dt entry
-                // Retrive the offcie id 
-                $assets =  array('office_id' => 1,
-                                'glsubcode_id_from' => '',
-                                'glsubcode_id_to' => end($glSub),
-                                'transaction_id' => $tranID,
-                                'debit' => $amount,
-                                'record_status' => 3);
-                $this->view->adm->addRecord('ourbank_Assets',$assets);
-                $interest = 0; $amount =0; $balance=0; $int=0;
-            } //end of for
-            $this->_redirect("/monthend/index/message");
+
+// //         $this->view->monthstart=$startdate=date('Y-m-d', mktime(0, 0, 0, date("m"), 1, date("Y")));
+// //         $nextstartdate=date('Y-m-d', mktime(0, 0, 0, date("m")+1, 1, date("Y")));
+// //         $this->view->monthend=$enddate=date('Y-m-t', mktime(0, 0, 0, date("m"), 1, date("Y")));
+//         // Month end process based on Selected Month
+        $app = $this->view->baseUrl();
+	$this->view->form = new Monthend_Form_Form($app);
+	$this->view->pendingmend = $pendingmonthend = $this->view->monthmodle->getmonthend(date("m"),date("Y"));
+
+	$i = 0;
+	foreach($pendingmonthend as $pendingmonthendv)
+	{
+		if($i == 0) {
+			$startend = $pendingmonthendv['startdate'] . '/' . $pendingmonthendv['enddate'];
+			$Monthid  = $pendingmonthendv['Monthid'];
+			$this->view->form->month->addMultiOption($startend,$pendingmonthendv['Month']);
+		}
+		if($i == 1)
+		{
+			$nextmonthfirstdate = $pendingmonthendv['startdate'];
+		}
+		$i++;
+	}
+        if ($this->_request->isPost() && $this->_request->getPost('continue')) {
+	$formdata = $this->_request->getPost();
+
+if($this->view->form->isValid($formdata))
+	{
+        $month = $this->_request->getPost('month');
+	list($startdate,$enddate) = explode('/',$month);
+	list($y,$m,$d) = explode('-',$startdate);
+        $monthloandetails=$this->view->monthloandetails=$this->view->monthmodle->getloandetails($startdate,$enddate);
+        if($monthloandetails) {
+                if($m == date('m')) {
+			if(date('Y-m-d')==$enddate)
+				{
+
+        foreach($monthloandetails as $monthloandetails1) {
+        $accountid[]=$monthloandetails1['account_id'];
         }
+        
+        $accountidunique = array_values(array_unique($accountid)); 
+        $totalinterest=0;
+        for($j=0;$j< count($accountidunique);$j++)
+        {
+          foreach($monthloandetails as $interestdetails)
+          {
+            if($interestdetails['account_id']==$accountidunique[$j])
+            {	$interest=$interestdetails['loan_interest'];
+		$repaymentbalance=$monthmodle->findcurrentbalance($interestdetails['paymentid']);
+                $paiddate[] =$repaymentbalance[0]['paid_date'];
+                $amount[] = $repaymentbalance[0]['balanceamount'];
+                $installmentid[]=$repaymentbalance[0]['installment_id'];
+
+            }
+          }
+          $monthinterest=$this->view->monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest,$installmentid);
+          $totalinterest+=$monthinterest[0];
+          $nextinstallmentid=end($installmentid)+1;
+          $input=array('monthend_tag'=>1);
+          $this->view->monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
+          $repaymentarray=array('account_id'=>$accountidunique[$j],'installment_id'=>$nextinstallmentid,'paid_date'=>$nextstartdate,'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
+          $this->view->adm->addRecord('ourbank_loan_repayment',$repaymentarray);
+
+            $paiddate = array();
+            $amount = array();
+            $installmentid= array();
+        }
+
+        $transactionarray=array('transaction_date'=>$nextstartdate,'amount_to_bank'=>$totalinterest,'transactiontype_id'=>1,'transaction_description'=>' Month end interest on '.$nextstartdate,'created_by'=>$this->view->createdby,'created_date'=>$nextinstallmentid,'paymenttype_id'=>5);
+        $trasid=$this->view->adm->addRecord('ourbank_transaction',$transactionarray);
+        $input=array('transaction_id'=>$trasid,'monthend_tag'=>1);
+        $monthmodle->accUpdate('ourbank_loan_repayment',2,$input,'monthend_tag');
+        // Update the Month end process table
+        $inputv = array('processed'=>2);
+        $this->view->monthmodle->monthendupdate('ourbank_monthend',$Monthid,$inputv);
+        echo "<font color='green'> Month end process successfully finished </font>";
+        }// // // close for current day
+        else { 
+		echo "<font color='red'> Month end process should happen on last day of this month only </font>";
+	}
+        }  // // //close for current month
+
+        } // Close monthloandetails
+        else { 
+            foreach($monthloandetails as $monthloandetails1) {
+                    $accountid[]=$monthloandetails1['account_id'];
+                }
+        
+        $accountidunique = array_values(array_unique($accountid)); 
+        $totalinterest=0;
+        for($j=0;$j< count($accountidunique);$j++)
+        {
+          foreach($monthloandetails as $interestdetails)
+          {
+            if($interestdetails['account_id']==$accountidunique[$j])
+            {	$interest=$interestdetails['loan_interest'];
+		$repaymentbalance=$this->view->monthmodle->findcurrentbalance($interestdetails['paymentid']);
+                $paiddate[] =$repaymentbalance[0]['paid_date'];
+                $amount[] = $repaymentbalance[0]['balanceamount'];
+                $installmentid[]=$repaymentbalance[0]['installment_id'];
+
+            }
+          }
+          $monthinterest=$this->view->monthmodle->interestcalculation($startdate,$enddate,$paiddate,$amount,$interest,$installmentid);
+          $totalinterest+=$monthinterest[0];
+          $nextinstallmentid=end($installmentid)+1;
+          $input=array('monthend_tag'=>1);
+          $this->view->monthmodle->accUpdate('ourbank_loan_repayment',$accountidunique[$j],$input,'account_id');
+          $repaymentarray=array('account_id'=>$accountidunique[$j],'installment_id'=>$nextinstallmentid,'paid_date'=>$nextstartdate,'paid_interest'=>$monthinterest[0],'balanceamount'=>$monthinterest[1],'monthend_tag'=>2);
+          $this->view->adm->addRecord('ourbank_loan_repayment',$repaymentarray);
+
+            $paiddate = array();
+            $amount = array();
+            $installmentid= array();
+        }
+
+        $transactionarray=array('transaction_date'=>$nextstartdate,'amount_to_bank'=>$totalinterest,'transactiontype_id'=>1,'transaction_description'=>' Month end interest on '.$nextstartdate,'created_by'=>$this->view->createdby,'created_date'=>$nextinstallmentid,'paymenttype_id'=>5);
+        $trasid=$this->view->adm->addRecord('ourbank_transaction',$transactionarray);
+        $input=array('transaction_id'=>$trasid,'monthend_tag'=>1);
+        $this->view->monthmodle->accUpdate('ourbank_loan_repayment',2,$input,'monthend_tag');
+        // Update the Month end process table
+        $inputv = array('processed'=>2);
+        $this->view->monthmodle->monthendupdate('ourbank_monthend',$Monthid,$inputv);
+        echo "<font color='green'> Month end process successfully finished </font>";
+
+            }
+
+        } // close for valid
+        } // close for submit
     }
     public function messageAction() 
     {
+
     }
 }
 

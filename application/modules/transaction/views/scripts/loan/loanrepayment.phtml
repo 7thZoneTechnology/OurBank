@@ -65,7 +65,7 @@
 			<legend>Sanctioned Details</legend>
 			<div class="cont-rgt-data">
 			<table id="hor-minimalist-b" summary="Employee Pay Sheet" >
-				<tr><td width="30%">loanAmount R$ :</td><TD width="50%">R$. <?php echo $this->loanAmountSanctioned;?></TD></tr>
+				<tr><td width="30%">loanAmount Rs :</td><TD width="50%">Rs. <?php echo $this->loanAmountSanctioned;?></TD></tr>
 				<tr><td width="30%">interestRates :</td><TD width="50%"><?php echo $this->rateOfIntrest.'%';?></TD></tr>
 				<tr><td width="30%">Installments:</td><TD width="50%"><?php echo $this->noInstalment;?></TD></tr>
 			</table>
@@ -82,15 +82,15 @@
 				<tr>
 					<th>Type</th>
 					<th>Installments</th>
-					<th>amount R$</th>
+					<th>amount Rs</th>
 				<tr>
 				<tr><td>Paid</td>
 					<TD width="40%"><?php echo $this->noOfInstalmentPaied;?></TD>
-					<TD width="40%">R$. <?php echo $this->paiedAmount;?></TD>
+					<TD width="40%">Rs. <?php echo $this->paiedAmount;?></TD>
 				</tr>
 				<tr><td>Due</td>
 					<TD width="40%"><?php echo $this->balanceInstalment;?></TD>
-					<TD width="40%">R$. <?php echo $this->stillHaveToPay;?></TD>
+					<TD width="40%">Rs. <?php echo $this->stillHaveToPay;?></TD>
 				</tr>
 			</table>
 			</div>
@@ -149,7 +149,7 @@
 	<table id="hor-minimalist-b" summary="Employee Pay Sheet">
 		<tr class="tdbrownheading">
 			<td width="33%">Name</td>
-			<td width="33%">Amount R$</td>
+			<td width="33%">Amount Rs</td>
 		</tr>
 
 	<?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
@@ -163,7 +163,7 @@
 	</fieldset></TD></tr>
 <?php } ?>
 			<TR class="tdbrown1">
-				<td width="30%">Amount R$ <span class="reqMark">*</span><?php echo $this->loanrepaymentAmountForm->accountcode; ?>
+				<td width="30%">Amount Rs <span class="reqMark">*</span><?php echo $this->loanrepaymentAmountForm->accountcode; ?>
 					<?php echo $this->loanrepaymentAmountForm->membercode; ?>
 					<?php echo $this->loanrepaymentAmountForm->categoryId; ?>
 					<?php echo $this->loanrepaymentAmountForm->transactionType_id; ?><?php echo $this->loanrepaymentAmountForm->installment_status; ?></td>
@@ -174,7 +174,7 @@
 				<TD><?php echo $this->loanrepaymentAmountForm->loanRepaymentDate; ?></TD>
 			</tr>
 			<tr class="tdbrown1">
-				<td width="20%">Loan interest amount R$<span class="reqMark">*</span></td>
+				<td width="20%">Loan interest amount Rs<span class="reqMark">*</span></td>
 				<TD><?php echo $this->loanrepaymentAmountForm->loanInterestAmountPaied; ?></TD>
 			</TR>
 			<TR class="tdbrown1">
@@ -185,7 +185,7 @@
 			</TR>
 			<?php if($this->loanrepaymentAmountForm->fine) { ?>
 				<tr class="tdbrown1">
-					<td width="20%">Fine R$<span class="reqMark">*</span></td>
+					<td width="20%">Fine Rs<span class="reqMark">*</span></td>
 					<TD><?php echo $this->loanrepaymentAmountForm->fine; ?></TD>
 				</TR>
 				<?php } ?>
@@ -247,7 +247,7 @@
 	<table id="hor-minimalist-b" summary="Employee Pay Sheet">
 		<tr class="tdbrownheading">
 			<td width="33%">Name</td>
-			<td width="33%">Amount R$</td>
+			<td width="33%">Amount Rs</td>
 		</tr>
 
 	<?php foreach($this->groupMembersDetails as $arrayroles1)  {?>
@@ -261,7 +261,7 @@
 	</fieldset></TD></tr>
 <?php } ?>
 			<TR class="tdbrown1">
-				<td width="30%">Amount R$<?php echo $this->loanrepaymentAmountForm->accountcode; ?>
+				<td width="30%">Amount Rs<?php echo $this->loanrepaymentAmountForm->accountcode; ?>
 					<?php echo $this->loanrepaymentAmountForm->membercode; ?>
 					<?php echo $this->loanrepaymentAmountForm->categoryId; ?>
 					<?php echo $this->loanrepaymentAmountForm->transactionType_id; ?><?php echo $this->loanrepaymentAmountForm->installment_status; ?><?php echo $this->loanrepaymentAmountForm->repayableamounts1; ?><?php echo $this->loanrepaymentAmountForm->loanRepaymentDate1; ?><?php echo $this->loanrepaymentAmountForm->transactionMode1; ?><?php echo $this->loanrepaymentAmountForm->paymenttype_details1; ?><?php echo $this->loanrepaymentAmountForm->fine1; ?></td>
@@ -272,7 +272,7 @@
 				<TD><?php echo $this->loanRepaymentDate; ?></TD>
 			</tr>
 			<tr class="tdbrown1">
-				<td width="20%">Loan interest amount R$</td>
+				<td width="20%">Loan interest amount Rs</td>
 				<TD><?php echo $this->loanInterestAmountPaied; ?></TD>
 			</TR>
 			<TR class="tdbrown1">
@@ -287,7 +287,7 @@
 			<?php } ?>
 			<?php if($this->loanrepaymentAmountForm->fine) { ?>
 				<tr class="tdbrown1">
-					<td width="20%">Fine R$</td>
+					<td width="20%">Fine Rs</td>
 					<TD><?php echo $this->repayamount; ?></TD>
 				</TR>
 			<?php } ?>
@@ -314,18 +314,18 @@
 		<table id="hor-minimalist-b" summary="Employee Pay Sheet">
 			<tr>
 				<th>Installment no</th>
-				<th>Installment amount R$</th>
-				<th>Interest amount R$</th>
-				<th> Principal amount R$</th>
+				<th>Installment amount Rs</th>
+				<th>Interest amount Rs</th>
+				<th> Principal amount Rs</th>
 				<th>Due date</th>
 				<th>Installment status</th>
 			</tr>
 			<?php foreach($this->loanInstalments as $loanInstalmentDetails) { ?>
 			<tr>
 				<td><?php echo $loanInstalmentDetails['accountinstallment_id']; ?></td>
-				<td>R$. <?php echo $loanInstalmentDetails['accountinstallment_amount']; ?></td>
-				<td>R$. <?php echo $loanInstalmentDetails['accountinstallment_interest_amount'];?></td>
-				<td>R$. <?php echo $loanInstalmentDetails['installment_principal_amount']; ?></td>
+				<td>Rs. <?php echo $loanInstalmentDetails['accountinstallment_amount']; ?></td>
+				<td>Rs. <?php echo $loanInstalmentDetails['accountinstallment_interest_amount'];?></td>
+				<td>Rs. <?php echo $loanInstalmentDetails['installment_principal_amount']; ?></td>
 				<td><?php echo $loanInstalmentDetails['accountinstallment_date'];  ?></td>
 				<?php	if($loanInstalmentDetails['installment_status']=='5') {?>
 				<TD><B style="color:red"><?php echo $loanInstalmentDetails['statusdescription'];  ?></B></td>

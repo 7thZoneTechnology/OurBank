@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 //commonview for all individual micro modules
 class Familycommonview_IndexController extends Zend_Controller_Action
 {
@@ -31,8 +28,6 @@ class Familycommonview_IndexController extends Zend_Controller_Action
         if(!$data){
                 $this->_redirect('index/login'); // once session get expired it will redirect to Login page
         }
-
-
         $sessionName = new Zend_Session_Namespace('ourbank');
         $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
 
@@ -58,18 +53,33 @@ class Familycommonview_IndexController extends Zend_Controller_Action
 
         $id=$this->_request->getParam('id');
         $this->view->memberid=$id;
-        $familycommon=new Familycommonview_Model_familycommonview(); 
+        $familycommon=new Familycommonview_Model_familycommonview();
         $member_name=$familycommon->getfamily($id);
-// // //         $revvillageid=$member_name[0]['rev_village_id'];
-// // // //         if($revvillageid){
-// // // //         $revvillagename = $this->view->adm->editRecord("ourbank_master_villagelist",$revvillageid);
-// // // //         $this->view->revvillagename=$revvillagename[0]['name']; 
-// // // // 		}
+        $villageid=$member_name[0]['rev_village_id'];
+        $parentid=$member_name[0]['parentoffice_id'];
+        $talukname=$familycommon->gettalukname($villageid);
+        if($talukname)
+        {
+          $this->view->villagename=$talukname[0]['name'];
+        }
+
+        $kootaname=$familycommon->getkoota($parentid);
+        if($kootaname)
+        {
+          $this->view->kootaname=$kootaname[0]['name'];
+        }
         //getting module id and submodule id
         $module=$familycommon->getmodule('Family');
-        foreach($module as $module_id){ }
-        $this->view->mod_id=$module_id['parent'];
-        $this->view->sub_id=$module_id['module_id'];
+        $this->view->mod_id=$module[0]['parent'];
+        $this->view->sub_id=$module[0]['module_id'];
+        $officemodule=$familycommon->getmodule('Office'); //print_r($officemodule);
+        $officesub_id=$officemodule[0]['module_id'];
+        $pincode1=$familycommon->getpincode($officesub_id,$villageid);
+        if($pincode1)
+        {
+          $this->view->pincode1=$pincode1[0]['zipcode'];
+        }
+
         $this->view->insurance=$familycommon->getinsurance($id);
 //         //geting family details, family details, health, economic, education details
         $this->view->membername=$member_name;

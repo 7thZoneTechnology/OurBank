@@ -131,8 +131,8 @@
                 <TD colspan="9"><?php echo $paid->paidAmt ; ?></TD>
 				<?php } ?>
             </TR>
-            <?php if($this->unpaid) { ?>
-
+            
+            <?php if($this->interesttype!=3) { if($this->unpaid) { ?>
             <TR>
                 <TD width="50">Due</TD>
 				<?php foreach ($this->unpaid as $unpaid) { ?>
@@ -147,7 +147,7 @@
                 <TD colspan="9" align="right"><?php echo $this->totalamount ?></TD>
             </TR>
 
-            <?php } ?>
+            <?php } } ?>
 		</table>
     <?php } ?>
     <br/>
@@ -158,12 +158,13 @@
         <table id="hor-minimalist-s">
                 <TR>
                     <TH>Current Due</TH>
-                    <TH></TH>
+                    <TH>Amount</TH>
                 </TR>
                 <TR>
-                    <TD bgcolor="#FAFAFA"><label for="fld1">Principal</label></TD>
+                    <TD bgcolor="#FAFAFA"><label for="fld1"><?php if($this->interesttype==3){ ?>Balance <?php } else { ?>Principal<?php } ?></label></TD>
                     <TD bgcolor="#FAFAFA"><?php echo $this->p; ?></TD>
                 </TR>
+                <?php if($this->interesttype!=3) { ?>
                 <TR>
                     <TD bgcolor="#FAFAFA"><label for="fld1">Interest</label></TD>
                     <TD bgcolor="#FAFAFA"><?php echo $this->int;?></TD>
@@ -172,6 +173,7 @@
                     <TD bgcolor="#FAFAFA"><label for="fld1">Total</label></TD>
                     <TD bgcolor="#FAFAFA"><?php echo $this->totalamount;?></TD>
                 </TR>
+                <?php } ?>
 			</table>
 	<br>
     <fieldset>

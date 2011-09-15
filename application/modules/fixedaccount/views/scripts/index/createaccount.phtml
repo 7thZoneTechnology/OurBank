@@ -68,7 +68,7 @@ if($a == 1) {
             </TR>
             <TR>
                 <TD>Member code:</td>
-                <TD><? echo $account['code']; ?></TD>
+                <TD><?php echo $account['code']; ?></TD>
             </TR>
             <TR>
                 <TD>Name:</td>
@@ -164,7 +164,6 @@ foreach($this->offerdetails as $offer) {
          <TR>
             <TD  colspan="2" style="display:none;" id="ertxt"><input type="text" class="Error" name="Error" id="Error"/></TD>
         </TR>
-        <input type="hidden" name="mindeposit" id="mindeposit" value="<?php echo $minumumbal;?>">
         <TR>
             <TD><?php echo $this->fixedForm->Submit; ?></TD>
             <td><a href="<?php echo $this->baseUrl();?>/fixedaccount/index"><?php echo $this->fixedForm->Back; ?></a></td>

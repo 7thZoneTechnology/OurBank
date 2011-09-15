@@ -9,16 +9,15 @@ function getnames(names,path) {
 }
 </script>
 
-<div id="namelist" style="float: right; clear: right; height:250px; ; overflow-y: auto; overflow-x: hidden;"></div>
-
-
 <div style="float: left; clear: left;"> 
 	<form action="<?php echo $this->baseUrl();?>/dropdown" method="POST">
 		<TABLE id="hor-minimalist-s">
 			<th colspan="2">Search</th>
-			<tr><td></td>
-				<td><div id="names"><?php echo $this->form;?></div></td>
-			</tr>
+				<div id="names"><?php echo $this->form;?></div>
 		</table>
 	</form>
 </div>
+
+
+<div id="namelist" style="float: left; clear: left; "></div>
+

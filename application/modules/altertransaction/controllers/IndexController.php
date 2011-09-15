@@ -119,6 +119,25 @@ class Altertransaction_IndexController extends Zend_Controller_Action
 		$this->view->vouchernumber = base64_decode($this->_request->getParam('vouchernumber'));
 		
     }
+
+
+	function deletetransactionAction() {
+    $transaction_id=$this->_request->getParam('vochure_number');
+		$storage = new Zend_Auth_Storage_Session();
+		$data = $storage->read();
+		if(!$data){
+			$this->_redirect('index/login');
+		}
+
+    $transaction_remarks= $this->_request->getParam('transaction_remarks');
+    $alterTransaction = new Transaction_Model_AlterTransaction();
+
+        $deleteData = array('recordstatus_id' => 1);
+        $alterTransaction->transactionUpdate($transaction_id,$deleteData);
+        $this->_redirect('/altertransaction/index');
+    }
+
+
 }
 
  

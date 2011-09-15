@@ -1,8 +1,22 @@
+<script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/group/membershipgroupm.js"></script>
+ 
 <form name="form1" action="<?php echo $this->baseUrl();?>/monthend/index/index" method="POST">
 <table id="hor-minimalist-b">
     <tr>
-        <th>Month end process for <?php echo date("Y-m-d", mktime(0, 0, 0, date("m") , date("d")-date("d")+1, date("Y")));?> - <?php echo date("Y-m-d", mktime(0, 0, 0, date("m")+1 , date("d")-date("d"), date("Y")));?></th>
+        <th colspan=2>Pending Month end </th>
+        <th colspan=2></th>
     </tr>
-    <td><input type = "submit" name = "Procced" value = "Procced"></td>
+    <tr>
+        <TD align="left" > Pending Month end
+        </td>
+        <td colspan="3"><?php foreach($this->pendingmend as $pendingmonthend) { 
+                        echo $pendingmonthend['Month']."<br>"; } ?>
+        </TD>
+    </tr>
+    <tr>
+	<td>Select month to do month end process</td>
+	<td><?php echo $this->form->month; ?></td>
+        <td><input type = "submit" name = "continue" value = "Continue "></td>
+        <td><a href="<?php echo $this->baseUrl();?>/maintenance/"><input type = "button" name = "cancel" value = "Cancel"></a></td></tr>
 </table>
 </form>

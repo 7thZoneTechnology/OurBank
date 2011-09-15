@@ -175,17 +175,15 @@ public function indexAction()
                 }
 
             }
-
-               
             $flag = false;
             $formData = $this->_request->getPost();
                  if($givendate){
 
                 $gdate = $this->view->dc->phpmysqlformat($givendate);
-                if ( $gdate != date('Y-m-d') ) {
+              /*  if ( $gdate != date('Y-m-d') ) {
                                     $this->view->maxdate= "Date should be current date" ;
                 } 
-                else {
+                else { */                  //date validation
                if($form->isValid($formData)){
                 $fixedSavings = new Fixedtransaction_Model_fixedSavings();
                     if($transactionMode=='5') {
@@ -212,7 +210,7 @@ public function indexAction()
                         $type = 1;
                         $amount = $this->_request->getParam('amount1');
                         $date = $this->_request->getParam('date1');
-                        $accNum = $this->_request->getParam('accNum');
+                        $accNum = base64_decode($this->_request->getParam('accNum'));
                 
 
                     $tranId = $this->view->savingsModel->deposit($this->view->accNum,$amount,$date,$type,$transactionMode,$description,$paymenttype_details,$this->view->createdby);
@@ -239,13 +237,14 @@ public function indexAction()
                     $type = 2;
                     $amount = $this->_request->getParam('amount');
                     $date = $this->_request->getParam('date');
-                    $accNum = $this->_request->getParam('accNum');
+                    $accNum = base64_decode($this->_request->getParam('accNum'));
+
                     $tranId = $this->view->savingsModel->deposit($this->view->accNum,$amount,$date,$type,$transactionMode,$description,$paymenttype_details,$this->view->createdby);
                     }
                 $this->_redirect("/savingswithdrawal/index/message/amt/".base64_encode($amount)."/accNum/".base64_encode($this->view->accNum));
                 }
             }
-    }
+   // }                       //date validation
     }
         }
     }

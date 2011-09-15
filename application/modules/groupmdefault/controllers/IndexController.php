@@ -22,7 +22,7 @@ class Groupmdefault_IndexController extends Zend_Controller_Action
         $this->view->pageTitle = "Group";
         $test = new DH_ClassInfo(APPLICATION_PATH .'/modules/groupm/controllers/');// create instance to get controller name 
 
- $storage = new Zend_Auth_Storage_Session();
+        $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
                 $this->_redirect('index/login'); // once session get expired it will redirect to Login page
@@ -102,32 +102,35 @@ unset($sessionName->Created_Date);
         }
        
 //         $dbobj = new Groupmdefault_Model_Groupdefault();
-        $days = $this->view->adm->viewRecord("ourbank_master_weekdays","id","ASC");
+        $param = 'id,name';
+        $days = $this->view->adm->getdropdownRecord("ourbank_master_weekdays",$param);
         foreach($days as $day) {
             $addForm->day->addMultiOption($day['id'],$day['name']);
         }
 
-        $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
+       /* $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
         foreach($bank as $banks) {
             $addForm->bank->addMultiOption($banks['id'],$banks['name']);
-        }
+        } */
            $hierarchy = $this->view->dbobj->getofficehierarchy();
                foreach($hierarchy as $hiearchyids){
              $hiearchyid = $hiearchyids['hierarchyid'];
             }
 
-        $officedetails = $this->view->adm->getRecord('ourbank_office','officetype_id',$hiearchyid);
+        $param = 'id,name';
+        $officedetails = $this->view->adm->getdropdownRecordc('ourbank_office',$param,'officetype_id',$hiearchyid);
         foreach($officedetails as $officeiddetails) { 
         $addForm->office->addMultiOption($officeiddetails['id'],$officeiddetails['name']);
         }
     }
     public function getmembersaddAction()
     {
+        $this->_helper->layout->disableLayout();
+
          // get branch id and display branch members
         $branch_id = $this->_request->getParam('branch_id');
         $grouptype = $this->_request->getParam('type');
         $this->view->familyid = $branch_id;
-        $this->_helper->layout->disableLayout();
         $dbobj= new Groupmdefault_Model_Groupdefault();
         $this->view->members = $dbobj->GetBranchMembers($branch_id,$grouptype);
         $existmem = $dbobj->GetExistMembers($branch_id,$grouptype);
@@ -199,8 +202,8 @@ unset($sessionName->Created_Date);
         $member_id = $_POST['member_id'];
         $group_head = $_POST['memberhead'];
         $representative_id = $_POST['representatives'];
-        $latitude = $this->_request->getParam('latitude');
-        $longitude = $this->_request->getParam('longitude');
+//         $latitude = $this->_request->getParam('latitude');
+//         $longitude = $this->_request->getParam('longitude');
         $grouptypeid = $this->_request->getParam('grouptype');
         $membertypeid = $grouptypeid;
         $office_id = $this->_request->getParam('office');
@@ -235,12 +238,12 @@ if($bank){
 if($createddate){
                     $sessionName->__set('Created_Date',$createddate);
 }
-if($latitude){
-                    $sessionName->__set('latitude',$latitude);
-}
-if($longitude){
-                    $sessionName->__set('longitude',$longitude);
-}
+// if($latitude){
+//                     $sessionName->__set('latitude',$latitude);
+// // }
+// if($longitude){
+//                     $sessionName->__set('longitude',$longitude);
+// }
 if($savingamt){
                     $sessionName->__set('savingamt',$savingamt);
 }
@@ -386,8 +389,9 @@ if($day){
                                                               'place' => $place,
                                                               'time' => $times,
                                                               'days' => $day,
-                                                              'latitude' => $latitude,
-                                                              'longitude' => $longitude)); // Insert group name and get pk id
+//                                                               'latitude' => $latitude,
+//                                                               'longitude' => $longitude 
+)); // Insert group name and get pk id
 
 //             // generate group code
             $groupcode=str_pad($office_id,3,"0",STR_PAD_LEFT)."0".$grouptypeid.str_pad($groupid,6,"0",STR_PAD_LEFT);
@@ -494,9 +498,9 @@ unset($sessionName->Created_Date);
             $addForm->day->addMultiOption($day['id'],$day['name']);
         }
         $bank = $this->view->adm->viewRecord("ourbank_master_bank","id","ASC");
-        foreach($bank as $banks) {
+       /* foreach($bank as $banks) {
             $addForm->bank->addMultiOption($banks['id'],$banks['name']);
-        }
+        }*/
         $branch = $this->view->adm->viewRecord("ourbank_master_branch","id","ASC");
         foreach($branch as $branch) {
             $addForm->branch->addMultiOption($branch['id'],$branch['name']);
@@ -538,6 +542,16 @@ unset($sessionName->Created_Date);
 
         $addForm->Created_Date->setValue($convertdate->phpnormalformat($group['group_created_date']));
         }
+
+        $dbobj = new Groupmdefault_Model_Groupdefault();
+        $officeid = $group['officeid'];
+        $banks = $dbobj->Getbank($officeid);
+        //  load applicable to values
+        foreach($banks as $banks) {
+                $addForm->bank->addMultiOption($banks['id'],$banks['name']);
+        }
+
+
         // enable javascript function to load groupmembers 
         echo "<script>getMember('".$group['officeid']."','".$app."','".$group['groupid']."','".$grouptype."');</script>";
             $gacc = array(); 
@@ -630,8 +644,8 @@ unset($sessionName->Created_Date);
                     $bank = $this->_request->getParam('bank');
                     $branch = $this->_request->getParam('branch');
                     $createddate= $this->_request->getParam('Created_Date');
-                    $latitude = $this->_request->getParam('latitude');
-                    $longitude = $this->_request->getParam('longitude');
+//                     $latitude = $this->_request->getParam('latitude');
+//                     $longitude = $this->_request->getParam('longitude');
                     $savingamt = $this->_request->getParam('savingamt');
                     $penaltyabsence = $this->_request->getParam('penaltyabsence');
                     $penaltylate = $this->_request->getParam('penaltylate');
@@ -686,8 +700,8 @@ unset($sessionName->Created_Date);
                                                                         'name' =>$groupname,
                                                                         'saving_perweek' => $savingamt,
                                                                         'penalty_notcoming' => $penaltyabsence,
-                                                                        'latitude' => $latitude,
-                                                                        'longitude' => $longitude, 
+//                                                                         'latitude' => $latitude,
+//                                                                         'longitude' => $longitude, 
                                                                         'penalty_latecoming' => $penaltylate,
                                                                         'late_subglcode' => $glidforlate,
                                                                         'absent_subglcode' =>$glidforabsense ,                                'rateinterest' => $interest,
@@ -724,7 +738,7 @@ unset($sessionName->Created_Date);
                                                   'id' =>$grouprepmemDetails['id'],
                                                   'group_id' => $grouprepmemDetails['group_id'],
                                                   'representative_id' => $grouprepmemDetails['representative_id']));
-                                                    
+
                  } // add group Representative members details to log table
 
                     $dbobject->UpdateGroupreps($group_id);
@@ -747,7 +761,7 @@ unset($sessionName->Created_Date);
     {
 //        $checkaccess = $access->accessRights('Group',$this->view->globalvalue[0]['name'],'activitydeleteAction');
 //        if (($checkaccess != NULL)) {
-        $this->view->groupid=$this->_request->getParam('id');
+        $this->view->groupid = $this->_request->getParam('id');
         $deleteForm = new Groupmdefault_Form_Delete();
         $this->view->form=$deleteForm; 
         // create instance for Groupmdefault model page
@@ -761,15 +775,17 @@ unset($sessionName->Created_Date);
         if ($this->_request->isPost() && $this->_request->getPost('Submit')){
          $formdata = $this->_request->getPost();
             if($deleteForm->isValid($formdata)) {
-                $grouptypeid = $dbobj->getGrouptypeid('Group');
-                // get the current status of group
-                $status = $dbobj->getAccountstatus($this->view->groupid,$grouptypeid);
+
+            $grouptypeid = $this->view->adm->getsingleRecord('ourbank_accounts','membertype_id','member_id',$this->view->groupid); // get group type id
+
+//                 // get the current status of group
+               $status = $dbobj->getAccountstatus($this->view->groupid,$grouptypeid);
                 if(!$status){
                     $flag = true;
                     }
                     if($status){
                         foreach($status as $statusid){
-                            if($statusid['accountstatus_id'] == 5) {
+                            if($statusid['status_id'] == 5) {
                                 $flag = true;
                                 }
                             else{
@@ -798,7 +814,7 @@ unset($sessionName->Created_Date);
                 if($flag==false){ // if account exists then display error message
                     echo "<font color='red'>You cannot delete this group, because this group have some active account.</font>";
                 }
-                }
+                }// valid ()
 	}
 	}
 
@@ -816,10 +832,28 @@ unset($sessionName->Created_Date);
 $dbobj = new Groupmdefault_Model_Groupdefault();
 //             $branches = $this->view->adm->getRecord('ourbank_master_branch','bank_id',$bankid);
 $branches = $dbobj->Getbranch($bankid);
-// Zend_Debug::dump($branches);
 //                 // load applicable to values
 		foreach($branches as $bankbranch) {
 			$groupForm->branch->addMultiOption($bankbranch['id'],$bankbranch['name']);
 		}
+        }
+
+        public function bankAction()
+        {
+
+        $app = $this->view->baseUrl();
+        $this->_helper->layout->disableLayout();
+
+        $officeid = $this->_request->getParam('officeid');
+
+        $groupForm = new Groupmdefault_Form_groupdefault($app);
+        $this->view->form = $groupForm;
+
+        $dbobj = new Groupmdefault_Model_Groupdefault();
+        $banks = $dbobj->Getbank($officeid);
+        // load applicable to values
+                        foreach($banks as $banks) {
+                                $groupForm->bank->addMultiOption($banks['id'],$banks['name']);
+                        }
         }
 }

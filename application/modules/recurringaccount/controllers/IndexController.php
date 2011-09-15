@@ -46,21 +46,41 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         $accountsForm = $this->view->form = new Recurringaccount_Form_Accounts();
-        if ($this->_request->isPost() && $this->_request->getPost('Search')) {
-            $formData = $this->_request->getPost();
-            if ($this->_request->isPost()) {
-                $formData = $this->_request->getPost();
-                if ($accountsForm->isValid($formData)) {
-                    $result = $this->view->accounts->search($this->_request->getParam('membercode'));
-                    if($result) {
-                        $this->view->result =$result;
-                    } else {
-                        $this->view->errormsg = "Record not found..Try Again..";
-                    }
-                }
-            }
-        }
-    }
+        $recurringaccount = new Recurringaccount_Model_Accounts();
+        
+        if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+         $result = $recurringaccount->search($postedvalues);
+		$this->view->recurringaccount = $result;
+
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+//           if (!$result){
+//                        echo "<font color='RED'>Records Not Found Try Again...</font>";
+//                             }
+// 
+	}
+        	
+        
+// //         if ($this->_request->isPost() && $this->_request->getPost('Search')) {
+// //             $formData = $this->_request->getPost();
+// //             if ($this->_request->isPost()) {
+// //                 $formData = $this->_request->getPost();
+// //                 if ($accountsForm->isValid($formData)) {
+// //                     $result = $this->view->accounts->search($this->_request->getParam('membercode'));
+// //                     if($result) {
+// //                         $this->view->result =$result;
+// //                     } else {
+// //                         $this->view->errormsg = "Record not found..Try Again..";
+// //                     }
+// //                 }
+// //             }
+// //         }
+// //     }
 
     public function detailsAction() 
     {
@@ -76,13 +96,25 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
     public function createaccountAction()
     {
         $path=$this->view->baseUrl();
-        $recurringForm = new Recurringaccount_Form_Recurring($path);
-        $this->view->fixedForm = $recurringForm;
+        
+
         $productId = base64_decode($this->_request->getParam('Id'));
         $memberId = base64_decode($this->_request->getParam('memberId'));
         $membercode = base64_decode($this->_request->getParam('code'));
+
+// offer details
+        $this->view->offerdetails = $this->view->accounts->getofferdetails($productId);
+
+
+        foreach($this->view->offerdetails as $account) {
+        $minimumbal = $account['minbalance'];
+        $maxbal = $account['maxbalance'];
+        }
+$recurringForm = new Recurringaccount_Form_Recurring($path,$minimumbal,$maxbal);
+        $this->view->fixedForm = $recurringForm;
+
         //EXTRACTING GROUP ID FROM MEMBER CODE
-        if(substr($membercode,4,1)=='2') {
+        if(substr($membercode,4,1)=='2' or substr($membercode,4,1)=='3') {
             $this->view->gp_members=$this->view->accounts->fetchmembers($memberId);
         }
 
@@ -99,6 +131,8 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $this->view->interestRates = $this->view->accounts->getInterestRates($productId);
         if ($this->_request->getPost('Submit')) 
         {
+
+
             $formData = $this->_request->getPost();
             if ($this->_request->isPost()) {
                 if ($recurringForm->isValid($formData)) {
@@ -167,7 +201,7 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
                     $tranID = $this->view->adm->addRecord('ourbank_recurring_payment',$rec_payment);
 
                     // Insertion into ourbank_paydetails
-                    
+
                     $date=$this->view->cl->phpmysqlformat($this->_request->getPost('date1'));
                     for($i=1; $i<=$periods; $i++) 
                     {
@@ -281,7 +315,6 @@ class Recurringaccount_IndexController extends Zend_Controller_Action
         $value=explode('-',$id);
         $interestvalue = $this->view->accounts->getInterestvalue($value[0],$value[1]);
         foreach($interestvalue as $interestvalue1){
-/*            echo $interestvalue1['Interest'];*/
              $this->view->interest = $interestvalue1['Interest'];
         }
     }

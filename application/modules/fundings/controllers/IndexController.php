@@ -17,23 +17,26 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Fundings_IndexController extends Zend_Controller_Action 
 {
     public function init()
      {
         $this->view->pageTitle='Fundings';
-        $globalsession = new App_Model_Users();
-                $this->view->globalvalue = $globalsession->getSession();// get session values
-                $this->view->createdby = $this->view->globalvalue[0]['id'];
-                $this->view->username = $this->view->globalvalue[0]['username'];
-				$storage = new Zend_Auth_Storage_Session();
-        		$data = $storage->read();
-        		if(!$data){
-           		 $this->_redirect('index/login');
-        			}
+        $storage = new Zend_Auth_Storage_Session();
+        $data = $storage->read();
+        if(!$data){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+
+
+        $sessionName = new Zend_Session_Namespace('ourbank');
+        $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
+
+        $login=new App_Model_Users();
+        $loginname=$login->username($userid);
+        foreach($loginname as $loginname) {
+            $this->view->username=$loginname['username']; // get the user name
+        } 
 //         if (($this->view->glourbankalvalue[0]['id'] == 0)) {
 //              $this->_redirect('index/logout');
 //         }
@@ -91,7 +94,7 @@ class Fundings_IndexController extends Zend_Controller_Action
 	
 			$form = new Fundings_Form_Fundings();
 			$this->view->form = $form;
-			$this->view->submitform = new Bank_Form_Submit();
+			$this->view->submitform = new Fundings_Form_Submit();
 
 			$funder = $this->view->adm->viewRecord("ourbank_funder","id","DESC");
 			foreach($funder as $funder) {
@@ -102,22 +105,154 @@ class Fundings_IndexController extends Zend_Controller_Action
 			foreach($currency as $currency) {
 				$form->currency_id->addMultiOption($currency['id'],$currency['name']);
 			}
-			$glcode = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
-			foreach($glcode as $glcode){
-				$form->glsubcode_id->addMultiOption($glcode['id'],$glcode['header']);
-			}
+			
 			if ($this->_request->isPost() && $this->_request->getPost('Submit')) {
 				if ($this->_request->isPost()) {
 					$formData = $this->_request->getPost();
 					if ($form->isValid($formData)) { 
 
-						$id = $this->view->adm->addRecord("ourbank_funding",$form->getValues());		
-						$this->_redirect('/fundingscommonview/index/commonview/id/'.$id);
+$fundings = new Fundings_Model_Fundings();
+$fundin=$fundings->getfundings();
+if(!$fundin) {
+
+
+$funderid=$formData['funder_id'];
+$fundings = new Fundings_Model_Fundings();
+        $fund=$fundings->getfunder($funderid);
+
+			 foreach ($fund as $fund) {
+$glcodeid=$fund['glcode_id'];
+}
+        $fundgl=$fundings->getglcode($glcodeid);
+
+			 foreach ($fundgl as $fundgl) {
+ $glcodeid=$fundgl['id'];
+
+ $glcode=$fundgl['glcode'];
+$subledger=$fundgl['ledgertype_id'];
+}
+
+
+$ini=substr($glcode,0,1);
+             $last=substr($glcode,1,5);
+          		$last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+            $glsubcode=$ini.$last;
+$userid=$this->view->createdby;
+   $officeid=$fundings->getuseroffice($userid);
+ foreach ($officeid as $officeid) {
+ $office=$officeid['bank_id'];
+}
+        $date=date("y/m/d H:i:s");
+
+ $glInsert = $fundings->insertGlsubcode(array('id' => '',
+                        'glsubcode' => $glsubcode, 'office_id' => $office,
+                        'glcode_id' => $glcodeid, 'subledger_id' => $subledger,'header' => $formData['name'],'description' => $formData['name'],
+                        'created_date' =>$date, 'created_by'=>$this->view->createdby));
+
+$glsubcode_id=$fundings->findmaxlevel();
+
+			 foreach ($glsubcode_id as $glsubcode_id) {
+$lastid=$glsubcode_id->lastid;
+}
+
+
+
+        $date=date("y/m/d H:i:s");
+$userid=$this->view->createdby;
+   $officeid=$fundings->getuseroffice($userid);
+ foreach ($officeid as $officeid) {
+ $office=$officeid['bank_id'];
+}
+
+
+$this->view->adm->addRecord("ourbank_funding",array('id' => '',
+                                                'funder_id' => $formData['funder_id'],
+                                                'name' =>$formData['name'],
+												'amount'=>$formData['amount'],
+												'glsubcode_id'=>$lastid,
+												'interest'=>$formData['interest'],
+												'currency_id'=>$formData['currency_id'],
+												'exchangerate'=>$formData['exchangerate'],
+												'beginingdate'=>$formData['beginingdate'],
+												'closingdate'=>$formData['closingdate'],
+												'created_by'=>$this->view->createdby,
+												'created_date' =>$date));
+	    	$this->_redirect('/fundings');
+}else {
+$funderid=$formData['funder_id'];
+
+
+
+$glfunding=$fundings->findmaxfunding($funderid);
+
+			 foreach ($glfunding as $glfunding) {
+ $lastfundingid=$glfunding->lastid;
+}
+        $fundinlast=$fundings->getfundingslast($lastfundingid);
+		foreach ($fundinlast as $fundinlast) {
+		$glsubcode=$fundinlast['glsubcode_id'];
+
+}
+
+        $subcode=$fundings->getglsubcode($glsubcode);
+foreach ($subcode as $subcode) {
+		$glsubcode=$subcode['glsubcode'];
+		$glcodeid=$subcode['glcode_id'];
+$subledger=$subcode['subledger_id'];
+
+}
+
+
+$ini=substr($glsubcode,0,1);
+             $last=substr($glsubcode,1,5);
+          		$last+=1;
+               $last = str_pad($last,5,0,STR_PAD_LEFT);
+            $glnewcode=$ini.$last;
+
+
+        $date=date("y/m/d H:i:s");
+$userid=$this->view->createdby;
+   $officeid=$fundings->getuseroffice($userid);
+ foreach ($officeid as $officeid) {
+ $office=$officeid['bank_id'];
+}
+ $glInsert = $fundings->insertGlsubcode(array('id' => '',
+                        'glsubcode' => $glnewcode, 'office_id' => $office,
+                        'glcode_id' => $glcodeid, 'subledger_id' => $subledger,'header' => $formData['name'],'description' => $formData['name'],
+                        'created_date' =>$date, 'created_by'=>$this->view->createdby));
+
+$glsubcode_id=$fundings->findmaxlevel();
+
+			 foreach ($glsubcode_id as $glsubcode_id) {
+$lastid=$glsubcode_id->lastid;
+}
+
+
+
+
+
+$this->view->adm->addRecord("ourbank_funding",array('id' => '',
+                                                'funder_id' => $formData['funder_id'],
+                                                'name' =>$formData['name'],
+												'amount'=>$formData['amount'],
+												'glsubcode_id'=>$lastid,
+												'interest'=>$formData['interest'],
+												'currency_id'=>$formData['currency_id'],
+												'exchangerate'=>$formData['exchangerate'],
+												'beginingdate'=>$formData['beginingdate'],
+												'closingdate'=>$formData['closingdate'],
+												'created_by'=>$this->view->createdby,
+												'created_date' =>$date));
+	    	$this->_redirect('/fundings');
+
+}
+// 						$id = $this->view->adm->addRecord("ourbank_funding",$form->getValues());		
+// 						$this->_redirect('/fundingscommonview/index/commonview/id/'.$id);
 					}
 				}
 			}
 // 		} else {
-// 	    	$this->_redirect('index/index');
 // 		}
     }
 
@@ -145,10 +280,7 @@ class Fundings_IndexController extends Zend_Controller_Action
 			foreach($currency as $currency) {
 				$form->currency_id->addMultiOption($currency['id'],$currency['name']);
 			}
-                        $glcode = $this->view->adm->viewRecord("ourbank_glsubcode","id","DESC");
-			foreach($glcode as $glcode){
-				$form->glsubcode_id->addMultiOption($glcode['id'],$glcode['header']);
-			}
+                     
         if ($this->_request->isPost() && $this->_request->getPost('Update')) {
 	    if ($this->_request->isPost()) {
 		$formData = $this->_request->getPost();

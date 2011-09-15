@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 class Familydefault_Model_familydefault extends Zend_Db_Table
 {
     protected $_name = 'ourbank_family';
@@ -34,11 +31,11 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
         return $result;
     }
 
-	public function office($hiearchyid) {
+	public function office($kootaid) {
            $select = $this->select()
                    ->setIntegrityCheck(false)
                    ->from(array('a' => 'ourbank_office'),array('name as villagename','id as village_id'))
-                   ->where('a.id =?',$hiearchyid);
+                   ->where('a.officetype_id =?',$kootaid);
 
            //die($select->__toString($select));
            return $this->fetchAll($select);
@@ -163,11 +160,42 @@ class Familydefault_Model_familydefault extends Zend_Db_Table
 	public function gethabitation($id) {
 		$select=$this->select()
 			->setIntegrityCheck(false)
-			->join(array('a'=>'ourbank_master_habitation'),array('id'),array('a.name as villagename','a.id'))
+			->join(array('a'=>'ourbank_master_habitation'),array('id'),array('a.name_regional as villagename','a.id'))
                         ->where('a.village_id =?',$id);
          //die($select->__toString($select));
 		$result = $this->fetchAll($select);
 		return $result->toArray();
 	}
+
+        public function getparentid($tablename,$rev_villageid)
+        { 
+		$select=$this->select()
+			->setIntegrityCheck(false)
+			->join(array('a'=>$tablename),array('id'))
+                        ->where('a.parentoffice_id =?',$rev_villageid);
+         //die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
+
+        public function getpincode($rev_villageid,$sub_id)
+        {
+		$select=$this->select()
+			->setIntegrityCheck(false)
+			->join(array('a'=>'ourbank_address'),array('id'))
+                        ->where('a.submodule_id  =?',$sub_id)
+                        ->where('a.id =?',$rev_villageid);
+                //die($select->__toString($select));
+		$result = $this->fetchAll($select);
+		return $result->toArray();
+        }
+
+        public function checkSujeevanNo($sujeevana_no,$rev_vill)
+        {
+                $db = $this->getAdapter();
+                $sql = "select sujeevana from ourbank_family where sujeevana='".$sujeevana_no."' and rev_village_id='".$rev_vill."'";
+                $result = $db->fetchAll($sql);
+                return $result;
+        }
     
 }

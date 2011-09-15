@@ -17,9 +17,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
-?>
-
-<?php
 /*
 Class for common Add Delete and Modify 
 
@@ -101,15 +98,24 @@ class App_Model_Adm extends Zend_Db_Table
                         ->where('b.module_description = ?',$submodule)
                         ->join(array('c' => $table),'c.submodule_id = b.module_id')
                         ->where('id = ?',$id);
-        // die($select->__toString($select));
+//         die($select->__toString($select));
         return $this->fetchAll($select);
     }
 
-    public function paginator()
+//       public function paginator($result,$page)
+//     {
+//         $paginator = Zend_Paginator::factory($result);
+//         $paginator->setItemCountPerPage(1);
+//         $paginator->setCurrentPageNumber($page);
+//         return $paginator;
+//     }
+
+      public function paginator()
     {
+
         return 5;
     }
-    
+
     // Action methods
     public function deleteAction($table,$redirect,$id)
     {
@@ -166,12 +172,33 @@ class App_Model_Adm extends Zend_Db_Table
                 where $param2 ='".$value."'";
                 $result = $db->fetchOne($sql);
         return $result;
+    } 
+
+// modified by albert on aug 8 2:41 pm
+// function used to get particular record from a table ex., id,name with out condition
+    public function getdropdownRecord($table,$param1)
+    {
+     $db = $this->getAdapter();
+        $sql = "select $param1 from $table ";
+                $result = $db->fetchAll($sql);
+        return $result;
+    } 
+
+// modified by albert on aug 8 2:41 pm
+// function used to get particular record from a table ex., id,name with condition
+
+    public function getdropdownRecordc($table,$param1,$where,$condition)
+    {
+     $db = $this->getAdapter();
+        $sql = "select $param1 from $table where $where = $condition";
+                $result = $db->fetchAll($sql);
+        return $result;
     }
     public function getRecord($table,$parameter,$value)
     { 
         $select = $this->select()
-                                ->setIntegrityCheck(false)  
-                                ->join(array('a' => $table),array('id'))
+                    ->setIntegrityCheck(false)  
+                    ->join(array('a' => $table),array('id'))
                 ->where($parameter.'=?',$value);
         $result = $this->fetchAll($select);
         return $result->toArray();
@@ -182,4 +209,99 @@ class App_Model_Adm extends Zend_Db_Table
         $sql = "delete from ".$table." where ".$param." = ". $value;
         $db->exec($sql);
     }
+
+
+    public function commonsearchquery($request,$cr) {
+
+	$postedvalue= array();
+	$postedvalues=$request;
+	$filterlastkey = array_pop($postedvalues);
+	$keyvalue = array_filter($postedvalues);
+
+	if($cr==2)
+	{
+		for($i=1;$i<=count($postedvalues);$i++)
+		{
+			$postedvalue['s'.$i] = base64_decode($postedvalues['s'.$i]);
+		}
+		return $postedvalue;
+	}
+	else 
+	{
+		return $postedvalues;
+	}
+    }
+
+    public function mainSearch($input,$fieldname,$table,$condition) {
+
+        $dateconvert = new App_Model_dateConvertor();
+        function checkingDate( $value )
+	{
+		return preg_match( '`^\d{1,2}/\d{1,2}/\d{4}$`', $value );
+	}
+
+		$keyvalue = array_filter($input);
+		$searchcounter = count($keyvalue);
+
+	if($searchcounter > 0) {
+
+        for($i=1; $i<=count($fieldname); $i++){
+               $inputA = $fieldname['input'.$i];
+               $inputB = $input['s'.$i];
+
+           $checkdate=checkingDate($inputB);
+            if($checkdate==1){
+            $inputB=$dateconvert->mysqlformat($inputB);
+                $where[]="a.".$inputA." like '%".$inputB."%'"; 
+            } else {
+                $where[]="a.".$inputA." like '%".$inputB."%'";
+            }
+         }
+
+        $condwhere = implode(" AND ",$where);
+        if($condition) $wherecond='AND ('.$condition.')'; else $wherecond='';
+        $this->db = Zend_Db_Table::getDefaultAdapter();
+        $sql= "SELECT * FROM ".$table." as a WHERE ".$condwhere." $wherecond ORDER BY a.DateofEntry Desc";
+        $result = $this->db->fetchAll($sql);
+//         echo $sql;
+        return $result;	
+
+		} else {
+                        if($condition) {
+                        $select = $this->select()
+                            ->setIntegrityCheck(false)  
+                            ->join(array('a' => $table),array('id'))
+                            ->order(array('a.id DESC'))
+                            ->where($condition);
+                $result = $this->fetchAll($select);
+                                } else {
+                        $select = $this->select()
+                            ->setIntegrityCheck(false)  
+                            ->join(array('a' => $table),array('id'))
+                            ->order(array('a.id DESC'));
+                $result = $this->fetchAll($select);
+                                }
+       return $result->toArray();
+		}
+        }
+//pagination
+   public function commonsearch($result,$page){
+        $paginator = Zend_Paginator::factory($result);
+        $paginator->setItemCountPerPage(5);
+        $paginator->setCurrentPageNumber($page);
+	return $paginator;
+    }
+
+   public function encodedvalue($postedvalues) {
+       $input=array();
+       $keyvalue = array_filter($postedvalues);
+       $searchcounter = count($keyvalue);
+               for($i=1;$i<=count($postedvalues);$i++)
+               {
+                   $input['s'.$i] = base64_encode($postedvalues['s'.$i]);
+               }
+       return $input;
+    }
+
+
 }

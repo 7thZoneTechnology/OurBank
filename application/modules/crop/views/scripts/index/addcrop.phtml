@@ -148,7 +148,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
   <BODY>
    <table id="hor-minimalist-b" border="1" bgcolor="#F8F8F8">
    <tr>
-        <th><?php echo $this->translate("Family information"); ?></th>
+        <th><?php echo $this->translate("ಕಟುಂಬದ ವಿವರ"); ?></th>
         <th></th>
         <th></th>
         <th></th>
@@ -156,49 +156,49 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <?php 
     $convertdate = new App_Model_dateConvertor();
     foreach($this->membername as $family_view){ ?>
-<tr>
-        <td ><?php echo $this->translate("Family ID:"); ?></td>
+<!--<tr>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ಕೋಡ :"); ?></td>
         <td ><?php echo $family_view['family_id']; ?></td>
         <td ><?php //echo $this->translate("Caste:"); ?></td>
-        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>
+        <td ><?php //echo $family_view['subcaste']; ?></td>    </tr>-->
     <tr>
-        <td ><?php echo $this->translate("House No:"); ?></td>
+        <td ><?php echo $this->translate("ಮನೆ ಸಂಖ್ಯೆ:"); ?></td>
         <td ><?php echo $family_view['house_no']; ?></td>
-        <td ><?php echo $this->translate("Ration card:"); ?></td>
+        <td ><?php echo $this->translate("ರೇಷನ್ ಕಾರ್ಡ್:"); ?></td>
         <td ><?php echo $family_view['ration']; ?></td>
     </tr>
 
     <tr>
-        <td><?php echo $this->translate("Street/Road/Lane:"); ?></td>
+        <td><?php echo $this->translate("ಬೀದಿ /ರಸ್ತೆ:"); ?></td>
         <td ><?php echo $family_view['street']; ?></td>
-        <td ><?php echo $this->translate("Health Insurance:"); ?></td>
+        <td ><?php echo $this->translate("ಆರೋಗ್ಯ ವಿಮೆ:"); ?></td>
         <td ><?php foreach($this->insurance as $insurance){ echo $insurance['insurancename']; echo "<br>";
         }?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Rev Village:"); ?></td>
+        <td ><?php echo $this->translate("ಕಂದಾಯ ಗ್ರಾಮ:"); ?></td>
         <td ><?php echo $family_view['villagename']; ?></td>
-        <td ><?php echo $this->translate("NREGS Job Card No:"); ?></td>
+        <td ><?php echo $this->translate("ಉದ್ಯೋಗಖಾತ್ರಿ ಜಾಬ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ:"); ?></td>
         <td ><?php echo $family_view['nregs_jobno']; ?></td>    </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Colony/Habitation:"); ?></td>
+        <td ><?php echo $this->translate(" ಗ್ರಾಮ:"); ?></td>
         <td ><?php echo $family_view['names']; ?></td>
-        <td ><?php echo $this->translate("Major source of income:"); ?></td>
+        <td ><?php echo $this->translate("ಆದಾಯದ ಪ್ರಮುಖ ಮೂಲ:"); ?></td>
         <td ><?php echo $family_view['income']; ?></td>
     </tr>
     <tr>
-        <td ><?php echo $this->translate("Family type:"); ?></td>
+        <td ><?php echo $this->translate("ಕುಟುಂಬದ ವಿಧ :"); ?></td>
         <td ><?php echo $family_view['familytype']; ?></td>
-        <td ><?php echo $this->translate("Contact Phone:"); ?></td>
+        <td ><?php echo $this->translate("ದೂರವಾಣಿ:"); ?></td>
         <td ><?php echo $family_view['phone']; ?></td>
     </tr>
 
     <tr>
-        <td ><?php echo $this->translate("Category:"); ?></td>
+        <td ><?php echo $this->translate("ಜಾತಿ:"); ?></td>
         <td ><?php echo $family_view['caste']; ?></td>
-        <td ><?php echo $this->translate("Mobile:"); ?></td>
+        <td ><?php echo $this->translate("ಮೊಬೈಲ್ :"); ?></td>
         <td ><?php echo $family_view['mobile']; ?></td>
     </tr>
    <?php } ?>
@@ -209,24 +209,24 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 <?php if($this->agriculture){ ?>
 <table id="hor-minimalist-b" border="1">
     <tr>
-        <th align="right"><?php echo $this->translate("Land holding"); ?></th>
+        <th align="right"><?php echo $this->translate("ಭೂ ಮಾಲೀಕತ್ವ "); ?></th>
 
 
- 		<th align="right"><?php echo $this->translate("Acre"); ?></th>
-        <th align="right"><?php echo $this->translate("Gunta"); ?></th>
-        <th align="right"><?php echo $this->translate("name of owner"); ?></th>
-        <th align="right"><?php echo $this->translate("Survey No"); ?></th>
-        <th align="right"><?php echo $this->translate("Village"); ?></th>
+ 		<th align="right"><?php echo $this->translate("ಎಕರೆ"); ?></th>
+        <th align="right"><?php echo $this->translate("ಗುಂಟೆ"); ?></th>
+        <th align="right"><?php echo $this->translate("ಮಾಲೀಕತ್ವ  ಹೆಸುರು"); ?></th>
+        <th align="right"><?php echo $this->translate("ಸರ್ವೇ ನಂಬರ್"); ?></th>
+        <th align="right"><?php echo $this->translate("ಗ್ರಾಮ"); ?></th>
        
     </tr>
     <?php foreach($this->agriculture as $agri){   ?>
     <tr>
-        <td><?php echo $agri['name']; ?></td>
+        <td><?php echo $agri['name_regional']; ?></td>
         <td align="right"><?php echo $agri['acre']; ?></td>
         <td align="right"><?php echo $agri['gunta']; ?></td>
         <td><?php echo $agri['membername']; ?></td>
         <td align="right"><?php echo $agri['survey_no']; ?></td>
-        <td><?php echo $agri['villagename']; ?></td>
+        <td><?php echo $agri['villagenames']; ?></td>
 
     </tr>
     <?php } ?>
@@ -252,18 +252,19 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
     <form name="form1" id = "valueForm" action="<?php echo $this->baseUrl();?>/crop/index/addcrop/id/<?php echo $this->id; ?>/subId/<?php echo $this->subId; ?>/modId/<?php echo $this->modId; ?>" method="POST">
         <table id="hor-minimalist-b" class = 'crop'>
             <tr> 
-                <th ><?php echo $this->translate("Land holding"); ?></th>
+                <th ><?php echo $this->translate("* ಜಮೀನಿನ ಕ್ರಮ ಸಂಖ್ಯೆ( ಕೋಷ್ಟಕ 4 ಕೃಷಿ ಜಮೀನಿಗೆ ಸಂಬಂಧಿಸಿದಂತೆ)"); ?></th>
 
-                <th ><?php echo $this->translate("Crop"); ?></th>
-                <th ><?php echo $this->translate("Season"); ?></th>
-                <th ><?php echo $this->translate("Acre"); ?></th>
-                <th ><?php echo $this->translate("Gunta"); ?></th>
-                <th ><?php echo $this->translate("Unit"); ?></th>
-                <th ><?php echo $this->translate("Quantity produced in units"); ?></th>
-                <th ><?php echo $this->translate("Quantity sold in units"); ?></th>
-                <th ><?php echo $this->translate("Price per units"); ?></th>
-                <th ><?php echo $this->translate("Price realised"); ?></th>
-                <th ><?php echo $this->translate("Sold date"); ?></th>
+                <th ><?php echo $this->translate("* ಬೆಳೆ"); ?></th>
+                <th ><?php echo $this->translate("* ಋತುಮಾನ "); ?></th>
+                <th ><?php echo $this->translate("ಎಕರೆ"); ?></th>
+                <th ><?php echo $this->translate("ಗುಂಟೆ"); ?></th>
+                <th ><?php echo $this->translate("* ಘಟಕ"); ?></th>
+                <th ><?php echo $this->translate("* ಬೆಳೆಯ ಉತ್ಪಾದನಾ ಪ್ರಮಾನ"); ?></th>
+                <th ><?php echo $this->translate("ಮಾರಿದ ಪ್ರಮಾಣ  (ಎ)"); ?></th>
+                <th ><?php echo $this->translate("ಮಾರಿದ ದಿನಾಂಕ"); ?></th>
+                <th ><?php echo $this->translate("ಒಂದು ಯೂನಿಟ್ ಗೆ ಸಿಕ್ಕ ಬೆಲೆ(ಬಿ)"); ?></th>
+                <th ><?php echo $this->translate("ಮಾರಿದ ಮೌಲ್ಯ(ಎ*ಬಿ)"); ?></th>
+                <!--<th ><?php echo $this->translate("ಮಾರಿದ ದಿನಾಂಕ"); ?></th> -->
                 <th ><?php echo $this->translate("Action"); ?></th>
             </tr>
             <tr id='tmp'>
@@ -271,7 +272,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="">Select</option>
 
                             <?php foreach ($this->agriculture as $land_details) {  ?>
-                            <option value="<?php echo $land_details['land_id']?>"><?php echo $land_details['name']?></option>
+                            <option value="<?php echo $land_details['land_id']?>"><?php echo $land_details['land_id']; echo ".  "; echo $land_details['name_regional']?></option>
 
                             <?php }
  ?>
@@ -281,7 +282,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="">Select</option>
 
                     <?php foreach ($this->cropdetails as $cropdetails) { ?>
-                    <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['name']?></option>
+                    <option value="<?php echo $cropdetails['id']?>"><?php echo $cropdetails['id']; echo ".  "; echo $cropdetails['name_regional']?></option>
 
                     <?php } ?>
 
@@ -294,7 +295,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                     <option value="">Select</option>
 
                     <?php foreach ($this->seasondetails as $seasondetails) { ?>
-                    <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['name']?></option>
+                    <option value="<?php echo $seasondetails['id']?>"><?php echo $seasondetails['id']; echo ".  "; echo $seasondetails['name_regional']?></option>
 
                     <?php } ?>
              </select> </td>
@@ -306,7 +307,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
                     <?php foreach ($this->units as $unit) { ?>
 
-                    <option value="<?php echo $unit['id']?>"><?php echo $unit['name']?></option>
+                    <option value="<?php echo $unit['id']?>"><?php echo $unit['id']; echo ".  "; echo $unit['name_regional']?></option>
 
                     <?php } ?>
 
@@ -315,14 +316,18 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                 </td>
 <td><INPUT type="text" name = "quantity[]" id =  "quantity1" size = 10 maxlength="3" class="quantity required number produced"></td>
                 <td><INPUT type="text" name = "marketed[]" id = "marketed1" size = 10 maxlength="5" min="1" class="marketed sold numeric1 number" ></td>
+                    <td><INPUT type="text" name = "date[]"  class="date" readonly></td>
                 <td><INPUT type="text" name = "price[]" id =  "price[]" size = 10 maxlength="6" min="1" class="numeric1 product number" ></td>
                 <td><INPUT type="text" name = "realised[]" id = "realised[]" size = 10 maxlength="6" readonly class="realised "></td>
-                <td><INPUT type="text" name = "date[]"  class="date" readonly></td>
+                <!--<td><INPUT type="text" name = "date[]"  class="date" readonly></td>-->
                 <td><img class="delete-icon" alt="delete" src="<?php echo $this->baseUrl(); ?>/images/delete.gif" border=0 width='16' height='16'></td>
             </tr> 
         </table>
-      
-        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>"><input type="submit" class="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>"><a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>"><input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
+
+        <input type="button" id="tmpAddRow" name="Add" value="<?php echo $this->translate("Add"); ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" id="submit" name="submit" value="<?php echo $this->translate("Submit"); ?>">
+	<a href="<? echo $this->baseUrl();?>/familycommonview/index/commonview/id/<? echo $this->id ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="submit" name="submit" value="<?php echo $this->translate("Back"); ?>"></a>
     </form>
 <?php //echo $this->errormsg; ?>
 </div>

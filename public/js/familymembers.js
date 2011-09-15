@@ -87,7 +87,7 @@ $(document).ready(
         }
     });
 
-    $(".uidvalid").change( function() {
+    $(".uidvalid").change( function() { //alert('HI prakash');
 	var id=$(this).attr("id").split("-"); 
         if($(this).val())
         {  uid=$(this).val();
@@ -95,29 +95,7 @@ $(document).ready(
            targeturl=path+"/familymembers/index/checkuid?uid="+uid+"&hiddenid="+id[1]; //alert(targeturl);
 	   $.ajax({ url: targeturl, success: function(data){ $('#uiddiv-'+id[1]).html(data) }});
         }
-// 	alert($('#hiddenuid-'+id[1]).val());
     }); 
-
-    $(".uidvaltext").change( function() {
-	var id=$(this).attr("id").split("-");
-        var uidvalue = $(this).val();
-        habitfields = $("input[name='uid"+"[]']").serializeArray(); 
-        len = habitfields.length; //alert(len);
-        for(i=1; i<=len; i++){ //alert(i);
-        if(i!=id[1]){
-        if($('#uid-'+i).val()!=uidvalue)
-        {
-            $(this).next('span#uidmember').remove();
-        }
-        else
-        {
-            $(this).after('<span id="uidmember" style="color: #FF0000">UID repeating</span>');
-            return false;
-        }
-        }
-        }
-    });
-
 
     $(".profid1").click ( function() {
          var entitlename=$(this).attr("name").split("-"); 
@@ -271,7 +249,7 @@ $(document).ready(
         if($(this).val())
         {  type_id=$(this).val();
            path=$('#baseurl').val();
-           targeturl=path+"/familymembers/index/getbank?type_id="+type_id+"&divid="+id[1];
+           targeturl=path+"/familymembers/index/getbank?type_id="+type_id+"&divid="+id[1]+"&villageid="+$('#villageid').val();
 	   $.ajax({ url: targeturl, success: function(data){ $('#bankdiv-'+id[1]).html(data) }});
         }
     });
@@ -342,6 +320,42 @@ $(document).ready(
            }
        });
 
+        $(this).find(':text.uidvaltext').each(function() {
+	var id=$(this).attr("id").split("-");
+        var uidvalue = $(this).val();
+        habitfields = $("input[name='uid"+"[]']").serializeArray(); 
+        len = habitfields.length;
+	var uiddatacheck=$("#hiddenid-"+id[1]).val();
+
+	if($("#hiddenid-"+id[1]).val()==2)
+	{   if($(this).next('span').length == 0) {
+	    $(this).after('<span id="uidmember1" style="color: #FF0000">UID already exist</span>');
+	    }
+            e.preventDefault();
+	}
+        else
+	{
+	    if($(this).next('span').length > 0) {
+	    $(this).next('span#uidmember1').remove();
+	    }
+	}
+	//alert(uiddatacheck);
+        for(i=0; i<=len; i++){
+        if(i!=id[1]) {
+        if($('#uid-'+i).val()!=uidvalue)
+        {
+            $(this).next('span#uidmember').remove();
+        }
+        else
+        {
+            if($(this).val()!="" && $(this).next('span').length == 0){
+            $(this).after('<span id="uidmember" style="color: #FF0000">UID repeating</span>');
+            e.preventDefault();
+            }
+        }
+        }
+        }
+        });
 
     });
 });

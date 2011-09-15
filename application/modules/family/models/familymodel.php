@@ -41,7 +41,8 @@ class Family_Model_familymodel extends Zend_Db_Table
     }
 
 //fetch the member details from search options...
-    public function searchDetails($userid,$post = array()) {
+    public function searchDetails($userid,$post = array()) 
+{
 
         $select = $this->select()
                         ->setIntegrityCheck(false)  
@@ -51,9 +52,12 @@ class Family_Model_familymodel extends Zend_Db_Table
                         ->where('a.code like "%" ? "%"',$post['code'])
                         ->where('a.rev_village_id like "%" ? "%"',$post['office'])
                         ->where('a.house_no like "%" ? "%"',$post['house'])
-                        ->where('a.family_id like "%" ? "%"',$post['familyid'])
+                      //  ->where('a.family_id like "%" ? "%"',$post['familyid']);
                         ->order(array('a.id DESC'))
                         ->where('c.id=?',$userid);
+  //  die($select->__toString($select));	
+
+
 	return $this->fetchAll($select);
     }
 

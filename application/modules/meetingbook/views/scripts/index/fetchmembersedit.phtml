@@ -52,7 +52,7 @@ $currentbalance3=0; $loandue1=0; $loandue2=0; $currentpay=0;
              <input type="hidden" name="accNum" value="<?php if($memberaccNum) { echo $memberaccNum[0]['account_number']; } else {  echo ''; } ?>">
 <?php
 $totalmembers=count($this->members);
- foreach($this->members as $members) { 
+ foreach($this->members as $members) {
     $absent=$members['penalty_notcoming'];        $late=$members['penalty_latecoming'];
     $latesucode=$members['late_subglcode'];       $absntsubcode=$members['absent_subglcode']; 
   ?>
@@ -65,31 +65,50 @@ $totalmembers=count($this->members);
         <td><? echo $no;?> </td>
         <td><? echo $members['membername'];?> </td>
         <td>
-<?php 
- for($i=0;$i<sizeof($this->val);$i++){  
+
+<?php for($i=0;$i<sizeof($this->val);$i++)
+     {
             $string_exploded = explode('_',$this->val[$i]);
+            if($string_exploded[0]==$members['memberid']) 
+            { ?>
+                <?php if($string_exploded[1]=='1') {  ?>
+                    <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'absent'.$members['id']; ?>" 
+                    value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?>,<?php echo $members['id'];?>);" checked="">
+                    <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'late'.$members['id']; ?>" value="<?php echo 'late_'.$no;?>" onchange="return late(<?php echo $late;?>,<?php echo $members['id'];?>);">
+                    <input type="text" class="totfee <?php echo 'fee'.$members['id']; ?>" id="<?php echo 'fee'.$members['id']; ?>" name="fee[]" readonly value="<?php echo $absent.'.00';?>"  size="2px">
+                <?php }  ?>
+                <?php if($string_exploded[1]=='2') { ?>
+                    <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'absent'.$members['id']; ?>" 
+                    value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?>,<?php echo $members['id'];?>);">
+                    <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'late'.$members['id']; ?>" value="<?php echo 'late_'.$no;?>" onchange="return late(<?php echo $late;?>,<?php echo $members['id'];?>);" checked="">
+                    <input type="text" class="totfee <?php echo 'fee'.$members['id']; ?>" id="<?php echo 'fee'.$members['id']; ?>" name="fee[]" readonly value="<?php echo $late.'.00';?>"  size="2px">
+                <?php }  ?>
+        <?php //} else { ?>
 
-if($string_exploded[0]==$members['memberid']) {
-if($string_exploded[1]=='1'){
-?>
-<input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'absent'.$members['id']; ?>" 
-value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?>,<?php echo $members['id'];?>);" checked="">
-<input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'late'.$members['id']; ?>" value="<?php echo 'late_'.$no;?>" onchange="return late(<?php echo $late;?>,<?php echo $members['id'];?>);">
-<input type="text" class="totfee <?php echo 'fee'.$members['id']; ?>" id="<?php echo 'fee'.$members['id']; ?>" name="fee[]" readonly value="<?php echo $absent.'.00';?>"  size="2px">
-<?php  } 
-if($string_exploded[1]=='2'){
-?>
-<input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'absent'.$members['id']; ?>" 
-value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?>,<?php echo $members['id'];?>);">
-<input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'late'.$members['id']; ?>" value="<?php echo 'late_'.$no;?>" onchange="return late(<?php echo $late;?>,<?php echo $members['id'];?>);" checked="">
-<input type="text" class="totfee <?php echo 'fee'.$members['id']; ?>" id="<?php echo 'fee'.$members['id']; ?>" name="fee[]" readonly value="<?php echo $late.'.00';?>"  size="2px">
-<?php }
+<!--        <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'absent'.$members['id']; ?>" 
+        value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?>,<?php echo $members['id'];?>);">
+        <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'late'.$members['id']; ?>" value="<?php echo 'late_'.$no;?>" onchange="return late(<?php echo $late;?>,<?php echo $members['id'];?>);">
+        <input type="text" class="totfee <?php echo 'fee'.$members['id']; ?>" id="<?php echo 'fee'.$members['id']; ?>" name="fee[]" readonly value=""  size="2px">-->
 
-      }
-  }
-?>
+        <?php } ?>
 
+
+
+<?php } ?>
         </td>
+
+
+
+
+        <?php //if($string_exploded[1]=='') { ?>
+
+<!--        <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'absent'.$members['id']; ?>" 
+        value="<?php echo 'absent_'.$no;?>" onchange="return absent(<?php echo $absent;?>,<?php echo $members['id'];?>);">
+        <input type="radio" name="<?php echo $members['id']; ?>"  id="<?php echo 'late'.$members['id']; ?>" value="<?php echo 'late_'.$no;?>" onchange="return late(<?php echo $late;?>,<?php echo $members['id'];?>);">
+        <input type="text" class="totfee <?php echo 'fee'.$members['id']; ?>" id="<?php echo 'fee'.$members['id']; ?>" name="fee[]" readonly value=""  size="2px">-->
+
+         <?php //}  ?>
+
 
         <td style="text-align:right;">    <?php $memberid=$members['memberid']; 
                     $creditbalance=$currentbalance->creditbalance($memberid);

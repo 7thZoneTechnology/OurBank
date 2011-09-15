@@ -25,7 +25,7 @@ class Fixedaccount_Form_Savings extends Zend_Form
     public function init() 
     {
     }
-    public function __construct($minimumDeposit,$ID,$memberID) 
+    public function __construct($minimumDeposit,$ID,$memberID)
     {
         parent::__construct($minimumDeposit);
         parent::__construct($ID);

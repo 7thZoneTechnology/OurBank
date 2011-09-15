@@ -130,6 +130,16 @@ public function search($acc)
 	return $tranId;
     }
 
+    public function search_groupmember_acc($acc)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $sql = "select a.id from ourbank_accounts a where a.tag_account in (SELECT b.id FROM ourbank_accounts b WHERE b.account_number in ('".$acc."')) and a.account_number not in ('".$acc."')";
+        echo $sql;
+        $result = $db->fetchAll($sql);
+        return $result;
+    }
+
     public function deposit($acc,$amount,$date,$type,$transactionMode,$description,$tranId) 
     {
 	$cl = new App_Model_dateConvertor ();
@@ -137,11 +147,14 @@ public function search($acc)
         $db->setFetchMode(Zend_Db::FETCH_OBJ);
 	$accData = $this->search($acc);  //echo '<pre>'; print_r($accData);
 	foreach ($accData as $accData) {
-	   $accId = $accData->accId;
+	   //$accId = $accData->accId;
 	   $gl = $accData->gl;
 	   $officeid = $accData->officeid;
 	}
-
+        $accData1 = $this->search_groupmember_acc($acc);
+        foreach($accData1 as $accData1)
+        {
+            $accId = $accData1->id;
 // 	// Transaction entry
 // 	$input = array('account_id' => $accId,
 //                       'glsubcode_id_to' => $gl,
@@ -168,6 +181,7 @@ public function search($acc)
                         'transaction_description' => $description,
 			'transaction_by' => 1);
 	$db->insert('ourbank_savings_transaction',$saving);
+        }
 
 	//Insertion into Liabilities
 	$liabilities = array('office_id' => $officeid,
@@ -181,6 +195,7 @@ public function search($acc)
 	foreach ($glresult as $glresult) {
             $cashglsubocde = $glresult->id;
 	}
+
         // Insertion into Assets ourbank_Assets
 //         $assets =  array('office_id' => $officeid,
 // 			'glsubcode_id_from' => '',
@@ -228,7 +243,7 @@ public function updateRecord($table,$param,$data)
 public function updateRecord1($table,$param,$data)  
     {
 	$db = $this->getAdapter();
-        $db->update($table, $data , array('tranasction_id = '.$param)); 
+        $db->update($table, $data , array('transaction_id = '.$param)); 
         return;
     }
 

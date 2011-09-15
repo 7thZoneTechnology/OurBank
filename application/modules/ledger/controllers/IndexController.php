@@ -17,9 +17,14 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 */
+?>
+
+<?php
+
 /*
 To create the Ledger Details
 */
+
 class Ledger_IndexController extends Zend_Controller_Action 
 {
     public function init()
@@ -27,19 +32,10 @@ class Ledger_IndexController extends Zend_Controller_Action
         $this->view->pageTitle='Ledger';
         $this->view->mainModule='Management';
         $this->view->adm = new App_Model_Adm();
-      $storage = new Zend_Auth_Storage_Session();
-        $data = $storage->read();
-        if(!$data){
-               $this->_redirect('index/login'); // once session get expired it will redirect to Login page
-       }
-       $sessionName = new Zend_Session_Namespace('ourbank');
-       $userid=$this->view->createdby = $sessionName->primaryuserid; // get the stored session id
-
-       $login=new App_Model_Users();
-       $loginname=$login->username($userid);
-       foreach($loginname as $loginname) {
-           $this->view->username=$loginname['username']; // get the user name
-       }
+        $globalsession = new App_Model_Users();
+        $this->view->globalvalue = $globalsession->getSession();
+        $this->view->username = $this->view->globalvalue[0]['username'];
+        $this->view->created_by = $this->view->globalvalue[0]['id'];
         $date=date("y/m/d H:i:s");
 
         $ledger = new Ledger_Model_Ledger();
@@ -72,6 +68,7 @@ class Ledger_IndexController extends Zend_Controller_Action
         $ledgerselect = $ledger->fetchAllLedger1();
         $this->view->ledger = $ledger->fetchAllLedger1(); //fetch all glcode details
 
+
         $subledger = new Ledger_Model_Ledger();
         $subledgerselect = $subledger->fetchAllSubLedger();
 
@@ -86,18 +83,25 @@ class Ledger_IndexController extends Zend_Controller_Action
 
         $form = new Management_Form_Search();
         $this->view->form1 = $form;
+
+        $office = $this->view->adm->viewRecord("ourbank_office","id","DESC");
+        foreach($office as $office1) {
+        $form->field5->addMultiOption($office1->id,$office1->name);
+        }
+
         if ($this->_request->isPost() && $this->_request->getPost('Search')) {	
             $glcode = $this->_request->getParam('field6'); 
             $glsubcode = $this->_request->getParam('field2');
             $accountHeader = $this->_request->getParam('field3');
             $subheader = $this->_request->getParam('field4');
+            $officeid = $this->_request->getParam('field5');
             $formData = $this->_request->getPost();
             if ($form->isValid($formData)) {
                 $first = new Ledger_Model_Ledger();
 
                 $arrayledger = $first->ledgerSearch($glcode,$accountHeader);
 
-                $arraysubledger = $first->subledgerSearch($glsubcode,$subheader);
+                $arraysubledger = $first->subledgerSearch($glsubcode,$subheader,$officeid);
                 $this->view->subledger = $arraysubledger;
 
                 $this->view->ledger1 = $arrayledger;
@@ -131,6 +135,12 @@ class Ledger_IndexController extends Zend_Controller_Action
 //         echo "<pre>"; print_r($categoryDetails);
         foreach($categoryDetails as $cName) {
         $form->product->addMultiOption($cName->id,$cName->name);
+        }
+
+        $officelevel = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+
+        foreach($officelevel as $officelevel1) {
+        $form->officelevel->addMultiOption($officelevel1->id,$officelevel1->type);
         }
 
         $products = $ledger->getproducts();
@@ -184,15 +194,12 @@ class Ledger_IndexController extends Zend_Controller_Action
     public function addsubledgerAction()
     {
         $path = $this->view->baseUrl();
-
         $date=date("y/m/d H:i:s");
-
         if ($this->_request->isPost() && $this->_request->getPost('submit')) {
             $glcode_id = $this->_request->getParam('glcode_id');echo "<br>";
             $subheader = $this->_request->getParam('subheader');echo "<br>";
             $glsubaccountdescription = $this->_request->getParam('glsubaccountdescription');echo "<br>";
             $productname = $this->_request->getParam('offerproduct');echo "<br>";
-
             $fetchglcodedetails=$this->view->adm->editRecord('ourbank_glcode',$glcode_id);
             $ledgertype_id = $fetchglcodedetails[0]['ledgertype_id'];
             $glcode = $fetchglcodedetails[0]['glcode'];
@@ -222,6 +229,7 @@ class Ledger_IndexController extends Zend_Controller_Action
             $gInsert = $ledger->insertGlsubcode(array('id' => '',
                             'glsubcode' => $glsubcode,
                             'glcode_id' => $glcode_id,
+                            'office_id'=>$this->_request->getParam('office'),
                             'subledger_id' => $ledgertype_id,
                             'header' => $subheader,
                             'description' => $glsubaccountdescription,
@@ -230,7 +238,7 @@ class Ledger_IndexController extends Zend_Controller_Action
             $this->_redirect('ledger/index');
         }
     }
-    
+
     public function viewledgerAction()
     {
         $this->view->title = "View Ledger";
@@ -257,6 +265,7 @@ class Ledger_IndexController extends Zend_Controller_Action
         $this->view->subledger = $ledgerselect;
         foreach ($this->view->subledger as $ledger1) {
             $this->view->glcode=$ledger1->glcode;
+            $this->view->officename=$ledger1->officename;
             $this->view->glsubcode=$ledger1->glsubcode;
             $this->view->subheader=$ledger1->header;
             $this->view->glsubaccountdescription=$ledger1->description;
@@ -324,6 +333,7 @@ class Ledger_IndexController extends Zend_Controller_Action
         }
         $ledger = new Ledger_Model_Ledger();
         $subledgerselect=$ledger->viewSubLedger($glsubcodeId);
+        $this->view->officename = $subledgerselect[0]['officename'];
         foreach($subledgerselect as $subledgerassign) {
             $this->view->glcode = $subledgerassign->glcode;
             $this->view->glsubcode = $subledgerassign->glsubcode;
@@ -371,14 +381,14 @@ class Ledger_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $this->_request->getPost('Delete')) 
         {
             $formData=$this->_request->isPost();
-            if ($this->_request->getParam('remarks'))
+            if ($this->_request->getParam('remarks')) 
             {
                 $glsubdetails=$this->view->adm->editRecord('ourbank_glsubcode',$id);
                 $this->view->adm->addRecord('ourbank_glsubcode_log',$glsubdetails[0]);
                 $this->view->adm->deleteRecord('ourbank_glsubcode',$id);
                 $this->_redirect("ledger/index");
             } else {
-                $this->view->errormsg="Value is required and can't be empty";
+                $this->view->errormsg="Value required";
             }
         }
     }
@@ -395,12 +405,34 @@ class Ledger_IndexController extends Zend_Controller_Action
         }
     }
 
+    public function getofficeAction() 
+    {
+        $this->_helper->layout->disableLayout();
+        $office_id = $this->_request->getParam('office_id');
+        $path = $this->view->baseUrl();
+        $form=$this->view->form = new Ledger_Form_Ledger($path);
+        $ledger = new Ledger_Model_Ledger();
+        $office = $ledger->getoffice($office_id);
+        foreach($office as $office1) {
+        $form->office->addMultiOption($office1->id,$office1->name);
+        }
+    }
+
     public function getsubledgerAction()
     {
         $this->_helper->layout->disableLayout();
         $glcode_id = $this->_request->getParam('glcode_id');
         $ledger = new Ledger_Model_Ledger();
-        $this->view->product = $ledger->subLedger($glcode_id); 
+        $this->view->product = $ledger->subLedger($glcode_id);
+    }
+
+    public function mainledgersAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $mainid = $this->_request->getParam('mainid');
+        $ledger = new Ledger_Model_Ledger();
+        $mainname = $ledger->getmainname($mainid);
+        echo $mainname[0]['header'];
     }
 
     public function getglcodeAction()

@@ -128,7 +128,7 @@ class Loanledger_IndexController extends Zend_Controller_Action
 	$y1 = $y1-25;
 		$page->drawText('Loan name  : '.$details->loanname,$x0, $y1);
 	$y1 = $y1-20;
-		$page->drawText('Loan amount R$  : '.$details->amount,$x0, $y1);
+		$page->drawText('Loan amount Rs  : '.$details->amount,$x0, $y1);
 	$y1 = $y1-20;
 		$page->drawText('Interest rate %  : '.$details->interest,$x0, $y1);
 	$y1 = $y1-20;

@@ -1,0 +1,337 @@
+<?php
+/*
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+*/
+class User_Indexcontroller extends Zend_Controller_Action
+{
+    public function init() 
+    {
+        $this->view->pageTitle='User';
+        $users = new App_Model_Users();
+        $this->view->createdby = $users->checkSession();
+        if($this->view->createdby == 0){
+                $this->_redirect('index/login'); // once session get expired it will redirect to Login page
+        }
+        $this->view->adm = new App_Model_Adm();
+        $this->view->user = new User_Model_User();
+
+    }
+
+    public function indexAction()
+    {
+        $this->view->title = "User";
+        $searchForm = new User_Form_Search();
+        $this->view->form = $searchForm;
+
+
+        $designation = $this->view->adm->viewRecord("ourbank_master_designation","id","DESC");
+        foreach($designation as $designation){
+            $searchForm->s2->addMultiOption($designation['id'],$designation['name']);
+        }
+
+        $grant = $this->view->adm->viewRecord("ourbank_grant","id","DESC");
+        foreach($grant as $grant){
+            $searchForm->grant_id->addMultiOption($grant['id'],$grant['name']);
+        }
+
+        $bankname = $this->view->adm->viewRecord("ourbank_office","id","DESC");
+        foreach($bankname as $bankname){
+            $searchForm->s3->addMultiOption($bankname['id'],$bankname['name']);
+        }
+
+        if($_POST)
+            $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,1);
+	else
+	   $postedvalues = $this->view->adm->commonsearchquery($_REQUEST,2); 
+
+        $result = $this->view->user->userSearch($postedvalues);
+        $page = $this->_getParam('page',1);
+        $this->view->paginator = $this->view->adm->commonsearch($result,$page);
+        $this->view->requestvalues=$this->view->adm->encodedvalue($postedvalues);
+        if (!$result) {
+                echo "<font color='RED'>Records Not Found Try Again...</font>";
+            } 
+    }
+
+    public function addAction() 
+    {
+       //language translator
+        $this->view->title = $this->view->translate("New User");
+	//session
+        $storage = new Zend_Auth_Storage_Session();
+	$data = $storage->read();
+	//redirect if not a session
+	if(!$data){
+            $this->_redirect('index/login');
+	}
+        //calling add form
+        $path = $this->view->baseUrl();
+        $addForm = new User_Form_User($path,$this->view->createdby);
+        $this->view->form=$addForm;
+        //listing designation
+        $designation = $this->view->adm->viewRecord("ourbank_master_designation","id","DESC");
+        foreach($designation as $designation){
+                        $addForm->designation->addMultiOption($designation['id'],$designation['name']);
+                }
+
+
+
+//         //listing office types
+//         $officetype = $this->view->adm->viewRecord("ourbank_officehierarchy","id","DESC");
+//         foreach($officetype as $officetype){
+//             $addForm->officetype->addMultiOption($officetype['id'],$officetype['type']);
+//         }
+
+//         //listing institution
+//         $bankname = $this->view->adm->viewRecord("ourbank_office","id","DESC");
+//                 foreach($bankname as $bankname){
+//                 $addForm->bank_id->addMultiOption($bankname['id'],$bankname['name']);
+//                 }
+
+
+
+        //listing the office types drop down
+        $office = new User_Model_User();
+        $this->view->officeDetails = $office->getOffice();
+        $this->view->officehierarchyselect = $office->officehierarchyselect();
+	//load hierarchy office dropdown
+        if($this->view->officehierarchyselect) {
+        $officehierarchyoutid = $office->getOfficehierarchyDetailsout();
+        foreach($officehierarchyoutid as $officehierarchyoutids) {
+                $addForm->officetype->addMultiOption($officehierarchyoutids->Hierarchy_level,$officehierarchyoutids->type);
+                    }
+        } else {
+
+        $officehierarchy = new User_Model_User();
+        $officehierarchy = $officehierarchy->getOfficehierarchyDetails(); 
+         foreach($officehierarchy as $officehierarchy) {
+                $addForm->officetype->addMultiOption($officehierarchy->id,$officehierarchy->type);
+                    }
+        }
+
+        //listing grants
+                $grant = $this->view->adm->viewRecord("ourbank_grant","id","DESC");
+                foreach($grant as $grant){
+                        $addForm->grant_id ->addMultiOption($grant['id'],$grant['name']);
+                }
+
+        //listing departments
+        $department = $this->view->adm->viewRecord("ourbank_master_department","id","DESC");
+        foreach($department as $department){
+            $addForm->department->addMultiOption($department['id'],$department['name']);
+        }
+
+        //listing gender
+                $gender = $this->view->adm->viewRecord("ourbank_master_gender","id","DESC");
+                foreach($gender as $gender){
+                        $addForm->gender->addMultiOption($gender['id'],$gender['name']);
+                }
+
+        //submit action
+        if ($this->_request->isPost() && $this->_request->getPost('Submit')) { 
+            $formData = $this->_request->getPost();
+
+// echo "Valid2";
+// echo "<pre>";
+// print_r ($formData);
+$officebranch = $this->_request->getParam('bank_id');
+// echo "<pre>";
+// print_r ($officebranch);
+
+//             if ($addForm->isValid($formData)) 
+//                 { 
+
+
+                    //adding datas to database
+                    $inputarray = array('id' => '',
+                                     'name' => $formData['name'],
+                                     'bank_id'=> $officebranch,
+                                     'gender' => $formData['gender'],
+                                     'designation' => $formData['designation'],
+//                                      'department' => $formData['department'],
+                                     'username'=> $formData['username'],
+                                     'password'=> $formData['password'],
+//                                      'grant_id' => $formData['grant_id'],
+                                     'created_by' => $this->view->createdby);
+                          $result = $this->view->adm->addRecord("ourbank_user",$inputarray);
+
+                                   $this->_redirect('user/index');
+//                   }
+
+                 }
+        }
+
+
+        public function subofficeAction() 
+        {
+        $this->_helper->layout()->disableLayout();
+        $officetype=$this->_request->getParam('officetype_id');
+        $this->view->officetype=$officetype;
+ 
+        $subOffice = new User_Model_User();
+        $path = $this->view->baseUrl();
+        $subofficeForm = new User_Form_User($path,$this->view->createdby);
+        $this->view->form=$subofficeForm;
+        $hierarchylevel2=$subOffice->hierarchylevel($officetype);
+
+        $off=$subOffice->office_branches($officetype);
+        foreach($off as $offs){
+                        $subofficeForm->bank_id->addMultiOption($offs->id,$offs->name);
+                }
+        }
+
+    public function edituserdetailAction()
+    {
+        $path = $this->view->baseUrl();
+        $addForm = new User_Form_User($path,$this->view->createdby);
+        $this->view->form=$addForm;
+
+        $id = $this->_getParam('id');
+        $this->view->id = $id;
+        $designation = $this->view->adm->viewRecord("ourbank_master_designation","id","DESC");
+        foreach($designation as $designation){
+            $addForm->designation->addMultiOption($designation['id'],$designation['name']);
+        }
+
+        $office = new User_Model_User();
+        $this->view->dbobj = $office;
+        $this->view->officeDetails = $office->getOffice();
+        $this->view->officehierarchyselect = $office->officehierarchyselect();
+	//load hierarchy office dropdown
+        if($this->view->officehierarchyselect) {
+        $officehierarchyoutid = $office->getOfficehierarchyDetailsout();
+        foreach($officehierarchyoutid as $officehierarchyoutids) {
+                $addForm->officetype->addMultiOption($officehierarchyoutids->Hierarchy_level,$officehierarchyoutids->type);
+                    }
+        } else {
+
+        $officehierarchy = new User_Model_User();
+        $officehierarchy = $officehierarchy->getOfficehierarchyDetails(); 
+         foreach($officehierarchy as $officehierarchy) {
+                $addForm->officetype->addMultiOption($officehierarchy->id,$officehierarchy->type);
+                 }
+        }
+
+
+/* $department = $this->view->adm->viewRecord("ourbank_master_department","id","DESC");
+        foreach($department as $department){
+            $addForm->department->addMultiOption($department['id'],$department['name']);
+        }
+        //listing grants
+        $grant = $this->view->adm->viewRecord("ourbank_grant","id","DESC");
+        foreach($grant as $grant){
+            $addForm->grant_id ->addMultiOption($grant['id'],$grant['name']);
+        } */
+        //listing gender
+        $gender = $this->view->adm->viewRecord("ourbank_master_gender","id","DESC");
+        foreach($gender as $gender){
+            $addForm->gender->addMultiOption($gender['id'],$gender['name']);
+        }
+        $this->view->title = "Edit User";
+                        //Acl
+        //         $access = new App_Model_Access();
+        //         $checkaccess = $access->accessRights('User',$this->view->globalvalue[0]['name'],'edituserdetail');
+        //        	if (($checkaccess != NULL)) {
+ 
+        $userdetails = $this->view->adm->editRecord("ourbank_user",$id); //print_r($userdetails);
+        $officeid=$userdetails[0]['bank_id'];
+                $officetypeselected = $office->getOfficeTypeId($officeid); //print_r($officetypeselected);
+        $this->view->form->officetype->setValue($officetypeselected[0]);
+       foreach($officetypeselected as $office){
+        $officeid = $office->officetype_id;
+        }
+        $officedetails=$this->view->dbobj->findofficename($officeid);
+        foreach($officedetails as $officedetails1){
+            $addForm->bank_id->addMultiOption($officedetails1['id'],$officedetails1['name']);
+        }
+        $addForm->populate($userdetails[0]);
+        if ($this->_request->isPost() && $this->_request->getPost('Update')) {
+               //submit action
+         $id = $this->_getParam('id');
+                $formData = $this->_request->getPost();
+print_r($formData);
+              // if ($addForm->isValid($formData)) {
+
+                    //editing record
+                    $previousdata = $this->view->adm->editRecord("ourbank_user",$id);
+                    //echo  "<pre>"; print_r($previousdata);
+                    $this->view->adm->updateLog("ourbank_user_log",$previousdata[0],$id);
+
+                    $inputarray = array('name' => $formData['name'],	
+                                     'bank_id'=> $formData['bank_id'],
+                                     'gender' => $formData['gender'],
+                                     'designation' => $formData['designation'],
+                                     'username'=> $formData['username'],
+                                     'password'=> $formData['password']);
+
+                $this->view->adm->updateRecord("ourbank_user",$id,$inputarray);
+      // $this->view->adm->deleteRecord("ourbank_office_child",$id);
+
+//                 foreach($formData['bank_id'] as $formData['bank_id'])
+//                 {
+//                     $inputarray1 = array('id' => $formData['officetype'],
+//                                      'bank_id' => $formData['bank_id']);
+//                     $this->view->adm->addRecord("ourbank_office_child",$inputarray1);
+//                 }
+
+                   // $this->view->adm->updateRecord("ourbank_user",$id,$addForm->getValues());
+                   $this->_redirect('user/index');
+               // }
+        }
+    }
+
+
+    public function commonviewAction() 
+    {
+        $this->view->title = "View user";
+        $SectForm = new Sectors_Form_Search();
+        $this->view->form = $SectForm;
+        $id = (int)$this->_getParam('id');
+        $this->view->id = $id;
+        //calling the model
+        $userdetails=new User_Model_User();
+        $user_details=$userdetails->getUser($id);
+        $module=$userdetails->getmodule('User');
+        foreach($module as $module_id){ }
+        $this->view->mod_id=$module_id['parent'];
+        $this->view->sub_id=$module_id['module_id'];
+        $this->view->userdetails = $user_details;
+        $this->view->address = $this->view->adm->getModule("address",$id,"Individual");
+        $personal=$userdetails->getpersonal($id);
+        $this->view->personal=$personal;
+    }
+
+    public function deleteAction()
+    {
+        $delform = new User_Form_Delete();
+        $this->view->deleteform = $delform;
+        $userdetails=new User_Model_User();
+        $id = (int)$this->_getParam('id');
+        $this->view->id = $id;
+        $user_details=$userdetails->getuser($id); 
+        $this->view->userdetails = $user_details;
+        if ($this->_request->isPost() && $this->_request->getPost('Delete')) {  
+            $redirect = $this->view->adm->deleteRecord("ourbank_user",$id);
+            $this->_redirect('/user');
+        }
+    }
+}
+
+ 
+
+	

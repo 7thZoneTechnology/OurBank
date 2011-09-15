@@ -20,7 +20,7 @@
 class Savingsledger_IndexController extends Zend_Controller_Action
 {
 	function init() { 
-		$this->view->pageTitle = "Savings ledger";
+		$this->view->pageTitle = "Individual / Group Savings ledger";
 		$this->view->tilte = "Reports";
         $this->view->type = "generalFields";
 		$this->view->dateconvert=new App_Model_dateConvertor();
@@ -37,8 +37,7 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 	}
 
 	function indexAction() {
-		$searchForm = new Savingsledger_Form_Search();
-		$this->view->form = $searchForm;
+		$this->view->form = $searchForm = new Savingsledger_Form_Search();
 
 		$dateFrom =$this->view->fromdate=$this->_request->getParam('datefrom');
 		$dateTo =$this->view->todate= $this->_request->getParam('dateto');
@@ -93,7 +92,9 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 			}
 		}
 		$creditTotal=0;$debitTotal=0;$transaction1='';
-		$transaction1 = $transaction->fetchTransactionDetails($this->_request->getParam('acc'),$this->_request->getParam('datefrom'),$this->_request->getParam('dateto'));
+		$transaction1 = $transaction->fetchTransactionDetails($this->_request->getParam('acc'),
+															  $this->_request->getParam('datefrom'),
+															  $this->_request->getParam('dateto'));
 			foreach($transaction1 as $calc){ 
 				if ($calc['transactiontype_id']==1) {
 					$creditTotal+=$calc['amount_to_bank'];
@@ -103,7 +104,7 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 			}
 		$this->view->creditTotal=$creditTotal;
 		$this->view->debitTotal=$debitTotal;
-// 
+
 		if ($transaction1=='') {
 			echo 'No Transactions yet Records';
 		} else {
@@ -181,6 +182,9 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 		$transaction = new Savingsledger_Model_Savingsledger();
 		if($accountnumber!=''){
 			$accountDetails = $transaction->getAccountDetails($accountnumber);
+
+			$balance = $transaction->balance($accountnumber);
+			
 			foreach($accountDetails as $arraytran2) 
 			{
 			$page->drawText("Name  ",50, $y1);$page->drawText(": ".$arraytran2['membername'],120, $y1);$y1-=15;
@@ -189,6 +193,9 @@ class Savingsledger_IndexController extends Zend_Controller_Action
 			$page->drawText("Product name ",300, $y2);$page->drawText(": ".$arraytran2['offername'],390, $y2);$y2-=15;
 			$page->drawText("Account no.  ",300, $y2);$page->drawText(": ".$arraytran2['account_number'],390, $y2);$y2-=15;
 			//$account_number = $arraytran2->account_number;
+			foreach($balance as $balanc){
+			$page->drawText("Balance  ",300, $y2);$page->drawText(": ".$balanc['bal'],390, $y2);$y2-=15;
+}
 			}
 		}
 

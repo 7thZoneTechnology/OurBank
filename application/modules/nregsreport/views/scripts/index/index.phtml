@@ -1,0 +1,59 @@
+<!--
+############################################################################
+#  This file is part of OurBank.
+############################################################################
+#  OurBank is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Affero General Public License as
+#  published by the Free Software Foundation, either version 3 of the
+#  License, or (at your option) any later version.
+############################################################################
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Affero General Public License for more details.
+############################################################################
+#  You should have received a copy of the GNU Affero General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+############################################################################
+!-->
+<!--search for individual member !-->
+<?php if (!$this->result) { ?>
+<fieldset>
+	<legend><?php echo $this->translate("Search"); ?></legend>
+		<form action="<?php echo $this->baseUrl();?>/nregsreport/index" method="POST">
+			<table width="100%" class="fieldsets">
+                            <TR>
+								<TD><label class="mand"><?php echo $this->translate("Grama Panchayat:"); ?></label></TD>
+                                <TD><?php echo $this->form->nregs;?></TD>
+                            </TR>
+                        </table>
+					<tr><TD></TD>
+						<TD><br><input type="submit" name="Search" value="Search"></TD>
+					</tr>
+
+	 </form>
+</fieldset>
+<?php } ?>
+
+<?php if ($this->result) { ?>
+
+		<table id="hor-minimalist-b" border="2">
+		<th width="5%">S.No</th><th>Gramapanchayat Name</th><th>Job Card No</th>
+		<th>APL</th><th>BPL</th><th>AAY</th><th>None</th><th>Nregs Cards</th>
+			<?php $i=1; foreach($this->result as $familydeatails){?>
+
+			<TR>
+				<TD width="5%" align="center"><?php echo $i ?></TD>
+				<TD><?php  echo $familydeatails['name'];?></TD>
+				<TD><?php  //echo $familydeatails['jobcardno'];?></TD>
+				<TD align="center"><?php echo $familydeatails['APL'];?></TD>
+				<TD align="center"><?php echo $familydeatails['BPL'];?></TD>
+				<TD align="center"><?php echo $familydeatails['AAY'];?></TD>
+				<TD align="center"><?php echo $familydeatails['norationcard'];?></TD>
+				<TD align="center"><?php echo $totalcount = $familydeatails['APL'] + $familydeatails['BPL'] + $familydeatails['AAY'];?></TD>
+			</TR>
+			<?php $i++;  } ?>
+
+		</table>
+
+<?php } ?>

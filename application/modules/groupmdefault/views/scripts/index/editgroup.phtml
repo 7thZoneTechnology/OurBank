@@ -25,6 +25,7 @@
 
 </script>
 <?php 
+/*
 function checkConnection()
 {
     //Initiates a socket connection to www.itechroom.com at port 80
@@ -53,7 +54,7 @@ if($status == "OK"){
           type="text/javascript">
    </script>
 </head>
-<?php } ?>
+<?php } */ ?>
 <script type="text/javascript" src="<?php  echo $this->baseUrl();?>/js/group/membershipgroupmedit.js"></script>
 <fieldset>
     <legend>Edit group</legend>
@@ -77,16 +78,32 @@ if($status == "OK"){
                        <?php } ?>
                     </TD>
                </TR>
-             <TR>
+            <TR>
                     <TD><label for="fld1" class="mand">Village name</td>
                     <TD><?php echo $this->form->offedit;?></TD>
-                    <?php echo $this->form->offeditv;?>
-                    <TD><?php echo $this->form->bank;?></TD>
-                    <TD><label class="mand">Bank branch</label></TD>
+                    <?php //echo $this->form->offeditv;?>
+            </TR>
+            <TR>   <TD><label class="mand">Bank</label></TD> <TD><?php echo $this->form->bank;?></TD> </TR>
+            <TR>   <TD><label class="mand">Bank branch</label></TD>
                     <TD><div id="branch"><?php echo $this->form->branch;?></div></TD>
                     <TD><?php echo $this->form->groupname;?></TD>
                     <td></td>
-                </TR> 
+                </TR>
+
+              <!--  <TR>
+                    <TD><label class="mand">Village name</td>
+                    <TD><?php echo $this->form->offedit;?></TD>
+                </TR>
+                <TR>
+                    <TD><label class="mand">Bank</label></TD>
+                    <TD><div id="bank"><?php echo $this->form->bank;?></div></TD>
+                 </TR>
+                <TR><TD><label class="mand">Bank branch</label></TD>
+                    <TD><div id="branch"><?php echo $this->form->branch;?></div></TD>
+                    <TD><?php echo $this->form->groupname;?></TD>
+                </TR> -->
+
+
                 <TR>
                     <TD><?php echo $this->form->savingamt;?></td>
                     <TD><?php echo $this->form->penaltylate;?></TD>
@@ -108,6 +125,7 @@ if($status == "OK"){
         </table>
  <br>
 <?php 
+/*
 if($status == "OK"){
 ?>
         <div id="map" style="width: 250px; height:200px; overflow-x:auto; overflow-y:auto; bottom-padding:10px">
@@ -132,7 +150,7 @@ else {
 
 echo "<font color ='red'>Internet connection is not available due to that google map not displayed...</font>";
 
-} ?>
+} */?>
         <div class="btnhouse">
             <div class="ltbtns">
                 <?php echo $this->form->Submit;?>

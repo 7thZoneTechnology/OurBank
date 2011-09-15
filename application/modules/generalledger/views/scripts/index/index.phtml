@@ -16,43 +16,68 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ############################################################################
 !-->
+<script type="text/javascript">
+function getlevels(hierarchy,path) {
+	if(hierarchy) {
+		targeturl=path+"/cashscroll/index/sublevel?hierarchy="+hierarchy;
+		$.ajax({ url: targeturl, success: function(data){ $("#statediv").html(data) }});
+	}
+}
 
+$(document).ready(function() {
+$('#show').change(function(){
+var va = $('#hierarchy').val();
+if(va != 4){
+$("#hide").hide();
+}else {
+$("#hide").show();
+
+}
+});
+});
+</script>
 <?php
 if($this->search == 0) { ?>   
-<form action="<?php echo $this->baseUrl();?>/generalledger/index" method="POST">  
-
 <fieldset>
-    <legend>Search</legend>
-        <TABLE width="100%">
-            <tr><br>
-                <td align = "center" class="label">Begin Date :</td>
-                <td align = "center"><?php  echo $this->form->datefrom;?></td>
-                <td class="label">Close Date :</td>
-                <td align = "right"><?php  echo $this->form->dateto;?></td>
-            </tr>
-           
-            <tr>
-                <TD align="center"><br><input type="submit" name="Search" value="Search"></TD>
-            </tr>
+  <legend>Search</legend>
+	<form action="<?php echo $this->baseUrl();?>/generalledger/index" method="POST">  
+      <TABLE width="100%">
+  						<tr>
+							<td><?php echo $this->translate('Hierarchy'); ?></td>
+                            <td id="show"><?php echo $this->form->hierarchy;?></td>
+                			<td align = "center" class="label">Begin Date :</td>
+                			<td align = "left"><?php  echo $this->form->datefrom;?></td>
+						</tr>
+						<tr>
+                            <td><br><?php echo $this->translate('Branch'); ?></td>
+                            <td><br><div id="statediv"><?php echo $this->form->branch;?></div></td>
+			                <td align = "center"><br>Close Date :</td>
+            			    <td ><br><?php  echo $this->form->dateto;?></td>
+						</tr>
+<!--						<tr id="hide">
+							<TD><?php //echo $this->translate('Group'); ?></TD>
+                            <TD><div id="groupdiv"><?php //echo $this->form->group;?></TD>
+						</tr>-->
+            <tr><TD align="center"><br><input type="submit" name="Search" value="Search"></TD></tr>
         </table>
+	</form>
 </fieldset>
-</form>
+
 <?php } ?>
 <?php if (count($this->ledegerList)) { ?>
-	<h3 align="right">From <?php echo "<font color='#045'>".$this->datefrom."</font>"; ?> </h3>
-	<h3 align="right"> To <?php echo "<font color='#045'>".$this->dateto."</font>"; ?></h3> 
+	<h3 align="left">From <?php echo "<font color='#039'>".$this->from."</font>"; ?> </h3> 
+	<h3 align="left"> To <?php echo "<font color='#039'>".$this->to."</font>"; ?></h3> 
 	<?php foreach($this->ledegerList as $ledegerList) { $type = $ledegerList["subheader"]; }?>
-	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
-	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
-	<div style="float:left;width:800px">
-    <TABLE id="hor-minimalist-b" width="80%">
+	<div style="float:left;width:200px">
+    <TABLE id="hor-minimalist-s" >
+	<tr><TD align="center"><b>Liabilities</b></TD></tr>
      <tr>
         <TH allign = "right">Particular</TH>
         <TH allign = "right">Dr</TH>
         <TH allign = "right">Cr</TH>
         <TH allign = "right">Balance</TH>
      </tr>
-     <?php foreach($this->ledegerList as $ledegerList) { 
+     <?php foreach($this->ledegerList as $ledegerList) {
      $liabilityCash = 0.00; ?>
              <tr>
             <TD allign = "right">Opening Balance</TD>
@@ -62,8 +87,8 @@ if($this->search == 0) { ?>
             foreach($this->openingCash as $openingCash) {
         if ($openingCash["glsubcode_id"] == $ledegerList["glsubcode_id"]) {
            $liabilityCash = $openingCash["openingCash"];
-             }
-           } 
+             	}
+           	  }
            }  ?>
 
             <TD align = "rgiht"><?php echo $liabilityCash;?></TD>
@@ -96,16 +121,13 @@ if($this->search == 0) { ?>
     </TABLE>
 </div>
 <?php } ?>
-<div style="float:left;width:800px">
-<?php if (count($this->ledegerListAssets)) { ?>
-	<h3 align="right">From <?php echo "<font color='#039'>".$this->field1."</font>"; ?> </h3>
-	<h3 align="right"> To <?php echo "<font color='#039'>".$this->field2."</font>"; ?></h3> 
-	<?php foreach($this->ledegerListAssets as $ledegerListAssets) { $type = $ledegerListAssets["subheader"]; }?>
-	<h3 align="right"> Ledger <?php echo "<font color='#039'>".$type."</font>"; ?></h3> <br>
+<div style="float:right;width:340px">
 
-	<h3 style="text-align:right">* Amount in <font color="red">Rs</font></h3>
-    <legend>Assets</legend>
-    <TABLE id="hor-minimalist-b" width="80%">
+<?php if (count($this->ledegerListAssets)) { ?>
+
+	<?php foreach($this->ledegerListAssets as $ledegerListAssets) { $type = $ledegerListAssets["subheader"]; }?>
+    <TABLE id="hor-minimalist-s">
+	<tr><TD align="center"><b>Assets</b></TD></tr>
      <tr>
         <TH allign = "right">Particular</TH>
         <TH allign = "right">Dr</TH>
@@ -121,7 +143,7 @@ if($this->search == 0) { ?>
             <TD allign = "right"></TD>
           <?php   if (count($this->openingCashAssets)) { 
             foreach($this->openingCashAssets as $openingCashAssets) {
-        if ($openingCashAssets["glsubcode_id"] == $ledegerListAssets["glsubcode_id"]) { 
+        if ($openingCashAssets["glsubcode"] == $ledegerListAssets["glsubcode"]) { 
 
            $assetsCash = $openingCashAssets["openingCash"];?>
 

@@ -43,5 +43,38 @@ echo "<span style='color:red;'>There is no loan accounts</span>";
 <td>Office:</td><td><?php echo $members['officename'];?>
 <input type="hidden" name="officeid" value="<?php echo $members['village_id'];?>"/> </td>
 </tr>
+
+<tr>
+<td>Savings account balance:</td><td><?php 
+if($memberaccNum) {
+
+        //echo $memberaccNum[0]['account_number']; 
+        $this->psdetails = new Psdetails_Model_Savingsdeposit();
+        $this->transactions = $this->psdetails->transaction($memberaccNum[0]['account_number']);
+        //echo $this->transactions;
+
+        $Balance = $this->psdetails->getbalance($memberaccNum[0]['account_number']);
+                foreach($Balance as $balances){
+                    $this->balance =  $balance = $balances['Balance']; 
+                    //echo $this->balance;
+                }
+
+        $credit = $this->psdetails->getCreditbalance($memberaccNum[0]['account_number']);
+        foreach($credit as $creditbal){
+        $Cbalance = $creditbal['Credit'];
+        }
+        $debit = $this->psdetails->getDebitbalance($memberaccNum[0]['account_number']);
+        foreach($debit as $debitbal){
+        $Dbalance = $debitbal['Debit'];
+        }
+        $balance = $Cbalance - $Dbalance;
+        $this->balanceamount = $balance;
+
+} ?> 
+<b><font color="green"><?php  if (!$this->transactions) {
+echo $this->balance;  } else  { echo $this->balanceamount; } ?></font></b></TD>
+<td></td>
+</tr>
+
 </table>
 <?php } ?>

@@ -22,6 +22,23 @@ class IndexController extends Zend_Controller_Action
     public function init() 
     {
         $this->view->title = "Management";
+		$date=date("y/m/d H:i:s");
+        $ledger = new Ledger_Model_Ledger();
+        $ledger1 = $ledger->fetchAllLedger1();
+        $flag = 0;
+        if($ledger1) { $flag = 1; }
+        $defaultledger = array('Bank','Cash','Loans','Savings','Interest','Fee','SrvChrg','Penalty','IntOnLoan','MeetingExpenses','OtherExpenses','IntOnSavings');
+        $glcode= array('A01000', 'A02000','A03000','L01000','I01000','I02000','I03000','I04000','I05000','E01000','E02000','E03000');
+        $ledgertype= array(3,3,3,4,1,1,1,1,1,2,2,2);
+        $description=array('Bank','Cash','Loans','Savings','Interest','Fee','ServiceCharge','Penalty','InterestOnLoans','MeetingExpenses','OtherExpenses','InterestOnSavings');
+        if($flag == 0) {
+            for($i=0; $i<= count($defaultledger); $i++){
+            $glInsert = $ledger->insertGlcode(array(
+                        'glcode' => $glcode[$i], 'ledgertype_id' => $ledgertype[$i],
+                        'header' => $defaultledger[$i], 'description' => $description[$i],
+                        'created_by' => 1,'created_date' =>$date));
+            }
+        }
 
     }
 
@@ -77,9 +94,13 @@ class IndexController extends Zend_Controller_Action
                     $getresult= $userinfo->userinfo($username);
                     foreach($getresult as $getdata) {
                             $user_id = $getdata["id"];
+                            $username = $getdata["name"];
                     }
                     $sessionName = new Zend_Session_Namespace('ourbank');
                     $sessionName->__set('primaryuserid',$user_id);
+                    $sessionName->primaryuserid;
+                    $sessionName->__set('username',$username);
+                    $sessionName->username;
                     $globalsession = new App_Model_Users();
                     $this->view->globalvalue = $globalsession->getSession();
                     $sessionName->__set('language',$this->view->globalvalue[1]);
