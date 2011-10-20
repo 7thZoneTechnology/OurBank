@@ -57,3 +57,20 @@ Now the Application is ready to use ..
 go to your browser and type http://localhost/ourbank/public
 default username and password is admin admin 
 and continue to using the application
+
+
+Windows Installation:
+
+1. Download WAMP from http://www.wampserver.com/en/download.php
+2. Install the Setup file, if successful, you should be able to access default WAMP page at http://localhost
+3. By Default, WAMP sets webroot as C:/wamp/www, Copy Ourbank Application to the folder
+4. Import sql file using phpmyadmin, default mysql access(in WAMP) will be 
+	user: root
+	nopassword 
+5. Update application/configs/application.ini with the mysql access
+6. Edit php.ini and turn short_tags On
+7. In apache.conf, search for '<Directory C:\wamp\www>', check if AllowOverride All is there.
+8. Enable mod_rewrite in Apache.
+(Steps 6,7,8 can be carried out by right-clicking on WAMP system tray icon)
+9. Just for sanity, Restart WAMP services.
+10. Browse 
